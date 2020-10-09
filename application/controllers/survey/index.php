@@ -72,6 +72,7 @@ class index extends CAction
 
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
+            resetQuestionTimers($surveyid);
         }
 
         $surveyExists   = ($oSurvey != null);
@@ -398,6 +399,10 @@ class index extends CAction
                 $aLoadErrorMsg['password'] = gT("You did not provide a password.");
             }
 
+            if (!$isSurveyActive) {
+                $aLoadErrorMsg['password'] = gT("You cannot reload responses because the survey is not activated, yet.");
+            }
+
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
             // && Yii::app()->request->isPostRequest ?
@@ -591,7 +596,7 @@ class index extends CAction
 
         // Reset the question timers in preview
         if (!$isSurveyActive || $previewmode) {
-            resetQuestionTimers();
+            resetQuestionTimers($surveyid);
         }
 
         sendCacheHeaders();

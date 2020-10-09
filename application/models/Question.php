@@ -1236,4 +1236,35 @@ class Question extends LSActiveRecord
     public function getHasAnsweroptions(){
 
     }
+
+    /**
+     * Override update() method to "clean" subquestions after saving a parent question
+     */
+    public function update($attributes=null)
+	{
+        if(parent::update($attributes)) {
+            $this->removeInvalidSubquestions();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    protected function removeInvalidSubquestions()
+    {
+        // No need to remove anything if this is a subquestion
+        if ($this->parent_qid) {
+            return;
+        }
+
+        // Remove subquestions if the question's type doesn't allow subquestions
+        if (!$this->getQuestionType()->subquestions) {
+            $aSubquestions = Question::model()->findAll("parent_qid=:parent_qid", array("parent_qid"=>$this->qid));
+            if (!empty($aSubquestions)) {
+                foreach ($aSubquestions as $oSubquestion) {
+                    $oSubquestion->delete();
+                }
+            }
+        }
+    }
 }

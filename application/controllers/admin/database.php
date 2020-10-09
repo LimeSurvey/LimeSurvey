@@ -766,8 +766,7 @@ class database extends Survey_Common_Action
                         foreach ($udata as $k => $v) {
                             $oQuestionL10n->$k = $v;
                         }
-
-                        $uqresult = $oQuestionL10n->save(); //($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                        $uqresult = $oQuestionL10n->save(); 
                         if (!$uqresult) {
                             $bOnError = true;
                             $aErrors = $oQuestion->getErrors();
@@ -1294,7 +1293,7 @@ class database extends Survey_Common_Action
 
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');
             $oQuestion->question_order = (int) $iQuestionOrder;
-            $oQuestion->save();
+                $oQuestion->save(); 
             if ($oQuestion) {
                 $this->iQuestionID = $oQuestion->qid;
             }
@@ -1312,7 +1311,7 @@ class database extends Survey_Common_Action
             $oQuestionLS->question = $sQuestionText;
             $oQuestionLS->help = $sQuestionHelp;
             $oQuestionLS->qid = $oQuestion->qid;
-            $oQuestionLS->save();
+            $oQuestionLS->save(); 
             
             $aErrors = $oQuestionLS->getErrors();
             if (count($aErrors)) {

@@ -1953,15 +1953,16 @@ function resetTimers()
 }
 
 /**
- * Sets the 'resetQuestionTimers' flag, so timer.js can pick it and unset the localstorage
+ * Removes all question timers for this survey from local storage
  *
  * @return void
  */
-function resetQuestionTimers()
+function resetQuestionTimers($surveyid)
 {
     Yii::app()->clientScript->registerScript(
         'resetQuestionTimers',
-        'LSvar.bResetQuestionTimers=true;',
+        //'LSvar.bResetQuestionTimers=true;',
+        "resetQuestionTimers({$surveyid})",
         LSYii_ClientScript::POS_BEGIN
     );
 }

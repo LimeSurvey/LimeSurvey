@@ -708,7 +708,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null)
 * @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
 * @param string[] $excludes array of columnames not to include in export
 */
-function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array())
+function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(), $iSurveyID = 0)
 {
     $iChunkSize = 3000; // This works even for very large result sets and leaves a minimal memory footprint
 
@@ -731,9 +731,9 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
             $criteria->limit = $iChunkSize;
             $criteria->offset = $iStart;
             if ($TableName == 'responses'){
-                $results = Response::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+                $results = Response::model($iSurveyID)->findAll($criteria);
             } elseif ($TableName == 'tokens'){
-                $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+                $results = Token::model($iSurveyID)->findAll($criteria);
             }
 
             foreach($results as $row){
@@ -1009,7 +1009,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->endElement();
     $aquery = "SELECT * FROM {{{$sTableName}}}";
 
-    buildXMLFromQuery($xml, $aquery, $sXMLTableTagName);
+    buildXMLFromQuery($xml, $aquery, $sXMLTableTagName, array(), $iSurveyID);
     $xml->endElement(); // close columns
     $xml->endDocument();
     if ($sFileName = '') {
@@ -1025,7 +1025,18 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 */
 function QueXMLCleanup($string, $allow = '<p><b><u><i><em>')
 {
-    return str_replace("&", "&amp;", html_entity_decode(trim(strip_tags(str_ireplace("<br />", "\n", $string), $allow)), ENT_QUOTES, 'UTF-8'));
+    $sAllowedTags = str_replace(">","",str_replace("<","",str_replace("><",",",$allow)));
+    $sResult = str_ireplace("<br />", "\n", $string);
+    $oPurifier = new CHtmlPurifier();
+    $oPurifier->options = array(
+        'HTML.Allowed'=>$sAllowedTags,
+        'Output.Newline'=> "\n"
+    );
+    $sResult = $oPurifier->purify($sResult);
+    $sResult = trim($sResult);
+    $sResult = html_entity_decode($sResult, ENT_QUOTES, 'UTF-8');
+    $sResult = str_replace("&", "&amp;", $sResult);
+    return $sResult;
 }
 
 /**
@@ -2349,17 +2360,13 @@ function CPDBExport($data, $filename)
     header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, no-store, no-cache");
-    $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
+    echo chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF')); // UTF-8 BOM
 
+    $handler = fopen('php://output', 'w');
     foreach ($data as $key=>$value) {
-        foreach ($value as $values) {
-            $tokenoutput .= trim($values).',';
-        }
-        $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
-        $tokenoutput .= "\n";
-
+        fputcsv($handler, $value);
     }
-    echo $tokenoutput;
+    fclose($handler);
     exit;
 }
 

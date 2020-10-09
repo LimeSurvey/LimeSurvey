@@ -97,6 +97,19 @@ class PluginManagerController extends Survey_Common_Action
         $oPluginManager = App()->getPluginManager();
         $result = $oPluginManager->scanPlugins();
 
+        // Add delete URL for each plugin
+        foreach($result as $name => &$scannedPlugin) {
+            if (isset($scannedPlugin['pluginType'])&&$scannedPlugin['pluginType']=='upload') {
+                $scannedPlugin['deleteUrl'] = $this->getController()->createUrl(
+                    '/admin/pluginmanager',
+                    [
+                        'sa' => 'deleteFiles',
+                        'plugin' => $name,
+                    ]
+                );
+            }
+        }
+
         Yii::app()->setFlashMessage(
             sprintf(
                 gT('Found %s plugins in file system'),
@@ -113,7 +126,7 @@ class PluginManagerController extends Survey_Common_Action
                 'sa' => 'installPluginFromFile'
             ]
         );
-        $aData['scanFilesUrl'] = $this->getController()->createUrl(
+        $data['scanFilesUrl'] = $this->getController()->createUrl(
             '/admin/pluginmanager',
             [
                 'sa' => 'scanFiles',
@@ -130,6 +143,32 @@ class PluginManagerController extends Survey_Common_Action
 
         //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
         //$this->getController()->redirect($indexUrl);
+    }
+
+    public function deleteFiles($plugin) {
+        $this->checkUpdatePermission();
+
+        // Pre supposes the plugin is in the uploads folder. Other plugins are not deletable by button.
+        $pluginDir =Yii::getPathOfAlias(App()->getPluginManager()->pluginDirs['upload']) . DIRECTORY_SEPARATOR . $plugin;
+
+        if (!file_exists($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Plugin folder does not exist.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        if (!is_writable($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Plugin files cannot be deleted due to permissions problem.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        if (!rmdirr($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Could not remove plugin files.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        } else {
+            Yii::app()->setFlashMessage(gT('Plugin files successfully deleted.'), 'success');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+        
     }
 
     /**
