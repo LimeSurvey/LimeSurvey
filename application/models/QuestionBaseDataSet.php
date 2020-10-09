@@ -198,7 +198,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->sLanguage = $this->oQuestion->survey->language;
 
         // Get all attributes for advanced settings (e.g. Subquestions, Attribute, Display, Display Theme options, Logic, Other, Statistics)
-        if ($this->oQuestion->qid == null) { //this is only the case if question is new and has not been saved
+        if ($this->oQuestion->qid == null || $this->oQuestion->qid == 0) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
             if ($userSetting !== null) {
                 $advancedOptionsArray = (array) json_decode($userSetting, true);
@@ -227,6 +227,10 @@ abstract class QuestionBaseDataSet extends StaticModel
                 $formElementValue = isset($questionAttributesValuesFromDB[$sAttributeName]) ? $questionAttributesValuesFromDB[$sAttributeName]->value : '';
                 $advancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray, $formElementValue);
             }
+        }
+        // TODO: Another hack - why is 'value' an empty array?
+        if (is_array($advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'])) {
+            $advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'] = '';
         }
         return $advancedOptionsArray;
     }
