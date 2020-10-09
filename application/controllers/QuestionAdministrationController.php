@@ -268,7 +268,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = $this->getQuestionObject(null, 'T', null);
 
-        Yii::app()->loadHelper("admin/htmleditor");
+        Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('jquery-ace');
         Yii::app()->getClientScript()->registerScript(
@@ -1349,6 +1349,7 @@ class QuestionAdministrationController extends LSBaseController
         if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
             throw new CHttpException(403, gT('No permission'));
         }
+        Yii::app()->loadHelper("admin.htmleditor");
         // NB: This works even when $questionId is null (get default question values).
         $question = $this->getQuestionObject($questionId);
         if ($questionId) {

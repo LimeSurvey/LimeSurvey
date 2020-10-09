@@ -229,7 +229,10 @@ abstract class QuestionBaseDataSet extends StaticModel
             }
         }
         // TODO: Another hack - why is 'value' an empty array?
-        if (is_array($advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'])) {
+        if (
+            isset($advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'])
+            && is_array($advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'])
+        ) {
             $advancedOptionsArray['Display']['text_input_width']['aFormElementOptions']['options']['option'][0]['value'] = '';
         }
         return $advancedOptionsArray;

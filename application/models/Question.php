@@ -296,9 +296,7 @@ class Question extends LSActiveRecord
         $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
-
-        $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
-        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
+        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
 
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute) {
@@ -334,6 +332,9 @@ class Question extends LSActiveRecord
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
         if (isset($aAttributeValues['question_template']) && ($aAttributeValues['question_template'] != 'core')) {
+            if (empty($oQuestion)) {
+                throw new Exception('oQuestion cannot be empty');
+            }
             $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
             if ($oQuestionTemplate->bHasCustomAttributes) {
                 // Add the custom attributes to the list
