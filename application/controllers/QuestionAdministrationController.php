@@ -721,6 +721,149 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * Called via Ajax.
+     * @todo Permission
+     */
+    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible = '')
+    {
+        $languages = explode(';', json_decode($languages));
+        $html      = array();
+        $first     = true;
+        $qid = 'new' . rand(0, 99999);
+        foreach ($languages as $language) {
+            $html[$language] = $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+            $first = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($html);
+    }
+
+    /**
+     * AJAX Method to QuickAdd multiple Rows AJAX-based
+     * @todo Permission
+     */
+    public function getSubquestionRowQuickAdd($surveyid, $gid)
+    {
+        $qid               = '{{quid_placeholder}}';
+        $request           = Yii::app()->request;
+        $codes             = $request->getPost('codes');
+        $language          = $request->getPost('language');
+        $first             = $request->getPost('first');
+        $scale_id          = $request->getPost('scale_id');
+        $type              = $request->getPost('type');
+        $position          = $request->getPost('position');
+        $assessmentvisible = $request->getPost('assessmentvisible');
+        echo $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+    }
+
+    /**
+     * This function should be called via ajax request
+     * It returns a EMPTY subquestion row HTML for a given ....
+     */
+    private function getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible = '')
+    {
+        // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
+        $stringCodes = json_decode($codes,true); // All the codes of the displayed subquestions
+
+        // TODO: calcul correct value
+        $oldCode = false;
+
+        //Capture "true" and "false" as strings
+        if (is_string($first)) {
+            $first = ($first == "false" ? false : true);
+        }
+        // We get the numerical part of each code and we store them in Arrays
+        // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
+        // Another array is to store the string values (so we keep all the prefixed "0")
+        $numCodes = array();
+        foreach ($stringCodes as $key => $stringCode) {
+            // This will loop into the code, from the last character to the first letter
+            $numericSuffix = ''; $n = 1; $numeric = true;
+            while ($numeric === true && $n <= strlen($stringCode)) {
+                $currentCharacter = (string) substr($stringCode, -$n, 1); // get the current character
+
+                if (ctype_digit($currentCharacter)) {
+                // check if it's numerical
+                    $numericSuffix = $currentCharacter.$numericSuffix; // store it in a string
+                    $n = $n + 1;
+                } else {
+                    $numeric = false; // At first non numeric character found, the loop is stoped
+                }
+            }
+            $numCodesWithZero[$key] = (string) $numericSuffix; // In string type, we can have   : "0001"
+            $numCodes[$key]         = (int) $numericSuffix; // In int type, we can only have : "1"
+        }
+
+        // Let's get the greatest code
+        $greatestNumCode          = max($numCodes); // greatest code
+        $key                      = array_keys($numCodes, max($numCodes)); // its key (same key in all tables)
+        $greatesNumCodeWithZeros  = (isset($numCodesWithZero)) ? $numCodesWithZero[$key[0]] : ''; // its value with prefixed 0 (like : 001)
+        $stringCodeOfGreatestCode = $stringCodes[$key[0]]; // its original submited  string (like: SQ001)
+
+        // We get the string part of it: it's the original string code, without the greates code with its 0 :
+        // like  substr ("SQ001", (strlen(SQ001)) - strlen(001) ) ==> "SQ"
+        $stringPartOfNewCode    = (string) substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
+
+        // We increment by one the greatest code
+        $numericalPartOfNewCode = $newPosition = $greatestNumCode + 1;
+
+        // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
+        $listOfZero = (string) substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
+
+        // When no more zero are available we want to be sure that the last 9 unit will not left
+        // (like in SQ01 => SQ99 ; should become SQ100, not SQ9100)
+        $listOfZero = ($listOfZero == "9") ? '' : $listOfZero;
+
+        // We finaly build the new code
+        $code = $stringPartOfNewCode.$listOfZero.$numericalPartOfNewCode;
+
+        $activated = false; // You can't add ne subquestion when survey is active
+        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+
+        if ($type == 'subquestion') {
+            $view = '_subquestion';
+            $aData = array(
+                'position'  => $position,
+                'scale_id'  => $scale_id,
+                'activated' => $activated,
+                'first'     => $first,
+                'surveyid'  => $surveyid,
+                'gid'       => $gid,
+                'qid'       => $qid,
+                'language'  => $language,
+                'title'     => $code,
+                'question'  => '',
+                'relevance' => '1',
+                'oldCode'   => $oldCode,
+            );
+        } else {
+            $view = '_answer_option';
+            $aData = array(
+                'assessmentvisible' => $assessmentvisible == "false" ? false : true,
+                'assessment_value'  => '',
+                'answer'            => '',
+                'sortorder'         => $newPosition,
+                'position'          => $newPosition,
+                'scale_id'          => $scale_id,
+                'activated'         => $activated,
+                'first'             => $first,
+                'surveyid'          => $surveyid,
+                'gid'               => $gid,
+                'qid'               => $qid,
+                'language'          => $language,
+                'title'             => $code,
+                'question'          => '',
+                'relevance'         => '1',
+                'oldCode'           => $oldCode,
+            );
+        }
+
+        $html = '<!-- Inserted Row -->';
+        $html .= App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
+    }
 
     /**
      * Collect the permissions available for a specific question

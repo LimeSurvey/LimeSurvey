@@ -198,11 +198,10 @@
         <input
             type="hidden"
             id="add-input-javascript-datas"
-            data-url="{{ createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/') }}"
+            data-url="{{ createUrl('/questionAdministration/getSubquestionRowForAllLanguages/') }}"
             data-quickurl="{{ createUrl(
-                '/admin/questions/',
+                '/questionAdministration/getSubquestionRowQuickAdd',
                 ({
-                    'sa' : 'getSubquestionRowQuickAdd',
                     'surveyid' : surveyid,
                     'gid' : gid
                 })

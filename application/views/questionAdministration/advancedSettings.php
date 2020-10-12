@@ -105,3 +105,7 @@
         </div>
     </div>
 </div>
+<script>
+// TODO
+langs = "en";
+</script>
