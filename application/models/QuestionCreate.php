@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class used when creating new question.
+ */
 class QuestionCreate extends Question
 {
     public static function getInstance($iSurveyId, $type)
@@ -9,16 +12,18 @@ class QuestionCreate extends Question
             throw new Exception('Found no survey with id ' . json_encode($iSurveyId));
         }
         $gid = Yii::app()->request->getParam('gid', 0);
-        if($gid == 0) {
+        if ($gid == 0) {
             $gid = array_values($oSurvey->groups)[0]->gid;
         }
-        if (isset($type) && !empty($type)){
+        if (isset($type) && !empty($type)) {
             $questionType = $type;
         } else {
             $questionType = SettingsUser::getUserSettingValue('preselectquestiontype', null, null, null, Yii::app()->getConfig('preselectquestiontype'));
         }
         $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
-        $temporaryTitle = 'G'.str_pad($oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT).'Q'.str_pad((safecount($oSurvey->baseQuestions)+1), 2, '0', STR_PAD_LEFT);
+        $temporaryTitle =
+            'G' . str_pad($oCurrentGroup->group_order, 2, '0', STR_PAD_LEFT)
+            . 'Q' . str_pad((safecount($oSurvey->baseQuestions) + 1), 2, '0', STR_PAD_LEFT);
         $aQuestionData = [
                 'sid' => $iSurveyId,
                 'gid' => $gid,
@@ -54,22 +59,42 @@ class QuestionCreate extends Question
         return $oQuestion;
     }
 
-    public function getOrderedAnswers($scale_id=null) {
-        if($scale_id == null) {
+    /**
+     * @param int|null $scale_id
+     * @return array|null
+     * @todo Why return both empty array and null?
+     */
+    public function getOrderedAnswers($scale_id = null)
+    {
+        if ($scale_id == null) {
             return [];
         }
-        if($this->questionType->subquestions >= 1) {
+        if ($this->questionType->subquestions >= 1) {
             return  $this->questionType->subquestions == 1 ? [[]] : [[],[]];
         }
         return null;
     }
-    public function getOrderedSubQuestions($scale_id=null) {
-        if($scale_id == null) {
+
+    /**
+     * @param int|null $scale_id
+     * @return array|null
+     */
+    public function getOrderedSubQuestions($scale_id = null)
+    {
+        if ($scale_id == null) {
             return [];
         }
-        if($this->questionType->answerscales >= 1) {
+        if ($this->questionType->answerscales >= 1) {
             return $this->questionType->answerscales == 1 ? [[]] : [[],[]];
         }
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmptySubquestion()
+    {
+        return new Question();
     }
 }

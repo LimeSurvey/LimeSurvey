@@ -1,15 +1,5 @@
-<input type='hidden' name='sid' value='{{ surveyid }}' />
-<input type='hidden' name='gid' value='{{ gid }}' />
-<input type='hidden' name='qid' value='{{ qid }}' />
-
-{% if viewType=='subQuestions' %}
-    <input type='hidden' id='action' name='action' value='updatesubquestions' />
-{% elseif viewType=='answerOptions' %}
-    <input type='hidden' name='action' value='updateansweroptions' />
-{% endif %}
-
-<input type='hidden' name='sortorder' value='' />
-<input type='hidden' id='deletedqids' name='deletedqids' value='' />
+<input type='hidden' name='subquestions_sortorder' value='' />
+<input type='hidden' id='subquestions_deletedqids' name='subquestions_deletedqids' value='' />
 
 {% set first=true %}
 
@@ -21,12 +11,13 @@
 <!-- Tab content -->
 <div id='tabpage_{{ anslang }}' class='tab-page tab-pane'>
     {% for scale_id in range(0,scalecount-1) %}
+        {{ dump(results) }}
          {% set result = results[anslang][scale_id] %}
          {% set anscount = result|length %}
         {# TODO : check the rendering of XSCALES / Y SCALES #}
 
-        {# For subQuestions #}
-        {% if viewType=='subQuestions' %}
+        {# For subquestions #}
+        {% if viewType=='subquestions' %}
             {% set position=0 %}
             {% if scalecount>1 %}
                 {% if scale_id==0 %}
@@ -50,7 +41,7 @@
             {% endif %}
         {% endif %}
 
-        <!-- Answers/Subquestions Table -->
+        <!-- Answers/subquestions Table -->
         <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
 
             <!-- Headers -->
@@ -65,8 +56,8 @@
                     </th>
                     <th class='col-md-1'>{{ gT("Code") }}</th>
 
-                    <!-- subQuestions headers -->
-                    {% if viewType=='subQuestions' %}
+                    <!-- subquestions headers -->
+                    {% if viewType=='subquestions' %}
                         <th>
                             {{ gT("Subquestion") }}
                         </th>
@@ -110,7 +101,7 @@
             <tbody id="rowcontainer">
                 {% for row in result %}
                     <!-- Line tag -->
-                    {% if viewType=='subQuestions' %}
+                    {% if viewType=='subquestions' %}
                         {% include 'subquestionRow.twig' with {
                             'position'  : position,
                             'scale_id'  : scale_id,
@@ -152,7 +143,7 @@
         </table>
 
         <div class="action-buttons">
-            {% if viewType=='subQuestions' %}
+            {% if viewType=='subquestions' %}
                 {% if activated == 'Y' %}
                     {% set disabled = 'disabled="disabled"' %}
                 {% else %}

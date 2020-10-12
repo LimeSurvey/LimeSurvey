@@ -54,15 +54,9 @@
                             '/application/views/questionAdministration/subquestions.twig',
                             [
                                 'anslang'    => 'en',
-                                'viewType'   => 'subQuestions',
+                                'viewType'   => 'subquestions',
                                 'scalecount' => 1,
-                                'results'     => [
-                                    'en' => [
-                                        [
-                                            'position' => 1
-                                        ]
-                                    ]
-                                ]
+                                'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()]
                             ],
                             true
                         ); ?>
@@ -75,16 +69,12 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/subquestions.twig',
                             [
+                                'activated'  => false,
+                                'oldCode'    => true,
                                 'anslang'    => 'en',
                                 'viewType'   => 'answerOptions',
                                 'scalecount' => 1,
-                                'results'     => [
-                                    'en' => [
-                                        [
-                                            'position' => 1
-                                        ]
-                                    ]
-                                ]
+                                'results'    => $oQuestion->answers
                             ],
                             true
                         ); ?>

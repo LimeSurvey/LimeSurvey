@@ -343,12 +343,12 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 
 /**
  * add input : the ajax way
+ * @param {event} e
  */
-
 function addinput(e)
 {
     e.preventDefault();
-       var $that              = $(this),                               // The "add" button
+    var $that              = $(this),                               // The "add" button
         $currentRow            = $that.closest('.row-container'),   // The row containing the "add" button
         $currentTable          = $that.closest('.answertable'),
         $commonId              = $currentRow.data('common-id'),     // The common id of this row in the other languages
@@ -383,7 +383,6 @@ function addinput(e)
         url: $url,
         data: datas,
         success: function(arrayofhtml) {
-
             // arrayofhtml is a json object containing the different HTML row by language
             // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
 
@@ -394,7 +393,7 @@ function addinput(e)
             });
             rebindClickHandler();
         },
-        error :  function(html, statut){
+        error: function(html, statut) {
             alert($errormessage);
         }
     });
