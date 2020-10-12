@@ -98,6 +98,7 @@ class CopyQuestion
         $this->newQuestion->attributes = $questionToCopy->attributes;
         $this->newQuestion->title = $questionCode;
         $this->newQuestion->gid = $groupId;
+        $this->newQuestion->question_order = $this->copyQuestionValues->getQuestionPositionInGroup();
         $this->newQuestion->qid = null;
 
         return $this->newQuestion->save();

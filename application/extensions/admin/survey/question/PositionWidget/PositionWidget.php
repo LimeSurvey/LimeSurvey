@@ -16,13 +16,16 @@
      * This widget display a position selection for a question inside a group. It's used for now in "add new question".
      * It has two modes :
      *
-     * - static mode (display = form_group) : just render a select with "At end", "At Bengining", "After question..." for each question of the group
+     * - static mode (display = form_group) : just render a select with "At end", "At Bengining", "After question..."
+     * for each question of the group
      *   this mode imply that the group can't be change in the same view that the widget
      *
      * - ajax mode (display = ajax_form_group): In ajax mode, the widget will first render an hidden input where is called.
      *    This hidden input contains the necessary datas to generate a static position selector.
-     *    Then it will register some js, that will insert after this hidden input a static position selector based on the datas of the hidden input.
-     *    If the question group selector change, it will update the datas of the hidden input, and regenerate a new position selector
+     *    Then it will register some js, that will insert after this hidden input a static position selector based on
+     *    the datas of the hidden input.
+     *    If the question group selector change, it will update the datas of the hidden input, and regenerate a new
+     *    position selector
      */
     class PositionWidget extends CWidget
     {
