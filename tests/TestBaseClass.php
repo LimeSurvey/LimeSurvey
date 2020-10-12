@@ -80,6 +80,7 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
+            \Survey::model()->resetCache(); // Reset the cache so findByPk doesn't return a previously cached survey
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
