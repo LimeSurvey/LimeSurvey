@@ -54,7 +54,6 @@
                             '/application/views/questionAdministration/subquestions.twig',
                             [
                                 'anslang'    => 'en',
-                                'viewType'   => 'subquestions',
                                 'scalecount' => 1,
                                 'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()]
                             ],
@@ -67,12 +66,11 @@
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
-                            '/application/views/questionAdministration/subquestions.twig',
+                            '/application/views/questionAdministration/answerOptions.twig',
                             [
                                 'activated'  => false,
                                 'oldCode'    => true,
                                 'anslang'    => 'en',
-                                'viewType'   => 'answerOptions',
                                 'scalecount' => 1,
                                 'results'    => $oQuestion->answers
                             ],
