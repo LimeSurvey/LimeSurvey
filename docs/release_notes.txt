@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.23.7 (build 201006) to 3.24.0 (build 201013) October 12, 2020
++New feature: E-Mail bodies allow now for more than 64kb size when using MySQL (Carsten Schmitz)
+-Fixed issue: Error when too many translations are added to a survey (Carsten Schmitz)
+-Fixed issue: Database exception when trying to import a question/group/survey from an incompatible LimeSurvey version (Carsten Schmitz)
+-Fixed issue: Database exception when trying to add the same user twice in survey permissions (Carsten Schmitz)
+-Fixed issue: Database exception is shown when trying to reload responses for/resume an inactive survey (Carsten Schmitz)
+-Fixed issue: Database exception is shown when trying to download files on a inactive survey (Carsten Schmitz)
+-Fixed issue: Database error on sorting CPDB participants by owner (Carsten Schmitz)
+-Fixed issue: Database error on question creation/editing if question text is too long (Carsten Schmitz)
+-Fixed issue #16560: After downloading tokens for the first time, need to refresh for a second download (#1613) (Gabriel Jenik)
+-Fixed issue #16506: Fruity theme: question type Matrix (texts), you do not see the sums of the total columns and grand total. (#1605) (Gabriel Jenik)
+-Fixed issue #13437: simple statistics looks odd (GabrielJenik)
+#Updated translation: Japanese by nomoto, kmrmtr
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by george01
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.23.6 (build 200929) to 3.23.7 (build 201006) October 5, 2020
 -Fixed issue: Quick translation shows database error when group name too long (Carsten Schmitz)
 -Fixed issue: Importing participant with invalid Valid/ValidUntil date threw database error (Carsten Schmitz)
