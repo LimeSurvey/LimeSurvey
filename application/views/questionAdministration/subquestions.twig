@@ -3,133 +3,135 @@
 
 {% set first=true %}
 
-<!-- Tabs -->
 {% set sortorderids='' %}
 {% set codeids='' %}
 {% set scale_id = 0 %}
 
-<!-- Tab content -->
-<div id='tabpage_{{ anslang }}' class='tab-page tab-pane'>
-    {% for scale_id in range(0,scalecount-1) %}
-        {% set anscount = subquestions|length %}
-        {# TODO : check the rendering of XSCALES / Y SCALES #}
+<!-- Loop all language, and then hide all but the current selected one with JS. -->
+{% for lang in allLanguages %}
+    <div class="lang-{{ lang }}">
+        {% for scale_id in range(0,scalecount-1) %}
+            {% set anscount = subquestions|length %}
+            {# TODO : check the rendering of XSCALES / Y SCALES #}
 
-        {% set position=0 %}
-        {% if scalecount > 1 %}
-            {% if scale_id==0 %}
-                <div class='header ui-widget-header'>
-                    {{ gT("Y-Scale") }}
-                </div>
-            {% else %}
-                <div class='header ui-widget-header'>
-                    {{ gT("X-Scale") }}
-                </div>
+            {% set position=0 %}
+            {% if scalecount > 1 %}
+                {% if scale_id==0 %}
+                    <div class='header ui-widget-header'>
+                        {{ gT("Y-Scale") }}
+                    </div>
+                {% else %}
+                    <div class='header ui-widget-header'>
+                        {{ gT("X-Scale") }}
+                    </div>
+                {% endif %}
             {% endif %}
-        {% endif %}
 
-        <!-- Subquestions Table -->
-        <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
+            <!-- Subquestions table -->
+            <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
 
-            <!-- Headers -->
-            <thead>
-                <tr>
-                    <th class="col-md-1">
-                        {% if first and activated != 'Y' %}
-                            {{ gT("Position") }}
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </th>
-                    <th class='col-md-1'>{{ gT("Code") }}</th>
-                    <th>
-                        {{ gT("Subquestion") }}
-                    </th>
-                    {% if first %}
-                        {% if scale_id == 0 %}
-                            <th id='rel-eq-th' class='col-md-1'>
-                                {{ gT("Relevance equation") }}
+                <!-- Headers -->
+                <thead>
+                    <tr>
+                        <th class="col-md-1">
+                            {% if first and activated != 'Y' %}
+                                {{ gT("Position") }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </th>
+                        <th class='col-md-1'>{{ gT("Code") }}</th>
+                        <th>
+                            {{ gT("Subquestion") }}
+                        </th>
+                        {% if first %}
+                            {% if scale_id == 0 %}
+                                <th id='rel-eq-th' class='col-md-1'>
+                                    {{ gT("Relevance equation") }}
+                                </th>
+                            {% endif %}
+                            <th class="col-md-1">
+                                {{ gT("Action") }}
                             </th>
                         {% endif %}
-                        <th class="col-md-1">
-                            {{ gT("Action") }}
-                        </th>
+                    </tr>
+                </thead>
+
+                <!-- Body -->
+                <tbody id="rowcontainer">
+                    {% for subquestion in subquestions %}
+                        <!-- Line tag -->
+                        {% include 'subquestionRow.twig' with {
+                            'position'  : position,
+                            'scale_id'  : scale_id,
+                            'activated' : activated,
+                            'first'     : first,
+                            'subquestion': subquestion.questionl10ns[lang],
+                            'oldCode'   : true,
+                        } %}
+
+                        {% set position = position + 1 %}
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="action-buttons">
+                    {% if activated == 'Y' %}
+                        {% set disabled = 'disabled="disabled"' %}
+                    {% else %}
+                        {% set disabled = '' %}
                     {% endif %}
-                </tr>
-            </thead>
 
-            <!-- Body -->
-            <tbody id="rowcontainer">
-                {% for subquestion in subquestions %}
-                    <!-- Line tag -->
-                    {% include 'subquestionRow.twig' with {
-                        'position'  : position,
-                        'scale_id'  : scale_id,
-                        'activated' : activated,
-                        'first'     : first,
-                        'subquestion': subquestion,
-                        'oldCode'   : true,
-                    } %}
+                <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                    {{ gT('Predefined label sets...') }}
+                </button>
 
-                    {% set position = position + 1 %}
+                <button {{ disabled }}  id='btnquickadd_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                    {{ gT('Quick add...') }}
+                </button>
 
-                {% endfor %}
-            </tbody>
-        </table>
 
-        <div class="action-buttons">
-                {% if activated == 'Y' %}
-                    {% set disabled = 'disabled="disabled"' %}
-                {% else %}
-                    {% set disabled = '' %}
+                {% if has_permissions %}
+                    <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
+                        {{ gT('Save as label set') }}
+                    </button>
                 {% endif %}
 
-            <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
-                {{ gT('Predefined label sets...') }}
-            </button>
+            </div>
+            {% set position=sprintf("%05d", position) %}
+        {% endfor %}
+    </div>
+{% endfor %}
 
-            <button {{ disabled }}  id='btnquickadd_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
-                {{ gT('Quick add...') }}
-            </button>
+{% set first=false %}
 
+<!--   Modals   -->
+{% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+    {% include 'modals.twig' %}
+{% endif %}
 
-            {% if has_permissions %}
-                <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
-                    {{ gT('Save as label set') }}
-                </button>
-            {% endif %}
-
-        </div>
-        {% set position=sprintf("%05d", position) %}
-    {% endfor %}
-</div>
-        {% set first=false %}
-
-    <!--   Modals   -->
-    {% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-        {% include 'modals.twig' %}
-    {% endif %}
-
-    <p>
-        <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
-        <!-- For javascript -->
-        <input
-            type="hidden"
-            id="add-input-javascript-datas"
-            data-url="{{ createUrl('/questionAdministration/getSubquestionRowForAllLanguages/') }}"
-            data-quickurl="{{ createUrl(
-                '/questionAdministration/getSubquestionRowQuickAdd',
-                ({
-                    'surveyid' : surveyid,
-                    'gid' : gid
-                })
-            ) }}"
-            data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
-            data-errormessage="An error occured while processing the ajax request."
-            data-surveyid="{{ surveyid }}"
-            data-languages='{{ json_encode(all_languages) }}'
-            data-gid="{{ gid }}"
-            data-qid="{{ qid }}"
-            data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
-        />
-    </p>
+<p>
+    <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
+    <!-- For javascript -->
+    <input
+        type="hidden"
+        id="add-input-javascript-datas"
+        data-url="{{ createUrl('/questionAdministration/getSubquestionRowForAllLanguages/') }}"
+        data-quickurl="{{ createUrl(
+            '/questionAdministration/getSubquestionRowQuickAdd',
+            ({
+                'surveyid' : surveyid,
+                'gid' : gid
+            })
+        ) }}"
+        data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
+        data-errormessage="An error occured while processing the ajax request."
+        data-surveyid="{{ surveyid }}"
+        data-languages='{{ json_encode(all_languages) }}'
+        data-gid="{{ gid }}"
+        data-qid="{{ qid }}"
+        data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
+    />
+</p>
 <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />

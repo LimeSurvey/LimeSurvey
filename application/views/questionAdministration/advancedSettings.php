@@ -53,8 +53,9 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/subquestions.twig',
                             [
-                                'scalecount' => 1,
-                                'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()]
+                                'scalecount'   => 1,
+                                'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()],
+                                'allLanguages' => $oSurvey->allLanguages
                             ],
                             true
                         ); ?>

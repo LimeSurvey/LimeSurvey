@@ -62,8 +62,9 @@
                         <?php $this->renderPartial(
                             "advancedSettings",
                             [
-                                'oQuestion'         => $oQuestion,
-                                'advancedSettings'  => $advancedSettings,
+                                'oQuestion'        => $oQuestion,
+                                'oSurvey'          => $oSurvey,
+                                'advancedSettings' => $advancedSettings,
                             ]
                         ); ?>
                     </div>
