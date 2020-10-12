@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.19 (build 201005) to 4.3.20 (build 201012) October 12, 2020
++New feature: E-Mail bodies allow now for more than 64kb size when using MySQL (Carsten Schmitz)
+-Fixed issue: Some database updates from 3.x were not run on update (Carsten Schmitz)
+-Fixed issue: Error when too many translations are added to a survey (Carsten Schmitz)
+-Fixed issue: Database exception when trying to add the same user twice in survey permissions (Carsten Schmitz)
+-Fixed issue: Database exception is shown when trying to reload responses for/resume an inactive survey (Carsten Schmitz)
+-Fixed issue: Database exception is shown when trying to download files on a inactive survey (Carsten Schmitz)
+-Fixed issue: Database error on sorting CPDB participants by owner (Carsten Schmitz)
+-Fixed issue: Database error on question creation/editing if question text is too long (Carsten Schmitz)
+-Fixed issue #16708: php error in statistics view (Gabriel Jenik)
+-Fixed issue #16704: Inheritance not working when importing themes created for LS3.x (Gabriel Jenik)
+-Fixed issue #16694: Export multiple surveys (lss, lsa) to ZIP crashes or does not export reports/tokens for correct survey (GabrielJenik)
+-Fixed issue #16685: Delete Plugin files is not working  (Gabriel Jenik)
+-Fixed issue #16642: PHP warning when showing array questions  (Gabriel Jenik)
+-Fixed issue #16637: Statistics: Criteria not cleared for text question results (GabrielJenik)
+-Fixed issue #16620: simple statistics looks odd (GabrielJenik)
+#Updated translation: Japanese by nomoto, kmrmtr
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Arabic by medhat
+
+
 Changes from 4.3.18 (build 200928) to 4.3.19 (build 201005) October 5, 2020
 -New feature: JSON available as export option for responses (Carsten Schmitz)
 -Fixed issue: RemoteControl API JSON export broken if first field it not response ID (Carsten Schmitz)
