@@ -3205,8 +3205,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
             $oTransaction->commit();
-  		}   
+  		}
 
+        if ($iOldDBVersion < 430) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert("{{plugins}}", [
+                'name'               => 'ComfortUpdateChecker',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]);
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
