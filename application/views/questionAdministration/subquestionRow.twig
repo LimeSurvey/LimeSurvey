@@ -2,21 +2,13 @@
 /**
  * subquestion row view
  *
- * @var $subquestion
- * @var $position
+ * @var $position ???
  * @var $scale_id
  * @var $activated
  * @var $first
- * @var $language
- * @var $title
- * @var $question
- * @var $relevance
+ * @var $subquestion
+ * @var $subquestionl10n
  * @var $oldCode
-
- 'language'  : row.language,
- 'title'     : row.title,
- 'question'  : row.question,
- 'relevance' : row.relevance,
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
@@ -36,18 +28,18 @@
             <input
                 class="code-title"
                 type='hidden'
-                name='code_{{ position }}_{{ scale_id }}'   {# TODO: uniformisation with  $scale_id and  $position #}
-                value="{{ title }}"
+                name='subquestion_code_{{ position }}_{{ scale_id }}'   {# TODO: uniformisation with  $scale_id and  $position #}
+                value="{{ subquestion.title }}"
                 maxlength='20'
                 size='5'
             />
-            {{ title }}
+            {{ subquestion.title }}
         </td>
 
     {# If survey is not activated and first language : move button, code editable   #}
     {% elseif first %}
 
-        {% set sPattern = (title)?"^([a-zA-Z0-9]*|"~title~")$":"^[a-zA-Z0-9]*$" %}
+        {% set sPattern = (subquestion.title)?"^([a-zA-Z0-9]*|"~subquestion.title~")$":"^[a-zA-Z0-9]*$" %}
 
         <!-- Move icon -->
         <td class="move-icon" >
@@ -55,24 +47,24 @@
         </td>
 
         <!-- Code (title) -->
-        <td  class="code-title" style="vertical-align: middle;">
+        <td class="code-title" style="vertical-align: middle;">
             {% if oldCode %}
                 <input
                     type='hidden'
                     class='oldcode code-title'
-                    id='oldcode_{{ subquestion.qid }}_{{ scale_id }}'
-                    name='oldcode_{{ qid }}_{{ scale_id }}'
-                    value="{{ title }}"
+                    id='subquestion_oldcode_{{ subquestion.qid }}_{{ scale_id }}'
+                    name='subquestion_oldcode_{{ qid }}_{{ scale_id }}'
+                    value="{{ subquestion.title }}"
                 />
             {% endif %}
 
             <input
                 type='text'
                 class="code form-control input"
-                id='code_{{ subquestion.qid }}_{{ scale_id }}'
+                id='subquestion_code_{{ subquestion.qid }}_{{ scale_id }}'
+                name='subquestion_code_{{ subquestion.qid }}_{{ scale_id }}'
                 class='code code-title'
-                name='code_{{ subquestion.qid }}_{{ scale_id }}'
-                value="{{ title }}"
+                value="{{ subquestion.title }}"
                 maxlength='20' size='20'
                 pattern='{{ sPattern }}'
                 required='required'
@@ -89,14 +81,11 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            {{ title }}
+            {{ subquestion.title }}
         </td>
     {% endif %}
 
-
-    <!-- No assessment values for subQuestions -->
-
-    <!-- Answer (Subquestion Text) -->
+    <!-- Subquestion text -->
     <td  class="subquestion-text" style="vertical-align: middle;">
         <div class="input-group">        
             <input
@@ -106,11 +95,19 @@
                 id='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
                 name='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
                 placeholder='{{ gT("Some example subquestion","js") }}'
-                value="{{ question }}"
+                value="{{ subquestionl10n.question }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
             <span class="input-group-addon">
-                {{ getEditor("editanswer","subquestion_"~language~"_"~subquestion.qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",subquestion.sid,gid,subquestion.qid,'editanswer') }}
+                {{ getEditor(
+                    "editanswer",
+                    "subquestion_"~language~"_"~subquestion.qid~"_"~scale_id,
+                    "["~gT("Subquestion:", "js")~"]("~language~")",
+                    subquestion.sid,
+                    gid,
+                    subquestion.qid,
+                    'editanswer'
+                ) }}
             </span>
         </div>
     </td>
@@ -118,25 +115,36 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ subquestion.qid }}_{{ scale_id }}' name='relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ subquestion.qid }}_{{ scale_id }}' name='relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ subquestion.relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     {%  else %}
+        <!-- TOOD: Why render and then hide? -->
         <span style="display: none" class="relevance relevance-equation">
-            {{ relevance }}
+            {{ subquestion.relevance }}
         </span>
     {%  endif %}
 
-
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
-
-
         {%  if activated != 'Y' and first %}
             {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
-
-            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success" data-code="{{ title }}" data-toggle="tooltip" data-scale-id="{{ scale_id }}" data-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
-            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
+            <button class="btn btn-default btn-sm btnaddanswer">
+                <i
+                    class="icon-add text-success"
+                    data-code="{{ subquestion.title }}"
+                    data-toggle="tooltip"
+                    data-scale-id="{{ scale_id }}"
+                    data-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"
+                ></i>
+            </button>
+            <button class="btn btn-default btn-sm btndelanswer">
+                <i
+                    class="fa fa-trash text-danger"
+                    data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="{{ gT("Delete this subquestion") }}"
+                ></i>
+            </button>
         {%  endif %}
-
     </td>
 </tr>

@@ -1,10 +1,8 @@
 <input type='hidden' name='subquestions_sortorder' value='' />
 <input type='hidden' id='subquestions_deletedqids' name='subquestions_deletedqids' value='' />
 
-{% set first=true %}
+{% set first = true %}
 
-{% set sortorderids='' %}
-{% set codeids='' %}
 {% set scale_id = 0 %}
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
@@ -67,8 +65,9 @@
                             'scale_id'  : scale_id,
                             'activated' : activated,
                             'first'     : first,
-                            'subquestion': subquestion.questionl10ns[lang],
-                            'language': lang,
+                            'subquestion': subquestion,
+                            'subquestionl10n': subquestion.questionl10ns[lang],
+                            'language'  : lang,
                             'oldCode'   : true,
                         } %}
 
