@@ -266,7 +266,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new Exception('Internal error: Found no survey with id ' . $surveyid);
         }
 
-        $oQuestion = $this->getQuestionObject(null, 'T', null);
+        $oQuestion = $this->getQuestionObject(null, 'F', null);
 
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');

@@ -53,7 +53,6 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/subquestions.twig',
                             [
-                                'anslang'    => 'en',
                                 'scalecount' => 1,
                                 'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()]
                             ],
@@ -70,7 +69,6 @@
                             [
                                 'activated'  => false,
                                 'oldCode'    => true,
-                                'anslang'    => 'en',
                                 'scalecount' => 1,
                                 'results'    => $oQuestion->answers
                             ],

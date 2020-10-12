@@ -2,26 +2,28 @@
 /**
  * subquestion row view
  *
- * @var $row
+ * @var $subquestion
  * @var $position
  * @var $scale_id
  * @var $activated
  * @var $first
- * @var $surveyid
- * @var $gid
- * @var $qid
  * @var $language
  * @var $title
  * @var $question
  * @var $relevance
  * @var $oldCode
+
+ 'language'  : row.language,
+ 'title'     : row.title,
+ 'question'  : row.question,
+ 'relevance' : row.relevance,
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
 #}
 
 <!-- subquestion row -->
-<tr id='row_{{ language }}_{{ qid }}_{{ scale_id }}' class="row-container" data-common-id="{{ qid }}_{{ scale_id }}">
+<tr id='row_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}' class="row-container" data-common-id="{{ subquestion.qid }}_{{ scale_id }}">
     {# If survey is active : no move button, code not editable #}
     {% if activated == 'Y' %}
         <!-- Move icon -->
@@ -58,7 +60,7 @@
                 <input
                     type='hidden'
                     class='oldcode code-title'
-                    id='oldcode_{{ qid }}_{{ scale_id }}'
+                    id='oldcode_{{ subquestion.qid }}_{{ scale_id }}'
                     name='oldcode_{{ qid }}_{{ scale_id }}'
                     value="{{ title }}"
                 />
@@ -67,9 +69,9 @@
             <input
                 type='text'
                 class="code form-control input"
-                id='code_{{ qid }}_{{ scale_id }}'
+                id='code_{{ subquestion.qid }}_{{ scale_id }}'
                 class='code code-title'
-                name='code_{{ qid }}_{{ scale_id }}'
+                name='code_{{ subquestion.qid }}_{{ scale_id }}'
                 value="{{ title }}"
                 maxlength='20' size='20'
                 pattern='{{ sPattern }}'
@@ -101,14 +103,14 @@
             type='text'
             size='20'
             class='answer form-control input'
-            id='answer_{{ language }}_{{ qid }}_{{ scale_id }}'
-            name='answer_{{ language }}_{{ qid }}_{{ scale_id }}'
+            id='answer_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
+            name='answer_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
             placeholder='{{ gT("Some example subquestion","js") }}'
             value="{{ question }}"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
             <span class="input-group-addon">
-                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
+                {{ getEditor("editanswer","answer_"~language~"_"~subquestion.qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",subquestion.sid,gid,subquestion.qid,'editanswer') }}
             </span>
         </div>
     </td>
@@ -116,7 +118,7 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ subquestion.qid }}_{{ scale_id }}' name='relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     {%  else %}
         <span style="display: none" class="relevance relevance-equation">

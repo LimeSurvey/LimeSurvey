@@ -11,37 +11,23 @@
 <!-- Tab content -->
 <div id='tabpage_{{ anslang }}' class='tab-page tab-pane'>
     {% for scale_id in range(0,scalecount-1) %}
-        {{ dump(results) }}
-         {% set result = results[anslang][scale_id] %}
-         {% set anscount = result|length %}
+        {% set anscount = subquestions|length %}
         {# TODO : check the rendering of XSCALES / Y SCALES #}
 
-        {# For subquestions #}
-        {% if viewType=='subquestions' %}
-            {% set position=0 %}
-            {% if scalecount>1 %}
-                {% if scale_id==0 %}
-                    <div class='header ui-widget-header'>
-                        {{ gT("Y-Scale") }}
-                    </div>
-                {% else %}
-                    <div class='header ui-widget-header'>
-                        {{ gT("X-Scale") }}
-                    </div>
-                {% endif %}
-            {% endif %}
-
-        {# For answers #}
-        {% elseif viewType=='answerOptions' %}
-            {% set position=1 %}
-            {%  if scalecount>1 %}
-                <div class='header ui-widget-header' style='margin-top:5px;'>
-                    {{ sprintf(gT("Answer scale %s"),scale_id+1) }}
+        {% set position=0 %}
+        {% if scalecount > 1 %}
+            {% if scale_id==0 %}
+                <div class='header ui-widget-header'>
+                    {{ gT("Y-Scale") }}
+                </div>
+            {% else %}
+                <div class='header ui-widget-header'>
+                    {{ gT("X-Scale") }}
                 </div>
             {% endif %}
         {% endif %}
 
-        <!-- Answers/subquestions Table -->
+        <!-- Subquestions Table -->
         <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
 
             <!-- Headers -->
@@ -55,43 +41,17 @@
                         {% endif %}
                     </th>
                     <th class='col-md-1'>{{ gT("Code") }}</th>
-
-                    <!-- subquestions headers -->
-                    {% if viewType=='subquestions' %}
-                        <th>
-                            {{ gT("Subquestion") }}
-                        </th>
-                        {% if first %}
-                            {% if scale_id == 0 %}
-                                <th id='rel-eq-th' class='col-md-1'>
-                                    {{ gT("Relevance equation") }}
-                                </th>
-                            {% endif %}
-                            <th class="col-md-1">
-                                {{ gT("Action") }}
+                    <th>
+                        {{ gT("Subquestion") }}
+                    </th>
+                    {% if first %}
+                        {% if scale_id == 0 %}
+                            <th id='rel-eq-th' class='col-md-1'>
+                                {{ gT("Relevance equation") }}
                             </th>
                         {% endif %}
-
-                    <!-- answer Options header-->
-                    {% elseif viewType=='answerOptions' %}
-                        {% if assessmentvisible %}
-                            <th class='col-md-1'>
-                                {{ gT("Assessment value") }}
-                            </th>
-                        {% else %}
-                            <th style='display:none;'>
-                                &nbsp;
-                            </th>
-                        {% endif %}
-
-                        <th class='col-md-8'>
-                            {{ gT("Answer options") }}
-                        </th>
-
-                        <th class='col-md-1'>
-                            {% if first %}
-                                {{ gT("Actions") }}
-                            {% endif %}
+                        <th class="col-md-1">
+                            {{ gT("Action") }}
                         </th>
                     {% endif %}
                 </tr>
@@ -99,42 +59,16 @@
 
             <!-- Body -->
             <tbody id="rowcontainer">
-                {% for row in result %}
+                {% for subquestion in subquestions %}
                     <!-- Line tag -->
-                    {% if viewType=='subquestions' %}
-                        {% include 'subquestionRow.twig' with {
-                            'position'  : position,
-                            'scale_id'  : scale_id,
-                            'activated' : activated,
-                            'first'     : first,
-                            'surveyid'  : surveyid,
-                            'gid'       : gid,
-                            'qid'       : row.qid,
-                            'language'  : row.language,
-                            'title'     : row.title,
-                            'question'  : row.question,
-                            'relevance' : row.relevance,
-                            'oldCode'   : true,
-                        } %}
-
-                    {% elseif viewType=='answerOptions' %}
-                        {% include 'answerOptionRow.twig' with {
-                            'position'          : position,
-                            'first'             : first,
-                            'assessmentvisible' : assessmentvisible,
-                            'scale_id'          : scale_id,
-                            'title'             : row.code,
-                            'surveyid'          : surveyid,
-                            'gid'               : gid,
-                            'qid'               : qid,
-                            'language'          : row.language,
-                            'assessment_value'  : row.assessment_value,
-                            'sortorder'         : row.sortorder,
-                            'answer'            : row.answer,
-                            'oldCode'   : true,
-                        } %}
-
-                    {% endif %}
+                    {% include 'subquestionRow.twig' with {
+                        'position'  : position,
+                        'scale_id'  : scale_id,
+                        'activated' : activated,
+                        'first'     : first,
+                        'subquestion': subquestion,
+                        'oldCode'   : true,
+                    } %}
 
                     {% set position = position + 1 %}
 
@@ -143,19 +77,11 @@
         </table>
 
         <div class="action-buttons">
-            {% if viewType=='subquestions' %}
                 {% if activated == 'Y' %}
                     {% set disabled = 'disabled="disabled"' %}
                 {% else %}
                     {% set disabled = '' %}
                 {% endif %}
-            {% elseif viewType=='answerOptions' %}
-                {% if first %}
-                    <input type='hidden' id='answercount_{{ scale_id }}' name='answercount_{{ scale_id }}' value='{{ anscount }}' />
-                    {% set disabled="" %}
-                {% endif %}
-                <br/>
-            {% endif %}
 
             <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                 {{ gT('Predefined label sets...') }}
