@@ -100,17 +100,17 @@
     <td  class="subquestion-text" style="vertical-align: middle;">
         <div class="input-group">        
             <input
-            type='text'
-            size='20'
-            class='answer form-control input'
-            id='answer_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
-            name='answer_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
-            placeholder='{{ gT("Some example subquestion","js") }}'
-            value="{{ question }}"
-            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+                type='text'
+                size='20'
+                class='answer form-control input'
+                id='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
+                name='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
+                placeholder='{{ gT("Some example subquestion","js") }}'
+                value="{{ question }}"
+                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
             <span class="input-group-addon">
-                {{ getEditor("editanswer","answer_"~language~"_"~subquestion.qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",subquestion.sid,gid,subquestion.qid,'editanswer') }}
+                {{ getEditor("editanswer","subquestion_"~language~"_"~subquestion.qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",subquestion.sid,gid,subquestion.qid,'editanswer') }}
             </span>
         </div>
     </td>

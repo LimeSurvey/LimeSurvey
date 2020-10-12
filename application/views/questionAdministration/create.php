@@ -74,3 +74,12 @@
         </form>
     </div>
 </div>
+
+<!-- TODO: Move to where? -->
+<script>
+$(document).on("ready pjax:scriptcomplete", function () {
+    // Hide all languages except main.
+    $('.lang-hide').hide();
+    $('.lang-<?= $oSurvey->language; ?>').show();
+});
+</script>

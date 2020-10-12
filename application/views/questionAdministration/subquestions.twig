@@ -9,7 +9,7 @@
 
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
-    <div class="lang-{{ lang }}">
+    <div class="lang-hide lang-{{ lang }}">
         {% for scale_id in range(0,scalecount-1) %}
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
@@ -67,6 +67,7 @@
                             'activated' : activated,
                             'first'     : first,
                             'subquestion': subquestion.questionl10ns[lang],
+                            'language': lang,
                             'oldCode'   : true,
                         } %}
 
@@ -77,11 +78,11 @@
             </table>
 
             <div class="action-buttons">
-                    {% if activated == 'Y' %}
-                        {% set disabled = 'disabled="disabled"' %}
-                    {% else %}
-                        {% set disabled = '' %}
-                    {% endif %}
+                {% if activated == 'Y' %}
+                    {% set disabled = 'disabled="disabled"' %}
+                {% else %}
+                    {% set disabled = '' %}
+                {% endif %}
 
                 <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                     {{ gT('Predefined label sets...') }}
@@ -91,13 +92,11 @@
                     {{ gT('Quick add...') }}
                 </button>
 
-
                 {% if has_permissions %}
                     <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
                         {{ gT('Save as label set') }}
                     </button>
                 {% endif %}
-
             </div>
             {% set position=sprintf("%05d", position) %}
         {% endfor %}
