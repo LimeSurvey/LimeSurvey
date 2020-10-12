@@ -1319,7 +1319,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT('No permission'));
         }
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId);
+        $question = $this->getQuestionObject($questionId, $questionType);
         if ($questionId) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
@@ -1355,7 +1355,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         Yii::app()->loadHelper("admin.htmleditor");
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId);
+        $question = $this->getQuestionObject($questionId, $questionType);
         if ($questionId) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
@@ -1783,7 +1783,18 @@ class QuestionAdministrationController extends LSBaseController
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        return $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
+        $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
+        // TODO: Why can empty array be saved as value?
+        foreach ($advancedSettings as &$category) {
+            foreach ($category as &$setting) {
+                if ($setting['value'] === []) {
+                    $setting['value'] = null;
+                }
+            }
+        }
+        // This category is "general setting".
+        unset($advancedSettings['Attribute']);
+        return $advancedSettings;
     }
 
     /**

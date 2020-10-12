@@ -1,23 +1,23 @@
 <div class="btn-group col-12" role="group" data-toggle="buttons">
-    <?php foreach ($this->setting['aFormElementOptions']['options']['option'] as $option): ?>
-        <?php if ($this->setting['formElementValue'] == $option['value']): ?>
+    <?php foreach ($this->setting['options'] as $value => $text): ?>
+        <?php if ($this->setting['value'] == $value): ?>
             <label class="btn btn-default active">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="<?= $option['value']; ?>"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    value="<?= $value; ?>"
                     checked
                 />
-                <?= $option['text']; ?>
+                <?= $text; ?>
             </label>
         <?php else: ?>
             <label class="btn btn-default">
                 <input 
                     type="radio" 
-                    name="advancedSettings[<?= strtolower($this->setting['aFormElementOptions']['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="<?= $option['value']; ?>"
+                    name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
+                    value="<?= $value; ?>"
                 />
-                <?= $option['text']; ?>
+                <?= $text; ?>
             </label>
         <?php endif; ?>
     <?php endforeach; ?>

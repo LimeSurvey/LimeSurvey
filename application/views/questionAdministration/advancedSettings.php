@@ -21,7 +21,7 @@
             -->
             <!-- Advanced settings tabs -->
             <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
-                <?php if ($oQuestion->QuestionType->subquestions > 0): ?>
+                <?php if ($oQuestion->questionType->subquestions > 0): ?>
                     <li role="presentation">
                         <a
                             href="#subquestions"
@@ -33,7 +33,7 @@
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if ($oQuestion->QuestionType->answerscales > 0): ?>
+                <?php if ($oQuestion->questionType->answerscales > 0): ?>
                 <li role="presentation">
                     <a
                         href="#answeroptions"
@@ -64,7 +64,7 @@
                 <?php endforeach; ?>
             </ul>
             <div class="tab-content">
-                <?php if ($oQuestion->QuestionType->subquestions > 0): ?>
+                <?php if ($oQuestion->questionType->subquestions > 0): ?>
                     <div role="tabpanel" class="tab-pane" id="subquestions">
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
@@ -86,7 +86,7 @@
                         ); ?>
                     </div>
                 <?php endif; ?>
-                <?php if ($oQuestion->QuestionType->answerscales > 0): ?>
+                <?php if ($oQuestion->questionType->answerscales > 0): ?>
                     <div role="tabpanel" class="tab-pane" id="answeroptions">
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
