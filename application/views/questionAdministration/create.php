@@ -59,7 +59,13 @@
                     </div>
 
                     <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <?php $this->renderPartial("advancedSettings", ['advancedSettings'  => $advancedSettings]); ?>
+                        <?php $this->renderPartial(
+                            "advancedSettings",
+                            [
+                                'oQuestion'         => $oQuestion,
+                                'advancedSettings'  => $advancedSettings,
+                            ]
+                        ); ?>
                     </div>
 
                 </div>

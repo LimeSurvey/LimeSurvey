@@ -405,6 +405,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return void
      * @throws CException
+     * @todo Different permission check when sid vs qid is given.
      */
     public function actionSaveQuestionData()
     {
@@ -1366,7 +1367,13 @@ class QuestionAdministrationController extends LSBaseController
             $questionType,
             'core'  // TODO: question_template
         );
-        $this->renderPartial("advancedSettings", ['advancedSettings'  => $advancedSettings]);
+        $this->renderPartial(
+            "advancedSettings",
+            [
+                'advancedSettings'  => $advancedSettings,
+                'oQuestion'         => $question
+            ]
+        );
     }
 
     /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
