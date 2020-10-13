@@ -437,6 +437,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
+        echo '<pre>';var_dump($_POST);die;
 
         /*
          * Setting up a try/catch scenario to delete a copied/created question,

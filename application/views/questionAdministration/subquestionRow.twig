@@ -53,7 +53,7 @@
                     type='hidden'
                     class='oldcode code-title'
                     id='subquestion_oldcode_{{ subquestion.qid }}_{{ scale_id }}'
-                    name='subquestion_oldcode_{{ qid }}_{{ scale_id }}'
+                    name='subquestion_oldcode_{{ subquestion.qid }}_{{ scale_id }}'
                     value="{{ subquestion.title }}"
                 />
             {% endif %}
@@ -115,7 +115,7 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ subquestion.qid }}_{{ scale_id }}' name='relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ subquestion.relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='subquestion_relevance_{{ subquestion.qid }}_{{ scale_id }}' name='subquestion_relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ subquestion.relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
     {%  else %}
         <!-- TOOD: Why render and then hide? -->

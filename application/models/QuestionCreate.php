@@ -95,6 +95,9 @@ class QuestionCreate extends Question
      */
     public function getEmptySubquestion()
     {
-        return new Question();
+        $question = new Question();
+        $question->qid = 0;
+        $question->relevance = 1;
+        return $question;
     }
 }
