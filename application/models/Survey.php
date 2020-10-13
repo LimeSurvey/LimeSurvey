@@ -526,7 +526,7 @@ class Survey extends LSActiveRecord
             array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'3', 'allowEmpty'=>true),
             array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
-            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'-1', 'max'=>'36'),
+            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'-1', 'max'=>'35'),
             array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('navigationdelay', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('template', 'filter', 'filter'=>array($this, 'filterTemplateSave')),
