@@ -1272,7 +1272,13 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
-            $copyQuestionValues->setQuestionPositionInGroup((int)Yii::app()->request->getParam('questionposition'));
+            $questionPosition = Yii::app()->request->getParam('questionposition');
+            if($questionPosition===''){ //this means "at the end"
+                $questionPosition = -1;
+            }else{
+                $questionPosition = (int)$questionPosition;
+            }
+            $copyQuestionValues->setQuestionPositionInGroup($questionPosition);
 
             $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
             $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
