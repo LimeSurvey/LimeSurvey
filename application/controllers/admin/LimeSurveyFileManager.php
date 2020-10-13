@@ -138,6 +138,10 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     public function getFileList($folder, $iSurveyId = null)
     {
+        if ($folder == '') {
+            $folder = 'global';
+        }
+
         // Get real folder name from alias.
         if (in_array($folder, array_keys($this->globalDirectoriesMap))) {
             $folder = $this->globalDirectoriesMap[$folder];
