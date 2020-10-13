@@ -272,6 +272,8 @@ var ThemeOptions = function () {
                 JSON.parse($('#TemplateConfiguration_packages_to_load').val()) :
                 $(this).data('inheritvalue');
 
+            if (currentPackageObject === 'inherit') currentPackageObject = {add:[]};
+
             if ($('#simple_edit_options_font').val() === 'inherit') {
 
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
