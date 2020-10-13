@@ -55,6 +55,7 @@
                             [
                                 'scalecount'   => 1,
                                 'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()],
+                                'question'     => $oQuestion,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'mainLanguage' => $oSurvey->language
                             ],

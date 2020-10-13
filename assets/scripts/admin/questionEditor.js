@@ -325,19 +325,20 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 
     // We get the HTML of the new row to insert
      $.ajax({
-        type: "POST", // We don't update DB, no need post
-        url: $url,
-        data: datas,
-        success: function(htmlrow) {
-            var $lang_table = $('#answers_'+language+'_'+scale_id);
-            $defer.resolve({lng: language, langtable: $lang_table, html: htmlrow});
-        },
-        error :  function(html, statut){
-            alert($errormessage);
-            $defer.reject([html, statut, $errormessage]);
-        }
-    });
-    return $defer.promise();
+         // TODO: We don't update DB, no need post
+         type: "POST",
+         url: $url,
+         data: datas,
+         success: function(htmlrow) {
+             var $lang_table = $('#answers_'+language+'_'+scale_id);
+             $defer.resolve({lng: language, langtable: $lang_table, html: htmlrow});
+         },
+         error :  function(html, statut){
+             alert($errormessage);
+             $defer.reject([html, statut, $errormessage]);
+         }
+     });
+     return $defer.promise();
 }
 
 

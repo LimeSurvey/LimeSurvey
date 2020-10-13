@@ -437,7 +437,6 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
-        echo '<pre>';var_dump($_POST);die;
 
         /*
          * Setting up a try/catch scenario to delete a copied/created question,
@@ -485,26 +484,29 @@ class QuestionAdministrationController extends LSBaseController
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
-            // If set, and the question type allows it, store subquestions
-            if (isset($questionData['scaledSubquestions']) && $oQuestion->getQuestionType()->subquestions) {
-                if (!($questionCopy === true && $questionCopySettings['copySubquestions'] == false)) {
-                    $setApplied['scaledSubquestions'] = $this->storeSubquestions(
-                        $oQuestion,
-                        $questionData['scaledSubquestions'],
-                        $questionCopy
-                    );
-                }
-            }
 
-            // If set, store answer options
-            if (isset($questionData['scaledAnswerOptions'])) {
-                if (!($questionCopySettings['copyAnswerOptions'] == false)) {
-                    $setApplied['scaledAnswerOptions'] = $this->storeAnswerOptions(
+            // Clean subquestions and answer options before save.
+            // NB: Still inside a database transaction.
+            if ($oQuestion->survey->active == 'N') {
+                $oQuestion->deleteAllAnswers();
+                // If question type has subquestions, save them.
+                if ($oQuestion->questionType->subquestions === 1) {
+                    $this->storeSubquestions(
                         $oQuestion,
-                        $questionData['scaledAnswerOptions'],
-                        $questionCopy
+                        $request->getPost('subquestions')
                     );
                 }
+                // If question type has answeroptions, save them.
+                if ($oQuestion->questionType->answerscales > 0) {
+                    //$this->storeAnswerOptions(
+                        //$oQuestion,
+                        //$request->getPost('answeroptions')
+                    //);
+                }
+            } else {
+                // Can only update subquestions.
+                // TODO: Update subquestions.
+                // TODO: Update answer options.
             }
             $transaction->commit();
         } catch (CException $ex) {
@@ -521,52 +523,15 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
-        // Compile the newly stored data to update the FE
-        //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
-        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]);
-        $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
-        $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
-        $aQuestionGeneralOptions = $this->getGeneralOptions(
-            $oQuestion->qid,
-            null,
-            $oQuestion->gid,
-            $aQuestionAttributeData['question_template']
-        );
-        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null);
-
-        // Return a JSON document with the newly stored question data
+        // TODO: Redirect to edit form.
+        // Return success message.
         $this->renderJSON(
             [
-                'success'            => array_reduce(
-                    $setApplied,
-                    function ($coll, $it) {
-                        return $coll && $it;
-                    },
-                    true
-                ),
-                'message'            => gT('Question successfully stored'),
-                'successDetail'      => $setApplied,
-                'questionId'         => $oQuestion->qid,
-                'redirect'           => $this->createUrl(
-                    'questionAdministration/view/',
-                    [
-                        'surveyid' => $iSurveyId,
-                        'gid'      => $oQuestion->gid,
-                        'qid'      => $oQuestion->qid,
-                    ]
-                ),
-                'newQuestionDetails' => [
-                    "question"            => $aCompiledQuestionData['question'],
-                    "scaledSubquestions"  => $aCompiledQuestionData['subquestions'],
-                    "scaledAnswerOptions" => $aCompiledQuestionData['answerOptions'],
-                    "questionI10N"        => $aCompiledQuestionData['i10n'],
-                    "questionAttributes"  => $aQuestionAttributeData,
-                    "generalSettings"     => $aQuestionGeneralOptions,
-                    "advancedSettings"    => $aAdvancedOptions,
-                ],
-                'transfer'           => $questionData,
+                'success' => true,
+                'message' => gT('Question successfully stored'),
             ]
         );
+        // TODO: Needed?
         App()->close();
     }
 
@@ -724,16 +689,30 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Called via Ajax.
-     * @todo Permission
+     *
+     * @param int $surveyid
+     * @param int $gid
+     * @param string $codes
+     * @param int $scale_id
+     * @param string $type
+     * @param int $position
+     * @param string $assessmentvisible
+     * @return void
      */
-    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible = '')
+    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $type, $position, $assessmentvisible = '')
     {
-        $languages = explode(';', json_decode($languages));
-        $html      = array();
-        $first     = true;
-        $qid = 'new' . rand(0, 99999);
-        foreach ($languages as $language) {
-            $html[$language] = $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
+        $html  = [];
+        $first = true;
+        $qid   = 'new' . rand(0, 99999);
+        foreach ($oSurvey->allLanguages as $language) {
+            $html[$language] = $this->getSubquestionRow($oSurvey->sid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
             $first = false;
         }
         header('Content-Type: application/json');
@@ -769,6 +748,10 @@ class QuestionAdministrationController extends LSBaseController
 
         // TODO: calcul correct value
         $oldCode = false;
+
+        $oQuestion = $this->getQuestionObject($qid, $type, $gid);
+        $oSubquestion = $oQuestion->getEmptySubquestion();
+        $oSubquestion->qid = $qid;  // Set qid as new12345 random id.
 
         //Capture "true" and "false" as strings
         if (is_string($first)) {
@@ -823,7 +806,7 @@ class QuestionAdministrationController extends LSBaseController
         Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
 
         if ($type == 'subquestion') {
-            $view = '_subquestion';
+            $view = 'subquestionRow.twig';
             $aData = array(
                 'position'  => $position,
                 'scale_id'  => $scale_id,
@@ -837,9 +820,10 @@ class QuestionAdministrationController extends LSBaseController
                 'question'  => '',
                 'relevance' => '1',
                 'oldCode'   => $oldCode,
+                'subquestion'  => $oSubquestion
             );
         } else {
-            $view = '_answer_option';
+            $view = 'answerOptionRow.twig';
             $aData = array(
                 'assessmentvisible' => $assessmentvisible == "false" ? false : true,
                 'assessment_value'  => '',
@@ -861,7 +845,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $html = '<!-- Inserted Row -->';
-        $html .= App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData);
+        $html .= App()->twigRenderer->renderPartial('/questionAdministration/' . $view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
     }
@@ -2295,18 +2279,49 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * @param Question $oQuestion
-     * @param array $dataSet
-     * @param bool $isCopyProcess
-     * @return boolean
+     * @param array $subquestionsArray Data from request.
+     * @return void
      * @throws CHttpException
-     * @todo document me.
-     *
      */
-    private function storeSubquestions(&$oQuestion, $dataSet, $isCopyProcess = false)
+    private function storeSubquestions($oQuestion, $subquestionsArray)
     {
-        $this->cleanSubquestions($oQuestion, $dataSet);
-        foreach ($dataSet as $aSubquestions) {
-            foreach ($aSubquestions as $aSubquestionDataSet) {
+        $questionOrder = 0;
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+            if ($subquestionId == 0 or strpos($subquestionId, 'new') === 0) {
+                // New subquestion
+            } else {
+                // Updating subquestion
+            }
+            foreach ($subquestionArray as $scaleId => $data) {
+                $subquestion = new Question();
+                $subquestion->sid        = $oQuestion->sid;
+                $subquestion->gid        = $oQuestion->gid;
+                $subquestion->parent_qid = $oQuestion->qid;
+                $subquestion->question_order = $questionOrder;
+                $subquestion->title      = $data['code'];
+                $subquestion->relevance  = $data['relevance'];
+                if (!$subquestion->save()) {
+                    throw new CHttpException(
+                        500,
+                        gT("Could not save subquestion") . PHP_EOL
+                        . print_r($subquestion->getErrors(), true)
+                    );
+                }
+                $subquestion->refresh();
+                foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                    $l10n = new QuestionL10n();
+                    $l10n->qid = $subquestion->qid;
+                    $l10n->language = $lang;
+                    $l10n->question = $questionText;
+                    if (!$l10n->save()) {
+                        throw new CHttpException(
+                            500,
+                            gT("Could not save subquestion") . PHP_EOL
+                            . print_r($l10n->getErrors(), true)
+                        );
+                    }
+                }
+                /*
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 $oSubQuestion = Question::model()->find(
                     'sid = :sid AND qid = :qid',
@@ -2319,44 +2334,9 @@ class QuestionAdministrationController extends LSBaseController
                     $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
                 $this->applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
+                 */
             }
         }
-
-        return true;
-    }
-
-    /**
-     * @todo document me.
-     *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return void
-     * @todo PHPDoc description
-     */
-    private function cleanSubquestions(&$oQuestion, &$dataSet)
-    {
-        $aSubquestions = $oQuestion->subquestions;
-        array_walk(
-            $aSubquestions,
-            function ($oSubquestion) use (&$dataSet, $oQuestion) {
-                $exists = false;
-                foreach ($dataSet as $scaleId => $aSubquestions) {
-                    foreach ($aSubquestions as $i => $aSubquestionDataSet) {
-                        if ($oSubquestion->qid == $aSubquestionDataSet['qid']
-                            || (($oSubquestion->title == $aSubquestionDataSet['title'])
-                                && ($oSubquestion->scale_id == $scaleId))
-                        ) {
-                            $exists = true;
-                            $dataSet[$scaleId][$i]['qid'] = $oSubquestion->qid;
-                        }
-
-                        if (!$exists && !$oQuestion->survey->isActive) {
-                            $oSubquestion->delete();
-                        }
-                    }
-                }
-            }
-        );
     }
 
     /**

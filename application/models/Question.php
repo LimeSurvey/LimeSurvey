@@ -468,8 +468,10 @@ class Question extends LSActiveRecord
 
     /**
      * Delete all question and its subQuestion Answers
+     *
+     * @return void
      */
-    private function deleteAllAnswers()
+    public function deleteAllAnswers()
     {
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);

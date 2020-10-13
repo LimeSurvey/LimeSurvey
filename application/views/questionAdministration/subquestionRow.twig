@@ -1,14 +1,14 @@
-{#
+{#[
 /**
  * subquestion row view
  *
- * @var $position ???
+ * @var $position ??? Question order?
  * @var $scale_id
  * @var $activated
  * @var $first
  * @var $subquestion
  * @var $subquestionl10n
- * @var $oldCode
+ * @var $oldCode ???
  *
  * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
  */
@@ -28,7 +28,7 @@
             <input
                 class="code-title"
                 type='hidden'
-                name='subquestion_code_{{ position }}_{{ scale_id }}'   {# TODO: uniformisation with  $scale_id and  $position #}
+                name='subquestions[{{ position }}][{{ scale_id }}][code]'   {# TODO: uniformisation with  $scale_id and  $position #}
                 value="{{ subquestion.title }}"
                 maxlength='20'
                 size='5'
@@ -38,7 +38,6 @@
 
     {# If survey is not activated and first language : move button, code editable   #}
     {% elseif first %}
-
         {% set sPattern = (subquestion.title)?"^([a-zA-Z0-9]*|"~subquestion.title~")$":"^[a-zA-Z0-9]*$" %}
 
         <!-- Move icon -->
@@ -52,8 +51,8 @@
                 <input
                     type='hidden'
                     class='oldcode code-title'
-                    id='subquestion_oldcode_{{ subquestion.qid }}_{{ scale_id }}'
-                    name='subquestion_oldcode_{{ subquestion.qid }}_{{ scale_id }}'
+                    id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
+                    name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
                     value="{{ subquestion.title }}"
                 />
             {% endif %}
@@ -61,19 +60,16 @@
             <input
                 type='text'
                 class="code form-control input"
-                id='subquestion_code_{{ subquestion.qid }}_{{ scale_id }}'
-                name='subquestion_code_{{ subquestion.qid }}_{{ scale_id }}'
+                id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
+                name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
                 class='code code-title'
                 value="{{ subquestion.title }}"
-                maxlength='20' size='20'
-                pattern='{{ sPattern }}'
                 required='required'
             />
         </td>
 
     {# If survey is not active, and it's not the first language : no move button, code not editable #}
     {% else %}
-
         <!-- Move icon -->
         <td class="move-icon-disable">
             &nbsp;
@@ -92,8 +88,8 @@
                 type='text'
                 size='20'
                 class='answer form-control input'
-                id='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
-                name='subquestion_{{ language }}_{{ subquestion.qid }}_{{ scale_id }}'
+                id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][subquestionl10n][{{ language }}]'
+                name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][subquestionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example subquestion","js") }}'
                 value="{{ subquestionl10n.question }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
@@ -115,7 +111,15 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='subquestion_relevance_{{ subquestion.qid }}_{{ scale_id }}' name='subquestion_relevance_{{ subquestion.qid }}_{{ scale_id }}' value="{{ subquestion.relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <input
+                data-toggle="tooltip"data-title="{{ gT("Click to expand") }}"
+                type='text'
+                class='relevance form-control input'
+                id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
+                name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'
+                value="{{ subquestion.relevance }}"
+                onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+            />
         </td>
     {%  else %}
         <!-- TOOD: Why render and then hide? -->

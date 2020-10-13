@@ -39,6 +39,7 @@ class QuestionCreate extends Question
         ];
 
         $oQuestion = new QuestionCreate();
+        $oQuestion->qid = 0;
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new CException("Object creation failed, input array malformed or invalid");

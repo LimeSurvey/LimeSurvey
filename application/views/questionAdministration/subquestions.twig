@@ -101,9 +101,9 @@
             {% set position=sprintf("%05d", position) %}
         {% endfor %}
     </div>
+    {% set first=false %}
 {% endfor %}
 
-{% set first=false %}
 
 <!--   Modals   -->
 {% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
@@ -120,16 +120,16 @@
         data-quickurl="{{ createUrl(
             '/questionAdministration/getSubquestionRowQuickAdd',
             ({
-                'surveyid' : surveyid,
-                'gid' : gid
+                'surveyid' : question.sid,
+                'gid' : question.gid
             })
         ) }}"
         data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
         data-errormessage="An error occured while processing the ajax request."
-        data-surveyid="{{ surveyid }}"
-        data-languages='{{ json_encode(all_languages) }}'
-        data-gid="{{ gid }}"
-        data-qid="{{ qid }}"
+        data-surveyid="{{ question.sid }}"
+        data-languages='{{ json_encode(allLanguages) }}'
+        data-gid="{{ question.gid }}"
+        data-qid="{{ question.qid }}"
         data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
     />
 </p>
