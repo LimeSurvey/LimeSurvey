@@ -57,6 +57,7 @@ class Assessment extends LSActiveRecord
     {
         return array(
             array('name,message', 'LSYii_Validators'),
+            array('scope', 'in', 'range'=>array('G', 'T'))
         );
     }
 
