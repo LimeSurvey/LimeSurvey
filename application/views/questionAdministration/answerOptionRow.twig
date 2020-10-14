@@ -1,28 +1,25 @@
 {#
- * answer option row view
+ /**
+ * Answer option row view
  *
- * @var $position
- * @var $first
- * @var $assessmentvisible
- * @var $scale_id
- * @var $title
- * @var $surveyid
- * @var $gid
- * @var $qid
- * @var $language
- * @var $assessment_value
- * @var $sortorder
- * @var $answer
+ * @var int $position
+ * @var bool $first
+ * @var bool $assessmentvisible
+ * @var int $scale_id
+ * @var Question $question
+ * @var string $language
+ * @var Answer $answer
+ * @var AnswerL10n $answerl10ns
  *
  * NB: If you edit this view, remember to check if subquestion row view need also to be updated.
  */
 #}
 
-<tr class='row-container row_{{ position }}' id='row_{{ language }}_{{ position }}_{{ qid }}_{{ scale_id }}' data-common-id="{{ position }}_{{ qid }}_{{ scale_id }}">
+<tr class='row-container row_{{ position }}' id='row_{{ language }}_{{ position }}_{{ question.qid }}_{{ scale_id }}' data-common-id="{{ position }}_{{ question.qid }}_{{ scale_id }}">
 
     {# If survey is not activated and first language #}
     {% if first %}
-        {% set sPattern = (title)?"^([a-zA-Z0-9]*|"~title~")$":"^[a-zA-Z0-9]*$" %}
+        {% set pattern = (title)?"^([a-zA-Z0-9]*|"~title~")$":"^[a-zA-Z0-9]*$" %}
         <!-- Move icon -->
         <td class="move-icon" >
             <span class="fa fa-bars bigIcons"></span>
@@ -49,7 +46,7 @@
                 class='code code-title'
                 value="{{ title }}"
                 maxlength='5'
-                pattern='{{ sPattern }}'
+                pattern='{{ pattern }}'
                 required='required'
             />
         </td>
@@ -69,7 +66,7 @@
                 class='assessment form-control input'
                 id='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
                 name='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
-                value="{{ assessment_value }}"
+                value="{{ answerOption.assessment_value }}"
                 maxlength='5'
                 size='5'
                 onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
@@ -82,7 +79,7 @@
                 class='assessment'
                 id='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
                 name='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
-                value="{{ assessment_value }}"
+                value="{{ answerOption.assessment_value }}"
                 maxlength='5'
                 size='5'
                 onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
@@ -90,7 +87,7 @@
         </td>
     {% elseif assessmentvisible %}
         <td class="assessment-value">
-            {{ assessment_value }}
+            {{ answerOption.assessment_value }}
         </td>
     {% else %}
         <td style='display:none;' class="assessment-value"></td>
@@ -103,13 +100,21 @@
                 type='text'
                 size='20'
                 class='answer form-control input'
-                id='answeroptions[{{ sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
-                name='answeroptions[{{ sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                id='answeroptions[{{ answerOption.sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                name='answeroptions[{{ answerOption.sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example answer option") }}'
-                value="{{ answer }}"
+                value="{{ answerOption.answer }}"
             />
             <span class="input-group-addon">
-                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Answer option:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
+                {{ getEditor(
+                    "editanswer",
+                    "answer_"~language~"_"~question.qid~"_"~scale_id,
+                    "["~gT("Answer option:", "js")~"]("~language~")",
+                    question.sid,
+                    question.gid,
+                    question.qid,
+                    'editanswer'
+                ) }}
             </span>
         </div>
     </td>

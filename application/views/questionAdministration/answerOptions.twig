@@ -58,19 +58,19 @@
 
                 <!-- Body -->
                 <tbody id="rowcontainer">
-                    {% for answerOption in answerOptions %}
+                    {% for answerOption in answers %}
                         <!-- Line tag -->
                         {% include 'answerOptionRow.twig' with {
+                            'activated' : activated,
                             'position'          : position,
                             'first'             : first,
                             'assessmentvisible' : assessmentvisible,
                             'scale_id'          : scale_id,
-                            'title'             : row.code,
-                            'surveyid'          : surveyid,
-                            'gid'               : question.gid,
-                            'qid'               : question.qid,
+                            'question'          : question,
                             'answerOption'      : answerOption,
+                            'answerOptionl10n'  : answerOption.answerl10ns[lang],
                             'oldCode'           : true,
+                            'language'          : lang
                         } %}
 
                         {% set position = position + 1 %}
@@ -120,13 +120,13 @@
         data-quickurl="{{ createUrl(
             '/questionAdministration/getAnswerOptionRowQuickAdd',
             ({
-                'surveyid' : question.surveyid,
+                'surveyid' : question.sid,
                 'gid' : question.gid
             })
         ) }}"
         data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
         data-errormessage="An error occured while processing the ajax request."
-        data-surveyid="{{ surveyid }}"
+        data-surveyid="{{ question.sid }}"
         data-languages='{{ json_encode(allLanguages) }}'
         data-gid="{{ question.gid }}"
         data-qid="{{ question.qid }}"

@@ -92,7 +92,7 @@ class QuestionCreate extends Question
     }
 
     /**
-     * @return array
+     * @return Question
      */
     public function getEmptySubquestion()
     {
@@ -100,5 +100,14 @@ class QuestionCreate extends Question
         $question->qid = 0;
         $question->relevance = 1;
         return $question;
+    }
+
+    /**
+     * @return Answer
+     */
+    public function getEmptyAnswerOption()
+    {
+        $answer = new Answer();
+        return $answer;
     }
 }

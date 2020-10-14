@@ -409,6 +409,8 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionSaveQuestionData()
     {
+        echo '<pre>'; var_dump($_POST); echo '</pre>';
+        die;
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {

@@ -53,11 +53,12 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/subquestions.twig',
                             [
+                                'activated'    => $oSurvey->active !== 'N',
                                 'scalecount'   => 1,
                                 'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()],
                                 'question'     => $oQuestion,
                                 'allLanguages' => $oSurvey->allLanguages,
-                                'mainLanguage' => $oSurvey->language
+                                'language'     => $oSurvey->language
                             ],
                             true
                         ); ?>
@@ -70,10 +71,12 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/answerOptions.twig',
                             [
-                                'activated'  => false,
+                                'activated'  => $oSurvey->active !== 'N',
                                 'oldCode'    => true,
                                 'scalecount' => 1,
-                                'results'    => $oQuestion->answers
+                                'answers'    => $oQuestion->answers ? $oQuestion->answers : [$oQuestion->getEmptyAnswerOption()],
+                                'allLanguages' => $oSurvey->allLanguages,
+                                'language'   => $oSurvey->language
                             ],
                             true
                         ); ?>
