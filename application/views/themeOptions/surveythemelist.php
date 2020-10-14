@@ -4,7 +4,7 @@
         
         <?php
         $massiveAction = App()->getController()->renderPartial(
-            './_selector',
+            '/themeOptions/_selector',
             array(
                 'oSurveyTheme' => $oSurveyTheme,
                 'gridID' => 'themeoptions-grid',

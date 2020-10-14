@@ -45,7 +45,8 @@
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                         $this->renderPartial('themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
+                        Yii::app()->getController()->renderPartial('/themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
+                         //$this->renderPartial('//themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
                     }
                 ?>
             </div>
