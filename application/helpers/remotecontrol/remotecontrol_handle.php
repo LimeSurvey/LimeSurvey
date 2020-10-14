@@ -1449,7 +1449,7 @@ class remotecontrol_handle
                     if ($sNewQuestionHelp != '') {
                                             $oQuestion->setAttribute('help', $sNewQuestionHelp);
                     }
-                    if (in_array($sMandatory, array('Y', 'N'))) {
+                    if (in_array($sMandatory, array('Y', 'N', 'S'))) {
                                             $oQuestion->setAttribute('mandatory', $sMandatory);
                     } else {
                                         $oQuestion->setAttribute('mandatory', 'N');

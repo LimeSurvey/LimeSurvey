@@ -245,10 +245,10 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                             <span class="fa fa-info-circle" ></span>
                                         </a>
                                     </label>
-                                    <p class="help-block collapse" id="help_question_template"><?php eT("Use a customized question theme for this question");?></p> 
+                                    <p class="help-block collapse" id="help_question_template"><?php eT("Use a customized question theme for this question");?></p>
                                     <select id="question_template" name="question_template" class="form-control">
-                                        <?php 
-                                        foreach ($aQuestionTemplateList as $code => $value) { 
+                                        <?php
+                                        foreach ($aQuestionTemplateList as $code => $value) {
                                                 if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])){
                                                     $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
                                                     $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
@@ -311,20 +311,20 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                             <span class="fa fa-info-circle" ></span>
                                         </a>
                                     </label>
-                                    <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state");?></p> 
+                                    <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state. Use \"Soft\" option to allow question to be skipped.");?></p>
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                            'name' => 'mandatory',
-                                            'id' => 'mandatory',
-                                            'value'=> $eqrow['mandatory'] === "Y",
-                                            'onLabel'=>gT('On'),
-                                            'offLabel'=>gT('Off'),
-                                            'htmlOptions'=>array(
-                                                'value'=> 'Y',
-                                                'uncheckValue' => 'N',
-                                            ),
-                                        ));?>
+                                        <?php
+                                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                                'name' => 'mandatory',
+                                                'value'=> $oQuestion->mandatory,
+                                                'selectOptions'=>array(
+                                                    "Y"=>gT("Yes",'unescaped'),
+                                                    "S"=>gT("Soft",'unescaped'),
+                                                    "N"=>gT("No",'unescaped')
+                                                )
+                                            ));
+                                        ?>
                                     </div>
                                 </div>
 

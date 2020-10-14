@@ -766,6 +766,7 @@ class TemplateConfig extends CActiveRecord
 
         // Bootstrap Modal Alert
         $aClassAndAttributes['id']['alertmodal']           = 'bootstrap-alert-box-modal';
+        $aClassAndAttributes['id']['mandatorySoftModal']   = 'mandatory-soft-alert-box-modal';
         $aClassAndAttributes['class']['alertmodal']        = ' modal fade ';
         $aClassAndAttributes['class']['modaldialog']       = ' modal-dialog ';
         $aClassAndAttributes['class']['modalcontent']      = ' modal-content ';

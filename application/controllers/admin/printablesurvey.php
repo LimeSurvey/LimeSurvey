@@ -541,7 +541,7 @@ class printablesurvey extends Survey_Common_Action
                             $question['number'] = '';
                         }
 
-                        if ($deqrow['mandatory'] == 'Y') {
+                        if ($deqrow['mandatory'] == 'Y' || $deqrow['mandatory'] == 'S') {
                             $question['mandatory'] = gT('*'); // Must add a real string here !
                             $question['class'] .= ' mandatory';
                         }
