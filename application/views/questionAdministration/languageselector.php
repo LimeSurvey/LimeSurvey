@@ -1,15 +1,33 @@
 <div class="col-xs-12" >
-    <div class="button-toolbar" :id="elId+'-language-selector'">
-        <div class="btn-group">
+    <div class="button-toolbar">
+        <div class="btn-group" role="group" data-toggle="buttons">
             <?php foreach($oSurvey->allLanguages as $lang): ?>
-                <button
-                    :key="language+'-button'"
-                    class="btn btn-default"
-                    @click.prevent="setCurrentLanguage(language)"
-                >
-                    <!-- TODO: Mark active class="'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')"-->
-                    <?= getLanguageNameFromCode($lang, false); ?>
-                </button>
+                <?php if ($lang === $oSurvey->language): ?>
+                    <label
+                        class="btn btn-default lang-switch-button active"
+                        data-lang="<?= $lang; ?>"
+                    >
+                    <input 
+                        type="radio" 
+                        name="lang-switch-button" 
+                        value=""
+                        checked="checked"
+                    />
+                        <?= getLanguageNameFromCode($lang, false); ?>
+                    </label>
+                <?php else: ?>
+                    <label
+                        class="btn btn-default lang-switch-button"
+                        data-lang="<?= $lang; ?>"
+                    >
+                        <input 
+                            type="radio" 
+                            name="lang-switch-button" 
+                            value=""
+                        />
+                        <?= getLanguageNameFromCode($lang, false); ?>
+                    </label>
+                <?php endif; ?>
             <?php endforeach; ?>
             <!-- TODO: Chunk languages
             <button

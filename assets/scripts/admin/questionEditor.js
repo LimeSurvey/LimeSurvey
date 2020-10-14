@@ -28,6 +28,14 @@ $(document).on("ready pjax:scriptcomplete", function () {
 
     // Hide help tips by default.
     $('.question-option-help').hide();
+
+    // Hide all language except the selected one.
+    $('.lang-switch-button').on('click', function(ev) {
+        const lang = $(this).data('lang');
+        const langClass = '.lang-' + lang;
+        $('.lang-hide').hide();
+        $(langClass).show();
+    });
 });
 
 /**
