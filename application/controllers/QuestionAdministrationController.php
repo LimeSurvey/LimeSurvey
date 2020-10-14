@@ -1273,12 +1273,22 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
-            if($questionPosition===''){ //this means "at the end"
-                $questionPosition = -1;
-            }else{
-                $questionPosition = (int)$questionPosition;
+            if ($questionPosition==='') { //this means "at the end"
+                $questionPosition = -1; //the number must be highest number+1
             }
-            $copyQuestionValues->setQuestionPositionInGroup($questionPosition);
+            switch ((int)$questionPosition) {
+                case -1: //at the end
+                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) +1;
+                    break;
+                case 0: //at beginning
+                    //set all existing order numbers to +1, and the copied question to order number 1
+                    Question::increaseAllOrderNumbersForGroup($questionGroupId);
+                    $newQuestionPosition = 1;
+                    break;
+                default: //all other cases means after question X (the value coming from frontend is already correct)
+                    $newQuestionPosition = $questionPosition;
+            }
+            $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);
 
             $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
             $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
@@ -1785,7 +1795,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $iQuestionGroupId = App()->request->getParam('gid');
+        $iQuestionGroupId = (int)App()->request->getParam('gid'); //the group id the question belongs to
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -1805,7 +1815,7 @@ class QuestionAdministrationController extends LSBaseController
         $aQuestionData = array_merge(
             [
                 'sid'        => $iSurveyId,
-                'gid'        => App()->request->getParam('gid'),
+                'gid'        => $iQuestionGroupId,
                 'type'       => $type,
                 'other'      => 'N',
                 'mandatory'  => 'N',
@@ -1827,6 +1837,17 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = new Question();
         $oQuestion->setAttributes($aQuestionData, false);
+
+        //set the question_order the highest existing number +1, if no question exists for the group
+        //set the question_order to 1
+        $highestOrderNumber = Question::getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
+        if ($highestOrderNumber === null) { //this means there is no question inside this group ...
+            $oQuestion->question_order = 1;
+        } else {
+            $oQuestion->question_order = $highestOrderNumber +1;
+        }
+
+
         if ($oQuestion == null) {
             throw new LSJsonException(
                 500,

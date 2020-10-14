@@ -1204,6 +1204,42 @@ class Question extends LSActiveRecord
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
     }
 
+    /**
+     * Returns the highest question_order value that exists for a questiongroup inside the related questions.
+     * ($question->question_order).
+     *
+     * @param int $questionGroupId  the question group id
+     *
+     * @return int|null question highest order number or null if there are no questions belonging to the group
+     */
+    public static function getHighestQuestionOrderNumberInGroup($questionGroupId)
+    {
+        $criteriaHighestOrderNumber = new CDbCriteria();
+        $criteriaHighestOrderNumber->limit = 1;
+        $criteriaHighestOrderNumber->condition = 't.gid=:gid';
+        $criteriaHighestOrderNumber->addCondition("parent_qid=0"); //no subquestions here ...
+        $criteriaHighestOrderNumber->params = ['gid' => $questionGroupId];
+        $criteriaHighestOrderNumber->order = 't.question_order DESC';
+
+        $oQuestionHighestOrderNumber = Question::model()->find($criteriaHighestOrderNumber);
+
+        return ($oQuestionHighestOrderNumber === null)? null : $oQuestionHighestOrderNumber->question_order;
+    }
+
+    /**
+     * Increases all question_order numbers for questions belonging to the group by +1
+     *
+     * @param int $questionGroupId
+     */
+    public static function increaseAllOrderNumbersForGroup($questionGroupId)
+    {
+        $questionsInGroup = Question::model()->findAllByAttributes(["gid" => $questionGroupId]);
+        foreach ($questionsInGroup as $question) {
+            $question->question_order = $question->question_order +1;
+            $question->save();
+        }
+    }
+
 
     public function getHasSubquestions(){
 
