@@ -763,7 +763,7 @@ class responses extends Survey_Common_Action
         $iResponseId = (int) $iResponseId;
         $iQID = (int) $iQID;
 
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
             $this->getController()->redirect(array("admin/survey", "sa"=>"view", "surveyid"=>$iSurveyId));
@@ -812,7 +812,7 @@ class responses extends Survey_Common_Action
     {
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
             if (!$oSurvey->isActive) {
                 Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
                 $this->getController()->redirect(array("admin/survey", "sa"=>"view", "surveyid"=>$iSurveyId));

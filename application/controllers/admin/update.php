@@ -72,6 +72,11 @@ class update extends Survey_Common_Action
      */
     public function index()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+            Yii::app()->setFlashMessage(gT('You are not allowed to enter this page'), 'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
+        }
+
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));

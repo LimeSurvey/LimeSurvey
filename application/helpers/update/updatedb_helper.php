@@ -3209,6 +3209,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         //todo change number when ready ...
         if ($iOldDBVersion <430) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert("{{plugins}}", [
+                'name'               => 'ComfortUpdateChecker',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]);            
             $oDB->createCommand()->update(
                 '{{boxes}}',
                 array(
@@ -3420,6 +3428,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
 
             $oTransaction->commit();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
 
@@ -3512,6 +3523,8 @@ function extendDatafields429($oDB)
                 alterColumn('{{settings_global}}','stg_value',"mediumtext",false);
                 alterColumn('{{settings_user}}','stg_value',"mediumtext");
                 alterColumn('{{surveymenu_entries}}','data',"mediumtext");
+                // The following line fixes invalid entries having set 0000-00-00 00:00:00 as date
+                $oDB->createCommand()->update('{{surveys}}', ['expires'=>NULL], "expires=0");
                 alterColumn('{{surveys}}','attributedescriptions',"mediumtext");
                 alterColumn('{{surveys_languagesettings}}','surveyls_description',"mediumtext");
                 alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"mediumtext");
