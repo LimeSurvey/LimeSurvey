@@ -694,6 +694,16 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['radixpoint'] = 1;
     $supportedLanguages['ru']['momentjs'] = 'ru';
 
+    // Sami
+    /*
+    $supportedLanguages['smi']['description'] = gT('Sami');
+    $supportedLanguages['smi']['nativedescription'] = 'Sámi';
+    $supportedLanguages['smi']['rtl'] = false;
+    $supportedLanguages['smi']['dateformat'] = 4;
+    $supportedLanguages['smi']['radixpoint'] = 1;
+    $supportedLanguages['smi']['momentjs'] = 'sme';
+    */
+
     // Serbian
     $supportedLanguages['sr']['description'] = gT('Serbian (Cyrillic)');
     $supportedLanguages['sr']['nativedescription'] = '&#1057;&#1088;&#1087;&#1089;&#1082;&#1080;';
@@ -733,6 +743,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sl']['dateformat'] = 4;
     $supportedLanguages['sl']['radixpoint'] = 1;
     $supportedLanguages['sl']['momentjs'] = 'sl';
+
+    // Somali
+    $supportedLanguages['so']['description'] = gT('Somali');
+    $supportedLanguages['so']['nativedescription'] = 'Af-Soomaali';
+    $supportedLanguages['so']['rtl'] = false;
+    $supportedLanguages['so']['dateformat'] = 9;
+    $supportedLanguages['so']['radixpoint'] = 1;
+    $supportedLanguages['so']['momentjs'] = null;
+
 
     // Somali
     $supportedLanguages['so']['description'] = gT('Somali');
