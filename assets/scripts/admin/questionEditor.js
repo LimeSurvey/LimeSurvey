@@ -20,6 +20,8 @@ LS = LS || {
 let flag = [];
 /** @type {bool} Used in ajaxcheckdup */
 let check = false;
+// Declare this global. Defined in PHP? false = readonly
+/* global langs:false */
 
 $(document).on('ready pjax:scriptcomplete', () => {
   // Since save button is not inside the form, we need to trigger it manually.
@@ -97,6 +99,8 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     $('#ls-loading').hide();
   } catch (ex) {
     $('#ls-loading').hide();
+    // TODO: How to show internal errors?
+    // eslint-disable-next-line no-alert
     alert(`Internal error: ${ex}`);
   }
 }
@@ -146,11 +150,11 @@ function updateRowProperties() {
   const gID = $('input[name=gid]').val();
   const qID = $('input[name=qid]').val();
 
-  $('.answertable tbody').each(function () {
+  $('.answertable tbody').each(function loopTable() {
     const info = $(this).closest('table').attr('id').split('_');
     const language = info[1];
     const scaleId = info[2];
-    $(this).children('tr').each(function () {
+    $(this).children('tr').each(function loopTr() {
       const uniqueRowId = $(this).data('common-id').split('_').shift();
 
       if (!$(this).hasClass(`row_${uniqueRowId}`)) {
@@ -203,13 +207,11 @@ function aftermove(event, ui) {
   const $that = ui.item;
   const newindex = Number($that.parent().children().index($that) + 1);
   const oldindex = $that.data('oldindex');
-  const info = $that.closest('table').attr('id').split('_');
   const languages = langs.split(';');
 
   LS.ld.forEach(languages, (curLanguage, x) => {
     if (x > 0) {
-      const tablerow = $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`);
-      const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
+      // const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
       if (newindex < oldindex) {
         $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).before($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
       } else {
@@ -220,15 +222,6 @@ function aftermove(event, ui) {
   });
 }
 
-/**
- * Rebint events after Ajax call?
- * @return {void}
- */
-function rebindClickHandler() {
-  $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-  $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
-  // TODO: add/del answer option
-}
 /**
  * Bind relevance equation to expand on click (only once)
  *
@@ -299,6 +292,20 @@ function getRelevanceToolTip() {
 }
 
 /**
+ * Delete row?
+ *
+ * @param {object} jQueryItem
+ * @return {void}
+ */
+function deleteSubquestionRow(jQueryItem) {
+  if ($(jQueryItem).is('[id]')) {
+    const rowinfo = $(jQueryItem).attr('id').split('_');
+    // TODO: What is rowinfo[2]?
+    $('#deletedqids').val(`${$('#deletedqids').val()} ${rowinfo[2]}`);
+  }
+}
+
+/**
  * Delete subquestion row.
  * Executed when user click "Delete" button.
  * @param {event} e
@@ -312,21 +319,20 @@ function deleteSubquestionInput(e) {
   if (countanswers > 1) {
     // 2.) Remove the table row
     const classes = $(this).closest('tr').attr('class').split(' ');
-    LS.ld.forEach(classes, (curClass, x) => {
-      if (curClass.substr(0, 3) == 'row') {
+    LS.ld.forEach(classes, (curClass) => {
+      if (curClass.substr(0, 3) === 'row') {
         position = curClass.substr(4);
       }
     });
 
     const info = $(this).closest('table').attr('id').split('_');
-    const language = info[1];
     const scaleId = info[2];
     const languages = langs.split(';');
 
     LS.ld.forEach(languages, (curLanguage, x) => {
       const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
-      if (x == 0) {
-        tablerow.fadeTo(400, 0, function () {
+      if (x === 0) {
+        tablerow.fadeTo(400, 0, function fadeAndRemove() {
           $(this).remove();
           updateRowProperties();
         });
@@ -337,8 +343,9 @@ function deleteSubquestionInput(e) {
     });
   } else {
     // TODO: why block?
+    // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
     $.blockUI({ message: `<p><br/>${strCantDeleteLastAnswer}</p>` });
-    setTimeout(jQuery.unblockUI, 1000);
+    setTimeout($.unblockUI, 1000);
   }
   updateRowProperties();
 }
@@ -352,20 +359,6 @@ function deleteSubquestionInput(e) {
  */
 function deleteAnswerOptionInput(e) {
   e.preventDefault();
-}
-
-/**
- * Delete row?
- *
- * @param {object} jQueryItem
- * @return {void}
- */
-function deleteSubquestionRow(jQueryItem) {
-  if ($(jQueryItem).is('[id]')) {
-    const rowinfo = $(jQueryItem).attr('id').split('_');
-    // TODO: What is rowinfo[2]?
-    $('#deletedqids').val(`${$('#deletedqids').val()} ${rowinfo[2]}`);
-  }
 }
 
 /**
@@ -467,6 +460,12 @@ function addSubquestionInput(e) {
   datas += `&scale_id=${$(this).find('i').data('scale-id')}`,
   datas += '&position=0',
   datas += `&languages=${$languages}`;
+
+  const rebindClickHandler = () => {
+    // @TODO answer option
+    $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+  };
 
   // We get the HTML of the different rows to insert  (one by language)
   $.ajax({
