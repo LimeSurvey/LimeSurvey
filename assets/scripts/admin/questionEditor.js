@@ -121,7 +121,8 @@ $(document).on('ready pjax:scriptcomplete', function(){
         start:startmove,
         stop: endmove,
         update:aftermove,
-        distance:3});
+        distance:3
+    });
         
     $('.btnaddanswer').on("click.subquestions", addinput);
     $('.btndelanswer').on("click.subquestions", deleteinput);
@@ -133,8 +134,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
     //$('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').on('click', function(e){ e.preventDefault(); transferlabels('replace') });
     $('#btnlsinsert').on('click', function(e){ e.preventDefault(); transferlabels('insert') });
-
-
 
     $('#quickaddModal').on('show.bs.modal', function(e) {
         var scale_id = $(e.relatedTarget).data('scale-id');
@@ -357,15 +356,17 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 function addinput(e)
 {
     e.preventDefault();
-    var $that              = $(this),                               // The "add" button
-        $currentRow            = $that.closest('.row-container'),   // The row containing the "add" button
-        $currentTable          = $that.closest('.answertable'),
-        $commonId              = $currentRow.data('common-id'),     // The common id of this row in the other languages
-        $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
-        $url                   = $elDatas.data('url'),              // Url for the request
-        $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
-        $languages             = JSON.stringify(langs),             // The languages
+    var $that         = $(this),                               // The "add" button
+        $currentRow   = $that.closest('.row-container'),   // The row containing the "add" button
+        $currentTable = $that.closest('.answertable'),
+        $commonId     = $currentRow.data('common-id'),     // The common id of this row in the other languages
+        $elDatas      = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
+        $url          = $elDatas.data('url'),              // Url for the request
+        $errormessage = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
+        $languages    = JSON.stringify(langs),             // The languages
         $codes, datas;
+
+    console.log('$url', $url);
 
     // We get all the subquestion codes currently displayed
     var codes = [];
@@ -878,21 +879,21 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         }
         var quid = "new"+(Math.floor(Math.random()*10000));
 
-        LS.ld.forEach(languages, function(curLanguage, x) {
+        LS.ld.forEach(languages, function(language, x) {
             
             if (typeof thisrow[parseInt(x)+1]=='undefined')
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
 
-            if(!answers[curLanguage]){
-                answers[curLanguage] = [];
+            if(!answers[language]){
+                answers[language] = [];
             }
             if (lsreplace)
             {
-                $('#answers_'+curLanguage+'_'+scale_id+' tbody').empty();
+                $('#answers_'+language+'_'+scale_id+' tbody').empty();
             }
-            answers[curLanguage].push(
+            answers[language].push(
                 {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
             );
         });
@@ -901,17 +902,17 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 
     });
     
-    LS.ld.forEach(languages, function(curLanguage, x) {
+    LS.ld.forEach(languages, function(language, x) {
         // Unbind any previous events
-        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').off('click.subquestions');
-        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').off('click.subquestions');
-        $('#answers_'+curLanguage+'_'+scale_id+' .answer').off('focus');
-        $('#answers_'+curLanguage+'_'+scale_id+' .btnaddanswer').on('click.subquestions', addinput);
-        $('#answers_'+curLanguage+'_'+scale_id+' .btndelanswer').on('click.subquestions', deleteinput);
+        $('#answers_'+language+'_'+scale_id+' .btnaddanswer').off('click.subquestions');
+        $('#answers_'+language+'_'+scale_id+' .btndelanswer').off('click.subquestions');
+        $('#answers_'+language+'_'+scale_id+' .answer').off('focus');
+        $('#answers_'+language+'_'+scale_id+' .btnaddanswer').on('click.subquestions', addinput);
+        $('#answers_'+language+'_'+scale_id+' .btndelanswer').on('click.subquestions', deleteinput);
 
 
         promises.push(
-            addinputQuickEdit(closestTable, curLanguage, (x==0), scale_id, codes)
+            addinputQuickEdit(closestTable, language, (x==0), scale_id, codes)
         );
     });
 

@@ -740,6 +740,15 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * 
+     * @return 
+     */
+    public function actionGetAnswerOptionRowForAllLanguages()
+    {
+        die('here');
+    }
+
+    /**
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
      */
