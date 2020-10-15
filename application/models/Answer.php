@@ -253,7 +253,6 @@ class Answer extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-
         $oAnswers = Answer::model()->with('answerl10ns')->findAll($condition);
         $arr = array();
         foreach($oAnswers as $key => $answer)
@@ -262,6 +261,4 @@ class Answer extends LSActiveRecord
         }
         return $arr;
     }
-    
-    
 }

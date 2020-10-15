@@ -92,6 +92,7 @@ class QuestionCreate extends Question
     }
 
     /**
+     * Used by question create form.
      * @return Question
      */
     public function getEmptySubquestion()
@@ -103,11 +104,13 @@ class QuestionCreate extends Question
     }
 
     /**
+     * Used by question create form.
      * @return Answer
      */
     public function getEmptyAnswerOption()
     {
         $answer = new Answer();
+        $answer->sortorder = 0;
         return $answer;
     }
 }
