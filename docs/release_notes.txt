@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.20 (build 201012) to 4.3.21 (build 201015) October 14, 2020
+-Fixed issue: User without superadmin permission can enter comfort update page without restriction (Eddy Lackmann)
+-Fixed issue: Update issue with invalid datetime value stored in expires field (Carsten Schmitz)
+-Fixed issue: Participant access key length could be set to 36 (and creating errors on registration) even though 35 is the maximum. (Carsten Schmitz)
+-Fixed issue: No update notification for comfort update users (Eddy Lackmann)
+-Fixed issue: Database exception is shown when trying to download files on a inactive survey (Carsten Schmitz)
+-Fixed issue #16714: Clear process after test script is failing (Gabriel Jenik)
+-Fixed issue #16644: Audit log not save all actions (GabrielJenik)
+-Fixed issue #16640: Bar charts at statistics start with min value=1 but has to be min value=0 (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish by dscoig
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Myanmar by cdorin
+#Updated translation: Japanese by nomoto
+#Updated translation: German by eddylackmann
+#Updated translation: German (Informal) by eddylackmann
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.19 (build 201005) to 4.3.20 (build 201012) October 12, 2020
 +New feature: E-Mail bodies allow now for more than 64kb size when using MySQL (Carsten Schmitz)
 -Fixed issue: Some database updates from 3.x were not run on update (Carsten Schmitz)
