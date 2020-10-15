@@ -9539,10 +9539,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid = $q['info']['gid'];
                 $qid = $q['info']['qid'];
                 $qseq = $q['info']['qseq'];
+                $LEM->em->ResetWarnings();
+                $LEM->em->ResetErrors();
                 $errorCount=0;
                 /* @var warnings information for current question, see ExpressionManager::RDP_warnings */
                 $aWarnings = array();
-                $LEM->em->ResetWarnings();
+                
                 //////
                 // SHOW GROUP-LEVEL INFO
                 //////
@@ -9562,18 +9564,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                    $errText = "";
                     if($bGroupHaveError)
                     {
-                        $errClass='text-danger';
+                        $errClass = 'danger';
+                        $errText = "<br><em class='label label-danger'>".$LEM->gT("This group has at least 1 error.")."</em>";
                     }
                     $groupRow = "<tr class='LEMgroup'>"
                     . "<td class='$errClass'>G-$gseq</td>"
-                    . "<td><b>".viewHelper::flatEllipsizeText($ginfo['group_name'])."</b><br />[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"
-                    . "<td>".$sGroupRelevance."</td>"
-                    . "<td>".$sGroupText."</td>"
+                    . "<td><b>".viewHelper::flatEllipsizeText($ginfo['group_name'])."</b><br />[<a target='_blank' href='$editlink'>GID ".$gid."</a>] {$errText}</td>"
+                    . "<td>{$sGroupRelevance}</td>"
+                    . "<td>{$sGroupText}</td>"
                     . "</tr>\n";
                     $out .= $groupRow;
                     $LEM->em->ResetWarnings();
+                    $LEM->em->ResetErrors();
                 }
 
                 //////
