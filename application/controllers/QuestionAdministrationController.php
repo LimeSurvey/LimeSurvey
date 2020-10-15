@@ -1274,8 +1274,10 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
             if ($questionPosition==='') { //this means "at the end"
-                $questionPosition = -1; //the number must be highest number+1
+                $questionPosition = -1; //integer indicator for "end"
             }
+            //first ensure that all questions for the group have a question_order>0 and possibly set to this state
+            Question::setQuestionOrderForGroup($questionGroupId);
             switch ((int)$questionPosition) {
                 case -1: //at the end
                     $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) +1;
@@ -1842,7 +1844,7 @@ class QuestionAdministrationController extends LSBaseController
         //set the question_order to 1
         $highestOrderNumber = Question::getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
         if ($highestOrderNumber === null) { //this means there is no question inside this group ...
-            $oQuestion->question_order = 1;
+            $oQuestion->question_order = Question::START_SORTING_VALUE;
         } else {
             $oQuestion->question_order = $highestOrderNumber +1;
         }

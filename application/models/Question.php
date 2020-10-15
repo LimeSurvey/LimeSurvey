@@ -81,6 +81,8 @@ class Question extends LSActiveRecord
     const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
 
+    const START_SORTING_VALUE = 1; //this is the start value for question_order
+
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
@@ -1202,6 +1204,38 @@ class Question extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
+    }
+
+    /**
+     * In some cases question have o wrong questio_sort=0, The sort number should always be
+     * greater then 0, starting with 1. For this reason, the question_order has to be checked
+     * for a specific group and question_sort has be set correctly.
+     *
+     * @param $questionGroupId
+     *
+     * @return boolean true if sort numbers had to be set, false otherwise
+     */
+    public static function setQuestionOrderForGroup($questionGroupId){
+        $criteriaHighestOrderNumber = new CDbCriteria();
+        $criteriaHighestOrderNumber->condition = 't.gid=:gid';
+        $criteriaHighestOrderNumber->addCondition("parent_qid=0"); //no subquestions here ...
+        $criteriaHighestOrderNumber->addCondition('t.question_order=0');//find only those which has to be set
+        $criteriaHighestOrderNumber->params = ['gid' => $questionGroupId];
+        $criteriaHighestOrderNumber->order = 't.qid ASC';
+
+        $questionsWithZeroSortNumber = Question::model()->findAll($criteriaHighestOrderNumber);
+        $isAlreadySorted = count($questionsWithZeroSortNumber) === 0; //means no questions, so resort needed
+        if (!$isAlreadySorted) {
+            $sortValue = self::START_SORTING_VALUE;
+            /* @var Question $question  */
+            foreach ($questionsWithZeroSortNumber as $question) {
+                $question->question_order = $sortValue;
+                $question->save();
+                $sortValue++;
+            }
+        }
+
+        return !$isAlreadySorted;
     }
 
     /**
