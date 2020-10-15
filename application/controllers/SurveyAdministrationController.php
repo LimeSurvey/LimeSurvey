@@ -92,6 +92,12 @@ class SurveyAdministrationController extends LSBaseController
     public function actionView()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
+
+        if (!Permission::model()->hasSurveyPermission((int)$iSurveyID, 'survey', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
         $beforeSurveyAdminView->set('surveyId', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);
@@ -176,24 +182,6 @@ class SurveyAdministrationController extends LSBaseController
             'sideMenuOpen' => true
         ]);
     }
-
-    /**
-     * Loads list of surveys and its few quick properties.
-     *
-     * @deprecated not used anymore (let it here for a while to see if bugs come up)
-     *
-     * @access public
-     * @return void
-     */
-    /**
-    public function actionIndex()
-    {
-        $this->redirect(
-            array(
-                'surveyAdministration/listsurveys'
-            )
-        );
-    }*/
 
     /**
      * List Surveys.
