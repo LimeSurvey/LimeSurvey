@@ -409,7 +409,7 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionSaveQuestionData()
     {
-        echo '<pre>'; var_dump($_POST); echo '</pre>';
+        echo '<pre>'; print_r($_POST); echo '</pre>';
         die;
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
@@ -696,12 +696,12 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $gid
      * @param string $codes
      * @param int $scale_id
-     * @param string $type
      * @param int $position
      * @param string $assessmentvisible
      * @return void
+     * @todo Permission check hard with both sid and gid.
      */
-    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $type, $position, $assessmentvisible = '')
+    public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $position = 0, $assessmentvisible = '')
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (empty($oSurvey)) {
@@ -714,7 +714,7 @@ class QuestionAdministrationController extends LSBaseController
         $first = true;
         $qid   = 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
-            $html[$language] = $this->getSubquestionRow($oSurvey->sid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+            $html[$language] = $this->getSubquestionRow($oSurvey->sid, $gid, $qid, $codes, $language, $first, $scale_id, 'subquestion', $position, $assessmentvisible);
             $first = false;
         }
         header('Content-Type: application/json');

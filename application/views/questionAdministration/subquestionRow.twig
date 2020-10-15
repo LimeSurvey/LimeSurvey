@@ -132,16 +132,17 @@
     <td style="vertical-align: middle;" class="subquestion-actions">
         {%  if activated != 'Y' and first %}
             {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
-            <button class="btn btn-default btn-sm btnaddanswer">
+            <button class="btn btn-default btn-sm btnaddsubquestion">
                 <i
                     class="icon-add text-success"
                     data-code="{{ subquestion.title }}"
                     data-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
-                    data-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"
+                    data-placement="bottom"
+                    title="{{ gT("Insert a new subquestion after this one") }}"
                 ></i>
             </button>
-            <button class="btn btn-default btn-sm btndelanswer">
+            <button class="btn btn-default btn-sm btndelsubquestion">
                 <i
                     class="fa fa-trash text-danger"
                     data-toggle="tooltip"
