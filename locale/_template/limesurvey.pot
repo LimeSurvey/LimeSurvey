@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-14 08:55:09+00:00\n"
+"POT-Creation-Date: 2020-10-16 05:29:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -702,7 +702,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:475
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/helpers/qanda_helper.php:2307
-#: application/models/Assessment.php:99 application/models/Permission.php:759
+#: application/models/Assessment.php:100 application/models/Permission.php:759
 #: application/models/Question.php:855 application/models/SavedControl.php:131
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:690
@@ -734,7 +734,7 @@ msgstr ""
 #: application/controllers/UploaderController.php:316
 #: application/controllers/admin/assessments.php:278
 #: application/helpers/qanda_helper.php:2308
-#: application/models/Assessment.php:92 application/models/SavedControl.php:108
+#: application/models/Assessment.php:93 application/models/SavedControl.php:108
 #: application/models/SavedControl.php:119
 #: application/views/admin/quotas/viewquotas_quota_actions.php:12
 #: application/views/admin/survey/Question/questionbar_view.php:109
@@ -1240,7 +1240,7 @@ msgid "The survey group '%s' was deleted."
 msgstr ""
 
 #: application/controllers/admin/assessments.php:108
-#: application/models/Assessment.php:71
+#: application/models/Assessment.php:72
 msgid "Scope"
 msgstr ""
 
@@ -1252,14 +1252,14 @@ msgstr ""
 #: application/controllers/admin/assessments.php:108
 #: application/helpers/admin/statistics_helper.php:972
 #: application/helpers/userstatistics_helper.php:968
-#: application/models/Assessment.php:73
+#: application/models/Assessment.php:74
 msgid "Minimum"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:108
 #: application/helpers/admin/statistics_helper.php:1002
 #: application/helpers/userstatistics_helper.php:998
-#: application/models/Assessment.php:74
+#: application/models/Assessment.php:75
 msgid "Maximum"
 msgstr ""
 
@@ -2653,7 +2653,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1769
 #: application/libraries/Save.php:270 application/libraries/Save.php:410
-#: application/models/Assessment.php:72
+#: application/models/Assessment.php:73
 #: application/models/ParticipantAttributeName.php:202
 #: application/models/Surveymenu.php:188
 #: application/models/SurveymenuEntries.php:187
@@ -3895,7 +3895,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:844
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/helpers/admin/export/HtmlWriter.php:75
-#: application/models/Assessment.php:129
+#: application/models/Assessment.php:130
 #: application/views/admin/assessments/assessments_edit.php:31
 #: application/views/admin/survey/Question/listquestions.php:101
 msgid "Group"
@@ -4092,7 +4092,7 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:1881
 #: application/controllers/admin/surveypermission.php:66
-#: application/models/Assessment.php:122 application/models/Participant.php:366
+#: application/models/Assessment.php:123 application/models/Participant.php:366
 #: application/models/ParticipantAttributeName.php:196
 #: application/models/ParticipantShare.php:214
 #: application/models/Surveymenu.php:244
@@ -4959,7 +4959,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1643
 #: application/controllers/admin/tokens.php:1659
 #: application/controllers/admin/tokens.php:1668
-#: application/models/Assessment.php:129
+#: application/models/Assessment.php:130
 #: application/views/admin/responses/listResponses_view.php:121
 #: application/views/admin/token/exportdialog.php:35
 #: application/views/admin/token/exportdialog.php:53
@@ -7612,7 +7612,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:4451
 #: application/helpers/qanda_helper.php:4465
 #: application/helpers/qanda_helper.php:4466
-#: application/models/Assessment.php:129
+#: application/models/Assessment.php:130
 #: application/views/admin/assessments/assessments_edit.php:24
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
@@ -9133,7 +9133,7 @@ msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:640
-#: application/helpers/expressions/em_core_helper.php:1648
+#: application/helpers/expressions/em_core_helper.php:1660
 msgid "Undefined variable"
 msgstr ""
 
@@ -9154,7 +9154,7 @@ msgid "Extra token found after expressions"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:786
-#: application/helpers/expressions/em_core_helper.php:1644
+#: application/helpers/expressions/em_core_helper.php:1656
 msgid "Undefined function"
 msgstr ""
 
@@ -9170,35 +9170,35 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1637
+#: application/helpers/expressions/em_core_helper.php:1649
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1653
+#: application/helpers/expressions/em_core_helper.php:1665
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1660
+#: application/helpers/expressions/em_core_helper.php:1672
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2052
+#: application/helpers/expressions/em_core_helper.php:2064
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2057
+#: application/helpers/expressions/em_core_helper.php:2069
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2058
+#: application/helpers/expressions/em_core_helper.php:2070
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2269
+#: application/helpers/expressions/em_core_helper.php:2281
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2963
+#: application/helpers/expressions/em_core_helper.php:2975
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -9510,12 +9510,16 @@ msgstr ""
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9600
-#: application/helpers/expressions/em_manager_helper.php:9854
+#: application/helpers/expressions/em_manager_helper.php:9571
+msgid "This group has at least 1 error."
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:9605
+#: application/helpers/expressions/em_manager_helper.php:9859
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9625
+#: application/helpers/expressions/em_manager_helper.php:9630
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:61
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:65
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:87
@@ -9526,71 +9530,71 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9627
+#: application/helpers/expressions/em_manager_helper.php:9632
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9645
+#: application/helpers/expressions/em_manager_helper.php:9650
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9645
+#: application/helpers/expressions/em_manager_helper.php:9650
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9747
+#: application/helpers/expressions/em_manager_helper.php:9752
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9759
+#: application/helpers/expressions/em_manager_helper.php:9764
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9927
+#: application/helpers/expressions/em_manager_helper.php:9932
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9976
+#: application/helpers/expressions/em_manager_helper.php:9981
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9979
+#: application/helpers/expressions/em_manager_helper.php:9984
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9984
+#: application/helpers/expressions/em_manager_helper.php:9989
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9987
+#: application/helpers/expressions/em_manager_helper.php:9992
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9990
+#: application/helpers/expressions/em_manager_helper.php:9995
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10154
-#: application/helpers/expressions/em_manager_helper.php:10166
-#: application/helpers/expressions/em_manager_helper.php:10174
-#: application/helpers/expressions/em_manager_helper.php:10185
-#: application/helpers/expressions/em_manager_helper.php:10193
-#: application/helpers/expressions/em_manager_helper.php:10200
-#: application/helpers/expressions/em_manager_helper.php:10207
-#: application/helpers/expressions/em_manager_helper.php:10214
-#: application/helpers/expressions/em_manager_helper.php:10227
-#: application/helpers/expressions/em_manager_helper.php:10234
-#: application/helpers/expressions/em_manager_helper.php:10242
-#: application/helpers/expressions/em_manager_helper.php:10258
-#: application/helpers/expressions/em_manager_helper.php:10265
-#: application/helpers/expressions/em_manager_helper.php:10280
-#: application/helpers/expressions/em_manager_helper.php:10290
-#: application/helpers/expressions/em_manager_helper.php:10303
-#: application/helpers/expressions/em_manager_helper.php:10310
+#: application/helpers/expressions/em_manager_helper.php:10159
+#: application/helpers/expressions/em_manager_helper.php:10171
+#: application/helpers/expressions/em_manager_helper.php:10179
+#: application/helpers/expressions/em_manager_helper.php:10190
+#: application/helpers/expressions/em_manager_helper.php:10198
+#: application/helpers/expressions/em_manager_helper.php:10205
+#: application/helpers/expressions/em_manager_helper.php:10212
+#: application/helpers/expressions/em_manager_helper.php:10219
+#: application/helpers/expressions/em_manager_helper.php:10232
+#: application/helpers/expressions/em_manager_helper.php:10239
+#: application/helpers/expressions/em_manager_helper.php:10247
+#: application/helpers/expressions/em_manager_helper.php:10263
+#: application/helpers/expressions/em_manager_helper.php:10270
+#: application/helpers/expressions/em_manager_helper.php:10285
+#: application/helpers/expressions/em_manager_helper.php:10295
+#: application/helpers/expressions/em_manager_helper.php:10308
+#: application/helpers/expressions/em_manager_helper.php:10315
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10273
+#: application/helpers/expressions/em_manager_helper.php:10278
 msgid "This question only accept 30 digits including 10 decimals."
 msgstr ""
 
@@ -11975,13 +11979,13 @@ msgstr ""
 msgid "Answer codes must be unique by question."
 msgstr ""
 
-#: application/models/Assessment.php:75 application/models/Notification.php:161
+#: application/models/Assessment.php:76 application/models/Notification.php:161
 #: application/views/admin/assessments/assessments_edit.php:114
 #: application/views/admin/notification/index.php:28
 msgid "Message"
 msgstr ""
 
-#: application/models/Assessment.php:76 application/models/Participant.php:242
+#: application/models/Assessment.php:77 application/models/Participant.php:242
 #: application/models/QuestionGroup.php:81
 #: application/models/SurveymenuEntries.php:197
 #: application/models/TokenDynamic.php:720
@@ -11992,11 +11996,11 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: application/models/Assessment.php:90
+#: application/models/Assessment.php:91
 msgid "Edit this assessment rule"
 msgstr ""
 
-#: application/models/Assessment.php:97
+#: application/models/Assessment.php:98
 msgid "Delete this assessment rule"
 msgstr ""
 
