@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-14 08:09:16+00:00\n"
+"POT-Creation-Date: 2020-10-16 05:29:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -670,7 +670,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:133
 #: application/controllers/admin/surveypermission.php:475
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
-#: application/models/Assessment.php:110 application/models/Permission.php:812
+#: application/models/Assessment.php:111 application/models/Permission.php:812
 #: application/models/Question.php:632 application/models/SavedControl.php:144
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:690
@@ -1186,7 +1186,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:317
 #: application/controllers/admin/assessments.php:292
-#: application/models/Assessment.php:103
+#: application/models/Assessment.php:104
 #: application/models/SavedControl.php:121
 #: application/models/SavedControl.php:132
 #: application/views/admin/quotas/viewquotas_quota_actions.php:12
@@ -1965,7 +1965,7 @@ msgstr ""
 #: application/controllers/admin/LimeSurveyFileManager.php:87
 #: application/controllers/admin/surveyadmin.php:1760
 #: application/controllers/admin/surveypermission.php:66
-#: application/models/Assessment.php:133 application/models/Participant.php:367
+#: application/models/Assessment.php:134 application/models/Participant.php:367
 #: application/models/ParticipantAttributeName.php:239
 #: application/models/ParticipantShare.php:214
 #: application/models/Permissiontemplates.php:193
@@ -2540,7 +2540,7 @@ msgid "The survey group '%s' was deleted."
 msgstr ""
 
 #: application/controllers/admin/assessments.php:109
-#: application/models/Assessment.php:82
+#: application/models/Assessment.php:83
 msgid "Scope"
 msgstr ""
 
@@ -2554,14 +2554,14 @@ msgstr ""
 #: application/controllers/admin/assessments.php:109
 #: application/helpers/admin/statistics_helper.php:975
 #: application/helpers/userstatistics_helper.php:962
-#: application/models/Assessment.php:84
+#: application/models/Assessment.php:85
 msgid "Minimum"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:109
 #: application/helpers/admin/statistics_helper.php:1005
 #: application/helpers/userstatistics_helper.php:991
-#: application/models/Assessment.php:85
+#: application/models/Assessment.php:86
 msgid "Maximum"
 msgstr ""
 
@@ -3913,7 +3913,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1686
 #: application/libraries/Save.php:277 application/libraries/Save.php:423
-#: application/models/Assessment.php:83 application/models/Field.php:50
+#: application/models/Assessment.php:84 application/models/Field.php:50
 #: application/models/ParticipantAttributeName.php:245
 #: application/models/Permissiontemplates.php:198
 #: application/models/Surveymenu.php:330
@@ -4026,7 +4026,7 @@ msgid "Subject"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:58
-#: application/models/Assessment.php:86 application/models/Notification.php:162
+#: application/models/Assessment.php:87 application/models/Notification.php:162
 #: application/views/admin/assessments/assessments_edit.php:114
 #: application/views/admin/notification/index.php:28
 msgid "Message"
@@ -4328,7 +4328,7 @@ msgid "Label set couldn't be saved"
 msgstr ""
 
 #: application/controllers/admin/labels.php:600
-#: application/models/Assessment.php:87 application/models/Participant.php:244
+#: application/models/Assessment.php:88 application/models/Participant.php:244
 #: application/models/QuestionGroupL10n.php:83
 #: application/models/SurveymenuEntries.php:197
 #: application/models/TokenDynamic.php:723 application/models/User.php:112
@@ -5347,7 +5347,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:954
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/helpers/admin/export/HtmlWriter.php:75
-#: application/models/Assessment.php:140 application/models/Question.php:882
+#: application/models/Assessment.php:141 application/models/Question.php:882
 #: application/models/QuestionType.php:96
 #: application/views/admin/assessments/assessments_edit.php:31
 msgid "Group"
@@ -6680,7 +6680,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1632
 #: application/controllers/admin/tokens.php:1648
 #: application/controllers/admin/tokens.php:1657
-#: application/models/Assessment.php:140
+#: application/models/Assessment.php:141
 #: application/views/admin/responses/listResponses_view.php:121
 #: application/views/admin/token/exportdialog.php:35
 #: application/views/admin/token/exportdialog.php:53
@@ -9253,7 +9253,7 @@ msgstr ""
 #: application/helpers/qanda_helper.php:3891
 #: application/helpers/qanda_helper.php:3905
 #: application/helpers/qanda_helper.php:3906
-#: application/models/Assessment.php:140
+#: application/models/Assessment.php:141
 #: application/views/admin/assessments/assessments_edit.php:24
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
 #: application/views/admin/export/generatestats/_statisticsoutput_gross_total.php:27
@@ -10752,7 +10752,7 @@ msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:694
-#: application/helpers/expressions/em_core_helper.php:1737
+#: application/helpers/expressions/em_core_helper.php:1749
 msgid "Undefined variable"
 msgstr ""
 
@@ -10773,7 +10773,7 @@ msgid "Extra token found after expressions"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:839
-#: application/helpers/expressions/em_core_helper.php:1733
+#: application/helpers/expressions/em_core_helper.php:1745
 msgid "Undefined function"
 msgstr ""
 
@@ -10789,35 +10789,35 @@ msgstr ""
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1726
+#: application/helpers/expressions/em_core_helper.php:1738
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1742
+#: application/helpers/expressions/em_core_helper.php:1754
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1749
+#: application/helpers/expressions/em_core_helper.php:1761
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2085
+#: application/helpers/expressions/em_core_helper.php:2097
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2165
+#: application/helpers/expressions/em_core_helper.php:2177
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2166
+#: application/helpers/expressions/em_core_helper.php:2178
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2378
+#: application/helpers/expressions/em_core_helper.php:2390
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3069
+#: application/helpers/expressions/em_core_helper.php:3081
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -11133,12 +11133,16 @@ msgstr ""
 msgid "Text [Help] (Tip)"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9808
-#: application/helpers/expressions/em_manager_helper.php:10062
+#: application/helpers/expressions/em_manager_helper.php:9779
+msgid "This group has at least 1 error."
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:9813
+#: application/helpers/expressions/em_manager_helper.php:10067
 msgid "Default:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9833
+#: application/helpers/expressions/em_manager_helper.php:9838
 #: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:56
 #: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:60
 #: application/views/admin/survey/Question/nquestion_subviews/_tabs.php:84
@@ -11155,71 +11159,71 @@ msgstr ""
 msgid "Help:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9835
+#: application/helpers/expressions/em_manager_helper.php:9840
 msgid "Tip:"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9853
+#: application/helpers/expressions/em_manager_helper.php:9858
 msgid "Question attribute"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9853
+#: application/helpers/expressions/em_manager_helper.php:9858
 msgid "Value"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9955
+#: application/helpers/expressions/em_manager_helper.php:9960
 msgid "This variable name has already been used."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:9967
+#: application/helpers/expressions/em_manager_helper.php:9972
 msgid "Starting in 2.05, variable names should only contain letters and numbers; and may not start with a number. This variable name is deprecated."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10135
+#: application/helpers/expressions/em_manager_helper.php:10140
 msgid "This question has at least {n} error.|This question has at least {n} errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10184
+#: application/helpers/expressions/em_manager_helper.php:10189
 msgid "{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10187
+#: application/helpers/expressions/em_manager_helper.php:10192
 msgid "{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10192
+#: application/helpers/expressions/em_manager_helper.php:10197
 msgid "No syntax errors detected in this survey."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10195
+#: application/helpers/expressions/em_manager_helper.php:10200
 msgid "This group, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10198
+#: application/helpers/expressions/em_manager_helper.php:10203
 msgid "This question, by itself, does not contain any syntax errors."
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10370
-#: application/helpers/expressions/em_manager_helper.php:10382
-#: application/helpers/expressions/em_manager_helper.php:10390
-#: application/helpers/expressions/em_manager_helper.php:10400
-#: application/helpers/expressions/em_manager_helper.php:10407
-#: application/helpers/expressions/em_manager_helper.php:10414
-#: application/helpers/expressions/em_manager_helper.php:10421
-#: application/helpers/expressions/em_manager_helper.php:10428
-#: application/helpers/expressions/em_manager_helper.php:10441
-#: application/helpers/expressions/em_manager_helper.php:10447
-#: application/helpers/expressions/em_manager_helper.php:10454
-#: application/helpers/expressions/em_manager_helper.php:10470
-#: application/helpers/expressions/em_manager_helper.php:10477
-#: application/helpers/expressions/em_manager_helper.php:10491
-#: application/helpers/expressions/em_manager_helper.php:10501
-#: application/helpers/expressions/em_manager_helper.php:10514
-#: application/helpers/expressions/em_manager_helper.php:10521
+#: application/helpers/expressions/em_manager_helper.php:10375
+#: application/helpers/expressions/em_manager_helper.php:10387
+#: application/helpers/expressions/em_manager_helper.php:10395
+#: application/helpers/expressions/em_manager_helper.php:10405
+#: application/helpers/expressions/em_manager_helper.php:10412
+#: application/helpers/expressions/em_manager_helper.php:10419
+#: application/helpers/expressions/em_manager_helper.php:10426
+#: application/helpers/expressions/em_manager_helper.php:10433
+#: application/helpers/expressions/em_manager_helper.php:10446
+#: application/helpers/expressions/em_manager_helper.php:10452
+#: application/helpers/expressions/em_manager_helper.php:10459
+#: application/helpers/expressions/em_manager_helper.php:10475
+#: application/helpers/expressions/em_manager_helper.php:10482
+#: application/helpers/expressions/em_manager_helper.php:10496
+#: application/helpers/expressions/em_manager_helper.php:10506
+#: application/helpers/expressions/em_manager_helper.php:10519
+#: application/helpers/expressions/em_manager_helper.php:10526
 msgid "%s is an invalid value for this question"
 msgstr ""
 
-#: application/helpers/expressions/em_manager_helper.php:10485
+#: application/helpers/expressions/em_manager_helper.php:10490
 msgid "This question only accept 30 digits including 10 decimals."
 msgstr ""
 
@@ -13203,119 +13207,120 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:698
+#: application/helpers/surveytranslator_helper.php:708
 msgid "Serbian (Cyrillic)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:706
+#: application/helpers/surveytranslator_helper.php:716
 msgid "Serbian (Latin)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:714
+#: application/helpers/surveytranslator_helper.php:724
 msgid "Sinhala"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:722
+#: application/helpers/surveytranslator_helper.php:732
 msgid "Slovak"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:730
+#: application/helpers/surveytranslator_helper.php:740
 msgid "Slovenian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:738
+#: application/helpers/surveytranslator_helper.php:748
+#: application/helpers/surveytranslator_helper.php:757
 msgid "Somali"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:746
+#: application/helpers/surveytranslator_helper.php:765
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:754
+#: application/helpers/surveytranslator_helper.php:773
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:762
+#: application/helpers/surveytranslator_helper.php:781
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:771
+#: application/helpers/surveytranslator_helper.php:790
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:779
+#: application/helpers/surveytranslator_helper.php:798
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:787
+#: application/helpers/surveytranslator_helper.php:806
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:795
+#: application/helpers/surveytranslator_helper.php:814
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:804
+#: application/helpers/surveytranslator_helper.php:823
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:812
+#: application/helpers/surveytranslator_helper.php:831
 msgid "Tagalog"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:820
+#: application/helpers/surveytranslator_helper.php:839
 msgid "Telugu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:828
+#: application/helpers/surveytranslator_helper.php:847
 msgid "Tajik"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:836
+#: application/helpers/surveytranslator_helper.php:855
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:844
+#: application/helpers/surveytranslator_helper.php:863
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:852
+#: application/helpers/surveytranslator_helper.php:871
 msgid "Tigrinya"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:860
+#: application/helpers/surveytranslator_helper.php:879
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:869
+#: application/helpers/surveytranslator_helper.php:888
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:877
+#: application/helpers/surveytranslator_helper.php:896
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:885
+#: application/helpers/surveytranslator_helper.php:904
 msgid "Uyghur"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:893
+#: application/helpers/surveytranslator_helper.php:912
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:901
+#: application/helpers/surveytranslator_helper.php:920
 msgid "Welsh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:909
+#: application/helpers/surveytranslator_helper.php:928
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:937
+#: application/helpers/surveytranslator_helper.php:956
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:938
+#: application/helpers/surveytranslator_helper.php:957
 msgid "Comma (,)"
 msgstr ""
 
@@ -13341,19 +13346,19 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3239
+#: application/helpers/update/updatedb_helper.php:3256
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3243
+#: application/helpers/update/updatedb_helper.php:3260
 msgid "File %s, line %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3286
+#: application/helpers/update/updatedb_helper.php:3303
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:3287
+#: application/helpers/update/updatedb_helper.php:3304
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
@@ -13576,11 +13581,11 @@ msgstr ""
 msgid "Answer codes must be unique by question."
 msgstr ""
 
-#: application/models/Assessment.php:101
+#: application/models/Assessment.php:102
 msgid "Edit this assessment rule"
 msgstr ""
 
-#: application/models/Assessment.php:108
+#: application/models/Assessment.php:109
 msgid "Delete this assessment rule"
 msgstr ""
 
