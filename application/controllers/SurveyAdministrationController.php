@@ -196,6 +196,8 @@ class SurveyAdministrationController extends LSBaseController
 
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $aData['issuperadmin'] = true;
+        }else{
+
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
@@ -904,7 +906,6 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Method to call current date information by ajax
-
      *
      * @return JSON | string
      * @throws CException
@@ -912,6 +913,8 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetDateFormatOptions()
     {
         $aRawDateFormats = getDateFormatData();
+
+        //todo: does this action needs a permission check? what permission should be checked?
 
         return $this->renderPartial(
             '/admin/super/_renderJson',
@@ -1012,6 +1015,23 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetDataSecTextSettings($sid = null)
     {
         $iSurveyId = (int)$sid;
+
+        //permission check ...
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("No permission"),
+                        'debug' => null
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -2166,6 +2186,8 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionExpireMultipleSurveys()
     {
+        //permission check: only superadmin is allowed to do this
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();

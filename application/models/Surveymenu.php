@@ -124,6 +124,12 @@ class Surveymenu extends LSActiveRecord
         $entryData['menu_description']  = gT($entryData['menu_description']);
     }
 
+    /**
+     * @param $oSurveyMenuObjects
+     * @param boolean $collapsed
+     * @param null $oSurvey
+     * @return array
+     */
     public function createSurveymenuArray($oSurveyMenuObjects, $collapsed=false, $oSurvey=null)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
