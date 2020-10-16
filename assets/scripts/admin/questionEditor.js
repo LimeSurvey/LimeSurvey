@@ -10,16 +10,26 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
+'use strict';
+
+/* globals $, alert, window, document, console, LS, duplicatesubquestioncode */
+/* globals strCantDeleteLastAnswer, lsdetailurl, lspickurl, strNoLabelSet */
+/* globals lanameurl, sLabelSetName, lasuccess, lasaveurl */
+/* globals cancel, lafail, lanameurl, langs, languagecount, lasaveurl */
+/* globals lasuccess, lsbrowsertitle, lsdetailurl, lspickurl, ok */
+/* globals saveaslabletitl, sCheckLabelURL, sImageURL, sLabelSetName, strcode */
+/* globals strlabel, strNoLabelSet */
+
 // eslint-disable-next-line no-use-before-define
-LS = LS || {
-  onDocumentReady: {},
-};
+//LS = LS || {
+  //onDocumentReady: {},
+//};
 
 // @todo Don't use globals.
 /** @type {array} Used in setLabel */
 let flag = [];
 /** @type {bool} Used in ajaxcheckdup */
-let check = false;
+let check = true;
 // Declare this global. Defined in PHP? false = readonly
 /* global langs:false */
 
@@ -57,7 +67,7 @@ $(document).on('ready pjax:scriptcomplete', () => {
  * @return {void}
  */
 // eslint-disable-next-line no-unused-vars
-async function updateQuestionAttributes(questionType, generalSettingsUrl, advancedSettingsUrl) {
+async function updateQuestionAttributes(questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
   // If same question type, do nothing.
   // Else, fetch new HTML from server.
   $('#ls-loading').show();
@@ -111,36 +121,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
- *
- * Assumes global variables:
- *   langs
- *   lasaveurl ??
- *   LS.ld ??
  */
-
-/* Event added on document for all button (new one added in js too)
- * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
- * */
-$(document).on('click', '#editsubquestionsform :submit', () => {
-  // Validate duplicate before try to submit: surely some other javascript elsewhere
-  // return code_duplicates_check();
-});
-
-/**
- * This function adjusts the alternating table rows
- * if the list changed
- *
- * @param {object} $elm
- * @param {object} $attr
- * @param {object} $attrValue
- * @return {void}
- * @todo Define in function scope?
- */
-function updateIfEmpty($elm, $attr, $attrValue) {
-  if ($elm.attr($attr) === '') {
-    $elm.attr($attr, $attrValue);
-  }
-}
 
 /**
  * @return {void}
@@ -149,6 +130,22 @@ function updateRowProperties() {
   const sID = $('input[name=sid]').val();
   const gID = $('input[name=gid]').val();
   const qID = $('input[name=qid]').val();
+
+  /**
+   * This function adjusts the alternating table rows
+   * if the list changed
+   *
+   * @param {object} $elm
+   * @param {object} $attr
+   * @param {object} $attrValue
+   * @return {void}
+   * @todo Define in function scope?
+   */
+  function updateIfEmpty($elm, $attr, $attrValue) {
+    if ($elm.attr($attr) === '') {
+      $elm.attr($attr, $attrValue);
+    }
+  }
 
   $('.answertable tbody').each(function loopTable() {
     const info = $(this).closest('table').attr('id').split('_');
@@ -169,7 +166,12 @@ function updateRowProperties() {
       updateIfEmpty($(this).find('.assessment'), 'id', `assessment_${uniqueRowId}_${scaleId}`);
       updateIfEmpty($(this).find('.assessment'), 'name', `assessment_${uniqueRowId}_${scaleId}`);
       // Newly inserted row editor button
-      $(this).find('.editorLink').attr('href', `javascript:start_popup_editor('answer_${language}_${uniqueRowId}_${scaleId}','[Answer:](${language})','${sID}','${gID}','${qID}','editanswer','editanswer')`);
+      $(this).find('.editorLink').attr(
+        'href',
+        `javascript:start_popup_editor(
+          'answer_${language}_${uniqueRowId}_${scaleId}','[Answer:](${language})','${sID}','${gID}','${qID}','editanswer','editanswer'
+        )`
+      );
       $(this).find('.editorLink').attr('id', `answer_${language}_${uniqueRowId}_${scaleId}_ctrl`);
       $(this).find('.btneditanswerena').attr('id', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrlena`);
       $(this).find('.btneditanswerena').attr('name', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrlena`);
@@ -242,8 +244,8 @@ function addInputPredefined(i) {
   const datas = {
     surveyid: $elDatas.data('surveyid'),
     gid: $elDatas.data('gid'),
-    codes: JSON.stringify({ lbl_1: 'eins' }),
-    scale_id: scaleId,
+    codes: JSON.stringify({lbl_1: 'eins'}),  // jshint ignore:line
+    scale_id: scaleId,  // jshint ignore:line
     position: i,
     type: 'subquestion',
     languages: JSON.stringify($elDatas.data('languages').join(';')),
@@ -283,13 +285,10 @@ function bindClickIfNotExpanded() {
  *
  * @return {string}
  */
-function getRelevanceToolTip() {
-  const relevanceTooltip = !relevanceIsExpanded()
-    ? `data-toggle="tooltip" data-title="${clickToExpand}"`
-    : '';
-
-  return relevanceTooltip;
-}
+//function getRelevanceToolTip() {
+  //const relevanceTooltip = !relevanceIsExpanded() ? `data-toggle="tooltip" data-title="${clickToExpand}"` : '';
+  //return relevanceTooltip;
+//}
 
 /**
  * Delete row?
@@ -308,24 +307,26 @@ function deleteSubquestionRow(jQueryItem) {
 /**
  * Delete subquestion row.
  * Executed when user click "Delete" button.
+ *
  * @param {event} e
  * @return {void}
  */
 function deleteSubquestionInput(e) {
   e.preventDefault();
+  const target = e.target;
   // 1.) Check if there is at least one answe
   let position;
-  const countanswers = $(this).closest('tbody').children('tr').length; // Maybe use class is better
+  const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
   if (countanswers > 1) {
     // 2.) Remove the table row
-    const classes = $(this).closest('tr').attr('class').split(' ');
+    const classes = $(target).closest('tr').attr('class').split(' ');
     LS.ld.forEach(classes, (curClass) => {
       if (curClass.substr(0, 3) === 'row') {
         position = curClass.substr(4);
       }
     });
 
-    const info = $(this).closest('table').attr('id').split('_');
+    const info = $(target).closest('table').attr('id').split('_');
     const scaleId = info[2];
     const languages = langs.split(';');
 
@@ -333,7 +334,7 @@ function deleteSubquestionInput(e) {
       const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
       if (x === 0) {
         tablerow.fadeTo(400, 0, function fadeAndRemove() {
-          $(this).remove();
+          $(target).remove();
           updateRowProperties();
         });
       } else {
@@ -397,7 +398,8 @@ function addinputQuickEdit($currentTable, language, first, scaleId, codes) {
   // We build the datas for the request
   datas = {
     codes: $codes,
-    scale_id: scaleId, // In $elDatas.data('scale-id') ?
+    // In $elDatas.data('scale-id') ?
+    scale_id: scaleId,  // jshint ignore:line
     type: 'subquestion',
     position: null,
     first,
@@ -411,12 +413,12 @@ function addinputQuickEdit($currentTable, language, first, scaleId, codes) {
     url: $url,
     data: datas,
     success(htmlrow) {
-      const $lang_table = $(`#answers_${language}_${scaleId}`);
-      $defer.resolve({ lng: language, langtable: $lang_table, html: htmlrow });
+      const $langTable = $(`#answers_${language}_${scaleId}`);
+      $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
     },
-    error(html, statut) {
+    error(html, status) {
       alert($errormessage);
-      $defer.reject([html, statut, $errormessage]);
+      $defer.reject([html, status, $errormessage]);
     },
   });
   return $defer.promise();
@@ -430,7 +432,8 @@ function addinputQuickEdit($currentTable, language, first, scaleId, codes) {
  */
 function addSubquestionInput(e) {
   e.preventDefault();
-  const $that = $(this); // The "add" button
+  const target = e.target;
+  const $that = $(target); // The "add" button
   const $currentRow = $that.closest('.row-container'); // The row containing the "add" button
   const $currentTable = $that.closest('.answertable');
   const $commonId = $currentRow.data('common-id'); // The common id of this row in the other languages
@@ -438,27 +441,27 @@ function addSubquestionInput(e) {
   const $url = $elDatas.data('url'); // Url for the request
   const $errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
   const $languages = JSON.stringify(langs); // The languages
-  let $codes; let
-    datas;
+  let $codes;
+  let datas;
 
   console.log('$url', $url);
 
   // We get all the subquestion codes currently displayed
   const codes = [];
   $currentTable.find('.code').each(function () {
-    codes.push($(this).val());
+    codes.push($(target).val());
   });
 
   // We convert them to json for the request
   $codes = JSON.stringify(codes);
 
   // We build the datas for the request
-  datas = `surveyid=${$elDatas.data('surveyid')}`,
-  datas += `&gid=${$elDatas.data('gid')}`,
-  datas += `&qid=${$elDatas.data('qid')}`,
-  datas += `&codes=${$codes}`,
-  datas += `&scale_id=${$(this).find('i').data('scale-id')}`,
-  datas += '&position=0',
+  datas = `surveyid=${$elDatas.data('surveyid')}`;
+  datas += `&gid=${$elDatas.data('gid')}`;
+  datas += `&qid=${$elDatas.data('qid')}`;
+  datas += `&codes=${$codes}`;
+  datas += `&scale_id=${$(target).find('i').data('scale-id')}`;
+  datas += '&position=0';
   datas += `&languages=${$languages}`;
 
   const rebindClickHandler = () => {
@@ -478,12 +481,12 @@ function addSubquestionInput(e) {
 
       // We insert each row for each language
       $.each(arrayofhtml, (lang, htmlRow) => {
-        $elRowToUpdate = $(`#row_${lang}_${$commonId}`); // The row for the current language
+        const $elRowToUpdate = $(`#row_${lang}_${$commonId}`); // The row for the current language
         $elRowToUpdate.after(htmlRow); // We insert the HTML of the new row after this one
       });
       rebindClickHandler();
     },
-    error(html, statut) {
+    error() {
       alert($errormessage);
     },
   });
@@ -495,34 +498,45 @@ function addSubquestionInput(e) {
  * @param {event} e
  * @return {void}
  */
-function addAnswerOptionInput(e) {
+function addAnswerOptionInput() {
   // todo
 }
 
-function updatecodes() {
+//function updatecodes() {
+//}
 
+/**
+ * @param {*} mixedVar
+ * @return {bool}
+ */
+function isNumeric(mixedVar) {
+  return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' && !isNaN(mixedVar);
 }
 
-function getNextCode(sSourceCode) {
-  sourcecode = sSourceCode;
-  i = 1;
-  found = true;
-  foundnumber = -1;
-  sclength = sourcecode.length;
-  while (i <= sclength && found == true) {
-    found = is_numeric(sourcecode.substr(sclength - i, i));
+/**
+ * @param {string} sSourceCode
+ * @return {string}
+ */
+function getNextCode(sSourceCode) {  // jshint ignore: line
+  const sourcecode = sSourceCode;
+  let i = 1;
+  let found = true;
+  let foundnumber = -1;
+  const sclength = sourcecode.length;
+  while (i <= sclength && found === true) {
+    found = isNumeric(sourcecode.substr(sclength - i, i));
     if (found) {
       foundnumber = sourcecode.substr(sclength - i, i);
       i++;
     }
   }
-  if (foundnumber == -1) {
+  if (foundnumber === -1) {
     return (sourcecode);
   }
 
   foundnumber++;
   foundnumber += '';
-  result = sourcecode.substr(0, sclength - foundnumber.length) + foundnumber;
+  const result = sourcecode.substr(0, sclength - foundnumber.length) + foundnumber;
   return (result);
 }
 
@@ -531,18 +545,17 @@ function getNextCode(sSourceCode) {
 * If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
 *
 * @param sNewValue
-*
-* @returns {Boolean} False if codes are not unique
+* @returns {bool} False if codes are not unique
 */
-function areCodesUnique(sNewValue) {
-  languages = langs.split(';');
+function areCodesUnique(sNewValue) {  // jshint ignore: line
+  const languages = langs.split(';');
   let dupefound = false;
   $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
     let codearray = [];
     $(this).find('tr .code').each(function () {
       codearray.push($(this).val());
     });
-    if (sNewValue != '') {
+    if (sNewValue !== '') {
       codearray = window.LS.getUnique(codearray);
       codearray.push(sNewValue);
     }
@@ -555,19 +568,20 @@ function areCodesUnique(sNewValue) {
   }
 }
 
-function is_numeric(mixed_var) {
-  return (typeof (mixed_var) === 'number' || typeof (mixed_var) === 'string') && mixed_var !== '' && !isNaN(mixed_var);
-}
+/**
+ * @return {void}
+ */
+//function popupeditor() {
+  //const inputId = $(this).parent().find('.answer').attr('id');
+  //start_popup_editor(inputId); // jshint ignore:line
+//}
 
-function popupeditor() {
-  input_id = $(this).parent().find('.answer').attr('id');
-  start_popup_editor(input_id);
-}
-
-function code_duplicates_check() {
+/**
+ * @return {bool}
+ */
+function codeDuplicatesCheck() {
   // $('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
-
-  languages = langs.split(';');
+  const languages = langs.split(';');
   let cansubmit = true;
   $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
     const codearray = [];
@@ -585,11 +599,94 @@ function code_duplicates_check() {
   return cansubmit;
 }
 
-function lsbrowser_destruct(e) {
+/**
+ * @todo Does what?
+ * @return {void}
+ */
+function lsBrowserDestruct() {
   $('#labelsets').select2('destroy');
   $('#labelsetpreview').empty();
 }
 
+// previews the labels in a label set after selecting it in the select box
+// previews the labels in a label set after selecting it in the select box
+function lspreview(lid) {
+  const surveyid = $('input[name=sid]').val();
+  return $.ajax({
+    url: lsdetailurl,
+    data: { sid: surveyid, lid },
+    cache: true,
+    success(json) {
+      console.ls.log('lspreview', json);
+      if (json.languages === []) {
+        console.ls.console.warn('NOTHING TO RENDER!', json);
+        return;
+      }
+
+      const $liTemplate = $('<li role="presentation"></li>');
+      const $aTemplate = $('<a data-toggle="tab"></a>');
+      const $tabTodyTemplate = $('<div></div>');
+      const $listTemplate = $('<div class="list-group selector_label-list"></div>');
+      const $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
+      const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
+      const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
+
+      console.ls.group('LanguageParsing');
+      const i = 0;
+      $.each(json.languages, (language, languageName) => {
+        console.ls.log('Language', language, languageName);
+        const $linkItem = $aTemplate.clone();
+        const $bodyItem = $tabTodyTemplate.clone();
+        var $itemList = $listTemplate.clone();
+
+        const classLink = i === 0 ? 'active' : '';
+        const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
+
+        $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
+        $liTemplate.clone().append($linkItem).appendTo($tabindex);
+
+        $bodyItem.addClass(classBody).attr('id', `language_${language}`);
+        $tabbody.append($bodyItem);
+
+        console.ls.group('ParseLabelSet');
+
+        const labelSet = json.results[language];
+        console.ls.log('LabelSet', labelSet);
+
+        $itemList = $listTemplate.clone();
+
+        console.ls.group('ParseLabels');
+        $.each(labelSet.labels, (i, label) => {
+          console.ls.log('Label', i, label);
+          // Label title is not concatenated directly because it may have non-encoded HTML
+          const $labelTitleDiv = $('<div class="col-md-8"></div>');
+          $labelTitleDiv.text(label.title);
+          const $listItem = $listItemTemplate.clone();
+          $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
+          $listItem.append($labelTitleDiv);
+          $listItem.append('<div class="col-md-1"></div>');
+          $listItem.attr('data-label', JSON.stringify(label));
+          $itemList.append($listItem);
+        });
+
+        console.ls.groupEnd('ParseLabels');
+        $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
+        $itemList.appendTo($bodyItem);
+
+        console.ls.groupEnd('ParseLabelSet');
+      });
+      console.ls.groupEnd('LanguageParsing');
+      $('#labelsetpreview').empty();
+      $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
+      $tabindex.find('li').first().find('a').trigger('click');
+    },
+  });
+}
+
+/**
+ * @param {event} e
+ * @return {void}
+ */
 function lsbrowser(e) {
   const scaleId = $(e.relatedTarget).data('scale-id');
   $('body').append(`<input type="hidde" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
@@ -614,7 +711,7 @@ function lsbrowser(e) {
         console.ls.log('allResults', jsonString.labelsets);
         $.each(jsonString.labelsets, (i, item) => {
           console.log('SelectItem', item);
-          const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);
+          const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
           console.ls.log('newOption', newOption);
           $('#labelsets').append(newOption).trigger('change');
         });
@@ -625,90 +722,20 @@ function lsbrowser(e) {
 
   $('#labelsets').on('change', function () {
     const value = $(this).val();
-    if (parseFloat(value) == value) lspreview(value);
+    if (parseFloat(value) === value) {
+      lspreview(value);
+    }
   });
 }
 
-// previews the labels in a label set after selecting it in the select box
-// previews the labels in a label set after selecting it in the select box
-function lspreview(lid) {
-  const surveyid = $('input[name=sid]').val();
-  return $.ajax({
-    url: lsdetailurl,
-    data: { sid: surveyid, lid },
-    cache: true,
-    success(json) {
-      console.ls.log('lspreview', json);
-      if (json.languages == []) {
-        console.ls.console.warn('NOTHING TO RENDER!', json);
-        return;
-      }
-
-      const $liTemplate = $('<li role="presentation"></li>');
-      const $aTemplate = $('<a data-toggle="tab"></a>');
-      const $tabTodyTemplate = $('<div></div>');
-      const $listTemplate = $('<div class="list-group selector_label-list"></div>');
-      $listItemTemplate = $('<div class="list-group-item row selector_label-list-row"></div>');
-      $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>'),
-      $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>'),
-      count = 0;
-
-      console.ls.group('LanguageParsing');
-      const i = 0;
-      $.each(json.languages, (language, languageName) => {
-        console.ls.log('Language', language, languageName);
-        const $linkItem = $aTemplate.clone();
-        const $bodyItem = $tabTodyTemplate.clone();
-        var $itemList = $listTemplate.clone();
-
-        const classLink = i === 0 ? 'active' : '';
-        const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
-
-        $linkItem.addClass(classLink).attr('href', `#language_${language}`).text(languageName);
-        $liTemplate.clone().append($linkItem).appendTo($tabindex);
-
-        $bodyItem.addClass(classBody).attr('id', `language_${language}`);
-        $tabbody.append($bodyItem);
-
-        console.ls.group('ParseLabelSet');
-
-        const labelSet = json.results[language];
-        console.ls.log('LabelSet', labelSet);
-
-        var $itemList = $listTemplate.clone();
-
-        console.ls.group('ParseLabels');
-        $.each(labelSet.labels, (i, label) => {
-          console.ls.log('Label', i, label);
-          // Label title is not concatenated directly because it may have non-encoded HTML
-          const $labelTitleDiv = $('<div class="col-md-8"></div>');
-          $labelTitleDiv.text(label.title);
-          const $listItem = $listItemTemplate.clone();
-          $listItem.append(`<div class="col-md-3 text-right" style="border-right: 4px solid #cdcdcd">${label.code}</div>`);
-          $listItem.append($labelTitleDiv);
-          $listItem.append('<div class="col-md-1"></div>');
-          $listItem.attr('data-label', JSON.stringify(label));
-          $itemList.append($listItem);
-        });
-
-        console.ls.groupEnd('ParseLabels');
-        $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);
-        $itemList.appendTo($bodyItem);
-
-        console.ls.groupEnd('ParseLabelSet');
-      });
-      console.ls.groupEnd('LanguageParsing');
-      $('#labelsetpreview').empty();
-      $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
-      $tabindex.find('li').first().find('a').trigger('click');
-    },
-  });
-}
-
+/**
+ * @param {string} type ???
+ * @return {void}
+ */
 function transferlabels(type) {
-  const surveyid = $('input[name=sid]').val();
-  const languages = langs.split(';');
-  const labels = [];
+  //const surveyid = $('input[name=sid]').val();
+  //const languages = langs.split(';');
+  //const labels = [];
   const scaleId = $('#current_scale_id').val();
 
   addInputPredefined(1).then((result) => {
@@ -716,7 +743,7 @@ function transferlabels(type) {
     $.each(result, (lng, row) => {
       const $table = $(`#answers_${lng}_${scaleId}`);
 
-      if (type == 'replace') {
+      if (type === 'replace') {
         $table.find('tbody').find('tr').each((i, tableRow) => {
           deleteSubquestionRow($(tableRow));
           $(tableRow).remove();
@@ -731,21 +758,31 @@ function transferlabels(type) {
             const $tr = $row.eq(4);
             const randId = `new${Math.floor(Math.random() * 10000)}`;
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace(/new[0-9]{3,6}/, randId));
-            $tr.attr('id', $tr.attr('id').replace(/new[0-9]{3-5}/, randId));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', randId));
+            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-5}/', randId));
 
             $row.find('input').each((j, inputField) => {
               $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, randId));
               $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/, randId));
             });
 
-            $row.find('td.code-title').find('input[type=text]').length > 0 ? $row.find('td.code-title').find('input[type=text]').val(label.code) : $row.find('td.code-title').text(label.code);
-            $row.find('td.relevance-equation').find('input[type=text]').length > 0 ? $row.find('td.relevance-equation').find('input[type=text]').val(1) : '';
+            if ($row.find('td.code-title').find('input[type=text]').length > 0) {
+              $row.find('td.code-title').find('input[type=text]').val(label.code);
+            } else {
+              $row.find('td.code-title').text(label.code);
+            }
+            if ($row.find('td.relevance-equation').find('input[type=text]').length > 0) {
+              $row.find('td.relevance-equation').find('input[type=text]').val(1);
+            } else {
+              // ??
+            }
 
             $row.find('td.code-title').find('input[type=text]').val(label.code);
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
-          } catch (e) { console.ls.error(e); }
+          } catch (e) {
+            console.ls.error(e);
+          }
         });
 
       $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -753,7 +790,6 @@ function transferlabels(type) {
       $('#labelsetbrowserModal').modal('hide');
       $('#current_scale_id').remove();
     });
-    const $lang_table = $(`#answers_${language}_${scaleId}`);
   });
 }
 
@@ -766,14 +802,14 @@ function transferlabels(type) {
  * @param {string} addOrReplace - Either 'add' or 'replace'
  * @return {void}
  */
-function quickaddlabels(scaleId, addOrReplace, table_id) {
+function quickaddlabels(scaleId, addOrReplace, tableId) {
   console.ls.log('quickaddlabels');
-  const sID = $('input[name=sid]').val();
-  const gID = $('input[name=gid]').val();
-  const qID = $('input[name=qid]').val();
+  //const sID = $('input[name=sid]').val();
+  //const gID = $('input[name=gid]').val();
+  //const qID = $('input[name=qid]').val();
   const codes = [];
-  const closestTable = $(`#${table_id}`);
-  lsreplace = (addOrReplace === 'replace');
+  const closestTable = $(`#${tableId}`);
+  const lsreplace = (addOrReplace === 'replace');
 
   if (lsreplace) {
     $(`.answertable:eq(${scaleId}) tbody tr`).each(function () {
@@ -792,14 +828,14 @@ function quickaddlabels(scaleId, addOrReplace, table_id) {
     });
   }
 
-  languages = langs.split(';');
+  const languages = langs.split(';');
   const promises = [];
   const answers = [];
   let separatorchar;
   const lsrows = $('#quickaddarea').val().split('\n');
   const allrows = $(`.answertable:eq(${scaleId}) tbody tr`).length;
 
-  if (lsrows[0].indexOf('\t') == -1) {
+  if (lsrows[0].indexOf('\t') === -1) {
     separatorchar = ';';
   } else {
     separatorchar = '\t';
@@ -807,17 +843,17 @@ function quickaddlabels(scaleId, addOrReplace, table_id) {
 
   let numericSuffix = '';
   let n = 1;
-  const numeric = true;
+  let numeric = true;
   let currentCharacter;
   const codeSigil = (codes[0] !== undefined ? codes[0].split('') : ('001').split(''));
-  while (numeric == true && n <= codeSigil.length) {
+  while (numeric === true && n <= codeSigil.length) {
     currentCharacter = codeSigil.pop(); // get the current character
     if (!isNaN(Number(currentCharacter))) // check if it's numerical
     {
       numericSuffix = `${currentCharacter}${numericSuffix}`; // store it in a string
       n++;
     } else {
-      $numeric = false; // At first non numeric character found, the loop is stoped
+      numeric = false; // At first non numeric character found, the loop is stoped
     }
   }
   // Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
@@ -825,7 +861,6 @@ function quickaddlabels(scaleId, addOrReplace, table_id) {
     codeSigil.push(currentCharacter);
   }
 
-  const tablerows = '';
   LS.ld.forEach(lsrows, (value, k) => {
     const thisrow = value.splitCSV(separatorchar);
 
@@ -875,7 +910,7 @@ function quickaddlabels(scaleId, addOrReplace, table_id) {
     $(`#answers_${language}_${scaleId} .btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
 
     promises.push(
-      addinputQuickEdit(closestTable, language, (x == 0), scaleId, codes),
+      addinputQuickEdit(closestTable, language, (x === 0), scaleId, codes),
     );
   });
 
@@ -885,8 +920,8 @@ function quickaddlabels(scaleId, addOrReplace, table_id) {
       $.each(arguments, (i, item) => {
         $.each(answers[item.lng], (j, row) => {
           const { html } = item;
-          const html_quid = html.replace(/({{quid_placeholder}})/g, row.quid);
-          const htmlRowObject = $(html_quid);
+          const htmlQuid = html.replace('/({{quid_placeholder}})/g', row.quid);
+          const htmlRowObject = $(htmlQuid);
           htmlRowObject.find('input.answer').val(row.text);
           if (htmlRowObject.find('input.code').length > 0) {
             htmlRowObject.find('input.code').val(row.code);
@@ -928,13 +963,18 @@ function getLabel() {
   updateRowProperties();
 }
 
-function setlabel() {
-  switch ($(this).attr('id')) {
+/**
+ * @param {event} event
+ * @return {void}
+ */
+function setlabel(event) {
+  const target = event.target;
+  switch ($(target).attr('id')) {
     case 'newlabel':
       if (!flag[0]) {
         $('#lasets').parent().remove();
-        $(this).parent().after(`<p class="label-name-wrapper"><label for="laname">${sLabelSetName}:</label> `
-            + '<input type="text" name="laname" id="laname"></p>');
+        $(target).parent().after(`<p class="label-name-wrapper"><label for="laname">${sLabelSetName}:</label> ` +
+          '<input type="text" name="laname" id="laname"></p>');
         flag[0] = true;
         flag[1] = false;
       }
@@ -943,7 +983,7 @@ function setlabel() {
     case 'replacelabel':
       if (!flag[1]) {
         $('#laname').parent().remove();
-        $(this).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
+        $(target).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
         $.getJSON(lanameurl, (data) => {
           $.each(data, (key, val) => {
             $('#lasets').append(`<option value="${key}">${val}</option>`);
@@ -957,27 +997,9 @@ function setlabel() {
   }
 }
 
-function savelabel() {
-  const lid = $('#lasets').val() ? $('#lasets').val() : 0;
-  if (lid === 0) {
-    const response = ajaxcheckdup();
-    response.complete(() => {
-      if (check) {
-        ajaxreqsave();
-      }
-    });
-  } else {
-    aLanguages = langs.split(';');
-    $.post(sCheckLabelURL, { languages: aLanguages, lid, bCheckAssessments: 1 }, (data) => {
-      $('#strReplaceMessage').html(data);
-      $('#dialog-confirm-replaceModal').modal();
-      $('#btnlconfirmreplace').click(() => {
-        ajaxreqsave();
-      });
-    });
-  }
-}
-
+/**
+ * @return {void}
+ */
 function ajaxcheckdup() {
   check = true; // set check to true everytime on call
   return jQuery.getJSON(lanameurl, (data) => {
@@ -985,7 +1007,7 @@ function ajaxcheckdup() {
       $('#saveaslabelModal').modal('hide');
       $('#dialog-confirm-replaceModal').modal('hide');
 
-      if ($('#laname').val() == val) {
+      if ($('#laname').val() === val) {
         if ($('#dialog-duplicate').is(':visible')) {
           $('#dialog-duplicate').effect('pulsate', { times: 3 }, 3000);
         } else {
@@ -998,16 +1020,21 @@ function ajaxcheckdup() {
   });
 }
 
+/**
+ * @return {void}
+ */
 function ajaxreqsave() {
+  // todo: scale id is not defined
+  /*
   const lid = $('#lasets').val() ? $('#lasets').val() : 0;
   // get code for the current scale
-  const code = new Array();
+  const code = [];
   if ($('.code').length > 0) { // Deactivated survey
-    $('.code').each(function (index) {
+    $('.code').each(function () {
       if ($(this).attr('id').substr(-1) === scaleId) code.push($(this).val());
     });
   } else { // Activated survey
-    $('.answertable input[name^="code_"]').each(function (index) {
+    $('.answertable input[name^="code_"]').each(function () {
       if ($(this).attr('name').substr(-1) === scaleId) code.push($(this).attr('value'));
     });
   }
@@ -1015,10 +1042,10 @@ function ajaxreqsave() {
   const answers = {};
   const languages = langs.split(';');
 
-  for (x in languages) {
-    answers[languages[x]] = new Array();
-    $('.answer').each(function (index) {
-      if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) != -1) answers[languages[x]].push($(this).val());
+  for (let x in languages) {
+    answers[languages[x]] = [];
+    $('.answer').each(function () {  // jshint ignore: line
+      if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) answers[languages[x]].push($(this).val());
     });
   }
 
@@ -1044,6 +1071,31 @@ function ajaxreqsave() {
       $('#dialog-result').show();
     }
   });
+  */
+}
+
+/**
+ * @return {void}
+ */
+function savelabel() {
+  const lid = $('#lasets').val() ? $('#lasets').val() : 0;
+  if (lid === 0) {
+    const response = ajaxcheckdup();
+    response.complete(() => {
+      if (check) {
+        ajaxreqsave();
+      }
+    });
+  } else {
+    const aLanguages = langs.split(';');
+    $.post(sCheckLabelURL, { languages: aLanguages, lid, bCheckAssessments: 1 }, (data) => {
+      $('#strReplaceMessage').html(data);
+      $('#dialog-confirm-replaceModal').modal();
+      $('#btnlconfirmreplace').click(() => {
+        ajaxreqsave();
+      });
+    });
+  }
 }
 
 $(document).on('ready pjax:scriptcomplete', () => {
@@ -1060,7 +1112,7 @@ $(document).on('ready pjax:scriptcomplete', () => {
   $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
   $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
   $('#labelsetbrowserModal').on('shown.bs.modal.', lsbrowser);
-  $('#labelsetbrowserModal').on('hidden.bs.modal.', lsbrowser_destruct);
+  $('#labelsetbrowserModal').on('hidden.bs.modal.', lsBrowserDestruct);
 
   $('#btnlsreplace').on('click', (e) => { e.preventDefault(); transferlabels('replace'); });
   $('#btnlsinsert').on('click', (e) => { e.preventDefault(); transferlabels('insert'); });
@@ -1087,4 +1139,12 @@ $(document).on('ready pjax:scriptcomplete', () => {
   updateRowProperties();
 
   bindExpandRelevanceEquation();
+});
+
+/* Event added on document for all button (new one added in js too)
+ * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
+ * */
+$(document).on('click', '#editsubquestionsform :submit', () => {
+  // Validate duplicate before try to submit: surely some other javascript elsewhere
+  return codeDuplicatesCheck();
 });
