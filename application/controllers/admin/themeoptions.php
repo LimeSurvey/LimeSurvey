@@ -614,7 +614,6 @@ class themeoptions  extends Survey_Common_Action
             $oModelWithInheritReplacement->sTemplateName
         );
         $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
 
         $aData = array(
             'model'=>$model,
