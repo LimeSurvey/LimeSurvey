@@ -590,7 +590,7 @@ class QuestionEditorController extends LSBaseController
             "editorpreset" => App()->session['htmleditormode'],
             "script" =>
                 Permission::model()->hasSurveyPermission($oQuestion->sid, 'surveycontent', 'update')
-                && SettingsUser::getUserSetting('showScriptEdit', App()->user->id),
+                && SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id),
         ];
 
         $this->renderJSON($aPermissions);
