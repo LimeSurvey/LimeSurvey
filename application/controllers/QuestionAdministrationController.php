@@ -1510,7 +1510,8 @@ class QuestionAdministrationController extends LSBaseController
             "advancedSettings",
             [
                 'advancedSettings'  => $advancedSettings,
-                'oQuestion'         => $question
+                'oQuestion'         => $question,
+                'oSurvey'           => $question->survey,
             ]
         );
     }
