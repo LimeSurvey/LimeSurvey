@@ -9421,8 +9421,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $aAttributesDefinitions=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
-            $allErrors = array();
-            /** @var array[] questions with warnings : gid,qid and count to create a list ? */
+            /* @var boolean , did have error */
+            $haveErrors = false;
+            /* @var integer[] Used at end for count, number of errors by question */
+            $allQuestionsErrors = array();
+            /* @var array[] questions with warnings : gid,qid and count to create a list (@todo) ? */
             $aQuestionWarnings = array();
             $warnings = 0;
 
@@ -9477,52 +9480,87 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             {
                 if ($aSurveyInfo['surveyls_description'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_description'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("Description:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Description:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_welcometext'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Welcome:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Welcome:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_endtext'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_endtext']);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End message:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("End message:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_url'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_urldescription']." - ".$aSurveyInfo['surveyls_url']);
                     $sPrint= viewHelper::purified($LEM->GetLastPrettyPrintExpression());
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_policy_notice'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_policy_error'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_error'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_policy_notice_label'] != '')
                 {
+                    $LEM->em->ResetErrorsAndWarnings();
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $errClass = "";
+                    if($LEM->em->HasErrors()) {
+                        $errClass = 'danger';
+                        $haveErrors = true;
+                    }
+                    $out .= "<tr class='LEMgroup'><td class='$errClass'>" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
             }
 
@@ -9539,9 +9577,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid = $q['info']['gid'];
                 $qid = $q['info']['qid'];
                 $qseq = $q['info']['qseq'];
-                $LEM->em->ResetWarnings();
-                $LEM->em->ResetErrors();
-                $errorCount=0;
+                $LEM->em->ResetErrorsAndWarnings();
+                /* @var integer : count error for **this** question */
+                $errorCount = 0;
                 /* @var warnings information for current question, see ExpressionManager::RDP_warnings */
                 $aWarnings = array();
                 
@@ -9567,6 +9605,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $errText = "";
                     if($bGroupHaveError)
                     {
+                        $haveErrors = true;
                         $errClass = 'danger';
                         $errText = "<br><em class='label label-danger'>".$LEM->gT("This group has at least 1 error.")."</em>";
                     }
@@ -9577,8 +9616,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     . "<td>{$sGroupText}</td>"
                     . "</tr>\n";
                     $out .= $groupRow;
-                    $LEM->em->ResetWarnings();
-                    $LEM->em->ResetErrors();
+                    $LEM->em->ResetErrorsAndWarnings();
                 }
 
                 //////
@@ -9601,7 +9639,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                    $LEM->em->ResetWarnings();
+                    $LEM->em->ResetErrorsAndWarnings();
                     $default = '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                 }
                 else
@@ -9626,7 +9664,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                    $LEM->em->ResetWarnings();
+                    $LEM->em->ResetErrorsAndWarnings();
                     $sQuestionHelp = '<hr />[' . $LEM->gT("Help:") . ' ' . $sQuestionHelp . ']';
                 }
                 $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr />(' . $LEM->gT("Tip:") . ' ' . viewHelper::stripTagsEM($q['prettyValidTip']) . ')');// Unsure need to filter
@@ -9673,7 +9711,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 ++$errorCount;
                             }
                             $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                            $LEM->em->ResetWarnings();
+                            $LEM->em->ResetErrorsAndWarnings();
                         }
                         if (is_null($value)) {
                             continue;   // since continuing from within a switch statement doesn't work
@@ -9694,7 +9732,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // Must parse Relevance this way, otherwise if try to first split expressions, regex equations won't work
                 $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
-                $LEM->em->ResetWarnings();
+                $LEM->em->ResetErrorsAndWarnings();
                 if (!isset($LEM->ParseResultCache[$relevanceEqn]))
                 {
                     $result = $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $qseq);
@@ -9706,7 +9744,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         'hasErrors' => $hasErrors,
                         'aWarnings'=> $LEM->em->GetWarnings(),
                     );
-                    $LEM->em->ResetWarnings();
+                    $LEM->em->ResetErrorsAndWarnings();
                 }
                 $relevance = $LEM->ParseResultCache[$relevanceEqn]['prettyprint'];
                 if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors']) {
@@ -9732,7 +9770,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             'hasErrors' => $hasErrors,
                             'aWarnings'=> $LEM->em->GetWarnings(),
                         );
-                        $LEM->em->ResetWarnings();
+                        $LEM->em->ResetErrorsAndWarnings();
                     }
                     $prettyValidEqn = '<hr />(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                     if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
@@ -9834,7 +9872,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$sq['aWarnings']);
-                        $LEM->em->ResetWarnings();
+                        $LEM->em->ResetErrorsAndWarnings();
                     }
 
                     $sgqaInfo = $LEM->knownVars[$sgqa];
@@ -9846,7 +9884,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         ++$errorCount;
                     }
                     $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                    $LEM->em->ResetWarnings();
+                    $LEM->em->ResetErrorsAndWarnings();
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
                         $LEM->ProcessString($sgqaInfo['default'], $qid,$qReplacement,1,1,false,false);
@@ -9855,7 +9893,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                        $LEM->em->ResetWarnings();
+                        $LEM->em->ResetErrorsAndWarnings();
                         $subQeqn .= '<br />(' . $LEM->gT('Default:') . '  ' . $_default . ')';
                     }
                     $sqRows .= "<tr class='LEMsubq'>"
@@ -9906,7 +9944,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 ++$errorCount;
                             }
                             $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                            $LEM->em->ResetWarnings();
+                            $LEM->em->ResetErrorsAndWarnings();
                         }
                         $sAnswerText=$valInfo[1];
                         $LEM->ProcessString($sAnswerText, $qid,$qReplacement,1,1,false,false);
@@ -9915,7 +9953,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             ++$errorCount;
                         }
                         $aWarnings = array_merge($aWarnings,$LEM->em->GetWarnings());
-                        $LEM->em->ResetWarnings();
+                        $LEM->em->ResetErrorsAndWarnings();
                         $answerRows .= "<tr class='LEManswer'>"
                         . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
                         . "<td><b>" . $ansInfo[1]. "</b></td>"
@@ -9966,8 +10004,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $out .= $sqRows;
                 $out .= $answerRows;
 
-                if ($errorCount > 0) {
-                    $allErrors[$gid . '~' . $qid] = $errorCount;
+                if ($errorCount) {
+                    $allQuestionsErrors[$gid . '~' . $qid] = $errorCount;
+                    $haveErrors = true;
                 }
             }
             $out .= "</table>";
@@ -9976,12 +10015,31 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
                 $out .= LimeExpressionManager::GetDebugTimingMessage();
             }
-            // Here it's added at top 
+            // Here it's added at top
             if(count($aQuestionWarnings) > 0) {
                 $out = "<p class='alert alert-warning'>". $LEM->ngT("{n} question contains warnings that need to be verified.|{n} questions contain warnings that need to be verified.", count($aQuestionWarnings)) . "</p>\n" . $out;
             }
-            if (count($allErrors) > 0) {
-                $out = "<p class='alert alert-danger'>". $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allErrors)) . "</p>\n" . $out;
+            if($haveErrors) {
+                if (count($allQuestionsErrors) > 0) {
+                    $out = "<p class='alert alert-danger'>". $LEM->ngT("{n} question contains errors that need to be corrected.|{n} questions contain errors that need to be corrected.", count($allQuestionsErrors)) . "</p>\n" . $out;
+                } else {
+                    switch ($surveyMode)
+                    {
+                        case 'survey':
+                            $message = $LEM->gT('There are expressions with syntax errors in this survey.');
+                            break;
+                        case 'group':
+                            $message = $LEM->gT('There are expressions with syntax errors in thisgroup.');
+                            break;
+                        case 'question':
+                            $message = $LEM->gT('There are expressions with syntax errors in this question.');// How can happen
+                            break;
+                        default:
+                            $message = $LEM->gT('There are expressions with syntax errors.');// How can happen;
+                            break;
+                    }
+                    $out = "<p class='alert alert-danger'>{$message}</p>\n" . $out;
+                }
             } else {
                 switch ($surveyMode)
                 {
@@ -10003,7 +10061,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             $out .="</div>";
             return array(
-                'errors'=>$allErrors,
+                'errors'=>$allQuestionsErrors,
                 'html'=>$out
             );
         }
