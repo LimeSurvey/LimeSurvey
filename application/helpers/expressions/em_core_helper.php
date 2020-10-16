@@ -1714,6 +1714,16 @@ class ExpressionManager
     }
 
     /**
+     * Reset current errors and current warnings
+     * @return void
+     */
+    public function ResetErrorsAndWarnings()
+    {
+        $this->ResetErrors();
+        $this->ResetWarnings();
+    }
+
+    /**
      * Return true if there are syntax errors
      * @return boolean
      */
