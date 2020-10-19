@@ -145,7 +145,17 @@ class emailtemplates extends Survey_Common_Action
                     'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
                     'attachments' => serialize($_POST['attachments'][$langname])
                 );
-                $usquery = SurveyLanguageSetting::model()->updateAll($attributes, 'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
+
+                $aLanguageSetting = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
+                $aLanguageSetting->setAttributes($attributes);
+                if (!$aLanguageSetting->save()){
+                    $sErrors = '<br/>';
+                    foreach ($aLanguageSetting->getErrors() as $sError) {
+                        $sErrors .= $sError[0].'<br/>';
+                    }                    
+                    Yii::app()->setFlashMessage(sprintf(gT("Failed to update email templates. Message: %s"),$sErrors),'error');
+                    $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
+                }
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
             if (Yii::app()->request->getPost('close-after-save') == 'true') {

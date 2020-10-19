@@ -10,7 +10,7 @@ $script = array();
             <div class=''>
                 <?php
                 $sSubjectField=$details['field']['subject'];
-                echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'size'=>80)); ?>
+                echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'maxlength'=>255)); ?>
             </div>
         </div>
     </div>
