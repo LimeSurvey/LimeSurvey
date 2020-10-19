@@ -3709,8 +3709,8 @@ function do_array_10point($ia)
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width']) != '') {
-        $answerwidth = $aQuestionAttributes['answer_width'];
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
     } else {
         $answerwidth = 33;
     }
@@ -3847,7 +3847,11 @@ function do_array_yesnouncertain($ia)
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
+    } else {
+        $answerwidth = 33;
+    }
     $cellwidth               = 3; // number of columns
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
@@ -3943,7 +3947,11 @@ function do_array_increasesamedecrease($ia)
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
+    } else {
+        $answerwidth = 33;
+    }
     $cellwidth               = 3; // number of columns
     $inputnames              = array();
 
@@ -4065,7 +4073,7 @@ function do_array($ia)
 
     // No-dropdown layout
     if ($useDropdownLayout === false && count($lresult) > 0) {
-        if (trim($aQuestionAttributes['answer_width']) != '') {
+        if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
         } else {
@@ -4244,7 +4252,7 @@ function do_array($ia)
 
     // Dropdown layout
     elseif ($useDropdownLayout === true && count($lresult) > 0) {
-        if (trim($aQuestionAttributes['answer_width']) != '') {
+        if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
         } else {
@@ -4485,7 +4493,7 @@ function do_array_texts($ia)
         };
     }
 
-    if (trim($aQuestionAttributes['answer_width']) != '') {
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
         $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
@@ -4805,8 +4813,8 @@ function do_array_multiflexi($ia)
         $kpclass = "";
     }
 
-    if (trim($aQuestionAttributes['answer_width']) != '') {
-        $answerwidth = $aQuestionAttributes['answer_width'];
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
         $answerwidth = 33;
@@ -5084,8 +5092,8 @@ function do_arraycolumns($ia)
         $aData['labelcode'] = $labelcode;
 
         if ($anscount > 0) {
-            if (trim($aQuestionAttributes['answer_width_bycolumn']) != '') {
-                $answerwidth = trim($aQuestionAttributes['answer_width_bycolumn']);
+            if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+                $answerwidth = trim($aQuestionAttributes['answer_width']);
             } else {
                 $answerwidth = 33;
             }
@@ -5219,7 +5227,7 @@ function do_array_dual($ia)
 
     $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
     $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
-    if (trim($aQuestionAttributes['answer_width']) != '') {
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
         $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
