@@ -681,7 +681,6 @@ class ThemeOptionsController extends LSBaseController
             $oModelWithInheritReplacement->sTemplateName
         );
         $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
 
         $aData = array(
             'model'              => $model,
