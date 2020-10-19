@@ -442,7 +442,7 @@ class remotecontrol_handle
      * Activate survey (RPC function)
      *
      * Return the result of the activation
-     * Failure status : Invalid Survey ID, Constistency check error, Activation Error, Invalid session key, No permission
+     * Failure status : Invalid Survey ID, Survey already active, Consistency check error, Activation Error, Invalid session key, No permission
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -456,6 +456,9 @@ class remotecontrol_handle
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
+            }
+            if ($oSurvey->isActive) {
+                return array('status' => 'Error: Survey already active');
             }
             // Check consistency for groups and questions
             Yii::app()->loadHelper('admin/activate');
