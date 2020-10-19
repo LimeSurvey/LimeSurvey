@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.24.1 (build 201014) to 3.24.2 (build 201020) October 19, 2020
+-Fixed issue: Database error if email subject is too long (Carsten Schmitz)
+-Fixed issue #16745: Title for ranking question gets codes instead of quotes (Denis Chenu)
+-Fixed issue #16744: No error shown at top even if error exist (Denis Chenu)
+-Fixed issue #16738: Check logic, error in question group shown as error in question (Denis Chenu)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Latvian by ritapas
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Basque by zatarain
+
+
 Changes from 3.24.0 (build 201013) to 3.24.1 (build 201014) October 14, 2020
 -Fixed issue: Update issue with invalid datetime value stored in expires field (Carsten Schmitz)
 -Fixed issue: Participant access key length could be set to 36 (and creating errors on registration) even though 35 is the maximum. (Carsten Schmitz)
