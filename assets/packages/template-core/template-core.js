@@ -82,7 +82,7 @@ var TemplateCoreClass = function () {
                         $parent.addClass('tip-was-hidden', 1);
                     }
                     var questionContainer = $(this).parents('div.question-container');
-                    updateQuestionClassFromTips(questionContainer);
+                    window.templateCore.updateQuestionClassFromTips(questionContainer);
                 });
 
                 $(this).on('classChangeGood', function () {
@@ -94,7 +94,7 @@ var TemplateCoreClass = function () {
                         $parent.removeClass('tip-was-hidden').addClass('hide-tip');
                     }
                     var questionContainer = $(this).parents('div.question-container');
-                    updateQuestionClassFromTips(questionContainer);
+                    window.templateCore.updateQuestionClassFromTips(questionContainer);
                 });
             });
         },
@@ -107,10 +107,10 @@ var TemplateCoreClass = function () {
          * @param {Element} questionContainer 
          */
         updateQuestionClassFromTips: function(questionContainer) {
-            if ($(questionContainer).find('.question-valid-container .text-danger').length == 0) {
-                $(questionContainer).removeClass('input-error');
+            if (questionContainer.find('.question-valid-container .text-danger').length == 0) {
+                questionContainer.removeClass('input-error');
             } else {
-                $(questionContainer).addClass('input-error');
+                questionContainer.addClass('input-error');
             }
         },
         /**
