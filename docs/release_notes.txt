@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.21 (build 201015) to 4.3.22 (build 201019) October 19, 2020
+-Fixed issue: Database error if email subject is too long (Carsten Schmitz)
+-Fixed issue #16745: Title for ranking question gets codes instead of quotes (Denis Chenu)
+-Fixed issue #16738: Check logic, error in question group shown as error in question (Denis Chenu)
+-Fixed issue #16728 :my account->Show script field option not effective  (NDDDA)
+-Fixed issue #16571: hover OK button on confirm hide the OK  (Gabriel Jenik)
+-Fixed issue #16442: Unable to use string with "on" in theme option label (Denis Chenu)
+-Fixed issue #16313: Issues saving/modifying answers: "Answer codes must be unique by question" (Gabriel Jenik)
+-Fixed issue #16274: Fruity Theme : Setting font didn't work  (Gabriel Jenik)
+-Fixed issue #15837: After upgrade plugins are duplicated (GabrielJenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: German by eddylackmann
+#Updated translation: French (France) by eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.20 (build 201012) to 4.3.21 (build 201015) October 14, 2020
 -Fixed issue: User without superadmin permission can enter comfort update page without restriction (Eddy Lackmann)
 -Fixed issue: Update issue with invalid datetime value stored in expires field (Carsten Schmitz)

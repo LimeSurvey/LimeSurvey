@@ -62,7 +62,7 @@ class SurveyActivator
             );
         }
 
-        if (!$this->createParticipantsTable()) {
+        if (!$this->createResponseTable()) {
             return ['error'=>$this->error];
         }
 
@@ -300,7 +300,7 @@ class SurveyActivator
      * @throws CDbException
      * @throws CException
      */
-    protected function createParticipantsTable()
+    protected function createResponseTable()
     {
         $sTableName = $this->survey->responsesTableName;
         Yii::app()->loadHelper("database");
@@ -327,7 +327,7 @@ class SurveyActivator
         } catch (\Exception $e) {
         }
 
-        $this->createParticipantsTableKeys();
+        $this->createResponseTableKeys();
         return true;
     }
 
@@ -354,7 +354,7 @@ class SurveyActivator
      * @throws CDbException
      * @throws CException
      */
-    protected function createParticipantsTableKeys()
+    protected function createResponseTableKeys()
     {
         $iAutoNumberStart = Yii::app()->db->createCommand()
             ->select('autonumber_start')

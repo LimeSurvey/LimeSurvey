@@ -467,35 +467,11 @@ class LayoutHelper
                 'showCloseButton' => false,
             ],
             $aData['topBar']
-        );
+        ); //$aData['topBar']['showSaveButton']['url']
 
         Yii::app()->getClientScript()->registerPackage('admintoppanel');
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
-
-    /**
-     * Render the save/cancel bar for Organize question groups/questions
-     *
-     * @deprecated this topbar is nerver rendered again
-     * actionGetQuestionTopbar in QuestionEditorController is used instead
-     *
-     * @param array $aData
-     *
-     * @since 2014-09-30
-     * @author Olle Haerstedt
-     */
- /**   public function renderOrganizeQuestionBar($aData)
-    {
-        if (isset($aData['organizebar'])) {
-            if (isset($aData['questionbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
-                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $aData['questionbar'] = $aData['organizebar'];
-            Yii::app()->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
-        }
-    }*/
 
     /**
      * listquestion groups

@@ -315,8 +315,13 @@ if ($hasCopyPermission && $oSurvey->active === 'N') {
 
     // Copy Button
     $buttons['copy'] = [
-        'data-url' => $this->createUrl("questionAdministration/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
-        'triggerEvent' => 'copyQuestion',
+        //'data-url' => $this->createUrl("questionAdministration/copyquestion/", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
+        'url' => $this->createUrl("questionAdministration/copyQuestion/", [
+            "surveyId" => $sid ,
+            "questionGroupId" => $gid ,
+            "questionId" => $qid
+        ]),
+       //'triggerEvent' => 'copyQuestion',
         'name' => gT("Copy"),
         'icon' => 'icon-copy',
         'id' => 'copy_button',

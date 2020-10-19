@@ -15,7 +15,7 @@ use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
  */
 class CreateSurvey
 {
-    /** @var int number of attempts tp find a valid survey id */
+    /** @var int number of attempts to find a valid survey id */
     const ATTEMPTS_CREATE_SURVEY_ID = 50;
 
     /** @var string all attributes that have the value "NO" */

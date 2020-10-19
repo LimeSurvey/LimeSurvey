@@ -1475,6 +1475,111 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Copies a question
+     *
+     * @return void
+     */
+    public function actionCopyQuestion()
+    {
+        $aData = [];
+        //load helpers
+        Yii::app()->loadHelper('surveytranslator');
+        Yii::app()->loadHelper('admin.htmleditor');
+
+        //get params from request
+        $surveyId = (int)Yii::app()->request->getParam('surveyId');
+        $questionGroupId = (int)Yii::app()->request->getParam('questionGroupId');
+        $questionIdToCopy = (int)Yii::app()->request->getParam('questionId');
+
+        //permission check ...
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'create')) {
+            Yii::app()->user->setFlash('error', gT("Access denied! You don't have permission to copy a question"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $oQuestion = Question::model()->findByAttributes([
+            'sid' => $surveyId,
+            'gid' => $questionGroupId,
+            'qid' => $questionIdToCopy
+        ]);
+        if ($oQuestion === null) {
+            Yii::app()->user->setFlash('error', gT("Question does not exist."));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
+        $aData['sid'] = $surveyId; //important for renderGeneraltopbar()
+        $aData['gid'] = $questionGroupId; //important for renderGeneraltopbar()
+        $aData['qid'] = $questionIdToCopy; //important for renderGeneraltopbar()
+
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        $aData['oSurvey'] = $oSurvey;
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
+        $aData['oQuestionGroup'] = $oQuestionGroup;
+        $aData['oQuestion'] = $oQuestion;
+
+        //array elements for frontend (topbar etc.)
+        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
+        $aData['topBar']['showSaveButton'] = true;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
+            . " (" . gT("ID") . ":" . $surveyId . ")";
+
+        //save the copy ...savecopy (submitbtn pressed ...)
+        $savePressed = Yii::app()->request->getParam('savecopy');
+        if (isset($savePressed) && $savePressed !== null) {
+            $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
+            $copyQuestionValues->setOSurvey($oSurvey);
+            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
+            $copyQuestionValues->setQuestiontoCopy($oQuestion);
+            $questionPosition = Yii::app()->request->getParam('questionposition');
+            if ($questionPosition==='') { //this means "at the end"
+                $questionPosition = -1; //integer indicator for "end"
+            }
+            //first ensure that all questions for the group have a question_order>0 and possibly set to this state
+            Question::setQuestionOrderForGroup($questionGroupId);
+            switch ((int)$questionPosition) {
+                case -1: //at the end
+                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) +1;
+                    break;
+                case 0: //at beginning
+                    //set all existing order numbers to +1, and the copied question to order number 1
+                    Question::increaseAllOrderNumbersForGroup($questionGroupId);
+                    $newQuestionPosition = 1;
+                    break;
+                default: //all other cases means after question X (the value coming from frontend is already correct)
+                    $newQuestionPosition = $questionPosition;
+            }
+            $copyQuestionValues->setQuestionPositionInGroup($newQuestionPosition);
+
+            $copyQuestionService = new \LimeSurvey\Models\Services\CopyQuestion($copyQuestionValues);
+            $copyOptions['copySubquestions'] = (int)Yii::app()->request->getParam('copysubquestions') === 1;
+            $copyOptions['copyAnswerOptions'] = (int)Yii::app()->request->getParam('copyanswers') === 1;
+            $copyOptions['copyDefaultAnswers'] = (int)Yii::app()->request->getParam('copydefaultanswers') === 1;
+            $copyOptions['copySettings'] = (int)Yii::app()->request->getParam('copyattributes') === 1;
+            if ($copyQuestionService->copyQuestion($copyOptions)) {
+                App()->user->setFlash('success', gT("Saved copied question"));
+                $newQuestion = $copyQuestionService->getNewCopiedQuestion();
+                $this->redirect(
+                    $this->createUrl('questionAdministration/view/',
+                        array(
+                            'surveyid' => $surveyId,
+                            'gid' => $newQuestion->gid,
+                            'qid' => $newQuestion->qid
+                        )
+                    )
+                );
+                //todo: positions of questions in sidemenu list are not orderd correctly (what has to be done here???)
+            } else {
+                App()->user->setFlash('error', gT("Could not save copied question"));
+            }
+        }
+
+        $this->aData = $aData;
+        $this->render('copyQuestionForm', $aData);
+    }
+
+    /**
      * Get HTML for advanced settings.
      * Called with Ajax after question type is selected.
      *
@@ -1517,6 +1622,31 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
+
+    /**
+     * Try to get the get-parameter from request.
+     * At the moment there are three namings for a survey id:
+     * 'sid'
+     * 'surveyid'
+     * 'iSurveyID'
+     *
+     * Returns the id as integer or null if not exists any of them.
+     *
+     * @return int | null
+     *
+     * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
+     */
+    private function getSurveyIdFromGetRequest(){
+        $surveyId = Yii::app()->request->getParam('sid');
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('surveyid');
+        }
+        if($surveyId === null){
+            $surveyId = Yii::app()->request->getParam('iSurveyID');
+        }
+
+        return (int) $surveyId;
+    }
 
     /**
      * Returns true if $class is a valid CSS class (alphanumeric + '-' and '_')
@@ -1969,7 +2099,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * todo: move to model or service class
      *
-     * @param array $aQuestionData
+     * @param array $aQuestionData what is inside this array ??
      * @param boolean $subquestion
      * @return Question
      * @throws CHttpException
@@ -1978,7 +2108,8 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $iQuestionGroupId = App()->request->getParam('gid');
+        // TODO: Don't read request from private methods.
+        $iQuestionGroupId = (int) App()->request->getParam('gid'); //the group id the question belongs to
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,
@@ -1998,7 +2129,7 @@ class QuestionAdministrationController extends LSBaseController
         $aQuestionData = array_merge(
             [
                 'sid'        => $iSurveyId,
-                'gid'        => $aQuestionData['gid'],
+                'gid'        => $iQuestionGroupId,
                 'type'       => $type,
                 'other'      => 'N',
                 'mandatory'  => 'N',
@@ -2021,6 +2152,17 @@ class QuestionAdministrationController extends LSBaseController
 
         $oQuestion = new Question();
         $oQuestion->setAttributes($aQuestionData, false);
+
+        //set the question_order the highest existing number +1, if no question exists for the group
+        //set the question_order to 1
+        $highestOrderNumber = Question::getHighestQuestionOrderNumberInGroup($iQuestionGroupId);
+        if ($highestOrderNumber === null) { //this means there is no question inside this group ...
+            $oQuestion->question_order = Question::START_SORTING_VALUE;
+        } else {
+            $oQuestion->question_order = $highestOrderNumber +1;
+        }
+
+
         if ($oQuestion == null) {
             throw new LSJsonException(
                 500,
