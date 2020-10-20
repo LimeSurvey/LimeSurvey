@@ -3144,8 +3144,8 @@ function do_array_10point($ia)
     $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    if (trim($aQuestionAttributes['answer_width']) != '') {
-        $answerwidth = $aQuestionAttributes['answer_width'];
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
     } else {
         $answerwidth = 33;
     }
@@ -3281,7 +3281,11 @@ function do_array_yesnouncertain($ia)
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
+    } else {
+        $answerwidth = 33;
+    }
     $cellwidth               = 3; // number of columns
 
     if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
@@ -3378,7 +3382,11 @@ function do_array_increasesamedecrease($ia)
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-    $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
+    } else {
+        $answerwidth = 33;
+    }
     $cellwidth               = 3; // number of columns
     $inputnames              = [];
 
@@ -3463,7 +3471,9 @@ function do_array_increasesamedecrease($ia)
 }
 
 // ---------------------------------------------------------------
-// TMSW TODO - Can remove DB query by passing in answer list from EM
+/**
+ * @deprecated 4.0 Replaced by core\QuestionTypes\RenderArrayFlexibleRow
+ */
 function do_array($ia)
 {
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -3501,12 +3511,12 @@ function do_array($ia)
 
     // No-dropdown layout
     if ($useDropdownLayout === false && count($aAnswers) > 0) {
-        if (trim($aQuestionAttributes['answer_width']) != '') {
+        if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
         } else {
             $answerwidth = 33;
-            $defaultWidth = true;
+            $defaultWidth = false;
         }
         $columnswidth = 100 - $answerwidth;
         $iCount = (int) Question::model()->with(array('questionl10ns'=>array('condition'=>"question like :separator")))->count('parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0], ":separator"=>'%|%'));
@@ -3680,12 +3690,12 @@ function do_array($ia)
 
     // Dropdown layout
     elseif ($useDropdownLayout === true && count($aAnswers) > 0) {
-        if (trim($aQuestionAttributes['answer_width']) != '') {
+        if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
             $answerwidth = trim($aQuestionAttributes['answer_width']);
             $defaultWidth = false;
         } else {
             $answerwidth = 33;
-            $defaultWidth = true;
+            $defaultWidth = false;
         }
         $columnswidth = 100 - $answerwidth;
         $labels = [];
@@ -3925,7 +3935,7 @@ function do_array_texts($ia)
         };
     }
 
-    if (trim($aQuestionAttributes['answer_width']) != '') {
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
         $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
@@ -4243,12 +4253,12 @@ function do_array_multiflexi($ia)
         $kpclass = "";
     }
 
-    if (trim($aQuestionAttributes['answer_width']) != '') {
-        $answerwidth = $aQuestionAttributes['answer_width'];
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
+        $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
         $answerwidth = 33;
-        $defaultWidth = true;
+        $defaultWidth = false;
     }
 
     $columnswidth   = 100 - ($answerwidth);
@@ -4535,10 +4545,12 @@ function do_arraycolumns($ia)
         $aData['labelcode'] = $labelcode;
 
         if ($anscount > 0) {
-            if (trim($aQuestionAttributes['answer_width_bycolumn']) != '') {
+            if (ctype_digit(trim($aQuestionAttributes['answer_width_bycolumn']))) {
                 $answerwidth = trim($aQuestionAttributes['answer_width_bycolumn']);
+                $defaultWidth = false;
             } else {
                 $answerwidth = 33;
+                $defaultWidth = false;
             }
             $cellwidth = (100 - $answerwidth) / $anscount;
 
@@ -4631,6 +4643,9 @@ function do_arraycolumns($ia)
 }
 
 // ---------------------------------------------------------------
+/**
+ * @deprecated 4.0 Replaced by core\QuestionTypes\ArrayMultiscale
+ */
 function do_array_dual($ia)
 {
     global $thissurvey;
@@ -4685,12 +4700,12 @@ function do_array_dual($ia)
 
     $leftheader     = (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerA'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
     $rightheader    = (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') ? $aQuestionAttributes['dualscale_headerB'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']] : '';
-    if (trim($aQuestionAttributes['answer_width']) != '') {
+    if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
         $answerwidth = trim($aQuestionAttributes['answer_width']);
         $defaultWidth = false;
     } else {
         $answerwidth = 33;
-        $defaultWidth = true;
+        $defaultWidth = false;
     }
     // Find if we have rigth and center text
     /* All of this part seem broken actually : we don't send it to view and don't explode it */
