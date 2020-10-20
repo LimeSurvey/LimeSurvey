@@ -190,22 +190,8 @@ class SurveysGroups extends LSActiveRecord
         $criteria->compare('created_by', $this->created_by);
 
         // Permission
-        // Note: reflect Permission::hasPermission
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
-            $criteriaPerm = new CDbCriteria;
-
-            // Multiple ON conditions with string values such as 'survey'
-            $criteriaPerm->mergeWith(array(
-                'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
-                        LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
-            ));
-
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
-            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
-            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
-            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
-            $criteria->mergeWith($criteriaPerm, 'AND');
-        }
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
 
         $dataProvider = new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -280,15 +266,16 @@ class SurveysGroups extends LSActiveRecord
         return $button;
     }
 
+    /**
+     * Get the group list for current user
+     * @return array
+     */
     public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
         $criteria = new CDbCriteria;
-
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
-            $criteria->compare('t.owner_id', Yii::app()->user->id, false);
-            $criteria->compare('t.gsid', '1', false, 'OR');  // "default" survey group
-        }
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
 
         $oSurveyGroups = self::model()->findAll($criteria);
 
@@ -342,4 +329,25 @@ class SurveysGroups extends LSActiveRecord
         $model = parent::model($className);
         return $model;
     }
+
+    /**
+     * get criteria from Permission
+     * @return CDbCriteria
+     */
+    protected static function getPermissionCriteria()
+    {
+        $criteriaPerm = new CDbCriteria;
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+            $criteriaPerm->mergeWith(array(
+                'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
+                        LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+            ));
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
+            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
+            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+        }
+        return $criteriaPerm;
+    }
+
 }
