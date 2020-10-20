@@ -13,12 +13,10 @@
 'use strict';
 
 /* globals $, alert, window, document, console, LS, duplicatesubquestioncode */
-/* globals strCantDeleteLastAnswer, lsdetailurl, lspickurl, strNoLabelSet */
-/* globals lanameurl, sLabelSetName, lasuccess, lasaveurl */
-/* globals cancel, lafail, lanameurl, langs, languagecount, lasaveurl */
-/* globals lasuccess, lsbrowsertitle, lsdetailurl, lspickurl, ok */
-/* globals saveaslabletitl, sCheckLabelURL, sImageURL, sLabelSetName, strcode */
-/* globals strlabel, strNoLabelSet */
+/* globals strCantDeleteLastAnswer, lspickurl, strNoLabelSet */
+/* globals cancel, lanameurl, langs, languagecount, lasaveurl */
+/* globals lsdetailurl, ok */
+/* globals saveaslabletitl, sCheckLabelURL, sLabelSetName */
 
 // eslint-disable-next-line no-use-before-define
 //LS = LS || {
@@ -30,8 +28,6 @@
 let flag = [];
 /** @type {bool} Used in ajaxcheckdup */
 let check = true;
-// Declare this global. Defined in PHP? false = readonly
-/* global langs:false */
 
 $(document).on('ready pjax:scriptcomplete', () => {
   // Since save button is not inside the form, we need to trigger it manually.
