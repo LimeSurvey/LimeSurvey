@@ -1114,17 +1114,7 @@ $(document).on('ready pjax:scriptcomplete', () => {
   updateRowProperties();
 
   bindExpandRelevanceEquation();
-});
 
-/* Event added on document for all button (new one added in js too)
- * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
- * */
-$(document).on('click', '#editsubquestionsform :submit', () => {
-  // Validate duplicate before try to submit: surely some other javascript elsewhere
-  return codeDuplicatesCheck();
-});
-
-$(document).on('ready pjax:scriptcomplete', () => {
   // Since save button is not inside the form, we need to trigger it manually.
   $('#save-button').on('click', (ev) => {
     ev.preventDefault();
@@ -1149,3 +1139,10 @@ $(document).on('ready pjax:scriptcomplete', () => {
   });
 });
 
+/* Event added on document for all button (new one added in js too)
+ * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
+ */
+$(document).on('click', '#editsubquestionsform :submit', () => {
+  // Validate duplicate before try to submit: surely some other javascript elsewhere
+  return codeDuplicatesCheck();
+});
