@@ -27,7 +27,7 @@
 /*:: declare var _: {forEach: function} */
 
 // Globals for jshint.
-/* globals $, _, alert, window, document, console, LS */
+/* globals $, _, alert, document, console, LS */
 
 /**
  * Update question attributes (general and advanced settings) when selecting question type.
@@ -241,7 +241,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     if (!relevanceIsExpanded()) {
       bindExpandRelevanceEquation();
       // Activate tooltip
-      window.LS.doToolTip();
+      LS.doToolTip();
     }
   }
 
@@ -342,6 +342,53 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
       },
     });
     return $defer.promise();
+  }
+
+  /**
+   * Delete subquestion row.
+   * Executed when user click "Delete" button.
+   *
+   * @param {event} e
+   * @return {void}
+   */
+  function deleteSubquestionInput(e) {
+    e.preventDefault();
+    const target = e.target;
+    // 1.) Check if there is at least one answe
+    let position;
+    const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
+    if (countanswers > 1) {
+      // 2.) Remove the table row
+      const classes = $(target).closest('tr').attr('class').split(' ');
+      _.forEach(classes, (curClass) => {
+        if (curClass.substr(0, 3) === 'row') {
+          position = curClass.substr(4);
+        }
+      });
+
+      const info = $(target).closest('table').attr('id').split('_');
+      const scaleId = info[2];
+      const languages = languageJson.langs.split(';');
+
+      _.forEach(languages, (curLanguage, x) => {
+        const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
+        if (x === 0) {
+          tablerow.fadeTo(400, 0, function fadeAndRemove() {
+            $(target).remove();
+            updateRowProperties();
+          });
+        } else {
+          tablerow.remove();
+        }
+        deleteSubquestionRow($(tablerow));
+      });
+    } else {
+      // TODO: why block?
+      // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
+      $.blockUI({ message: `<p><br/>${languageJson.subquestions.strCantDeleteLastAnswer}</p>` });
+      setTimeout($.unblockUI, 1000);
+    }
+    updateRowProperties();
   }
 
   /**
@@ -476,10 +523,10 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
         codearray.push($(this).val());
       });
       if (sNewValue !== '') {
-        codearray = window.LS.getUnique(codearray);
+        codearray = LS.getUnique(codearray);
         codearray.push(sNewValue);
       }
-      if (window.LS.arrHasDupes(codearray)) {
+      if (LS.arrHasDupes(codearray)) {
         dupefound = true;
       }
     });
@@ -852,7 +899,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
   function getLabel() {
     // TODO
     //const answer_table = $(this).parent().children().eq(0);
-    //const scaleId = window.LS.removechars($(this).attr('id'));
+    //const scaleId = LS.removechars($(this).attr('id'));
 
     // $('#saveaslabel').dialog('open');
     updateRowProperties();
@@ -1030,7 +1077,7 @@ laname: $('#laname').val(), lid, code, answers,
       $(this).find('tr .code').each(function () {
         codearray.push($(this).val().toLowerCase());
       });
-      const theDuplicate = window.LS.arrHasDupesWhich(codearray);
+      const theDuplicate = LS.arrHasDupesWhich(codearray);
       if (theDuplicate !== false) {
         $('#error-modal .modal-body-text').html(languageJson.subquestions.duplicatesubquestioncode);
         $('#error-modal').modal();
@@ -1040,54 +1087,6 @@ laname: $('#laname').val(), lid, code, answers,
     //console.ls.log(`cansubmit: ${cansubmit}`);
     return cansubmit;
   }
-
-  /**
-   * Delete subquestion row.
-   * Executed when user click "Delete" button.
-   *
-   * @param {event} e
-   * @return {void}
-   */
-  function deleteSubquestionInput(e) {
-    e.preventDefault();
-    const target = e.target;
-    // 1.) Check if there is at least one answe
-    let position;
-    const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
-    if (countanswers > 1) {
-      // 2.) Remove the table row
-      const classes = $(target).closest('tr').attr('class').split(' ');
-      _.forEach(classes, (curClass) => {
-        if (curClass.substr(0, 3) === 'row') {
-          position = curClass.substr(4);
-        }
-      });
-
-      const info = $(target).closest('table').attr('id').split('_');
-      const scaleId = info[2];
-      const languages = languageJson.langs.split(';');
-
-      _.forEach(languages, (curLanguage, x) => {
-        const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
-        if (x === 0) {
-          tablerow.fadeTo(400, 0, function fadeAndRemove() {
-            $(target).remove();
-            updateRowProperties();
-          });
-        } else {
-          tablerow.remove();
-        }
-        deleteSubquestionRow($(tablerow));
-      });
-    } else {
-      // TODO: why block?
-      // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
-      $.blockUI({ message: `<p><br/>${languageJson.subquestions.strCantDeleteLastAnswer}</p>` });
-      setTimeout($.unblockUI, 1000);
-    }
-    updateRowProperties();
-  }
-
 
   /* Event added on document for all button (new one added in js too)
    * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example

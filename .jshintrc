@@ -60,5 +60,8 @@
    */
 
   // Suppress warnings about == null comparisons.
-  "eqnull": true
+  "eqnull": true,
+
+  // Include unscape() and other adopted functions.
+  "nonstandard": true
 }
