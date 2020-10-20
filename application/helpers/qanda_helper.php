@@ -5092,8 +5092,8 @@ function do_arraycolumns($ia)
         $aData['labelcode'] = $labelcode;
 
         if ($anscount > 0) {
-            if (ctype_digit(trim($aQuestionAttributes['answer_width']))) {
-                $answerwidth = trim($aQuestionAttributes['answer_width']);
+            if (ctype_digit(trim($aQuestionAttributes['answer_width_bycolumn']))) {
+                $answerwidth = trim($aQuestionAttributes['answer_width_bycolumn']);
             } else {
                 $answerwidth = 33;
             }
