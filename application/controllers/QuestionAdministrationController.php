@@ -1247,22 +1247,23 @@ class QuestionAdministrationController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
-        $aData['sid'] = $surveyId; //important for renderGeneraltopbar()
-        $aData['gid'] = $questionGroupId; //important for renderGeneraltopbar()
-        $aData['qid'] = $questionIdToCopy; //important for renderGeneraltopbar()
-
         $oSurvey = Survey::model()->findByPk($surveyId);
-        $aData['oSurvey'] = $oSurvey;
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
-        $aData['oQuestionGroup'] = $oQuestionGroup;
-        $aData['oQuestion'] = $oQuestion;
+        $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
 
+       // $aData['sid'] = $surveyId; //important for renderGeneraltopbar(), should not be used anymore
+       // $aData['gid'] = $questionGroupId; //important for renderGeneraltopbar(), should not be used anymore
+       // $aData['qid'] = $questionIdToCopy; //important for renderGeneraltopbar(), should not be used anymore
+        // $aData['topBar']['showSaveButton'] = true;
         //array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
-        $aData['topBar']['showSaveButton'] = true;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
+        $aData['renderSpecificTopbar'] = 'copyQuestiontopbar_view'; //this goes directly into the view called by $this->render(...)
+
+        $aData['oSurvey'] = $oSurvey;
+        $aData['oQuestionGroup'] = $oQuestionGroup;
+        $aData['oQuestion'] = $oQuestion;
 
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
@@ -1309,7 +1310,6 @@ class QuestionAdministrationController extends LSBaseController
                         )
                     )
                 );
-                //todo: positions of questions in sidemenu list are not orderd correctly (what has to be done here???)
             } else {
                 App()->user->setFlash('error', gT("Could not save copied question"));
             }
