@@ -297,6 +297,16 @@ class QuestionAdministrationController extends LSBaseController
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
+        $this->renderPartial(
+            '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
+            [
+                'anslangs'          => $oSurvey->allLanguages,
+                // TODO
+                'assessmentvisible' => false,
+                'scalecount'        => 1
+            ]
+        );
+
         $this->render(
             'create',
             [
