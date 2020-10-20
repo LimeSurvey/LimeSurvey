@@ -1,7 +1,6 @@
 <?php
 /**
  * This subview render the javaScript variables for subQuestion_view and answerOptions_view
- * @var $jsVariableType  Define which type of javascript variables should be render
  */
 
 // Common variables between subquestions / answers options
