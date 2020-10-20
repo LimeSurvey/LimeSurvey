@@ -25,6 +25,7 @@
 // Flow declarations.
 /*:: declare var $: Object */
 /*:: declare var _: {forEach: function} */
+/*:: declare var LS: Object */
 
 // Globals for jshint.
 /* globals $, _, alert, document, console, LS */
@@ -281,7 +282,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     e.preventDefault();
   }
 
-  /*:: declare var addinputQuickEdit: (Object, string, boolean, number, Array<string>) => Object */
+  /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>): Object */
   /**
    * add addinputQuickEdit : for usage with the quickAdd Button
    *
