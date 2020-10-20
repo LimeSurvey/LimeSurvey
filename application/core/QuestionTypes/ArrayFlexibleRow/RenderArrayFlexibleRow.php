@@ -76,9 +76,14 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         // If there arent we can leave out the right td column
         $this->rightExists = ($iCount > 0);
 
-        $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), 33);
-        $this->defaultWidth = ($this->answerwidth===33);
-        
+        if (ctype_digit(trim($this->getQuestionAttribute('answer_width')))) {
+            $this->answerwidth  = trim($this->getQuestionAttribute('answer_width'));
+            $this->defaultWidth = false;
+        } else {
+            $this->answerwidth = 33;
+            $this->defaultWidth = true;
+        }
+
         $this->columnswidth = 100 - $this->answerwidth;
 
         if($this->rightExists) {
@@ -90,7 +95,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             }
         }
         if($this->getQuestionCount() > 0) {
-            $this->cellwidth = round(($this->columnswidth / $this->getQuestionCount()), 1);
+            $this->cellwidth = round(($this->columnswidth / $this->getAnswerCount()), 1);
         }
         $this->setHeaders();
 
