@@ -46,11 +46,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->doDualScaleFunction = "doDualScaleRadio";
         }
 
-        $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), null);
-        $this->defaultWidth = false;
-        if ($this->answerwidth == null) {
+        if (ctype_digit(trim($this->getQuestionAttribute('answer_width')))) {
+            $this->answerwidth = trim($this->getQuestionAttribute('answer_width'));
+            $this->defaultWidth = false;
+        } else {
             $this->answerwidth = 33;
-            $this->defaultWidth = true;
+            $this->defaultWidth = false;
         }
     }
 
