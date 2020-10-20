@@ -180,18 +180,6 @@ if ($hasSurveyContentPermission) {
             'id' => 'reset_conditions_button',
         ];
         array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['reset_conditions']);
-    } else {
-        // Condition disabled
-        // TODO: alert onlick vue
-        $buttons['reset_conditions'] = [
-            'url' => '#',
-            'type' => 'alert',
-            'alerttext' => gT("Currently there are no conditions configured for this survey."),
-            'icon' => 'icon-resetsurveylogic',
-            'name' => gT("Reset conditions"),
-            'id' => 'reset_conditions_button',
-        ];
-        array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['reset_conditions']);
     }
 }
 
