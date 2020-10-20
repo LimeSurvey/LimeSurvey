@@ -4331,6 +4331,10 @@ function upgradeSurveyTables181($sMySQLCollation)
                     $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
+                case 'mysqli':
+                    // Fixes 0000-00-00 00:00:00 datetime entries
+                    $oDB->createCommand()->update($sTableName,array('startdate'=>'1980-01-01 00:00:00'),"startdate=0");
+                    $oDB->createCommand()->update($sTableName,array('datestamp'=>'1980-01-01 00:00:00'),"datestamp=0");
                     alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');
