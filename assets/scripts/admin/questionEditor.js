@@ -12,7 +12,10 @@
 
 'use strict';
 
-/* globals $, alert, window, document, console, LS, duplicatesubquestioncode */
+/*:: declare var $: Object */
+/*:: declare var _: {forEach: function} */
+
+/* globals $, _, alert, window, document, console, LS, duplicatesubquestioncode */
 /* globals strCantDeleteLastAnswer, lspickurl, strNoLabelSet */
 /* globals cancel, lanameurl, langs, languagecount, lasaveurl */
 /* globals lsdetailurl, ok */
@@ -28,31 +31,6 @@
 let flag = [];
 /** @type {bool} Used in ajaxcheckdup */
 let check = true;
-
-$(document).on('ready pjax:scriptcomplete', () => {
-  // Since save button is not inside the form, we need to trigger it manually.
-  $('#save-button').on('click', (ev) => {
-    ev.preventDefault();
-    $('#edit-question-form').submit();
-    return false;
-  });
-
-  // Init Ace script editor.
-  $('.ace:not(.none)').ace({
-    mode: 'javascript',
-  });
-
-  // Hide help tips by default.
-  $('.question-option-help').hide();
-
-  // Hide all language except the selected one.
-  $('.lang-switch-button').on('click', function langSwitchOnClick() {
-    const lang = $(this).data('lang');
-    const langClass = `.lang-${lang}`;
-    $('.lang-hide').hide();
-    $(langClass).show();
-  });
-});
 
 /**
  * Update question attributes (general and advanced settings) when selecting question type.
@@ -207,7 +185,8 @@ function aftermove(event, ui) {
   const oldindex = $that.data('oldindex');
   const languages = langs.split(';');
 
-  LS.ld.forEach(languages, (curLanguage, x) => {
+  // TODO: Replace with $.each()? Other order of value/key in callback.
+  _.forEach(languages, (curLanguage, x) => {
     if (x > 0) {
       // const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
       if (newindex < oldindex) {
@@ -316,7 +295,7 @@ function deleteSubquestionInput(e) {
   if (countanswers > 1) {
     // 2.) Remove the table row
     const classes = $(target).closest('tr').attr('class').split(' ');
-    LS.ld.forEach(classes, (curClass) => {
+    _.forEach(classes, (curClass) => {
       if (curClass.substr(0, 3) === 'row') {
         position = curClass.substr(4);
       }
@@ -326,7 +305,7 @@ function deleteSubquestionInput(e) {
     const scaleId = info[2];
     const languages = langs.split(';');
 
-    LS.ld.forEach(languages, (curLanguage, x) => {
+    _.forEach(languages, (curLanguage, x) => {
       const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
       if (x === 0) {
         tablerow.fadeTo(400, 0, function fadeAndRemove() {
@@ -591,7 +570,7 @@ function codeDuplicatesCheck() {
       cansubmit = false;
     }
   });
-  console.ls.log(`cansubmit: ${cansubmit}`);
+  //console.ls.log(`cansubmit: ${cansubmit}`);
   return cansubmit;
 }
 
@@ -613,9 +592,9 @@ function lspreview(lid) {
     data: { sid: surveyid, lid },
     cache: true,
     success(json) {
-      console.ls.log('lspreview', json);
+      //console.ls.log('lspreview', json);
       if (json.languages === []) {
-        console.ls.console.warn('NOTHING TO RENDER!', json);
+        //console.ls.console.warn('NOTHING TO RENDER!', json);
         return;
       }
 
@@ -627,10 +606,10 @@ function lspreview(lid) {
       const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
       const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
-      console.ls.group('LanguageParsing');
+      //console.ls.group('LanguageParsing');
       const i = 0;
       $.each(json.languages, (language, languageName) => {
-        console.ls.log('Language', language, languageName);
+        //console.ls.log('Language', language, languageName);
         const $linkItem = $aTemplate.clone();
         const $bodyItem = $tabTodyTemplate.clone();
         var $itemList = $listTemplate.clone();
@@ -644,16 +623,16 @@ function lspreview(lid) {
         $bodyItem.addClass(classBody).attr('id', `language_${language}`);
         $tabbody.append($bodyItem);
 
-        console.ls.group('ParseLabelSet');
+        //console.ls.group('ParseLabelSet');
 
         const labelSet = json.results[language];
-        console.ls.log('LabelSet', labelSet);
+        //console.ls.log('LabelSet', labelSet);
 
         $itemList = $listTemplate.clone();
 
-        console.ls.group('ParseLabels');
+        //console.ls.group('ParseLabels');
         $.each(labelSet.labels, (i, label) => {
-          console.ls.log('Label', i, label);
+          //console.ls.log('Label', i, label);
           // Label title is not concatenated directly because it may have non-encoded HTML
           const $labelTitleDiv = $('<div class="col-md-8"></div>');
           $labelTitleDiv.text(label.title);
@@ -665,13 +644,13 @@ function lspreview(lid) {
           $itemList.append($listItem);
         });
 
-        console.ls.groupEnd('ParseLabels');
+        //console.ls.groupEnd('ParseLabels');
         $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
         $itemList.appendTo($bodyItem);
 
-        console.ls.groupEnd('ParseLabelSet');
+        //console.ls.groupEnd('ParseLabelSet');
       });
-      console.ls.groupEnd('LanguageParsing');
+      //console.ls.groupEnd('LanguageParsing');
       $('#labelsetpreview').empty();
       $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
       $tabindex.find('li').first().find('a').trigger('click');
@@ -694,7 +673,7 @@ function lsbrowser(e) {
     url: lspickurl,
     data: { sid: surveyid, match: 1 },
     success(jsonString) {
-      console.ls.log('combined String', jsonString);
+      //console.ls.log('combined String', jsonString);
       if (jsonString.success !== true) {
         $('#labelsetpreview').html(`<p class='alert'>${strNoLabelSet}</p>`);
         $('#btnlsreplace').addClass('disabled');
@@ -703,15 +682,15 @@ function lsbrowser(e) {
         $('#btnlsinsert').attr('disabled', 'disabled');
       } else {
         $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
-        console.ls.group('SelectParsing');
-        console.ls.log('allResults', jsonString.labelsets);
+        //console.ls.group('SelectParsing');
+        //console.ls.log('allResults', jsonString.labelsets);
         $.each(jsonString.labelsets, (i, item) => {
           console.log('SelectItem', item);
           const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
-          console.ls.log('newOption', newOption);
+          //console.ls.log('newOption', newOption);
           $('#labelsets').append(newOption).trigger('change');
         });
-        console.ls.groupEnd('SelectParsing');
+        //console.ls.groupEnd('SelectParsing');
       }
     },
   });
@@ -735,7 +714,7 @@ function transferlabels(type) {
   const scaleId = $('#current_scale_id').val();
 
   addInputPredefined(1).then((result) => {
-    console.ls.log(result);
+    //console.ls.log(result);
     $.each(result, (lng, row) => {
       const $table = $(`#answers_${lng}_${scaleId}`);
 
@@ -777,7 +756,7 @@ function transferlabels(type) {
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
           } catch (e) {
-            console.ls.error(e);
+            //console.ls.error(e);
           }
         });
 
@@ -799,7 +778,7 @@ function transferlabels(type) {
  * @return {void}
  */
 function quickaddlabels(scaleId, addOrReplace, tableId) {
-  console.ls.log('quickaddlabels');
+  //console.ls.log('quickaddlabels');
   //const sID = $('input[name=sid]').val();
   //const gID = $('input[name=gid]').val();
   //const qID = $('input[name=qid]').val();
@@ -857,7 +836,7 @@ function quickaddlabels(scaleId, addOrReplace, tableId) {
     codeSigil.push(currentCharacter);
   }
 
-  LS.ld.forEach(lsrows, (value, k) => {
+  _.forEach(lsrows, (value, k) => {
     const thisrow = value.splitCSV(separatorchar);
 
     if (thisrow.length <= languages.length) {
@@ -874,7 +853,7 @@ function quickaddlabels(scaleId, addOrReplace, tableId) {
     }
     const quid = `new${Math.floor(Math.random() * 10000)}`;
 
-    LS.ld.forEach(languages, (language, x) => {
+    _.forEach(languages, (language, x) => {
       if (typeof thisrow[parseInt(x) + 1] === 'undefined') {
         thisrow[parseInt(x) + 1] = thisrow[1];
       }
@@ -893,7 +872,7 @@ function quickaddlabels(scaleId, addOrReplace, tableId) {
     // $('#answers_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
   });
 
-  LS.ld.forEach(languages, (language, x) => {
+  _.forEach(languages, (language, x) => {
     // Unbind any previous events
     $(`#answers_${language}_${scaleId} .btnaddanswer`).off('click.subquestions');
     $(`#answers_${language}_${scaleId} .btndelanswer`).off('click.subquestions');
@@ -936,7 +915,7 @@ function quickaddlabels(scaleId, addOrReplace, tableId) {
       bindClickIfNotExpanded();
     },
     function () {
-      console.ls.log(arguments);
+      //console.ls.log(arguments);
       /* $('#quickadd').dialog('close'); */
       $('#quickaddarea').val('');
       $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -1144,3 +1123,29 @@ $(document).on('click', '#editsubquestionsform :submit', () => {
   // Validate duplicate before try to submit: surely some other javascript elsewhere
   return codeDuplicatesCheck();
 });
+
+$(document).on('ready pjax:scriptcomplete', () => {
+  // Since save button is not inside the form, we need to trigger it manually.
+  $('#save-button').on('click', (ev) => {
+    ev.preventDefault();
+    $('#edit-question-form').submit();
+    return false;
+  });
+
+  // Init Ace script editor.
+  $('.ace:not(.none)').ace({
+    mode: 'javascript',
+  });
+
+  // Hide help tips by default.
+  $('.question-option-help').hide();
+
+  // Hide all language except the selected one.
+  $('.lang-switch-button').on('click', function langSwitchOnClick() {
+    const lang = $(this).data('lang');
+    const langClass = `.lang-${lang}`;
+    $('.lang-hide').hide();
+    $(langClass).show();
+  });
+});
+
