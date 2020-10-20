@@ -37,4 +37,4 @@ $scriptVariables = [
 
 ?>
 
-<input type="hidden" name="translation-strings-json" value="<?= json_encode($scriptVariables); ?>" />
+<input type="hidden" name="translation-strings-json" value="<?= htmlentities(json_encode($scriptVariables)); ?>" />

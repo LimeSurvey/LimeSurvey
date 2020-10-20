@@ -1,3 +1,6 @@
+// @flow
+// @ts-check
+
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2012-2016 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,9 +15,18 @@
 
 'use strict';
 
+/**
+ * To check with TypeScript:
+ *   tsc --allowJs --noEmit assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
+ * To check with Flow:
+ *   flow check-contents < assets/scripts/admin/questionEditor.js
+ */
+
+// Flow declarations.
 /*:: declare var $: Object */
 /*:: declare var _: {forEach: function} */
 
+// jshint globals.
 /* globals $, _, alert, window, document, console, LS, duplicatesubquestioncode */
 /* globals strCantDeleteLastAnswer, lspickurl, strNoLabelSet */
 /* globals cancel, lanameurl, langs, languagecount, lasaveurl */
@@ -552,29 +564,6 @@ function areCodesUnique(sNewValue) {  // jshint ignore: line
 //}
 
 /**
- * @return {bool}
- */
-function codeDuplicatesCheck() {
-  // $('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
-  const languages = langs.split(';');
-  let cansubmit = true;
-  $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
-    const codearray = [];
-    $(this).find('tr .code').each(function () {
-      codearray.push($(this).val().toLowerCase());
-    });
-    const theDuplicate = window.LS.arrHasDupesWhich(codearray);
-    if (theDuplicate !== false) {
-      $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
-      $('#error-modal').modal();
-      cansubmit = false;
-    }
-  });
-  //console.ls.log(`cansubmit: ${cansubmit}`);
-  return cansubmit;
-}
-
-/**
  * @todo Does what?
  * @return {void}
  */
@@ -1073,6 +1062,51 @@ function savelabel() {
   }
 }
 
+// Wrap it in closure to avoid global variables.
+(function () {
+
+  /** @type {Object} */
+  let languageJson;
+  const value = $('input[name=translation-strings-json]').val();
+  try {
+    languageJson = JSON.parse(unescape(value));
+  } catch (e) {
+    alert('Internal error: Could not parse language JSON');
+    throw 'abort';
+  }
+
+  /**
+   * @return {boolean}
+   */
+  function codeDuplicatesCheck() {
+    // $('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
+    const languages = langs.split(';');
+    let cansubmit = true;
+    $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
+      const codearray = [];
+      $(this).find('tr .code').each(function () {
+        codearray.push($(this).val().toLowerCase());
+      });
+      const theDuplicate = window.LS.arrHasDupesWhich(codearray);
+      if (theDuplicate !== false) {
+        $('#error-modal .modal-body-text').html(languageJson.subquestions.duplicatesubquestioncode);
+        $('#error-modal').modal();
+        cansubmit = false;
+      }
+    });
+    //console.ls.log(`cansubmit: ${cansubmit}`);
+    return cansubmit;
+  }
+
+  /* Event added on document for all button (new one added in js too)
+   * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
+   */
+  $(document).on('click', '#editsubquestionsform :submit', () => {
+    // Validate duplicate before try to submit: surely some other javascript elsewhere
+    return codeDuplicatesCheck();
+  });
+})();
+
 $(document).on('ready pjax:scriptcomplete', () => {
   $('.tab-page:first .answertable tbody').sortable({
     containment: 'parent',
@@ -1137,12 +1171,4 @@ $(document).on('ready pjax:scriptcomplete', () => {
     $('.lang-hide').hide();
     $(langClass).show();
   });
-});
-
-/* Event added on document for all button (new one added in js too)
- * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
- */
-$(document).on('click', '#editsubquestionsform :submit', () => {
-  // Validate duplicate before try to submit: surely some other javascript elsewhere
-  return codeDuplicatesCheck();
 });
