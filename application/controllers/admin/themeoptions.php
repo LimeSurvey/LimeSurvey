@@ -592,7 +592,9 @@ class themeoptions  extends Survey_Common_Action
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
-        $aTemplateConfiguration = $oModelWithInheritReplacement->getOptionPageAttributes();
+
+        $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
+        $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
         App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         
         if ($aOptionAttributes['optionsPage'] == 'core') {

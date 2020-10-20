@@ -284,6 +284,15 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
     </div>
 </div>
 
+<!-- Form for image file upload -->
+<div class="hidden">
+    <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'upload_frontend', 'name'=>'upload_frontend', 'enctype'=>'multipart/form-data')); ?>
+        <input type='hidden' name='templatename' value='<?php echo $aTemplateConfiguration['template_name']; ?>' />
+        <input type='hidden' name='templateconfig' value='<?php echo $aTemplateConfiguration['id']; ?>' />
+        <input type='hidden' name='action' value='templateuploadimagefile' />
+    </form>
+</div>
+
 <?php
 Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
 
