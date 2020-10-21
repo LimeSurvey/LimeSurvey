@@ -348,6 +348,9 @@ return array(
     'jquery-datatable' => array(
         'basePath' => 'third_party.datatables',
         'position' => CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/datatables'.$minVersion.'.css'
+        ),
         'js' => array(
             'js/jquery.dataTables'.$minVersion.'.js',
             'js/dataTables.bootstrap'.$minVersion.'.js'
