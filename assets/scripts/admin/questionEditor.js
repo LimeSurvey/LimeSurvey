@@ -32,7 +32,7 @@
 
 /**
  * Update question attributes (general and advanced settings) when selecting question type.
- * Used by question selector, so not wrapped in closure.
+ * Used by question selector modal, so not wrapped in closure.
  *
  * @param {string} questionType - One-letter string of question type
  * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
@@ -100,6 +100,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 (function () {
 
+  // TODO: Does not work with pjax loading.
   /** @type {Object} */
   let languageJson;
   const value = $('input[name=translation-strings-json]').val();
@@ -115,6 +116,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
   /** @type {bool} Used in ajaxcheckdup */
   let check = true;
 
+  /*:: declare function updateRowProperties(): void */
   /**
    * @return {void}
    */
@@ -204,6 +206,11 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     });
   }
 
+  /*:: declare function addInputPredefined(number): Promise<XMLHttpRequest> */
+  /**
+   * @param {number} i
+   * @return {XMLHttpRequest}
+   */
   function addInputPredefined(i) {
     const $elDatas = $('#add-input-javascript-datas');
     const scaleId = $('#current_scale_id').val();
@@ -297,7 +304,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     const codes = _codes || [];
     const $elDatas = $('#add-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
     const $url = $elDatas.data('quickurl'); // Url for the request
-    const $errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
+    const errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
     const $defer = $.Deferred();
     let $codes;
     let datas;
@@ -338,8 +345,8 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert($errormessage);
-        $defer.reject([html, status, $errormessage]);
+        alert(errormessage);
+        $defer.reject([html, status, errormessage]);
       },
     });
     return $defer.promise();
@@ -392,10 +399,11 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     updateRowProperties();
   }
 
+  /*:: declare function addSubquestionInput(Event): void */
   /**
    * Add one subquestion row using Ajax.
    *
-   * @param {event} e
+   * @param {Event} e
    * @return {void}
    */
   function addSubquestionInput(e) {
@@ -404,33 +412,35 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     const $that = $(target); // The "add" button
     const $currentRow = $that.closest('.row-container'); // The row containing the "add" button
     const $currentTable = $that.closest('.answertable');
-    const $commonId = $currentRow.data('common-id'); // The common id of this row in the other languages
+    const commonId = $currentRow.data('common-id'); // The common id of this row in the other languages
     const $elDatas = $('#add-subquestion-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
-    const $url = $elDatas.data('url'); // Url for the request
-    const $errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
-    const $languages = JSON.stringify(languageJson.langs); // The languages
-    let $codes;
-    let datas;
+    const url = $elDatas.data('url'); // Url for the request
+    const errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
+    const languages = JSON.stringify(languageJson.langs); // The languages
 
-    console.log('$url', $url);
+    if ($currentTable.length === 0) {
+      alert('Internal error: Found no answertable');
+      throw 'abort';
+    }
 
     // We get all the subquestion codes currently displayed
     const codes = [];
-    $currentTable.find('.code').each(function () {
-      codes.push($(target).val());
+    $currentTable.find('.code').each(function (i, elem) {
+      codes.push($(elem).val());
     });
 
     // We convert them to json for the request
-    $codes = JSON.stringify(codes);
+    const codesJson = JSON.stringify(codes);
 
     // We build the datas for the request
-    datas = `surveyid=${$elDatas.data('surveyid')}`;
+    // TODO: Use object instead of string.
+    let datas = `surveyid=${$elDatas.data('surveyid')}`;
     datas += `&gid=${$elDatas.data('gid')}`;
     datas += `&qid=${$elDatas.data('qid')}`;
-    datas += `&codes=${$codes}`;
+    datas += `&codes=${codesJson}`;
     datas += `&scale_id=${$(target).find('i').data('scale-id')}`;
     datas += '&position=0';
-    datas += `&languages=${$languages}`;
+    datas += `&languages=${languages}`;
 
     const rebindClickHandler = () => {
       // @TODO answer option
@@ -441,7 +451,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
       type: 'GET',
-      url: $url,
+      url: url,
       data: datas,
       success(arrayofhtml) {
         // arrayofhtml is a json object containing the different HTML row by language
@@ -449,13 +459,13 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 
         // We insert each row for each language
         $.each(arrayofhtml, (lang, htmlRow) => {
-          const $elRowToUpdate = $(`#row_${lang}_${$commonId}`); // The row for the current language
+          const $elRowToUpdate = $(`#row_${lang}_${commonId}`); // The row for the current language
           $elRowToUpdate.after(htmlRow); // We insert the HTML of the new row after this one
         });
         rebindClickHandler();
       },
       error() {
-        alert($errormessage);
+        alert(errormessage);
       },
     });
   }
@@ -738,26 +748,31 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     });
   }
 
+  /*:: declare function quickAddLabels(number, string, number): void */
   /**
    * Quick-add subquestions/answers
    *
    * @param {number} scaleId
    * @param {string} addOrReplace - Either 'add' or 'replace'
+   * @param {number} tableId
    * @return {void}
    */
-  function quickaddlabels(scaleId, addOrReplace, tableId) {
-    //console.ls.log('quickaddlabels');
+  function quickAddLabels(scaleId, addOrReplace, tableId) {
+    //console.ls.log('quickAddLabels');
     //const sID = $('input[name=sid]').val();
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
     const codes = [];
     const closestTable = $(`#${tableId}`);
-    const lsreplace = (addOrReplace === 'replace');
+    const lsreplace = addOrReplace === 'replace';
 
     if (lsreplace) {
       $(`.answertable:eq(${scaleId}) tbody tr`).each(function () {
         const aRowInfo = this.id.split('_');
-        $('#deletedqids').val(`${$('#deletedqids').val()} ${aRowInfo[2]}`);
+        const elem = $('#deletedqids');
+        const previousVal = elem.val();
+        const newVal = previousVal + ' ' + aRowInfo[2];
+        elem.val(newVal);
       });
     }
 
@@ -964,6 +979,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
   }
 
   /**
+   * ???
    * @return {void}
    */
   function ajaxreqsave() {
@@ -1121,11 +1137,11 @@ laname: $('#laname').val(), lid, code, answers,
       const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
 
       $('#btnqainsert').off('click').on('click', () => {
-        quickaddlabels(scaleId, 'add', tableId);
+        quickAddLabels(scaleId, 'add', tableId);
       });
 
       $('#btnqareplace').off('click').on('click', () => {
-        quickaddlabels(scaleId, 'replace', tableId);
+        quickAddLabels(scaleId, 'replace', tableId);
       });
     });
 

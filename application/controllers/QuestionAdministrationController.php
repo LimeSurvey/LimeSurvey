@@ -709,7 +709,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $position
      * @param string $assessmentvisible
      * @return void
-     * @todo Permission check hard with both sid and gid.
+     * @todo Permission check hard when both sid and gid are given.
      */
     public function actionGetSubquestionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $position = 0, $assessmentvisible = '')
     {
@@ -724,7 +724,18 @@ class QuestionAdministrationController extends LSBaseController
         $first = true;
         $qid   = 'new' . rand(0, 99999);
         foreach ($oSurvey->allLanguages as $language) {
-            $html[$language] = $this->getSubquestionRow($oSurvey->sid, $gid, $qid, $codes, $language, $first, $scale_id, 'subquestion', $position, $assessmentvisible);
+            $html[$language] = $this->getSubquestionRow(
+                $oSurvey->sid,
+                $gid,
+                $qid,
+                $codes,
+                $language,
+                $first,
+                $scale_id,
+                'subquestion',
+                $position,
+                $assessmentvisible
+            );
             $first = false;
         }
         header('Content-Type: application/json');
@@ -761,6 +772,10 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
+     *
+     * @todo Document.
+     * @todo Too many arguments.
+     * @return string
      */
     private function getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible = '')
     {
@@ -822,6 +837,7 @@ class QuestionAdministrationController extends LSBaseController
 
         // We finaly build the new code
         $code = $stringPartOfNewCode.$listOfZero.$numericalPartOfNewCode;
+        $oSubquestion->title = $code;
 
         $activated = false; // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
@@ -837,7 +853,6 @@ class QuestionAdministrationController extends LSBaseController
                 'gid'       => $gid,
                 'qid'       => $qid,
                 'language'  => $language,
-                'title'     => $code,
                 'question'  => '',
                 'relevance' => '1',
                 'oldCode'   => $oldCode,
@@ -858,7 +873,6 @@ class QuestionAdministrationController extends LSBaseController
                 'gid'               => $gid,
                 'qid'               => $qid,
                 'language'          => $language,
-                'title'             => $code,
                 'question'          => '',
                 'relevance'         => '1',
                 'oldCode'           => $oldCode,

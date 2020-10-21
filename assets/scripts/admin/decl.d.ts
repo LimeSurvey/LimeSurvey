@@ -1,3 +1,3 @@
-declare var $: function;
+declare var $: Function;
 declare var LS: Object;
-declare var _: {forEach: function};
+declare var _: {forEach: Function};
