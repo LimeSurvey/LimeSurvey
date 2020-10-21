@@ -99,6 +99,7 @@ class QuestionCreate extends Question
     {
         $question = new Question();
         $question->qid = 0;
+        $question->title = 'SQ001';
         $question->relevance = 1;
         return $question;
     }
@@ -111,6 +112,7 @@ class QuestionCreate extends Question
     {
         $answer = new Answer();
         $answer->sortorder = 0;
+        $answer->code = 'A1';
         return $answer;
     }
 }
