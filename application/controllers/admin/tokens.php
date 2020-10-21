@@ -2148,18 +2148,17 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        $aEventResult = $this->dispatchBeforeTokenImport(
-                            $iSurveyId,
-                            $aWriteArray,
-                            $sUploadCharset,
-                            $bFilterDuplicateToken,
-                            $bFilterBlankEmail,
-                            $bAllowInvalidEmail,
-                            $aFilterDuplicateFields,
-                            $sSeparator,
-                            Yii::app()->request->getPost('showwarningtoken'),
-                            $iRecordCount
+                        // Dispatch beforeTokenImport event
+                        $aOptions = array(
+                            'csvcharset' => $sUploadCharset,
+                            'filterduplicatetoken' => $bFilterDuplicateToken,
+                            'filterblankemail' => $bFilterBlankEmail,
+                            'allowinvalidemail' => $bAllowInvalidEmail,
+                            'filterduplicatefields' => $aFilterDuplicateFields,
+                            'separator' => $sSeparator,
+                            'showwarningtoken' => Yii::app()->request->getPost('showwarningtoken'),
                         );
+                        $aEventResult = $this->dispatchBeforeTokenImport($iSurveyId, $aWriteArray, $iRecordCount, $aOptions);
                         $bPluginReportedError = $aEventResult['pluginReportedError'];
                         $bImportDone = $aEventResult['importDone'];
 
@@ -2812,22 +2811,24 @@ class tokens extends Survey_Common_Action
      * @param int $iRecordCount
      * @return array
      */
-    protected function dispatchBeforeTokenImport($iSurveyId, $aToken, $sUploadCharset, $bFilterDuplicateToken, $bFilterBlankEmail, $bAllowInvalidEmail, $aFilterDuplicateFields, $sSeparator, $bShowWarningToken, $iRecordCount)
+    protected function dispatchBeforeTokenImport($iSurveyId, $aToken, $iRecordCount, $aOptions)
     {
-        // Dispatch beforeTokenImport event
-        $params = array(
-            'csvcharset' => $sUploadCharset,
-            'filterduplicatetoken' => $bFilterDuplicateToken,
-            'filterblankemail' => $bFilterBlankEmail,
-            'allowinvalidemail' => $bAllowInvalidEmail,
-            'filterduplicatefields' => $aFilterDuplicateFields,
-            'separator' => $sSeparator,
-            'showwarningtoken' => $bShowWarningToken,
+        $aParams = array_merge(
+            array(
+                'csvcharset' => 'UTF-8',
+                'filterduplicatetoken' => false,
+                'filterblankemail' => true,
+                'allowinvalidemail' => false,
+                'filterduplicatefields' => array(),
+                'separator' => ',',
+                'showwarningtoken' => true,
+            ),
+            $aOptions
         );
         $event = new PluginEvent('beforeTokenImport');
         $event->set('importType', 'CSV');
         $event->set('surveyId', $iSurveyId);
-        $event->set('params', $params);
+        $event->set('params', $aParams);
         $event->set('recordCount', $iRecordCount);
         $event->set('token', $aToken);
         $event->set('importDone', false);
