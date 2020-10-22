@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-21 08:35:51+00:00\n"
+"POT-Creation-Date: 2020-10-22 13:17:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -405,7 +405,7 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:100
 #: application/controllers/admin/questiongroups.php:127
 #: application/controllers/admin/questiongroups.php:166
-#: application/controllers/admin/questiongroups.php:305
+#: application/controllers/admin/questiongroups.php:309
 #: application/controllers/admin/questions.php:111
 #: application/controllers/admin/questions.php:157
 #: application/controllers/admin/questions.php:245
@@ -1009,8 +1009,9 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:131
 #: application/controllers/admin/questiongroups.php:174
 #: application/controllers/admin/questiongroups.php:238
-#: application/controllers/admin/questiongroups.php:414
-#: application/controllers/admin/questiongroups.php:582
+#: application/controllers/admin/questiongroups.php:286
+#: application/controllers/admin/questiongroups.php:418
+#: application/controllers/admin/questiongroups.php:592
 #: application/controllers/admin/questions.php:262
 #: application/controllers/admin/questions.php:424
 #: application/controllers/admin/questions.php:637
@@ -3597,7 +3598,7 @@ msgstr ""
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:384
+#: application/controllers/admin/questiongroups.php:388
 #: application/controllers/admin/surveyadmin.php:1122
 #: application/controllers/admin/surveyadmin.php:1204
 #: application/controllers/admin/surveyadmin.php:1696
@@ -3615,16 +3616,16 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:397
+#: application/controllers/admin/questiongroups.php:401
 #: application/models/QuestionGroup.php:320
 msgid "Edit group"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:495
+#: application/controllers/admin/questiongroups.php:499
 msgid "You can't reorder in an active survey"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:574
+#: application/controllers/admin/questiongroups.php:584
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -9571,7 +9572,7 @@ msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:10032
-msgid "There are expressions with syntax errors in thisgroup."
+msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:10035
@@ -12599,7 +12600,7 @@ msgstr ""
 
 #: application/models/QuestionGroup.php:334
 #: application/models/QuestionGroup.php:343
-#: application/models/SurveysGroups.php:277
+#: application/models/SurveysGroups.php:263
 msgid "Delete survey group"
 msgstr ""
 
@@ -12785,7 +12786,7 @@ msgid "Submitted"
 msgstr ""
 
 #: application/models/Surveymenu.php:108
-#: application/models/SurveysGroups.php:316
+#: application/models/SurveysGroups.php:303
 msgid "No parent menu"
 msgstr ""
 
@@ -12980,11 +12981,11 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: application/models/SurveysGroups.php:274
+#: application/models/SurveysGroups.php:260
 msgid "Edit survey group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:277
+#: application/models/SurveysGroups.php:263
 #: application/models/TemplateConfiguration.php:648
 #: application/models/TemplateConfiguration.php:676
 msgid "Do you want to continue?"
