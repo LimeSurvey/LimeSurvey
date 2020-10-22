@@ -86,11 +86,9 @@ return array(
         'devBaseUrl'  => 'assets/packages/template-core/',
         'basePath' => 'core.template-core',
         'css'=> array(
-            'spectrum.css',
             'template-core.css',
         ),
         'js'=>array(
-            'spectrum.js',
             'template-core.js',
         ),
         'depends' => array(
