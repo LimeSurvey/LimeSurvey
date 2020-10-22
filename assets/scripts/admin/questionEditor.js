@@ -399,6 +399,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     updateRowProperties();
   }
 
+  /*:: declare function addNewInputAux(HTMLElement, Object, () => void): void */
   /**
    * Helper function for addSubquestionInput and addAnswerOptionInput.
    *
