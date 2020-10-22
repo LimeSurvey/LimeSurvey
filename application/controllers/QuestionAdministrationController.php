@@ -418,8 +418,6 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionSaveQuestionData()
     {
-        echo '<pre>'; print_r($_POST); echo '</pre>';
-        die;
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
@@ -509,13 +507,12 @@ class QuestionAdministrationController extends LSBaseController
                 }
                 // If question type has answeroptions, save them.
                 if ($oQuestion->questionType->answerscales > 0) {
-                    //$this->storeAnswerOptions(
-                        //$oQuestion,
-                        //$request->getPost('answeroptions')
-                    //);
+                    $this->storeAnswerOptions(
+                        $oQuestion,
+                        $request->getPost('answeroptions')
+                    );
                 }
             } else {
-                // Can only update subquestions.
                 // TODO: Update subquestions.
                 // TODO: Update answer options.
             }
@@ -2521,12 +2518,15 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @param Question $oQuestion
+     * Save subquestion.
+     * Used when survey is *not* activated.
+     *
+     * @param Question $question
      * @param array $subquestionsArray Data from request.
      * @return void
      * @throws CHttpException
      */
-    private function storeSubquestions($oQuestion, $subquestionsArray)
+    private function storeSubquestions($question, $subquestionsArray)
     {
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
@@ -2537,12 +2537,13 @@ class QuestionAdministrationController extends LSBaseController
             }
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = new Question();
-                $subquestion->sid        = $oQuestion->sid;
-                $subquestion->gid        = $oQuestion->gid;
-                $subquestion->parent_qid = $oQuestion->qid;
+                $subquestion->sid        = $question->sid;
+                $subquestion->gid        = $question->gid;
+                $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $subquestion->title      = $data['code'];
                 $subquestion->relevance  = $data['relevance'];
+                $subquestion->scale_id   = 0;  // TODO
                 if (!$subquestion->save()) {
                     throw new CHttpException(
                         500,
@@ -2568,12 +2569,12 @@ class QuestionAdministrationController extends LSBaseController
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 $oSubQuestion = Question::model()->find(
                     'sid = :sid AND qid = :qid',
-                    [':sid' => $oQuestion->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
+                    [':sid' => $question->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
                 );
                 if ($oSubQuestion != null && !$isCopyProcess) {
                     $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
-                } elseif (!$oQuestion->survey->isActive) {
-                    $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
+                } elseif (!$question->survey->isActive) {
+                    $aSubquestionDataSet['parent_qid'] = $question->qid;
                     $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
                 }
                 $this->applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
@@ -2584,7 +2585,7 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * @todo document me
-     *
+     * @todo delete if not used
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -2612,25 +2613,55 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @param bool $isCopyProcess
-     * @return boolean
+     * Store new answer options.
+     * Different from update during active survey?
+     *
+     * @param Question $question
+     * @param array $answerOptionsArray
+     * @return void
      * @throws CHttpException
-     * @todo document me
-     *
-     *
      */
-    private function storeAnswerOptions(&$oQuestion, $dataSet, $isCopyProcess = false)
+    private function storeAnswerOptions($question, $answerOptionsArray)
     {
-        $this->cleanAnsweroptions($oQuestion, $dataSet);
+        foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
+            foreach ($answerOptionArray as $scaleId => $data) {
+                $answer = new Answer();
+                $answer->qid = $question->qid;
+                $answer->code = $data['code'];
+                $answer->sortorder = 0;  // TODO
+                $answer->assessment_value = 0;  // TODO
+                $answer->scale_id = 0;  // TODO
+                if (!$answer->save()) {
+                    throw new CHttpException(
+                        500,
+                        gT("Could not save answer option") . PHP_EOL
+                        . print_r($answer->getErrors(), true)
+                    );
+                }
+                $answer->refresh();
+                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
+                    $l10n = new AnswerL10n();
+                    $l10n->aid = $answer->aid;
+                    $l10n->language = $lang;
+                    $l10n->answer = $answerOptionText;
+                    if (!$l10n->save()) {
+                        throw new CHttpException(
+                            500,
+                            gT("Could not save answer option") . PHP_EOL
+                            . print_r($l10n->getErrors(), true)
+                        );
+                    }
+                }
+            }
+        }
+                /*
         foreach ($dataSet as $aAnswerOptions) {
             foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int)$aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
                 if ($oAnswer == null || $isCopyProcess) {
                     $oAnswer = new Answer();
-                    $oAnswer->qid = $oQuestion->qid;
+                    $oAnswer->qid = $question->qid;
                     unset($aAnswerOptionDataSet['aid']);
                     unset($aAnswerOptionDataSet['qid']);
                 }
@@ -2651,14 +2682,16 @@ class QuestionAdministrationController extends LSBaseController
                         . print_r($oAnswer->getErrors(), true)
                     );
                 }
-                $this->applyAnswerI10N($oAnswer, $oQuestion, $aAnswerOptionDataSet);
+                $this->applyAnswerI10N($oAnswer, $question, $aAnswerOptionDataSet);
             }
         }
+                 */
         return true;
     }
 
     /**
      * @todo document me
+     * @todo delete if not used
      *
      * @param Question $oQuestion
      * @param array $dataSet
@@ -2693,6 +2726,7 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * @todo document me
+     * @todo delete if not used
      *
      * @param Answer $oAnswer
      * @param Question $oQuestion
