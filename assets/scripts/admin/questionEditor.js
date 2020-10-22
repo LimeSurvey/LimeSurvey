@@ -212,23 +212,23 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
    * @return {XMLHttpRequest}
    */
   function addInputPredefined(i) {
-    const $elDatas = $('#add-input-javascript-datas');
+    const $dataInput = $('#add-input-javascript-datas');
     const scaleId = $('#current_scale_id').val();
     // We build the datas for the request
     const datas = {
-      surveyid: $elDatas.data('surveyid'),
-      gid: $elDatas.data('gid'),
+      surveyid: $dataInput.data('surveyid'),
+      gid: $dataInput.data('gid'),
       codes: JSON.stringify({lbl_1: 'eins'}),  // jshint ignore:line
       scale_id: scaleId,  // jshint ignore:line
       position: i,
       type: 'subquestion',
-      languages: JSON.stringify($elDatas.data('languages').join(';')),
+      languages: JSON.stringify($dataInput.data('languages').join(';')),
     };
     // We get the HTML of the new row to insert
     return $.ajax({
       type: 'GET',
       contentType: 'json',
-      url: $elDatas.data('url'),
+      url: $dataInput.data('url'),
       data: datas,
     });
   }
@@ -302,9 +302,9 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
    */
   function addinputQuickEdit($currentTable, language, first, scaleId, _codes) {
     const codes = _codes || [];
-    const $elDatas = $('#add-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
-    const $url = $elDatas.data('quickurl'); // Url for the request
-    const errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
+    const $dataInput = $('#add-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
+    const $url = $dataInput.data('quickurl'); // Url for the request
+    const errormessage = $dataInput.data('errormessage'); // the error message if the AJAX request failed
     const $defer = $.Deferred();
     let $codes;
     let datas;
@@ -326,7 +326,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     // We build the datas for the request
     datas = {
       codes: $codes,
-      // In $elDatas.data('scale-id') ?
+      // In $dataInput.data('scale-id') ?
       scale_id: scaleId,  // jshint ignore:line
       type: 'subquestion',
       position: null,
@@ -399,24 +399,28 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     updateRowProperties();
   }
 
-  /*:: declare function addSubquestionInput(Event): void */
   /**
-   * Add one subquestion row using Ajax.
+   * Helper function for addSubquestionInput and addAnswerOptionInput.
    *
-   * @param {Event} e
+   * @param {HTMLElement} target
+   * @param {Object} data Data from relevant <input> in the view.
+   * @param {Function} rebindClickHandler
    * @return {void}
    */
-  function addSubquestionInput(e) {
-    e.preventDefault();
-    const target = e.target;
-    const $that = $(target); // The "add" button
-    const $currentRow = $that.closest('.row-container'); // The row containing the "add" button
+  function addNewInputAux(target, data, rebindClickHandler)
+  {
+    // The "add" button
+    const $that = $(target);
+    // The row containing the "add" button
+    const $currentRow = $that.closest('.row-container');
     const $currentTable = $that.closest('.answertable');
-    const commonId = $currentRow.data('common-id'); // The common id of this row in the other languages
-    const $elDatas = $('#add-subquestion-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
-    const url = $elDatas.data('url'); // Url for the request
-    const errormessage = $elDatas.data('errormessage'); // the error message if the AJAX request failed
-    const languages = JSON.stringify(languageJson.langs); // The languages
+    // The common id of this row in the other languages
+    const commonId = $currentRow.data('common-id');
+    // Url for the request
+    const url = data.url;
+    // the error message if the AJAX request failed
+    const errormessage = data.errormessage;
+    const languages = JSON.stringify(languageJson.langs);
 
     if ($currentTable.length === 0) {
       alert('Internal error: Found no answertable');
@@ -434,19 +438,13 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 
     // We build the datas for the request
     // TODO: Use object instead of string.
-    let datas = `surveyid=${$elDatas.data('surveyid')}`;
-    datas += `&gid=${$elDatas.data('gid')}`;
-    datas += `&qid=${$elDatas.data('qid')}`;
+    let datas = `surveyid=${data.surveyid}`;
+    datas += `&gid=${data.gid}`;
+    datas += `&qid=${data.qid}`;
     datas += `&codes=${codesJson}`;
     datas += `&scale_id=${$(target).find('i').data('scale-id')}`;
     datas += '&position=0';
     datas += `&languages=${languages}`;
-
-    const rebindClickHandler = () => {
-      // @TODO answer option
-      $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
-      $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
-    };
 
     // We get the HTML of the different rows to insert  (one by language)
     $.ajax({
@@ -470,14 +468,41 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     });
   }
 
+  /*:: declare function addSubquestionInput(Event): void */
+  /**
+   * Add one subquestion row using Ajax.
+   *
+   * @param {Event} e
+   * @return {void}
+   */
+  function addSubquestionInput(e) {
+    e.preventDefault();
+    const target = e.target;
+    const data = $('#add-subquestion-input-javascript-datas').data();
+    const rebindClickHandler = () => {
+      // @TODO answer option
+      $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+      $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+    };
+    addNewInputAux(target, data, rebindClickHandler);
+  }
+
   /**
    * Add one answer option row using Ajax.
    *
    * @param {event} e
    * @return {void}
    */
-  function addAnswerOptionInput() {
-    // todo
+  function addAnswerOptionInput(e) {
+    e.preventDefault();
+    const target = e.target;
+    const data = $('#add-answer-option-input-javascript-datas').data();
+    const rebindClickHandler = () => {
+      // @TODO answer option
+      $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+      $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+    };
+    addNewInputAux(target, data, rebindClickHandler);
   }
 
   //function updatecodes() {

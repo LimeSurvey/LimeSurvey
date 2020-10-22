@@ -127,8 +127,8 @@
         ) }}"
         data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
         data-errormessage="An error occured while processing the ajax request."
-        data-surveyid="{{ question.sid }}"
         data-languages='{{ json_encode(allLanguages) }}'
+        data-surveyid="{{ question.sid }}"
         data-gid="{{ question.gid }}"
         data-qid="{{ question.qid }}"
         data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}

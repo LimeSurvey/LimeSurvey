@@ -1,6 +1,5 @@
 <?php
 
-
 class QuestionAdministrationController extends LSBaseController
 {
 
@@ -732,7 +731,6 @@ class QuestionAdministrationController extends LSBaseController
                 $language,
                 $first,
                 $scale_id,
-                'subquestion',
                 $position,
                 $assessmentvisible
             );
@@ -757,28 +755,52 @@ class QuestionAdministrationController extends LSBaseController
         $type              = $request->getPost('type');
         $position          = $request->getPost('position');
         $assessmentvisible = $request->getPost('assessmentvisible');
-        echo $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
+        echo $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $position, $assessmentvisible);
     }
 
     /**
-     * 
-     * @return 
+     * @return void
      */
-    public function actionGetAnswerOptionRowForAllLanguages()
+    public function actionGetAnswerOptionRowForAllLanguages($surveyid, $gid, $codes, $scale_id, $position = 0, $assessmentvisible = '')
     {
-        die('here');
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (empty($oSurvey)) {
+            throw new CHttpException(404, gT("Invalid survey id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT("No permission"));
+        }
+        $html  = [];
+        $first = true;
+        $qid   = 'new' . rand(0, 99999);
+        foreach ($oSurvey->allLanguages as $language) {
+            $html[$language] = $this->getAnswerOptionRow(
+                $oSurvey->sid,
+                $gid,
+                $qid,
+                $codes,
+                $language,
+                $first,
+                $scale_id,
+                $position,
+                $assessmentvisible
+            );
+            $first = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($html);
     }
 
     /**
-     * This function should be called via ajax request
-     * It returns a EMPTY subquestion row HTML for a given ....
+     * It returns a empty subquestion row.
+     * Used when user clicks "Add new row" in question editor.
      *
      * @todo Document.
      * @todo Too many arguments.
      * @param string $codes All previous codes (used to calculate the next code)
      * @return string
      */
-    private function getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible = '')
+    private function getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $position, $assessmentvisible = '')
     {
         // index.php/admin/questions/sa/getSubquestionRow/position/1/scale_id/1/surveyid/691948/gid/76/qid/1611/language/en/first/true
 
@@ -791,52 +813,79 @@ class QuestionAdministrationController extends LSBaseController
 
         //Capture "true" and "false" as strings
         if (is_string($first)) {
-            $first = ($first == "false" ? false : true);
+            $first = $first == "false" ? false : true;
         }
 
         $stringCodes = json_decode($codes, true);
-        $oSubquestion->title = $this->calculateNextCode($stringCodes);
+        [$oSubquestion->title, $newPosition] = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
 
-        if ($type == 'subquestion') {
-            $view = 'subquestionRow.twig';
-            $aData = array(
-                'position'  => $position,
-                'scale_id'  => $scale_id,
-                'activated' => $activated,
-                'first'     => $first,
-                'surveyid'  => $surveyid,
-                'gid'       => $gid,
-                'qid'       => $qid,
-                'language'  => $language,
-                'question'  => '',
-                'relevance' => '1',
-                'oldCode'   => $oldCode,
-                'subquestion'  => $oSubquestion
-            );
-        } else {
-            $view = 'answerOptionRow.twig';
-            $aData = array(
-                'assessmentvisible' => $assessmentvisible == "false" ? false : true,
-                'assessment_value'  => '',
-                'answer'            => '',
-                'sortorder'         => $newPosition,
-                'position'          => $newPosition,
-                'scale_id'          => $scale_id,
-                'activated'         => $activated,
-                'first'             => $first,
-                'surveyid'          => $surveyid,
-                'gid'               => $gid,
-                'qid'               => $qid,
-                'language'          => $language,
-                'question'          => '',
-                'relevance'         => '1',
-                'oldCode'           => $oldCode,
-            );
+        $view = 'subquestionRow.twig';
+        $aData = array(
+            'position'  => $position,
+            'scale_id'  => $scale_id,
+            'activated' => $activated,
+            'first'     => $first,
+            'surveyid'  => $surveyid,
+            'gid'       => $gid,
+            'qid'       => $qid,
+            'language'  => $language,
+            'question'  => '',
+            'relevance' => '1',
+            'oldCode'   => $oldCode,
+            'subquestion'  => $oSubquestion
+        );
+
+        $html = '<!-- Inserted Row -->';
+        $html .= App()->twigRenderer->renderPartial('/questionAdministration/' . $view, $aData);
+        $html .= '<!-- end of Inserted Row -->';
+        return $html;
+    }
+
+    /**
+     * @todo docs
+     * @return string
+     */
+    private function getAnswerOptionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $position, $assessmentvisible = '')
+    {
+        $oldCode = false;
+
+        // TODO: Fix question type 'A'.
+        $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
+        $answerOption = $oQuestion->getEmptyAnswerOption();
+
+        //Capture "true" and "false" as strings
+        if (is_string($first)) {
+            $first = $first == "false" ? false : true;
         }
 
+        $stringCodes = json_decode($codes, true);
+        [$answerOption->code, $newPosition] = $this->calculateNextCode($stringCodes);
+
+        $activated = false; // You can't add ne subquestion when survey is active
+        Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
+
+        $view = 'answerOptionRow.twig';
+        $aData = array(
+            //'assessmentvisible' => $assessmentvisible == "false" ? false : true,
+            'assessmentvisible' => false,
+            'assessment_value'  => '',
+            'answer'            => '',
+            'sortorder'         => $newPosition,
+            'position'          => $newPosition,
+            'scale_id'          => $scale_id,
+            'activated'         => $activated,
+            'first'             => $first,
+            'surveyid'          => $surveyid,
+            'gid'               => $gid,
+            'qid'               => $qid,
+            'language'          => $language,
+            'question'          => '',
+            'relevance'         => '1',
+            'oldCode'           => $oldCode,
+        );
         $html = '<!-- Inserted Row -->';
         $html .= App()->twigRenderer->renderPartial('/questionAdministration/' . $view, $aData);
         $html .= '<!-- end of Inserted Row -->';
@@ -886,7 +935,7 @@ class QuestionAdministrationController extends LSBaseController
         $stringPartOfNewCode    = (string) substr($stringCodeOfGreatestCode, 0, (strlen($stringCodeOfGreatestCode) - strlen($greatesNumCodeWithZeros)));
 
         // We increment by one the greatest code
-        $numericalPartOfNewCode = $newPosition = $greatestNumCode + 1;
+        $numericalPartOfNewCode = $greatestNumCode + 1;
 
         // We get the list of 0 : (using $numericalPartOfNewCode will remove the excedent 0 ; SQ009 will be followed by SQ010 )
         $listOfZero = (string) substr($greatesNumCodeWithZeros, 0, (strlen($greatesNumCodeWithZeros) - strlen($numericalPartOfNewCode)));
@@ -896,7 +945,7 @@ class QuestionAdministrationController extends LSBaseController
         $listOfZero = $listOfZero == "9" ? '' : $listOfZero;
 
         // We finaly build the new code
-        return $stringPartOfNewCode . $listOfZero . $numericalPartOfNewCode;
+        return [$stringPartOfNewCode . $listOfZero . $numericalPartOfNewCode, $numericalPartOfNewCode];
     }
 
     /**

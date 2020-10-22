@@ -75,6 +75,7 @@
                                 'oldCode'    => true,
                                 'scalecount' => 1,
                                 'answers'    => $oQuestion->answers ? $oQuestion->answers : [$oQuestion->getEmptyAnswerOption()],
+                                'question'     => $oQuestion,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'language'   => $oSurvey->language
                             ],
