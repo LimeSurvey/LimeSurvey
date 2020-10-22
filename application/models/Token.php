@@ -203,7 +203,7 @@ abstract class Token extends Dynamic
                 $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
                 break;
             case 'pgsql':
-                $db->createCommand()->createIndex('idx_email_'.$surveyId_.rand(1, 50000), $sTableName, 'email', false);
+                $db->createCommand()->createIndex('idx_email_'.$surveyId.'_'.rand(1, 50000), $sTableName, 'email', false);
                 break;
         }
 
