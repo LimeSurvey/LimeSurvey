@@ -436,13 +436,30 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
     // We convert them to json for the request
     const codesJson = JSON.stringify(codes);
 
+    // TODO: Why on earth is target sometimes <i>, sometimes <button>??
+    let targetData = {};
+    if (target.nodeName === 'BUTTON') {
+      targetData = $(target).find('i').data();
+    } else if (target.nodeName === 'I') {
+      targetData = $(target).data();
+    } else {
+      alert('Internal error: Unknown nodeName: ' + target.nodeName);
+      throw 'abort';
+    }
+    const scaleId = targetData.scaleId;
+
+    if (scaleId === '' || scaleId === undefined) {
+      alert('Internal error: Could not find scale_id');
+      throw 'abort';
+    }
+
     // We build the datas for the request
     // TODO: Use object instead of string.
     let datas = `surveyid=${data.surveyid}`;
     datas += `&gid=${data.gid}`;
     datas += `&qid=${data.qid}`;
     datas += `&codes=${codesJson}`;
-    datas += `&scale_id=${$(target).find('i').data('scale-id')}`;
+    datas += `&scale_id=${scaleId}`;
     datas += '&position=0';
     datas += `&languages=${languages}`;
 
@@ -690,7 +707,6 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
           //console.ls.group('SelectParsing');
           //console.ls.log('allResults', jsonString.labelsets);
           $.each(jsonString.labelsets, (i, item) => {
-            console.log('SelectItem', item);
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
             //console.ls.log('newOption', newOption);
             $('#labelsets').append(newOption).trigger('change');
@@ -1151,6 +1167,7 @@ laname: $('#laname').val(), lid, code, answers,
     $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
     $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
     $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+
     $('#labelsetbrowserModal').on('shown.bs.modal.', lsbrowser);
     $('#labelsetbrowserModal').on('hidden.bs.modal.', lsBrowserDestruct);
 

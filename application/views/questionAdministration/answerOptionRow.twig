@@ -104,8 +104,8 @@
                 type='text'
                 size='20'
                 class='answer form-control input'
-                id='answeroptions[{{ answerOption.sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
-                name='answeroptions[{{ answerOption.sortorder }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                id='answeroptions[{{ position }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                name='answeroptions[{{ position }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example answer option") }}'
                 value="{{ answerOptionl10n.answer }}"
             />
@@ -125,7 +125,7 @@
 
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="answeroption-actions">
-        {% if first %}
+        {% if activated != 'Y' and first %}
             <button type="button" class="btn btn-default btn-sm btnaddanswer">
                 <i
                     class="icon-add text-success"

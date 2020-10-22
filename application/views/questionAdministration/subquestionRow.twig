@@ -130,8 +130,7 @@
 
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
-        {%  if activated != 'Y' and first %}
-            {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
+        {% if activated != 'Y' and first %}
             <button class="btn btn-default btn-sm btnaddsubquestion">
                 <i
                     class="icon-add text-success"
