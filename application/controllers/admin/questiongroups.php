@@ -282,6 +282,10 @@ class questiongroups extends Survey_Common_Action
 
     public function view($surveyid, $gid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
+        }                
         $aData = array();
         $aData['surveyid'] = $iSurveyID = $surveyid;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -533,6 +537,12 @@ class questiongroups extends Survey_Common_Action
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
         $survey = Survey::model()->findByPk($surveyid);
+
+        if (!App()->request->isPostRequest) {
+            $this->getController()->redirect(
+                array('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid)
+            );
+        }
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             Yii::app()->loadHelper('surveytranslator');
