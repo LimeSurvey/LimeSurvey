@@ -26,7 +26,7 @@ $oQuestionSelector = $this->beginWidget(
             'onUpdate' => [
                 'value',
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
-                "$('#question_type').val(value); updateQuestionAttributes(value, '$generalSettingsUrl', '$advancedSettingsUrl'); updateQuestionTemplateOptions(value);"
+                "$('#question_type').val(value); LS.questionEditor.updateQuestionAttributes(value, '$generalSettingsUrl', '$advancedSettingsUrl');"
             ]
         ]
     ]

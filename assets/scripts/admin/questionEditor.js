@@ -28,69 +28,7 @@
 /*:: declare var LS: Object */
 
 // Globals for jshint.
-/* globals $, _, alert, document, console, LS */
-
-/**
- * Update question attributes (general and advanced settings) when selecting question type.
- * Used by question selector modal, so not wrapped in closure.
- *
- * @param {string} questionType - One-letter string of question type
- * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
- * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
- * @return {void}
- */
-// eslint-disable-next-line no-unused-vars
-async function updateQuestionAttributes(questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
-  // If same question type, do nothing.
-  // Else, fetch new HTML from server.
-  $('#ls-loading').show();
-
-  const generalSettingsPromise = new Promise((resolve, reject) => {
-    $.ajax({
-      url: generalSettingsUrl,
-      method: 'GET',
-      data: { questionType },
-      dataType: 'html',
-      success: (data) => {
-        resolve(data);
-      },
-      error: (data) => {
-        reject(data);
-      },
-    });
-  });
-  const advancedSettingsPromise = new Promise((resolve, reject) => {
-    $.ajax({
-      url: advancedSettingsUrl,
-      method: 'GET',
-      data: { questionType },
-      dataType: 'html',
-      success: (data) => {
-        resolve(data);
-      },
-      error: (data) => {
-        reject(data);
-      },
-    });
-  });
-  try {
-    const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
-    $('#general-settings').replaceWith(html);
-    // TODO: Double check HTML injected here. Extra div?
-    $('#advanced-options-container').replaceWith(html2);
-    $('.question-option-help').hide();
-    $('#ls-loading').hide();
-  } catch (ex) {
-    $('#ls-loading').hide();
-    // TODO: How to show internal errors?
-    // eslint-disable-next-line no-alert
-    alert(`Internal error: ${ex}`);
-  }
-}
-
-function updateQuestionTemplateOptions(questionType) {
-  // TODO
-}
+/* globals $, _, alert, document, LS */
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
@@ -98,7 +36,7 @@ function updateQuestionTemplateOptions(questionType) {
 
 // Wrap it in closure to avoid global variables.
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
-(function () {
+LS.questionEditor = (function () {
 
   // TODO: Does not work with pjax loading.
   /** @type {Object} */
@@ -1221,4 +1159,71 @@ laname: $('#laname').val(), lid, code, answers,
       $(langClass).show();
     });
   });
+
+  // Return public functions to LS.questionEditor module.
+  return {
+    /**
+     * Update question attributes (general and advanced settings) when selecting question type.
+     * Used by question selector modal, so not wrapped in closure.
+     *
+     * @param {string} questionType - One-letter string of question type
+     * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
+     * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
+     * @return {void}
+     */
+    // eslint-disable-next-line no-unused-vars
+    updateQuestionAttributes: async function (questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
+      // If same question type, do nothing.
+      // Else, fetch new HTML from server.
+      $('#ls-loading').show();
+
+      const generalSettingsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+          url: generalSettingsUrl,
+          method: 'GET',
+          data: { questionType },
+          dataType: 'html',
+          success: (data) => {
+            resolve(data);
+          },
+          error: (data) => {
+            reject(data);
+          },
+        });
+      });
+      const advancedSettingsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+          url: advancedSettingsUrl,
+          method: 'GET',
+          data: { questionType },
+          dataType: 'html',
+          success: (data) => {
+            resolve(data);
+          },
+          error: (data) => {
+            reject(data);
+          },
+        });
+      });
+      try {
+        const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
+        $('#general-settings').replaceWith(html);
+        // TODO: Double check HTML injected here. Extra div?
+        $('#advanced-options-container').replaceWith(html2);
+        $('.question-option-help').hide();
+        $('#ls-loading').hide();
+
+        // TODO: Duplication.
+        $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
+        $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
+        $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
+        $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+      } catch (ex) {
+        $('#ls-loading').hide();
+        // TODO: How to show internal errors?
+        // eslint-disable-next-line no-alert
+        alert(`Internal error: ${ex}`);
+      }
+    }
+  };
 })();
