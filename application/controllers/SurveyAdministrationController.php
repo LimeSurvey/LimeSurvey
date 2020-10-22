@@ -619,6 +619,22 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionGetCurrentEditorValues($sid)
     {
+        //Permission check
+        if(!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')){
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("No permission"),
+                        'debug' => null
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
         $iSurveyId = (int)$sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -702,6 +718,12 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleTheme()
     {
+        //only superadmin can do this
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
@@ -727,6 +749,11 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
@@ -783,7 +810,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * AjaxRequest get questionGroup with containing questions
      *
-     * @todo this could go to the questiongroupAdministrationController
+     * @todo this could go to the questiongroupAdministrationController ?
      *
      * @param int $surveyid Given Survey ID
      *
@@ -1723,6 +1750,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
+    /*
     private function actionEditSurvey_json()
     {
         $operation = Yii::app()->request->getPost('oper');
@@ -1735,7 +1763,7 @@ class SurveyAdministrationController extends LSBaseController
                 }
             }
         }
-    }
+    }*/
 
     /**
      * New system of rendering content
@@ -1915,6 +1943,8 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * @param int $iSurveyID Given Survey ID.
+     *
+     * @deprecated this action is never used
      *
      * @return void
      * @todo   Add TypeDoc.
@@ -2187,6 +2217,10 @@ class SurveyAdministrationController extends LSBaseController
     public function actionExpireMultipleSurveys()
     {
         //permission check: only superadmin is allowed to do this
+        if(!Permission::model()->hasGlobalPermission('superadmin')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
 
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
