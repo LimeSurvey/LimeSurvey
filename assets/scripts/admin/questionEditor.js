@@ -88,9 +88,9 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
   }
 }
 
-// TODO
-// function updateQuestionTemplateOptions(questionType) {
-// }
+function updateQuestionTemplateOptions(questionType) {
+  // TODO
+}
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js

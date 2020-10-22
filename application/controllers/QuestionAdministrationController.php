@@ -266,7 +266,44 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $oQuestion = $this->getQuestionObject(null, 'F', null);
+        $oQuestion->sid = $surveyid;
 
+        $this->renderFormAux($oQuestion);
+    }
+
+    /**
+     * Show question edit form.
+     *
+     * @param int $questionId
+     * @return void
+     */
+    public function actionEdit($questionId)
+    {
+        $questionId = (int) $questionId;
+
+        /** @var Question|null */
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
+        $this->renderFormAux($question);
+    }
+
+    /**
+     * Helper function to render form.
+     * Used by create and edit actions.
+     *
+     * @param Question $oQuestion
+     * @return void
+     */
+    public function renderFormAux(Question $question)
+    {
         Yii::app()->loadHelper("admin.htmleditor");
         Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('jquery-ace');
@@ -281,25 +318,26 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
-        App()->session['FileManagerContent'] = "edit:survey:{$surveyid}";
+        App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $this->aData['surveyid'] = $surveyid;
-        $this->aData['sid'] = $surveyid;
+        $this->aData['surveyid'] = $question->sid;
+        $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $this->aData['questionbar']['buttons']['view'] = true;
         $this->aData['title_bar']['title'] =
-            $oSurvey->currentLanguageSettings->surveyls_title
-            . " (" . gT("ID") . ":" . $surveyid . ")";
+            $question->survey->currentLanguageSettings->surveyls_title
+            . " (" . gT("ID") . ":" . $question->sid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $advancedSettings = $this->getAdvancedOptions(0, 'T', 'core');  // TODO: question_template
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, 'core');  // TODO: question_template
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
+        // Add <input> with JSON as value, used by JavaScript.
         $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
-                'anslangs'          => $oSurvey->allLanguages,
+                'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
                 'scalecount'        => 1
@@ -309,12 +347,18 @@ class QuestionAdministrationController extends LSBaseController
         $this->render(
             'create',
             [
-                'oSurvey'                => $oSurvey,
-                'oQuestion'              => $oQuestion,
+                'oSurvey'                => $question->survey,
+                'question'              => $question,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
                 'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
                 'advancedSettings'       => $advancedSettings,
-                'generalSettings'        => $this->getGeneralOptions(0, 'T', 0, 'core')  // TODO: question_template
+                'generalSettings'        => $this->getGeneralOptions(
+                    $question->qid,
+                    $question->type,
+                    $question->gid,
+                    // TODO: question_template
+                    'core'
+                )
             ]
         );
     }
@@ -447,10 +491,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
-        /*
-         * Setting up a try/catch scenario to delete a copied/created question,
-         * in case the storing of the peripherals breaks
-         */
+        // Rollback at failure.
         try {
             $transaction = Yii::app()->db->beginTransaction();
 
@@ -493,7 +534,6 @@ class QuestionAdministrationController extends LSBaseController
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
-
             // Clean subquestions and answer options before save.
             // NB: Still inside a database transaction.
             if ($oQuestion->survey->active == 'N') {
@@ -517,6 +557,11 @@ class QuestionAdministrationController extends LSBaseController
                 // TODO: Update answer options.
             }
             $transaction->commit();
+
+            // All done, redirect to edit form.
+            App()->setFlashMessage('Question saved', 'success');
+            $oQuestion->refresh();
+            $this->redirect(['questionAdministration/edit/questionId/' . $oQuestion->qid]);
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
@@ -1701,7 +1746,7 @@ class QuestionAdministrationController extends LSBaseController
             "advancedSettings",
             [
                 'advancedSettings'  => $advancedSettings,
-                'oQuestion'         => $question,
+                'question'         => $question,
                 'oSurvey'           => $question->survey,
             ]
         );
@@ -2014,13 +2059,10 @@ class QuestionAdministrationController extends LSBaseController
         $iSurveyId = App()->request->getParam('sid') ??
             App()->request->getParam('surveyid') ??
             App()->request->getParam('surveyId');
-        //$oQuestion = Question::model()->findByPk($iQuestionId);
-        $oQuestion = Question::model()->find(
-            'sid = :sid AND qid = :qid',
-            [':sid' => $iSurveyId, ':qid' => (int) $iQuestionId]
-        );
+        /** @var Question|null */
+        $oQuestion = Question::model()->findByPk($iQuestionId);
 
-        if ($oQuestion == null) {
+        if (empty($oQuestion)) {
             $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
         }
 

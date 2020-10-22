@@ -12,7 +12,11 @@
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">
                         <x-test id="action::addQuestion"></x-test>
-                        <?= gT('Create question'); ?>
+                        <?php if ($question->qid === 0): ?>
+                            <?= gT('Create question'); ?>
+                        <?php else: ?>
+                            <?= gT('Edit question'); ?>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Question code and question type selector -->
@@ -21,7 +25,7 @@
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,
-                                'oQuestion'           => $oQuestion,
+                                'question'            => $question,
                                 'aStructureArray'     => $aQuestionTypeGroups,
                                 'questionTypes'       => $aQuestionTypeStateList,
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups
@@ -62,7 +66,7 @@
                         <?php $this->renderPartial(
                             "advancedSettings",
                             [
-                                'oQuestion'        => $oQuestion,
+                                'question'        => $question,
                                 'oSurvey'          => $oSurvey,
                                 'advancedSettings' => $advancedSettings,
                             ]

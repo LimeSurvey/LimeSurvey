@@ -1,11 +1,11 @@
 <?php
 $generalSettingsUrl = $this->createUrl(
     'questionAdministration/getGeneralSettingsHTML',
-    ['surveyId' => $oQuestion->sid, 'questionId' => $oQuestion->qid]
+    ['surveyId' => $question->sid, 'questionId' => $question->qid]
 );
 $advancedSettingsUrl = $this->createUrl(
     'questionAdministration/getAdvancedSettingsHTML',
-    ['surveyId' => $oQuestion->sid, 'questionId' => $oQuestion->qid]
+    ['surveyId' => $question->sid, 'questionId' => $question->qid]
 );
 $oQuestionSelector = $this->beginWidget(
     'ext.admin.PreviewModalWidget.PreviewModalWidget',
@@ -18,11 +18,11 @@ $oQuestionSelector = $this->beginWidget(
         'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
-        'value' => $oQuestion->type,
+        'value' => $question->type,
         'debug' => YII_DEBUG,
-        'currentSelected' => Question::getQuestionTypeName($oQuestion->type),
+        'currentSelected' => Question::getQuestionTypeName($question->type),
         'optionArray' => [
-            'selectedClass' => Question::getQuestionClass($oQuestion->type),
+            'selectedClass' => Question::getQuestionClass($question->type),
             'onUpdate' => [
                 'value',
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
@@ -42,6 +42,7 @@ $oQuestionSelector = $this->beginWidget(
             class="form-control"
             id="questionCode"
             name="question[title]"
+            value="<?= $question->title; ?>"
             :maxlength="this.maxQuestionCodeLength"
             :required="true"
             :readonly="!(editQuestion || isCreateQuestion || initCopy)"
@@ -63,5 +64,5 @@ $oQuestionSelector = $this->beginWidget(
         <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
-    <input type="hidden" id="question_type" name="question[type]" value="<?= $oQuestion->type; ?>" />
+    <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
 </div>

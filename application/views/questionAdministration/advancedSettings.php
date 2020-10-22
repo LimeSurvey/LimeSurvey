@@ -3,7 +3,7 @@
         <div class="row scoped-tablist-container">
             <!-- Advanced settings tabs -->
             <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
-                <?php if ($oQuestion->questionType->subquestions > 0): ?>
+                <?php if ($question->questionType->subquestions > 0): ?>
                     <li role="presentation">
                         <a
                             href="#subquestions"
@@ -15,7 +15,7 @@
                         </a>
                     </li>
                 <?php endif; ?>
-                <?php if ($oQuestion->questionType->answerscales > 0): ?>
+                <?php if ($question->questionType->answerscales > 0): ?>
                 <li role="presentation">
                     <a
                         href="#answeroptions"
@@ -46,7 +46,7 @@
                 <?php endforeach; ?>
             </ul>
             <div class="tab-content">
-                <?php if ($oQuestion->questionType->subquestions > 0): ?>
+                <?php if ($question->questionType->subquestions > 0): ?>
                     <div role="tabpanel" class="tab-pane" id="subquestions">
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
@@ -55,8 +55,8 @@
                             [
                                 'activated'    => $oSurvey->active !== 'N',
                                 'scalecount'   => 1,
-                                'subquestions' => $oQuestion->subquestions ? $oQuestion->subquestions : [$oQuestion->getEmptySubquestion()],
-                                'question'     => $oQuestion,
+                                'subquestions' => $question->subquestions ? $question->subquestions : [$question->getEmptySubquestion()],
+                                'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'language'     => $oSurvey->language
                             ],
@@ -64,7 +64,7 @@
                         ); ?>
                     </div>
                 <?php endif; ?>
-                <?php if ($oQuestion->questionType->answerscales > 0): ?>
+                <?php if ($question->questionType->answerscales > 0): ?>
                     <div role="tabpanel" class="tab-pane" id="answeroptions">
                         <!-- TODO: Add path in controller. -->
                         <?php Yii::app()->twigRenderer->getLoader()->addPath(__DIR__, '__main__'); ?>
@@ -74,8 +74,8 @@
                                 'activated'  => $oSurvey->active !== 'N',
                                 'oldCode'    => true,
                                 'scalecount' => 1,
-                                'answers'    => $oQuestion->answers ? $oQuestion->answers : [$oQuestion->getEmptyAnswerOption()],
-                                'question'     => $oQuestion,
+                                'answers'    => $question->answers ? $question->answers : [$question->getEmptyAnswerOption()],
+                                'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'language'   => $oSurvey->language
                             ],
