@@ -113,7 +113,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 
   /** @type {array} Used in setLabel */
   let flag = [];
-  /** @type {bool} Used in ajaxcheckdup */
+  /** @type {boolean} Used in ajaxcheckdup */
   let check = true;
 
   /*:: declare function updateRowProperties(): void */
@@ -295,7 +295,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
    *
    * @param {object} $currentTable
    * @param {string} language
-   * @param {bool} first
+   * @param {boolean} first
    * @param {number} scaleId
    * @param {array} codes
    * @return {Promise}
@@ -528,7 +528,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
 
   /**
    * @param {*} mixedVar
-   * @return {bool}
+   * @return {boolean}
    */
   function isNumeric(mixedVar) {
     return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' && !isNaN(mixedVar);
@@ -566,7 +566,7 @@ async function updateQuestionAttributes(questionType, generalSettingsUrl, advanc
    * If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
    *
    * @param sNewValue
-   * @returns {bool} False if codes are not unique
+   * @returns {boolean} False if codes are not unique
    */
   function areCodesUnique(sNewValue) {  // jshint ignore: line
     const languages = languageJson.langs.split(';');
