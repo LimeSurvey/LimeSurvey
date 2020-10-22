@@ -10029,7 +10029,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             $message = $LEM->gT('There are expressions with syntax errors in this survey.');
                             break;
                         case 'group':
-                            $message = $LEM->gT('There are expressions with syntax errors in thisgroup.');
+                            $message = $LEM->gT('There are expressions with syntax errors in this group.');
                             break;
                         case 'question':
                             $message = $LEM->gT('There are expressions with syntax errors in this question.');// How can happen
