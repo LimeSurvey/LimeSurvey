@@ -1247,7 +1247,9 @@ function do_listwithcomment($ia)
     }
     return array($answer, $inputnames);
 }
-
+/**
+ * @deprecated 4.0 Replaced by core\QuestionTypes\RankingStyle
+ */
 function do_ranking($ia)
 {
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -1339,12 +1341,12 @@ function do_ranking($ia)
     if (trim($aQuestionAttributes['choice_title'][App()->language]) != '') {
         $choice_title = htmlspecialchars(trim($aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
     } else {
-        $choice_title = gT("Your Choices", 'js');
+        $choice_title = gT("Your Choices", 'html');
     }
     if (trim($aQuestionAttributes['rank_title'][App()->language]) != '') {
         $rank_title = htmlspecialchars(trim($aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
     } else {
-        $rank_title = gT("Your Ranking", 'js');
+        $rank_title = gT("Your Ranking", 'html');
     }
     $aDisplayAnswers = [];
     foreach ($aAnswers as $aAnswer) {
