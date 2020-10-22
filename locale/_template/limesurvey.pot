@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-21 08:36:06+00:00\n"
+"POT-Creation-Date: 2020-10-22 13:18:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -400,7 +400,7 @@ msgstr ""
 #: application/controllers/admin/index.php:37
 #: application/controllers/admin/questiongroups.php:114
 #: application/controllers/admin/questiongroups.php:146
-#: application/controllers/admin/questiongroups.php:329
+#: application/controllers/admin/questiongroups.php:333
 #: application/controllers/admin/questions.php:63
 #: application/controllers/admin/questions.php:171
 #: application/controllers/admin/questions.php:345
@@ -460,7 +460,7 @@ msgid "ID"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:145
-#: application/controllers/admin/questiongroups.php:385
+#: application/controllers/admin/questiongroups.php:389
 msgid "Create question"
 msgstr ""
 
@@ -471,7 +471,7 @@ msgid "General settings"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:147
-#: application/controllers/admin/questiongroups.php:387
+#: application/controllers/admin/questiongroups.php:391
 #: application/models/Question.php:862 application/models/QuestionType.php:94
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:26
@@ -486,14 +486,14 @@ msgid "Text elements"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:149
-#: application/controllers/admin/questiongroups.php:383
-#: application/controllers/admin/questiongroups.php:389
+#: application/controllers/admin/questiongroups.php:387
+#: application/controllers/admin/questiongroups.php:393
 #: application/models/Question.php:874
 msgid "Question type"
 msgstr ""
 
 #: application/controllers/QuestionEditorController.php:150
-#: application/controllers/admin/questiongroups.php:388
+#: application/controllers/admin/questiongroups.php:392
 #: application/controllers/admin/responses.php:962
 #: application/helpers/admin/statistics_helper.php:4312
 #: application/models/Question.php:868
@@ -513,7 +513,7 @@ msgstr ""
 
 #: application/controllers/QuestionEditorController.php:152
 #: application/controllers/admin/labels.php:602
-#: application/controllers/admin/questiongroups.php:381
+#: application/controllers/admin/questiongroups.php:385
 #: application/controllers/admin/translate.php:565
 #: application/views/admin/survey/Question/import_view.php:17
 #: application/views/admin/survey/QuestionGroups/import_view.php:26
@@ -524,7 +524,7 @@ msgstr ""
 
 #: application/controllers/QuestionEditorController.php:153
 #: application/controllers/admin/labels.php:601
-#: application/controllers/admin/questiongroups.php:382
+#: application/controllers/admin/questiongroups.php:386
 #: application/controllers/admin/translate.php:581
 #: tmp/runtime/twig_cache/bc/bc6f89472f79007effa489917efe46f39bf653639d18bf9023b925a6d4aa577b.php:345
 msgid "Answer options"
@@ -1107,7 +1107,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:304
 #: application/controllers/admin/dataentry.php:907
-#: application/controllers/admin/questiongroups.php:376
+#: application/controllers/admin/questiongroups.php:380
 #: application/controllers/admin/responses.php:239
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:60
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
@@ -1218,8 +1218,8 @@ msgstr ""
 #: application/helpers/common_helper.php:4272
 #: application/helpers/common_helper.php:4321
 #: application/helpers/qanda_helper.php:709
-#: application/helpers/qanda_helper.php:1302
-#: application/helpers/qanda_helper.php:3755
+#: application/helpers/qanda_helper.php:1304
+#: application/helpers/qanda_helper.php:3757
 #: application/views/admin/dataentry/content_view.php:151
 #: application/views/admin/dataentry/content_view.php:162
 #: tmp/runtime/twig_cache/50/50a07a3b969c6c83071fcbaba93ec6b14d6c5c464b01124f65921121efc996f5.php:80
@@ -1281,8 +1281,9 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:45
 #: application/controllers/admin/questiongroups.php:150
 #: application/controllers/admin/questiongroups.php:227
-#: application/controllers/admin/questiongroups.php:682
-#: application/controllers/admin/questiongroups.php:866
+#: application/controllers/admin/questiongroups.php:306
+#: application/controllers/admin/questiongroups.php:686
+#: application/controllers/admin/questiongroups.php:876
 #: application/controllers/admin/questions.php:188
 #: application/controllers/admin/questions.php:544
 #: application/controllers/admin/questions.php:589
@@ -2523,7 +2524,7 @@ msgstr ""
 #: application/controllers/admin/globalsettings.php:445
 #: application/core/LsDefaultDataSets.php:133
 #: application/models/Permission.php:726
-#: application/models/SurveysGroups.php:277
+#: application/models/SurveysGroups.php:263
 msgid "Survey settings"
 msgstr ""
 
@@ -2545,7 +2546,7 @@ msgid "Scope"
 msgstr ""
 
 #: application/controllers/admin/assessments.php:109
-#: application/controllers/admin/questiongroups.php:367
+#: application/controllers/admin/questiongroups.php:371
 #: application/models/QuestionBaseDataSet.php:267
 #: application/views/admin/export/statistics_subviews/_response_filter_choice.php:15
 msgid "Question group"
@@ -2944,15 +2945,15 @@ msgstr ""
 #: application/helpers/qanda_helper.php:814
 #: application/helpers/qanda_helper.php:1147
 #: application/helpers/qanda_helper.php:1205
-#: application/helpers/qanda_helper.php:3038
-#: application/helpers/qanda_helper.php:3093
-#: application/helpers/qanda_helper.php:3197
-#: application/helpers/qanda_helper.php:3238
-#: application/helpers/qanda_helper.php:3580
-#: application/helpers/qanda_helper.php:3632
-#: application/helpers/qanda_helper.php:3772
-#: application/helpers/qanda_helper.php:4531
-#: application/helpers/qanda_helper.php:4532
+#: application/helpers/qanda_helper.php:3040
+#: application/helpers/qanda_helper.php:3095
+#: application/helpers/qanda_helper.php:3199
+#: application/helpers/qanda_helper.php:3240
+#: application/helpers/qanda_helper.php:3582
+#: application/helpers/qanda_helper.php:3634
+#: application/helpers/qanda_helper.php:3774
+#: application/helpers/qanda_helper.php:4533
+#: application/helpers/qanda_helper.php:4534
 #: application/helpers/userstatistics_helper.php:640
 #: application/helpers/userstatistics_helper.php:675
 #: application/helpers/userstatistics_helper.php:1364
@@ -3515,7 +3516,7 @@ msgstr ""
 #: application/helpers/export_helper.php:1175
 #: application/helpers/export_helper.php:1305
 #: application/helpers/export_helper.php:1322
-#: application/helpers/qanda_helper.php:1673
+#: application/helpers/qanda_helper.php:1675
 #: application/helpers/questionHelper.php:700
 #: application/helpers/questionHelper.php:711
 #: application/helpers/questionHelper.php:727
@@ -3811,7 +3812,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:786
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:69
-#: application/helpers/qanda_helper.php:1293
+#: application/helpers/qanda_helper.php:1295
 #: application/views/admin/dataentry/content_view.php:244
 #: application/views/admin/themes/templateeditor_printablesurvey_quesanswer_view.php:3
 msgid "First choice"
@@ -3838,13 +3839,13 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:820
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:134
-#: application/helpers/qanda_helper.php:1342
+#: application/helpers/qanda_helper.php:1344
 msgid "Your Choices"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:821
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:140
-#: application/helpers/qanda_helper.php:1347
+#: application/helpers/qanda_helper.php:1349
 msgid "Your Ranking"
 msgstr ""
 
@@ -4792,8 +4793,8 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:678
 #: application/core/QuestionTypes/MultipleChoiceWithComments/RenderMultipleChoiceWithComments.php:116
 #: application/core/QuestionTypes/MultipleChoiceWithComments/RenderMultipleChoiceWithComments.php:167
-#: application/helpers/qanda_helper.php:1640
-#: application/helpers/qanda_helper.php:1681
+#: application/helpers/qanda_helper.php:1642
+#: application/helpers/qanda_helper.php:1683
 msgid "Make a comment on your choice here:"
 msgstr ""
 
@@ -4821,8 +4822,8 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:6690
 #: application/helpers/qanda_helper.php:650
 #: application/helpers/qanda_helper.php:878
-#: application/helpers/qanda_helper.php:1390
-#: application/helpers/qanda_helper.php:1540
+#: application/helpers/qanda_helper.php:1392
+#: application/helpers/qanda_helper.php:1542
 msgid "Other:"
 msgstr ""
 
@@ -4932,44 +4933,44 @@ msgstr ""
 msgid "Group could not be deleted"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:368
+#: application/controllers/admin/questiongroups.php:372
 msgid "Group overview"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:369
-#: application/controllers/admin/questiongroups.php:380
+#: application/controllers/admin/questiongroups.php:373
+#: application/controllers/admin/questiongroups.php:384
 #: application/core/LsDefaultDataSets.php:24
 msgid "Question list"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:370
+#: application/controllers/admin/questiongroups.php:374
 msgid "Create new question group"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:371
+#: application/controllers/admin/questiongroups.php:375
 msgid "Question group overview"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:372
+#: application/controllers/admin/questiongroups.php:376
 msgid "Question group editor"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:373
+#: application/controllers/admin/questiongroups.php:377
 msgid "General Settings"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:374
+#: application/controllers/admin/questiongroups.php:378
 #: application/models/QuestionGroup.php:280
 #: application/views/admin/super/_question_explorer.php:81
 #: application/views/admin/survey/QuestionGroups/group_view.old.php:8
 msgid "Group summary"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:375
+#: application/controllers/admin/questiongroups.php:379
 msgid "Random Group"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:377
+#: application/controllers/admin/questiongroups.php:381
 #: application/models/QuestionBaseDataSet.php:437
 #: application/views/admin/emailtemplates/emailtemplates_view.php:93
 #: application/views/admin/survey/copySurvey_view.php:43
@@ -4978,7 +4979,7 @@ msgstr ""
 msgid "Condition"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:378
+#: application/controllers/admin/questiongroups.php:382
 #: application/controllers/admin/surveyadmin.php:1624
 #: application/models/Permissiontemplates.php:202
 #: application/models/QuestionType.php:95 application/models/Surveymenu.php:333
@@ -4997,22 +4998,22 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:379
+#: application/controllers/admin/questiongroups.php:383
 msgid "Quick actions"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:384
+#: application/controllers/admin/questiongroups.php:388
 msgid "Default answer"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:386
+#: application/controllers/admin/questiongroups.php:390
 #: application/models/Surveymenu.php:328
 #: application/models/SurveymenuEntries.php:185
 #: application/models/SurveysGroups.php:141
 msgid "Order"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:390
+#: application/controllers/admin/questiongroups.php:394
 #: application/models/Question.php:888
 #: application/models/QuestionBaseDataSet.php:314
 #: application/views/survey/system/required.php:6
@@ -5028,7 +5029,7 @@ msgstr ""
 msgid "Mandatory"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:391
+#: application/controllers/admin/questiongroups.php:395
 #: application/models/ParticipantAttributeName.php:90
 #: application/models/ParticipantAttributeName.php:263
 #: application/models/QuestionBaseDataSet.php:344
@@ -5036,18 +5037,18 @@ msgstr ""
 msgid "Encrypted"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:392
+#: application/controllers/admin/questiongroups.php:396
 #: application/models/SurveysGroups.php:150
 #: application/views/admin/responses/browseallheader_view.php:86
 #: tmp/runtime/twig_cache/bc/bc6f89472f79007effa489917efe46f39bf653639d18bf9023b925a6d4aa577b.php:355
 msgid "Actions"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:569
+#: application/controllers/admin/questiongroups.php:573
 msgid "Question group successfully stored"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:649
+#: application/controllers/admin/questiongroups.php:653
 #: application/views/admin/assessments/assessments_edit.php:89
 #: application/views/admin/emailtemplates/emailtemplates_view.php:38
 #: application/views/admin/quotas/_form_langsettings.php:15
@@ -5062,16 +5063,16 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:664
+#: application/controllers/admin/questiongroups.php:668
 #: application/models/QuestionGroup.php:273
 msgid "Edit group"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:767
+#: application/controllers/admin/questiongroups.php:771
 msgid "You can't reorder in an active survey"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:856
+#: application/controllers/admin/questiongroups.php:866
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -8694,17 +8695,17 @@ msgid "Please enter your comment here"
 msgstr ""
 
 #: application/core/QuestionTypes/MultipleNumericalQuestion/RenderMultipleNumerical.php:331
-#: application/helpers/qanda_helper.php:2255
+#: application/helpers/qanda_helper.php:2257
 msgid "Please click and drag the slider handles to enter your answer."
 msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:69
-#: application/helpers/qanda_helper.php:1293
+#: application/helpers/qanda_helper.php:1295
 msgid "Choice of rank %s"
 msgstr ""
 
 #: application/core/QuestionTypes/RankingStyle/RenderRanking.php:127
-#: application/helpers/qanda_helper.php:1336
+#: application/helpers/qanda_helper.php:1338
 #: tmp/runtime/twig_cache/c3/c38216c6cb21adbd83a194af2d955298abe422b282fe21d853fde4dbf8f5d2f6.php:178
 msgid "Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item."
 msgstr ""
@@ -9247,10 +9248,10 @@ msgid "Full"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:121
-#: application/helpers/qanda_helper.php:3887
-#: application/helpers/qanda_helper.php:3901
-#: application/helpers/qanda_helper.php:3915
-#: application/helpers/qanda_helper.php:3916
+#: application/helpers/qanda_helper.php:3889
+#: application/helpers/qanda_helper.php:3903
+#: application/helpers/qanda_helper.php:3917
+#: application/helpers/qanda_helper.php:3918
 #: application/models/Assessment.php:141
 #: application/views/admin/assessments/assessments_edit.php:24
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
@@ -11194,7 +11195,7 @@ msgid "There are expressions with syntax errors in this survey."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:10240
-msgid "There are expressions with syntax errors in thisgroup."
+msgid "There are expressions with syntax errors in this group."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:10243
@@ -11388,78 +11389,78 @@ msgstr ""
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:1773
+#: application/helpers/qanda_helper.php:1775
 #: tmp/runtime/twig_cache/5b/5b5c8a827a68b16d1f49bcac3e8e7850622d98f37b5bcbdd684b8b40bcea6822.php:155
 msgid "Upload file|Upload files"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2520
+#: application/helpers/qanda_helper.php:2522
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2585
+#: application/helpers/qanda_helper.php:2587
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3491
+#: application/helpers/qanda_helper.php:3493
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3495
+#: application/helpers/qanda_helper.php:3497
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3549
+#: application/helpers/qanda_helper.php:3551
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3821
+#: application/helpers/qanda_helper.php:3823
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3880
+#: application/helpers/qanda_helper.php:3882
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3890
-#: application/helpers/qanda_helper.php:3905
+#: application/helpers/qanda_helper.php:3892
+#: application/helpers/qanda_helper.php:3907
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3895
+#: application/helpers/qanda_helper.php:3897
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3908
+#: application/helpers/qanda_helper.php:3910
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3924
+#: application/helpers/qanda_helper.php:3926
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4150
+#: application/helpers/qanda_helper.php:4152
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4209
+#: application/helpers/qanda_helper.php:4211
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4220
+#: application/helpers/qanda_helper.php:4222
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4226
+#: application/helpers/qanda_helper.php:4228
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4635
+#: application/helpers/qanda_helper.php:4637
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4639
-#: application/helpers/qanda_helper.php:5021
+#: application/helpers/qanda_helper.php:4641
+#: application/helpers/qanda_helper.php:5023
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
@@ -14262,7 +14263,7 @@ msgstr ""
 
 #: application/models/QuestionGroup.php:287
 #: application/models/QuestionGroup.php:296
-#: application/models/SurveysGroups.php:279
+#: application/models/SurveysGroups.php:265
 msgid "Delete survey group"
 msgstr ""
 
@@ -14816,17 +14817,17 @@ msgstr ""
 msgid "Survey group ID"
 msgstr ""
 
-#: application/models/SurveysGroups.php:275
+#: application/models/SurveysGroups.php:261
 msgid "Edit survey group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:279
+#: application/models/SurveysGroups.php:265
 #: application/models/TemplateConfiguration.php:770
 #: application/models/TemplateConfiguration.php:781
 msgid "Do you want to continue?"
 msgstr ""
 
-#: application/models/SurveysGroups.php:318
+#: application/models/SurveysGroups.php:305
 msgid "No parent group"
 msgstr ""
 
