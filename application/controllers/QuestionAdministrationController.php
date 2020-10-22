@@ -807,7 +807,8 @@ class QuestionAdministrationController extends LSBaseController
         // TODO: calcul correct value
         $oldCode = false;
 
-        $oQuestion = $this->getQuestionObject($qid, $type, $gid);
+        // TODO: Fix question type 'A'. Needed?
+        $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $oSubquestion = $oQuestion->getEmptySubquestion();
         $oSubquestion->qid = $qid;  // Set qid as new12345 random id.
 
@@ -852,7 +853,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $oldCode = false;
 
-        // TODO: Fix question type 'A'.
+        // TODO: Fix question type 'A'. Needed?
         $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $answerOption = $oQuestion->getEmptyAnswerOption();
 
