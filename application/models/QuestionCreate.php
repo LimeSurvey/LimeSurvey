@@ -5,6 +5,9 @@
  */
 class QuestionCreate extends Question
 {
+    /**
+     * @todo This is a factory method, not a singleton. Rename to make() or create().
+     */
     public static function getInstance($iSurveyId, $type)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -45,17 +48,17 @@ class QuestionCreate extends Question
             throw new CException("Object creation failed, input array malformed or invalid");
         }
         
-        $i10N = [];
+        $l10n = [];
         foreach ($oSurvey->allLanguages as $sLanguage) {
-            $i10N[$sLanguage] = new QuestionL10n();
-            $i10N[$sLanguage]->setAttributes([
+            $l10n[$sLanguage] = new QuestionL10n();
+            $l10n[$sLanguage]->setAttributes([
                 'qid' => $oQuestion->qid,
                 'language' => $sLanguage,
                 'question' => '',
                 'help' => '',
             ], false);
         }
-        $oQuestion->questionl10ns = $i10N;
+        $oQuestion->questionl10ns = $l10n;
 
         return $oQuestion;
     }
@@ -113,6 +116,21 @@ class QuestionCreate extends Question
         $answer = new Answer();
         $answer->sortorder = 0;
         $answer->code = 'A1';
+
+        $l10n = [];
+        foreach ($this->survey->allLanguages as $language) {
+            $l10n[$language] = new AnswerL10n();
+            $l10n[$language]->setAttributes(
+                [
+                    'aid'      => 0,
+                    'answer'   => '',
+                    'language' => $language,
+                ],
+                false
+            );
+        }
+        $answer->answerl10ns = $l10n;
+
         return $answer;
     }
 }

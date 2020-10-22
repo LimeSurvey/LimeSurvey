@@ -872,7 +872,8 @@ class QuestionAdministrationController extends LSBaseController
             //'assessmentvisible' => $assessmentvisible == "false" ? false : true,
             'assessmentvisible' => false,
             'assessment_value'  => '',
-            'answer'            => '',
+            'answerOption'      => $answerOption,
+            'answerOptionl10n'  => $answerOption->answerl10ns[$language],
             'sortorder'         => $newPosition,
             'position'          => $newPosition,
             'scale_id'          => $scale_id,
@@ -882,7 +883,7 @@ class QuestionAdministrationController extends LSBaseController
             'gid'               => $gid,
             'qid'               => $qid,
             'language'          => $language,
-            'question'          => '',
+            'question'          => $oQuestion,
             'relevance'         => '1',
             'oldCode'           => $oldCode,
         );
