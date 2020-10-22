@@ -2801,14 +2801,8 @@ class tokens extends Survey_Common_Action
      * Dispatches the beforeTokenImport event
      * @param int $iSurveyId
      * @param array $aToken
-     * @param string $sUploadCharset
-     * @param boolean $bFilterDuplicateToken
-     * @param boolean $bFilterBlankEmail
-     * @param boolean $bAllowInvalidEmail
-     * @param array $aFilterDuplicateFields
-     * @param string $sSeparator
-     * @param boolean $bShowWarningToken
      * @param int $iRecordCount
+     * @param array $aOptions
      * @return array
      */
     protected function dispatchBeforeTokenImport($iSurveyId, $aToken, $iRecordCount, $aOptions)
