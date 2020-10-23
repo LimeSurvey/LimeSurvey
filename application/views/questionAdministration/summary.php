@@ -6,7 +6,7 @@
         <!-- Question Group -->
         <tr>
             <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-            <td><em><?php echo flattenText($oQuestion->group->group_name);?></em> (ID:<?php echo $oQuestion->group->gid;?>)</td>
+            <td><em><?php echo flattenText($question->group->group_name);?></em> (ID:<?php echo $question->group->gid;?>)</td>
         </tr>
 
         <!-- Code -->
@@ -18,9 +18,9 @@
             </td>
 
             <td>
-                <?php echo $oQuestion->title; ?>
-                <?php if ($oQuestion->type != "X"): ?>
-                    <?php if ($oQuestion->mandatory == "Y") :?>
+                <?php echo $question->title; ?>
+                <?php if ($question->type != "X"): ?>
+                    <?php if ($question->mandatory == "Y") :?>
                         : (<i><?php eT("Mandatory Question"); ?></i>)
                     <?php else: ?>
                             : (<i><?php eT("Optional Question"); ?></i>)
@@ -39,12 +39,12 @@
             <td>
                 <?php
                     templatereplace(
-                        $oQuestion->questionl10ns[$oSurvey->language]->question,
-                        array('QID' => $oQuestion->qid),
+                        $question->questionl10ns[$question->survey->language]->question,
+                        array('QID' => $question->qid),
                         $aReplacementData,
                         'Unspecified',
                         false,
-                        $oQuestion->qid
+                        $question->qid
                     );
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                 ?>
@@ -61,15 +61,15 @@
             <td>
 
                 <?php
-                    if (trim($oQuestion->questionl10ns[$oSurvey->language]->help) != '')
+                    if (trim($question->questionl10ns[$question->survey->language]->help) != '')
                     {
                         templatereplace(
-                            $oQuestion->questionl10ns[$oSurvey->language]->help,
-                            array('QID' => $oQuestion->qid),
+                            $question->questionl10ns[$question->survey->language]->help,
+                            array('QID' => $question->qid),
                             $aReplacementData,
                             'Unspecified',
                             false,
-                            $oQuestion->qid
+                            $question->qid
                         );
                         echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     }
@@ -78,7 +78,7 @@
         </tr>
 
         <!-- Validation -->
-        <?php if ($oQuestion->preg):?>
+        <?php if ($question->preg):?>
             <tr >
                 <td>
                     <strong>
@@ -86,7 +86,7 @@
                     </strong>
                 </td>
                 <td>
-                    <?php echo htmlspecialchars($oQuestion->preg); ?>
+                    <?php echo htmlspecialchars($question->preg); ?>
                 </td>
             </tr>
         <?php endif; ?>
@@ -99,12 +99,12 @@
                 </strong>
             </td>
             <td>
-                <?php echo $questionTypes[$oQuestion->type]['description']; ?>
+                <?php echo $questionTypes[$question->type]['description']; ?>
             </td>
         </tr>
 
         <!-- Warning : You need to add answer -->
-        <?php if ($answersCount == 0 && $questionTypes[$oQuestion->type]['answerscales'] > 0):?>
+        <?php if ($answersCount == 0 && $questionTypes[$question->type]['answerscales'] > 0):?>
         <tr>
             <td>
             </td>
@@ -121,7 +121,7 @@
         <?php endif; ?>
 
         <!--  Warning : You need to add subquestions to this question -->
-        <?php  if ($subquestionsCount == 0 && $questionTypes[$oQuestion->type]['subquestions'] > 0): ?>
+        <?php  if ($subquestionsCount == 0 && $questionTypes[$question->type]['subquestions'] > 0): ?>
             <tr>
                 <td></td>
                 <td>
@@ -137,7 +137,7 @@
         <?php endif; ?>
 
         <!-- Option 'Other' -->
-        <?php if ($oQuestion->type == "M" or $oQuestion->type == "P"):?>
+        <?php if ($question->type == "M" or $question->type == "P"):?>
             <tr>
                 <td>
                     <strong>
@@ -145,7 +145,7 @@
                     </strong>
                 </td>
                 <td>
-                    <?php if ($oQuestion->other == "Y"):?>
+                    <?php if ($question->other == "Y"):?>
                         <?php eT("Yes"); ?>
                     <?php else:?>
                         <?php eT("No"); ?>
@@ -155,7 +155,7 @@
         <?php endif; ?>
 
         <!-- Mandatory -->
-        <?php if (isset($oQuestion->mandatory) and ($oQuestion->type != "X") and ($oQuestion->type != "|")):?>
+        <?php if (isset($question->mandatory) and ($question->type != "X") and ($question->type != "|")):?>
             <tr>
                 <td>
                     <strong>
@@ -163,7 +163,7 @@
                     </strong>
                 </td>
                 <td>
-                    <?php if ($oQuestion->mandatory == "Y") : ?>
+                    <?php if ($question->mandatory == "Y") : ?>
                         <?php eT("Yes"); ?>
                     <?php else:?>
                         <?php eT("No"); ?>
@@ -173,12 +173,12 @@
         <?php endif; ?>
 
         <!-- Relevance equation -->
-        <?php if (trim($oQuestion->relevance) != ''): ?>
+        <?php if (trim($question->relevance) != ''): ?>
             <tr>
                 <td><?php eT("Relevance equation:"); ?></td>
                 <td>
                     <?php
-                    LimeExpressionManager::ProcessString("{" . $oQuestion->relevance . "}", $oQuestion->qid);    // tests Relevance equation so can pretty-print it
+                    LimeExpressionManager::ProcessString("{" . $question->relevance . "}", $question->qid);    // tests Relevance equation so can pretty-print it
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
                 </td>
@@ -186,12 +186,12 @@
         <?php endif; ?>
 
         <!-- Group Relevance equation -->
-        <?php if (trim($oQuestion->group->grelevance)!=''): ?>
+        <?php if (trim($question->group->grelevance)!=''): ?>
             <tr>
                 <td><?php eT("Group relevance:"); ?></td>
                 <td>
                     <?php
-                    LimeExpressionManager::ProcessString("{" . $oQuestion->group->grelevance . "}", $oQuestion->qid);
+                    LimeExpressionManager::ProcessString("{" . $question->group->grelevance . "}", $question->qid);
                     echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                     ?>
                 </td>
@@ -207,13 +207,13 @@
                     <td>
                         <?php
                             if (isset($setting->expression) && $setting->expression == 2) {
-                                LimeExpressionManager::ProcessString('{' . $setting->value . '}', $oQuestion->qid);
+                                LimeExpressionManager::ProcessString('{' . $setting->value . '}', $question->qid);
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             } else {
                                 //if ($setting->aFormElementOptions->i18n == false) {
                                     //echo htmlspecialchars($setting->aFormElementOptions->value);
                                 //} else {
-                                    //echo htmlspecialchars($setting['aFormElementOptions'][$oSurvey->language]['value']);
+                                    //echo htmlspecialchars($setting['aFormElementOptions'][$question->survey->language]['value']);
                                 //}
                             }
                         ?>

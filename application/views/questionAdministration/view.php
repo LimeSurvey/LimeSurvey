@@ -29,9 +29,22 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
 
         <div id="advancedQuestionEditor">
             <div class="container-center scoped-new-questioneditor">
-                <div class="btn-group pull-right clear">
-                    <button id="questionOverviewButton" class="btn btn-default"><?= gT('Question overview'); ?></button>
-                    <button id="questionEditorButton" class="btn btn-default" ><?= gT('Question editor'); ?></button>
+                <div class="btn-group pull-right clear" role="group" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input 
+                            type="radio" 
+                            name="question-editor-switch"
+                            checked="checked"
+                        />
+                        <?= gt('Question overview'); ?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input
+                            type="radio"
+                            name="question-editor-switch"
+                        />
+                        <?= gT('Question editor'); ?>
+                    </label>
                 </div>
 
                 <div class="row">
@@ -48,7 +61,6 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                             "summary",
                             [
                                 'oQuestion'         => $oQuestion,
-                                'oSurvey'           => $oSurvey,
                                 'questionTypes'     => $aQuestionTypeStateList,
                                 'answersCount'      => $answersCount,
                                 'subquestionsCount' => $subquestionsCount,
