@@ -570,6 +570,114 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$iSurveyId));
     }
 
+    /**
+     * View the current question list.
+     *
+     * @param integer $surveyid           Survey ID
+     * @param integer $gid                Group ID
+     * @param string  $landOnSideMenuTab  Name of side menu tab. Default behavior is to land on the structure tab.
+     * @return void
+     * @throws CHttpException
+     */
+    public function view($surveyid, $gid, $landOnSideMenuTab = 'structure')
+    {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(array('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid));
+        }                
+        $aData = array();
+        $aData['surveyid'] = $iSurveyID = $surveyid;
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['gid'] = $gid;
+        $baselang = $survey->language;
+        if ($gid!==null) {
+            $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
+        }
+        $aData['condarray'] = $condarray ?? [];
+
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('questiongroupeditor');
+
+        $oQuestionGroup = $this->_getQuestionGroupObject($gid);
+        $grow           = $oQuestionGroup->attributes;
+
+        $grow = array_map('flattenText', $grow);
+
+        $aData['oQuestionGroup'] = $oQuestionGroup;
+        $aData['surveyid'] = $surveyid;
+        $aData['gid'] = $gid;
+        $aData['grow'] = $grow;
+
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
+            . " (".gT("ID").":".$iSurveyID.")";
+        $aData['questiongroupbar']['buttons']['view'] = true;
+
+        $aData['questiongroupbar']['buttonspreview'] = true;
+        $aData['questiongroupbar']['savebutton']['form'] = true;
+        $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
+        if (sanitize_paranoid_string(App()->request->getParam('sa') == 'add')) {
+            $aData['questiongroupbar']['importbutton'] = true;
+        }
+
+        ///////////
+        // sidemenu
+        // TODO: Code duplication (Line 611 - 614) side menu state
+        $aData['sidemenu']['state'] = true;
+        $aData['sidemenu']['questiongroups'] = true;
+        $aData['sidemenu']['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
+        $aData['sidemenu']['explorer']['state'] = true;
+        $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
+        $aData['sidemenu']['explorer']['qid'] = false;
+        $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
+
+        $aData['jsData'] = [
+            'surveyid' => $iSurveyID,
+            'gid' => $gid,
+            'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
+            'connectorBaseUrl' => $this->getController()->createUrl(
+                'admin/questiongroups',
+                ['sid' => $iSurveyID, 'sa' => '']
+            ),
+            'openQuestionUrl' => $this->getController()->createUrl(
+                'questionEditor/view/',
+                ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']
+            ),
+            'createQuestionUrl' => $this->getController()->createUrl(
+                "questionEditor/view/",
+                ["surveyid" =>  $surveyid, 'gid' => $gid]
+            ),
+            'i10N' => [
+                'Question group' => gT('Question group'),
+                'Group overview' => gT('Group overview'),
+                'Question list' => gT('Question list'),
+                'Create new question group' => gT('Create new question group'),
+                'Question group overview' => gT('Question group overview'),
+                'Question group editor' => gT('Question group editor'),
+                'General Settings' => gT("General Settings"),
+                'Group summary' => gT('Group summary'),
+                'Random Group' => gT('Random Group'),
+                'Title' => gT('Title'),
+                'Condition' => gT('Condition'),
+                'Description' => gT('Description'),
+                'Quick actions' => gT('Quick actions'),
+                'Question list' => gT('Question list'),
+                'Subquestions' => gT('Subquestions'),
+                'Answeroptions' => gT('Answer options'),
+                'Question type' => gT('Question type'),
+                'Default answer' => gT('Default answer'),
+                'Create question' => gT('Create question'),
+                'Order' => gT('Order'),
+                'Question code' => gT('Code'),
+                'Question' => gT('Question'),
+                'QuestionType' => gT('Question type'),
+                'Mandatory' => gT('Mandatory'),
+                'Encrypted' => gT('Encrypted'),
+                'Actions' => gT('Actions'),
+               ]
+        ];
+
+        $this->_renderWrappedTemplate('survey/QuestionGroups', 'group_view', $aData);
+    }
 
     /**
      * Ajax request
@@ -877,6 +985,107 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
     /**
      * Returns the rendered question group topbar.
+     *
+     * @param integer $surveyid ID of survey
+     * @return void
+     * @todo Used?
+     */
+    public function updateOrderWithQuestions($surveyid)
+    {
+        $grouparray = App()->request->getPost('grouparray', []);
+        foreach ($grouparray as $aQuestiongroup) {
+            $oQuestiongroups = QuestionGroup::model()->findAll(
+                "gid=:gid AND sid=:sid",
+                [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]
+            );
+            array_map(function ($oQuestiongroup) use ($aQuestiongroup) {
+                $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                $oQuestiongroup->save();
+            }, $oQuestiongroups);
+        }
+    }
+
+    /**
+     * Provides an interface for updating a group
+     *
+     * @access public
+     * @param int $gid
+     * @return void
+     */
+    public function update($gid)
+    {
+        $gid = (int) $gid;
+        $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
+        $surveyid = $group->sid;
+        $survey = Survey::model()->findByPk($surveyid);
+
+        if (!App()->request->isPostRequest) {
+            $this->getController()->redirect(
+                array('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid)
+            );
+        }
+
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            App()->loadHelper('surveytranslator');
+
+            foreach ($survey->allLanguages as $grplang) {
+                if (isset($grplang) && $grplang != "") {
+                    $group_name = $_POST['group_name_'.$grplang];
+                    $group_description = $_POST['description_'.$grplang];
+
+                    $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                    $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name = fixCKeditorText($group_name);
+                    $group_description = fixCKeditorText($group_description);
+
+                    $aData = array(
+                        'randomization_group' => $_POST['randomization_group'],
+                        'grelevance' => $_POST['grelevance'],
+                    );
+                    $group = QuestionGroup::model()->findByPk($gid);
+                    foreach ($aData as $k => $v) {
+                        $group->$k = $v;
+                    }
+
+                    // TODO: unused variable $ugresult
+                    $ugresult = $group->save();
+
+                    $aData = array(
+                        'group_name' => $group_name,
+                        'description' => $group_description,
+                    );
+                    $condition = array(
+                        'language' => $grplang,
+                        'gid' => $gid,
+                    );
+                    $oGroupLS = QuestionGroupL10n::model()->findByAttributes($condition);
+                    foreach ($aData as $k => $v) {
+                        $oGroupLS->$k = $v;
+                    }
+                    // TODO: unused variable $ugresult2
+                    $ugresult2 = $oGroupLS->save();
+                }
+            }
+
+            Yii::app()->setFlashMessage(gT("Question group successfully saved."));
+
+            if (App()->request->getPost('close-after-save') === 'true') {
+                $this->getController()->redirect(
+                    array('admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid)
+                );
+            }
+
+            $this->getController()->redirect(array('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid));
+        } else {
+            App()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(App()->request->urlReferrer);
+        }
+    }
+
+    /**
+     * @todo document me.
      *
      * @param integer $sid ID of survey
      * @param null |integer   $gid ID of group
