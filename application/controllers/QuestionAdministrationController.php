@@ -116,30 +116,6 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $this->renderFormAux($question);
-        //$this->renderOverview();
-?>
-                <div class="row">
-                    <!-- Question summary -->
-                    <div class="pagetitle h3">
-                        <?php eT('Question summary'); ?>&nbsp;
-                        <small>
-                            <em><?= $question->title; ?></em>&nbsp;
-                            (ID: <?php echo (int) $question->qid;?>)
-                        </small>
-                    </div>
-                    <div class="row">
-                        <?php $this->renderPartial(
-                            "summary",
-                            [
-                                'question'          => $question,
-                                'questionTypes'     => QuestionType::modelsAttributes(),
-                                'answersCount'      => $answersCount,
-                                'subquestionsCount' => $subquestionsCount,
-                                'advancedSettings'  => $advancedSettings
-                            ]
-                        ); ?>
-                    </div>
-<?php
     }
 
     /**

@@ -1160,6 +1160,12 @@ laname: $('#laname').val(), lid, code, answers,
     });
   });
 
+  $(document).on("ready pjax:scriptcomplete", function () {
+    // Hide all languages except main.
+    $('.lang-hide').hide();
+    $('.lang-' + languageJson.langs[0]).show();
+  });
+
   // Return public functions to LS.questionEditor module.
   return {
     /**

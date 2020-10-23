@@ -28,47 +28,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
         <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor"/>
 
         <div id="advancedQuestionEditor">
-            <div class="container-center scoped-new-questioneditor">
-                <div class="btn-group pull-right clear" role="group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input 
-                            type="radio" 
-                            name="question-editor-switch"
-                            checked="checked"
-                        />
-                        <?= gt('Question overview'); ?>
-                    </label>
-                    <label class="btn btn-default">
-                        <input
-                            type="radio"
-                            name="question-editor-switch"
-                        />
-                        <?= gT('Question editor'); ?>
-                    </label>
-                </div>
 
-                <div class="row">
-                    <!-- Question summary -->
-                    <div class="pagetitle h3">
-                        <?php eT('Question summary'); ?>&nbsp;
-                        <small>
-                            <em><?= $oQuestion->title; ?></em>&nbsp;
-                            (ID: <?php echo (int) $oQuestion->qid;?>)
-                        </small>
-                    </div>
-                    <div class="row">
-                        <?php $this->renderPartial(
-                            "summary",
-                            [
-                                'oQuestion'         => $oQuestion,
-                                'questionTypes'     => $aQuestionTypeStateList,
-                                'answersCount'      => $answersCount,
-                                'subquestionsCount' => $subquestionsCount,
-                                'advancedSettings'  => $advancedSettings
-                            ]
-                        ); ?>
-                    </div>
-                </div>
             </div>
         </div>
         </form>

@@ -3,17 +3,45 @@
     []
 ); ?>
 
+<style>
+/* TODO: Move where? */
+.scoped-unset-pointer-events {
+    pointer-events: none;
+}
+</style>
+
 <!-- Create form for question -->
 <div class="side-body">
+
     <div class="container-fluid">
         <?php echo CHtml::form(
             ['questionAdministration/saveQuestionData'],
             'post',
             ['id'    => 'edit-question-form']
         ); ?>
+
+            <!-- Question overview switch -->
+            <div class="btn-group pull-right clear" role="group" data-toggle="buttons">
+                <label class="btn btn-default active">
+                    <input 
+                        type="radio" 
+                        name="question-overview-switch"
+                        checked="checked"
+                    />
+                    <?= gt('Question overview'); ?>
+                </label>
+                <label class="btn btn-default">
+                    <input
+                        type="radio"
+                        name="question-overview-switch"
+                    />
+                    <?= gT('Question editor'); ?>
+                </label>
+            </div>
+
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
             <input type="hidden" name="question[qid]" value="0" />
-            <div id="advancedQuestionEditor">
+            <div id="advanced-question-editor">
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">
                         <x-test id="action::addQuestion"></x-test>
@@ -82,13 +110,30 @@
             </div>
         </form>
     </div>
-</div>
 
-<!-- TODO: Move to where? -->
-<script>
-$(document).on("ready pjax:scriptcomplete", function () {
-    // Hide all languages except main.
-    $('.lang-hide').hide();
-    $('.lang-<?= $oSurvey->language; ?>').show();
-});
-</script>
+    <!-- Show summary page if we're editing or viewing. -->
+    <?php if ($question->qid !== 0): ?>
+        <div class="row" id="question-overview">
+            <!-- Question summary -->
+            <div class="pagetitle h3">
+                <?php eT('Question summary'); ?>&nbsp;
+                <small>
+                    <em><?= $question->title; ?></em>&nbsp;
+                    (ID: <?php echo (int) $question->qid;?>)
+                </small>
+            </div>
+            <div class="row">
+                <?php $this->renderPartial(
+                    "summary",
+                    [
+                        'question'         => $question,
+                        'questionTypes'     => $aQuestionTypeStateList,
+                        'answersCount'      => count($question->answers),
+                        'subquestionsCount' => count($question->subquestions),
+                        'advancedSettings'  => $advancedSettings
+                    ]
+                ); ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
