@@ -13,31 +13,35 @@
 <!-- Create form for question -->
 <div class="side-body">
 
+    <!-- Question overview switch -->
+    <div
+        class="btn-group pull-right clear"
+        role="group"
+        data-toggle="buttons"
+    >
+        <label class="btn btn-default active" onclick="LS.questionEditor.showOverview();">
+            <input 
+                type="radio" 
+                name="question-overview-switch"
+                checked="checked"
+            />
+            <?= gt('Question overview'); ?>
+        </label>
+        <label class="btn btn-default" onclick="LS.questionEditor.showEditor();">
+            <input
+                type="radio"
+                name="question-overview-switch"
+            />
+            <?= gT('Question editor'); ?>
+        </label>
+    </div>
+
     <div class="container-fluid">
         <?php echo CHtml::form(
             ['questionAdministration/saveQuestionData'],
             'post',
-            ['id'    => 'edit-question-form']
+            ['id' => 'edit-question-form']
         ); ?>
-
-            <!-- Question overview switch -->
-            <div class="btn-group pull-right clear" role="group" data-toggle="buttons">
-                <label class="btn btn-default active">
-                    <input 
-                        type="radio" 
-                        name="question-overview-switch"
-                        checked="checked"
-                    />
-                    <?= gt('Question overview'); ?>
-                </label>
-                <label class="btn btn-default">
-                    <input
-                        type="radio"
-                        name="question-overview-switch"
-                    />
-                    <?= gT('Question editor'); ?>
-                </label>
-            </div>
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
             <input type="hidden" name="question[qid]" value="0" />
@@ -113,8 +117,10 @@
 
     <!-- Show summary page if we're editing or viewing. -->
     <?php if ($question->qid !== 0): ?>
-        <div class="row" id="question-overview">
+        <div class="container-fluid" id="question-overview">
+            <form>
             <!-- Question summary -->
+            <div class="container-center scoped-new-questioneditor">
             <div class="pagetitle h3">
                 <?php eT('Question summary'); ?>&nbsp;
                 <small>
@@ -134,6 +140,8 @@
                     ]
                 ); ?>
             </div>
+            </div>
+            </form>
         </div>
     <?php endif; ?>
 </div>

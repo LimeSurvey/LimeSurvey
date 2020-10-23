@@ -1164,6 +1164,8 @@ laname: $('#laname').val(), lid, code, answers,
     // Hide all languages except main.
     $('.lang-hide').hide();
     $('.lang-' + languageJson.langs[0]).show();
+
+    $('#advanced-question-editor').hide();
   });
 
   // Return public functions to LS.questionEditor module.
@@ -1230,6 +1232,16 @@ laname: $('#laname').val(), lid, code, answers,
         // eslint-disable-next-line no-alert
         alert(`Internal error: ${ex}`);
       }
+    },
+
+    showOverview: function () {
+      $('#advanced-question-editor').hide();
+      $('#question-overview').show();
+    },
+
+    showEditor: function () {
+      $('#question-overview').hide();
+      $('#advanced-question-editor').show();
     }
   };
 })();
