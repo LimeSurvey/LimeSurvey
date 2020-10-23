@@ -13,10 +13,10 @@
                     'text'=>gT('Close'),
                 ),
                 'savebutton' => array(
-                    'form' => Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','update') ? 'surveys-groups-form' : null,
+                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
                 ),
                 'saveandclosebutton' => array(
-                    'form' => Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','update') ? 'surveys-groups-form' : null,
+                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
                 )
             )
         )); ?>
@@ -46,12 +46,12 @@
             </div>
             <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
                 <div id="settingsForThisGroup" class="tab-pane">
-                    <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
+                    <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model,'aRigths' => $aRigths)); ?>
                 </div>
             <?php endif;?>
             <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'security','update')):?>
                 <div id="securityForThisGroup" class="tab-pane">
-                    <?php $this->renderPartial('./surveysgroups/_permission', array('model'=>$model)); ?>
+                    <?php $this->renderPartial('./surveysgroups/_permission', array('model'=>$model,'aRigths' => $aRigths)); ?>
                 </div>
             <?php endif;?>
             <div id="templateSettingsFortThisGroup" class="tab-pane">

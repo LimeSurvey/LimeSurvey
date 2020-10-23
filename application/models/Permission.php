@@ -585,9 +585,9 @@ class Permission extends LSActiveRecord
         if (!$oGroup) {
             return false;
         }
-        // Get global correspondance for surveygroups rigth, keep it in case in develop
+        // Get global correspondance for surveysgroups rigth, keep it in case in develop
         $sGlobalCRUD = $sCRUD;
-        return $this->hasGlobalPermission('surveygroups', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveygroup', $sPermission, $sCRUD, $iUserID);
+        return $this->hasGlobalPermission('surveysgroups', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -601,7 +601,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveysInGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = SurveysInGroups::model()->findByPk($iGroupId);
+        $oGroup = SurveysInGroup::model()->findByPk($iGroupId);
         if (!$oGroup) {
             return false;
         }
@@ -612,7 +612,7 @@ class Permission extends LSActiveRecord
         if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveyingroup', $sPermission, $sCRUD, $iUserID);
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -685,7 +685,12 @@ class Permission extends LSActiveRecord
      */
     protected function getEntityOwnerId($iEntityID, $sEntityName)
     {
-        if(method_exists($sEntityName,'model')) {
+        /* know invalid entity */
+        if (in_array($sEntityName, array('global','template'))) {
+            return null;
+        }
+        /* allow to get it dynamically from any model */
+        if(method_exists($sEntityName,'model') && $sEntityName::model()->findByPk($iEntityID)) {
             // Or check if $sEntityName is a child of LSActiveRecord ?
             return $sEntityName::model()->findByPk($iEntityID)->getOwnerId();
         }
@@ -801,7 +806,7 @@ class Permission extends LSActiveRecord
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
                 'img' => ' icon-list',
             ),
-            'surveygroups' => array(
+            'surveysgroups' => array(
                 'create' => true,
                 'read' => true,
                 'delete' => true,

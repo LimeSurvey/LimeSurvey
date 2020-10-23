@@ -63,17 +63,20 @@ class SurveysGroupsController extends Survey_Common_Action
         }
 
         $aData['model'] = $model;
+        $aData['aRigths'] = array(
+            'update' => true,
+            'delete' => false,
+        );
         $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
         $aData['fullpagebar']['returnbutton'] = array(
             'url'=>'admin/survey/sa/listsurveys#surveygroups',
             'text'=>gT('Close'),
         );
-
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
     /**
-     * Updates a particular model.
+     * Show and pdates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
@@ -81,10 +84,10 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $bRedirect = 0;
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'update')) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
-        }
         if (!empty(App()->getRequest()->getPost('SurveysGroups'))) {
+            if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
             $model->attributes = $postSurveysGroups;// No filter ?
             // prevent loop
@@ -109,7 +112,10 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurveySearch = new Survey('search');
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
-
+        $aData['aRigths'] = array(
+            'update' => Permission::model()->hasSurveyGroupPermission($id, 'group', 'update'),
+            'delete' => Permission::model()->hasSurveyGroupPermission($id, 'group', 'delete'),
+        );
         $oTemplateOptions           = new TemplateConfiguration();
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
