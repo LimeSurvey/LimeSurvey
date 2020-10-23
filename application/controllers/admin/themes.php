@@ -165,18 +165,126 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * Responsible to import a template archive.
+     * Render the Upload theme view
      *
      * @access public
      * @return void
      */
     public function upload()
     {
-        $action = returnGlobal('action');
-        if ($action == 'templateuploadimagefile' && Yii::app()->request->getPost('surveyid') ) {
-            Yii::app()->getController()->forward("/admin/survey/sa/uploadimagefile/");
+        $sTemplateName = Yii::app()->request->getPost('templatename');
+        if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
+            Yii::app()->loadHelper('admin/template');
+            $lid = returnGlobal('lid');
+
+            $aViewUrls = 'importform_view';
+            $aData = array('lid' => $lid);
+
+            $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
+        } else {
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array("admin/themeoptions"));
+        }
+    }
+
+    /**
+     * Responsible to import a template image file.
+     * 
+     * Called from Theme Options
+     *
+     * @access public
+     * @return void
+     */
+    public function templateuploadimagefile()
+    {
+        if (Yii::app()->request->getPost('surveyid') ) {
+            Yii::app()->getController()->forward("/admin/survey/sa/uploadimagefile");
             Yii::app()->end();
         }
+        $sTemplateName = Yii::app()->request->getPost('templatename');
+        if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
+            Yii::app()->loadHelper('admin/template');
+            $uploadresult = "";
+            $success = false;
+            $debug = [];
+            
+            $oTemplateConfiguration = Template::getInstance($sTemplateName);
+
+            $debug[] = $sTemplateName;
+            $debug[] = $oTemplateConfiguration;
+            if (Yii::app()->getConfig('demoMode')) {
+                $uploadresult = gT("Demo mode: Uploading images is disabled.");
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                    false,
+                    false
+                );
+            }
+
+            $debug[] = $_FILES;
+
+            // Check file size and render JSON on error
+            checkUploadedFileSizeAndRenderJson('file', $debug);
+            
+            $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
+            $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
+            if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
+                $message = $checkImageContent['check'] === false 
+                    ? $checkImageContent['uploadresult'] 
+                    : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
+                $debug = $checkImageContent['check'] === false 
+                    ? $checkImageContent['debug'] 
+                    : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
+                    false,
+                    false
+                );
+            }
+
+            $destdir = $oTemplateConfiguration->filesPath;
+            if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
+                $destdir = $oTemplateConfiguration->generalFilesPath;
+            }
+
+            $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
+            $fullfilepath = $destdir.$filename;
+            $debug[] = $destdir;
+            $debug[] = $filename;
+            $debug[] = $fullfilepath;
+            if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+                $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+            } else {
+                $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+                Yii::app()->user->setFlash('success', "Data saved!");
+                $success = true;
+            };
+
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+
+        } else {
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array("admin/themeoptions"));
+        }
+    }
+
+    /**
+     * Responsible to import a template archive.
+     * 
+     * Called from theme list and editor
+     *
+     * @access public
+     * @return void
+     */
+    public function templateupload()
+    {
         $sTemplateName = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             Yii::app()->loadHelper('admin/template');
@@ -184,149 +292,76 @@ class themes extends Survey_Common_Action
             $uploadresult = "";
             $success = false;
             $debug = [];
-            if ($action == 'templateuploadimagefile') {
-                // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
-                // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
-                $oTemplateConfiguration = Template::getInstance($sTemplateName);
+            
+            Yii::app()->loadLibrary('admin.pclzip');
 
-                $debug[] = $sTemplateName;
-                $debug[] = $oTemplateConfiguration;
-                if (Yii::app()->getConfig('demoMode')) {
-                    $uploadresult = gT("Demo mode: Uploading images is disabled.");
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $debug[] = $_FILES;
-                if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-                    $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
-                $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
-                $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
-                if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
-                    $message = $checkImageContent['check'] === false 
-                        ? $checkImageContent['uploadresult'] 
-                        : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
-                    $debug = $checkImageContent['check'] === false 
-                        ? $checkImageContent['debug'] 
-                        : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
-                    return Yii::app()->getController()->renderPartial(
-                        '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
-                        false,
-                        false
-                    );
-                }
+            // Redirect back if demo mode is set.
+            $this->checkDemoMode();
 
-                $destdir = $oTemplateConfiguration->filesPath;
-                if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
-                    $destdir = $oTemplateConfiguration->generalFilesPath;
-                }
+            // Redirect back at file size error.
+            $this->checkFileSizeError();
 
-                $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
-                $fullfilepath = $destdir.$filename;
-                $debug[] = $destdir;
-                $debug[] = $filename;
-                $debug[] = $fullfilepath;
-                if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
-                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                } else {
-                    $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                    Yii::app()->user->setFlash('success', "Data saved!");
-                    $success = true;
-                };
+            $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+            $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
-                return Yii::app()->getController()->renderPartial(
-                    '/admin/super/_renderJson',
-                    array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                    false,
-                    false
-                );
+            // Redirect back if $destdir is not writable OR if it already exists.
+            $this->checkDestDir($destdir, $sNewDirectoryName);
 
-            } else if ($action == 'templateupload') {
+            // All OK if we're here.
+            mkdir($destdir);
 
-                Yii::app()->loadLibrary('admin.pclzip');
+            $aImportedFilesInfo = array();
+            $aErrorFilesInfo = array();
 
-                // Redirect back if demo mode is set.
-                $this->checkDemoMode();
+            if (is_file($_FILES['the_file']['tmp_name'])) {
+                $zip = new PclZip($_FILES['the_file']['tmp_name']);
+                $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
 
-                // Redirect back at file size error.
-                $this->checkFileSizeError();
-
-                $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-                $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
-
-                // Redirect back if $destdir is not writable OR if it already exists.
-                $this->checkDestDir($destdir, $sNewDirectoryName);
-
-                // All OK if we're here.
-                mkdir($destdir);
-
-                $aImportedFilesInfo = array();
-                $aErrorFilesInfo = array();
-
-                if (is_file($_FILES['the_file']['tmp_name'])) {
-                    $zip = new PclZip($_FILES['the_file']['tmp_name']);
-                    $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
-
-                    if ($aExtractResult === 0) {
-                        Yii::app()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
-                        rmdirr($destdir);
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    } else {
-                        // Successfully unpacked
-                        foreach ($aExtractResult as $sFile) {
-                            if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
-                                $aErrorFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                );
-                            } else {
-                                $aImportedFilesInfo[] = array(
-                                    "filename" => $sFile['stored_filename'],
-                                    "status" => gT("OK"),
-                                    'is_folder' => $sFile['folder']
-                                );
-                            }
-                        }
-
-                        if (Template::checkIfTemplateExists($sNewDirectoryName)) {
-                            Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
-                            rmdirr($destdir);
-                            $this->getController()->redirect(array("admin/themes/sa/upload"));
-                        }
-                        TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
-                    }
-
-                    if (count($aImportedFilesInfo) == 0) {
-                        Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
-                        $this->getController()->redirect(array("admin/themes/sa/upload"));
-                    }
-                } else {
-                    Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+                if ($aExtractResult === 0) {
+                    Yii::app()->user->setFlash('error', gT("This file is not a valid ZIP file archive. Import failed."));
                     rmdirr($destdir);
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
+                } else {
+                    // Successfully unpacked
+                    foreach ($aExtractResult as $sFile) {
+                        if ($sFile['status'] == 'skipped' && !$sFile['folder']) {
+                            $aErrorFilesInfo[] = array(
+                                "filename" => $sFile['stored_filename'],
+                            );
+                        } else {
+                            $aImportedFilesInfo[] = array(
+                                "filename" => $sFile['stored_filename'],
+                                "status" => gT("OK"),
+                                'is_folder' => $sFile['folder']
+                            );
+                        }
+                    }
+
+                    if (Template::checkIfTemplateExists($sNewDirectoryName)) {
+                        Yii::app()->user->setFlash('error', gT("Can not import a theme that already exists!"));
+                        rmdirr($destdir);
+                        $this->getController()->redirect(array("admin/themes/sa/upload"));
+                    }
+                    TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
 
-                $aViewUrls = 'importuploaded_view';
-                $aData = array(
-                    'aImportedFilesInfo' => $aImportedFilesInfo,
-                    'aErrorFilesInfo' => $aErrorFilesInfo,
-                    'lid' => $lid,
-                    'newdir' => $sNewDirectoryName,
-                );
+                if (count($aImportedFilesInfo) == 0) {
+                    Yii::app()->user->setFlash('error', gT("This ZIP archive contains no valid template files. Import failed."));
+                    $this->getController()->redirect(array("admin/themes/sa/upload"));
+                }
             } else {
-                $aViewUrls = 'importform_view';
-                $aData = array('lid' => $lid);
+                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+                rmdirr($destdir);
+                $this->getController()->redirect(array("admin/themes/sa/upload"));
             }
+
+            $aViewUrls = 'importuploaded_view';
+            $aData = array(
+                'aImportedFilesInfo' => $aImportedFilesInfo,
+                'aErrorFilesInfo' => $aErrorFilesInfo,
+                'lid' => $lid,
+                'newdir' => $sNewDirectoryName,
+            );
 
             $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         } else {
@@ -338,20 +373,29 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * Responsible to import a template file.
+     * Responsible to import a file into a template.
+     * 
+     * Called from Theme Editor
      *
      * @access public
      * @return void
      */
     public function uploadfile()
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+        $editfile = App()->request->getPost('editfile');
+        $templatename = returnGlobal('templatename');
+        $screenname = returnGlobal('screenname');
+        if (empty($screenname)) {
+            $screenname = 'welcome';
+        }
 
-            $action                 = returnGlobal('action');
-            $editfile               = App()->request->getPost('editfile');
-            $templatename           = returnGlobal('templatename');
+        $redirectUrl = array('admin/themes', 'sa'=>'view', 'editfile'=>$editfile, 'screenname'=>$screenname, 'templatename'=>$templatename);
+
+        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+            // Check file size and redirect on error
+            checkUploadedFileSizeAndRedirect('upload_file', $redirectUrl);
+
             $oEditedTemplate        = Template::getInstance($templatename);
-            $screenname             = returnGlobal('screenname');
             $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
@@ -368,30 +412,32 @@ class themes extends Survey_Common_Action
 
             $fullfilepath = $dirfilepath.$filename;
             $status       = 'error';
-
-            if ($action == "templateuploadfile") {
-                if (Yii::app()->getConfig('demoMode')) {
-                    $uploadresult = gT("Demo mode: Uploading template files is disabled.");
-                } elseif ($filename != $_FILES['upload_file']['name']) {
-                    $uploadresult = gT("This filename is not allowed to be uploaded.");
-                } elseif (!in_array(strtolower(substr(strrchr($filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
-                    $uploadresult = gT("This file type is not allowed to be uploaded.");
-                } else {
-                    //Uploads the file into the appropriate directory
-                    if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
-                        $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                    } else {
-                        $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                        Template::model()->findByPk($templatename)->resetAssetVersion(); // Upload a files, asset need to be resetted (maybe)
-                        $status = 'success';
-                    }
-                }
+            
+            if (Yii::app()->getConfig('demoMode')) {
+                $uploadresult = gT("Demo mode: Uploading template files is disabled.");
                 Yii::app()->setFlashMessage($uploadresult, $status);
+                $this->getController()->redirect($redirectUrl);
             }
+
+            if ($filename != $_FILES['upload_file']['name']) {
+                $uploadresult = gT("This filename is not allowed to be uploaded.");
+            } elseif (!in_array(strtolower(substr(strrchr($filename, '.'), 1)), explode(",", $allowedthemeuploads))) {
+                $uploadresult = gT("This file type is not allowed to be uploaded.");
+            } else {
+                //Uploads the file into the appropriate directory
+                if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
+                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+                } else {
+                    $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+                    Template::model()->findByPk($templatename)->resetAssetVersion(); // Upload a files, asset need to be resetted (maybe)
+                    $status = 'success';
+                }
+            }
+            Yii::app()->setFlashMessage($uploadresult, $status);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-        $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>$editfile, 'screenname'=>$screenname, 'templatename'=>$templatename));
+        $this->getController()->redirect($redirectUrl);
     }
 
 
@@ -1217,16 +1263,7 @@ class themes extends Survey_Common_Action
      */
     protected function checkFileSizeError()
     {
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            Yii::app()->setFlashMessage(
-                sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                ),
-                'error'
-            );
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
-        }
+        checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
     }
 
     /**

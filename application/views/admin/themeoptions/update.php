@@ -144,7 +144,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                         <?php printf(gT("Upload an image (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                                     </div>
                                     <div class="col-sm-6">
-                                    <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'uploadimage', 'name'=>'uploadimage', 'enctype'=>'multipart/form-data')); ?>
+                                    <?php echo TbHtml::form(array('admin/themes/sa/templateuploadimagefile'), 'post', array('id'=>'uploadimage', 'name'=>'uploadimage', 'enctype'=>'multipart/form-data')); ?>
                                         <span id="fileselector">
                                             <label class="btn btn-default col-xs-8" for="upload_image">
                                                 <input class="hidden" id="upload_image" name="upload_image" type="file" >
