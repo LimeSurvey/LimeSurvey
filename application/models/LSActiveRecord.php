@@ -455,4 +455,14 @@ class LSActiveRecord extends CActiveRecord
     {
         return null;
     }
+
+    /**
+     * Get Permission data for Permission object
+     * @param string $key
+     * @return array
+     */
+    public static function getPermissionData($key = null)
+    {
+        return array();
+    }
 }
