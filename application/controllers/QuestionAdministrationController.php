@@ -344,11 +344,12 @@ class QuestionAdministrationController extends LSBaseController
             ]
         );
 
+        $this->aData['renderSpecificTopbar'] = 'editQuestiontopbar_view';
         $this->render(
             'create',
             [
                 'oSurvey'                => $question->survey,
-                'question'              => $question,
+                'question'               => $question,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
                 'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
                 'advancedSettings'       => $advancedSettings,

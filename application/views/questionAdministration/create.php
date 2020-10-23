@@ -1,3 +1,8 @@
+<?php $this->renderPartial(
+    'topbars/' . $this->aData['renderSpecificTopbar'],
+    []
+); ?>
+
 <!-- Create form for question -->
 <div class="side-body">
     <div class="container-fluid">
