@@ -33,62 +33,6 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                     <button id="questionOverviewButton" class="btn btn-default"><?= gT('Question overview'); ?></button>
                     <button id="questionEditorButton" class="btn btn-default" ><?= gT('Question editor'); ?></button>
                 </div>
-                <div class="pagetitle h3 scoped-unset-pointer-events">
-                    <!-- TODO: If create or edit or copy -->
-                    <x-test id="action::addQuestion"></x-test>
-                    <!-- {{ (initCopy ? 'Copy question' : 'Create question') | translate }} -->
-                    <?= gT('Create question'); ?>
-                    <!-- TODO -->
-                    <!-- {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>-->
-                </div>
-
-                <!-- Question code and question type selector -->
-                <div class="row">
-                    <?php $this->renderPartial(
-                        "codeAndType",
-                        [
-                            'data'                => $jsData,
-                            'oQuestion'           => $oQuestion,
-                            'oSurvey'             => $oSurvey,
-                            'aStructureArray'     => $aQuestionTypeGroups,
-                            'questionTypes'       => $aQuestionTypeStateList,
-                            'aQuestionTypeGroups' => $aQuestionTypeGroups
-                        ]
-                    ); ?>
-                </div>
-
-                <!-- Language selector -->
-                <div class="row">
-                    <?php $this->renderPartial(
-                        "languageselector",
-                        ['oSurvey' => $oSurvey]
-                    ); ?>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-7">
-                        <!-- Text elements -->
-                        <?php $this->renderPartial(
-                            "textElements",
-                            [
-                                'oQuestion'         => $oQuestion,
-                                'oSurvey'           => $oSurvey,
-                                'aStructureArray'   => $aQuestionTypeGroups,
-                                'questionTypes'     => $aQuestionTypeStateList,
-                                'answersCount'      => $answersCount,
-                                'subquestionsCount' => $subquestionsCount,
-                                'advancedSettings'  => $advancedSettings
-                            ]
-                        ); ?>
-                    </div>
-
-                    <!-- General settings -->
-                    <div class="col-lg-5">
-                        <div class="ls-flex scope-set-min-height scoped-general-settings">
-                            <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <!-- Question summary -->
@@ -109,16 +53,6 @@ Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype 
                                 'answersCount'      => $answersCount,
                                 'subquestionsCount' => $subquestionsCount,
                                 'advancedSettings'  => $advancedSettings
-                            ]
-                        ); ?>
-                    </div>
-
-                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
-                        <?php $this->renderPartial(
-                            "advancedSettings",
-                            [
-                                'oQuestion'         => $oQuestion,
-                                'advancedSettings'  => $advancedSettings,
                             ]
                         ); ?>
                     </div>

@@ -203,7 +203,6 @@
             <?php foreach ($settings as $setting): ?>
                 <tr>
                     <td>
-                        <?php echo $setting['title']; ?>:
                     </td>
                     <td>
                         <?php
