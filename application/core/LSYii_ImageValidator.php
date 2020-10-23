@@ -56,7 +56,8 @@ class LSYii_ImageValidator
             "image/ico",
             "image/gif",
             "image/svg+xml",
-            "image/x-icon"
+            "image/x-icon",
+            "image/vnd.microsoft.icon"
         );
 
         if (!empty($checkImage)

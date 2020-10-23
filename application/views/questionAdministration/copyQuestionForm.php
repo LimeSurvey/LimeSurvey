@@ -4,9 +4,21 @@
 /** @var Survey $oSurvey */
 /** @var Question $oQuestion*/
 /** @var QuestionGroup $oQuestionGroup */
+/** @var string $renderSpecificTopbar */
+
+//render the topbar for copy question
+
+$this->renderPartial('topbars/' . $renderSpecificTopbar,[
+        'closeBtnUrl' => $this->createUrl(
+                'questionAdministration/view/',
+                ['surveyid' => $oSurvey->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]
+                ) //go back to the question user wanted to copy
+        ]
+);
 
 
 ?>
+
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
     <!-- Page Title-->
@@ -19,7 +31,7 @@
     <div class="row">
         <!-- Form for the whole page-->
         <?php echo CHtml::form(array("questionAdministration/copyQuestion"), 'post',
-            array('class' => 'form30 ', 'id' => 'frmeditquestion', 'name' => 'frmeditquestion')); ?>
+            array('class' => 'form30 ', 'id' => 'form_copy_question', 'name' => 'frmeditquestion')); ?>
         <!-- The tabs & tab-fanes -->
         <div class="col-sm-12 col-md-7 content-right">
             <?php
@@ -34,7 +46,15 @@
                 )
             ); ?>
         </div>
-        <p><input type='submit' class="btn navbar-btn button white btn-success" name="savecopy" value='<?php eT("Copy question"); ?>'/></p>
+        <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
+        <input
+                type='submit'
+                style="display:none"
+                class="btn navbar-btn button white btn-success"
+                id = 'submit-copy-question'
+                name="savecopy"
+                value='<?php eT("Copy question"); ?>'
+        />
 
         <!-- The Accordion -->
         <div class="col-sm-12 col-md-5" id="accordion-container" style="background-color: #fff; z-index: 2;">

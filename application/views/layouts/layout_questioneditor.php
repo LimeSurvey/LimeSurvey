@@ -39,8 +39,6 @@ echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
 //New general top bar (VueComponent)
-//$this->_generaltopbar($aData);
-//$layoutHelper->renderGeneraltopbar($aData);
 ?>
 <div id="vue-topbar-container" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
     <div class="topbarpanel">
@@ -64,6 +62,10 @@ echo '<div '
     </div>
 </div>
 <?php
+// TODO: Enable this
+//if (!isset($aData['renderSpecificTopbar'])) {
+    //$layoutHelper->renderGeneraltopbar($aData);
+//}
 
 echo '<div id="pjax-content" class="col-12">';
 
@@ -78,7 +80,9 @@ $layoutHelper->notifications();
 echo $content;
 
 //$this->_generaltopbarAdditions($aData);
-$layoutHelper->renderGeneralTopbarAdditions($aData);
+if (!isset($aData['renderSpecificTopbar'])) {
+    $layoutHelper->renderGeneralTopbarAdditions($aData);
+}
 echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";
