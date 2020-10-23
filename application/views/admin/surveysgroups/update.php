@@ -13,10 +13,10 @@
                     'text'=>gT('Close'),
                 ),
                 'savebutton' => array(
-                    'form' => 'surveys-groups-form'
+                    'form' => Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','update') ? 'surveys-groups-form' : null,
                 ),
                 'saveandclosebutton' => array(
-                    'form' => 'surveys-groups-form'
+                    'form' => Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','update') ? 'surveys-groups-form' : null,
                 )
             )
         )); ?>
@@ -24,7 +24,12 @@
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
-            <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
+            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
+                <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
+            <?php endif;?>
+            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'security','update')):?>
+                <li><a href="#securityForThisGroup"><?php eT('Survey group permissions'); ?></a></li>
+            <?php endif;?>
             <li><a href="#templateSettingsFortThisGroup"><?php eT('Themes options for this survey group'); ?></a></li>
         </ul>
         <div class="tab-content">
@@ -39,9 +44,16 @@
                     ?>
                 </div>
             </div>
-            <div id="settingsForThisGroup" class="tab-pane">
-                <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
-            </div>
+            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
+                <div id="settingsForThisGroup" class="tab-pane">
+                    <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
+                </div>
+            <?php endif;?>
+            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'security','update')):?>
+                <div id="securityForThisGroup" class="tab-pane">
+                    <?php $this->renderPartial('./surveysgroups/_permission', array('model'=>$model)); ?>
+                </div>
+            <?php endif;?>
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
@@ -65,6 +77,10 @@
         } else if($(this).attr('href') == '#settingsForThisGroup'){
             //e.preventDefault();
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#securityForThisGroup'){
+            e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-permission');
             $(this).tab('show');
         } else if($(this).attr('href') == '#templateSettingsFortThisGroup'){
             e.preventDefault();

@@ -27,6 +27,12 @@ class SurveysGroups extends LSActiveRecord
         return '{{surveys_groups}}';
     }
 
+    /** @inheritdoc */
+    public function primaryKey()
+    {
+        return 'gsid';
+    }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -352,4 +358,58 @@ class SurveysGroups extends LSActiveRecord
         return $criteriaPerm;
     }
 
+    /**
+     * Get Permission data for Permission object
+     * @param string $key
+     * @return array
+     */
+    public static function getPermissionData($key = null)
+    {
+        $aPermission = array(
+            'group' => array(
+                'create' => false,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Group"),
+                'description' => gT("Permission to update this group name, description of this group. TYhis inclide deletion of this group."),
+                'img' => ' fa fa-edit',
+            ),
+            'security' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey group security"),
+                'description' => gT("Permission to modify survey group security settings"),
+                'img' => ' fa fa-shield',
+            ),
+            'surveysettings' => array(
+                'create' => true,
+                'update' => true,
+                'delete' => true,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey settings"),
+                'description' => gT("Permission to update survey settings for this group."),
+                'img' => ' fa fa-edit',
+            ),
+        );
+        if ($key) {
+            if(isset($aPermission[$key])) {
+                return $aPermission[$key];
+            }
+            return null;
+        }
+        return $aPermission;
+    }
+    /**
+     * Get the owner id of this Survey group
+     * Used for Permission
+     * @return integer
+     */
+    public function getOwnerId()
+    {
+        return $this->owner_id;
+    }
 }

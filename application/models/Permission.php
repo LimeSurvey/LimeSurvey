@@ -464,7 +464,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getOwnerId($iEntityID, $sEntityName) && $sEntityName != 'role') {
+        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName) && $sEntityName != 'role') {
             return true;
         }
 
@@ -571,6 +571,51 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * Checks if a user has a certain permission in the given survey group
+     * 
+     * @param $iGroupId integer The survey ID
+     * @param $sPermission string Name of the permission
+     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    public function hasSurveyGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        $oGroup = SurveysGroups::model()->findByPk($iGroupId);
+        if (!$oGroup) {
+            return false;
+        }
+        // Get global correspondance for surveygroups rigth, keep it in case in develop
+        $sGlobalCRUD = $sCRUD;
+        return $this->hasGlobalPermission('surveygroups', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveygroup', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
+     * Checks if a user has a certain permission in the given surveys inside survey group
+     * 
+     * @param $iGroupId integer The survey ID
+     * @param $sPermission string Name of the permission
+     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
+    public function hasSurveysInGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        $oGroup = SurveysInGroups::model()->findByPk($iGroupId);
+        if (!$oGroup) {
+            return false;
+        }
+        $sGlobalCRUD = $sCRUD;
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveyingroup', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
      * Returns true if a role has permission to read/create/update a certain template
      * @param string $roleId
      * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
@@ -638,10 +683,11 @@ class Permission extends LSActiveRecord
      * @param string $sEntityName string name (model)
      * @return integer|null user id if exist
      */
-    protected function getOwnerId($iEntityID, $sEntityName)
+    protected function getEntityOwnerId($iEntityID, $sEntityName)
     {
-        if ($sEntityName == 'survey') {
-            return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
+        if(method_exists($sEntityName,'model')) {
+            // Or check if $sEntityName is a child of LSActiveRecord ?
+            return $sEntityName::model()->findByPk($iEntityID)->getOwnerId();
         }
         return null;
     }
@@ -754,6 +800,16 @@ class Permission extends LSActiveRecord
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
                 'img' => ' icon-list',
+            ),
+            'surveygroups' => array(
+                'create' => true,
+                'read' => true,
+                'delete' => true,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey groups"),
+                'description' => gT("Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."),
+                'img' => ' fa fa-indent',
             ),
             'users' => array(
                 'import' => false,

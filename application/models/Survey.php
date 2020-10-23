@@ -2078,6 +2078,16 @@ return $s->hasTokensTable; });
         return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
     }
 
+    /**
+     * Get the owner id of this Survey
+     * Used for Permission
+     * @return integer
+     */
+    public function getOwnerId()
+    {
+        return $this->owner_id;
+    }
+
     /*
      * Find all public surveys
      * @return Survey[]

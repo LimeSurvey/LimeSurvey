@@ -39,7 +39,9 @@ class SurveysGroupsController extends Survey_Common_Action
     public function create()
     {
         $model = new SurveysGroups;
-
+        if (!Permission::model()->hasGlobalPermission('surveygroups','create')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
@@ -79,22 +81,24 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $bRedirect = 0;
         $model = $this->loadModel($id);
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (!empty(App()->getRequest()->getPost('SurveysGroups'))) {
+            $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
+            $model->attributes = $postSurveysGroups;// No filter ?
+            // prevent loop
+            if (!empty($postSurveysGroups['parent_id'])) {
+                $sgid = $postSurveysGroups['parent_id'] ;
+                $ParentSurveyGroup = $this->loadModel($sgid);
+                $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
 
-        if (isset($_POST['SurveysGroups'])) {
-            $model->attributes = $_POST['SurveysGroups'];
-
-
-                // prevent loop
-                if (!empty($_POST['SurveysGroups']['parent_id'])){
-                    $sgid = $_POST['SurveysGroups']['parent_id'] ;
-                    $ParentSurveyGroup = $this->loadModel($sgid);
-                    $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
-
-                    if ( in_array( $model->gsid, $aParentsGsid  ) ) {
-                        Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
-                        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
-                    }
+                if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                    Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
+                    // $todo : fix this, must save other but return to edition
+                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
                 }
+            }
 
             if ($model->save()) {
                 $bRedirect = 1;
@@ -126,6 +130,8 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     * @todo : find where it shown
+     * @todo : fix $_POST call
      * @param integer $id the ID of the model to be updated
      */
     public function surveySettings($id)
@@ -133,7 +139,9 @@ class SurveysGroupsController extends Survey_Common_Action
         $bRedirect = 0;
         /** @var SurveysGroups $model */
         $model = $this->loadModel($id);
-
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $aData['model'] = $model;
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
@@ -212,19 +220,22 @@ class SurveysGroupsController extends Survey_Common_Action
     public function delete($id)
     {
         $oGroupToDelete = $this->loadModel($id);
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         $sGroupTitle    = $oGroupToDelete->title;
-
+        $returnUrl = App()->getRequest()->getPost('returnUrl', array('admin/survey/sa/listsurveys'));
         if ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+            $this->getController()->redirect($returnUrl);
         } elseif ($oGroupToDelete->hasChildGroups) {
             Yii::app()->setFlashMessage(gT("You can't delete a group because one or more groups depend on it as parent!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+            $this->getController()->redirect($returnUrl);
         } else {
             $oGroupToDelete->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (!isset($_GET['ajax'])) {
+            if (App()->getRequest()->getQuery('ajax')) {
                 Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), CHtml::encode($sGroupTitle)), 'success');
                 $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
             }
@@ -243,13 +254,14 @@ class SurveysGroupsController extends Survey_Common_Action
 
     /**
      * Manages all models.
+     * @TODO : security permission control
      */
     public function admin()
     {
-        $model = new SurveysGroups('search');
+        $model = new SurveysGroups('search'); // @todo : fix this : need update permission
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['SurveysGroups'])) {
-                    $model->attributes = $_GET['SurveysGroups'];
+        if (!empty(App()->getRequest()->getParam('SurveysGroups'))) {
+            $model->attributes = App()->getRequest()->getParam('SurveysGroups');
         }
 
         $this->render('admin', array(
@@ -269,7 +281,7 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $model = SurveysGroups::model()->findByPk($id);
         if ($model === null) {
-                    throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $model;
     }
@@ -280,7 +292,7 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveys-groups-form') {
+        if (App()->getRequest()->getPost('ajax') === 'surveys-groups-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
