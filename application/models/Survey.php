@@ -2088,6 +2088,110 @@ return $s->hasTokensTable; });
         return $this->owner_id;
     }
 
+    /**
+     * Get Permission data for Permission object
+     * @param string $key
+     * @return array
+     */
+    public static function getPermissionData($key = null)
+    {
+        $aPermission = array(
+            'assessments' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Assessments"),
+                'description' => gT("Permission to create/view/update/delete assessments rules for a survey"),
+                'img' => ' fa fa-comment',
+            ),
+            'quotas' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Quotas"),
+                'description' => gT("Permission to create/view/update/delete quota rules for a survey"),
+                'img' => ' fa fa-tasks',
+            ),
+            'responses' => array(
+                'title' => gT("Responses"),
+                'description' => gT("Permission to create(data entry)/view/update/delete/import/export responses"),
+                'img' => ' icon-browse',
+            ),
+            'statistics' => array(
+                'create' => false,
+                'update' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Statistics"),
+                'description' => gT("Permission to view statistics"),
+                'img' => ' fa fa-bar-chart',
+            ),
+            'survey' => array(
+                'create' => false,
+                'update' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey deletion"),
+                'description' => gT("Permission to delete a survey"),
+                'img' => ' fa fa-trash',
+            ),
+            'surveyactivation' => array(
+                'create' => false,
+                'read' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey activation"),
+                'description' => gT("Permission to activate/deactivate a survey"),
+                'img' => ' fa fa-play',
+            ),
+            'surveycontent' => array(
+                'title' => gT("Survey content"),
+                'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
+                'img' => ' fa fa-file-text-o',
+            ),
+            'surveylocale' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey text elements"),
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
+                'img' => ' fa fa-edit',
+            ),
+            'surveysecurity' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey security"),
+                'description' => gT("Permission to modify survey security settings"),
+                'img' => ' fa fa-shield',
+            ),
+            'surveysettings' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey settings"),
+                'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
+                'img' => ' fa fa-gears',
+            ),
+            'tokens' => array(
+                'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
+                'img' => ' fa fa-user',
+            ),
+            'translations' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Quick translation"),
+                'description' => gT("Permission to view & update the translations using the quick-translation feature"),
+                'img' => ' fa fa-language',
+            ),
+        );
+
+        return $key == null ? $aPermission : $aPermission[$key];
+    }
+
     /*
      * Find all public surveys
      * @return Survey[]

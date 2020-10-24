@@ -219,6 +219,63 @@ class SurveysGroupsController extends Survey_Common_Action
     }
 
     /**
+     * Shown permissions list, allow to add user and group,
+     * No action done
+     * @param integer$id SurveysGroups id
+     */
+    public function permissions($id)
+    {
+        /** @var SurveysGroups $model */
+        $model = $this->loadModel($id);
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $aData['model'] = $model;
+        $aBasePermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
+        $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        $this->_renderWrappedTemplate('surveysgroups', 'permissions', $aData);
+    }
+
+    /**
+     * Add user in permission
+     * @param integer$id SurveysGroups id
+     */
+    public function permissionsAddUser($id)
+    {
+        $model = $this->loadModel($id);
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (App()->getRequest()->isPostRequest && !Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $aData['model'] = $model;
+    }
+    /**
+     * Add user in permission
+     * @param integer$id SurveysGroups id
+     */
+    public function permissionsAddUserGroup($id)
+    {
+
+    }
+    /**
+     * Shown permissions list, allow to add user
+     * @param integer $id SurveysGroups id
+     * @param integer $id user or group id
+     * @param string $type user or group
+     */
+    public function permissionsSet($id, $toid, $type = 'user')
+    {
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'view')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if (App()->getRequest()->isPostRequest && !Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+    }
+
+    /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
@@ -229,7 +286,10 @@ class SurveysGroupsController extends Survey_Common_Action
         if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $sGroupTitle    = $oGroupToDelete->title;
+        if (!App()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        $sGroupTitle = $oGroupToDelete->title;
         $returnUrl = App()->getRequest()->getPost('returnUrl', array('admin/survey/sa/listsurveys'));
         if ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
@@ -239,7 +299,6 @@ class SurveysGroupsController extends Survey_Common_Action
             $this->getController()->redirect($returnUrl);
         } else {
             $oGroupToDelete->delete();
-
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (App()->getRequest()->getQuery('ajax')) {
                 Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), CHtml::encode($sGroupTitle)), 'success');

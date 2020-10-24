@@ -98,7 +98,7 @@ class SurveysGroups extends LSActiveRecord
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
-                    'value'=>'CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
                     'type'=>'raw',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
@@ -107,7 +107,7 @@ class SurveysGroups extends LSActiveRecord
                 array(
                     'header' => gT('Name'),
                     'name' => 'name',
-                    'value'=>'CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
                     'type'=>'raw',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 ),
@@ -162,6 +162,16 @@ class SurveysGroups extends LSActiveRecord
                 ),
 
             );
+    }
+
+    /**
+     * Retrieve if current user have update rights on this SurveysGroups
+     * Used for buttons
+     * @return boolean
+     */
+    public function getHasViewSurveyGroupRight()
+    {
+        return Permission::model()->hasSurveyGroupPermission($this->gsid, 'group', 'read');
     }
 
     /**
@@ -258,17 +268,23 @@ class SurveysGroups extends LSActiveRecord
      */
     public function getButtons()
     {
-        $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
+        $sDeleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
         $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
-        $button         = '';
-
-        if (!$this->gsid != 1) {
-            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
+        $sPermissionUrl = App()->createUrl("admin/surveysgroups/sa/permissions", array("id"=>$this->gsid));
+        $button = '';
+        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'groupsettings','read')) {
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
-        $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" ></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
-        if (!$this->hasSurveys) {
-            $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger "></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'surveysettings','read')) {
+            $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
+        }
+        if (Permission::model()->hasSurveyGroupPermission($this->gsid,'permission','read')) {
+            $button .= '<a class="btn btn-default" href="'.$sPermissionUrl.'" role="button" data-toggle="tooltip" title="'.gT('Permission').'"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">'.gT('Permission').'</span></a>';
+        }
+        /* Can not delete group #1 + with survey */
+        if ($this->gsid!=1 && !$this->hasSurveys && Permission::model()->hasSurveyGroupPermission($this->gsid,'group','delete')) {
+            $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
         return $button;
@@ -368,31 +384,36 @@ class SurveysGroups extends LSActiveRecord
         $aPermission = array(
             'group' => array(
                 'create' => false,
-                'read' => true,
+                'read' => true, /* Without this : no real access … */
                 'update' => true,
                 'delete' => true,
                 'import' => false,
                 'export' => false,
                 'title' => gT("Group"),
-                'description' => gT("Permission to update this group name, description of this group. TYhis inclide deletion of this group."),
+                'description' => gT("Permission to update this group name, description of this group. This include deletion of this group. Read permission is used for access to this group."),
                 'img' => ' fa fa-edit',
             ),
-            'security' => array(
-                'import' => false,
-                'export' => false,
-                'title' => gT("Survey group security"),
-                'description' => gT("Permission to modify survey group security settings"),
-                'img' => ' fa fa-shield',
-            ),
             'surveysettings' => array(
-                'create' => true,
+                'create' => false, /* always exist as inherit when group was created */
+                'read' => true,
                 'update' => true,
-                'delete' => true,
+                'delete' => false, /* always exist as inherit when group was created */
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
                 'description' => gT("Permission to update survey settings for this group."),
                 'img' => ' fa fa-edit',
+            ),
+            'permission' => array(
+                'create' => true,
+                'read' => true,
+                'update' => true,
+                'delete' => true,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey group security"),
+                'description' => gT("Permission to modify survey group security settings"),
+                'img' => ' fa fa-shield',
             ),
         );
         if ($key) {

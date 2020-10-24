@@ -168,6 +168,8 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * get current permissions list
+     * Seems used in LimeSurvey\PluginManager\LimesurveyApi->getPermissionSet
      * @param integer $iUserID
      * @param integer $iEntityID
      * @param string $sEntityName
@@ -176,39 +178,44 @@ class Permission extends LSActiveRecord
     public static function getPermissions($iUserID, $iEntityID = null, $sEntityName = null)
     {
         $aBasePermissions = array();
-        if ($sEntityName == 'survey') {
-            $aBasePermissions = Permission::model()->getSurveyBasePermissions();
-        } elseif ($sEntityName == 'global') {
-            $aBasePermissions = Permission::model()->getGlobalBasePermissions();
-        }
-
         if (is_null($sEntityName)) {
             $oPermissions = Permission::model()->findAllByAttributes(array('uid' => $iUserID));
             $aBasePermissions = array();
             foreach ($oPermissions as $oPermission) {
                 $aBasePermissions[$oPermission->id] = $oPermission->attributes;
             }
+            return $aBasePermissions;
+        }
+        if($sEntityName == 'global') {
+            $aBasePermissions = Permission::model()->getGlobalBasePermissions();
         } else {
-            foreach ($aBasePermissions as $sPermission => &$aPermissionDetail) {
-                $oCurrentPermissions = Permission::model()->findByAttributes(array('uid' => $iUserID, 'entity_id' => $iEntityID, 'permission' => $sPermission));
-                if ($aPermissionDetail['create']) {
-                    $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->create_p : false);
-                }
-                if ($aPermissionDetail['read']) {
-                    $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->read_p : false);
-                }
-                if ($aPermissionDetail['update']) {
-                    $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->update_p : false);
-                }
-                if ($aPermissionDetail['delete']) {
-                    $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->delete_p : false);
-                }
-                if ($aPermissionDetail['import']) {
-                    $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->import_p : false);
-                }
-                if ($aPermissionDetail['export']) {
-                    $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->export_p : false);
-                }
+            $aBasePermissions = Permission::model()->getEntityBasePermissions($sEntityName);
+        }
+
+        foreach ($aBasePermissions as $sPermission => &$aPermissionDetail) {
+            $oCurrentPermissions = Permission::model()->findByAttributes(array(
+                'uid' => $iUserID,
+                'entity' => $sEntityName,
+                'entity_id' => $iEntityID,
+                'permission' => $sPermission
+            ));
+            if ($aPermissionDetail['create']) {
+                $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->create_p : false);
+            }
+            if ($aPermissionDetail['read']) {
+                $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->read_p : false);
+            }
+            if ($aPermissionDetail['update']) {
+                $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->update_p : false);
+            }
+            if ($aPermissionDetail['delete']) {
+                $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->delete_p : false);
+            }
+            if ($aPermissionDetail['import']) {
+                $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->import_p : false);
+            }
+            if ($aPermissionDetail['export']) {
+                $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->export_p : false);
             }
         }
         return $aBasePermissions;
@@ -776,6 +783,7 @@ class Permission extends LSActiveRecord
             return $aPermission['title'];
         }, $aPermissions);
     }
+
     public static function getPermissionGradeList()
     {
         return [
