@@ -111,10 +111,8 @@
             <td>
                 <span class='statusentryhighlight'>
                     <?php eT("Warning"); ?>:
-                    <a href='<?php echo $this->createUrl("admin/questions/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
-                        <?php eT("You need to add answer options to this question"); ?>
-                        <span class="icon-answers text-success" title='<?php eT("Edit answer options for this question"); ?>'></span>
-                    </a>
+                    <?php eT("You need to add answer options to this question"); ?>
+                    <span class="icon-answers text-success" title='<?php eT("Edit answer options for this question"); ?>'></span>
                 </span>
             </td>
         </tr>
@@ -127,10 +125,8 @@
                 <td>
                     <span class='statusentryhighlight'>
                         <?php eT("Warning"); ?>:
-                        <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
-                            <?php eT("You need to add subquestions to this question"); ?>
-                            <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
-                        </a>
+                        <?php eT("You need to add subquestions to this question"); ?>
+                        <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
                     </span>
                 </td>
             </tr>
