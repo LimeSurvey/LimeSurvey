@@ -369,27 +369,27 @@ return array(
             'adminbasics'
         )
     ),
-    'textelements' => array(
-        'devBaseUrl' => 'assets/packages/textelements/',
-        'basePath' => 'core.textelements',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/lstextelements.js',
-            )
-            : array(
-                'build.min/js/lstextelements.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
+//    'textelements' => array(
+//        'devBaseUrl' => 'assets/packages/textelements/',
+//        'basePath' => 'core.textelements',
+//        'position' =>CClientScript::POS_END,
+//        'js' => (
+//            $debug > 0
+//            ? array(
+//                'build/js/lstextelements.js',
+//            )
+//            : array(
+//                'build.min/js/lstextelements.js'
+//            )
+//        ),
+//        'css' => array(
+//            'build.min/css/main.css'
+//        ),
+//        'depends' => array(
+//            'adminbasics',
+//            'admintoppanel',
+//        )
+//    ),
     'datasectextelements' => array(
         'devBaseUrl' => 'assets/packages/datasecuritysettings/',
         'basePath' => 'core.datasecuritysettings',
