@@ -471,6 +471,27 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Delete all subquestions that belong to this question.
+     *
+     * @return void
+     * @todo Duplication from delete()
+     */
+    public function deleteAllSubquestions()
+    {
+        $ids = $this->allSubQuestionIds;
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+        self::model()->deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
+        QuestionAttribute::model()->deleteAll($qidsCriteria);
+        QuestionL10n::model()->deleteAll($qidsCriteria);
+        QuotaMember::model()->deleteAll($qidsCriteria);
+        $defaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach($defaultValues as $defaultValue){
+            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+        }
+    }
+
+    /**
      * Delete all question and its subQuestion Answers
      *
      * @return void
