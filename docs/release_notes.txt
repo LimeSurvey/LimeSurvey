@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.24.2 (build 201020) to 3.24.3 (build 201027) October 26, 2020
+-Fixed issue: View access to survey group even though no permission (Carsten Schmitz)
+-Fixed issue: Update issue with invalid datetime value stored in startdate/datestamp field of response table (Carsten Schmitz)
+-Fixed issue: Don't update survey group if no POST was submitted (Carsten Schmitz)
+-Fixed issue: DB error when trying to activate already activated survey (Carsten Schmitz)
+-Fixed issue: Create token table on Postgres throws index error, if done repeatedly (Carsten Schmitz)
+-Fixed issue #16787: Survey participant / Token editor doesn't correctly reflect reminder status when survey in anonymous mode (Adam Zammit)
+-Fixed issue #16786: Token editor mixes up invitation sent / reminder sent when manually editing token / survey participant (Adam Zammit)
+-Fixed issue #16769: Unable to embed in iframe (using config.php) for Chrome (Denis Chenu)
+-Fixed issue #16766: Simple user reset Survey group to default one (Denis Chenu)
+-Fixed issue #16759: Answers column width issue (Denis Chenu)
+-Fixed issue #16659: PHP7.1 + debug set : PHP Warning A non-numeric value encountered (#1585) (Denis Chenu)
+-Fixed issue #16555: bootswatch Image uploaded via Survey theme option are uploaded in Global directory (#1527) (Denis Chenu)
+-Fixed issue #16501: Navigation Problems on iPhone and Mac (Adam Zammit)
+#Updated translation: Spanish (Spain) by larjona
+#Updated translation: Portuguese (Portugal) by pmduque, effgarces
+#Updated translation: Myanmar by yarzaryeni
+#Updated translation: Japanese by a_ochi11
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by ritapas, lfanfoni
+#Updated translation: French (France) by b00z00, eddylackmann, DenisChenu
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.24.1 (build 201014) to 3.24.2 (build 201020) October 19, 2020
 -Fixed issue: Database error if email subject is too long (Carsten Schmitz)
 -Fixed issue #16745: Title for ranking question gets codes instead of quotes (Denis Chenu)
