@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-23 10:10:11+00:00\n"
+"POT-Creation-Date: 2020-10-26 07:14:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8208,190 +8208,190 @@ msgstr ""
 msgid "Thank you for taking the tour!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1175
-#: application/core/LsDefaultDataSets.php:1182
+#: application/core/LsDefaultDataSets.php:1176
+#: application/core/LsDefaultDataSets.php:1183
 msgid "Strongly disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1176
-#: application/core/LsDefaultDataSets.php:1183
+#: application/core/LsDefaultDataSets.php:1177
+#: application/core/LsDefaultDataSets.php:1184
 msgid "Disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1177
-msgid "Neither agree nor disagree"
-msgstr ""
-
 #: application/core/LsDefaultDataSets.php:1178
-#: application/core/LsDefaultDataSets.php:1184
-msgid "Agree"
+msgid "Neither agree nor disagree"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1179
 #: application/core/LsDefaultDataSets.php:1185
+msgid "Agree"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1180
+#: application/core/LsDefaultDataSets.php:1186
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2073
+#: application/core/LsDefaultDataSets.php:2074
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2074
-#: application/core/LsDefaultDataSets.php:2090
+#: application/core/LsDefaultDataSets.php:2075
+#: application/core/LsDefaultDataSets.php:2091
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2075
+#: application/core/LsDefaultDataSets.php:2076
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2076
+#: application/core/LsDefaultDataSets.php:2077
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2077
+#: application/core/LsDefaultDataSets.php:2078
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2078
+#: application/core/LsDefaultDataSets.php:2079
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2079
+#: application/core/LsDefaultDataSets.php:2080
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2080
+#: application/core/LsDefaultDataSets.php:2081
 msgid "Brandlogo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2081
+#: application/core/LsDefaultDataSets.php:2082
 msgid "Brandlogo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2082
+#: application/core/LsDefaultDataSets.php:2083
 #: application/views/admin/themeoptions/options_core.php:198
 msgid "Preview image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2083
+#: application/core/LsDefaultDataSets.php:2084
 msgid "Bootstrap theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2084
+#: application/core/LsDefaultDataSets.php:2085
 msgid "Bootswatch theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2085
+#: application/core/LsDefaultDataSets.php:2086
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2086
+#: application/core/LsDefaultDataSets.php:2087
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2087
+#: application/core/LsDefaultDataSets.php:2088
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2088
+#: application/core/LsDefaultDataSets.php:2089
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2089
+#: application/core/LsDefaultDataSets.php:2090
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2091
+#: application/core/LsDefaultDataSets.php:2092
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2092
+#: application/core/LsDefaultDataSets.php:2093
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2093
+#: application/core/LsDefaultDataSets.php:2094
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2094
+#: application/core/LsDefaultDataSets.php:2095
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2095
+#: application/core/LsDefaultDataSets.php:2096
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2096
+#: application/core/LsDefaultDataSets.php:2097
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2097
+#: application/core/LsDefaultDataSets.php:2098
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2098
+#: application/core/LsDefaultDataSets.php:2099
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2099
+#: application/core/LsDefaultDataSets.php:2100
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2100
+#: application/core/LsDefaultDataSets.php:2101
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2101
+#: application/core/LsDefaultDataSets.php:2102
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2102
+#: application/core/LsDefaultDataSets.php:2103
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2103
+#: application/core/LsDefaultDataSets.php:2104
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2104
+#: application/core/LsDefaultDataSets.php:2105
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2105
+#: application/core/LsDefaultDataSets.php:2106
 msgid "Animate alert"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2106
-#: application/core/LsDefaultDataSets.php:2108
+#: application/core/LsDefaultDataSets.php:2107
+#: application/core/LsDefaultDataSets.php:2109
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2107
+#: application/core/LsDefaultDataSets.php:2108
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2109
+#: application/core/LsDefaultDataSets.php:2110
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2110
+#: application/core/LsDefaultDataSets.php:2111
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2111
+#: application/core/LsDefaultDataSets.php:2112
 msgid "Select font:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2112
+#: application/core/LsDefaultDataSets.php:2113
 msgid "Select variation:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2113
+#: application/core/LsDefaultDataSets.php:2114
 msgid "Fruity fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2114
+#: application/core/LsDefaultDataSets.php:2115
 msgid "Fruity variations"
 msgstr ""
 
