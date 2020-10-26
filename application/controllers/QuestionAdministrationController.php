@@ -124,6 +124,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param Question $oQuestion
      * @return void
+     * @todo Move to service class
      */
     public function renderFormAux(Question $question)
     {
@@ -282,16 +283,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return void
      * @throws CException
-     * @todo Different permission check when sid vs qid is given.
      */
     public function actionSaveQuestionData()
     {
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->redirect(Yii::app()->request->urlReferrer);
-        }
 
         /**
          * From Vue component:
@@ -311,9 +307,26 @@ class QuestionAdministrationController extends LSBaseController
 
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
+        // TODO: It's l10n, not i10n.
         $questionData['questionI10N']     = (array) $request->getPost('questionI10N');
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
+
+        $question = Question::model()->findByPk((int) $questionData['question']['qid']);
+
+        // Different permission check when sid vs qid is given.
+        // This double permission check is needed if user manipulates the post data.
+        if (empty($question)) {
+            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+                Yii::app()->user->setFlash('error', gT("Access denied"));
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        } else {
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                Yii::app()->user->setFlash('error', gT("Access denied"));
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        }
 
         // Rollback at failure.
         try {
@@ -321,28 +334,24 @@ class QuestionAdministrationController extends LSBaseController
 
             if ($questionData['question']['qid'] == 0) {
                 $questionData['question']['qid'] = null;
-                $oQuestion = $this->storeNewQuestionData($questionData['question']);
+                $question = $this->storeNewQuestionData($questionData['question']);
             } else {
                 // Store changes to the actual question data, by either storing it, or updating an old one
-                $oQuestion = Question::model()->find(
-                    'sid = :sid AND qid = :qid',
-                    [':sid' => $iSurveyId, ':qid' => (int) $questionData['question']['qid']]
-                );
-                $oQuestion = $this->updateQuestionData($oQuestion, $questionData['question']);
+                $question = $this->updateQuestionData($question, $questionData['question']);
             }
 
             // Apply the changes to general settings, advanced settings and translations
             $setApplied = [];
 
-            $setApplied['questionI10N'] = $this->applyI10N($oQuestion, $questionData['questionI10N']);
+            $setApplied['questionI10N'] = $this->applyL10n($question, $questionData['questionI10N']);
 
             $setApplied['advancedSettings'] = $this->unparseAndSetAdvancedOptions(
-                $oQuestion,
+                $question,
                 $questionData['advancedSettings']
             );
 
             $setApplied['question'] = $this->unparseAndSetGeneralOptions(
-                $oQuestion,
+                $question,
                 $questionData['question']
             );
 
@@ -360,19 +369,20 @@ class QuestionAdministrationController extends LSBaseController
 
             // Clean subquestions and answer options before save.
             // NB: Still inside a database transaction.
-            if ($oQuestion->survey->active == 'N') {
-                $oQuestion->deleteAllAnswers();
+            if ($question->survey->active == 'N') {
+                $question->deleteAllAnswers();
+                $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
-                if ($oQuestion->questionType->subquestions === 1) {
+                if ($question->questionType->subquestions === 1) {
                     $this->storeSubquestions(
-                        $oQuestion,
+                        $question,
                         $request->getPost('subquestions')
                     );
                 }
                 // If question type has answeroptions, save them.
-                if ($oQuestion->questionType->answerscales > 0) {
+                if ($question->questionType->answerscales > 0) {
                     $this->storeAnswerOptions(
-                        $oQuestion,
+                        $question,
                         $request->getPost('answeroptions')
                     );
                 }
@@ -384,8 +394,8 @@ class QuestionAdministrationController extends LSBaseController
 
             // All done, redirect to edit form.
             App()->setFlashMessage('Question saved', 'success');
-            $oQuestion->refresh();
-            $this->redirect(['questionAdministration/edit/questionId/' . $oQuestion->qid]);
+            $question->refresh();
+            $this->redirect(['questionAdministration/edit/questionId/' . $question->qid]);
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
@@ -410,60 +420,6 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: Needed?
         App()->close();
-    }
-
-    /**
-     * Update the data set in the FE
-     *
-     * @param int $iQuestionId
-     * @param string $type
-     * @param int $gid Group id
-     * @param string $question_template
-     *
-     * @return void
-     * @throws CException
-     */
-    public function actionReloadQuestionData(
-        $iQuestionId = null,
-        $type = null,
-        $gid = null,
-        $question_template = 'core'
-    ) {
-        $iQuestionId = (int)$iQuestionId;
-        $oQuestion = $this->getQuestionObject($iQuestionId, $type, $gid);
-
-        $aCompiledQuestionData = $this->getCompiledQuestionData($oQuestion);
-        $aQuestionGeneralOptions = $this->getGeneralOptions(
-            $oQuestion->qid,
-            $type,
-            $oQuestion->gid,
-            $question_template
-        );
-        $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, $type, $question_template);
-
-        $aLanguages = [];
-        $aAllLanguages = getLanguageData(false, App()->session['adminlang']);
-        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
-
-        array_walk(
-            $aSurveyLanguages,
-            function ($lngString) use (&$aLanguages, $aAllLanguages) {
-                $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
-            }
-        );
-
-        $this->renderJSON(
-            array_merge(
-                $aCompiledQuestionData,
-                [
-                    'languages'        => $aLanguages,
-                    'mainLanguage'     => $oQuestion->survey->language,
-                    'generalSettings'  => $aQuestionGeneralOptions,
-                    'advancedSettings' => $aAdvancedOptions,
-                    'questiongroup'    => $oQuestion->group->attributes,
-                ]
-            )
-        );
     }
 
     /**
@@ -2129,7 +2085,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($saved == false) {
             throw new LSJsonException(
                 500,
-                "Object creation failed, couldn't save.\n ERRORS:\n"
+                gT('Could not save question') . " " . PHP_EOL
                 . print_r($oQuestion->getErrors(), true),
                 0,
                 null,
@@ -2209,7 +2165,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return boolean
      * @throws CHttpException
      */
-    private function applyI10N($oQuestion, $dataSet)
+    private function applyL10n($oQuestion, $dataSet)
     {
         foreach ($dataSet as $sLanguage => $aI10NBlock) {
             $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
