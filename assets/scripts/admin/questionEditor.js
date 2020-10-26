@@ -209,10 +209,14 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function deleteSubquestionRow(jQueryItem) {
+    console.log('deleteSubquestionRow');
     if ($(jQueryItem).is('[id]')) {
+      // TODO: Type rowinfo with class?
       const rowinfo = $(jQueryItem).attr('id').split('_');
       // TODO: What is rowinfo[2]?
       $('#deletedqids').val(`${$('#deletedqids').val()} ${rowinfo[2]}`);
+    } else {
+      // TODO: What???
     }
   }
 
@@ -299,34 +303,42 @@ LS.questionEditor = (function () {
    */
   function deleteSubquestionInput(e) {
     e.preventDefault();
+    console.log('deleteSubquestionInput');
     const target = e.target;
     // 1.) Check if there is at least one answe
-    let position;
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
+    console.log('countanswers', countanswers);
     if (countanswers > 1) {
       // 2.) Remove the table row
+      let position;
       const classes = $(target).closest('tr').attr('class').split(' ');
       _.forEach(classes, (curClass) => {
         if (curClass.substr(0, 3) === 'row') {
           position = curClass.substr(4);
         }
       });
+      console.log('position', position);
 
       const info = $(target).closest('table').attr('id').split('_');
+      const idAttr = $(target).closest('table').attr('id');
+      console.log('idAttr', idAttr);
+      console.log('info', info);
       const scaleId = info[2];
       const languages = languageJson.langs.split(';');
 
       _.forEach(languages, (curLanguage, x) => {
-        const tablerow = $(`#tabpage_${languages[x]}`).find(`#answers_${languages[x]}_${scaleId} .row_${position}`);
+        const $tablerow = $(`#row_${languages[x]}_${scaleId}`);
+        console.log('tablerow', $tablerow);
+        console.log('tablerow.length', $tablerow.length);
         if (x === 0) {
-          tablerow.fadeTo(400, 0, function fadeAndRemove() {
+          $tablerow.fadeTo(400, 0, function fadeAndRemove() {
             $(target).remove();
             updateRowProperties();
           });
         } else {
-          tablerow.remove();
+          $tablerow.remove();
         }
-        deleteSubquestionRow($(tablerow));
+        deleteSubquestionRow($tablerow);
       });
     } else {
       // TODO: why block?

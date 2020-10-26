@@ -289,22 +289,6 @@ class QuestionAdministrationController extends LSBaseController
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
 
-        /**
-         * From Vue component:
-            questionData: {
-            question: context.state.currentQuestion,
-                scaledSubquestions:
-            context.state.currentQuestionSubquestions || [],
-                scaledAnswerOptions:
-            context.state.currentQuestionAnswerOptions || [],
-                questionI10N: context.state.currentQuestionI10N,
-                generalSettings:
-            context.state.currentQuestionGeneralSettings,
-                advancedSettings:
-            context.state.currentQuestionAdvancedSettings
-        }
-         */
-
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
         // TODO: It's l10n, not i10n.
