@@ -323,6 +323,7 @@ LS.questionEditor = (function () {
       const idAttr = $(target).closest('table').attr('id');
       console.log('idAttr', idAttr);
       console.log('info', info);
+      // TODO: use data-scaleid.
       const scaleId = info[2];
       const languages = languageJson.langs.split(';');
 
