@@ -44,7 +44,7 @@
         ); ?>
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
-            <input type="hidden" name="question[qid]" value="0" />
+            <input type="hidden" name="question[qid]" value="<?= $question->qid; ?>" />
             <div id="advanced-question-editor">
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">
