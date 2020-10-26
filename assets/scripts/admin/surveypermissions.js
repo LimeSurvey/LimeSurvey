@@ -12,7 +12,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
 
-    $(".usersurveypermissions").tablesorter({
+    $(".table-permissions-set").tablesorter({
          widgets: ['zebra'],
          headers: { 0: { sorter: false},
                     2: { sorter: false},
@@ -38,7 +38,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         function(){
             $(this).removeClass('mixed');
             var checked = $(this).prop('checked');
-            $('.usersurveypermissions tbody tr').each(function(){
+            $('.table-permissions-set tbody tr').each(function(){
                 var rowSelector = $(this).find('input');
                 $(rowSelector).prop('checked',checked).prop('indeterminate',false);
             });
@@ -65,10 +65,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
 
     if (Cookies.get('surveysecurityas')!='true')
     {
-        $('.usersurveypermissions .extended').hide();
+        $('.table-permissions-set .extended').hide();
     }
 
-    $('.usersurveypermissions tbody tr').each(function(){
+    $('.table-permissions-set tbody tr').each(function(){
         if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
         {
             $(this).find('.markrow').prop('checked',true).removeClass('mixed');
@@ -84,14 +84,14 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     })
 
     $('#btnToggleAdvanced').click(function(){
-        extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
+        extendoptionsvisible=$('.table-permissions-set .extended').is(':visible');
         if (extendoptionsvisible==false)
         {
-            $('.usersurveypermissions .extended').fadeIn('slow');
+            $('.table-permissions-set .extended').fadeIn('slow');
         }
         else
         {
-            $('.usersurveypermissions .extended').fadeOut();
+            $('.table-permissions-set .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
         Cookies.set('surveysecurityas',!extendoptionsvisible);
@@ -118,7 +118,7 @@ function updateAllCheckboxes(){
     var iFullCheckedRows = 0;
     var iHalfCheckedRows = 0;
     var iNoCheckedRows = 0;
-    $('.usersurveypermissions tbody tr').each(function(){
+    $('.table-permissions-set tbody tr').each(function(){
         var rowSelector = $(this).find('.markrow');
         if (rowSelector.prop('checked') === true && !rowSelector.hasClass('mixed')){
             iFullCheckedRows += 1;
@@ -129,7 +129,7 @@ function updateAllCheckboxes(){
         }
     });
 
-    var markAllSelector = $('.usersurveypermissions thead tr').find('.markall');
+    var markAllSelector = $('.table-permissions-set thead tr').find('.markall');
 
     if (iFullCheckedRows > 0 && iHalfCheckedRows == 0 && iNoCheckedRows == 0){
         markAllSelector.prop('checked',true).removeClass('mixed');

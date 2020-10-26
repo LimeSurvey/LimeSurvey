@@ -28,8 +28,9 @@ class SurveysInGroup extends SurveysGroups
     public static function getPermissionData($key = null)
     {
         $aPermission = array(
-            'sureys' => array(
+            'surveys' => array(
                 'create' => false,
+                'read' => true,
                 'update' => true,
                 'delete' => true,
                 'import' => false,

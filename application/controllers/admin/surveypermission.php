@@ -464,7 +464,7 @@ class surveypermission extends Survey_Common_Action
             $usersummary .= '<div class="row"><div class="col-lg-12 content-right">';
             $usersummary .= "<br />"
             .CHtml::form(array("admin/surveypermission/sa/surveyright/surveyid/{$surveyid}"), 'post')
-            . "<table class='usersurveypermissions table table-striped'><thead>\n";
+            . "<table class='usersurveypermissions table table-striped table-permissions-set'><thead>\n";
 
             $usersummary .= ""
             . "<tr><th></th><th>".gT("Permission")."</th>\n"

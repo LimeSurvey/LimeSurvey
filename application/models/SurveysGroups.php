@@ -384,7 +384,7 @@ class SurveysGroups extends LSActiveRecord
         $aPermission = array(
             'group' => array(
                 'create' => false,
-                'read' => true, /* Without this : no real access … */
+                'read' => false, /* Minimal : forced to true when edit, see survey for Survey model */
                 'update' => true,
                 'delete' => true,
                 'import' => false,
@@ -423,6 +423,15 @@ class SurveysGroups extends LSActiveRecord
             return null;
         }
         return $aPermission;
+    }
+
+    /**
+     * Get minimal permission name (for read value)
+     * @return string
+     */
+    public static function getMinimalPermissionData()
+    {
+        return 'group';
     }
     /**
      * Get the owner id of this Survey group

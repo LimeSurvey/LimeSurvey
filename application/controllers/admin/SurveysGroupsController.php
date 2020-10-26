@@ -232,7 +232,43 @@ class SurveysGroupsController extends Survey_Common_Action
         }
         $aData['model'] = $model;
         $aBasePermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
-        $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        $oUserList  = array();
+        $oGroupList  = array();
+        if (Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+            /* Search user withouth rights on SurveyGroup */
+            /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
+            $oCriteria = new CDbCriteria;
+            $oCriteria->select ='uid';
+            $oCriteria->group ='uid';
+            $oCriteria->compare("entity","SurveysGroups"); // on SurveyGroup
+            $oCriteria->compare("entity_id",$model->primaryKey); // on this SurveyGroup
+            $aExistionUsers = CHtml::listData(Permission::model()->findAll($oCriteria),'uid','uid');
+            $oCriteria = new CDbCriteria;
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {
+                $authorizedUsersList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+                $oCriteria->addInCondition("uid",$authorizedUsersList);
+            }
+            $oCriteria->addNotInCondition("uid",$aExistionUsers);
+            $oCriteria->compare("uid","<>".Permission::getUserId());
+            $oCriteria->order = "users_name";
+            $oUserList = User::model()->findAll($oCriteria);
+            /* User group according to rights */
+            $oCriteria = new CDbCriteria;
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true && !Permission::model()->hasGlobalPermission('superadmin')) {
+                $authorizedGroupsList = getUserGroupList();
+                $oCriteria->addInCondition("ugid",$authorizedGroupsList);
+            }
+            $oCriteria->order = "name";
+            $oGroupList = UserGroup::model()->findAll($oCriteria);
+        }
+        $aData['subview'] = 'viewCurrents';
+        $aData['aPermissionData'] = array(
+            'aPermissionsDefinitions' => array(),
+            'aCurrentPermissions' => array(),
+            'oAddUserList' => $oUserList,
+            'oAddGroupList' => $oUserList,
+            'model' => $model
+        );
         $this->_renderWrappedTemplate('surveysgroups', 'permissions', $aData);
     }
 
@@ -246,10 +282,52 @@ class SurveysGroupsController extends Survey_Common_Action
         if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        if (App()->getRequest()->isPostRequest && !Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        $uid = App()->getRequest()->getPost('uid');
+        if (!$uid) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        /* Check if logged user can see user */
+        if(!in_array($uid, getUserList('onlyuidarray'))) {
+            throw new CHttpException(403, gT("You do not have permission to this user."));
         }
         $aData['model'] = $model;
+        $aData['subview'] = 'addUserResult';
+        $aData['aPermissionData'] = array(
+            'result' => array(),
+            'uid' => $uid,
+            'model' => $model,
+        );
+        $result = array(
+            'success' => false,
+            'warning' => false,
+            'error' => false,
+        );
+        $oPermission = Permission::model()->find(
+            "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
+            array(
+                ":entity" => "surveysgroups",
+                ":entity_id" => $id,
+                ":uid" => $uid,
+                ":permission" => "surveysgroup",
+            )
+        );
+        if($oPermission) {
+            $result['warning'] = gT("User already has permissions for this survey.");
+        } else {
+            $oPermission = new Permission;
+            $oPermission->entity = "surveysgroups";
+            $oPermission->entity_id = $id;
+            $oPermission->uid = $uid;
+            $oPermission->permission = "surveysgroup";
+        }
+        $oPermission->read_p = 1;
+        if($oPermission->save()) {
+            $result['success'] = gT("Permission set for user.");
+        } else {
+            $result['error'] = CHtml::errorSummary($oPermission);
+        }
+        $aData['aPermissionData']['result'] = $result;
+        $this->_renderWrappedTemplate('surveysgroups', 'permissions', $aData);
     }
     /**
      * Add user in permission
@@ -257,24 +335,125 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function permissionsAddUserGroup($id)
     {
-
+        throw new CHttpException(500, gT("User group are still in WIP"));
     }
     /**
-     * Shown permissions list, allow to add user
+     * Shown permissions list for user (or group)
      * @param integer $id SurveysGroups id
      * @param integer $id user or group id
      * @param string $type user or group
      */
-    public function permissionsSet($id, $toid, $type = 'user')
+    public function permissionsSet($id, $to, $type = 'user')
     {
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'view')) {
+        $model = $this->loadModel($id);
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (App()->getRequest()->isPostRequest && !Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        if(!in_array($type, ['user','usegroup'])) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        if($type == 'user') {
+            $oUserGroup = null;
+            $oUser = User::model()->findByPk($to);
+            if(empty($oUser)) {
+                throw new CHttpException(401, gT("User not found"));
+            }
+            if(!in_array($to, getUserList('onlyuidarray'))) {
+                throw new CHttpException(403, gT("You do not have permission to this user."));
+            }
+            $userId = $to; // More clear after
+        } else {
+            /* @todo : Check if user have access to this group by perm */
+            if(empty($groupId)) {
+                throw new CHttpException(405, gT("Invalid action"));
+            }
+            $oUserGroup = UserGroup::model()->findByPk($to);
+            $oUser = null;
+            if(empty($oUserGroup)) {
+                throw new CHttpException(401, gT("User group not found"));
+            }
+            throw new CHttpException(500, gT("User group are still in WIP"));
+        }
+        $aSurveysGroupsPermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
+        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
+        foreach(array_keys($aSurveysGroupsPermissions) as $sPermission) {
+            $aSurveysGroupsPermissions[$sPermission]['current'] = array(
+                'create' => array('checked'=> false, 'indertiminate'=> false),
+                'read' => array('checked'=> false, 'indertiminate'=> false),
+                'update' => array('checked'=> false, 'indertiminate'=> false),
+                'delete' => array('checked'=> false, 'indertiminate'=> false),
+                'import' => array('checked'=> false, 'indertiminate'=> false),
+                'export' => array('checked'=> false, 'indertiminate'=> false),
+            );
+            if ($type = 'user') {
+                foreach(array_keys($aSurveysGroupsPermissions[$sPermission]['current']) as $sCrud) {
+                    if($aSurveysGroupsPermissions[$sPermission][$sCrud]) {
+                        $havePermissionSet = Permission::model()->hasPermission($id, 'surveysgroups', $sPermission, $sCrud, $userId);// Clearly set permission
+                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud] = array(
+                            'checked' => $havePermissionSet, 
+                            'data-indeterminate' => !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId), // Set by global or owner
+                        );
+                    }
+                }
+            }
+        }
+        $aSurveysInGroupPermissions = Permission::model()->getEntityBasePermissions('SurveysInGroup');
+        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
+        foreach(array_keys($aSurveysInGroupPermissions) as $sPermission) {
+            $aSurveysInGroupPermissions[$sPermission]['current'] = array(
+                'create' => array('checked'=> false, 'indertiminate'=> false),
+                'read' => array('checked'=> false, 'indertiminate'=> false),
+                'update' => array('checked'=> false, 'indertiminate'=> false),
+                'delete' => array('checked'=> false, 'indertiminate'=> false),
+                'import' => array('checked'=> false, 'indertiminate'=> false),
+                'export' => array('checked'=> false, 'indertiminate'=> false),
+            );
+            if ($type = 'user') {
+                foreach(array_keys($aSurveysInGroupPermissions[$sPermission]['current']) as $sCrud) {
+                    if($aSurveysInGroupPermissions[$sPermission][$sCrud]) {
+                        $havePermissionSet = Permission::model()->hasPermission($id, 'surveysingroup', $sPermission, $sCrud, $userId);// Clearly set permission
+                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud] = array(
+                            'checked' => $havePermissionSet, 
+                            'data-indeterminate' => !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId), // Set by global or owner
+                        );
+                    }
+                }
+            }
+        }
+        $aPermissions = array_merge(
+            $aSurveysGroupsPermissions,
+            $aSurveysInGroupPermissions,
+        );
+        $aData = array(
+            'model' => $model,
+            'subview' => 'setPermissionForm',
+        );
+        $aData['aPermissionData']=array(
+            'aPermissions' => $aPermissions,
+            'model' => $model,
+            'uid' => ($type == 'user') ? $to : null,
+            'to' => $to,
+            'type' => $type,
+            'oUser' => $oUser,
+            'oUserGroup' => $oUserGroup,
+        );
+        $this->_renderWrappedTemplate('surveysgroups', 'permissions', $aData);
+        Yii::app()->end();
     }
 
+    /**
+     * Shown permissions list for user (or group)
+     * @param integer $id SurveysGroups id
+     * @param integer $id user or group id
+     * @param string $type user or group
+     */
+    public function permissionsSave($id, $to, $type = 'user')
+    {
+        throw new CHttpException(500, gT("Savec action are still in WIP"));
+    }
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
