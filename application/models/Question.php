@@ -1338,4 +1338,46 @@ class Question extends LSActiveRecord
             }
         }
     }
+
+    /**
+     * Used by question create form.
+     * @return Question
+     */
+    public function getEmptySubquestion()
+    {
+        $question = new Question();
+        $question->qid = 0;
+        // TODO: Customize
+        $question->title = 'SQ001';
+        $question->relevance = 1;
+        return $question;
+    }
+
+    /**
+     * Used by question create form.
+     * @return Answer
+     */
+    public function getEmptyAnswerOption()
+    {
+        $answer = new Answer();
+        $answer->sortorder = 0;
+        // TODO: Customize
+        $answer->code = 'A1';
+
+        $l10n = [];
+        foreach ($this->survey->allLanguages as $language) {
+            $l10n[$language] = new AnswerL10n();
+            $l10n[$language]->setAttributes(
+                [
+                    'aid'      => 0,
+                    'answer'   => '',
+                    'language' => $language,
+                ],
+                false
+            );
+        }
+        $answer->answerl10ns = $l10n;
+
+        return $answer;
+    }
 }
