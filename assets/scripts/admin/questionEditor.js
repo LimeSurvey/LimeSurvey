@@ -1163,7 +1163,8 @@ laname: $('#laname').val(), lid, code, answers,
   $(document).on("ready pjax:scriptcomplete", function () {
     // Hide all languages except main.
     $('.lang-hide').hide();
-    $('.lang-' + languageJson.langs[0]).show();
+    const languages = languageJson.langs.split(';');
+    $('.lang-' + languages[0]).show();
 
     $('#advanced-question-editor').hide();
   });
@@ -1220,6 +1221,10 @@ laname: $('#laname').val(), lid, code, answers,
         $('#advanced-options-container').replaceWith(html2);
         $('.question-option-help').hide();
         $('#ls-loading').hide();
+
+        $('.lang-hide').hide();
+        const languages = languageJson.langs.split(';');
+        $('.lang-' + languages[0]).show();
 
         // TODO: Duplication.
         $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
