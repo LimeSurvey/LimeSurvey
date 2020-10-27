@@ -260,7 +260,8 @@ LS.questionEditor = (function () {
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert(errormessage);
+        console.log(html, status);
+        alert('Internal error: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
     });

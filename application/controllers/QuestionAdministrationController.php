@@ -168,6 +168,12 @@ class QuestionAdministrationController extends LSBaseController
             ]
         );
 
+        Yii::app()->twigRenderer->renderViewFromFile(
+            '/application/views/questionAdministration/modals.twig',
+            [],
+            true
+        );
+
         $this->aData['renderSpecificTopbar'] = 'editQuestiontopbar_view';
         $this->render(
             'create',
