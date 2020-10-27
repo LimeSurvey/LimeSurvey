@@ -203,24 +203,6 @@ LS.questionEditor = (function () {
   //}
 
   /**
-   * Delete row?
-   *
-   * @param {object} jQueryItem
-   * @return {void}
-   */
-  function deleteSubquestionRow(jQueryItem) {
-    console.log('deleteSubquestionRow');
-    if ($(jQueryItem).is('[id]')) {
-      // TODO: Type rowinfo with class?
-      const rowinfo = $(jQueryItem).attr('id').split('_');
-      // TODO: What is rowinfo[2]?
-      $('#deletedqids').val(`${$('#deletedqids').val()} ${rowinfo[2]}`);
-    } else {
-      // TODO: What???
-    }
-  }
-
-  /**
    * Delete answer option row.
    * Executed when user clicks "Delete" button.
    *
@@ -303,11 +285,9 @@ LS.questionEditor = (function () {
    */
   function deleteSubquestionInput(e) {
     e.preventDefault();
-    console.log('deleteSubquestionInput');
     const target = e.target;
     // 1.) Check if there is at least one answe
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
-    console.log('countanswers', countanswers);
     if (countanswers > 1) {
       // 2.) Remove the table row
       let position;
@@ -317,31 +297,24 @@ LS.questionEditor = (function () {
           position = curClass.substr(4);
         }
       });
-      console.log('position', position);
 
       const info = $(target).closest('tr').attr('id').split('_');
       const idAttr = $(target).closest('table').attr('id');
-      console.log('idAttr', idAttr);
-      console.log('info', info);
       // TODO: use data-scaleid.
       const scaleId = info[3];
       const subquestionId = info[2];
       const languages = languageJson.langs.split(';');
 
       _.forEach(languages, (curLanguage, x) => {
-        console.log('curLanguage', curLanguage);
         const $tablerow = $(`#row_${languages[x]}_${subquestionId}_${scaleId}`);
-        console.log('tablerow', $tablerow);
-        console.log('tablerow.length', $tablerow.length);
         if (x === 0) {
           $tablerow.fadeTo(400, 0, function fadeAndRemove() {
-            $(target).remove();
+            $tablerow.remove();
             updateRowProperties();
           });
         } else {
           $tablerow.remove();
         }
-        deleteSubquestionRow($tablerow);
       });
     } else {
       // TODO: why block?
@@ -695,7 +668,6 @@ LS.questionEditor = (function () {
 
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
-            deleteSubquestionRow($(tableRow));
             $(tableRow).remove();
           });
         }
