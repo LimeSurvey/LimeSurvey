@@ -605,7 +605,7 @@ LS.questionEditor = (function () {
           //console.ls.log('Language', language, languageName);
           const $linkItem = $aTemplate.clone();
           const $bodyItem = $tabTodyTemplate.clone();
-          var $itemList = $listTemplate.clone();
+          let $itemList = $listTemplate.clone();
 
           const classLink = i === 0 ? 'active' : '';
           const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
