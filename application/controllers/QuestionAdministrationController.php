@@ -556,7 +556,7 @@ class QuestionAdministrationController extends LSBaseController
      * AJAX Method to QuickAdd multiple Rows AJAX-based
      * @todo Permission
      */
-    public function getSubquestionRowQuickAdd($surveyid, $gid)
+    public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
         $qid               = '{{quid_placeholder}}';
         $request           = Yii::app()->request;

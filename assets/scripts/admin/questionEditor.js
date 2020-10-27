@@ -212,19 +212,22 @@ LS.questionEditor = (function () {
    * @param {string} language
    * @param {boolean} first
    * @param {number} scaleId
-   * @param {array} codes
+   * @param {array} _codes
    * @return {Promise}
    */
   function addinputQuickEdit($currentTable, language, first, scaleId, _codes) {
     const codes = _codes || [];
-    const $dataInput = $('#add-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
-    const $url = $dataInput.data('quickurl'); // Url for the request
-    const errormessage = $dataInput.data('errormessage'); // the error message if the AJAX request failed
+    // This hidden element  on the page contains various datas for this function
+    const dataInput = document.getElementById('add-subquestion-input-javascript-datas');
+    if (dataInput == null) {
+      alert('Internal error: Could not find data input');
+      throw 'abort';
+    }
+    const url = dataInput.dataset.quickurl;
+    console.log('url', url);
+    const errormessage = dataInput.dataset.errormessage;
     const $defer = $.Deferred();
-    let $codes;
-    let datas;
 
-    // We get all the subquestion codes currently displayed
     // We get all the subquestion codes currently displayed
     if ($currentTable.find('.code').length > 0) {
       $currentTable.find('.code').each(function () {
@@ -236,11 +239,13 @@ LS.questionEditor = (function () {
       });
     }
 
+    console.log('codes', codes);
+
     // We convert them to json for the request
-    $codes = JSON.stringify(codes);
+    const codesJson = JSON.stringify(codes);
     // We build the datas for the request
-    datas = {
-      codes: $codes,
+    const datas = {
+      codes: codesJson,
       // In $dataInput.data('scale-id') ?
       scale_id: scaleId,  // jshint ignore:line
       type: 'subquestion',
@@ -249,11 +254,13 @@ LS.questionEditor = (function () {
       language,
     };
 
+    console.log('datas', datas);
+
     // We get the HTML of the new row to insert
     $.ajax({
       // TODO: We don't update DB, no need post
       type: 'POST',
-      url: $url,
+      url: url,
       data: datas,
       success(htmlrow) {
         const $langTable = $(`#answers_${language}_${scaleId}`);
@@ -757,6 +764,18 @@ LS.questionEditor = (function () {
     });
   }
 
+  /**
+   * @param {array} lsrows
+   * @return {string}
+   */
+  function getSeparatorChar(lsrows) {
+    if (lsrows[0].indexOf('\t') === -1) {
+      return ';';
+    } else {
+      return '\t';
+    }
+  }
+
   /*:: declare function quickAddLabels(number, string, number): void */
   /**
    * Quick-add subquestions/answers
@@ -771,10 +790,13 @@ LS.questionEditor = (function () {
     //const sID = $('input[name=sid]').val();
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
+    console.log('tableId', tableId);
     const codes = [];
-    const closestTable = $(`#${tableId}`);
+    const $closestTable = $(`#${tableId}`);
     const lsreplace = addOrReplace === 'replace';
 
+    // Not needed, since we always delete all rows at save (when survey is not active).
+    /*
     if (lsreplace) {
       $(`.answertable:eq(${scaleId}) tbody tr`).each(function () {
         const aRowInfo = this.id.split('_');
@@ -784,29 +806,27 @@ LS.questionEditor = (function () {
         elem.val(newVal);
       });
     }
+    */
 
-    if (closestTable.find('.code').length < 0) {
-      closestTable.find('.code-title').each(function () {
+    if ($closestTable.find('.code').length < 0) {
+      $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
       });
     } else {
-      closestTable.find('.code').each(function () {
+      $closestTable.find('.code').each(function () {
         codes.push($(this).val());
       });
     }
+    console.log('codes', codes);
 
     const languages = languageJson.langs.split(';');
     const promises = [];
     const answers = [];
-    let separatorchar;
     const lsrows = $('#quickaddarea').val().split('\n');
-    const allrows = $(`.answertable:eq(${scaleId}) tbody tr`).length;
+    const allrows = $closestTable.find('tr').length;
+    console.log('allrows', allrows);
 
-    if (lsrows[0].indexOf('\t') === -1) {
-      separatorchar = ';';
-    } else {
-      separatorchar = '\t';
-    }
+    const separatorchar = getSeparatorChar(lsrows);
 
     let numericSuffix = '';
     let n = 1;
@@ -843,8 +863,10 @@ LS.questionEditor = (function () {
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
+      // TODO: This should come from the server.
       const quid = `new${Math.floor(Math.random() * 10000)}`;
 
+      // TODO: What's happening here?
       _.forEach(languages, (language, x) => {
         if (typeof thisrow[parseInt(x) + 1] === 'undefined') {
           thisrow[parseInt(x) + 1] = thisrow[1];
@@ -864,6 +886,8 @@ LS.questionEditor = (function () {
       // $('#answers_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
     });
 
+    console.log('answers', answers);
+
     _.forEach(languages, (language, x) => {
       // Unbind any previous events
       $(`#answers_${language}_${scaleId} .btnaddanswer`).off('click.subquestions');
@@ -876,8 +900,11 @@ LS.questionEditor = (function () {
       $(`#answers_${language}_${scaleId} .btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
       $(`#answers_${language}_${scaleId} .btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
 
+      // NB: promises is an array with promises.
+      // NB: addinputQuickEdit returns a promise.
+      // TODO: Only one promise, so need no array?
       promises.push(
-        addinputQuickEdit(closestTable, language, (x === 0), scaleId, codes),
+        addinputQuickEdit($closestTable, language, (x === 0), scaleId, codes)
       );
     });
 
@@ -885,10 +912,18 @@ LS.questionEditor = (function () {
       function () {
         /* $('#quickadd').dialog('close'); */
         $.each(arguments, (i, item) => {
+          console.log('i', i);
+          console.log('item', item);
           $.each(answers[item.lng], (j, row) => {
             const { html } = item;
             const htmlQuid = html.replace('/({{quid_placeholder}})/g', row.quid);
+            console.log('htmlQuid', htmlQuid);
             const htmlRowObject = $(htmlQuid);
+            if (htmlRowObject.length === 0) {
+              alert('Internal error: Could not find htmlRowObject with htmlQuid ' + htmlQuid);
+              throw 'abort';
+            }
+            console.log('htmlRowObject', htmlRowObject);
             htmlRowObject.find('input.answer').val(row.text);
             if (htmlRowObject.find('input.code').length > 0) {
               htmlRowObject.find('input.code').val(row.code);
@@ -901,6 +936,7 @@ LS.questionEditor = (function () {
           });
         });
         $('#quickaddarea').val('');
+        //$('.tab-page:first .answertable tbody').sortable('refresh');
         $('.tab-page:first .answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
