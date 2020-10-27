@@ -308,7 +308,7 @@ LS.questionEditor = (function () {
       _.forEach(languages, (curLanguage, x) => {
         const $tablerow = $(`#row_${languages[x]}_${subquestionId}_${scaleId}`);
         if (x === 0) {
-          $tablerow.fadeTo(400, 0, function fadeAndRemove() {
+          $tablerow.fadeTo(300, 0, function fadeAndRemove() {
             $tablerow.remove();
             updateRowProperties();
           });
