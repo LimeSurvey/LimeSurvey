@@ -168,7 +168,7 @@ class QuestionAdministrationController extends LSBaseController
             ]
         );
 
-        Yii::app()->twigRenderer->renderViewFromFile(
+        echo Yii::app()->twigRenderer->renderViewFromFile(
             '/application/views/questionAdministration/modals.twig',
             [],
             true

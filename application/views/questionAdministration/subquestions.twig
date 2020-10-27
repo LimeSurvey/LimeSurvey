@@ -84,11 +84,11 @@
                     {% set disabled = '' %}
                 {% endif %}
 
-                <button {{ disabled }}  id='btnlsbrowser_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                <button {{ disabled }} id='btnlsbrowser_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                     {{ gT('Predefined label sets...') }}
                 </button>
 
-                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button' data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add...') }}
                 </button>
 
@@ -103,11 +103,6 @@
     </div>
     {% set first=false %}
 {% endfor %}
-
-<!--   Modals   -->
-{% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
-    {% include 'modals.twig' %}
-{% endif %}
 
 <p>
     <input type='submit' class="hidden" id='saveallbtn_{{ lang }}' name='method' value='{{ gT("Save changes") }}' />
