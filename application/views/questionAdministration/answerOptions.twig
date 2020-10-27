@@ -8,9 +8,6 @@
 {% for lang in allLanguages %}
     <div class="lang-hide lang-{{ lang }}">
         {% for scale_id in range(0,scalecount-1) %}
-             {% set result = results[anslang][scale_id] %}
-             {% set anscount = result|length %}
-             {# TODO : check the rendering of XSCALES / Y SCALES #}
 
             {% set position=1 %}
             {%  if scalecount>1 %}
@@ -20,7 +17,7 @@
             {% endif %}
 
             <!-- Answer options table -->
-            <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
+            <table class='answertable table table-responsive' id='{{ tableId[lang][scale_id] }}' data-scaleid='{{ scale_id }}'>
 
                 <!-- Headers -->
                 <thead>
@@ -81,16 +78,17 @@
 
             <div class="action-buttons">
                 {% if first %}
+                    <!-- TODO: Not used??? -->
                     <input type='hidden' id='answercount_{{ scale_id }}' name='answercount_{{ scale_id }}' value='{{ anscount }}' />
                     {% set disabled="" %}
                 {% endif %}
                 <br/>
 
-                <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                <button {{ disabled }}  id='btnlsbrowser_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                     {{ gT('Predefined label sets...') }}
                 </button>
 
-                <button {{ disabled }}  id='btnquickadd_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
                     {{ gT('Quick add...') }}
                 </button>
 
@@ -112,7 +110,7 @@
 {% endif %}
 
 <p>
-    <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
+    <input type='submit' class="hidden" id='saveallbtn_{{ lang }}' name='method' value='{{ gT("Save changes") }}' />
     <!-- For javascript -->
     <input
         type="hidden"
