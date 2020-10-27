@@ -299,7 +299,6 @@ LS.questionEditor = (function () {
       });
 
       const info = $(target).closest('tr').attr('id').split('_');
-      const idAttr = $(target).closest('table').attr('id');
       // TODO: use data-scaleid.
       const scaleId = info[3];
       const subquestionId = info[2];
@@ -1147,7 +1146,7 @@ laname: $('#laname').val(), lid, code, answers,
     });
   });
 
-  $(document).on("ready pjax:scriptcomplete", function () {
+  $(document).on('ready pjax:scriptcomplete', function () {
     // Hide all languages except main.
     $('.lang-hide').hide();
     const languages = languageJson.langs.split(';');
