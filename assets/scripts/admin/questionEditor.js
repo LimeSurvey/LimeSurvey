@@ -312,10 +312,7 @@ LS.questionEditor = (function () {
         }
       });
     } else {
-      // TODO: why block?
-      // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
-      $.blockUI({ message: `<p><br/>${languageJson.subquestions.strCantDeleteLastAnswer}</p>` });
-      setTimeout($.unblockUI, 1000);
+      // Do nothing, can't delete last row.
     }
     updateRowProperties();
   }
