@@ -319,16 +319,18 @@ LS.questionEditor = (function () {
       });
       console.log('position', position);
 
-      const info = $(target).closest('table').attr('id').split('_');
+      const info = $(target).closest('tr').attr('id').split('_');
       const idAttr = $(target).closest('table').attr('id');
       console.log('idAttr', idAttr);
       console.log('info', info);
       // TODO: use data-scaleid.
-      const scaleId = info[2];
+      const scaleId = info[3];
+      const subquestionId = info[2];
       const languages = languageJson.langs.split(';');
 
       _.forEach(languages, (curLanguage, x) => {
-        const $tablerow = $(`#row_${languages[x]}_${scaleId}`);
+        console.log('curLanguage', curLanguage);
+        const $tablerow = $(`#row_${languages[x]}_${subquestionId}_${scaleId}`);
         console.log('tablerow', $tablerow);
         console.log('tablerow.length', $tablerow.length);
         if (x === 0) {
