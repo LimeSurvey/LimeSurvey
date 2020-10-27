@@ -20,6 +20,8 @@
  *   tsc --allowJs --noEmit assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
  * To check with Flow:
  *   flow check-contents < assets/scripts/admin/questionEditor.js
+ * To check with jshint:
+ *   jshint assets/scripts/admin/questionEditor.js
  */
 
 // Flow declarations.
@@ -202,17 +204,6 @@ LS.questionEditor = (function () {
   //return relevanceTooltip;
   //}
 
-  /**
-   * Delete answer option row.
-   * Executed when user clicks "Delete" button.
-   *
-   * @param {event} e
-   * @return {void}
-   */
-  function deleteAnswerOptionInput(e) {
-    e.preventDefault();
-  }
-
   /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>): Object */
   /**
    * add addinputQuickEdit : for usage with the quickAdd Button
@@ -276,6 +267,7 @@ LS.questionEditor = (function () {
     return $defer.promise();
   }
 
+  /*:: declare function deleteSubquestionInput(Event): void */
   /**
    * Delete subquestion row.
    * Executed when user click "Delete" button.
@@ -289,7 +281,7 @@ LS.questionEditor = (function () {
     // 1.) Check if there is at least one answe
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
     if (countanswers > 1) {
-      // 2.) Remove the table row
+      // NB: Only answer options use position. Subquestions use id.
       let position;
       const classes = $(target).closest('tr').attr('class').split(' ');
       _.forEach(classes, (curClass) => {
@@ -306,6 +298,10 @@ LS.questionEditor = (function () {
 
       _.forEach(languages, (curLanguage, x) => {
         const $tablerow = $(`#row_${languages[x]}_${subquestionId}_${scaleId}`);
+        if ($tablerow.length === 0) {
+          alert('Internal error: Could not find row to delete');
+          throw 'abort';
+        }
         if (x === 0) {
           $tablerow.fadeTo(300, 0, function fadeAndRemove() {
             $tablerow.remove();
@@ -320,6 +316,55 @@ LS.questionEditor = (function () {
       // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
       $.blockUI({ message: `<p><br/>${languageJson.subquestions.strCantDeleteLastAnswer}</p>` });
       setTimeout($.unblockUI, 1000);
+    }
+    updateRowProperties();
+  }
+
+  /**
+   * Delete answer option row.
+   * Executed when user clicks "Delete" button.
+   *
+   * @param {event} e
+   * @return {void}
+   */
+  function deleteAnswerOptionInput(e) {
+    e.preventDefault();
+    const target = e.target;
+    // 1.) Check if there is at least one answe
+    const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
+    if (countanswers > 1) {
+      // NB: Only answer options use position. Subquestions use id.
+      let position;
+      const classes = $(target).closest('tr').attr('class').split(' ');
+      _.forEach(classes, (curClass) => {
+        if (curClass.substr(0, 3) === 'row') {
+          position = curClass.substr(4);
+        }
+      });
+
+      // Info is array like: ["row", lang, position, questionId, scale id].
+      const info = $(target).closest('tr').attr('id').split('_');
+      // TODO: use data-scaleid.
+      const languages = languageJson.langs.split(';');
+
+      _.forEach(languages, (curLanguage, x) => {
+        // TODO: This is the only row that's different from deleteSubquestionInput().
+        const $tablerow = $(`#row_${languages[x]}_${info[2]}_${info[3]}_${info[4]}`);
+        if ($tablerow.length === 0) {
+          alert('Internal error: Could not find row to delete');
+          throw 'abort';
+        }
+        if (x === 0) {
+          $tablerow.fadeTo(300, 0, function fadeAndRemove() {
+            $tablerow.remove();
+            updateRowProperties();
+          });
+        } else {
+          $tablerow.remove();
+        }
+      });
+    } else {
+      // Do nothing, can't delete last row.
     }
     updateRowProperties();
   }
