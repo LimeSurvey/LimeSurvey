@@ -319,10 +319,10 @@ foreach ($tokendata as $Key => $Value) {
                     <?php } else { ?>
                         <?php
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => "sent-switch",
-                            'id'=>"sent-switch",
+                            'name' => "remind-switch",
+                            'id'=>"remind-switch",
                             'htmlOptions'=>array('class'=>"YesNoSwitch action_toggle_bootstrap_switch"),
-                            'value' => $bSwitchValue,
+                            'value' => $bRemindSwitchValue,
                             'onLabel'=>gT('Yes'),
                             'offLabel' => gT('No')));
                         ?>
