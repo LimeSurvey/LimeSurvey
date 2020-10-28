@@ -1,7 +1,19 @@
-<?php $this->renderPartial(
+<?php
+
+/** @var Survey $oSurvey */
+
+$this->renderPartial(
     'topbars/' . $this->aData['renderSpecificTopbar'],
-    []
-); ?>
+    [
+            'closeBtnUrl'=> $this->createUrl(
+                'surveyAdministration/view/',
+                ['surveyid' => $oSurvey->sid]
+            )
+    ]
+);
+
+
+?>
 
 <style>
 /* TODO: Move where? */
@@ -45,6 +57,14 @@
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
             <input type="hidden" name="question[qid]" value="<?= $question->qid; ?>" />
+            <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
+            <input
+                type='submit'
+                style="display:none"
+                class="btn navbar-btn button white btn-success"
+                id = 'submit-create-question'
+                name="savecreate"
+            />
             <div id="advanced-question-editor">
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">

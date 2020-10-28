@@ -92,6 +92,13 @@ class SurveyAdministrationController extends LSBaseController
     public function actionView()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
+
+        //Permission check, user has permission to view this survey?
+        if(!Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
         $beforeSurveyAdminView->set('surveyId', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);

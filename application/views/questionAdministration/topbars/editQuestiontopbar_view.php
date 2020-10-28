@@ -1,4 +1,4 @@
-<!-- Temporary top bar while working on question editor -->
+<!-- Temporary top bar while working on question editor
 <div id="vue-topbar-container" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
     <div class="topbarpanel">
         <nav class="navbar navbar-default scoped-topbar-nav" style="border: none;">
@@ -19,4 +19,47 @@
             </div>
         </nav>
     </div>
+</div>  -->
+<?php
+/**  @var string $closeBtnUrl */
+
+?>
+
+<div class='menubar surveybar' id="questiongroupbarid">
+    <div class='row container-fluid'>
+
+        <div class="col-sm-4 text-right">
+            <a class="btn btn-default"
+               href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/groupid/'.$groupid.'/surveyid/'.$surveyid); ?>"
+               role="button">
+                <span class="icon-import"></span>
+                <?php eT('Import a question'); ?>
+            </a>
+        </div>
+
+        <!-- Right Buttons -->
+        <div class="col-sm-4 pull-right text-right">
+
+            <!-- Save and close -->
+            <a id="save-and-close-button-create-question" class="btn btn-default" role="button">
+                <i class="fa fa-check-square"></i>
+                <?php eT("Save and close");?>
+            </a>
+
+            <!-- Close -->
+            <a class="btn btn-danger" href="<?php echo $closeBtnUrl; ?>" role="button">
+                <span class="fa fa-close"></span>
+                <?php eT("Close");?>
+            </a>
+
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#save-and-close-button-create-question").click(function() {
+            document.getElementById("submit-create-question").click();
+        });
+    });
+</script>
