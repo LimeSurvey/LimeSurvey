@@ -1,4 +1,4 @@
-// @flow strict
+// @flow
 // @ts-check
 
 /*
@@ -24,10 +24,17 @@
  *   jshint assets/scripts/admin/questionEditor.js
  */
 
-// Flow declarations.
-/*:: declare var $: Object */
-/*:: declare var _: {forEach: function} */
-/*:: declare var LS: Object */
+/*flow-include
+declare var $: Object
+declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
+declare var LS: {
+  arrHasDupesWhich: Array<mixed> => boolean,
+  arrHasDupes: Array<mixed> => boolean,
+  doToolTip: void => void,
+  getUnique: Array<mixed> => Array<mixed>,
+  questionEditor: {}
+}
+*/
 
 // Globals for jshint.
 /* globals $, _, alert, document, LS */
@@ -38,6 +45,7 @@
 
 // Wrap it in closure to avoid global variables.
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+// TODO: Include functions from assets/packages/adminbasics/src/pages/subquestionandanswers.js
 LS.questionEditor = (function () {
 
   // TODO: Does not work with pjax loading.
@@ -204,7 +212,7 @@ LS.questionEditor = (function () {
   //return relevanceTooltip;
   //}
 
-  /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>, string): Object */
+  /*:: declare function addinputQuickEdit({}, string, boolean, number, Array<string>, string): {} */
   /**
    * add addinputQuickEdit : for usage with the quickAdd Button
    *
@@ -375,17 +383,21 @@ LS.questionEditor = (function () {
     updateRowProperties();
   }
 
-  /*:: declare function addNewInputAux(HTMLElement, Object, () => void): void */
   /**
    * Helper function for addSubquestionInput and addAnswerOptionInput.
    *
-   * @param {HTMLElement} target
+   * @param {EventTarget} target
    * @param {Object} data Data from relevant <input> in the view.
    * @param {Function} rebindClickHandler
    * @return {void}
    */
-  function addNewInputAux(target, data, rebindClickHandler)
+  function addNewInputAux(target /*: EventTarget */, data /*: {[string]: string} */, rebindClickHandler /*: () => void */)
   {
+    if (!(target instanceof HTMLElement)) {
+      alert('Internal error: Target is expected to be HTMLElement');
+      throw 'abort';
+    }
+
     // The "add" button
     const $that = $(target);
     // The row containing the "add" button
@@ -503,10 +515,10 @@ LS.questionEditor = (function () {
   //}
 
   /**
-   * @param {*} mixedVar
+   * @param {any} mixedVar
    * @return {boolean}
    */
-  function isNumeric(mixedVar) {
+  function isNumeric(mixedVar /*: mixed */) {
     return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' && !isNaN(mixedVar);
   }
 
@@ -659,8 +671,10 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * @param {event} e
+   * @param {Event & {relatedTarget: HTMLElement}} e
    * @return {void}
+   * @todo Fix name
+   * @todo What does it do?
    */
   function lsbrowser(e) {
     const scaleId = $(e.relatedTarget).data('scale-id');
@@ -851,7 +865,8 @@ LS.questionEditor = (function () {
     }
 
     // TODO: Document value
-    _.forEach(lsrows, (value /*: string & {splitCSV: Function} */, k /*: number */) => {
+    // NB: splitCSV is added to string prototype in adminbasics.
+    lsrows.forEach((value /*: string & {splitCSV: string => Array<string>} */, k /*: number */) => {
       const thisrow = value.splitCSV(separatorchar);
 
       if (thisrow.length <= languages.length) {
@@ -870,7 +885,7 @@ LS.questionEditor = (function () {
       const quid = `new${Math.floor(Math.random() * 10000)}`;
 
       // TODO: What's happening here?
-      _.forEach(languages, (language, x) => {
+      languages.forEach((language, x) => {
         if (typeof thisrow[parseInt(x) + 1] === 'undefined') {
           thisrow[parseInt(x) + 1] = thisrow[1];
         }
