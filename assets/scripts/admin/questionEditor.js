@@ -17,7 +17,7 @@
 
 /**
  * To check with TypeScript:
- *   tsc --allowJs --noEmit assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
+ *   tsc --allowJs --noEmit --target ES6 assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
  * To check with Flow:
  *   flow check-contents < assets/scripts/admin/questionEditor.js
  * To check with jshint:
@@ -149,7 +149,7 @@ LS.questionEditor = (function () {
   /*:: declare function addInputPredefined(number): Promise<XMLHttpRequest> */
   /**
    * @param {number} i
-   * @return {XMLHttpRequest}
+   * @return {Promise}
    */
   function addInputPredefined(i) {
     const $dataInput = $('#add-input-javascript-datas');
@@ -204,7 +204,7 @@ LS.questionEditor = (function () {
   //return relevanceTooltip;
   //}
 
-  /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>): Object */
+  /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>, string): Object */
   /**
    * add addinputQuickEdit : for usage with the quickAdd Button
    *
@@ -513,6 +513,7 @@ LS.questionEditor = (function () {
   /**
    * @param {string} sSourceCode
    * @return {string}
+   * @todo Used in label sets?
    */
   function getNextCode(sSourceCode) {  // jshint ignore: line
     const sourcecode = sSourceCode;
@@ -523,17 +524,17 @@ LS.questionEditor = (function () {
     while (i <= sclength && found === true) {
       found = isNumeric(sourcecode.substr(sclength - i, i));
       if (found) {
-        foundnumber = sourcecode.substr(sclength - i, i);
+        foundnumber = parseInt(sourcecode.substr(sclength - i, i));
         i++;
       }
     }
     if (foundnumber === -1) {
-      return (sourcecode);
+      return sourcecode;
     }
 
     foundnumber++;
-    foundnumber += '';
-    const result = sourcecode.substr(0, sclength - foundnumber.length) + foundnumber;
+    const foundnumberString = foundnumber.toString();
+    const result = sourcecode.substr(0, sclength - foundnumberString.length) + foundnumberString;
     return (result);
   }
 
@@ -778,13 +779,13 @@ LS.questionEditor = (function () {
     }
   }
 
-  /*:: declare function quickAddLabels(number, string, number): void */
+  /*:: declare function quickAddLabels(number, string, string): void */
   /**
    * Quick-add subquestions/answers
    *
    * @param {number} scaleId
    * @param {string} addOrReplace - Either 'add' or 'replace'
-   * @param {number} tableId
+   * @param {string} tableId
    * @return {void}
    * @todo Unit-test this? How? With classes?
    */
@@ -827,7 +828,6 @@ LS.questionEditor = (function () {
     const answers = [];
     const lsrows = $('#quickaddarea').val().split('\n');
     const allrows = $closestTable.find('tr').length;
-
     const separatorchar = getSeparatorChar(lsrows);
 
     let numericSuffix = '';
@@ -850,7 +850,8 @@ LS.questionEditor = (function () {
       codeSigil.push(currentCharacter);
     }
 
-    _.forEach(lsrows, (value, k) => {
+    // TODO: Document value
+    _.forEach(lsrows, (value /*: string & {splitCSV: Function} */, k /*: number */) => {
       const thisrow = value.splitCSV(separatorchar);
 
       if (thisrow.length <= languages.length) {
@@ -1244,7 +1245,7 @@ laname: $('#laname').val(), lid, code, answers,
      * @param {string} questionType - One-letter string of question type
      * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
      * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
-     * @return {void}
+     * @return {Promise}
      */
     // eslint-disable-next-line no-unused-vars
     updateQuestionAttributes: async function (questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
