@@ -225,7 +225,7 @@ class themes extends Survey_Common_Action
             $debug[] = $_FILES;
 
             // Check file size and render JSON on error
-            checkUploadedFileSizeAndRenderJson('file', $debug);
+            LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
             
             $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
             $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
@@ -393,7 +393,7 @@ class themes extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             // Check file size and redirect on error
-            checkUploadedFileSizeAndRedirect('upload_file', $redirectUrl);
+            LSUploadHelper::checkUploadedFileSizeAndRedirect('upload_file', $redirectUrl);
 
             $oEditedTemplate        = Template::getInstance($templatename);
             $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads');
@@ -1263,7 +1263,7 @@ class themes extends Survey_Common_Action
      */
     protected function checkFileSizeError()
     {
-        checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
+        LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
     }
 
     /**

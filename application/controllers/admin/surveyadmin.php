@@ -2340,7 +2340,7 @@ class SurveyAdmin extends Survey_Common_Action
         // Check file size and render JSON on error.
         // This is done before checking the survey permissions because, if the max POST size was exceeded,
         // there is no Survey ID to check for permissions, so the error could be misleading.
-        checkUploadedFileSizeAndRenderJson('file', $debug);
+        LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $iSurveyID = Yii::app()->request->getPost('surveyid');
         $success = false;
