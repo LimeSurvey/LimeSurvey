@@ -218,7 +218,13 @@ LS.questionEditor = (function () {
   function addinputQuickEdit($currentTable, language, first, scaleId, _codes) {
     const codes = _codes || [];
     // This hidden element  on the page contains various datas for this function
-    const dataInput = document.getElementById('add-subquestion-input-javascript-datas');
+    // TODO: Use class with state instead? `new QuickAdd('subquestions');`
+    const dataInputId = $currentTable.data('input-data-id');
+    if (dataInputId == null) {
+      alert('Internal error: Missing data input id');
+      throw 'abort';
+    }
+    const dataInput = document.getElementById(dataInputId);
     if (dataInput == null) {
       alert('Internal error: Could not find data input');
       throw 'abort';
@@ -259,7 +265,8 @@ LS.questionEditor = (function () {
       data: datas,
       success(htmlrow) {
         // TODO: Make this work for both subquestions and answer options.
-        const $langTable = $(`#subquestions_${language}_${scaleId}`);
+        //const $langTable = $(`#subquestions_${language}_${scaleId}`);
+        const $langTable = $currentTable;
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
@@ -760,7 +767,7 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * @param {array} lsrows
+   * @param {Array<string>} lsrows
    * @return {string}
    */
   function getSeparatorChar(lsrows) {
@@ -779,6 +786,7 @@ LS.questionEditor = (function () {
    * @param {string} addOrReplace - Either 'add' or 'replace'
    * @param {number} tableId
    * @return {void}
+   * @todo Unit-test this? How? With classes?
    */
   function quickAddLabels(scaleId, addOrReplace, tableId) {
     //console.ls.log('quickAddLabels');
@@ -814,6 +822,7 @@ LS.questionEditor = (function () {
 
     const languages = languageJson.langs.split(';');
     const promises = [];
+    // TODO: Doc answers
     const answers = [];
     const lsrows = $('#quickaddarea').val().split('\n');
     const allrows = $closestTable.find('tr').length;
@@ -878,10 +887,10 @@ LS.questionEditor = (function () {
       // $('#subquestions_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
     });
 
+    // TODO: One call per language, really?
     languages.forEach((language, x) => {
       // NB: promises is an array with promises.
       // NB: addinputQuickEdit returns a promise.
-      // TODO: Only one promise, so need no array?
       promises.push(
         addinputQuickEdit($closestTable, language, x === 0, scaleId, codes)
       );
@@ -900,6 +909,7 @@ LS.questionEditor = (function () {
               alert('Internal error: Could not find htmlRowObject');
               throw 'abort';
             }
+            console.log('item', item);
             htmlRowObject.find('input.answer').val(row.text);
             if (htmlRowObject.find('input.code').length > 0) {
               htmlRowObject.find('input.code').val(row.code);
@@ -1168,6 +1178,10 @@ laname: $('#laname').val(), lid, code, answers,
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = $(e.relatedTarget).data('scale-id');
       const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      if (tableId === '') {
+        alert('Internal error: Did not find tableId');
+        throw 'abort';
+      }
 
       $('#btnqainsert').off('click').on('click', () => {
         quickAddLabels(scaleId, 'add', tableId);

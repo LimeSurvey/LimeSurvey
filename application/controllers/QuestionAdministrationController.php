@@ -555,6 +555,8 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * AJAX Method to QuickAdd multiple Rows AJAX-based
      * @todo Permission
+     * @todo Should be GET, not POST
+     * @return void
      */
     public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
     {
@@ -568,6 +570,25 @@ class QuestionAdministrationController extends LSBaseController
         $position          = $request->getPost('position');
         $assessmentvisible = $request->getPost('assessmentvisible');
         echo $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $position, $assessmentvisible);
+    }
+
+    /**
+     * @todo Permission
+     * @todo Should be GET, not POST
+     * @return void
+     */
+    public function actionGetAnswerOptionRowQuickAdd($surveyid, $gid)
+    {
+        $qid               = '{{quid_placeholder}}';
+        $request           = Yii::app()->request;
+        $codes             = $request->getPost('codes');
+        $language          = $request->getPost('language');
+        $first             = $request->getPost('first');
+        $scale_id          = $request->getPost('scale_id');
+        $type              = $request->getPost('type');
+        $position          = $request->getPost('position');
+        $assessmentvisible = $request->getPost('assessmentvisible');
+        echo $this->getAnswerOptionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $position, $assessmentvisible);
     }
 
     /**
