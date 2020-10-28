@@ -10,6 +10,13 @@ $count=0;
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
+//render the topbar
+$this->renderPartial(
+    'topbars/' . $renderSpecificTopbar,
+    [
+        'surveyid' => $surveyid,
+    ]
+);
 
 App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
 var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';

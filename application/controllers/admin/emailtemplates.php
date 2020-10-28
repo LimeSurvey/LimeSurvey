@@ -69,24 +69,15 @@ class emailtemplates extends Survey_Common_Action
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key], $sEscapeMode);
         }
 
-            $aData['sidemenu']['state'] = false;
-            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-
-
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-            $aData['topBar']['showSaveButton'] = true;
-            if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update')) {
-                unset($aData['surveybar']['savebutton']);
-                unset($aData['surveybar']['saveandclosebutton']);
-                $aData['topBar']['showSaveButton'] = false;
-            }
-            $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyId; // Close button
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
 
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
+
+        $aData['renderSpecificTopbar'] = 'emailtemplatesTopbar_view';
         
         App()->getClientScript()->registerPackage('emailtemplates');
         App()->getClientScript()->registerPackage('expressionscript');

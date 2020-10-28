@@ -35,8 +35,11 @@ $this->_showHeaders($aData, false);
         echo '<div '
         . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
         . '>';
-            //New general top bar (VueComponent)
-            $this->_generaltopbar($aData);
+            // Only render general topbar if no specific topbar is rendered
+            if (!isset($aData['renderSpecificTopbar'])) {
+                //New general top bar (VueComponent)
+                $this->_generaltopbar($aData);
+            }
 
             echo '<div id="pjax-content" class="col-12">';
 
@@ -65,7 +68,9 @@ $this->_showHeaders($aData, false);
 
                     echo $content;
                     
-                    $this->_generaltopbarAdditions($aData);
+                    if (!isset($aData['renderSpecificTopbar'])) {
+                        $this->_generaltopbarAdditions($aData);
+                    }
                 echo "</div>\n";
             echo "</div>\n";
         echo "</div>\n";
