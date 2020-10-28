@@ -25,7 +25,7 @@
  */
 
 /*flow-include
-declare var $: Object
+declare var $: {string: any, ajax: {} => void, post: {} => void, post: (string, {}, void => void) => void} & (any) => any
 declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
 declare var LS: {
   arrHasDupesWhich: Array<mixed> => boolean,
