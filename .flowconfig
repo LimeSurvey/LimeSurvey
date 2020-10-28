@@ -1,2 +1,3 @@
 [ignore]
 .*/third_party/.*
+.*/assets/packages/.*
