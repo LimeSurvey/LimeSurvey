@@ -3,21 +3,21 @@
  * @var QuestionGroupsAdministrationController $this
  * @var Survey $oSurvey
  */
+
+//render the topbar for group overview
+$this->renderPartial(
+    'topbars/' . $renderSpecificTopbar,
+    [
+        'oSurvey' => $oSurvey,
+        'surveyid' => $surveyid,
+        'gid' => $gid,
+        'condarray' => $condarray,
+    ]
+);
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class='container-fluid'>
         <div class='container-center'>
-            <?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update')): ?>
-            <div class="pull-right clear">
-                <a type="button" 
-                id="edit_question_group" 
-                href="<?= $this->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/")?>" 
-                class="btn btn-default">
-                <i class="icon-edit icon"></i>
-                <?=gT("Question group editor")?>
-                </a>
-            </div>
-            <?php endif; ?>
             <div class="pagetitle h3" style="pointer-events: none;"><?php eT('Group summary'); ?></div>
         </div>
         <div class="row">

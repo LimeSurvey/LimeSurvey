@@ -8,12 +8,10 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('importQuestionGroup');
+
+//render the topbar for group import
+$this->renderPartial('topbars/' . $renderSpecificTopbar, []);
 ?>
-<div>
-    <a type="button" href="#" id="save-button" data-btntype="1" class="pull-right btn button white btn-success">
-        <i class="fa fa-floppy-o icon"></i><?php eT('Import') ?>
-    </a>
-</div>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import question group"); ?></h3>
     <div class="row">
