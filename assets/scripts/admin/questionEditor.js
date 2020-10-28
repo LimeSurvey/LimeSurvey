@@ -213,9 +213,10 @@ LS.questionEditor = (function () {
    * @param {boolean} first
    * @param {number} scaleId
    * @param {array} _codes
+   * @param {string} tableIdPrefix Either 'subquestions' or 'answeroptions'
    * @return {Promise}
    */
-  function addinputQuickEdit($currentTable, language, first, scaleId, _codes) {
+  function addinputQuickEdit($currentTable, language, first, scaleId, _codes, tableIdPrefix) {
     const codes = _codes || [];
     // This hidden element  on the page contains various datas for this function
     // TODO: Use class with state instead? `new QuickAdd('subquestions');`
@@ -251,7 +252,7 @@ LS.questionEditor = (function () {
       codes: codesJson,
       // In $dataInput.data('scale-id') ?
       scale_id: scaleId,  // jshint ignore:line
-      type: 'subquestion',
+      //type: 'subquestion',
       position: null,
       first,
       language,
@@ -264,9 +265,7 @@ LS.questionEditor = (function () {
       url: url,
       data: datas,
       success(htmlrow) {
-        // TODO: Make this work for both subquestions and answer options.
-        //const $langTable = $(`#subquestions_${language}_${scaleId}`);
-        const $langTable = $currentTable;
+        const $langTable = $(`#${tableIdPrefix}_${language}_${scaleId}`);
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
@@ -715,6 +714,7 @@ LS.questionEditor = (function () {
     addInputPredefined(1).then((result) => {
       //console.ls.log(result);
       $.each(result, (lng, row) => {
+        // TODO: Answer options
         const $table = $(`#subquestions_${lng}_${scaleId}`);
 
         if (type === 'replace') {
@@ -795,6 +795,7 @@ LS.questionEditor = (function () {
     //const qID = $('input[name=qid]').val();
     const codes = [];
     const $closestTable = $(`#${tableId}`);
+    const tableIdPrefix = tableId.split('_')[0];
     const lsreplace = addOrReplace === 'replace';
 
     // Not needed, since we always delete all rows at save (when survey is not active).
@@ -892,7 +893,7 @@ LS.questionEditor = (function () {
       // NB: promises is an array with promises.
       // NB: addinputQuickEdit returns a promise.
       promises.push(
-        addinputQuickEdit($closestTable, language, x === 0, scaleId, codes)
+        addinputQuickEdit($closestTable, language, x === 0, scaleId, codes, tableIdPrefix)
       );
     });
 
@@ -909,7 +910,6 @@ LS.questionEditor = (function () {
               alert('Internal error: Could not find htmlRowObject');
               throw 'abort';
             }
-            console.log('item', item);
             htmlRowObject.find('input.answer').val(row.text);
             if (htmlRowObject.find('input.code').length > 0) {
               htmlRowObject.find('input.code').val(row.code);
