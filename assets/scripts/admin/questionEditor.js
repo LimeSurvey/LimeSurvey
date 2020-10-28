@@ -224,7 +224,6 @@ LS.questionEditor = (function () {
       throw 'abort';
     }
     const url = dataInput.dataset.quickurl;
-    console.log('url', url);
     const errormessage = dataInput.dataset.errormessage;
     const $defer = $.Deferred();
 
@@ -239,8 +238,6 @@ LS.questionEditor = (function () {
       });
     }
 
-    console.log('codes', codes);
-
     // We convert them to json for the request
     const codesJson = JSON.stringify(codes);
     // We build the datas for the request
@@ -254,8 +251,6 @@ LS.questionEditor = (function () {
       language,
     };
 
-    console.log('datas', datas);
-
     // We get the HTML of the new row to insert
     $.ajax({
       // TODO: We don't update DB, no need post
@@ -263,11 +258,11 @@ LS.questionEditor = (function () {
       url: url,
       data: datas,
       success(htmlrow) {
-        const $langTable = $(`#answers_${language}_${scaleId}`);
+        // TODO: Make this work for both subquestions and answer options.
+        const $langTable = $(`#subquestions_${language}_${scaleId}`);
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        console.log(html, status);
         alert('Internal error: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
@@ -713,7 +708,7 @@ LS.questionEditor = (function () {
     addInputPredefined(1).then((result) => {
       //console.ls.log(result);
       $.each(result, (lng, row) => {
-        const $table = $(`#answers_${lng}_${scaleId}`);
+        const $table = $(`#subquestions_${lng}_${scaleId}`);
 
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
@@ -790,7 +785,6 @@ LS.questionEditor = (function () {
     //const sID = $('input[name=sid]').val();
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
-    console.log('tableId', tableId);
     const codes = [];
     const $closestTable = $(`#${tableId}`);
     const lsreplace = addOrReplace === 'replace';
@@ -817,14 +811,12 @@ LS.questionEditor = (function () {
         codes.push($(this).val());
       });
     }
-    console.log('codes', codes);
 
     const languages = languageJson.langs.split(';');
     const promises = [];
     const answers = [];
     const lsrows = $('#quickaddarea').val().split('\n');
     const allrows = $closestTable.find('tr').length;
-    console.log('allrows', allrows);
 
     const separatorchar = getSeparatorChar(lsrows);
 
@@ -876,54 +868,38 @@ LS.questionEditor = (function () {
           answers[language] = [];
         }
         if (lsreplace) {
-          $(`#answers_${language}_${scaleId} tbody`).empty();
+          $(`#subquestions_${language}_${scaleId} tbody`).empty();
         }
         answers[language].push(
           { text: thisrow[(parseInt(x) + 1)], code: thisrow[0], quid },
         );
       });
 
-      // $('#answers_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
+      // $('#subquestions_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
     });
 
-    console.log('answers', answers);
-
-    _.forEach(languages, (language, x) => {
-      // Unbind any previous events
-      $(`#answers_${language}_${scaleId} .btnaddanswer`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btndelanswer`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btnaddsubquestion`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btndelsubquestion`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .answer`).off('focus');
-      $(`#answers_${language}_${scaleId} .btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
-      $(`#answers_${language}_${scaleId} .btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
-      $(`#answers_${language}_${scaleId} .btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
-      $(`#answers_${language}_${scaleId} .btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
-
+    languages.forEach((language, x) => {
       // NB: promises is an array with promises.
       // NB: addinputQuickEdit returns a promise.
       // TODO: Only one promise, so need no array?
       promises.push(
-        addinputQuickEdit($closestTable, language, (x === 0), scaleId, codes)
+        addinputQuickEdit($closestTable, language, x === 0, scaleId, codes)
       );
     });
 
     $.when.apply($, promises).done(
       function () {
         /* $('#quickadd').dialog('close'); */
+        // TODO: What is item here?
         $.each(arguments, (i, item) => {
-          console.log('i', i);
-          console.log('item', item);
           $.each(answers[item.lng], (j, row) => {
             const { html } = item;
-            const htmlQuid = html.replace('/({{quid_placeholder}})/g', row.quid);
-            console.log('htmlQuid', htmlQuid);
+            const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
             const htmlRowObject = $(htmlQuid);
             if (htmlRowObject.length === 0) {
-              alert('Internal error: Could not find htmlRowObject with htmlQuid ' + htmlQuid);
+              alert('Internal error: Could not find htmlRowObject');
               throw 'abort';
             }
-            console.log('htmlRowObject', htmlRowObject);
             htmlRowObject.find('input.answer').val(row.text);
             if (htmlRowObject.find('input.code').length > 0) {
               htmlRowObject.find('input.code').val(row.code);
@@ -950,6 +926,17 @@ LS.questionEditor = (function () {
         updateRowProperties();
         $('#quickaddModal').modal('hide');
         bindClickIfNotExpanded();
+
+        // Unbind and bind events.
+        $(`.btnaddanswer`).off('click.subquestions');
+        $(`.btndelanswer`).off('click.subquestions');
+        $(`.btnaddsubquestion`).off('click.subquestions');
+        $(`.btndelsubquestion`).off('click.subquestions');
+        $(`.answer`).off('focus');
+        $(`.btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
+        $(`.btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
+        $(`.btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
+        $(`.btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
       },
     );
   }
