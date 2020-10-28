@@ -24,6 +24,7 @@
  *   jshint assets/scripts/admin/questionEditor.js
  */
 
+// Flow declarations. The TypeScript declaration are in decl.d.ts.
 /*flow-include
 declare var $: {string: any, ajax: {} => void, post: {} => void, post: (string, {}, void => void) => void} & (any) => any
 declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
