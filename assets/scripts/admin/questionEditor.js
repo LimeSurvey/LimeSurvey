@@ -26,7 +26,14 @@
 
 // Flow declarations. The TypeScript declaration are in decl.d.ts.
 /*flow-include
-declare var $: {string: any, ajax: {} => void, post: {} => void, post: (string, {}, void => void) => void} & (any) => any
+declare class _$ {
+  ajax: {} => void,
+  post: (string, {}, void => void) => void,
+  each: (Array, (number, mixed) => void) => void,
+  getJSON: (string, ({}) => void) => void,
+  (string|HTMLElement|Document): any
+}
+declare var $: _$
 declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
 declare var LS: {
   arrHasDupesWhich: Array<mixed> => boolean,
@@ -984,7 +991,11 @@ LS.questionEditor = (function () {
               $(target).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
               $.getJSON(languageJson.lanameurl, (data) => {
                 $.each(data, (key, val) => {
-                  $('#lasets').append(`<option value="${key}">${val}</option>`);
+                  if (typeof val === 'string') {
+                    $('#lasets').append(`<option value="${key}">${val}</option>`);
+                  } else {
+                    throw 'val is not string';
+                  }
                 });
               });
               $('#lasets option[value=""]').remove();
@@ -995,6 +1006,7 @@ LS.questionEditor = (function () {
     }
   }
 
+  /*:: declare function ajaxcheckdup(): Promise<mixed> */
   /**
    * @return {Promise}
    */
@@ -1012,7 +1024,6 @@ LS.questionEditor = (function () {
             $('#dialog-duplicate').show();
           }
           check = false;
-          return false;
         }
       });
     });
@@ -1106,7 +1117,7 @@ laname: $('#laname').val(), lid, code, answers,
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
     if (lid === 0) {
       const response = ajaxcheckdup();
-      response.complete(() => {
+      response.then(() => {
         if (check) {
           ajaxreqsave();
         }
