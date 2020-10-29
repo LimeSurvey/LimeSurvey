@@ -465,4 +465,13 @@ class LSActiveRecord extends CActiveRecord
     {
         return array();
     }
+
+    /**
+     * Get minimal permission name (for read value)
+     * @return null|string
+     */
+    public static function getMinimalPermissionRead()
+    {
+        return null;
+    }
 }

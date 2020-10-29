@@ -96,6 +96,17 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * Return minimal permission name (for read value)
+     * @param string $sEntityName must be an existing object child of LSActiveRecord
+     * @static
+     * @return null|string
+     */
+    public static function getEntityMinimalPermissionRead($sEntityName)
+    {
+        return $sEntityName::getMinimalPermissionRead();
+    }
+
+    /**
      * Returns the global permissions including description and title
      *
      * @access public
@@ -263,8 +274,8 @@ class Permission extends LSActiveRecord
             } elseif (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
                 unset($aBasePermissions['superadmin']);
             }
-        } elseif ($sEntityName == 'survey') {
-            $aBasePermissions = Permission::model()->getSurveyBasePermissions();
+        } else {
+            $aBasePermissions = Permission::model()->getEntityBasePermissions($sEntityName);
         }
 
         $aFilteredPermissions = array();
@@ -276,21 +287,28 @@ class Permission extends LSActiveRecord
             $aFilteredPermissions[$sPermissionname]['import'] = (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
             $aFilteredPermissions[$sPermissionname]['export'] = (isset($aPermissions[$sPermissionname]['export']) && $aPermissions[$sPermissionname]['export']);
         }
-
-        $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
+        $condition = array(
+            'entity' => $sEntityName,
+            'entity_id' => $iEntityID,
+            'uid' => $iUserID
+        );
         $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions', $aFilteredPermissions);
         $oEvent->set('iSurveyID', $iEntityID);
+        $oEvent->set('entity', $sEntityName); /* New in 4.4.X */
+        $oEvent->set('entityId', $iEntityID); /* New in 4.4.X */
         $oEvent->set('iUserID', $iUserID);
         App()->getPluginManager()->dispatchEvent($oEvent);
 
         if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
-            Permission::model()->deleteAllByAttributes($condition, "permission <> 'superadmin' AND entity <> 'template'");
+            Permission::model()->deleteAllByAttributes($condition, "permission <> 'superadmin'");
         } else {
-            Permission::model()->deleteAllByAttributes($condition, "entity <> 'template'");
+            Permission::model()->deleteAllByAttributes($condition);
         }
 
         foreach ($aFilteredPermissions as $sPermissionname => $aPermission) {
+            /* @todo : review this : any user with security update can delete or add any other permission, must be limited to own permission */
+            /* Move to : search or create, and update after */
             if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                 $data = array(
                     'entity_id' => $iEntityID,
@@ -304,17 +322,54 @@ class Permission extends LSActiveRecord
                     'import_p' => (int) $aPermission['import'],
                     'export_p' => (int) $aPermission['export'],
                 );
-
                 $permission = new self;
                 foreach ($data as $k => $v) {
                     $permission->$k = $v;
                 }
                 $permission->save();
             }
+            
+        }
+        if($sEntityName != 'global') {
+            self::setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName);
         }
         return true;
     }
 
+    /**
+     * Set global permissions to the user id
+     *
+     * @param int $iNewUID
+     * @param mixed $iEntityID
+     * @param string $sEntityName
+     * @return null|self::model()
+     */
+    public static function setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName)
+    {
+        $sPermission = self::getEntityMinimalPermissionRead($sEntityName);
+        if(!$sPermission) {
+            return null;
+        }
+        $oPermission = Permission::model()->find(
+            "uid= :uid AND entity = :entity AND entity_id = :entity_id AND permission = :permission",
+            array(
+                'uid' => $iUserID,
+                'entity' => $sEntityName,
+                'entity_id' => $iEntityID,
+                'permission' => $sPermission,
+            )
+        );
+        if(empty($oPermission)) {
+            $oPermission = new Permission;
+            $oPermission->uid = $iUserID;
+            $oPermission->entity = $sEntityName;
+            $oPermission->entity_id = $iEntityID;
+            $oPermission->permission = $sPermission;
+        }
+        $oPermission->read_p = 1;
+        $oPermission->save();
+        return $oPermission;
+    }
     /**
      * Set global permissions to the user id
      *
@@ -392,17 +447,22 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * @param integer $surveyid
+     * @param integer $iEntityID
+     * @param string $sEntityName
      * @return array
      */
-    public function getUserDetails($surveyid)
+    public function getUserDetails($iEntityID, $sEntityName = 'survey')
     {
         $sQuery = "SELECT p.entity_id, p.uid, u.users_name, u.full_name FROM {{permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
-            WHERE p.entity_id = :surveyid AND u.uid != :userid and p.entity='survey'
+            WHERE p.entity_id = :entityid AND u.uid != :userid and p.entity= :entity
             GROUP BY p.entity_id, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
         $iUserID = Yii::app()->user->getId();
-        return Yii::app()->db->createCommand($sQuery)->bindParam(":userid", $iUserID, PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query()->readAll(); //Checked
+        return Yii::app()->db->createCommand($sQuery)
+            ->bindParam(":userid", $iUserID, PDO::PARAM_INT)
+            ->bindParam("entityid", $iEntityID, PDO::PARAM_INT)
+            ->bindParam("entity", $sEntityName, PDO::PARAM_STR)
+            ->query()->readAll(); //Checked
     }
 
     /**

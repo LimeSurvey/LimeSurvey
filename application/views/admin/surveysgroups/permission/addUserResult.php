@@ -1,4 +1,4 @@
-<div class="jumbotron message-box">
+<div class="jumbotron">
     <h2 class="pagetitle h3"><?php eT('Add user');?></h2>
     <?php if($result['warning']) : ?>
         <p class="alert alert-warning"><?= $result['warning'] ?>
@@ -7,12 +7,12 @@
         <p class="alert alert-success"><?= $result['success'] ?>
     <?php endif ?>
     <?php if($result['error']) : ?>
-        <p class="alert alert-error"><?= $result['success'] ?>
+        <p class="alert alert-error"><?= $result['error'] ?>
     <?php endif ?>
     <p><?php
         echo CHtml::link(
             gT("Set the permission for this user on this group."),
-            array( "admin/surveysgroups/sa/permissionsSet", 'id'=>$model->gsid, 'to' => $uid, 'type' => 'user'),
+            array( "admin/surveysgroups/sa/permissionsUserSet", 'id'=>$model->gsid, 'to' => $uid),
             array('class' => 'btn btn-default')
         );
     ?> </p>

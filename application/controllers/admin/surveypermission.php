@@ -93,17 +93,16 @@ class surveypermission extends Survey_Common_Action
                         $group_ids[] = $resul3row->ugid;
                     }
                 }
-
                 if (isset($group_ids) && $group_ids[0] != null) {
                     $group_ids_query = implode(",", $group_ids);
                     unset($group_ids);
                     $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");
 
                     foreach ($result4 as $resul4row) {
-                        $group_names[] = \CHtml::encode($resul4row->name);
+                       $group_names[] = \CHtml::encode($resul4row->name);
                     }
                     if (count($group_names) > 0) {
-                                            $group_names_query = implode(", ", $group_names);
+                        $group_names_query = implode(", ", $group_names);
                     }
                 }
                 //                  else {break;} //TODO Commented by lemeur

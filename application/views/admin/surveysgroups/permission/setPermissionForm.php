@@ -2,10 +2,11 @@
     App()->getClientScript()->registerPackage('jquery-tablesorter');
     App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'surveypermissions.js');
 ?>
-<?php echo CHtml::beginForm(
-    array("admin/surveysgroups/sa/permissionsSave", 'id'=>$model->gsid),
+<?php
+    echo CHtml::beginForm(
+    array( "admin/surveysgroups/sa/permissionsSave", 'id'=>$model->gsid),
     'post',
-    array('class'=>'usersurveypermissions') // Class used by surveypermissions
+    array('class'=>'setPermissionsForm', 'id'=> 'permissionsSave')
 ); ?>
     <h2 class="pagetitle h3"><?php if($type == 'user') {
         printf(gT("Set permission for user : %s"),"<em>".CHtml::encode($oUser->users_name)."</em>");
@@ -37,12 +38,20 @@
                 <td><?= $aCurrentPermissions['title'] ?></td>
                 <td><?php echo CHtml::checkBox("all_$sPermission",false, array('class' => 'markrow')) ?></td>
                 <?php foreach ($aCurrentPermissions['current'] as $sKey =>$aValues): ?>
+                <?php array(
+                    $sKey,
+                    $aValues
+                );?>
                 <td class='extended'><?php if($aCurrentPermissions[$sKey]) {
                     echo CHtml::checkBox(
-                        "all_{$sPermission}_{$sKey}",
-                        false,
+                        "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
+                        $aValues['checked'],
                         array(
-                            'data-indeterminate' => false
+                            'value' => 1,
+                            'data-indeterminate' =>$aValues['data-indeterminate'],
+                            'id' => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
+                            'uncheckValue' => 0,
+                            'disabled' =>$aValues['disabled'],
                         )
                     );
                     }?>
@@ -51,4 +60,10 @@
             </tr>
         <?php endforeach;?></tbody>
     </table>
+    <!-- Hidden input -->
+    <?php
+        if($type == 'user') {
+            echo CHtml::hiddenField('uid',$oUser->uid);
+        }
+    ?>
 </form>

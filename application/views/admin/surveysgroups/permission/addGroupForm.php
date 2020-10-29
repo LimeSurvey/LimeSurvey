@@ -1,22 +1,9 @@
-<?php echo CHtml::beginForm(array("admin/surveysgroups/sa/permissionsAddUserGroup", 'id'=>$model->gsid), 'post', array('class'=>'form-horizontal container-fluid')) ?>
-<div class="row">
-    <label class='col-sm-2 col-md-offset-2 text-right control-label' for='uid'>
-        <?php eT("User group"); ?>
-    </label>
-    <div class='col-sm-4 '>
-        <?php echo CHtml::dropDownList(
-            'uid',
-            '',
-            CHtml::listData($oAddGroupList,'uid','users_name'),
-            array(
-                'empty' => gT("Please choose..."),
-                'class'=> 'form-control',
-                'required' => true,
-            )
-        ); ?>
-    </div>
-    <div class='col-sm-4 '>
-        <?php echo CHtml::button(gT("Add group users"),array('class'=>'btn btn-default', 'type'=>'submit')); ?>
-    </div>
-</div>
-</form>
+<?php
+    $this->renderPartial(
+        'super/permissions/addGroupForm',
+        array(
+            'action' => array("admin/surveysgroups/sa/permissionsAddUserGroup", 'id'=>$model->gsid),
+            'oAddGroupList' => $oAddGroupList
+        )
+    );
+?>

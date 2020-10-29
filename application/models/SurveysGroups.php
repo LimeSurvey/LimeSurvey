@@ -426,13 +426,13 @@ class SurveysGroups extends LSActiveRecord
     }
 
     /**
-     * Get minimal permission name (for read value)
-     * @return string
+     * @inheritdoc
      */
-    public static function getMinimalPermissionData()
+    public static function getMinimalPermissionRead()
     {
         return 'group';
     }
+
     /**
      * Get the owner id of this Survey group
      * Used for Permission

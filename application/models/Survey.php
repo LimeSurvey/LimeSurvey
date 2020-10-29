@@ -2089,6 +2089,15 @@ return $s->hasTokensTable; });
     }
 
     /**
+     * @inheritdoc
+     * @todo use it in surveyspermission 
+     */
+    public static function getMinimalPermissionRead()
+    {
+        return 'survey';
+    }
+
+    /**
      * Get Permission data for Permission object
      * @param string $key
      * @return array
