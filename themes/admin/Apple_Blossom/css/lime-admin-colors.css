@@ -1954,6 +1954,12 @@ input[type="checkbox"]:checked:after,
   background-color: #AA4340;
   border-color: #AA4340; }
 
+input[type="checkbox"]:indeterminate:after,
+.checkbox input[type="checkbox"]:indeterminate:after,
+.checkbox-inline input[type="checkbox"]:indeterminate:after {
+  background-color: #AA4340;
+  border-color: #AA4340; }
+
 /* jqGrid */
 .ui-dialog, .ui-jqdialog, .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
   background-color: #ffffff;
