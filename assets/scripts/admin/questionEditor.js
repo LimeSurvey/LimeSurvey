@@ -1258,6 +1258,8 @@ laname: $('#laname').val(), lid, code, answers,
     if (qidInput instanceof HTMLInputElement) {
       if (qidInput.value !== 0) {
         $('#advanced-question-editor').hide();
+        $('#question-create-topbar').hide();
+        $('#question-edit-topbar').hide();
       }
     }
   });
@@ -1332,14 +1334,21 @@ laname: $('#laname').val(), lid, code, answers,
       }
     },
 
+    // Show summary page.
     showOverview: function () {
       $('#advanced-question-editor').hide();
+      $('#question-create-topbar').hide();
+      $('#question-edit-topbar').hide();
       $('#question-overview').show();
+      $('#question-summary-topbar').show();
     },
 
     showEditor: function () {
       $('#question-overview').hide();
+      $('#question-summary-topbar').hide();
       $('#advanced-question-editor').show();
+      $('#question-create-topbar').show();
+      $('#question-edit-topbar').show();
     }
   };
 })();

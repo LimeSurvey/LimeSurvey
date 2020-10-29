@@ -9,7 +9,8 @@ $this->renderPartial(
             'surveyAdministration/view/',
             ['surveyid' => $oSurvey->sid]
         ),
-        'surveyId' => $oSurvey->sid
+        'surveyId' => $oSurvey->sid,
+        'question' => $question,
     ]
 );
 
