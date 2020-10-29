@@ -168,6 +168,7 @@ class QuestionAdministrationController extends LSBaseController
             ]
         );
 
+        // TODO: Problem with CSRF cookie when entering directly after login.
         echo Yii::app()->twigRenderer->renderViewFromFile(
             '/application/views/questionAdministration/modals.twig',
             [],

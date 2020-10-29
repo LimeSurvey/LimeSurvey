@@ -5,14 +5,13 @@
 $this->renderPartial(
     'topbars/' . $this->aData['renderSpecificTopbar'],
     [
-            'closeBtnUrl'=> $this->createUrl(
-                'surveyAdministration/view/',
-                ['surveyid' => $oSurvey->sid]
-            ),
-            'surveyId' => $oSurvey->sid
+        'closeBtnUrl'=> $this->createUrl(
+            'surveyAdministration/view/',
+            ['surveyid' => $oSurvey->sid]
+        ),
+        'surveyId' => $oSurvey->sid
     ]
 );
-
 
 ?>
 
@@ -26,28 +25,30 @@ $this->renderPartial(
 <!-- Create form for question -->
 <div class="side-body">
 
-    <!-- Question overview switch -->
-    <div
-        class="btn-group pull-right clear"
-        role="group"
-        data-toggle="buttons"
-    >
-        <label class="btn btn-default active" onclick="LS.questionEditor.showOverview();">
-            <input 
-                type="radio" 
-                name="question-overview-switch"
-                checked="checked"
-            />
-            <?= gt('Question overview'); ?>
-        </label>
-        <label class="btn btn-default" onclick="LS.questionEditor.showEditor();">
-            <input
-                type="radio"
-                name="question-overview-switch"
-            />
-            <?= gT('Question editor'); ?>
-        </label>
-    </div>
+    <!-- Question overview switch (no summary on create, so hide then) -->
+    <?php if ($question->qid !== 0): ?>
+        <div
+            class="btn-group pull-right clear"
+            role="group"
+            data-toggle="buttons"
+        >
+            <label class="btn btn-default active" onclick="LS.questionEditor.showOverview();">
+                <input 
+                    type="radio" 
+                    name="question-overview-switch"
+                    checked="checked"
+                />
+                <?= gt('Question overview'); ?>
+            </label>
+            <label class="btn btn-default" onclick="LS.questionEditor.showEditor();">
+                <input
+                    type="radio"
+                    name="question-overview-switch"
+                />
+                <?= gT('Question editor'); ?>
+            </label>
+        </div>
+    <?php endif; ?>
 
     <div class="container-fluid">
         <?php echo CHtml::form(
@@ -142,25 +143,25 @@ $this->renderPartial(
             <form>
             <!-- Question summary -->
             <div class="container-center scoped-new-questioneditor">
-            <div class="pagetitle h3">
-                <?php eT('Question summary'); ?>&nbsp;
-                <small>
-                    <em><?= $question->title; ?></em>&nbsp;
-                    (ID: <?php echo (int) $question->qid;?>)
-                </small>
-            </div>
-            <div class="row">
-                <?php $this->renderPartial(
-                    "summary",
-                    [
-                        'question'         => $question,
-                        'questionTypes'     => $aQuestionTypeStateList,
-                        'answersCount'      => count($question->answers),
-                        'subquestionsCount' => count($question->subquestions),
-                        'advancedSettings'  => $advancedSettings
-                    ]
-                ); ?>
-            </div>
+                <div class="pagetitle h3" style="padding-top: 0; margin-top: 0;">
+                    <?php eT('Question summary'); ?>&nbsp;
+                    <small>
+                        <em><?= $question->title; ?></em>&nbsp;
+                        (ID: <?php echo (int) $question->qid;?>)
+                    </small>
+                </div>
+                <div class="row">
+                    <?php $this->renderPartial(
+                        "summary",
+                        [
+                            'question'         => $question,
+                            'questionTypes'     => $aQuestionTypeStateList,
+                            'answersCount'      => count($question->answers),
+                            'subquestionsCount' => count($question->subquestions),
+                            'advancedSettings'  => $advancedSettings
+                        ]
+                    ); ?>
+                </div>
             </div>
             </form>
         </div>

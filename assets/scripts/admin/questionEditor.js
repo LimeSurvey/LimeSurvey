@@ -1249,7 +1249,11 @@ laname: $('#laname').val(), lid, code, answers,
     const languages = languageJson.langs.split(';');
     $('.lang-' + languages[0]).show();
 
-    $('#advanced-question-editor').hide();
+    // Land on summary page if qid != 0 (not new question).
+    const qidInput = document.querySelector('input[name="question[qid]"]');
+    if (qidInput.value !== 0) {
+      $('#advanced-question-editor').hide();
+    }
   });
 
   // Return public functions to LS.questionEditor module.
