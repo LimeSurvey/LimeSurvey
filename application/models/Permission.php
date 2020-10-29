@@ -308,6 +308,7 @@ class Permission extends LSActiveRecord
 
         foreach ($aFilteredPermissions as $sPermissionname => $aPermission) {
             /* @todo : review this : any user with security update can delete or add any other permission, must be limited to own permission */
+            /* @see https://bugs.limesurvey.org/view.php?id=14551 */
             /* Move to : search or create, and update after */
             if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                 $data = array(

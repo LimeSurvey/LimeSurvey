@@ -62,4 +62,12 @@ class SurveysInGroup extends SurveysGroups
         return $this->owner_id;
     }
 
+    /**
+     * @inheritdoc
+     * No minimal permission : must be set or get it via owner (or global)
+     */
+    public static function getMinimalPermissionRead()
+    {
+        return null;
+    }
 }

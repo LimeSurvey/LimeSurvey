@@ -609,7 +609,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 $oCurrentPermissions = Permission::model()->find(
                     "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
                     array(
-                        ":entity" => 'surveysingroup',
+                        ":entity" => 'SurveysInGroup',
                         ":entity_id" => $id,
                         ":uid" => $userId,
                         ":permission" => $sPermission
@@ -618,8 +618,8 @@ class SurveysGroupsController extends Survey_Common_Action
                 foreach(array_keys($aSurveysInGroupPermissions[$sPermission]['current']) as $sCrud) {
                     if($aSurveysInGroupPermissions[$sPermission][$sCrud]) {
                         $havePermissionSet = !empty($oCurrentPermissions) && $oCurrentPermissions->getAttribute("{$sCrud}_p");
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
+                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
+                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
                     }
                 }
             }
@@ -694,9 +694,9 @@ class SurveysGroupsController extends Survey_Common_Action
             $uids = array($uid);
         }
         $set = App()->getRequest()->getPost('set');
-        $aAllCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach($set as $entity => $aPermissionSet) {
             foreach($uids as $uid) {
+                /* Permission::model()->setPermissions return true or break */
                 Permission::model()->setPermissions(
                     $uid,
                     $id,

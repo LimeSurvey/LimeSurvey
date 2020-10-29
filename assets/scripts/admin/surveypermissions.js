@@ -69,11 +69,11 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     }
 
     $('.table-permissions-set tbody tr').each(function(){
-        if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
+        if ($(this).find('.extended input:checkbox:checked').length == $(this).find('.extended input:checkbox').length)
         {
             $(this).find('.markrow').prop('checked',true).removeClass('mixed');
         }
-        else if ($(this).find('.extended input:checked').size()==0)
+        else if (!$(this).find('.extended input:checkbox:checked').length)
         {
             $(this).find('.markrow').prop('checked',false).removeClass('mixed');
         }
