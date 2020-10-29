@@ -22,15 +22,16 @@
 </div>  -->
 <?php
 /**  @var string $closeBtnUrl */
+/** @var int $surveyId */
 
 ?>
 
 <div class='menubar surveybar' id="questiongroupbarid">
     <div class='row container-fluid'>
 
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-4 ">
             <a class="btn btn-default"
-               href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/groupid/'.$groupid.'/surveyid/'.$surveyid); ?>"
+               href="<?php echo Yii::App()->createUrl('questionAdministration/importView', ['surveyid' => $surveyId]); ?>"
                role="button">
                 <span class="icon-import"></span>
                 <?php eT('Import a question'); ?>

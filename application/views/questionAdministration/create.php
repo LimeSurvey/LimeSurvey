@@ -8,7 +8,8 @@ $this->renderPartial(
             'closeBtnUrl'=> $this->createUrl(
                 'surveyAdministration/view/',
                 ['surveyid' => $oSurvey->sid]
-            )
+            ),
+            'surveyId' => $oSurvey->sid
     ]
 );
 
