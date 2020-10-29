@@ -1,4 +1,4 @@
-// @flow strict
+// @flow
 // @ts-check
 
 /*
@@ -17,15 +17,25 @@
 
 /**
  * To check with TypeScript:
- *   tsc --allowJs --noEmit assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
+ *   tsc --allowJs --noEmit --target ES6 assets/scripts/admin/decl.d.ts assets/scripts/admin/questionEditor.js
  * To check with Flow:
  *   flow check-contents < assets/scripts/admin/questionEditor.js
+ * To check with jshint:
+ *   jshint assets/scripts/admin/questionEditor.js
  */
 
-// Flow declarations.
-/*:: declare var $: Object */
-/*:: declare var _: {forEach: function} */
-/*:: declare var LS: Object */
+// Flow declarations. The TypeScript declaration are in decl.d.ts.
+/*flow-include
+declare var $: {string: any, ajax: {} => void, post: {} => void, post: (string, {}, void => void) => void} & (any) => any
+declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
+declare var LS: {
+  arrHasDupesWhich: Array<mixed> => boolean,
+  arrHasDupes: Array<mixed> => boolean,
+  doToolTip: void => void,
+  getUnique: Array<mixed> => Array<mixed>,
+  questionEditor: {}
+}
+*/
 
 // Globals for jshint.
 /* globals $, _, alert, document, LS */
@@ -36,6 +46,7 @@
 
 // Wrap it in closure to avoid global variables.
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+// TODO: Include functions from assets/packages/adminbasics/src/pages/subquestionandanswers.js
 LS.questionEditor = (function () {
 
   // TODO: Does not work with pjax loading.
@@ -147,7 +158,7 @@ LS.questionEditor = (function () {
   /*:: declare function addInputPredefined(number): Promise<XMLHttpRequest> */
   /**
    * @param {number} i
-   * @return {XMLHttpRequest}
+   * @return {Promise}
    */
   function addInputPredefined(i) {
     const $dataInput = $('#add-input-javascript-datas');
@@ -202,36 +213,7 @@ LS.questionEditor = (function () {
   //return relevanceTooltip;
   //}
 
-  /**
-   * Delete row?
-   *
-   * @param {object} jQueryItem
-   * @return {void}
-   */
-  function deleteSubquestionRow(jQueryItem) {
-    console.log('deleteSubquestionRow');
-    if ($(jQueryItem).is('[id]')) {
-      // TODO: Type rowinfo with class?
-      const rowinfo = $(jQueryItem).attr('id').split('_');
-      // TODO: What is rowinfo[2]?
-      $('#deletedqids').val(`${$('#deletedqids').val()} ${rowinfo[2]}`);
-    } else {
-      // TODO: What???
-    }
-  }
-
-  /**
-   * Delete answer option row.
-   * Executed when user clicks "Delete" button.
-   *
-   * @param {event} e
-   * @return {void}
-   */
-  function deleteAnswerOptionInput(e) {
-    e.preventDefault();
-  }
-
-  /*:: declare function addinputQuickEdit(Object, string, boolean, number, Array<string>): Object */
+  /*:: declare function addinputQuickEdit({}, string, boolean, number, Array<string>, string): {} */
   /**
    * add addinputQuickEdit : for usage with the quickAdd Button
    *
@@ -239,19 +221,28 @@ LS.questionEditor = (function () {
    * @param {string} language
    * @param {boolean} first
    * @param {number} scaleId
-   * @param {array} codes
+   * @param {array} _codes
+   * @param {string} tableIdPrefix Either 'subquestions' or 'answeroptions'
    * @return {Promise}
    */
-  function addinputQuickEdit($currentTable, language, first, scaleId, _codes) {
+  function addinputQuickEdit($currentTable, language, first, scaleId, _codes, tableIdPrefix) {
     const codes = _codes || [];
-    const $dataInput = $('#add-input-javascript-datas'); // This hidden element  on the page contains various datas for this function
-    const $url = $dataInput.data('quickurl'); // Url for the request
-    const errormessage = $dataInput.data('errormessage'); // the error message if the AJAX request failed
+    // This hidden element  on the page contains various datas for this function
+    // TODO: Use class with state instead? `new QuickAdd('subquestions');`
+    const dataInputId = $currentTable.data('input-data-id');
+    if (dataInputId == null) {
+      alert('Internal error: Missing data input id');
+      throw 'abort';
+    }
+    const dataInput = document.getElementById(dataInputId);
+    if (dataInput == null) {
+      alert('Internal error: Could not find data input');
+      throw 'abort';
+    }
+    const url = dataInput.dataset.quickurl;
+    const errormessage = dataInput.dataset.errormessage;
     const $defer = $.Deferred();
-    let $codes;
-    let datas;
 
-    // We get all the subquestion codes currently displayed
     // We get all the subquestion codes currently displayed
     if ($currentTable.find('.code').length > 0) {
       $currentTable.find('.code').each(function () {
@@ -264,13 +255,13 @@ LS.questionEditor = (function () {
     }
 
     // We convert them to json for the request
-    $codes = JSON.stringify(codes);
+    const codesJson = JSON.stringify(codes);
     // We build the datas for the request
-    datas = {
-      codes: $codes,
+    const datas = {
+      codes: codesJson,
       // In $dataInput.data('scale-id') ?
       scale_id: scaleId,  // jshint ignore:line
-      type: 'subquestion',
+      //type: 'subquestion',
       position: null,
       first,
       language,
@@ -280,20 +271,21 @@ LS.questionEditor = (function () {
     $.ajax({
       // TODO: We don't update DB, no need post
       type: 'POST',
-      url: $url,
+      url: url,
       data: datas,
       success(htmlrow) {
-        const $langTable = $(`#answers_${language}_${scaleId}`);
+        const $langTable = $(`#${tableIdPrefix}_${language}_${scaleId}`);
         $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert(errormessage);
+        alert('Internal error: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
     });
     return $defer.promise();
   }
 
+  /*:: declare function deleteSubquestionInput(Event): void */
   /**
    * Delete subquestion row.
    * Executed when user click "Delete" button.
@@ -303,13 +295,11 @@ LS.questionEditor = (function () {
    */
   function deleteSubquestionInput(e) {
     e.preventDefault();
-    console.log('deleteSubquestionInput');
     const target = e.target;
     // 1.) Check if there is at least one answe
     const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
-    console.log('countanswers', countanswers);
     if (countanswers > 1) {
-      // 2.) Remove the table row
+      // NB: Only answer options use position. Subquestions use id.
       let position;
       const classes = $(target).closest('tr').attr('class').split(' ');
       _.forEach(classes, (curClass) => {
@@ -317,50 +307,98 @@ LS.questionEditor = (function () {
           position = curClass.substr(4);
         }
       });
-      console.log('position', position);
 
-      const info = $(target).closest('table').attr('id').split('_');
-      const idAttr = $(target).closest('table').attr('id');
-      console.log('idAttr', idAttr);
-      console.log('info', info);
+      const info = $(target).closest('tr').attr('id').split('_');
       // TODO: use data-scaleid.
-      const scaleId = info[2];
+      const scaleId = info[3];
+      const subquestionId = info[2];
       const languages = languageJson.langs.split(';');
 
       _.forEach(languages, (curLanguage, x) => {
-        const $tablerow = $(`#row_${languages[x]}_${scaleId}`);
-        console.log('tablerow', $tablerow);
-        console.log('tablerow.length', $tablerow.length);
+        const $tablerow = $(`#row_${languages[x]}_${subquestionId}_${scaleId}`);
+        if ($tablerow.length === 0) {
+          alert('Internal error: Could not find row to delete');
+          throw 'abort';
+        }
         if (x === 0) {
-          $tablerow.fadeTo(400, 0, function fadeAndRemove() {
-            $(target).remove();
+          $tablerow.fadeTo(300, 0, function fadeAndRemove() {
+            $tablerow.remove();
             updateRowProperties();
           });
         } else {
           $tablerow.remove();
         }
-        deleteSubquestionRow($tablerow);
       });
     } else {
-      // TODO: why block?
-      // TODO: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php
-      $.blockUI({ message: `<p><br/>${languageJson.subquestions.strCantDeleteLastAnswer}</p>` });
-      setTimeout($.unblockUI, 1000);
+      // Do nothing, can't delete last row.
     }
     updateRowProperties();
   }
 
-  /*:: declare function addNewInputAux(HTMLElement, Object, () => void): void */
+  /**
+   * Delete answer option row.
+   * Executed when user clicks "Delete" button.
+   *
+   * @param {event} e
+   * @return {void}
+   */
+  function deleteAnswerOptionInput(e) {
+    e.preventDefault();
+    const target = e.target;
+    // 1.) Check if there is at least one answe
+    const countanswers = $(target).closest('tbody').children('tr').length; // Maybe use class is better
+    if (countanswers > 1) {
+      // NB: Only answer options use position. Subquestions use id.
+      let position;
+      const classes = $(target).closest('tr').attr('class').split(' ');
+      _.forEach(classes, (curClass) => {
+        if (curClass.substr(0, 3) === 'row') {
+          position = curClass.substr(4);
+        }
+      });
+
+      // Info is array like: ["row", lang, position, questionId, scale id].
+      const info = $(target).closest('tr').attr('id').split('_');
+      // TODO: use data-scaleid.
+      const languages = languageJson.langs.split(';');
+
+      _.forEach(languages, (curLanguage, x) => {
+        // TODO: This is the only row that's different from deleteSubquestionInput().
+        const $tablerow = $(`#row_${languages[x]}_${info[2]}_${info[3]}_${info[4]}`);
+        if ($tablerow.length === 0) {
+          alert('Internal error: Could not find row to delete');
+          throw 'abort';
+        }
+        if (x === 0) {
+          $tablerow.fadeTo(300, 0, function fadeAndRemove() {
+            $tablerow.remove();
+            updateRowProperties();
+          });
+        } else {
+          $tablerow.remove();
+        }
+      });
+    } else {
+      // Do nothing, can't delete last row.
+    }
+    updateRowProperties();
+  }
+
   /**
    * Helper function for addSubquestionInput and addAnswerOptionInput.
    *
-   * @param {HTMLElement} target
+   * @param {EventTarget} target
    * @param {Object} data Data from relevant <input> in the view.
    * @param {Function} rebindClickHandler
    * @return {void}
    */
-  function addNewInputAux(target, data, rebindClickHandler)
+  function addNewInputAux(target /*: EventTarget */, data /*: {[string]: string} */, rebindClickHandler /*: () => void */)
   {
+    if (!(target instanceof HTMLElement)) {
+      alert('Internal error: Target is expected to be HTMLElement');
+      throw 'abort';
+    }
+
     // The "add" button
     const $that = $(target);
     // The row containing the "add" button
@@ -478,16 +516,17 @@ LS.questionEditor = (function () {
   //}
 
   /**
-   * @param {*} mixedVar
+   * @param {any} mixedVar
    * @return {boolean}
    */
-  function isNumeric(mixedVar) {
+  function isNumeric(mixedVar /*: mixed */) {
     return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' && !isNaN(mixedVar);
   }
 
   /**
    * @param {string} sSourceCode
    * @return {string}
+   * @todo Used in label sets?
    */
   function getNextCode(sSourceCode) {  // jshint ignore: line
     const sourcecode = sSourceCode;
@@ -498,17 +537,17 @@ LS.questionEditor = (function () {
     while (i <= sclength && found === true) {
       found = isNumeric(sourcecode.substr(sclength - i, i));
       if (found) {
-        foundnumber = sourcecode.substr(sclength - i, i);
+        foundnumber = parseInt(sourcecode.substr(sclength - i, i));
         i++;
       }
     }
     if (foundnumber === -1) {
-      return (sourcecode);
+      return sourcecode;
     }
 
     foundnumber++;
-    foundnumber += '';
-    const result = sourcecode.substr(0, sclength - foundnumber.length) + foundnumber;
+    const foundnumberString = foundnumber.toString();
+    const result = sourcecode.substr(0, sclength - foundnumberString.length) + foundnumberString;
     return (result);
   }
 
@@ -586,7 +625,7 @@ LS.questionEditor = (function () {
           //console.ls.log('Language', language, languageName);
           const $linkItem = $aTemplate.clone();
           const $bodyItem = $tabTodyTemplate.clone();
-          var $itemList = $listTemplate.clone();
+          let $itemList = $listTemplate.clone();
 
           const classLink = i === 0 ? 'active' : '';
           const classBody = i === 0 ? 'tab-pane tab-pane fade in active' : 'tab-page tab-pane fade';
@@ -633,8 +672,10 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * @param {event} e
+   * @param {Event & {relatedTarget: HTMLElement}} e
    * @return {void}
+   * @todo Fix name
+   * @todo What does it do?
    */
   function lsbrowser(e) {
     const scaleId = $(e.relatedTarget).data('scale-id');
@@ -689,11 +730,11 @@ LS.questionEditor = (function () {
     addInputPredefined(1).then((result) => {
       //console.ls.log(result);
       $.each(result, (lng, row) => {
-        const $table = $(`#answers_${lng}_${scaleId}`);
+        // TODO: Answer options
+        const $table = $(`#subquestions_${lng}_${scaleId}`);
 
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
-            deleteSubquestionRow($(tableRow));
             $(tableRow).remove();
           });
         }
@@ -741,14 +782,27 @@ LS.questionEditor = (function () {
     });
   }
 
-  /*:: declare function quickAddLabels(number, string, number): void */
+  /**
+   * @param {Array<string>} lsrows
+   * @return {string}
+   */
+  function getSeparatorChar(lsrows) {
+    if (lsrows[0].indexOf('\t') === -1) {
+      return ';';
+    } else {
+      return '\t';
+    }
+  }
+
+  /*:: declare function quickAddLabels(number, string, string): void */
   /**
    * Quick-add subquestions/answers
    *
    * @param {number} scaleId
    * @param {string} addOrReplace - Either 'add' or 'replace'
-   * @param {number} tableId
+   * @param {string} tableId
    * @return {void}
+   * @todo Unit-test this? How? With classes?
    */
   function quickAddLabels(scaleId, addOrReplace, tableId) {
     //console.ls.log('quickAddLabels');
@@ -756,9 +810,12 @@ LS.questionEditor = (function () {
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
     const codes = [];
-    const closestTable = $(`#${tableId}`);
+    const $closestTable = $(`#${tableId}`);
+    const tableIdPrefix = tableId.split('_')[0];
     const lsreplace = addOrReplace === 'replace';
 
+    // Not needed, since we always delete all rows at save (when survey is not active).
+    /*
     if (lsreplace) {
       $(`.answertable:eq(${scaleId}) tbody tr`).each(function () {
         const aRowInfo = this.id.split('_');
@@ -768,29 +825,25 @@ LS.questionEditor = (function () {
         elem.val(newVal);
       });
     }
+    */
 
-    if (closestTable.find('.code').length < 0) {
-      closestTable.find('.code-title').each(function () {
+    if ($closestTable.find('.code').length < 0) {
+      $closestTable.find('.code-title').each(function () {
         codes.push($(this).text());
       });
     } else {
-      closestTable.find('.code').each(function () {
+      $closestTable.find('.code').each(function () {
         codes.push($(this).val());
       });
     }
 
     const languages = languageJson.langs.split(';');
     const promises = [];
+    // TODO: Doc answers
     const answers = [];
-    let separatorchar;
     const lsrows = $('#quickaddarea').val().split('\n');
-    const allrows = $(`.answertable:eq(${scaleId}) tbody tr`).length;
-
-    if (lsrows[0].indexOf('\t') === -1) {
-      separatorchar = ';';
-    } else {
-      separatorchar = '\t';
-    }
+    const allrows = $closestTable.find('tr').length;
+    const separatorchar = getSeparatorChar(lsrows);
 
     let numericSuffix = '';
     let n = 1;
@@ -812,7 +865,9 @@ LS.questionEditor = (function () {
       codeSigil.push(currentCharacter);
     }
 
-    _.forEach(lsrows, (value, k) => {
+    // TODO: Document value
+    // NB: splitCSV is added to string prototype in adminbasics.
+    lsrows.forEach((value /*: string & {splitCSV: string => Array<string>} */, k /*: number */) => {
       const thisrow = value.splitCSV(separatorchar);
 
       if (thisrow.length <= languages.length) {
@@ -827,9 +882,11 @@ LS.questionEditor = (function () {
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
+      // TODO: This should come from the server.
       const quid = `new${Math.floor(Math.random() * 10000)}`;
 
-      _.forEach(languages, (language, x) => {
+      // TODO: What's happening here?
+      languages.forEach((language, x) => {
         if (typeof thisrow[parseInt(x) + 1] === 'undefined') {
           thisrow[parseInt(x) + 1] = thisrow[1];
         }
@@ -838,41 +895,38 @@ LS.questionEditor = (function () {
           answers[language] = [];
         }
         if (lsreplace) {
-          $(`#answers_${language}_${scaleId} tbody`).empty();
+          $(`#subquestions_${language}_${scaleId} tbody`).empty();
         }
         answers[language].push(
           { text: thisrow[(parseInt(x) + 1)], code: thisrow[0], quid },
         );
       });
 
-      // $('#answers_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
+      // $('#subquestions_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
     });
 
-    _.forEach(languages, (language, x) => {
-      // Unbind any previous events
-      $(`#answers_${language}_${scaleId} .btnaddanswer`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btndelanswer`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btnaddsubquestion`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .btndelsubquestion`).off('click.subquestions');
-      $(`#answers_${language}_${scaleId} .answer`).off('focus');
-      $(`#answers_${language}_${scaleId} .btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
-      $(`#answers_${language}_${scaleId} .btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
-      $(`#answers_${language}_${scaleId} .btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
-      $(`#answers_${language}_${scaleId} .btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
-
+    // TODO: One call per language, really?
+    languages.forEach((language, x) => {
+      // NB: promises is an array with promises.
+      // NB: addinputQuickEdit returns a promise.
       promises.push(
-        addinputQuickEdit(closestTable, language, (x === 0), scaleId, codes),
+        addinputQuickEdit($closestTable, language, x === 0, scaleId, codes, tableIdPrefix)
       );
     });
 
     $.when.apply($, promises).done(
       function () {
         /* $('#quickadd').dialog('close'); */
+        // TODO: What is item here?
         $.each(arguments, (i, item) => {
           $.each(answers[item.lng], (j, row) => {
             const { html } = item;
-            const htmlQuid = html.replace('/({{quid_placeholder}})/g', row.quid);
+            const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
             const htmlRowObject = $(htmlQuid);
+            if (htmlRowObject.length === 0) {
+              alert('Internal error: Could not find htmlRowObject');
+              throw 'abort';
+            }
             htmlRowObject.find('input.answer').val(row.text);
             if (htmlRowObject.find('input.code').length > 0) {
               htmlRowObject.find('input.code').val(row.code);
@@ -885,6 +939,7 @@ LS.questionEditor = (function () {
           });
         });
         $('#quickaddarea').val('');
+        //$('.tab-page:first .answertable tbody').sortable('refresh');
         $('.tab-page:first .answertable tbody').sortable('refresh');
         updateRowProperties();
         $('#quickaddModal').modal('hide');
@@ -898,6 +953,17 @@ LS.questionEditor = (function () {
         updateRowProperties();
         $('#quickaddModal').modal('hide');
         bindClickIfNotExpanded();
+
+        // Unbind and bind events.
+        $(`.btnaddanswer`).off('click.subquestions');
+        $(`.btndelanswer`).off('click.subquestions');
+        $(`.btnaddsubquestion`).off('click.subquestions');
+        $(`.btndelsubquestion`).off('click.subquestions');
+        $(`.answer`).off('focus');
+        $(`.btnaddanswer`).on('click.subquestions', addAnswerOptionInput);
+        $(`.btndelanswer`).on('click.subquestions', deleteAnswerOptionInput);
+        $(`.btnaddsubquestion`).on('click.subquestions', addSubquestionInput);
+        $(`.btndelsubquestion`).on('click.subquestions', deleteSubquestionInput);
       },
     );
   }
@@ -1129,6 +1195,10 @@ laname: $('#laname').val(), lid, code, answers,
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = $(e.relatedTarget).data('scale-id');
       const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      if (tableId === '') {
+        alert('Internal error: Did not find tableId');
+        throw 'abort';
+      }
 
       $('#btnqainsert').off('click').on('click', () => {
         quickAddLabels(scaleId, 'add', tableId);
@@ -1173,7 +1243,7 @@ laname: $('#laname').val(), lid, code, answers,
     });
   });
 
-  $(document).on("ready pjax:scriptcomplete", function () {
+  $(document).on('ready pjax:scriptcomplete', function () {
     // Hide all languages except main.
     $('.lang-hide').hide();
     const languages = languageJson.langs.split(';');
@@ -1191,7 +1261,7 @@ laname: $('#laname').val(), lid, code, answers,
      * @param {string} questionType - One-letter string of question type
      * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
      * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
-     * @return {void}
+     * @return {Promise}
      */
     // eslint-disable-next-line no-unused-vars
     updateQuestionAttributes: async function (questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
