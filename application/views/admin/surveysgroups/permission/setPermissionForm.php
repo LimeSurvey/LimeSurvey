@@ -38,20 +38,16 @@
                 <td><?= $aCurrentPermissions['title'] ?></td>
                 <td><?php echo CHtml::checkBox("all_$sPermission",false, array('class' => 'markrow')) ?></td>
                 <?php foreach ($aCurrentPermissions['current'] as $sKey =>$aValues): ?>
-                <?php array(
-                    $sKey,
-                    $aValues
-                );?>
                 <td class='extended'><?php if($aCurrentPermissions[$sKey]) {
                     echo CHtml::checkBox(
                         "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
                         $aValues['checked'],
                         array(
                             'value' => 1,
-                            'data-indeterminate' =>$aValues['data-indeterminate'],
+                            'data-indeterminate' => $aValues['indeterminate'],
                             'id' => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
                             'uncheckValue' => 0,
-                            'disabled' =>$aValues['disabled'],
+                            'disabled' => null, // $aValues['disabled'], unused : in survey : user can set permission even if it don't have it.
                         )
                     );
                     }?>
@@ -60,10 +56,22 @@
             </tr>
         <?php endforeach;?></tbody>
     </table>
-    <!-- Hidden input -->
+    <!-- Hidden inputs -->
     <?php
         if($type == 'user') {
             echo CHtml::hiddenField('uid',$oUser->uid);
+        } else {
+            echo CHtml::hiddenField('ugid',$oUserGroup->ugid);
+            echo CHtml::hiddenField('type','group');
         }
+        echo CHtml::htmlButton(
+            gT("Save"),
+            array(
+                'type' => 'submit',
+                'name' => 'save',
+                'value' => 'save',
+                'class' => 'hidden'
+            )
+        );
     ?>
 </form>

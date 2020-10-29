@@ -1,11 +1,11 @@
 <?php echo CHtml::beginForm($action, 'post', array('class'=>'form-horizontal container-fluid')) ?>
 <div class="row">
-    <label class='col-sm-2 col-md-offset-2 text-right control-label' for='uid'>
+    <label class='col-sm-2 col-md-offset-2 text-right control-label' for='ugid'>
         <?php eT("User group"); ?>
     </label>
     <div class='col-sm-4 '>
         <?php echo CHtml::dropDownList(
-            'uid',
+            'ugid',
             '',
             CHtml::listData($oAddGroupList,'ugid','name'),
             array(
