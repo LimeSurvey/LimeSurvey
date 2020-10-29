@@ -1251,8 +1251,14 @@ laname: $('#laname').val(), lid, code, answers,
 
     // Land on summary page if qid != 0 (not new question).
     const qidInput = document.querySelector('input[name="question[qid]"]');
-    if (qidInput.value !== 0) {
-      $('#advanced-question-editor').hide();
+    if (qidInput == null) {
+      alert('Internal error: Could not find qidInput');
+      throw 'abort';
+    }
+    if (qidInput instanceof HTMLInputElement) {
+      if (qidInput.value !== 0) {
+        $('#advanced-question-editor').hide();
+      }
     }
   });
 
