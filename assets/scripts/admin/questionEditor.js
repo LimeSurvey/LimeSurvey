@@ -605,10 +605,9 @@ LS.questionEditor = (function () {
       data: { sid: surveyid, lid },
       cache: true,
       success(json) {
-        //console.ls.log('lspreview', json);
         if (json.languages === []) {
-          //console.ls.console.warn('NOTHING TO RENDER!', json);
-          return;
+          alert('Internal error: No languages');
+          throw 'abort';
         }
 
         const $liTemplate = $('<li role="presentation"></li>');
@@ -619,10 +618,8 @@ LS.questionEditor = (function () {
         const $tabindex = $('<ul class="nav nav-tabs" role="tablist"></ul>');
         const $tabbody = $('<div class="tab-content" style="max-height: 50vh; overflow:auto;"></div>');
 
-        //console.ls.group('LanguageParsing');
         const i = 0;
         $.each(json.languages, (language, languageName) => {
-          //console.ls.log('Language', language, languageName);
           const $linkItem = $aTemplate.clone();
           const $bodyItem = $tabTodyTemplate.clone();
           let $itemList = $listTemplate.clone();
@@ -636,16 +633,11 @@ LS.questionEditor = (function () {
           $bodyItem.addClass(classBody).attr('id', `language_${language}`);
           $tabbody.append($bodyItem);
 
-          //console.ls.group('ParseLabelSet');
-
           const labelSet = json.results[language];
-          //console.ls.log('LabelSet', labelSet);
 
           $itemList = $listTemplate.clone();
 
-          //console.ls.group('ParseLabels');
           $.each(labelSet.labels, (i, label) => {
-            //console.ls.log('Label', i, label);
             // Label title is not concatenated directly because it may have non-encoded HTML
             const $labelTitleDiv = $('<div class="col-md-8"></div>');
             $labelTitleDiv.text(label.title);
@@ -657,13 +649,9 @@ LS.questionEditor = (function () {
             $itemList.append($listItem);
           });
 
-          //console.ls.groupEnd('ParseLabels');
           $bodyItem.append(`<h4>${labelSet.label_name}</h4>`);  // jshint ignore: line
           $itemList.appendTo($bodyItem);
-
-          //console.ls.groupEnd('ParseLabelSet');
         });
-        //console.ls.groupEnd('LanguageParsing');
         $('#labelsetpreview').empty();
         $('<div></div>').append($tabindex).append($tabbody).appendTo($('#labelsetpreview'));
         $tabindex.find('li').first().find('a').trigger('click');
@@ -688,7 +676,6 @@ LS.questionEditor = (function () {
       url: languageJson.lspickurl,
       data: { sid: surveyid, match: 1 },
       success(jsonString) {
-        //console.ls.log('combined String', jsonString);
         if (jsonString.success !== true) {
           $('#labelsetpreview').html(`<p class='alert'>${languageJson.strNoLabelSet}</p>`);
           $('#btnlsreplace').addClass('disabled');
@@ -697,14 +684,10 @@ LS.questionEditor = (function () {
           $('#btnlsinsert').attr('disabled', 'disabled');
         } else {
           $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
-          //console.ls.group('SelectParsing');
-          //console.ls.log('allResults', jsonString.labelsets);
           $.each(jsonString.labelsets, (i, item) => {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
-            //console.ls.log('newOption', newOption);
             $('#labelsets').append(newOption).trigger('change');
           });
-          //console.ls.groupEnd('SelectParsing');
         }
       },
     });
@@ -728,7 +711,6 @@ LS.questionEditor = (function () {
     const scaleId = $('#current_scale_id').val();
 
     addInputPredefined(1).then((result) => {
-      //console.ls.log(result);
       $.each(result, (lng, row) => {
         // TODO: Answer options
         const $table = $(`#subquestions_${lng}_${scaleId}`);
@@ -770,7 +752,8 @@ LS.questionEditor = (function () {
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
           } catch (e) {
-            //console.ls.error(e);
+            alert('Internal error:' + e);
+            throw 'abort';
           }
         });
 
@@ -805,7 +788,6 @@ LS.questionEditor = (function () {
    * @todo Unit-test this? How? With classes?
    */
   function quickAddLabels(scaleId, addOrReplace, tableId) {
-    //console.ls.log('quickAddLabels');
     //const sID = $('input[name=sid]').val();
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
@@ -946,7 +928,6 @@ LS.questionEditor = (function () {
         bindClickIfNotExpanded();
       },
       function () {
-        //console.ls.log(arguments);
         /* $('#quickadd').dialog('close'); */
         $('#quickaddarea').val('');
         $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -1160,7 +1141,6 @@ laname: $('#laname').val(), lid, code, answers,
         cansubmit = false;
       }
     });
-    //console.ls.log(`cansubmit: ${cansubmit}`);
     return cansubmit;
   }
 
@@ -1256,11 +1236,17 @@ laname: $('#laname').val(), lid, code, answers,
       throw 'abort';
     }
     if (qidInput instanceof HTMLInputElement) {
-      if (qidInput.value !== 0) {
+      if (parseInt(qidInput.value) !== 0) {
         $('#advanced-question-editor').hide();
         $('#question-create-topbar').hide();
         $('#question-edit-topbar').hide();
+      } else {
+        $('#advanced-question-editor').show();
+        $('#question-create-topbar').show();
       }
+    } else {
+      alert('Internal error: qidInput is not an HTMLInputElement');
+      throw 'abort';
     }
   });
 
