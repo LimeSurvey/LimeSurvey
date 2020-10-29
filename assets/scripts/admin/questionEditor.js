@@ -527,7 +527,8 @@ LS.questionEditor = (function () {
    * @return {boolean}
    */
   function isNumeric(mixedVar /*: mixed */) {
-    return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' && !isNaN(mixedVar);
+    return (typeof (mixedVar) === 'number' || typeof (mixedVar) === 'string') && mixedVar !== '' &&
+      (typeof mixedVar === 'number' && !isNaN(mixedVar));
   }
 
   /**
