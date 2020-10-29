@@ -625,7 +625,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Reminder email subject"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "l",
+                    'HTMLeditorDisplay' => "",
                     'associated' => "emailreminderbody"
                 );
             break;
@@ -1009,14 +1009,17 @@ class translate extends Survey_Common_Action
     }
 
     /**
+     * @param $htmleditor
      * @param string[] $aData
+     * @return mixed
      */
     private function _loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
         $displayType = strtolower($htmleditor["HTMLeditorDisplay"]);
+        $displayTypeIsEmpty = empty($displayType);
 
-        if ($displayType == "inline" || empty($displayType)) {
+        if ($displayType == "inline" || $displayTypeIsEmpty) {
             $editor_function = "getEditor";
         } else if ($displayType == "popup") {
             $editor_function = "getPopupEditor";
@@ -1025,7 +1028,6 @@ class translate extends Survey_Common_Action
             $editor_function = "getModalEditor";
             $aData[2] = $htmleditor['description'];            
         }
-
         return call_user_func_array($editor_function, $aData);
     }
 
