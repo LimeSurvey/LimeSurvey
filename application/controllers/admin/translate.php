@@ -979,21 +979,18 @@ class translate extends Survey_Common_Action
                 $minHeight = "25px";
             } else if ($amTypeOptions["HTMLeditorDisplay"] == "Modal") {
                 $minHeight = "30px";
-            }            
-            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
-                array(
-                    'class' => 'col-sm-10',
-                    'cols' => '75',
-                    'rows' => $nrows,
-                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update'),
-                    'style' => "min-height: $minHeight;",                    
-                )
+            }
+            $aDisplayOptions = array(
+                'class' => 'col-sm-10',
+                'cols' => '75',
+                'rows' => $nrows,
+                'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
             );
             if ($type=='group') {
                 $aDisplayOptions['maxlength']=100; 
             }
 
-            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,$aDisplayOptions);
+            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto, $aDisplayOptions);
             $htmleditor_data = array(
                 "edit".$type,
                 $type."_newvalue_".$i,
