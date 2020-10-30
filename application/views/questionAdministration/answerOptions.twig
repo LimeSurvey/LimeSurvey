@@ -89,7 +89,13 @@
                 {% endif %}
                 <br/>
 
-                <button {{ disabled }}  id='btnlsbrowser_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                <button
+                    {{ disabled }}
+                    data-scale-id="{{ scale_id }}"
+                    class='btnlsbrowser btn btn-default'
+                    type='button'
+                    onclick="LS.questionEditor.showLabelSetPicker('answeroptions');"
+                >
                     {{ gT('Predefined label sets...') }}
                 </button>
 

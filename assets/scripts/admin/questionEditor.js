@@ -496,7 +496,6 @@ LS.questionEditor = (function () {
     const target = e.target;
     const data = $('#add-subquestion-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      // @TODO answer option
       $('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
       $('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
     };
@@ -514,7 +513,6 @@ LS.questionEditor = (function () {
     const target = e.target;
     const data = $('#add-answer-option-input-javascript-datas').data();
     const rebindClickHandler = () => {
-      // @TODO answer option
       $('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
       $('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
     };
@@ -598,10 +596,10 @@ LS.questionEditor = (function () {
   //}
 
   /**
-   * @todo Does what?
+   * Reset label set picker after hide.
    * @return {void}
    */
-  function lsBrowserDestruct() {
+  function labelSetDestruct() {
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
   }
@@ -679,7 +677,12 @@ LS.questionEditor = (function () {
    * @todo What does it do?
    */
   function lsbrowser(e) {
-    const scaleId = $(e.relatedTarget).data('scale-id');
+    const scaleId = $(e.target).data('scale-id');
+    if (scaleId == null) {
+      alert('Internal error: No scale id in lsbrowser');
+      throw 'abort';
+    }
+
     // TODO: Send as input, not in DOM.
     $('body').append(`<input type="hidde" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
 
@@ -714,12 +717,13 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * Transfer labels from what to what???
+   * Transfer labels from preview to subquestions/answer options.
    *
    * @param {string} type 'replace' or 'add'
+   * @param {string} source 'subquestions' or 'answeroptions'
    * @return {void}
    */
-  function transferLabels(type /*: string */) /*: void */ {
+  function transferLabels(type /*: string */, source /*: string */) /*: void */ {
     //const surveyid = $('input[name=sid]').val();
     //const languages = languageJson.langs.split(';');
     //const labels = [];
@@ -728,7 +732,7 @@ LS.questionEditor = (function () {
     addInputPredefined(1).then((result) => {
       $.each(result, (lang, row) => {
         // TODO: Answer options
-        const tableId = `#subquestions_${lang}_${scaleId}`;
+        const tableId = `#${source}_${lang}_${scaleId}`;
         const $table = $(tableId);
         if ($table.length === 0) {
           alert('Internal error: Found no table to add labels to with id ' + tableId);
@@ -740,8 +744,6 @@ LS.questionEditor = (function () {
             $(tableRow).remove();
           });
         }
-
-        const preview = $('#labelsetpreview');
 
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
@@ -1173,7 +1175,7 @@ laname: $('#laname').val(), lid, code, answers,
   }
 
   /* Event added on document for all button (new one added in js too)
-   * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
+   * @todo used?
    */
   $(document).on('click', '#editsubquestionsform :submit', () => {
     // Validate duplicate before try to submit: surely some other javascript elsewhere
@@ -1194,17 +1196,7 @@ laname: $('#laname').val(), lid, code, answers,
     $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
     $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
 
-    $('#labelsetbrowserModal').on('shown.bs.modal.', lsbrowser);
-    $('#labelsetbrowserModal').on('hidden.bs.modal.', lsBrowserDestruct);
-
-    $('#btnlsreplace').on('click', (e) => {
-      e.preventDefault();
-      transferLabels('replace');
-    });
-    $('#btnlsinsert').on('click', (e) => {
-      e.preventDefault();
-      transferLabels('insert');
-    });
+    $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = $(e.relatedTarget).data('scale-id');
@@ -1224,7 +1216,6 @@ laname: $('#laname').val(), lid, code, answers,
     });
 
     $('#labelsets').click(showLabelSetPreview);
-    // $('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
@@ -1369,6 +1360,25 @@ laname: $('#laname').val(), lid, code, answers,
       $('#advanced-question-editor').show();
       $('#question-create-topbar').show();
       $('#question-edit-topbar').show();
+    },
+
+    /**
+     * @param {string} source
+     */
+    showLabelSetPicker: function(source /*: string */) {
+      $('#btnlsreplace').on('click', (e) => {
+        e.preventDefault();
+        transferLabels('replace', source);
+      });
+      $('#btnlsinsert').on('click', (e) => {
+        e.preventDefault();
+        transferLabels('insert', source);
+      });
+
+      $('#labelsetbrowserModal').modal('show');
+
+      lsbrowser(event);
     }
+
   };
 })();
