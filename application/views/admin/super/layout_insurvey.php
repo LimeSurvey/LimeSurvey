@@ -1,7 +1,7 @@
 <?php
 
 /* @deprecated moved to layouts/layout_questioneditor */
-//todo should be removed when all controllers have been refactored
+//todo should be removed when all controllers have been refactored.
 
     //All paths relative from /application/views
 
