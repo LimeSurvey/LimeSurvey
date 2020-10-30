@@ -166,11 +166,26 @@ LS.questionEditor = (function () {
 
   /**
    * @param {number} i
+   * @param {string} source
    * @return {Promise<XMLHttpRequest>}
    */
-  function addInputPredefined(i /*: number */) /*: Promise<XMLHttpRequest> */ {
+  function addInputPredefined(i /*: number */, source) /*: Promise<XMLHttpRequest> */ {
     // TODO: Support answer options
-    const $dataInput = $('#add-subquestion-input-javascript-datas');
+    let $dataInput;
+    if (source === 'subquestions') {
+       $dataInput = $('#add-subquestion-input-javascript-datas');
+    } else if (source === 'answeroptions') {
+       $dataInput = $('#add-answer-option-input-javascript-datas');
+    } else {
+      alert('Internal error: source is not subquestions or answeroptions: ' + source);
+      throw 'abort';
+    }
+
+    if ($dataInput.length === 0) {
+      alert('Internal error: Found no data element in addInputPredefined');
+      throw 'abort';
+    }
+
     const scaleId = $('#current_scale_id').val();
     // We build the datas for the request
     const datas = {
@@ -676,10 +691,10 @@ LS.questionEditor = (function () {
    * @todo Fix name
    * @todo What does it do?
    */
-  function lsbrowser(e) {
+  function initLabelSetModal(e) {
     const scaleId = $(e.target).data('scale-id');
     if (scaleId == null) {
-      alert('Internal error: No scale id in lsbrowser');
+      alert('Internal error: No scale id in initLabelSetModal');
       throw 'abort';
     }
 
@@ -729,7 +744,7 @@ LS.questionEditor = (function () {
     //const labels = [];
     const scaleId = $('#current_scale_id').val();
 
-    addInputPredefined(1).then((result) => {
+    addInputPredefined(1, source).then((result) => {
       $.each(result, (lang, row) => {
         // TODO: Answer options
         const tableId = `#${source}_${lang}_${scaleId}`;
@@ -749,8 +764,19 @@ LS.questionEditor = (function () {
         .each((i, item) => {
           try {
             const label = $(item).data('label');
+            console.log('row', row);
             const $row = $(row);
-            const $tr = $row.eq(4);
+            console.log('$row', $row);
+            let $tr;
+            // TODO: Use classes instead of if-statements.
+            if (source === 'subquestions') {
+              $tr = $row.eq(4);
+            } else if (source === 'answeroptions') {
+              $tr = $row.eq(2);
+            }
+            if ($tr.length === 0) {
+              throw 'Found no $tr in transferLabels';
+            }
             const randId = `new${Math.floor(Math.random() * 10000)}`;
 
             $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', randId));
@@ -776,7 +802,7 @@ LS.questionEditor = (function () {
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
           } catch (e) {
-            alert('Internal error:' + e);
+            alert('Internal error in transferLabels: ' + e);
             throw 'abort';
           }
         });
@@ -1377,7 +1403,7 @@ laname: $('#laname').val(), lid, code, answers,
 
       $('#labelsetbrowserModal').modal('show');
 
-      lsbrowser(event);
+      initLabelSetModal(event);
     }
 
   };
