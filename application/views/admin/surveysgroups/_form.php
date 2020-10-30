@@ -62,6 +62,12 @@
         <?php echo $form->error($model,'parent_id'); ?>
     </div>
 
+    <div class="row">
+        <?php echo $form->labelEx($model,'owner_id'); ?>
+        <?php echo $form->dropDownList($model,'owner_id',CHtml::listData($oUsers, 'uid', 'full_name'),array('disabled' => !$aRigths['owner_id'])); ?>
+        <?php echo $form->error($model,'owner_id'); ?>
+    </div>
+
     <?php if ($updateRigth) : ?>
     <div class="hidden">
             <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success col-md-2 col-sm-4', "id"=>"surveys-groups-form-submit")); ?>

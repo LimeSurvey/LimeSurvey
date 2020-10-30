@@ -77,7 +77,7 @@ class SurveysGroups extends LSActiveRecord
             'title'       => gT('Title'),
             'description' => gT('Description'),
             'sortorder'   => gT('Sort order'),
-            'owner_id'   => gT('Owner UID'),
+            'owner_id'    => gT('Owner'),
             'parent_id'   => gT('Parent group'),
             'created'     => gT('Created on'),
             'modified'    => gT('Modified on'),
@@ -273,7 +273,7 @@ class SurveysGroups extends LSActiveRecord
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
         $sPermissionUrl = App()->createUrl("admin/surveysgroups/sa/permissions", array("id"=>$this->gsid));
         $button = '';
-        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'groupsettings','read')) {
+        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'group','read')) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
         if(Permission::model()->hasSurveyGroupPermission($this->gsid,'surveysettings','read')) {

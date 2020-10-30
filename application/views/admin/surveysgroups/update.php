@@ -27,10 +27,6 @@
             <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
                 <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
             <?php endif;?>
-            <?php if(false && Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'security','update')):?>
-                <!-- Check if need double , not currently -->
-                <li><a href="#securityForThisGroup"><?php eT('Survey group permissions'); ?></a></li>
-            <?php endif;?>
             <li><a href="#templateSettingsFortThisGroup"><?php eT('Themes options for this survey group'); ?></a></li>
         </ul>
         <div class="tab-content">
@@ -47,13 +43,7 @@
             </div>
             <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
                 <div id="settingsForThisGroup" class="tab-pane">
-                    <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model,'aRigths' => $aRigths)); ?>
-                </div>
-            <?php endif;?>
-            <?php if(false && Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'security','update')):?>
-                <!-- Check if need double , not currently -->
-                <div id="securityForThisGroup" class="tab-pane">
-                    <?php $this->renderPartial('./surveysgroups/_permission', array('model'=>$model,'aRigths' => $aRigths)); ?>
+                    <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
                 </div>
             <?php endif;?>
             <div id="templateSettingsFortThisGroup" class="tab-pane">

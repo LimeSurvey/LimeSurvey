@@ -742,7 +742,7 @@ class Permission extends LSActiveRecord
             if (Yii::app() instanceof CConsoleApplication) {
                 throw new Exception('Permission must not be tested with console application.');
             }
-            $iUserID = Yii::app()->session['loginID'];
+            $iUserID = Yii::app()->user->id;
         }
         return $iUserID;
     }
