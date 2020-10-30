@@ -3222,7 +3222,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
             $oTransaction->commit();
-  		}
+        }
 
         if ($iOldDBVersion < 430) {
             $oTransaction = $oDB->beginTransaction();
@@ -3236,6 +3236,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ]);
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /* Add public boolean to surveygroup : view forl all in list */
+        if ($iOldDBVersion < 431) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -3309,8 +3317,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
-
-
 
 function extendDatafields429($oDB)
 {

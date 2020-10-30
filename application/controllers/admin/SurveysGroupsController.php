@@ -109,7 +109,12 @@ class SurveysGroupsController extends Survey_Common_Action
             ) {
                 $postSurveysGroups['owner_id'] = $model->owner_id;
             }
-            $model->attributes = $postSurveysGroups;// No filter ?
+            if($model->gsid == 1) {
+                /* Move this to model */
+                $postSurveysGroups['public'] = 1;
+            }
+            $model->attributes = $postSurveysGroups;
+
             // prevent loop
             if (!empty($postSurveysGroups['parent_id'])) {
                 $sgid = $postSurveysGroups['parent_id'] ;

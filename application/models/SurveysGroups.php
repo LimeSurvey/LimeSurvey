@@ -11,6 +11,7 @@
  * @property integer $sortorder
  * @property integer $owner_id
  * @property integer $parent_id
+ * @property boolean $alwaysavailable
  * @property string $created
  * @property string $modified
  * @property integer $created_by
@@ -34,6 +35,16 @@ class SurveysGroups extends LSActiveRecord
     }
 
     /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if($this->gsid = 1) {
+            $this->alwaysavailable = 1;
+        }
+    }
+
+    /**
      * @return array validation rules for model attributes.
      */
     public function rules()
@@ -46,6 +57,7 @@ class SurveysGroups extends LSActiveRecord
             array('name', 'length', 'max'=>45),
             array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u','message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
             array('title', 'length', 'max'=>100),
+            array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
@@ -72,16 +84,17 @@ class SurveysGroups extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'gsid'        => gT('ID'),
-            'name'        => gT('Name'),
-            'title'       => gT('Title'),
-            'description' => gT('Description'),
-            'sortorder'   => gT('Sort order'),
-            'owner_id'    => gT('Owner'),
-            'parent_id'   => gT('Parent group'),
-            'created'     => gT('Created on'),
-            'modified'    => gT('Modified on'),
-            'created_by'  => gT('Created by'),
+            'gsid'              => gT('ID'),
+            'name'              => gT('Name'),
+            'title'             => gT('Title'),
+            'description'       => gT('Description'),
+            'sortorder'         => gT('Sort order'),
+            'owner_id'          => gT('Owner'),
+            'parent_id'         => gT('Parent group'),
+            'alwaysavailable'   => gT('Always available'),
+            'created'           => gT('Created on'),
+            'modified'          => gT('Modified on'),
+            'created_by'        => gT('Created by'),
         );
     }
 
@@ -107,7 +120,7 @@ class SurveysGroups extends LSActiveRecord
                 array(
                     'header' => gT('Name'),
                     'name' => 'name',
-                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
+                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type'=>'raw',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                 ),
@@ -131,6 +144,14 @@ class SurveysGroups extends LSActiveRecord
                     'header' => gT('Parent group'),
                     'name' => 'parent',
                     'value'=>'$data->parentTitle',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
+                ),
+
+                array(
+                    'header' => gT('Available'),
+                    'name' => 'alwaysavailable',
+                    'value'=>'$data->alwaysavailable',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
@@ -194,16 +215,16 @@ class SurveysGroups extends LSActiveRecord
 
         $criteria->select = array('DISTINCT t.*');
 
-        $criteria->compare('gsid', $this->gsid);
-        $criteria->compare('name', $this->name, true);
-        $criteria->compare('title', $this->title, true);
-        $criteria->compare('description', $this->description, true);
-        $criteria->compare('sortorder', $this->sortorder);
-        $criteria->compare('owner_id', $this->owner_id);
-        $criteria->compare('parent_id', $this->parent_id);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('modified', $this->modified, true);
-        $criteria->compare('created_by', $this->created_by);
+        $criteria->compare('t.gsid', $this->gsid);
+        $criteria->compare('t.name', $this->name, true);
+        $criteria->compare('t.title', $this->title, true);
+        $criteria->compare('t.description', $this->description, true);
+        $criteria->compare('t.sortorder', $this->sortorder);
+        $criteria->compare('t.owner_id', $this->owner_id);
+        $criteria->compare('t.parent_id', $this->parent_id);
+        $criteria->compare('t.created', $this->created, true);
+        $criteria->compare('t.modified', $this->modified, true);
+        $criteria->compare('t.created_by', $this->created_by);
 
         // Permission
         $criteriaPerm = self::getPermissionCriteria();
@@ -370,6 +391,7 @@ class SurveysGroups extends LSActiveRecord
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+            $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
         return $criteriaPerm;
     }
