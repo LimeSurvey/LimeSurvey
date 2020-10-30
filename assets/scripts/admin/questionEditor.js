@@ -1389,9 +1389,10 @@ laname: $('#laname').val(), lid, code, answers,
     },
 
     /**
+     * @param {Event} event
      * @param {string} source
      */
-    showLabelSetPicker: function(source /*: string */) {
+    showLabelSetPicker: function(event /*: Event */, source /*: string */) {
       $('#btnlsreplace').on('click', (e) => {
         e.preventDefault();
         transferLabels('replace', source);
