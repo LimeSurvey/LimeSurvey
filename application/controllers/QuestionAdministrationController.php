@@ -1544,6 +1544,122 @@ class QuestionAdministrationController extends LSBaseController
         );
     }
 
+    /**
+     * This function prepares the data for label set details
+     *
+     * @param int $lid
+     * @return void
+     */
+    public function actionGetLabelsetDetails($lid)
+    {
+        $labelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $lid));
+
+        $result = [];
+        $languages = [];
+
+        if($labelSet !== null) {
+            $usedLanguages = explode(' ', $labelSet->languages);
+
+            foreach ($usedLanguages as $sLanguage) {
+                $result[$sLanguage] = array_map(
+                    function($attribute) { return \viewHelper::flatten($attribute); },
+                    $labelSet->attributes
+                );
+                foreach ($labelSet->labels as $oLabel) {
+                    $result[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
+                };
+                $languages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            };
+        }
+
+        $resultdata = ['results' => $result, 'languages' => $languages];
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success'   => count($result) > 0,
+                    'results'   => $result,
+                    'languages' => $aLanguages
+                ],
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * This function prepares the data for labelset
+     *
+     * @param int $sid
+     * @param int $match
+     * @return void
+     */
+    public function actionGetLabelsetPicker($sid, $match = 0)
+    {
+        $criteria = new CDbCriteria;
+        // TODO: Always null
+        $language = null;
+        if ($match === 1) {
+            $criteria->addCondition('languages LIKE :language');
+            $criteria->params = [':language' => '%'.$language.'%'];
+        }
+
+        $labelSets = LabelSet::model()->findAll($criteria);
+        // Create languagespecific array
+        $result = [];
+        foreach ($labelSets as $labelSet) {
+            $result[] = array_map(
+                function($attribute) { return \viewHelper::flatten($attribute); },
+                $labelSet->attributes
+            );
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success'   => count($result) > 0,
+                    'labelsets' => $result
+                ],
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Check if label set is what???
+     *
+     * @param int $lid
+     * @param ??? $languages
+     * @param ??? $checkAssessments
+     * @return void
+     */
+    public function actionCheckLabel($lid, $languages, $checkAssessments)
+    {
+        $labelSet = LabelSet::model()->find('lid=:lid', array(':lid' => $lid));
+        $label = Label::model()->count('lid=:lid AND assessment_value<>0', array(':lid' => $lid));
+        $labelSetLangauges = explode(' ', $labelSet->languages);
+        $errorMessages = [];
+        if ($checkAssessments && $label) {
+            $errorMessages[] = gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
+        }
+        if (count(array_diff($labelSetLangauges, $languages))) {
+            $errorMessages[] = gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
+        }
+        if (count($errorMessages)) {
+            foreach ($errorMessages as $errorMessage) {
+                echo  $errorMessage.'<br>';
+            }
+            eT('Do you really want to continue?');
+        } else {
+            eT('You are about to replace an existing label set with the current answer options.');
+            echo '<br>';
+            eT('Continue?');
+        }
+    }
+
     /** ++++++++++++  TODO: The following functions should be moved to model or a service class ++++++++++++++++++++++++++ */
 
     /**

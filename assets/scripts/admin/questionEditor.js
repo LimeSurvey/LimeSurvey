@@ -167,8 +167,9 @@ LS.questionEditor = (function () {
    * @param {number} i
    * @return {Promise}
    */
-  function addInputPredefined(i) {
-    const $dataInput = $('#add-input-javascript-datas');
+  function addInputPredefined(i /*: number */) {
+    // TODO: Support answer options
+    const $dataInput = $('#add-subquestion-input-javascript-datas');
     const scaleId = $('#current_scale_id').val();
     // We build the datas for the request
     const datas = {
