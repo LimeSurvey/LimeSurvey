@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-22 13:18:13+00:00\n"
+"POT-Creation-Date: 2020-10-26 07:14:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -472,7 +472,7 @@ msgstr ""
 
 #: application/controllers/QuestionEditorController.php:147
 #: application/controllers/admin/questiongroups.php:391
-#: application/models/Question.php:862 application/models/QuestionType.php:94
+#: application/models/Question.php:864 application/models/QuestionType.php:94
 #: application/views/admin/labels/_labelviewtabcontent_view.php:18
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:26
 #: tmp/runtime/twig_cache/bc/bc6f89472f79007effa489917efe46f39bf653639d18bf9023b925a6d4aa577b.php:278
@@ -488,7 +488,7 @@ msgstr ""
 #: application/controllers/QuestionEditorController.php:149
 #: application/controllers/admin/questiongroups.php:387
 #: application/controllers/admin/questiongroups.php:393
-#: application/models/Question.php:874
+#: application/models/Question.php:876
 msgid "Question type"
 msgstr ""
 
@@ -496,7 +496,7 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:392
 #: application/controllers/admin/responses.php:962
 #: application/helpers/admin/statistics_helper.php:4312
-#: application/models/Question.php:868
+#: application/models/Question.php:870
 #: application/models/TemplateManifest.php:167
 #: application/views/admin/conditions/includes/form_editconditions_header.php:67
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:22
@@ -671,7 +671,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:475
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
 #: application/models/Assessment.php:111 application/models/Permission.php:812
-#: application/models/Question.php:632 application/models/SavedControl.php:144
+#: application/models/Question.php:634 application/models/SavedControl.php:144
 #: application/models/TemplateManifest.php:687
 #: application/models/TemplateManifest.php:690
 #: application/views/admin/participants/massive_actions/_selector.php:18
@@ -3130,7 +3130,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:634 application/models/Survey.php:1037
+#: application/models/Question.php:636 application/models/Survey.php:1037
 #: application/models/Survey.php:1045
 #: application/views/admin/conditions/deleteAllConditions.php:17
 #: application/views/admin/conditions/includes/conditions_edit.php:8
@@ -3309,7 +3309,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:139
 #: application/models/ParticipantShare.php:144
 #: application/models/ParticipantShare.php:252
-#: application/models/Question.php:634 application/models/Survey.php:1037
+#: application/models/Question.php:636 application/models/Survey.php:1037
 #: application/models/Survey.php:1045
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:624
@@ -3532,7 +3532,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1353
 #: application/helpers/userstatistics_helper.php:1474
 #: application/helpers/userstatistics_helper.php:1602
-#: application/models/Question.php:896
+#: application/models/Question.php:898
 #: application/models/QuestionBaseDataSet.php:285
 #: application/models/SurveyDynamic.php:840
 #: application/models/SurveyDynamic.php:908
@@ -5014,7 +5014,7 @@ msgid "Order"
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:394
-#: application/models/Question.php:888
+#: application/models/Question.php:890
 #: application/models/QuestionBaseDataSet.php:314
 #: application/views/survey/system/required.php:6
 #: tmp/runtime/twig_cache/39/3978dda68666d9ad2d12e4e1d4e196445ff80f9e88e93c20240891e7d3ca9c11.php:227
@@ -5165,7 +5165,7 @@ msgid "Question could not be saved"
 msgstr ""
 
 #: application/controllers/admin/questions.php:1546
-#: application/models/Question.php:852
+#: application/models/Question.php:854
 #: application/views/admin/survey/Question/massive_actions/_delete_results.php:10
 msgid "Question ID"
 msgstr ""
@@ -5349,7 +5349,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:954
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/helpers/admin/export/HtmlWriter.php:75
-#: application/models/Assessment.php:141 application/models/Question.php:882
+#: application/models/Assessment.php:141 application/models/Question.php:884
 #: application/models/QuestionType.php:96
 #: application/views/admin/assessments/assessments_edit.php:31
 msgid "Group"
@@ -7239,7 +7239,7 @@ msgstr ""
 msgid "Invalid email address."
 msgstr ""
 
-#: application/core/LSYii_ImageValidator.php:69
+#: application/core/LSYii_ImageValidator.php:70
 msgid "This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images."
 msgstr ""
 
@@ -8208,190 +8208,190 @@ msgstr ""
 msgid "Thank you for taking the tour!"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1175
-#: application/core/LsDefaultDataSets.php:1182
+#: application/core/LsDefaultDataSets.php:1176
+#: application/core/LsDefaultDataSets.php:1183
 msgid "Strongly disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1176
-#: application/core/LsDefaultDataSets.php:1183
+#: application/core/LsDefaultDataSets.php:1177
+#: application/core/LsDefaultDataSets.php:1184
 msgid "Disagree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:1177
-msgid "Neither agree nor disagree"
-msgstr ""
-
 #: application/core/LsDefaultDataSets.php:1178
-#: application/core/LsDefaultDataSets.php:1184
-msgid "Agree"
+msgid "Neither agree nor disagree"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:1179
 #: application/core/LsDefaultDataSets.php:1185
+msgid "Agree"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:1180
+#: application/core/LsDefaultDataSets.php:1186
 msgid "Strongly agree"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2073
+#: application/core/LsDefaultDataSets.php:2074
 msgid "Survey container"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2074
-#: application/core/LsDefaultDataSets.php:2090
+#: application/core/LsDefaultDataSets.php:2075
+#: application/core/LsDefaultDataSets.php:2091
 msgid "Hide privacy info"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2075
+#: application/core/LsDefaultDataSets.php:2076
 msgid "Show popups"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2076
+#: application/core/LsDefaultDataSets.php:2077
 msgid "Popup"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2077
+#: application/core/LsDefaultDataSets.php:2078
 msgid "On page"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2078
+#: application/core/LsDefaultDataSets.php:2079
 msgid "Fix automatically numeric value"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2079
+#: application/core/LsDefaultDataSets.php:2080
 msgid "For expression"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2080
+#: application/core/LsDefaultDataSets.php:2081
 msgid "Brandlogo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2081
+#: application/core/LsDefaultDataSets.php:2082
 msgid "Brandlogo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2082
+#: application/core/LsDefaultDataSets.php:2083
 #: application/views/admin/themeoptions/options_core.php:198
 msgid "Preview image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2083
+#: application/core/LsDefaultDataSets.php:2084
 msgid "Bootstrap theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2084
+#: application/core/LsDefaultDataSets.php:2085
 msgid "Bootswatch theme"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2085
+#: application/core/LsDefaultDataSets.php:2086
 msgid "Question borders"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2086
+#: application/core/LsDefaultDataSets.php:2087
 msgid "Question shadow"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2087
+#: application/core/LsDefaultDataSets.php:2088
 msgid "Zebra-striped questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2088
+#: application/core/LsDefaultDataSets.php:2089
 msgid "Sticky array headers"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2089
+#: application/core/LsDefaultDataSets.php:2090
 msgid "Dim answered array rows"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2091
+#: application/core/LsDefaultDataSets.php:2092
 msgid "Cross-hover in matrix questions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2092
+#: application/core/LsDefaultDataSets.php:2093
 msgid "Background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2093
+#: application/core/LsDefaultDataSets.php:2094
 msgid "Font color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2094
+#: application/core/LsDefaultDataSets.php:2095
 msgid "Question background color"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2095
+#: application/core/LsDefaultDataSets.php:2096
 msgid "Check icon"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2096
+#: application/core/LsDefaultDataSets.php:2097
 msgid "Background image"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2097
+#: application/core/LsDefaultDataSets.php:2098
 msgid "Background image file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2098
+#: application/core/LsDefaultDataSets.php:2099
 msgid "Logo"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2099
+#: application/core/LsDefaultDataSets.php:2100
 msgid "Logo file"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2100
+#: application/core/LsDefaultDataSets.php:2101
 msgid "Animate body"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2101
+#: application/core/LsDefaultDataSets.php:2102
 msgid "Body animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2102
+#: application/core/LsDefaultDataSets.php:2103
 msgid "Duration"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2103
+#: application/core/LsDefaultDataSets.php:2104
 msgid "Animate question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2104
+#: application/core/LsDefaultDataSets.php:2105
 msgid "Question animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2105
+#: application/core/LsDefaultDataSets.php:2106
 msgid "Animate alert"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2106
-#: application/core/LsDefaultDataSets.php:2108
+#: application/core/LsDefaultDataSets.php:2107
+#: application/core/LsDefaultDataSets.php:2109
 msgid "Alert animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2107
+#: application/core/LsDefaultDataSets.php:2108
 msgid "Animate checkbox"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2109
+#: application/core/LsDefaultDataSets.php:2110
 msgid "Animate radio buttons"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2110
+#: application/core/LsDefaultDataSets.php:2111
 msgid "Radio button animation"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2111
+#: application/core/LsDefaultDataSets.php:2112
 msgid "Select font:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2112
+#: application/core/LsDefaultDataSets.php:2113
 msgid "Select variation:"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2113
+#: application/core/LsDefaultDataSets.php:2114
 msgid "Fruity fonts"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:2114
+#: application/core/LsDefaultDataSets.php:2115
 msgid "Fruity variations"
 msgstr ""
 
@@ -14143,32 +14143,32 @@ msgstr ""
 msgid "Subquestion codes may only contain alphanumeric characters."
 msgstr ""
 
-#: application/models/Question.php:350
+#: application/models/Question.php:352
 #: application/models/SurveymenuEntries.php:195
 msgid "Template"
 msgstr ""
 
-#: application/models/Question.php:618
+#: application/models/Question.php:620
 #: application/views/admin/survey/Question/listquestions.php:140
 msgid "Question preview"
 msgstr ""
 
-#: application/models/Question.php:621
+#: application/models/Question.php:623
 #: application/views/admin/survey/Question/editQuestion_view.php:103
 #: application/views/admin/survey/Question/neditQuestion_view.php:87
 msgid "Edit question"
 msgstr ""
 
-#: application/models/Question.php:625
+#: application/models/Question.php:627
 #: application/views/admin/survey/Question/question_view.php:5
 msgid "Question summary"
 msgstr ""
 
-#: application/models/Question.php:633
+#: application/models/Question.php:635
 msgid "Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
 msgstr ""
 
-#: application/models/Question.php:781
+#: application/models/Question.php:783
 #: application/models/QuestionBaseDataSet.php:328
 #: application/views/admin/survey/Question/editQuestion_view.php:352
 #: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:21
@@ -14176,11 +14176,11 @@ msgstr ""
 msgid "Soft"
 msgstr ""
 
-#: application/models/Question.php:786 application/models/Question.php:796
+#: application/models/Question.php:788 application/models/Question.php:798
 msgid "Not relevant for this question type"
 msgstr ""
 
-#: application/models/Question.php:857
+#: application/models/Question.php:859
 msgid "Group / Question order"
 msgstr ""
 
