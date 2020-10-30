@@ -36,7 +36,7 @@ class SurveysInGroup extends SurveysGroups
                 'import' => false,
                 'export' => true,
                 'title' => gT("Sureys in this group"),
-                'description' => gT("Permission on surveys in this group."),
+                'description' => gT("Permission on surveys in this group. To see the survey in list : read permission is checked and muts be set."),
                 'img' => ' fa fa-edit',
             ),
         );

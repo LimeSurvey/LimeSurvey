@@ -1618,18 +1618,8 @@ class Survey extends LSActiveRecord
         $criteria->with = $aWithRelations;
 
         // Permission
-        // Note: reflect Permission::hasPermission
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
-            $criteriaPerm = new CDbCriteria;
-
-            // Multiple ON conditions with string values such as 'survey'
-            $criteriaPerm->mergeWith(array(
-                'join'=>"LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
-            ));
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
-            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
-            $criteria->mergeWith($criteriaPerm, 'AND');
-        }
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
         // $criteria->addCondition("t.blabla == 'blub'");
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
@@ -1644,6 +1634,47 @@ class Survey extends LSActiveRecord
         return $dataProvider;
     }
 
+    /**
+     * Get criteria from Permission
+     * @return CDbCriteria
+     */
+    protected static function getPermissionCriteria( $userid = null)
+        // Note: reflect Permission::hasPermission
+        $criteriaPerm = new CDbCriteria;
+        $criteriaPerm->params = array();
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+
+            /* it's the owner of the survey */
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+
+            /* Read is set on survey */
+            $criteriaPerm->mergeWith(
+                array(
+                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = t.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid= :surveypermissionuserid) ",
+            ));
+            $criteriaPerm->params[':surveypermissionuserid'] = Yii::app()->user->id;
+            $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
+
+            /* Read on Surveys in group */
+            $criteriaPerm->mergeWith(
+                array(
+                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions ON (surveysingrouppermissions.entity_id = t.gsid AND surveysingrouppermissions.entity='surveysingroup' AND surveysingrouppermissions.uid= :surveysingrouppermissionuserid) ",
+            ));
+            $criteriaPerm->params[':surveysingrouppermissionuserid'] = Yii::app()->user->id;
+            $criteriaPerm->compare('surveysingrouppermissions.read_p', '1', false, 'OR'); // This mean : update, export … didn't allow see in list
+
+            /* Under condition : owner of group */
+            if(App()->getConfig('ownerManageAllSurveysInGroup')) {
+                $criteriaPerm->mergeWith(
+                    array(
+                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner ON (surveysgroupsowner.gsid = t.gsid) ",
+                ));
+                $criteriaPerm->compare('surveysgroupsowner.owner_id',Yii::app()->user->id , false, 'OR');
+            }
+        }
+        /* Place for a new event */
+        return $criteriaPerm;
+    }
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
