@@ -62,21 +62,27 @@ class SurveysGroupsController extends Survey_Common_Action
             }
         }
 
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $aData['aRigths'] = array(
             'update' => true,
             'delete' => false,
         );
-        $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
-        $aData['fullpagebar']['returnbutton'] = array(
-            'url'=>'admin/survey/sa/listsurveys#surveygroups',
-            'text'=>gT('Close'),
+        $aData['fullpagebar'] = array(
+            'savebutton' => array(
+                'form' => 'surveys-groups-form'
+            ),
+            'returnbutton' => array(
+                'url'=>'admin/survey/sa/listsurveys#surveygroups',
+                'text'=>gT('Close'),
+            )
         );
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
     /**
-     * Show and pdates a particular model.
+     * Show and updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
@@ -108,7 +114,9 @@ class SurveysGroupsController extends Survey_Common_Action
             }
         }
 
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $oSurveySearch = new Survey('search');
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
@@ -148,7 +156,9 @@ class SurveysGroupsController extends Survey_Common_Action
         if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
         /** @var SurveysGroupsettings $oSurvey */
@@ -230,7 +240,9 @@ class SurveysGroupsController extends Survey_Common_Action
         if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         $aSurveysGroupsPermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
         $aSurveysInGroupPermissions = Permission::model()->getEntityBasePermissions('SurveysInGroup');
@@ -337,7 +349,9 @@ class SurveysGroupsController extends Survey_Common_Action
         if(!in_array($uid, getUserList('onlyuidarray'))) {
             throw new CHttpException(403, gT("You do not have permission to this user."));
         }
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $aData['subview'] = 'addUserResult';
         $aData['buttons'] = array(
             'closebutton' =>array(
@@ -383,7 +397,9 @@ class SurveysGroupsController extends Survey_Common_Action
         if(!in_array($ugid, getUserGroupList())) {
             throw new CHttpException(403, gT("You do not have permission to this user group."));
         }
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $aData['subview'] = 'addUserGroupResult';
         $aData['buttons'] = array(
             'closebutton' =>array(
@@ -463,13 +479,15 @@ class SurveysGroupsController extends Survey_Common_Action
             ':sid' => $id,
             ':entity' => 'SurveysInGroup'
         ));
+        $aData = array(
+            'model' => $model
+        );
         $aData['subview'] = 'deleteUserResult';
         $aData['buttons'] = array(
             'closebutton' =>array(
                 'url'=> App()->createUrl("admin/surveysgroups/sa/permission",array("id" => $id)),
             ),
         );
-        $aData['model'] = $model;
         $aData['aPermissionData']=array(
             'model' => $model,
             'oUser' => $oUser,
@@ -713,7 +731,6 @@ class SurveysGroupsController extends Survey_Common_Action
             App()->request->redirect(App()->getController()->createUrl('admin/surveysgroups/sa/permissions', array('id'=>$id)));
         }
         App()->request->redirect(App()->getController()->createUrl('admin/surveysgroups/sa/permissionsUserSet', array('id'=>$id, 'to' => $uid)));
-        Yii::app()->end();
     }
 
     /**
@@ -751,22 +768,27 @@ class SurveysGroupsController extends Survey_Common_Action
     public function index()
     {
         $model = new SurveysGroups('search');
-        $aData['model'] = $model;
+        $aData = array(
+            'model' => $model
+        );
         $this->_renderWrappedTemplate('surveysgroups', 'index', $aData);
     }
 
     /**
      * Manages all models.
-     * @TODO : security permission control
+     * @TODO : Remove
      */
     public function admin()
     {
+        /* @see next comment : throw 500 error */
+        throw new CHttpException(400, gT("Invalid action"));
+
         $model = new SurveysGroups('search'); // @todo : fix this : need update permission
         $model->unsetAttributes(); // clear any default values
         if (!empty(App()->getRequest()->getParam('SurveysGroups'))) {
             $model->attributes = App()->getRequest()->getParam('SurveysGroups');
         }
-
+        /* Throw : SurveysGroupsController and its behaviors do not have a method or closure named "render". */
         $this->render('admin', array(
             'model'=>$model,
         ));
