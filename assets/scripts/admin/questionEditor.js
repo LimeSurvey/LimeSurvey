@@ -28,31 +28,55 @@
 /*flow-include
 declare class _$ {
   ajax: {} => void,
-  post: (string, {}, void => void) => void,
+  post: (string, {}, mixed => void) => void,
   each: ({}, (number, mixed) => void) => void,
   getJSON: (string, ({}) => void) => void,
   find: string => _$,
-  append: (_$|string) => _$,
+  append: mixed => _$,
+  appendTo: mixed => _$,
   when: _$,
   done: (void => void, void => void) => _$,
   apply: (mixed, Array<Promise>) => _$,
   closest: string => _$,
-  attr: (string, string) => string,
+  attr(attributeName: string, func: (index: number, attr: string) => string | number): _$,
+  attr(attributeName: string, value: string | number): _$,
+  attr(attributes: Object): _$,
+  fadeTo(duration: string | number, opacity: number, complete?: Function): _$,
   off: string => _$,
-  on: (string, Function) => _$,
+  on: (string, ?string|Function, Function) => _$,
   length: number,
   data: (void|string) => string,
-  html: string => _$,
+  html: mixed => _$,
   clone: void => _$,
   addClass: string => _$,
-  each: ((number, _$) => void) => void,
+  each: (?{}, ?(number, _$) => void) => void,
   val: (void|mixed) => string,
   empty: void => void,
   first: void => _$,
   trigger: string => _$,
+  before: _$ => _$,
+  after: (_$|string) => _$,
   remove: void => _$,
+  parent: void => _$,
+  children(selector?: string): _$,
+  siblings: mixed => _$,
+  text: mixed => string,
+  hide: void => _$,
+  show: void => _$,
+  submit: void => _$,
+  effect: (string, {}, number) => void,
+  is: (string) => boolean,
+  replaceWith: string => _$,
   eq: number => _$,
-  (string|HTMLElement|Document): _$
+  sortable: mixed => _$,
+  modal: ?string => _$,
+  split: string => Array<string>,
+  click: Function => void,
+  (string|HTMLElement|Document): _$,
+
+  // Extra libs
+  ace: {} => void,
+  select2: (void|string) => void
 }
 declare var $: _$
 declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
@@ -753,7 +777,7 @@ LS.questionEditor = (function () {
     // Label set select2 element.
     $('#labelsets').on('change', function () {
       const value = $(this).val();
-      showLabelSetPreview(value);
+      showLabelSetPreview(parseInt(value));
     });
   }
 
@@ -794,7 +818,7 @@ LS.questionEditor = (function () {
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
           try {
-            const label = $(item).data('label');
+            const label /*: {code: string} */ = $(item).data('label');
             console.log('row', row);
             const $row = $(row);
             console.log('$row', $row);
@@ -1266,7 +1290,7 @@ laname: $('#laname').val(), lid, code, answers,
     $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
-      const scaleId = $(e.relatedTarget).data('scale-id');
+      const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
       const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
       if (tableId === '') {
         alert('Internal error: Did not find tableId');
