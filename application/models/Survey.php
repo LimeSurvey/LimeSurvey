@@ -600,10 +600,10 @@ class Survey extends LSActiveRecord
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
+     * @see issue https://bugs.limesurvey.org/view.php?id=16799
      * @access public
      * @param int $loginID
      * @return CActiveRecord
-     *
      */
     public function permission($loginID)
     {
