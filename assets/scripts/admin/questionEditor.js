@@ -54,6 +54,8 @@ declare var LS: {
 // Wrap it in closure to avoid global variables.
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 // TODO: Include functions from assets/packages/adminbasics/src/pages/subquestionandanswers.js
+// TODO: Use class for quick-add
+// TODO: Use class for label sets
 LS.questionEditor = (function () {
 
   // TODO: Does not work with pjax loading.
