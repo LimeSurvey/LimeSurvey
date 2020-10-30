@@ -29,9 +29,30 @@
 declare class _$ {
   ajax: {} => void,
   post: (string, {}, void => void) => void,
-  each: (Array, (number, mixed) => void) => void,
+  each: ({}, (number, mixed) => void) => void,
   getJSON: (string, ({}) => void) => void,
-  (string|HTMLElement|Document): any
+  find: string => _$,
+  append: (_$|string) => _$,
+  when: _$,
+  done: (void => void, void => void) => _$,
+  apply: (mixed, Array<Promise>) => _$,
+  closest: string => _$,
+  attr: (string, string) => string,
+  off: string => _$,
+  on: (string, Function) => _$,
+  length: number,
+  data: (void|string) => string,
+  html: string => _$,
+  clone: void => _$,
+  addClass: string => _$,
+  each: ((number, _$) => void) => void,
+  val: (void|mixed) => string,
+  empty: void => void,
+  first: void => _$,
+  trigger: string => _$,
+  remove: void => _$,
+  eq: number => _$,
+  (string|HTMLElement|Document): _$
 }
 declare var $: _$
 declare var _: {forEach: (Array<mixed>, (string, number) => void) => void}
@@ -628,9 +649,9 @@ LS.questionEditor = (function () {
     const surveyid = $('input[name=sid]').val();
     return $.ajax({
       url: languageJson.lsdetailurl,
-      data: { sid: surveyid, lid },
+      data: {sid: surveyid, lid},
       cache: true,
-      success(json) {
+      success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
         if (json.languages === []) {
           alert('Internal error: No languages');
           throw 'abort';
@@ -663,7 +684,7 @@ LS.questionEditor = (function () {
 
           $itemList = $listTemplate.clone();
 
-          $.each(labelSet.labels, (i, label) => {
+          labelSet.labels.forEach((label) => {
             // Label title is not concatenated directly because it may have non-encoded HTML
             const $labelTitleDiv = $('<div class="col-md-8"></div>');
             $labelTitleDiv.text(label.title);
@@ -692,7 +713,12 @@ LS.questionEditor = (function () {
    * @todo What does it do?
    */
   function initLabelSetModal(e) {
-    const scaleId = $(e.target).data('scale-id');
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) {
+      alert('Internal error: target is expected to be HTMLElement');
+      throw 'abort';
+    }
+    const scaleId = $(target).data('scale-id');
     if (scaleId == null) {
       alert('Internal error: No scale id in initLabelSetModal');
       throw 'abort';
@@ -716,7 +742,7 @@ LS.questionEditor = (function () {
           $('#btnlsinsert').attr('disabled', 'disabled');
         } else {
           $('#labelsets').find('option').each((i, option) => { if ($(option).attr('value')) { $(option).remove(); } });
-          $.each(jsonString.labelsets, (i, item) => {
+          jsonString.labelsets.forEach((item) => {
             const newOption = $(`<option value="${item.lid}">${item.label_name}</option>`);  // jshint ignore: line
             $('#labelsets').append(newOption).trigger('change');
           });
@@ -746,6 +772,11 @@ LS.questionEditor = (function () {
 
     addInputPredefined(1, source).then((result) => {
       $.each(result, (lang, row) => {
+        if (!(row instanceof HTMLElement)) {
+          alert('Internal error: row is not an HTMLElement');
+          throw 'abort';
+        }
+
         // TODO: Answer options
         const tableId = `#${source}_${lang}_${scaleId}`;
         const $table = $(tableId);
@@ -773,6 +804,9 @@ LS.questionEditor = (function () {
               $tr = $row.eq(4);
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
+            } else {
+              alert('Internal error: source is not subquestions or answeroptions: ' + source);
+              throw 'abort';
             }
             if ($tr.length === 0) {
               throw 'Found no $tr in transferLabels';
@@ -836,6 +870,7 @@ LS.questionEditor = (function () {
    * @param {string} tableId
    * @return {void}
    * @todo Unit-test this? How? With classes?
+   * @todo Factor out functions.
    */
   function quickAddLabels(scaleId, addOrReplace, tableId) {
     //const sID = $('input[name=sid]').val();
@@ -872,7 +907,7 @@ LS.questionEditor = (function () {
     const languages = languageJson.langs.split(';');
     const promises = [];
     // TODO: Doc answers
-    const answers = [];
+    const answers = {};
     const lsrows = $('#quickaddarea').val().split('\n');
     const allrows = $closestTable.find('tr').length;
     const separatorchar = getSeparatorChar(lsrows);
@@ -950,8 +985,9 @@ LS.questionEditor = (function () {
       function () {
         /* $('#quickadd').dialog('close'); */
         // TODO: What is item here?
-        $.each(arguments, (i, item) => {
-          $.each(answers[item.lang], (j, row) => {
+        // TODO: Too dynamic to use "arguments", better to know.
+        arguments.forEach((item /*: {lang: string, langtable: _$, html: string} */) => {
+          answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
             const { html } = item;
             const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
             const htmlRowObject = $(htmlQuid);
@@ -1019,6 +1055,11 @@ LS.questionEditor = (function () {
    */
   function setlabel(event /*: Event */) /*: void */ {
     const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      alert('target is not an HTMLElement');
+      throw 'abort';
+    }
+
     switch ($(target).attr('id')) {
         case 'newlabel':
             if (!flag[0]) {
