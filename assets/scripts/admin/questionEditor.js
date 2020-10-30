@@ -671,7 +671,7 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * @param {Event & {relatedTarget: HTMLElement}} e
+   * @param {Event} e
    * @return {void}
    * @todo Fix name
    * @todo What does it do?
