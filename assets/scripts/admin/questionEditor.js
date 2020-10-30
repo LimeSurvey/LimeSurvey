@@ -164,12 +164,11 @@ LS.questionEditor = (function () {
     });
   }
 
-  /*:: declare function addInputPredefined(number): Promise<XMLHttpRequest> */
   /**
    * @param {number} i
-   * @return {Promise}
+   * @return {Promise<XMLHttpRequest>}
    */
-  function addInputPredefined(i /*: number */) {
+  function addInputPredefined(i /*: number */) /*: Promise<XMLHttpRequest> */ {
     // TODO: Support answer options
     const $dataInput = $('#add-subquestion-input-javascript-datas');
     const scaleId = $('#current_scale_id').val();
@@ -285,7 +284,7 @@ LS.questionEditor = (function () {
       data: datas,
       success(htmlrow) {
         const $langTable = $(`#${tableIdPrefix}_${language}_${scaleId}`);
-        $defer.resolve({ lng: language, langtable: $langTable, html: htmlrow });
+        $defer.resolve({ lang: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
         alert('Internal error: ' + errormessage);
@@ -607,9 +606,12 @@ LS.questionEditor = (function () {
     $('#labelsetpreview').empty();
   }
 
-  // previews the labels in a label set after selecting it in the select box
-  // previews the labels in a label set after selecting it in the select box
-  function lspreview(lid) {
+  /**
+   * Previews the labels in a label set after selecting it in the select box
+   * @param {number} lid Label set id
+   * @return {void}
+   */
+  function showLabelSetPreview(lid /*: number */) /*: void */ {
     const surveyid = $('input[name=sid]').val();
     return $.ajax({
       url: languageJson.lsdetailurl,
@@ -678,6 +680,7 @@ LS.questionEditor = (function () {
    */
   function lsbrowser(e) {
     const scaleId = $(e.relatedTarget).data('scale-id');
+    // TODO: Send as input, not in DOM.
     $('body').append(`<input type="hidde" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
 
     $('#labelsets').select2();
@@ -703,28 +706,34 @@ LS.questionEditor = (function () {
       },
     });
 
+    // Label set select2 element.
     $('#labelsets').on('change', function () {
       const value = $(this).val();
-      if (parseFloat(value) === value) {
-        lspreview(value);
-      }
+      showLabelSetPreview(value);
     });
   }
 
   /**
-   * @param {string} type ???
+   * Transfer labels from what to what???
+   *
+   * @param {string} type 'replace' or 'add'
    * @return {void}
    */
-  function transferlabels(type) {
+  function transferLabels(type /*: string */) /*: void */ {
     //const surveyid = $('input[name=sid]').val();
     //const languages = languageJson.langs.split(';');
     //const labels = [];
     const scaleId = $('#current_scale_id').val();
 
     addInputPredefined(1).then((result) => {
-      $.each(result, (lng, row) => {
+      $.each(result, (lang, row) => {
         // TODO: Answer options
-        const $table = $(`#subquestions_${lng}_${scaleId}`);
+        const tableId = `#subquestions_${lang}_${scaleId}`;
+        const $table = $(tableId);
+        if ($table.length === 0) {
+          alert('Internal error: Found no table to add labels to with id ' + tableId);
+          throw 'abort';
+        }
 
         if (type === 'replace') {
           $table.find('tbody').find('tr').each((i, tableRow) => {
@@ -732,7 +741,9 @@ LS.questionEditor = (function () {
           });
         }
 
-        $('#labelsetpreview').find(`#language_${lng}`).find('.selector_label-list').find('.selector_label-list-row')
+        const preview = $('#labelsetpreview');
+
+        $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
           try {
             const label = $(item).data('label');
@@ -912,7 +923,7 @@ LS.questionEditor = (function () {
         /* $('#quickadd').dialog('close'); */
         // TODO: What is item here?
         $.each(arguments, (i, item) => {
-          $.each(answers[item.lng], (j, row) => {
+          $.each(answers[item.lang], (j, row) => {
             const { html } = item;
             const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
             const htmlRowObject = $(htmlQuid);
@@ -973,10 +984,12 @@ LS.questionEditor = (function () {
   }
 
   /**
+   * Used when???
+   *
    * @param {event} event
    * @return {void}
    */
-  function setlabel(event) {
+  function setlabel(event /*: Event */) /*: void */ {
     const target = event.target;
     switch ($(target).attr('id')) {
         case 'newlabel':
@@ -1184,8 +1197,14 @@ laname: $('#laname').val(), lid, code, answers,
     $('#labelsetbrowserModal').on('shown.bs.modal.', lsbrowser);
     $('#labelsetbrowserModal').on('hidden.bs.modal.', lsBrowserDestruct);
 
-    $('#btnlsreplace').on('click', (e) => { e.preventDefault(); transferlabels('replace'); });
-    $('#btnlsinsert').on('click', (e) => { e.preventDefault(); transferlabels('insert'); });
+    $('#btnlsreplace').on('click', (e) => {
+      e.preventDefault();
+      transferLabels('replace');
+    });
+    $('#btnlsinsert').on('click', (e) => {
+      e.preventDefault();
+      transferLabels('insert');
+    });
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = $(e.relatedTarget).data('scale-id');
@@ -1204,7 +1223,7 @@ laname: $('#laname').val(), lid, code, answers,
       });
     });
 
-    $('#labelsets').click(lspreview);
+    $('#labelsets').click(showLabelSetPreview);
     // $('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(setlabel);

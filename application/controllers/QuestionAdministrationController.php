@@ -1580,7 +1580,7 @@ class QuestionAdministrationController extends LSBaseController
                 'data' => [
                     'success'   => count($result) > 0,
                     'results'   => $result,
-                    'languages' => $aLanguages
+                    'languages' => $languages
                 ],
             ),
             false,
