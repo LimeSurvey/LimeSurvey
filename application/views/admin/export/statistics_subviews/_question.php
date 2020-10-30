@@ -1,6 +1,8 @@
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
 
 <?php
+    // If boilerplate don't render anything
+    if ($flt[2]=='X') return;
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
     $specialQuestionTypes = array("M", "P");
@@ -10,7 +12,7 @@
     }
     $counter2 = 0;
 ?>
-
+ 
 
 
 
@@ -82,15 +84,20 @@
 
                         //show speaker
                         echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row[1],true))
-                        ."</div>\n";?>
+                        ."</div>
 
-                        <span class='smalltext'><?php eT("Number greater than");?>:</span><br />
-                        <?php echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')"));?>
-                        <br>
-                        <span class='smalltext'><?php eT("Number less than");?>:</span><br>
-                        <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')"));?>
-                        <br>
-                        <?php
+                        <div class='form-group row'>
+                        <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
+                        <div class='col-sm-6'>"
+                        .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        ."</div>
+                        </div>
+                        <div class='form-group row'>
+                        <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
+                        <div class='col-sm-6'>"
+                        .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                        ."</div>
+                        </div>";                
                     }
 
                 }
@@ -126,7 +133,7 @@
                     echo $oStatisticsHelper::_showSpeaker($flt[3]." - ".flattenText($row[1],true))
                     ."<br /><p style='padding: 1em;'>\n"
                     ."\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n";
-                    echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array());
+                    echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
                     echo "</p>";
                     echo '</div></div>';
                 }
@@ -169,7 +176,7 @@
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Responses containing").":</span>
                 </div>\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array());
+                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control'));
                 break;
 
 
@@ -193,17 +200,21 @@
                     </label>
                 </div>
                 <?php
-                $myfield2="{$myfield}G";
-                $myfield3="{$myfield}L";
-                echo "\t<span class='smalltext'>".gT("Number greater than").":</span><br />\n"
-                .CHtml::textField('N'.$myfield2,isset($_POST[$myfield2])?'N'.$_POST[$myfield2]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
-                ."\t<br />\n"
-                ."\t<span class='smalltext'>".gT("Number less than").":</span><br />\n"
-                .CHtml::textField('N'.$myfield3,isset($_POST[$myfield3])?'N'.$_POST[$myfield3]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
-                ."\t<br />\n";
-
-                //put field names into array
-
+                $myfield2="N{$myfield}G";
+                $myfield3="N{$myfield}L";
+                echo " 
+                <div class='form-group row'>
+                <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number greater than:")."</label>
+                <div class='col-sm-6'>"
+                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                ."</div>
+                </div>
+                <div class='form-group row'>
+                <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number less than:")."</label>
+                <div class='col-sm-6'>"
+                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                ."</div>
+                </div>";                
                 break;
 
 
@@ -212,12 +223,19 @@
                 // Number of files uploaded for greater and less than X
                 $myfield2 = "{$myfield}G";
                 $myfield3 = "{$myfield}L";
-                echo "\t<span class='smalltext'>".gT("Number of files greater than").":</span><br />\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
-                ."<br />\n"
-                ."\t<span class='smalltext'>".gT("Number of files less than").":</span><br />\n"
-                .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
-                ."<br />\n";
+                echo"
+                <div class='form-group row'>
+                <label for='".$myfield2."' class='col-sm-4 control-label'>".gT("Number of files greater than:")."</label>
+                <div class='col-sm-6'>"
+                .CHtml::numberField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                ."</div>
+                </div>
+                <div class='form-group row'>
+                <label for='N".$myfield3."' class='col-sm-4 control-label'>".gT("Number of files less than:")."</label>
+                <div class='col-sm-6'>"
+                .CHtml::numberField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'class'=>'form-control', 'step'=>'any'))
+                ."</div>
+                </div>";                
                 break;
 
 
@@ -249,18 +267,102 @@
                 {echo " checked='checked'";}
 
                 echo " />";
-                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext).'</strong>'
-                ."<br />\n"
+                echo '<strong>'.$oStatisticsHelper::_showSpeaker($niceqtext)."</strong>
 
-                ."\t<span class='smalltext'>".gT("Date (YYYY-MM-DD) equals").":<br />\n"
-                .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array() )
-                ."<br />\n"
-                ."\t&nbsp;&nbsp;".gT("Date is")." >=<br />\n"
-                .CHtml::textField($myfield4,isset($_POST[$myfield4])?$_POST[$myfield4]:'',array() )
-                ."<br />"
-                .gT("AND/OR Date is")." <= <br />"
-                .CHtml::textField($myfield5,isset($_POST[$myfield5])?$_POST[$myfield5]:'',array() )
-                ."</span>\n";
+                <div class='form-group row' style='margin-top:1em;'>
+                <label for='".$myfield3."' class='col-sm-4 col-form-label smalltext'>".gT("Date equals:")."</label>
+                <div class='col-sm-8'>";
+                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                    'name' => $myfield3,
+                    'id' => $myfield3,
+                    'value' => isset($_POST[$myfield3]) ? $_POST[$myfield3] : '',
+                    'pluginOptions' => array(
+                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                        'allowInputToggle' =>true,
+                        'showClear' => true,
+                        'tooltips' => array(
+                            'clear'=> gT('Clear selection'),
+                            'prevMonth'=> gT('Previous month'),
+                            'nextMonth'=> gT('Next month'),
+                            'selectYear'=> gT('Select year'),
+                            'prevYear'=> gT('Previous year'),
+                            'nextYear'=> gT('Next year'),
+                            'selectDecade'=> gT('Select decade'),
+                            'prevDecade'=> gT('Previous decade'),
+                            'nextDecade'=> gT('Next decade'),
+                            'prevCentury'=> gT('Previous century'),
+                            'nextCentury'=> gT('Next century'),
+                        'selectTime'=> gT('Select time')
+                        ),
+                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                    )
+                ));                
+                echo "
+                </div>
+              </div>
+              <div class='form-group row'>
+              <label for='".$myfield4."' class='col-sm-4 col-form-label smalltext'>".gT("Date is >= :")."</label>
+              <div class='col-sm-8'>";
+              Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                  'name' => $myfield4,
+                  'id' => $myfield4,
+                  'value' => isset($_POST[$myfield4]) ? $_POST[$myfield4] : '',
+                  'pluginOptions' => array(
+                      'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                      'allowInputToggle' =>true,
+                      'showClear' => true,
+                      'tooltips' => array(
+                          'clear'=> gT('Clear selection'),
+                          'prevMonth'=> gT('Previous month'),
+                          'nextMonth'=> gT('Next month'),
+                          'selectYear'=> gT('Select year'),
+                          'prevYear'=> gT('Previous year'),
+                          'nextYear'=> gT('Next year'),
+                          'selectDecade'=> gT('Select decade'),
+                          'prevDecade'=> gT('Previous decade'),
+                          'nextDecade'=> gT('Next decade'),
+                          'prevCentury'=> gT('Previous century'),
+                          'nextCentury'=> gT('Next century'),
+                      'selectTime'=> gT('Select time')
+                      ),
+                      'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                  )
+              ));                
+              echo "
+              </div>
+            </div>
+            <div class='form-group row'>
+            <label for='".$myfield5."' class='col-sm-4 col-form-label smalltext'>".gT("And/or Date is <= :")."</label>
+            <div class='col-sm-8'>";
+            Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                'name' => $myfield5,
+                'id' => $myfield5,
+                'value' => isset($_POST[$myfield5]) ? $_POST[$myfield5] : '',
+                'pluginOptions' => array(
+                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                    'allowInputToggle' =>true,
+                    'showClear' => true,
+                    'tooltips' => array(
+                        'clear'=> gT('Clear selection'),
+                        'prevMonth'=> gT('Previous month'),
+                        'nextMonth'=> gT('Next month'),
+                        'selectYear'=> gT('Select year'),
+                        'prevYear'=> gT('Previous year'),
+                        'nextYear'=> gT('Next year'),
+                        'selectDecade'=> gT('Select decade'),
+                        'prevDecade'=> gT('Previous decade'),
+                        'nextDecade'=> gT('Next decade'),
+                        'prevCentury'=> gT('Previous century'),
+                        'nextCentury'=> gT('Next century'),
+                    'selectTime'=> gT('Select time')
+                    ),
+                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                )
+            ));                
+            echo "
+            </div>
+          </div>";            
+
                 echo '</div>';
                 break;
 
@@ -534,7 +636,7 @@
                         .$oStatisticsHelper::_showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['question']."]")." - ".$row[0]."/".$frow['title'])
                         ."</strong><br />\n";
                         echo "\t<span class='smalltext'>".gT("Responses containing").":</span><br />\n"
-                        .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array() );
+                        .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('class'=>'form-control') );
                         echo "<hr/>";
                         $counter2++;
                     }
@@ -904,12 +1006,6 @@
                 }
 
                 echo "\t</select>";
-                break;
-
-            //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case "X": //This is a boilerplate question and it has no business in this script
-                echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
-                eT("This question type can't be selected.");
                 break;
 
                 /*

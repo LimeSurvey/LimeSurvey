@@ -78,6 +78,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                                                     '/admin/export/statistics_subviews/_response_filter_choice',
                                                     array(
                                                         'filterchoice_state'=>$filterchoice_state,
+                                                        'dateformatdetails'=>$dateformatdetails,
                                                         'filters'=>$filters,
                                                         'aGroups'=>$aGroups,
                                                         'surveyid'=>$surveyid,
