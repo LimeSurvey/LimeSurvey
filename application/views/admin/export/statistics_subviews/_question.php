@@ -2,7 +2,7 @@
 
 <?php
     // If boilerplate don't render anything
-    if (in_array( $flt[2],[Question::QT_X_BOILERPLATE_QUESTION,Question::QT_ASTERISK_EQUATION]) return;
+    if (in_array( $flt[2],[Question::QT_X_BOILERPLATE_QUESTION,Question::QT_ASTERISK_EQUATION])) return;
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
     $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
