@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.24.3 (build 201027) to 3.24.4 (build 201103) November 2, 2020
+-Fixed issue: Database error in statistics when entering invalid information in number or date filter (Carsten Schmitz)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Brazil) by brownst
+#Updated translation: Maltese by ritapas
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.24.2 (build 201020) to 3.24.3 (build 201027) October 26, 2020
 -Fixed issue: View access to survey group even though no permission (Carsten Schmitz)
 -Fixed issue: Update issue with invalid datetime value stored in startdate/datestamp field of response table (Carsten Schmitz)
