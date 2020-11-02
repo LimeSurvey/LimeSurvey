@@ -219,6 +219,11 @@ class GlobalSettings extends Survey_Common_Action
             $maxemails = 1;
         }
 
+        $sendingrate = Yii::app()->getRequest()->getPost('sendingrate');
+        if (sanitize_int(Yii::app()->getRequest()->getPost('sendingrate')) < 1) {
+            $sendingrate = 60;
+        }
+
         $defaultlang = sanitize_languagecode(Yii::app()->getRequest()->getPost('defaultlang'));
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS(Yii::app()->getRequest()->getPost('restrictToLanguages')));
         if (!in_array($defaultlang, $aRestrictToLanguages)) {
@@ -301,6 +306,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('repeatheadings', $repeatheadingstemp);
 
         SettingGlobal::setSetting('maxemails', sanitize_int($maxemails));
+        SettingGlobal::setSetting('sendingrate', sanitize_int($sendingrate));
         $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime',7200));
         if ($iSessionExpirationTime == 0) {
             $iSessionExpirationTime = 7200;
