@@ -60,9 +60,9 @@
                 'name' => 'bounceencryption',
                 'value'=> getGlobalSetting('bounceencryption') ,
                 'selectOptions'=>array(
-                "off"=>gT("Off",'unescaped'),
-                "SSL"=>"SSL",
-                "TLS"=>"TLS"
+                "off"=>gT("Off (insecure)",'unescaped'),
+                "ssl"=>"SSL/TLS",
+                "tls"=>"StartTLS"
                 )
                 ));?>
     </div>

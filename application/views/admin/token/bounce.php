@@ -98,9 +98,9 @@
                                         'name' => 'bounceaccountencryption',
                                         'value'=> $settings['bounceaccountencryption'] ,
                                         'selectOptions'=>array(
-                                            "Off"=>gT("Off",'unescaped'),
-                                            "SSL"=>gT("SSL",'unescaped'),
-                                            "TLS"=>gT("TLS",'unescaped')
+                                            "off"=>gT("Off (insecure)",'unescaped'),
+                                            "ssl"=>gT("SSL/TLS",'unescaped'),
+                                            "tls"=>gT("StartTLS",'unescaped')
                                         )
                                     ));?>
                                 </div>
