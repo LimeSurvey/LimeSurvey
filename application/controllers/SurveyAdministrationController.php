@@ -348,8 +348,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
-
-        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
         $aData['esrow'] = $esrow;
@@ -368,7 +366,7 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         //Prepare the edition panes
-        $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
+    //    $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
 
         $defaultLanguage = App()->getConfig('defaultlang');
 
@@ -2852,6 +2850,8 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Returns data for text edit.
+     *
+     * BE CAREFUL (this function is not called directly, but by call_user_func_array and the name of function in db .. )
      *
      * @param Survey $survey Given Survey.
      *
