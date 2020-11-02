@@ -115,8 +115,22 @@
                                 <div class="topbarbutton">
                                     <button type="button" data-toggle="dropdown"
                                         aria-haspopup="true" data-btntype="2" class="btn btn-default navbar-btn button dropdown-toggle"><i 
-                                            class="fa fa-cog icon"></i>&nbsp;Preview
-                                        survey&nbsp;<i class="caret icon"></i></button></div>
+                                            class="fa fa-cog icon">
+                                        </i>&nbsp;Preview
+                                        survey&nbsp;<i class="caret icon">
+                                        </i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach ($question->survey->allLanguages as $tmp_lang){ ?>
+                                            <li>
+                                                <a target='_blank' href='<?php echo $this->createUrl("survey/index",
+                                                    array('sid'=>$question->sid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
+                                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -127,7 +141,19 @@
                                     <button type="button" data-toggle="dropdown"
                                         aria-haspopup="true" data-btntype="2" class="btn btn-default navbar-btn button dropdown-toggle"><i 
                                             class="fa fa-cog icon"></i>&nbsp;Preview question
-                                        group&nbsp;<i class="caret icon"></i></button></div>
+                                        group&nbsp;<i class="caret icon"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width : 252px;">
+                                        <?php foreach ($question->survey->allLanguages as $tmp_lang): ?>
+                                            <li>
+                                                <a target="_blank"
+                                                   href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/{$question->sid}/gid/{$question->gid}/lang/" . $tmp_lang); ?>" >
+                                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -138,7 +164,19 @@
                                     <button type="button" data-toggle="dropdown"
                                         aria-haspopup="true" data-btntype="2" class="btn btn-default navbar-btn button dropdown-toggle"><i 
                                             class="fa fa-cog icon"></i>&nbsp;Preview
-                                        question&nbsp;<i class="caret icon"></i></button></div>
+                                        question&nbsp;<i class="caret icon"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width : 252px;">
+                                        <?php foreach ($question->survey->allLanguages as $tmp_lang): ?>
+                                            <li>
+                                                <a target="_blank"
+                                                   href='<?php echo $this->createUrl("survey/index/action/previewquestion/sid/" . $question->sid . "/gid/" . $question->gid . "/qid/" . $question->qid . "/lang/" . $tmp_lang); ?>' >
+                                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -149,7 +187,19 @@
                                     <button type="button" id="check_logic_button"
                                         data-toggle="dropdown" aria-haspopup="true" data-btntype="2" class="btn btn-default navbar-btn button dropdown-toggle"><i 
                                             class="icon-expressionmanagercheck icon"></i>&nbsp;Check
-                                        logic&nbsp;<i class="caret icon"></i></button></div>
+                                        logic&nbsp;<i class="caret icon"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" style="min-width : 252px;">
+                                        <?php foreach ($question->survey->allLanguages as $tmp_lang): ?>
+                                            <li>
+                                                <a target="_blank"
+                                                   href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/" . $question->sid . "/gid/" . $question->gid . "/qid/" . $question->qid . "/lang/" . $tmp_lang); ?>' >
+                                                    <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </li>
