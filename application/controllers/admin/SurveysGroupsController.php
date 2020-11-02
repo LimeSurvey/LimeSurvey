@@ -174,6 +174,20 @@ class SurveysGroupsController extends Survey_Common_Action
     }
 
     /**
+     * Show the survey settings menue for a particular group
+     * @param integer $id group id, used for permission control
+     * @return void
+     */
+    public function surveysettingmenues($id) {
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        /* Can not call gloalsettings contoller fuinction sice _construct check access … */
+        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
+    }
+
+    /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @todo : find where it shown
@@ -255,8 +269,8 @@ class SurveysGroupsController extends Survey_Common_Action
             'sgid' => $id,
             'baseLinkUrl' => 'admin/surveysgroups/sa/surveysettings/id/'.$id,
             'getUrl' => Yii::app()->createUrl(
-                'admin/globalsettings/sa/surveysettingmenues',
-                array('surveygroupId' => $id)
+                'admin/surveysgroups/sa/surveysettingmenues',
+                array('id' => $id)
             ),
             'i10n' => [
                 'Survey settings' => gT('Survey settings')

@@ -29,15 +29,6 @@ class GlobalSettings extends Survey_Common_Action
     {
         parent::__construct($controller, $id);
 
-        /* Used for Group too : add $gsid checker */
-        $surveygroupId = App()->getRequest()->getParam('surveygroupId');
-        if(App()->getRequest()->getQuery('sa') == 'surveysettingmenues' && $surveygroupId) {
-            if (!Permission::model()->hasSurveyGroupPermission($surveygroupId, 'surveysettings', 'read')) {
-                throw new CHttpException(403, gT("You do not have permission to access this page."));
-            }
-            return;
-        }
-        
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
