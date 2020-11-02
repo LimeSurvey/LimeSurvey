@@ -42,7 +42,7 @@ $config['emailsmtphost']      = 'localhost'; // Sets the SMTP host. You can also
 
 $config['emailsmtpuser']      = ''; // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
 $config['emailsmtppassword']  = ''; // SMTP authorisation password - empty password is not allowed
-$config['emailsmtpssl']       = ''; // Set this to 'ssl' or 'tls' to use SSL/TLS for SMTP connection
+$config['emailsmtpssl']       = ''; // Set this to 'ssl' to use SSL/TLS or 'tls' to use StartTLS for SMTP connection
 
 $config['emailsmtpdebug']     = 0; // Settings this to 1 activates SMTP debug mode
 
