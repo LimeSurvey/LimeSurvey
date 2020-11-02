@@ -36,9 +36,11 @@ class SurveysGroups extends LSActiveRecord
 
     /**
      * @inheritdoc
+     * Set public for default group (gsid == 1)
      */
-    public function init()
+    protected function afterFind()
     {
+        parent::afterFind();
         if($this->gsid = 1) {
             $this->alwaysavailable = 1;
         }

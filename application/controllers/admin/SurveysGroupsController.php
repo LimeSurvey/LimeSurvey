@@ -111,7 +111,7 @@ class SurveysGroupsController extends Survey_Common_Action
             }
             if($model->gsid == 1) {
                 /* Move this to model */
-                $postSurveysGroups['public'] = 1;
+                $postSurveysGroups['alwaysavailable'] = 1;
             }
             $model->attributes = $postSurveysGroups;
 
