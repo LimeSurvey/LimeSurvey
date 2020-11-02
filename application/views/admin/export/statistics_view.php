@@ -102,21 +102,22 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                 ?>
                 <!-- Filter choice -->
                 <?php $this->renderPartial(
-                                                                                                                '/admin/export/statistics_subviews/_response_filter_choice',
-                                                                                                                array(
-                                                                                                                    'filterchoice_state' => $filterchoice_state,
-                                                                                                                    'filters' => $filters,
-                                                                                                                    'aGroups' => $aGroups,
-                                                                                                                    'surveyid' => $surveyid,
-                                                                                                                    'result' => $result,
-                                                                                                                    'fresults' => $fresults,
-                                                                                                                    'summary' => $summary,
-                                                                                                                    'oStatisticsHelper' => $oStatisticsHelper,
-                                                                                                                    'language' => $language,
-                                                                                                                    'dshresults' => $dshresults,
-                                                                                                                    'dshresults2' => $dshresults2,
-                                                                                                                )
-                                                                                                            );
+                    '/admin/export/statistics_subviews/_response_filter_choice',
+                    array(
+                        'filterchoice_state' => $filterchoice_state,
+                        'filters' => $filters,
+                        'aGroups' => $aGroups,
+                        'surveyid' => $surveyid,
+                        'result' => $result,
+                        'fresults' => $fresults,
+                        'summary' => $summary,
+                        'dateformatdetails'=>$dateformatdetails,
+                        'oStatisticsHelper' => $oStatisticsHelper,
+                        'language' => $language,
+                        'dshresults' => $dshresults,
+                        'dshresults2' => $dshresults2,
+                    )
+                );
                 ?>
 
             </div>

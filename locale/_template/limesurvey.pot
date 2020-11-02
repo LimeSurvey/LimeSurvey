@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-10-26 07:14:38+00:00\n"
+"POT-Creation-Date: 2020-11-02 06:18:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3140,8 +3140,8 @@ msgstr ""
 #: application/views/admin/dataentry/vvimport.php:84
 #: application/views/admin/dataentry/vvimport.php:108
 #: application/views/admin/dataentry/vvimport.php:123
-#: application/views/admin/export/statistics_subviews/_question.php:306
-#: application/views/admin/export/statistics_subviews/_question.php:449
+#: application/views/admin/export/statistics_subviews/_question.php:408
+#: application/views/admin/export/statistics_subviews/_question.php:551
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/blacklist_view.php:33
 #: application/views/admin/participants/blacklist_view.php:48
@@ -3221,7 +3221,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3729
 #: application/helpers/userstatistics_helper.php:1176
 #: application/views/admin/dataentry/content_view.php:692
-#: application/views/admin/export/statistics_subviews/_question.php:455
+#: application/views/admin/export/statistics_subviews/_question.php:557
 msgid "Uncertain"
 msgstr ""
 
@@ -3318,8 +3318,8 @@ msgstr ""
 #: application/views/admin/dataentry/vvimport.php:85
 #: application/views/admin/dataentry/vvimport.php:109
 #: application/views/admin/dataentry/vvimport.php:124
-#: application/views/admin/export/statistics_subviews/_question.php:312
-#: application/views/admin/export/statistics_subviews/_question.php:461
+#: application/views/admin/export/statistics_subviews/_question.php:414
+#: application/views/admin/export/statistics_subviews/_question.php:563
 #: application/views/admin/participants/blacklist_view.php:23
 #: application/views/admin/participants/blacklist_view.php:34
 #: application/views/admin/participants/blacklist_view.php:49
@@ -3397,7 +3397,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3732
 #: application/helpers/userstatistics_helper.php:1188
 #: application/views/admin/dataentry/content_view.php:716
-#: application/views/admin/export/statistics_subviews/_question.php:495
+#: application/views/admin/export/statistics_subviews/_question.php:597
 msgid "Increase"
 msgstr ""
 
@@ -3413,7 +3413,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3733
 #: application/helpers/userstatistics_helper.php:1189
 #: application/views/admin/dataentry/content_view.php:717
-#: application/views/admin/export/statistics_subviews/_question.php:500
+#: application/views/admin/export/statistics_subviews/_question.php:602
 msgid "Same"
 msgstr ""
 
@@ -3429,7 +3429,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3734
 #: application/helpers/userstatistics_helper.php:1190
 #: application/views/admin/dataentry/content_view.php:718
-#: application/views/admin/export/statistics_subviews/_question.php:505
+#: application/views/admin/export/statistics_subviews/_question.php:607
 msgid "Decrease"
 msgstr ""
 
@@ -3472,7 +3472,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3720
 #: application/helpers/userstatistics_helper.php:1269
 #: application/views/admin/dataentry/content_view.php:103
-#: application/views/admin/export/statistics_subviews/_question.php:289
+#: application/views/admin/export/statistics_subviews/_question.php:391
 #: tmp/runtime/twig_cache/a0/a0fa38bbeab88e21d540b57d33e7e686095fd7b9fc051eebf5871145594e6554.php:91
 #: tmp/runtime/twig_cache/d9/d97f67c19a822bf95a7d84dc942064f6080c29361878500c01e73a95f05e8c6e.php:95
 msgid "Female"
@@ -3491,7 +3491,7 @@ msgstr ""
 #: application/helpers/expressions/em_manager_helper.php:3719
 #: application/helpers/userstatistics_helper.php:1270
 #: application/views/admin/dataentry/content_view.php:104
-#: application/views/admin/export/statistics_subviews/_question.php:295
+#: application/views/admin/export/statistics_subviews/_question.php:397
 #: tmp/runtime/twig_cache/a0/a0fa38bbeab88e21d540b57d33e7e686095fd7b9fc051eebf5871145594e6554.php:124
 #: tmp/runtime/twig_cache/d9/d97f67c19a822bf95a7d84dc942064f6080c29361878500c01e73a95f05e8c6e.php:132
 msgid "Male"
@@ -8523,6 +8523,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:85
 #: application/extensions/SettingsWidget/SettingsWidget.php:624
 #: application/views/admin/dataentry/content_view.php:74
+#: application/views/admin/export/statistics_subviews/_question.php:278
+#: application/views/admin/export/statistics_subviews/_question.php:309
+#: application/views/admin/export/statistics_subviews/_question.php:340
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:21
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:55
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:90
@@ -8538,6 +8541,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:86
 #: application/extensions/SettingsWidget/SettingsWidget.php:625
 #: application/views/admin/dataentry/content_view.php:75
+#: application/views/admin/export/statistics_subviews/_question.php:279
+#: application/views/admin/export/statistics_subviews/_question.php:310
+#: application/views/admin/export/statistics_subviews/_question.php:341
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:22
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:56
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:91
@@ -8552,6 +8558,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:87
 #: application/extensions/SettingsWidget/SettingsWidget.php:626
 #: application/views/admin/dataentry/content_view.php:76
+#: application/views/admin/export/statistics_subviews/_question.php:280
+#: application/views/admin/export/statistics_subviews/_question.php:311
+#: application/views/admin/export/statistics_subviews/_question.php:342
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:23
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:57
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:92
@@ -8566,6 +8575,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:88
 #: application/extensions/SettingsWidget/SettingsWidget.php:627
 #: application/views/admin/dataentry/content_view.php:77
+#: application/views/admin/export/statistics_subviews/_question.php:281
+#: application/views/admin/export/statistics_subviews/_question.php:312
+#: application/views/admin/export/statistics_subviews/_question.php:343
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:24
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:58
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:93
@@ -8580,6 +8592,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:89
 #: application/extensions/SettingsWidget/SettingsWidget.php:628
 #: application/views/admin/dataentry/content_view.php:78
+#: application/views/admin/export/statistics_subviews/_question.php:282
+#: application/views/admin/export/statistics_subviews/_question.php:313
+#: application/views/admin/export/statistics_subviews/_question.php:344
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:25
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:59
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:94
@@ -8594,6 +8609,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:90
 #: application/extensions/SettingsWidget/SettingsWidget.php:629
 #: application/views/admin/dataentry/content_view.php:79
+#: application/views/admin/export/statistics_subviews/_question.php:283
+#: application/views/admin/export/statistics_subviews/_question.php:314
+#: application/views/admin/export/statistics_subviews/_question.php:345
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:26
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:60
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:95
@@ -8608,6 +8626,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:91
 #: application/extensions/SettingsWidget/SettingsWidget.php:630
 #: application/views/admin/dataentry/content_view.php:80
+#: application/views/admin/export/statistics_subviews/_question.php:284
+#: application/views/admin/export/statistics_subviews/_question.php:315
+#: application/views/admin/export/statistics_subviews/_question.php:346
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:27
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:61
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:96
@@ -8622,6 +8643,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:92
 #: application/extensions/SettingsWidget/SettingsWidget.php:631
 #: application/views/admin/dataentry/content_view.php:81
+#: application/views/admin/export/statistics_subviews/_question.php:285
+#: application/views/admin/export/statistics_subviews/_question.php:316
+#: application/views/admin/export/statistics_subviews/_question.php:347
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:28
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:62
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:97
@@ -8636,6 +8660,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:93
 #: application/extensions/SettingsWidget/SettingsWidget.php:632
 #: application/views/admin/dataentry/content_view.php:82
+#: application/views/admin/export/statistics_subviews/_question.php:286
+#: application/views/admin/export/statistics_subviews/_question.php:317
+#: application/views/admin/export/statistics_subviews/_question.php:348
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:29
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:63
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:98
@@ -8650,6 +8677,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:94
 #: application/extensions/SettingsWidget/SettingsWidget.php:633
 #: application/views/admin/dataentry/content_view.php:83
+#: application/views/admin/export/statistics_subviews/_question.php:287
+#: application/views/admin/export/statistics_subviews/_question.php:318
+#: application/views/admin/export/statistics_subviews/_question.php:349
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:30
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:64
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:99
@@ -8664,6 +8694,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:95
 #: application/extensions/SettingsWidget/SettingsWidget.php:634
 #: application/views/admin/dataentry/content_view.php:84
+#: application/views/admin/export/statistics_subviews/_question.php:288
+#: application/views/admin/export/statistics_subviews/_question.php:319
+#: application/views/admin/export/statistics_subviews/_question.php:350
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:31
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:65
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:100
@@ -8678,6 +8711,9 @@ msgstr ""
 #: application/core/QuestionTypes/Date/RenderDate.php:96
 #: application/extensions/SettingsWidget/SettingsWidget.php:635
 #: application/views/admin/dataentry/content_view.php:85
+#: application/views/admin/export/statistics_subviews/_question.php:289
+#: application/views/admin/export/statistics_subviews/_question.php:320
+#: application/views/admin/export/statistics_subviews/_question.php:351
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:32
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:66
 #: application/views/admin/export/statistics_subviews/_submissiondate.php:101
@@ -15884,7 +15920,7 @@ msgstr ""
 #: application/views/admin/conditions/includes/form_editconditions_header.php:221
 #: application/views/admin/export/statistics_view.php:38
 #: application/views/admin/export/statistics_view.php:81
-#: application/views/admin/export/statistics_view.php:126
+#: application/views/admin/export/statistics_view.php:127
 #: application/views/admin/responses/browsemenubar_view.php:193
 msgid "Clear"
 msgstr ""
@@ -16670,51 +16706,47 @@ msgstr ""
 msgid "As defined in question settings"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:86
-#: application/views/admin/export/statistics_subviews/_question.php:192
-msgid "Number greater than"
-msgstr ""
-
 #: application/views/admin/export/statistics_subviews/_question.php:89
-#: application/views/admin/export/statistics_subviews/_question.php:195
-msgid "Number less than"
+#: application/views/admin/export/statistics_subviews/_question.php:201
+msgid "Number greater than:"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:124
-#: application/views/admin/export/statistics_subviews/_question.php:146
-#: application/views/admin/export/statistics_subviews/_question.php:164
-#: application/views/admin/export/statistics_subviews/_question.php:528
+#: application/views/admin/export/statistics_subviews/_question.php:95
+#: application/views/admin/export/statistics_subviews/_question.php:207
+msgid "Number less than:"
+msgstr ""
+
+#: application/views/admin/export/statistics_subviews/_question.php:131
+#: application/views/admin/export/statistics_subviews/_question.php:153
+#: application/views/admin/export/statistics_subviews/_question.php:171
+#: application/views/admin/export/statistics_subviews/_question.php:630
 msgid "Responses containing"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:209
-msgid "Number of files greater than"
+#: application/views/admin/export/statistics_subviews/_question.php:222
+msgid "Number of files greater than:"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:212
-msgid "Number of files less than"
+#: application/views/admin/export/statistics_subviews/_question.php:228
+msgid "Number of files less than:"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:249
-msgid "Date (YYYY-MM-DD) equals"
+#: application/views/admin/export/statistics_subviews/_question.php:267
+msgid "Date equals:"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:252
-msgid "Date is"
+#: application/views/admin/export/statistics_subviews/_question.php:298
+msgid "Date is >= :"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:255
-msgid "AND/OR Date is"
+#: application/views/admin/export/statistics_subviews/_question.php:329
+msgid "And/or Date is <= :"
 msgstr ""
 
-#: application/views/admin/export/statistics_subviews/_question.php:782
-#: application/views/admin/export/statistics_subviews/_question.php:853
+#: application/views/admin/export/statistics_subviews/_question.php:884
+#: application/views/admin/export/statistics_subviews/_question.php:955
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:27
 msgid "Label"
-msgstr ""
-
-#: application/views/admin/export/statistics_subviews/_question.php:900
-msgid "This question type can't be selected."
 msgstr ""
 
 #: application/views/admin/export/statistics_subviews/_response_filter_header.php:3
@@ -16747,12 +16779,12 @@ msgid "Expert mode"
 msgstr ""
 
 #: application/views/admin/export/statistics_user_view.php:65
-#: application/views/admin/export/statistics_view.php:164
+#: application/views/admin/export/statistics_view.php:165
 msgid "Export images"
 msgstr ""
 
 #: application/views/admin/export/statistics_user_view.php:66
-#: application/views/admin/export/statistics_view.php:165
+#: application/views/admin/export/statistics_view.php:166
 msgid "Make sure all images on this screen are loaded before clicking on the button."
 msgstr ""
 
@@ -16763,18 +16795,18 @@ msgstr ""
 
 #: application/views/admin/export/statistics_view.php:34
 #: application/views/admin/export/statistics_view.php:80
-#: application/views/admin/export/statistics_view.php:125
+#: application/views/admin/export/statistics_view.php:126
 #: application/views/admin/responses/browsemenubar_view.php:189
 #: application/views/admin/themes/templateeditor_surveylist_view.php:38
 #: application/views/admin/themes/templateeditor_surveylist_view.php:42
 msgid "View statistics"
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:143
+#: application/views/admin/export/statistics_view.php:144
 msgid "Please select filters and click on the \"View statistics\" button to generate the statistics."
 msgstr ""
 
-#: application/views/admin/export/statistics_view.php:149
+#: application/views/admin/export/statistics_view.php:150
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:39
 #: application/views/admin/responses/listResponses_view.php:278
 #: application/views/admin/super/footer.php:145
