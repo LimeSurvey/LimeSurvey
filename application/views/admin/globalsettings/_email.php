@@ -97,7 +97,7 @@
             <label class="control-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
                 <?php echo Chtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
-                <span class="hint"><?php eT("Number of seconds to wait until next email batch is sent."); ?></span>
+                <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
     </div>
