@@ -109,11 +109,11 @@ class statistics extends Survey_Common_Action
         //still no survey ID -> error
         $aData['surveyid'] = $surveyid;
 
-        if (!Permission::model()->hasSurveyPermission($oSurveyid, 'statistics', 'read')) {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
-        $oSurvey=Survey::model()->findByPk($oSurveyid); 
+        $oSurvey=Survey::model()->findByPk($surveyid); 
         if (!$oSurvey){
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
             $this->getController()->redirect($this->getController()->createUrl("admin/index"));
@@ -121,7 +121,7 @@ class statistics extends Survey_Common_Action
 
         if (!$oSurvey->isActive){
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$oSurveyid}"));
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$surveyid}"));
         }        
 
         // Set language for questions and answers to base language of this survey
