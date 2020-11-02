@@ -41,7 +41,7 @@ class SurveysGroups extends LSActiveRecord
     protected function afterFind()
     {
         parent::afterFind();
-        if($this->gsid = 1) {
+        if($this->gsid == 1) {
             $this->alwaysavailable = 1;
         }
     }

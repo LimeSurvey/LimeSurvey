@@ -39,9 +39,11 @@ class SurveysGroupsController extends Survey_Common_Action
     public function create()
     {
         $model = new SurveysGroups;
-        if (!Permission::model()->hasGlobalPermission('surveygroups','create')) {
+        if (!Permission::model()->hasGlobalPermission('surveysgroups','create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        /* Move to SurveysGroup model init ? */
+        $model->owner_id = Yii::app()->user->id;
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
@@ -53,15 +55,13 @@ class SurveysGroupsController extends Survey_Common_Action
                 $modelSettings = new SurveysGroupsettings;
                 $modelSettings->gsid = $model->gsid;
                 $modelSettings->setToInherit();
-                $modelSettings->owner_id = $model->owner_id;
 
                 if ($modelSettings->save()) {
                     $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
                 }
-                // What happen iof SurveysGroups saved but no SurveysGroupsettings ?
+                // What happen if SurveysGroups saved but no SurveysGroupsettings ?
             }
         }
-
         $aData = array(
             'model' => $model
         );
@@ -484,11 +484,11 @@ class SurveysGroupsController extends Survey_Common_Action
         );
         /* All seems OK */
         $oUserInGroups = UserInGroup::model()->findAll(
-            'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
+            'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveysgroupOwnerId',
             array(
                 ':ugid' => $ugid,
                 ':currentUserId' => Permission::model()->getUserId(), // Don't need to set to current user
-                ':surveygroupsOwnerId' => $model->getOwnerId(), // Don't need to set to owner (?) , get from surveyspermission
+                ':surveysgroupOwnerId' => $model->getOwnerId(), // Don't need to set to owner (?) , get from surveyspermission
             )
         );
         foreach($oUserInGroups as $oUserInGroup) {
