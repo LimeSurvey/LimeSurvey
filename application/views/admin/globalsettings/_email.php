@@ -96,7 +96,7 @@
         <div class="form-group">
             <label class="control-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
             <div>
-                <?php echo Chtml::textField("sendingrate", getGlobalSetting('maxemails'), array('class' => 'form-control', 'size' => '5')); ?>
+                <?php echo Chtml::textField("sendingrate", getGlobalSetting('sendingrate'), array('class' => 'form-control', 'size' => '5')); ?>
                 <span class="hint"><?php eT("Number of seconds to wait until next email batch is sent."); ?></span>
             </div>
         </div>
