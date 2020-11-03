@@ -163,11 +163,6 @@ export default {
                 errorHeader = "ERROR RESPONSES";
                 this.slide = false;
                 break;
-            case "conditions":
-                dispatchAction = "getTopBarButtonsConditions";
-                errorHeader = "ERROR CONDITIONS";
-                this.slide = false;
-                break;
             }
             
             this.loading = true;
@@ -204,7 +199,7 @@ export default {
             });
             this.closeButtonUrl =
                 globalObject.closeButtonUrl ||
-                LS.createUrl("admin/survey/sa/view/", { sid: this.sid });
+                LS.createUrl("surveyAdministration/view/", { sid: this.sid });
         }
     },
     created() {

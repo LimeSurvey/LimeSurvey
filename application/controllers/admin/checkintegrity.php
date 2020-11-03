@@ -1029,9 +1029,8 @@ class CheckIntegrity extends Survey_Common_Action
         if (!empty($result)) {
             foreach ($result as &$survey) {
                 $survey['organizerLink'] = Yii::app()->getController()->createUrl(
-                    'admin/survey',
+                    'admin/survey/sa/organize',
                     [
-                        'sa' => 'organize',
                         'surveyid' => $survey['sid'],
                     ]
                 );
@@ -1079,9 +1078,8 @@ class CheckIntegrity extends Survey_Common_Action
                 );
                 if ($info['parent_qid'] != 0) {
                     $info['questionSummaryLink'] = Yii::app()->getController()->createUrl(
-                        'admin/questions',
+                        'questionAdministration/view',
                         [
-                            'sa' => 'subquestions',
                             'surveyid' => $info['sid'],
                             'gid' => $info['gid'],
                             'qid' => $info['parent_qid']

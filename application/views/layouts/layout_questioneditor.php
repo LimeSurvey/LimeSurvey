@@ -3,16 +3,14 @@
 Yii::import('application.helpers.common_helper', true);
 Yii::import('application.helpers.globalsettings_helper', true);
 
-$aData = Yii::app()->getController()->aData;
+$aData = App()->getController()->aData;
 
 $layoutHelper = new LayoutHelper();
 
 //All paths relative from /application/views
 
 $layoutHelper->showHeaders($aData, false);
-//$this->_showHeaders($aData, false);
 
-//$this->_showadminmenu($aData);
 $layoutHelper->showadminmenu($aData);
 
 echo "<!-- BEGIN LAYOUT_INSURVEY -->";
@@ -34,8 +32,6 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
     . 'class="ls-flex-row align-items-flex-begin align-content-flex-end col-12" '
     . '>';
 
-//Rendered through /admin/super/sidemenu
-//$this->_surveysidemenu($aData);
 $layoutHelper->renderSurveySidemenu($aData);
 
 
@@ -43,49 +39,26 @@ echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
 //New general top bar (VueComponent)
-//$this->_generaltopbar($aData);
-$layoutHelper->renderGeneraltopbar($aData);
+if (!isset($aData['renderSpecificTopbar'])) {
+    $layoutHelper->renderGeneraltopbar($aData);
+}
 
 echo '<div id="pjax-content" class="col-12">';
-
-//Rendered through /admin/responses/browsemenubar_view
-//$this->_browsemenubar($aData);
-//Rendered through /admin/survey/Question/questionbar_view
-//$this->_organizequestionbar($aData);
-$layoutHelper->renderOrganizeQuestionBar($aData);
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column fill col-12"'
     . '>';
 
 //Rendered through /admin/update/_update_notification
-//$this->_updatenotification();
 $layoutHelper->updatenotification();
-
-//Rendered through /notifications/notifications
-//$this->_notifications();
 $layoutHelper->notifications();
-
-//// Here the main content views.
-//Rendered through /admin/survey/QuestionGroups/listquestiongroups
-//$this->_listquestiongroups($aData);
-$layoutHelper->renderListQuestionGroups($aData);
-
-//Rendered through /admin/survey/Question/listquestions
-//$this->_listquestions($aData);
-$layoutHelper->renderListQuestions($aData);
-
-
-//Rendered through /admin/super/sidebody
-//With content of /admin/survey/surveySummary_view
-//$this->_nsurveysummary($aData);
-$layoutHelper->renderSurveySummary($aData);
-
 
 echo $content;
 
 //$this->_generaltopbarAdditions($aData);
-$layoutHelper->renderGeneralTopbarAdditions($aData);
+if (!isset($aData['renderSpecificTopbar'])) {
+    $layoutHelper->renderGeneralTopbarAdditions($aData);
+}
 echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";

@@ -598,7 +598,7 @@ class export extends Survey_Common_Action
         //Exports all responses to a survey in special "Verified Voting" format.
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'export')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         if ($subaction != "export") {
@@ -1149,7 +1149,7 @@ class export extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $iSurveyID; // Close button
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['subaction'] = gt('queXML PDF export');
         $aData['subaction'] = gt('queXML PDF export');

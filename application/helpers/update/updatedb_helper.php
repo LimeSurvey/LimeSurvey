@@ -3160,10 +3160,28 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 427) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => '',
+                    'action'    => 'updatesurveylocalsettings',
+                    'template'  => 'editLocalSettings_main_view',
+                    'partial'   => '/admin/survey/subview/accordion/_resources_panel'
+                ),
+                "name='resources'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
         /**
          * Add missing noTablesOnMobile.css to vanilla and bootswatch configs
          */
-        if ($iOldDBVersion < 427) {
+        if ($iOldDBVersion < 428) {
             $oTransaction = $oDB->beginTransaction();
             // Update vanilla config
             $oDB->createCommand()->update(
@@ -3181,7 +3199,198 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ],
                 "template_name = 'bootswatch' AND files_css != 'inherit'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        /** THIS CAME FROM MASTER **/
+        //~ if ($iOldDBVersion < 429) {
+            //~ $oTransaction = $oDB->beginTransaction();
+            //~ extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
+            //~ $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
+            //~ $oTransaction->commit();
+        //~ }
+    
+        if ($iOldDBVersion < 429) {
+            // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
+            $oTransaction = $oDB->beginTransaction();
+            extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => '',
+                    'action'    => 'updatesurveylocalesettings',
+                    'template'  => 'editLocalSettings_main_view',
+                    'partial'   => '/admin/survey/subview/accordion/_resources_panel',
+                    'getdatamethod' => 'tabResourceManagement'
+                ),
+                "name='resources'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        
+        //todo change number when ready ...
+        if ($iOldDBVersion <430) { //REFACTORING surveyadmin to surveyAdministrationController ...
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert("{{plugins}}", [
+                'name'               => 'ComfortUpdateChecker',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]);            
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/listsurveys',
+                ),
+                "url='admin/survey/sa/listsurveys'"
+            );
+            $oDB->createCommand()->update(
+                '{{boxes}}',
+                array(
+                    'url' => 'surveyAdministration/newSurvey',
+                ),
+                "url='admin/survey/sa/newSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionGroupsAdministration/listquestiongroups',
+                ),
+                "name='listQuestionGroups'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'questionAdministration/listQuestions',
+                ),
+                "name='listQuestions'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/view',
+                ),
+                "name='overview'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/activate',
+                ),
+                "name='activateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'surveyAdministration/deactivate',
+                ),
+                "name='deactivateSurvey'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'generalTabEditSurvey',
+                ),
+                "name='generalsettings'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getTextEditData',
+                ),
+                "name='surveytexts'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'getDataSecurityEditData',
+                ),
+                "name='datasecurity'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPresentationNavigation',
+                ),
+                "name='presentation'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabTokens',
+                ),
+                "name='tokens'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabNotificationDataManagement',
+                ),
+                "name='notification'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPublicationAccess',
+                ),
+                "name='publication'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'tabPanelIntegration',
+                ),
+                "name='panelintegration'"
+            );
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'getdatamethod' => 'pluginTabSurvey',
+                ),
+                "name='plugins'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Re-add question organizer menu entry
+         */
+        if($iOldDBVersion < 431) {
+            $oTransaction = $oDB->beginTransaction();
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+                if ($aSurveymenuentry['name']=='reorder') {
+                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                        SurveymenuEntries::reorderMenu(2);
+                    }
+                    break;
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }            
+
+
+        if ($iOldDBVersion < 432) {
+            // Update 'Theme Options' Entry (Side Menu Link) in Survey Menu Entries.
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                array(
+                    'menu_link' => 'themeOptions/updateSurvey',
+                    'data'      => '{"render": {"link": { "pjaxed": true, "data": {"sid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'
+                ),
+                "name='theme_options'"
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 432), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -3189,7 +3398,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          * Correct permission for survey menu Survey Participants (tokens, not surveysettings).
          * This is a copy of DBVersion 363 so this might have been already set
          */
-        if ($iOldDBVersion < 428) {
+        if ($iOldDBVersion < 433) {
             $oTransaction = $oDB->beginTransaction();
             $aTableNames = dbGetTablesLike("tokens%");
             $oDB = Yii::app()->getDb();
@@ -3214,39 +3423,42 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         }
                     } catch (Exception $e) { rollBackToTransactionBookmark(); }
             }
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>428], "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }   
-        if ($iOldDBVersion < 429) {
-            $oTransaction = $oDB->beginTransaction();
-            extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>433], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 430) {
+        /**
+         * Implemented default value for user administration global settings
+         */
+        if ($iOldDBVersion < 434) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->insert("{{plugins}}", [
-                'name'               => 'ComfortUpdateChecker',
-                'plugin_type'        => 'core',
-                'active'             => 1,
-                'version'            => '1.0.0',
-                'load_error'         => 0,
-                'load_error_message' => null
+            $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'sendadmincreationemail',
+                "stg_value" => $defaultSetting['sendadmincreationemail'],
             ]);
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailsubject',
+                "stg_value" => $defaultSetting['admincreationemailsubject'],
+            ]);
+
+            $oDB->createCommand()->insert('{{settings_global}}', [
+                "stg_name" => 'admincreationemailtemplate',
+                "stg_value" => $defaultSetting['admincreationemailtemplate'],
+            ]);
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /* Add public boolean to surveygroup : view forl all in list */
-        if ($iOldDBVersion < 431) {
+        if ($iOldDBVersion < 435) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 431), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 435), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -4339,8 +4551,9 @@ function upgradeSurveyTables181($sMySQLCollation)
                 case 'mysql':
                 case 'mysqli':
                     // Fixes 0000-00-00 00:00:00 datetime entries
-                    $oDB->createCommand()->update($sTableName,array('startdate'=>'1980-01-01 00:00:00'),"startdate=0");
-                    $oDB->createCommand()->update($sTableName,array('datestamp'=>'1980-01-01 00:00:00'),"datestamp=0");
+                    // Startdate and datestamp field only existed in versions older that 1.90 if Datestamps were activated
+                    try { setTransactionBookmark(); $oDB->createCommand()->update($sTableName,array('startdate'=>'1980-01-01 00:00:00'),"startdate=0"); } catch(Exception $e) { rollBackToTransactionBookmark();}
+                    try { setTransactionBookmark(); $oDB->createCommand()->update($sTableName,array('datestamp'=>'1980-01-01 00:00:00'),"datestamp=0"); } catch(Exception $e) { rollBackToTransactionBookmark();}
                     alterColumn($sTableName, 'token', "string(35) COLLATE '{$sMySQLCollation}'");
                     break;
                 default: die('Unknown database driver');

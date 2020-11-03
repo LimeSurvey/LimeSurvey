@@ -240,6 +240,11 @@ class QuestionTheme extends LSActiveRecord
         libxml_disable_entity_loader($bOldEntityLoaderState);
     }
 
+    /**
+     * Returns visibility button.
+     *
+     * @return string|array
+     */
     public function getVisibilityButton()
     {
         // don't show any buttons if user doesn't have update permission
@@ -253,7 +258,7 @@ class QuestionTheme extends LSActiveRecord
                 'visible' => $bVisible
             ]
         ];
-        $sButtons = App()->getController()->renderPartial('/admin/themeoptions/partials/question_themes/theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
+        $sButtons = App()->getController()->renderPartial('./theme_buttons', ['id' => $this->id, 'buttons' => $aButtons], true);
         return $sButtons;
     }
 
@@ -262,7 +267,7 @@ class QuestionTheme extends LSActiveRecord
      */
     public function getManifestButtons()
     {
-        $sLoadLink = CHtml::form(array("/admin/themeoptions/sa/importmanifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
+        $sLoadLink = CHtml::form(array("themeOptions/importManifest/"), 'post', array('id' => 'forminstallquestiontheme', 'name' => 'forminstallquestiontheme')) .
             "<input type='hidden' name='templatefolder' value='" . $this->xml_path . "'>
             <input type='hidden' name='theme' value='questiontheme'>
             <button id='template_options_link_" . $this->name . "'class='btn btn-default btn-block'>
@@ -294,7 +299,7 @@ class QuestionTheme extends LSActiveRecord
             $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 App()->setFlashMessage($aConvertSuccess['message'], 'error');
-                App()->getController()->redirect(array("admin/themeoptions#questionthemes"));
+                App()->getController()->redirect(array("themeOptions/index#questionthemes"));
             }
         }
 
@@ -358,13 +363,15 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Returns an Array of all questionthemes and their metadata
      *
+     * @param bool $core
+     * @param bool $custom
+     * @param bool $user
      * @return array
-     * @throws Exception
      */
-    public function getAllQuestionMetaData()
+    public function getAllQuestionMetaData($core = true, $custom = true, $user = true)
     {
         $questionsMetaData = $aBrokenQuestionThemes = [];
-        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths();
+        $questionDirectoriesAndPaths = $this->getAllQuestionXMLPaths($core, $custom, $user);
         if (isset($questionDirectoriesAndPaths) && !empty($questionDirectoriesAndPaths)) {
             foreach ($questionDirectoriesAndPaths as $directory => $questionConfigFilePaths) {
                 foreach ($questionConfigFilePaths as $questionConfigFilePath) {

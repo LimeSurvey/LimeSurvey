@@ -133,34 +133,37 @@ function modlabelsetanswers($lid)
     if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
 
         // First delete all labels without corresponding code
-        $aLabels = Label::model()->findAllByAttributes(['lid'=>$lid]);
-        foreach ($aLabels as $aLabel) {
-//            if {}
-        }
+        $oLabelSetObject = LabelSet::model()->findByPk($lid);
+        $oLabelSetObject->deleteLabelsForLabelSet();
+
         foreach ($data['codelist'] as $index=>$codeid) {
 
-            $codeObj = $data[$codeid];
+            $oLabelData = $data[$codeid];
 
+            $actualcode = $oLabelData['code'];
+            $assessmentvalue = (int) ($oLabelData['assessmentvalue']);
+            $sortorder = $index;
 
-            $actualcode = $codeObj['code'];
+            $oLabel = Label::model()->findByPk($lid);
+            $oLabel = $oLabel == null ? (new Label()) : $oLabel;
+            $oLabel->lid = $lid;
+            $oLabel->code = $actualcode;
+            $oLabel->sortorder = $sortorder;
+            $oLabel->assessment_value = $assessmentvalue;
 
-            $assessmentvalue = (int) ($codeObj['assessmentvalue']);
-            foreach ($data['langs'] as $lang) {
+            if (!$oLabel->validate()) {
+                $aErrors[] = $oLabel->getErrors();
+            } else {
+                $oLabel->save();
+                foreach ($data['langs'] as $lang) {
 
-                $strTemp = 'text_'.$lang;
-                $title = $codeObj[$strTemp];
-                $sortorder = $index;
-
-                $oLabel = new Label();
-                $oLabel->lid = $lid;
-                $oLabel->code = $actualcode;
-                $oLabel->sortorder = $sortorder;
-                $oLabel->assessment_value = $assessmentvalue;
-                
-                if (!$oLabel->validate()) {
-                    $aErrors[] = $oLabel->getErrors();
-                } else {
-                    $oLabel->save();
+                    $strTemp = 'text_'.$lang;
+                    if (!isset($oLabelData[$strTemp])) {
+                        // If title is missing for a language, use the first one
+                        $strTemp = 'text_'.$data['langs'][0];
+                    }
+                    $title = $oLabelData[$strTemp];
+                    
                     $oLabelI10N = new LabelL10n();
                     $oLabelI10N->label_id = $oLabel->id;
                     $oLabelI10N->title = $title;

@@ -7,10 +7,11 @@ export default {
     loadQuestionGroup: (context) => {
         return new Promise((resolve, reject) => {
             context.commit('setCurrentQuestionGroup', {});
-            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'loadQuestionGroup' : '/loadQuestionGroup';
             ajax.methods.$_get(
-                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
-                {'iQuestionGroupId' : window.QuestionGroupEditData.gid }
+                LS.createUrl('questionGroupsAdministration/loadQuestionGroup', {
+                    'surveyid' : window.QuestionGroupEditData.surveyid,
+                    'iQuestionGroupId' : window.QuestionGroupEditData.gid
+                })
             ).then((result) => {
                 context.commit('setLanguages', result.data.languages);
                 context.commit('setActiveLanguage', keys(result.data.languages)[0]);
@@ -31,10 +32,11 @@ export default {
         LOG.log('Reloading questionGroup with gid -> ', gid || context.state.currentQuestionGroup.gid);
         return new Promise((resolve, reject) => {
             context.commit('setCurrentQuestionGroup', {});
-            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'loadQuestionGroup' : '/loadQuestionGroup';
             ajax.methods.$_get(
-                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
-                {'iQuestionGroupId' : gid || context.state.currentQuestionGroup.gid }
+                LS.createUrl('questionGroupsAdministration/loadQuestionGroup', {
+                    'surveyid' : window.QuestionGroupEditData.surveyid,
+                    'iQuestionGroupId' : gid || context.state.currentQuestionGroup.gid
+                })
             ).then((result) => {
                 context.commit('setLanguages', result.data.languages);
                 context.commit('setActiveLanguage', keys(result.data.languages)[0]);
@@ -53,12 +55,10 @@ export default {
     },
     getQuestionsForGroup: (context) => {
         return new Promise((resolve, reject) => {
-            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionsForGroup' : '/getQuestionsForGroup';
             ajax.methods.$_get(
-                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
-                {
-                    'iQuestionGroupId' : window.QuestionGroupEditData.gid,
-                }
+                LS.createUrl('questionGroupsAdministration/getQuestionsForGroup', {
+                    'iQuestionGroupId' : window.QuestionGroupEditData.gid
+                })
             ).then((result) => {
                 context.commit('setQuestionList', result.data.questions);
                 resolve(true);
@@ -83,9 +83,12 @@ export default {
         return new Promise((resolve, reject) => {
             context.commit('setInTransfer', true);
             LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveQuestionGroupData' : '/saveQuestionGroupData';
-            ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+subAction, transferObject)
-                .then(
+            ajax.methods.$_post(
+                LS.createUrl('questionGroupsAdministration/saveQuestionGroupData', {
+                    'sid' : window.QuestionGroupEditData.surveyid
+                }),
+                transferObject
+            ).then(
                     (result) => {
                         LOG.log("Result data -> ", result.data);
                         LOG.log("Result data questiongroupData-> ", result.data.questiongroupData);

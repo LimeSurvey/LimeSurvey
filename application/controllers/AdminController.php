@@ -42,7 +42,7 @@ class AdminController extends LSYii_Controller
             $this->user_id = null;
             Yii::app()->session->destroy();
         }
-        
+
         if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
         if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
@@ -64,6 +64,7 @@ class AdminController extends LSYii_Controller
      * Shows a nice error message to the world
      *
      * todo REFACTORING is this still in use? can't find any call in an action or a view ...
+     * todo its used multiple times getController->error, all calls should be replaceable by setFlashMessage
      *
      * @access public
      * @param string $message The error message
@@ -148,7 +149,7 @@ class AdminController extends LSYii_Controller
 
 
         if ($action != "databaseupdate" && $action != "db") {
-            
+
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
@@ -330,7 +331,7 @@ class AdminController extends LSYii_Controller
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
         'homepagesettings' => 'homepagesettings',
-        'themeoptions'     => 'themeoptions',
+        //'themeoptions'     => 'themeoptions',
         'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
@@ -339,20 +340,20 @@ class AdminController extends LSYii_Controller
         'pluginmanager'    => 'PluginManagerController',
         'printablesurvey'  => 'printablesurvey',
         'roles'            => 'PermissiontemplatesController',
-        'questiongroups'   => 'questiongroups',
-        'questions'        => 'questions',
-        'questioneditor'   => 'questionedit',
+//        'questiongroups'   => 'questiongroups',  refactored to QuestionGroupsAdministration
+//        'questions'        => 'questions',
+//        'questioneditor'   => 'questionedit',
         'questionthemes'   => 'questionthemes',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
         'responses'        => 'responses',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
-        'survey'           => 'surveyadmin',
+      //  'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
-        'usermanagement'   => 'UserManagement',
-        'usergroups'       => 'usergroups',
+//        'usermanagement'   => 'UserManagement',  refactored to UserManagementController
+//        'usergroups'       => 'usergroups',      refactored to UserGroupController
         'themes'           => 'themes',
         'tokens'           => 'tokens',
         'translate'        => 'translate',
@@ -364,7 +365,6 @@ class AdminController extends LSYii_Controller
         'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
         'extensionupdater' => 'ExtensionUpdaterController',
-        'filemanager'      => 'LimeSurveyFileManager'
         );
     }
 

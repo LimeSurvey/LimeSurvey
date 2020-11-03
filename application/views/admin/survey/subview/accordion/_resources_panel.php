@@ -1,13 +1,14 @@
 <?php
 /**
-* ressources panel tab
-*/
+ * Ressources panel tab
+ **/
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyResources');
 
 
-App()->getClientScript()->registerScript("ressources-panel-variables", "
+App()->getClientScript()->registerScript(
+  "ressources-panel-variables", "
 var jsonUrl = '';
 var sAction = '';
 var sParameter = '';
@@ -16,7 +17,9 @@ var sNoParametersDefined = '';
 var sAdminEmailAddressNeeded = '".gT("If you are using token functions or notifications emails you need to set an administrator email address.",'js')."'
 var sURLParameters = '';
 var sAddParam = '';
-", LSYii_ClientScript::POS_BEGIN);
+",
+LSYii_ClientScript::POS_BEGIN
+);
 
 //The ressources panel is a little special thus the unorganized html
 // @TODO Fix rendering!
@@ -29,14 +32,16 @@ var sAddParam = '';
       <!-- Export -->
       <div class="col-sm-3">
         <?php 
-            echo TbHtml::dropDownList('fileTypeShow', 'fileTypeShow',
+            echo TbHtml::dropDownList(
+              'fileTypeShow', 
+              'fileTypeShow',
                 array(
-                    'files' =>  gT('Files','unescaped'),
-                    'flash' =>  gT('Flash','unescaped'),
-                    'images' =>  gT('Images','unescaped')),
+                    'files' =>  gT('Files', 'unescaped'),
+                    'flash' =>  gT('Flash', 'unescaped'),
+                    'images' =>  gT('Images', 'unescaped')),
                 array(
                     'class'=>'btn btn-default',
-                    "data-href" => Yii::app()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK( App()->language)
+                    "data-href" => App()->request->getBaseUrl()."/third_party/kcfinder/browse.php?language=".sTranslateLangCode2CK(App()->language)
                 )
             ); 
         ?>
@@ -56,7 +61,7 @@ var sAddParam = '';
     </div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <iframe id="browseiframe" src="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
+            <iframe id="browseiframe" src="<?php echo App()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
         </div>
     </div>
   </div>

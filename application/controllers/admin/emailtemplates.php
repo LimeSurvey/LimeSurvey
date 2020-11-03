@@ -22,114 +22,12 @@
 
 class emailtemplates extends Survey_Common_Action
 {
-
-    function index($iSurveyId) {
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        App()->getClientScript()->registerPackage('ace');
-        App()->getClientScript()->registerPackage('emailtemplates');
-        $aData = [];
-        
-        $aData['surveyid'] = $oSurvey->sid;
-        $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['subaction'] = gT("Edit email templates");
-
-        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update')) {
-            unset($aData['surveybar']['savebutton']);
-            unset($aData['surveybar']['saveandclosebutton']);
-        }
-        $aData['topBar']['closeButtonUrl'] = $this->getController()->createUrl("admin/survey/sa/view/", ['surveyid' => $iSurveyId]); // Close button
-        $aData['topBar']['showSaveButton'] = true;
-
-
-        // EmailTemplateData
-        $aData['jsData'] = [
-            'surveyid' => $iSurveyId,
-            'getFileUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => 'getFileList']),
-            'surveyFolder' => 'upload' . DIRECTORY_SEPARATOR . 'surveys' . DIRECTORY_SEPARATOR . $iSurveyId,
-            'validatorUrl' => $this->getController()->createUrl(
-                'admin/validate', 
-                ['sa'=>'email','sid'=>$iSurveyId]
-            ),
-            'i10N' => [
-                'Subject' => gT('Subject'),
-                'Message' => gT('Message'),
-                'Validate Expressions' => gT('Validate ExpressionScript'),
-                'Reset to default' => gT('Reset to default'),
-                'Add attachment to template' => gT('Add attachment to template'),
-               ]
-        ];
-        $this->_renderWrappedTemplate('emailtemplates', 'emailtemplatescomponent', $aData);
-    }
-
-    public function getEmailTemplateData($iSurveyId) {
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
-        $aSurveyLanguages = $oSurvey->getAllLanguages();
-        
-        $aLanguages = [];
-        $aTemplateTypeContents = [];
-        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, &$aTemplateTypeContents, $aAllLanguages, $oSurvey) {
-            $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
-            $aTemplateTypeContents[$lngString] = $oSurvey->languagesettings[$lngString];
-            $aTemplateTypeContents[$lngString]['attachments'] = json_decode($aTemplateTypeContents[$lngString]['attachments']);
-        });
-        
-        $aTemplateTypes = $this->getTabTypeArray($iSurveyId);
-        $aPermissions = [
-            "read" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveylocale', 'read'),
-            "update" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveylocale', 'update'),
-            "editorpreset" => Yii::app()->session['htmleditormode'],
-        ];
-        
-        $this->renderJSON([
-            'useHtml' => ($oSurvey->htmlemail == 'Y'),
-            'templateTypes' => $aTemplateTypes,
-            'templateTypeContents' => $aTemplateTypeContents,
-            'permissions' => $aPermissions,
-            'languages' => $aLanguages,
-        ]);
-        Yii::app()->close();
-    }
-
-    public function saveEmailTemplateData($iSurveyId) {
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
-        $aSurveyLanguages = $oSurvey->getAllLanguages();
-        
-        $aTemplateTypeContents = Yii::app()->request->getPost('changes', []);
-
-        if(!empty($aTemplateTypeContents)) {
-            $success = true;
-            $detailedSuccess = [];
-            foreach($aSurveyLanguages as $language) {
-                $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(['surveyls_survey_id'=>$iSurveyId, 'surveyls_language'=> $language]);
-                $oSurveyLanguageSetting->setAttributes($aTemplateTypeContents[$language]);
-                $oSurveyLanguageSetting->attachments = json_encode($aTemplateTypeContents[$language]['attachments']);
-                $result = $oSurveyLanguageSetting->save();
-                $success = $success && $result;
-                $detailedSuccess[$language] = $result;
-            }
-        }
-        
-        $this->renderJSON([
-            'success' => $success,
-            'detailedSuccess' => $detailedSuccess,
-            'message' => gT('Email templates successfully saved.'),
-            'reload' => true
-        ]);
-        Yii::app()->close();
-    }
-
-
     /**
      * Load edit email template screen.
      * @param mixed $iSurveyId
      * @return
      */
-    function view($iSurveyId)
+    function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -177,18 +75,20 @@ class emailtemplates extends Survey_Common_Action
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
+            $aData['topBar']['showSaveButton'] = true;
             if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update')) {
                 unset($aData['surveybar']['savebutton']);
                 unset($aData['surveybar']['saveandclosebutton']);
+                $aData['topBar']['showSaveButton'] = false;
             }
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId; // Close button
+            $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyId; // Close button
 
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
         
-        App()->getClientScript()->registerPackage('emailtemplatesold');
+        App()->getClientScript()->registerPackage('emailtemplates');
         App()->getClientScript()->registerPackage('expressionscript');
         
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
@@ -260,7 +160,7 @@ class emailtemplates extends Survey_Common_Action
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
             if (Yii::app()->request->getPost('close-after-save') == 'true') {
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyId));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyId));
             }
 
             $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
@@ -279,7 +179,7 @@ class emailtemplates extends Survey_Common_Action
         ];
     }
 
-    public function getTabTypeArray($iSurveyId, $language=null){
+    public static function getTabTypeArray($iSurveyId, $language=null){
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $language = $language==null ? $oSurvey->language : $language; 
@@ -373,12 +273,6 @@ class emailtemplates extends Survey_Common_Action
             )
         );
         return $array;
-    }
-
-    public function getDataUri($image, $mime = '')
-    {
-        return 'data:'
-        .(function_exists('mime_content_type') ? mime_content_type($image) : $mime).';base64,'.base64_encode(file_get_contents($image));
     }
 
     public function getTemplateOfType($type, $language=null, $survey=0){

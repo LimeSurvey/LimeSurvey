@@ -62,7 +62,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array( 'surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
@@ -148,7 +148,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             // Go to edit question page.
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl('questionEditor/view', array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
+            $url = $urlMan->createUrl('questionAdministration/view', array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid));
             $actualWebDriver = self::$webDriver->get($url);
 
             $this->assertNotNull($actualWebDriver, 'The WebDriver is null');
@@ -176,7 +176,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
@@ -228,7 +228,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $urlMan = \Yii::app()->urlManager;
             $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
             $url = $urlMan->createUrl(
-                'questionEditor/view',
+                'questionAdministration/view',
                 array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid, 'qid'=>$qid)
             );
             $web = self::$webDriver;
@@ -244,7 +244,9 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                     )
                 );
                 $questionEditorButton->click();
-
+                
+                sleep(10);
+                
                 // Check if General Settings Container is there
                 $web->wait(10)->until(WebDriverExpectedCondition::visibilityOfElementLocated( WebDriverBy::id('uncollapsed-general-settings') ));
                 $generalSettingsContainer = $web->findElement(
@@ -265,7 +267,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findByCss('#question_template option[value=bootstrap_buttons]');
             $option->click();
             
-            sleep(3);
+            sleep(5);
 
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -277,7 +279,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             $option = $web->findElement(WebDriverBy::cssSelector('#question_template option[value=core]'));
             $option->click();
  
-            sleep(3);
+            sleep(5);
             
             // Save Question
             $saveButton = $web->findElement(WebDriverBy::cssSelector('#save-button'));
@@ -291,7 +293,7 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
             );
             $this->assertNotNull($scopeApplyBaseStyleContainer);
 
-            sleep(3);
+            sleep(5);
 
             // Check if Display theme options link exists
             try {

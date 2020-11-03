@@ -8,43 +8,42 @@ return [
     // --------------------------------------------------
 
     // NB the import_id is needed only for the first item OR if you need to change the survey you want to work with
-    ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287']],
+    ['surveySummary', ['route'=>'surveyAdministration/view/surveyid/{SID}','import_id'=>'454287', 'noAdminInFront' => true]],
 
     // Survey main menu
-    ['surveyGeneralSettings', ['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}']],
-    ['surveyTexts', ['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}']],
-    ['surveyTemplateOptionsUpdate', ['route'=>'themeoptions/sa/updatesurvey/surveyid/{SID}/gsid/1']],
-    ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
+    ['surveyGeneralSettings', ['route'=>'surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyTexts', ['route'=>'surveyAdministration/rendersidemenulink/subaction/surveytexts/surveyid/{SID}', 'noAdminInFront' => true ]],
+    ['surveyTemplateOptionsUpdate', ['route'=>'themeOptions/updateSurvey/sid/{SID}/gsid/1', 'noAdminInFront' => true]],
+    ['surveyPresentationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/presentation/surveyid/{SID}', 'noAdminInFront' => true]],
 
-    ['surveyResources', ['route'=>'filemanager/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
-    ['surveyParticipantTokenOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}']],
+    ['surveyParticipantTokenOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/tokens/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
     ['surveyAssessments', ['route'=>'assessments/sa/index/surveyid/{SID}']],
-    ['surveyNotificationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}']],
-    ['surveyPublicationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/publication/surveyid/{SID}']],
+    ['surveyNotificationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/notification/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyPublicationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/publication/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
-    ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
-    ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
-    ['surveyListQuestions', ['route'=>'survey/sa/listquestions/surveyid/{SID}']],
+    ['surveyPanelIntegration', ['route'=>'surveyAdministration/rendersidemenulink/subaction/panelintegration/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyPlugins', ['route'=>'surveyAdministration/rendersidemenulink/subaction/plugins/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['surveyListQuestions', ['route'=>'questionAdministration/listquestions/surveyid/{SID}', 'noAdminInFront' => true]],
 
     // going deeper -------------------------------------
     // --------------------------------------------------
 
     // adding elements to survey
-    ['addQuestion', ['route'=>'questions/sa/newquestion/surveyid/{SID}']],
-    ['addQuestionGroup', ['route'=>'questiongroups/sa/add/surveyid/{SID}']],
-    ['importQuestionGroup', ['route'=>'questiongroups/sa/importview/surveyid/{SID}']],
+    ['addQuestion', ['route'=>'questionAdministration/view/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['addQuestionGroup', ['route'=>'questionGroupsAdministration/add/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['importQuestionGroup', ['route'=>'questionGroupsAdministration/importview/surveyid/{SID}', 'noAdminInFront' => true]],
     ['addQuota', ['route'=>'quotas/sa/newquota/surveyid/{SID}']],
 
     ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
 
     // open surveysummary again with new survey (triggers some needed session variables duh)
-    ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'496242']],
+    ['surveySummary', ['route'=>'surveyAdministration/view/surveyid/{SID}','import_id'=>'496242', 'noAdminInFront' => true]],
     ['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
 
     // Below are views need an activated survey
-    ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true]],
+    ['surveySummary', ['route'=>'surveyAdministration/view/surveyid/{SID}','import_id'=>'454287', 'activate'=>true, 'noAdminInFront' => true]],
     ['dataEntryView', ['route'=>'dataentry/sa/view/surveyid/{SID}']],
     ['statisticsIndex', ['route'=>'statistics/sa/index/surveyid/{SID}']],
     ['exportResults', ['route'=>'export/sa/exportresults/surveyid/{SID}']],

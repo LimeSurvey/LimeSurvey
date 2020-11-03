@@ -141,6 +141,7 @@
                             value="{{ lrow.code }}"
                             {% if ansrow.sActualAnswer1 == lrow.code %} selected="selected"{% endif %}>
                             {{  flatString(processString(lrow.title,1),1) }}
+
                         </option>
                     {% endfor %}
 

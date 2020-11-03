@@ -46,7 +46,7 @@ class surveypermission extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
 
         $aBaseSurveyPermissions = Permission::model()->getSurveyBasePermissions();
         $userList = getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
@@ -224,7 +224,7 @@ class surveypermission extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['subaction'] = gT("Survey permissions");
 
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
 
         $surveysecurity .= '</div></div></div>';
         $aViewUrls['output'] = $surveysecurity;
@@ -528,7 +528,7 @@ class surveypermission extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$surveyid; // Close button
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
@@ -589,7 +589,7 @@ class surveypermission extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
+        //$aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$surveyid;
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }

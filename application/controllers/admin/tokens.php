@@ -44,7 +44,7 @@ class tokens extends Survey_Common_Action
             && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')
         ) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         Yii::app()->loadHelper("surveytranslator");
@@ -424,11 +424,8 @@ class tokens extends Survey_Common_Action
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
                     if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                        if ($sCoreTokenField == 'language' && empty($value)) {
+                        if ($sCoreTokenField == 'language' and empty($value)){
                             continue;
-                        }
-                        if (($sCoreTokenField == 'sent' || $sCoreTokenField == 'remindersent' || $sCoreTokenField == 'completed') && empty($value)) {
-                            $value='N';
                         }
                         $aData[$sCoreTokenField] = $value;
                     }
@@ -621,7 +618,7 @@ class tokens extends Survey_Common_Action
         // Check permission
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             App()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         if (!$survey->hasTokensTable) {
@@ -753,7 +750,7 @@ class tokens extends Survey_Common_Action
                 return false;
             } else {
                 Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-                $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+                $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
             }
         }
 
@@ -790,10 +787,8 @@ class tokens extends Survey_Common_Action
             }
 
             // completed
-            if (trim($request->getPost('completed')) == 'N' || trim($request->getPost('completed')) == '') {
+            if (trim($request->getPost('completed')) == 'N') {
                 $_POST['completed'] = 'N';
-            } elseif (trim($request->getPost('completed')) == 'Y') {
-                $_POST['completed'] = 'Y';
             } else {
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
@@ -879,7 +874,7 @@ class tokens extends Survey_Common_Action
         /* Check permissions */
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -915,7 +910,7 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         if (!$survey->hasTokensTable) {
@@ -1073,7 +1068,7 @@ class tokens extends Survey_Common_Action
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         $bTokenExists = $oSurvey->hasTokensTable;
@@ -1156,7 +1151,7 @@ class tokens extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
@@ -1195,11 +1190,11 @@ class tokens extends Survey_Common_Action
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$oSurvey->hasTokensTable) {
             Yii::app()->session['flashmessage'] = gT("No survey participants table.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         $aData = array();
@@ -1256,7 +1251,7 @@ class tokens extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
@@ -1361,7 +1356,7 @@ class tokens extends Survey_Common_Action
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         if (!$survey->hasTokensTable) {
@@ -1598,7 +1593,7 @@ class tokens extends Survey_Common_Action
         $iSurveyId = (int) $iSurveyId;
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'export')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -1696,7 +1691,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -1941,7 +1936,7 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -2249,7 +2244,7 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -2308,7 +2303,7 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -2350,7 +2345,7 @@ class tokens extends Survey_Common_Action
             'message' => '<br />'.gT("The participant table has now been removed and access codes are no longer required to access this survey.")."<br /> ".gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
             . sprintf('("%s")<br /><br />', $newtableDisplay)
             . "<input type='submit' class='btn btn-default' value='"
-            . gT("Main Admin Screen")."' onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyId)."', '_top')\" />"
+            . gT("Main Admin Screen")."' onclick=\"window.open('".Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$iSurveyId)."', '_top')\" />"
             )), $aData);
 
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
@@ -2367,7 +2362,7 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
         if (!$survey->hasTokensTable) {
             // If no tokens table exists
@@ -2499,13 +2494,13 @@ class tokens extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             Yii::app()->session['flashmessage'] = gT("Survey participants have not been initialised for this survey.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         //The survey participants table already exist ?
         if ($survey->hasTokensTable) {
             Yii::app()->session['flashmessage'] = gT("Participant table already exist for this survey.");
-            $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
         }
 
         // The user have rigth to create token, then don't test right after

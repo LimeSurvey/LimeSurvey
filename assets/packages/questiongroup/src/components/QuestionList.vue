@@ -25,10 +25,7 @@ export default {
             ];
         },
         sortedQuestionList(){
-            let sorted = sortBy(this.$store.state.questionList, question => {
-                let intValue = parseInt(question[this.sortBy]);
-                return isNaN(intValue) ? question[this.sortBy] : intValue;
-            });
+            let sorted = sortBy(this.$store.state.questionList, question=>question[this.sortBy]);
             if(this.sortReverse) {
                 reverse(sorted);
             }

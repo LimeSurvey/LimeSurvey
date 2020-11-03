@@ -754,7 +754,8 @@
         }
 
         /**
-        * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
+        * Set the SurveyId - really checks whether the survey you're about
+         * to work with is new, and if so, clears the LEM cache
         * @param integer|null $sid
         */
         public static function SetSurveyId($sid=NULL)
@@ -6185,7 +6186,7 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                $editlink = Yii::app()->getController()->createUrl('questionGroupsAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                 $debug_message .= '<br />[G#' . $LEM->currentGroupSeq . ']'
                 . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                 . "[<a href='$editlink'>"
@@ -6940,7 +6941,7 @@
             /////////////////////////////////////////////////////////
             if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
             {
-                $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
+                $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $gid . '/qid/' . $qid);
                 $debug_qmessage .= '--[Q#' . $qInfo['qseq'] . ']'
                 . "[<a href='$editlink'>"
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
@@ -9809,7 +9810,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
-                    $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
+                    $editlink = Yii::app()->getController()->createUrl('questionGroupsAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                     $errText = "";
                     if($bGroupHaveError)
                     {
@@ -10193,12 +10194,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
                 if ($varNameErrorMsg == '')
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+                    $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
                     $questionRow .= $rootVarName;
                 }
                 else
                 {
-                    $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
+                    $editlink = App()->getController()->createUrl('questionAdministration/view/surveyid/' . $LEM->sid . '/gid/' . $varNameError['gid'] . '/qid/' . $varNameError['qid']);
                     $questionRow .= "<span class='highlighterror' title='" . $varNameError['message'] . "' "
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";

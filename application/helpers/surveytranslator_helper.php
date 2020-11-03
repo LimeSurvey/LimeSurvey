@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
     *
        */
 
+//@todo this should be a table with values from getLanguageData, then using ONLY the model to get values/arrays from it
 
     /*
     * Internationalization and Localization utilities
@@ -62,6 +63,11 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
     }
 }
 
+/**
+ * @param boolean $bOrderByNative
+ * @param string $sLanguageCode
+ * @return mixed
+ */
 function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 {
 
@@ -152,8 +158,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['bg']['momentjs'] = 'bg';
 
     // Catalan
-    $supportedLanguages['ca-valencia']['description'] = gT('Valencian');
-    $supportedLanguages['ca-valencia']['nativedescription'] = 'Valenciano';
+    $supportedLanguages['ca-valencia']['description'] = gT('Catalan (Valencian)');
+    $supportedLanguages['ca-valencia']['nativedescription'] = 'Catal&#224; (Valenci&#224;)';
     $supportedLanguages['ca-valencia']['rtl'] = false;
     $supportedLanguages['ca-valencia']['dateformat'] = 1;
     $supportedLanguages['ca-valencia']['radixpoint'] = 1;
@@ -430,14 +436,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kk']['dateformat'] = 1;
     $supportedLanguages['kk']['radixpoint'] = 1;
     $supportedLanguages['kk']['momentjs'] = 'kk';
-
-     // Kannada
-     $supportedLanguages['kn']['description'] = gT('Kannada');
-     $supportedLanguages['kn']['nativedescription'] = '&#3221;&#3240;&#3277;&#3240;&#3233;';
-     $supportedLanguages['kn']['rtl'] = false;
-     $supportedLanguages['kn']['dateformat'] = 2;
-     $supportedLanguages['kn']['radixpoint'] = 0;
-     $supportedLanguages['kn']['momentjs'] = 'kn';
 
     // Kinyarwanda
     $supportedLanguages['rw']['description'] = gT('Kinyarwanda');
@@ -834,14 +832,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['tl']['dateformat'] = 1;
     $supportedLanguages['tl']['radixpoint'] = 1;
     $supportedLanguages['tl']['momentjs'] = 'tl-ph';
-
-    // Telugu
-    $supportedLanguages['te']['description'] = gT('Telugu');
-    $supportedLanguages['te']['nativedescription'] = '&#3108;&#3142;&#3122;&#3137;&#3095;&#3137;';
-    $supportedLanguages['te']['rtl'] = false;
-    $supportedLanguages['te']['dateformat'] = 2;
-    $supportedLanguages['te']['radixpoint'] = 0;
-    $supportedLanguages['te']['momentjs'] = 'te';
     
     // Tajik
     $supportedLanguages['tg']['description'] = gT('Tajik');
@@ -949,6 +939,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
      *  radix point info about a specific format.
      *
      *  @param int $format Format ID/Number [optional]
+     *
+     * @return integer|array
      */
 function getRadixPointData($format = -1)
 {
@@ -958,6 +950,7 @@ function getRadixPointData($format = -1)
     );
 
     // hack for fact that null sometimes sent to this function
+    //todo then change the hack ...
     if (is_null($format)) {
         $format = 0;
     }
@@ -1116,7 +1109,12 @@ function canShowDatePicker($dateformatdetails, $dateformats = null)
     return $showpicker;
 }
 
-
+/**
+ *
+ *
+ * @param string $languagetosearch this is the shortname for the language (e.g. 'en' see array in getLanguageData())
+ * @return int|string
+ */
 function getLanguageCodefromLanguage($languagetosearch)
 {
     $detaillanguages = getLanguageData(false, Yii::app()->session['adminlang']);
@@ -1134,10 +1132,10 @@ function getLanguageCodefromLanguage($languagetosearch)
 /**
 * Returns a language name from the code
 * 
-* @param string $codetosearch
+* @param string  $codetosearch
 * @param boolean $withnative
-* @param string $sTranslationLanguage
-* @returns string|array
+* @param string  $sTranslationLanguage
+* @return string|array
 * @todo Should not give back different data types
 */
 function getLanguageNameFromCode($codetosearch, $withnative = true, $sTranslationLanguage = null)

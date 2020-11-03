@@ -252,7 +252,7 @@ var onClickListAction =  function () {
  *
  * 2. Defining value Type
  * By default, bootstrap switch use boolean values {true,false} for its states.
- * In the PHP code (like in controller questions::setMultipleAttributes()), we want to keep the code as dry as possible.
+ * In the PHP code (like in controller questionEditor::changeMultipleQuestionAttributes()), we want to keep the code as dry as possible.
  * To avoid to create a single method for each action using bootstrap-switch, just to change the boolean value to something else ({1,0} or {Y,N}, etc), we perform it here.
  * e.g: a bootstrap-switch with the class bootstrap-switch-integer will have its value converted to integer.
  *
@@ -313,9 +313,9 @@ function getDefaultDateTimePickerSettings() {
 
     //Switch between path and get based routing
     if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
-        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+        var url = "/index.php?r=surveyAdministration/datetimesettings";
     } else {
-        var url = "/index.php/admin/survey/sa/datetimesettings";
+        var url = "/index.php/surveyAdministration/datetimesettings";
     }
     var mydata = [];
     $.ajaxSetup({

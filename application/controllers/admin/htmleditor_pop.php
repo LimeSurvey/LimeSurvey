@@ -20,7 +20,7 @@ class htmleditor_pop extends Survey_Common_Action
 
     public function index()
     {
-        Yii::app()->loadHelper('admin/htmleditor');
+        Yii::app()->loadHelper('admin.htmleditor');
         $aData = array(
             'ckLanguage' => sTranslateLangCode2CK(Yii::app()->session['adminlang']),
             'sFieldName' => sanitize_xss_string(App()->request->getQuery('name')), // The fieldname : an input name

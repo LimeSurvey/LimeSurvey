@@ -4,7 +4,7 @@ export default {
     getTopBarButtonsQuestion: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('questionEditor/getQuestionTopbar', {
+            ajax.methods.$_get(LS.createUrl('questionAdministration/getQuestionTopbar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 gid: context.state.gid || LS.reparsedParameters().combined.gid || 0,
                 qid: context.state.qid || LS.reparsedParameters().combined.qid || 0
@@ -26,7 +26,7 @@ export default {
     getTopBarButtonsGroup: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', {
+            ajax.methods.$_get(LS.createUrl('questionGroupsAdministration/getQuestionGroupTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 gid: context.state.gid || LS.reparsedParameters().combined.gid || 0
             }))
@@ -47,7 +47,7 @@ export default {
     getTopBarButtonsSurvey: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getSurveyTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 saveButton: context.state.showSaveButton
             }))
@@ -68,7 +68,7 @@ export default {
     getTopBarButtonsTokens: (context) => {
         context.commit('clean');
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getTokenTopBar', {
                 sid: context.state.sid || LS.reparsedParameters().combined.sid,
                 saveButton: context.state.showSaveButton
             }))
@@ -107,35 +107,13 @@ export default {
         });
     },
 
-    getTopBarButtonsConditions: (context) => {
-        context.commit('clean');
-        return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/conditions/sa/getConditionsTopBarData', {
-                sid: context.state.sid || LS.reparsedParameters().combined.sid,
-                gid: context.state.gid || LS.reparsedParameters().combined.gid || 0,
-                qid: context.state.qid || LS.reparsedParameters().combined.qid || 0
-            }))
-                .then((data) => {
-                    context.commit('clean');
-                    context.commit('setTopBarRight', data.data.topbar.alignment.right.buttons);
-                    context.commit('setTopBarLeft', data.data.topbar.alignment.left.buttons);
-                    context.commit('setTopBarExtendedRight', []);
-                    context.commit('setTopBarExtendedLeft', []);
-                    context.commit('setPermissions', data.data.permissions);
-
-                    resolve(data.data.topbar);
-                })
-                .catch((error) => {reject(error);});
-        });
-    },
-
 
     getCustomTopbarContent: (context) => {
         return new Promise((resolve, reject) => {
-            ajax.methods.$_get(LS.createUrl('admin/survey/sa/getAjaxMenuArray', {
+            ajax.methods.$_get(LS.createUrl('surveyAdministration/getAjaxMenuArray', {
                 position: 'top',
-                sid: context.state.sid || LS.reparsedParameters().combined.sid,
-                saveButton: context.state.showSaveButton
+                surveyid: context.state.sid || LS.reparsedParameters().combined.sid,
+                //saveButton: context.state.showSaveButton  --> this parameter is not implemented in getAjaxMenuArray ..
             }))
                 .then((data) => {
                     const topbarLeft = context.state.topbar_left_buttons;

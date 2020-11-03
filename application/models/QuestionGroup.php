@@ -262,20 +262,20 @@ class QuestionGroup extends LSActiveRecord
 
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
+            $url = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid");
             $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
         }
 
         // Group edition
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
+            $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
             $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><i class="fa fa-pencil " ></i></a>';
         }
 
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
+            $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
             $url .= '/'.$this->sid.'/gid/'.$this->gid;
             $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><i class="fa fa-list-alt " ></i></a>';
         }
@@ -286,7 +286,7 @@ class QuestionGroup extends LSActiveRecord
             if (is_null($condarray)) {
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
+                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'

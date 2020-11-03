@@ -23,7 +23,8 @@ Yii::app()->getClientScript()->registerScript(
         array(
             'fullpagebar' => $buttons,
         )
-    ); ?>
+    );
+    ?>
 
     <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
     <div class="row">

@@ -356,8 +356,10 @@ class LayoutHelper
 
         $survey = Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
-        $sumresult1 = Survey::model()->with(array(
-                'languagesettings' => array('condition'=>'surveyls_language=language'))
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array('condition'=>'surveyls_language=language')
+            )
         )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
@@ -391,7 +393,8 @@ class LayoutHelper
             $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
             $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
             $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
-            Yii::app()->getController()->renderPartial("/admin/super/sidemenu", $aData);
+
+            Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
         } else {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             Yii::app()->getController()->redirect(array("admin/index"));
@@ -452,6 +455,7 @@ class LayoutHelper
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {
+
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
@@ -459,48 +463,34 @@ class LayoutHelper
                 'sid' => $aData['sid'],
                 'gid' => $aData['gid'] ?? 0,
                 'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false
+                'showSaveButton' => false,
+                'showCloseButton' => false,
             ],
             $aData['topBar']
-        );
+        ); //$aData['topBar']['showSaveButton']['url']
 
         Yii::app()->getClientScript()->registerPackage('admintoppanel');
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
 
     /**
-     * Render the save/cancel bar for Organize question groups/questions
-     *
-     * @param array $aData
-     *
-     * @since 2014-09-30
-     * @author Olle Haerstedt
-     */
-    public function renderOrganizeQuestionBar($aData)
-    {
-        if (isset($aData['organizebar'])) {
-            if (isset($aData['questionbar']['closebutton']['url'])) {
-                $sAlternativeUrl = $aData['questionbar']['closebutton']['url'];
-                $aData['questionbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
-            }
-
-            $aData['questionbar'] = $aData['organizebar'];
-            Yii::app()->getController()->renderPartial("/admin/survey/Question/questionbar_view", $aData);
-        }
-    }
-
-    /**
      * listquestion groups
+     *
+     * @deprecated not used anymore, is rendered directly from actionListquestiongroups
+     *
      * @param array $aData
      */
     public function renderListQuestionGroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
-            Yii::app()->getController()->renderPartial("/admin/survey/QuestionGroups/listquestiongroups", $aData);
+            Yii::app()->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
         }
     }
 
     /**
+     *
+     * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
+     *
      * @param $aData
      * @throws CException
      */
@@ -540,174 +530,6 @@ class LayoutHelper
     }
 
     /**
-     * Survey summary
-     * @param array $aData
-     */
-    public function renderSurveySummary($aData)
-    {
-        if (isset($aData['display']['surveysummary'])) {
-            if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-                $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-            }
-            $this->_surveysummary($aData);
-        }
-    }
-
-    /**
-     * Show survey summary
-     *
-     * todo: here are to many things that should be done in controller ...
-     *
-     * @param array $aData
-     */
-    private function _surveysummary($aData)
-    {
-        $iSurveyID = $aData['surveyid'];
-
-        $aSurveyInfo = getSurveyInfo($iSurveyID);
-        /** @var Survey $oSurvey */
-        $oSurvey = $aData['oSurvey'];
-        $activated = $aSurveyInfo['active'];
-
-        $condition = array('sid' => $iSurveyID, 'parent_qid' => 0);
-        $sumcount3 = Question::model()->countByAttributes($condition); //Checked
-        $sumcount2 = QuestionGroup::model()->countByAttributes(array('sid' => $iSurveyID));
-
-        //SURVEY SUMMARY
-        $aAdditionalLanguages = $oSurvey->additionalLanguages;
-        $surveysummary2 = [];
-        if ($aSurveyInfo['anonymized'] != "N") {
-            $surveysummary2[] = gT("Responses to this survey are anonymized.");
-        } else {
-            $surveysummary2[] = gT("Responses to this survey are NOT anonymized.");
-        }
-        if ($aSurveyInfo['format'] == "S") {
-            $surveysummary2[] = gT("It is presented question by question.");
-        } elseif ($aSurveyInfo['format'] == "G") {
-            $surveysummary2[] = gT("It is presented group by group.");
-        } else {
-            $surveysummary2[] = gT("It is presented on one single page.");
-        }
-        if ($aSurveyInfo['questionindex'] > 0) {
-            if ($aSurveyInfo['format'] == 'A') {
-                $surveysummary2[] = gT("No question index will be shown with this format.");
-            } elseif ($aSurveyInfo['questionindex'] == 1) {
-                $surveysummary2[] = gT("A question index will be shown; participants will be able to jump between viewed questions.");
-            } elseif ($aSurveyInfo['questionindex'] == 2) {
-                $surveysummary2[] = gT("A full question index will be shown; participants will be able to jump between relevant questions.");
-            }
-        }
-        if ($oSurvey->isDateStamp) {
-            $surveysummary2[] = gT("Responses will be date stamped.");
-        }
-        if ($oSurvey->isIpAddr) {
-            $surveysummary2[] = gT("IP Addresses will be logged");
-        }
-        if ($oSurvey->isRefUrl) {
-            $surveysummary2[] = gT("Referrer URL will be saved.");
-        }
-        if ($oSurvey->isUseCookie) {
-            $surveysummary2[] = gT("It uses cookies for access control.");
-        }
-        if ($oSurvey->isAllowRegister) {
-            $surveysummary2[] = gT("If participant access codes are used, the public may register for this survey");
-        }
-        if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
-            $surveysummary2[] = gT("Participants can save partially finished surveys");
-        }
-        if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2[] = gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto']);
-        }
-        if ($oSurvey->emailresponseto != '') {
-            $surveysummary2[] = gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto']);
-        }
-
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        if (trim($oSurvey->startdate) != '') {
-            Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
-            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-        } else {
-            $aData['startdate'] = "-";
-        }
-
-        if (trim($oSurvey->expires) != '') {
-            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
-            Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
-            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-        } else {
-            $aData['expdate'] = "-";
-        }
-
-        $aData['language'] = getLanguageNameFromCode($oSurvey->language, false);
-
-        if ($oSurvey->currentLanguageSettings->surveyls_urldescription == "") {
-            $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
-        }
-
-        if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
-            $aData['endurl'] = " <a target='_blank' href=\"".htmlspecialchars($aSurveyInfo['surveyls_url'])."\" title=\"".htmlspecialchars($aSurveyInfo['surveyls_url'])."\">".flattenText($oSurvey->currentLanguageSettings->surveyls_url)."</a>";
-        } else {
-            $aData['endurl'] = "-";
-        }
-
-        $aData['sumcount3'] = $sumcount3;
-        $aData['sumcount2'] = $sumcount2;
-
-        if ($activated == "N") {
-            $aData['activatedlang'] = gT("No");
-        } else {
-            $aData['activatedlang'] = gT("Yes");
-        }
-
-        $aData['activated'] = $activated;
-        if ($oSurvey->isActive) {
-            $aData['surveydb'] = Yii::app()->db->tablePrefix."survey_".$iSurveyID;
-        }
-
-        $aData['warnings'] = [];
-        if ($activated == "N" && $sumcount3 == 0) {
-            $aData['warnings'][] = gT("Survey cannot be activated yet.");
-            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>[".gT("You need to add question groups")."]</span>";
-            }
-            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
-                $aData['warnings'][] = "<span class='statusentryhighlight'>".gT("You need to add questions")."</span>";
-            }
-        }
-        $aData['hints'] = $surveysummary2;
-
-        //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-        //        $aData['tableusage'] = getDBTableUsage($iSurveyID);
-        // ToDo: Table usage is calculated on every menu display which is too slow with big surveys.
-        // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
-
-        $aData['tableusage'] = false;
-        $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
-        $aData['groups_count'] = $sumcount2;
-
-        // We get the state of the quickaction
-        // If the survey is new (ie: it has no group), it is opened by default
-        $quickactionState = SettingsUser::getUserSettingValue('quickaction_state');
-        if ($quickactionState === null || $quickactionState === 0) {
-            $quickactionState = 1;
-            SettingsUser::setUserSetting('quickaction_state', 1);
-        }
-        $aData['quickactionstate'] = $quickactionState !== null ? intval($quickactionState) : 1;
-        $aData['subviewData'] = $aData;
-
-        Yii::app()->getClientScript()->registerPackage('surveysummary');
-
-        $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
-        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
-            'content' => $content,
-            'sideMenuOpen' => true
-        ));
-    }
-
-    /**
      * todo: document me...
      *
      * @param $aData
@@ -720,7 +542,8 @@ class LayoutHelper
                 'sid' => $aData['sid'],
                 'gid' => $aData['gid'] ?? 0,
                 'qid' => $aData['qid'] ?? 0,
-                'showSaveButton' => false
+                'showSaveButton' => false,
+                'showCloseButton' => false,
             ],
             $aData['topBar']
         );

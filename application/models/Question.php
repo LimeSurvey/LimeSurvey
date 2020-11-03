@@ -81,6 +81,8 @@ class Question extends LSActiveRecord
     const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
 
+    const START_SORTING_VALUE = 1; //this is the start value for question_order
+
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
@@ -612,11 +614,10 @@ class Question extends LSActiveRecord
 
     public function getbuttons()
     {
-        $url         = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
-        $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
+        $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-        $editurl     = Yii::app()->createUrl("questionEditor/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $editurl     = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->survey->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
@@ -634,7 +635,7 @@ class Question extends LSActiveRecord
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
                 ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
+                            . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
                         ."});'>"
                     .' <i class="text-danger fa fa-trash"></i>
                 </a>';
@@ -1069,29 +1070,6 @@ class Question extends LSActiveRecord
     /**
      * @return QuestionAttribute[]
      */
-    public function getQuestionAttributes()
-    {
-        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
-        $value = EmCacheHelper::get($cacheKey);
-        if ($value !== false) {
-            return $value;
-        }
-
-        $criteria = new CDbCriteria();
-        $criteria->addCondition('qid=:qid');
-        $criteria->addCondition('(language=:language OR language IS NULL)');
-        $criteria->params = [':qid'=>$this->qid];
-        $criteria->params = [':language'=>$this->language];
-        $aQuestionAttributes = QuestionAttribute::model()->findAll($criteria);
-
-        EmCacheHelper::set($cacheKey, $aQuestionAttributes);
-
-        return $aQuestionAttributes;
-    }
-
-    /**
-     * @return QuestionAttribute[]
-     */
     public function getQuestionAttribute($sAttribute)
     {
         $criteria = new CDbCriteria();
@@ -1228,6 +1206,74 @@ class Question extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
+    }
+
+    /**
+     * In some cases question have o wrong questio_sort=0, The sort number should always be
+     * greater then 0, starting with 1. For this reason, the question_order has to be checked
+     * for a specific group and question_sort has be set correctly.
+     *
+     * @param $questionGroupId
+     *
+     * @return boolean true if sort numbers had to be set, false otherwise
+     */
+    public static function setQuestionOrderForGroup($questionGroupId){
+        $criteriaHighestOrderNumber = new CDbCriteria();
+        $criteriaHighestOrderNumber->condition = 't.gid=:gid';
+        $criteriaHighestOrderNumber->addCondition("parent_qid=0"); //no subquestions here ...
+        $criteriaHighestOrderNumber->addCondition('t.question_order=0');//find only those which has to be set
+        $criteriaHighestOrderNumber->params = ['gid' => $questionGroupId];
+        $criteriaHighestOrderNumber->order = 't.qid ASC';
+
+        $questionsWithZeroSortNumber = Question::model()->findAll($criteriaHighestOrderNumber);
+        $isAlreadySorted = count($questionsWithZeroSortNumber) === 0; //means no questions, so resort needed
+        if (!$isAlreadySorted) {
+            $sortValue = self::START_SORTING_VALUE;
+            /* @var Question $question  */
+            foreach ($questionsWithZeroSortNumber as $question) {
+                $question->question_order = $sortValue;
+                $question->save();
+                $sortValue++;
+            }
+        }
+
+        return !$isAlreadySorted;
+    }
+
+    /**
+     * Returns the highest question_order value that exists for a questiongroup inside the related questions.
+     * ($question->question_order).
+     *
+     * @param int $questionGroupId  the question group id
+     *
+     * @return int|null question highest order number or null if there are no questions belonging to the group
+     */
+    public static function getHighestQuestionOrderNumberInGroup($questionGroupId)
+    {
+        $criteriaHighestOrderNumber = new CDbCriteria();
+        $criteriaHighestOrderNumber->limit = 1;
+        $criteriaHighestOrderNumber->condition = 't.gid=:gid';
+        $criteriaHighestOrderNumber->addCondition("parent_qid=0"); //no subquestions here ...
+        $criteriaHighestOrderNumber->params = ['gid' => $questionGroupId];
+        $criteriaHighestOrderNumber->order = 't.question_order DESC';
+
+        $oQuestionHighestOrderNumber = Question::model()->find($criteriaHighestOrderNumber);
+
+        return ($oQuestionHighestOrderNumber === null)? null : $oQuestionHighestOrderNumber->question_order;
+    }
+
+    /**
+     * Increases all question_order numbers for questions belonging to the group by +1
+     *
+     * @param int $questionGroupId
+     */
+    public static function increaseAllOrderNumbersForGroup($questionGroupId)
+    {
+        $questionsInGroup = Question::model()->findAllByAttributes(["gid" => $questionGroupId]);
+        foreach ($questionsInGroup as $question) {
+            $question->question_order = $question->question_order +1;
+            $question->save();
+        }
     }
 
 

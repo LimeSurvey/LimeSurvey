@@ -76,7 +76,7 @@ class quotas extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
         } else {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->getController()->redirect($this->getController()->createUrl("admin/survey/sa/view/surveyid/$iSurveyId"));
+            $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/$iSurveyId"));
         }
     }
 
@@ -150,7 +150,7 @@ class quotas extends Survey_Common_Action
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
         $aData['surveybar']['closebutton']['forbidden'][] = 'quotas';
 
         $totalquotas = 0;

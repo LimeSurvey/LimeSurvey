@@ -57,7 +57,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 $modelSettings->setToInherit();
 
                 if ($modelSettings->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
                 }
                 // What happen if SurveysGroups saved but no SurveysGroupsettings ?
             }
@@ -75,8 +75,8 @@ class SurveysGroupsController extends Survey_Common_Action
                 'form' => 'surveys-groups-form'
             ),
             'returnbutton' => array(
-                'url'=>'admin/survey/sa/listsurveys#surveygroups',
-                'text'=>gT('Close'),
+                'url' => $this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')),
+                'text' => gT('Close'),
             )
         );
         /* User for dropdown */
@@ -104,8 +104,9 @@ class SurveysGroupsController extends Survey_Common_Action
             }
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
             /* Mimic survey system : only owner and superadmin can update owner … */
+            /* After update : potential loose of rights on SurveysGroups */
             if($model->owner_id != Yii::app()->user->id
-                && Permission::model()->hasGlobalPermission('superadmin', 'read')
+                && !Permission::model()->hasGlobalPermission('superadmin', 'read')
             ) {
                 $postSurveysGroups['owner_id'] = $model->owner_id;
             }
@@ -120,17 +121,14 @@ class SurveysGroupsController extends Survey_Common_Action
                 $sgid = $postSurveysGroups['parent_id'] ;
                 $ParentSurveyGroup = $this->loadModel($sgid);
                 $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
-
                 if ( in_array( $model->gsid, $aParentsGsid  ) ) {
                     Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
-                    // $todo : fix this, must save other but return to edition
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
                 }
             }
-
             if ($model->save()) {
                 if (App()->request->getPost('saveandclose') !== null){
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
                 }
             }
         }
@@ -161,9 +159,6 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions           = new TemplateConfiguration();
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
-
-
-
         // Page size
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
@@ -233,7 +228,6 @@ class SurveysGroupsController extends Survey_Common_Action
                 // and 'save&load'
                 $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
             }
-
             if ($oSurvey->save()) {
                 $bRedirect = 1;
             }
@@ -252,7 +246,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['oSurvey'] = $oSurvey;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null){
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+            $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
         }
 
         // Page size
@@ -278,7 +272,7 @@ class SurveysGroupsController extends Survey_Common_Action
         ];
         $aData['buttons'] = array(
             'closebutton'=>array(
-                'url' => App()->createUrl('admin/survey/sa/listsurveys', array('#' => 'surveygroups')),
+                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             ),
         );
         if (Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'update')) {
@@ -383,7 +377,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['subview'] = 'viewCurrents';
         $aData['buttons'] = array(
             'closebutton'=>array(
-                'url' => App()->createUrl('admin/survey/sa/listsurveys', array('#' => 'surveygroups')),
+                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             ),
         );
         $aData['aPermissionData'] = array(
@@ -723,7 +717,7 @@ class SurveysGroupsController extends Survey_Common_Action
                     'form' => 'permissionsSave'
                 ),
                 'closebutton' => array(
-                    'url'=> App()->createUrl("admin/survey/sa/listsurveys",array("#" => 'surveygroups')),
+                    'url'=> App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
                 ),
             ),
         );
@@ -811,7 +805,7 @@ class SurveysGroupsController extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $sGroupTitle = $oGroupToDelete->title;
-        $returnUrl = App()->getRequest()->getPost('returnUrl', array('admin/survey/sa/listsurveys'));
+        $returnUrl = App()->getRequest()->getPost('returnUrl', array('surveyAdministration/listsurveys'));
         if ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
             $this->getController()->redirect($returnUrl);
@@ -821,9 +815,9 @@ class SurveysGroupsController extends Survey_Common_Action
         } else {
             $oGroupToDelete->delete();
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (App()->getRequest()->getQuery('ajax')) {
+            if (!App()->getRequest()->getQuery('ajax')) {
                 Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), CHtml::encode($sGroupTitle)), 'success');
-                $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+                $this->getController()->redirect($returnUrl);
             }
         }
     }

@@ -108,7 +108,10 @@ class QuestionType extends StaticModel
     /**
      * @param string $language
      * @return array
+     *
+     * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
+
     public static function modelsAttributes($language = '')
     {
         return [

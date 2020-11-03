@@ -17,7 +17,6 @@
     //Security Checked: POST/GET/SESSION/DB/returnGlobal
     function initKcfinder()
     {
-        return;
         Yii::app()->session['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
@@ -112,12 +111,7 @@
      * @param CController $controller
      */
     function PrepareEditorScript($load = false, $controller = null)
-    {
-        return;
-                
-        App()->getClientScript()->registerPackage('ckeditor'); //
-        App()->getClientScript()->registerPackage('ckeditoradditions'); // CKEDITOR in a global sope
-        
+    {        
         if ($controller == null) {
             $controller = Yii::app()->getController();
         }
@@ -129,16 +123,26 @@
         }
     }
 
+    /**
+     * Returns Editor.
+     * 
+     * @param string   $fieldtype Field Type
+     * @param string   $fieldname Field Name
+     * @param int|null $surveyID  Survey ID
+     * @param int|null $gID       Group ID
+     * @param int|null $qID       Question ID
+     * @param string   $action    Action
+     * 
+     * @return string
+     */
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-
-        return;
-        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)) {
             $surveyID = 'uniq';
         }
 
         initKcfinder();
-        //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
+
         $session = &Yii::app()->session;
 
         if ($session['htmleditormode'] && $session['htmleditormode'] == 'none') {
@@ -160,6 +164,8 @@
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         } elseif ($htmleditormode == 'inline') {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
+        } elseif ($htmleditormode == 'modal') {
+            return getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         } else {
             return '';
         }
@@ -167,7 +173,7 @@
 
     function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-        return;
+
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }
@@ -192,9 +198,22 @@
         return $htmlcode;
     }
 
+    function getModalEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
+    {
+
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+            $surveyID = 'uniq';
+        }
+
+        $htmlcode = "<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='$fieldname' data-modal-title='$fieldtext' data-toggle='tooltip' data-original-title='" . gT("Open editor") . "'>\n" .
+                    "\t<i class='fa fa-edit' id='{$fieldname}_modal_icon'></i>\n" .
+                    "</a>\n";
+
+        return $htmlcode;
+    }
+
     function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-        return;
         if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
             $surveyID = 'uniq';
         }
@@ -235,6 +254,8 @@
             ,filebrowserFlashUploadUrl:'{$sFakeBrowserURL}'";
         }
 
+        $loaderHTML = getLoaderHTML($fieldname);
+
         $scriptCode = ""
         . "
             if($('#".$fieldname."').length >0){
@@ -244,13 +265,15 @@
                     $oCKeditorVarName = null;
                 }
 
+                $('#".$fieldname."').before('$loaderHTML');
+
                 $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
                 LimeReplacementFieldsType : \"".$fieldtype."\"
                 ,LimeReplacementFieldsSID : \"".$surveyID."\"
                 ,LimeReplacementFieldsGID : \"".$gID."\"
                 ,LimeReplacementFieldsQID : \"".$qID."\"
                 ,LimeReplacementFieldsAction : \"".$action."\"
-                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
+                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("limereplacementfields/index")."\"
                 ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
                 . $sFileBrowserAvailable
                 . $htmlformatoption
@@ -261,4 +284,23 @@
             }";
 
         Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_POSTSCRIPT);
+    }
+
+    function getLoaderHTML($fieldname) 
+    {
+        $loaderHTML  = '  <div  id="' . $fieldname . '_htmleditor_loader" class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
+        $loaderHTML .= '    <div class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">';
+        $loaderHTML .= '      <div class="ls-flex align-content-center align-items-center">';
+        $loaderHTML .= '        <div class="loader-adminpanel text-center" :class="extraClass">';
+        $loaderHTML .= '          <div class="contain-pulse animate-pulse">';
+        $loaderHTML .= '              <div class="square"></div>';
+        $loaderHTML .= '              <div class="square"></div>';
+        $loaderHTML .= '              <div class="square"></div>';
+        $loaderHTML .= '              <div class="square"></div>';
+        $loaderHTML .= '          </div>';
+        $loaderHTML .= '        </div>';
+        $loaderHTML .= '      </div>';
+        $loaderHTML .= '    </div>';
+        $loaderHTML .= '  </div>';
+        return $loaderHTML;
     }

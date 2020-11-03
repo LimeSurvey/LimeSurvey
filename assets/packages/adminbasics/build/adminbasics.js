@@ -29300,6 +29300,14 @@
 	          var $form = getForm(this);
 	          formSubmitting = true;
 
+	          try {
+	            for (var instanceName in CKEDITOR.instances) {
+	              CKEDITOR.instances[instanceName].updateElement();
+	            }
+	          } catch (e) {
+	            console.ls.log('Seems no CKEDITOR4 is loaded');
+	          }
+
 	          if ($form.data('isvuecomponent') == true) {
 	            LS.EventBus.$emit('componentFormSubmit', button);
 	          } else {

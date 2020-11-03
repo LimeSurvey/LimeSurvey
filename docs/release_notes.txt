@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.23 (build 201026) to 4.3.24 (build 201102) November 2, 2020
+-Fixed issue: Database error in statistics when entering invalid information in number or date filter (Carsten Schmitz)
+-Fixed issue: #16790: Survey participant / Token editor doesn't correctly reflect reminder status when survey in anonymous mode (Adam Zammit)
+-Fixed issue: #16789: Token editor mixes up invitation sent / reminder sent when manually editing token / survey participant (Adam Zammit)
+-Fixed issue #14558: No difference shown for auto set Permission in survey (Denis Chenu)
+#Updated translation: Ukrainian by imnetxiin
+#Updated translation: Turkish by kayazeren
+#Updated translation: Maltese by ritapas
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Bengali by c_schmitz
+
+
 Changes from 4.3.22 (build 201019) to 4.3.23 (build 201026) October 26, 2020
 -Fixed issue: View access to survey group even though no permission (Carsten Schmitz)
 -Fixed issue: Update issue with invalid datetime value stored in startdate/datestamp field of response table (Carsten Schmitz)

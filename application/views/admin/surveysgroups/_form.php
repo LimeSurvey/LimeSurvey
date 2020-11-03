@@ -9,7 +9,8 @@
 
 <?php
     $form=$this->beginWidget('TbActiveForm', array(
-        'id'=>'surveys-groups-form',
+        'id' => 'surveys-groups-form',
+        'action' => array("admin/surveysgroups/sa/update", 'id'=>$model->gsid, '#'=>'settingsForThisGroup'),
         // Please note: When you enable ajax validation, make sure the corresponding
         // controller action is handling ajax validation correctly.
         // There is a call to performAjaxValidation() commented in generated controller code.

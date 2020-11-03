@@ -711,17 +711,16 @@ class TemplateConfiguration extends TemplateConfig
         $sExtendUrl = App()->getController()->createUrl('admin/themes/sa/templatecopy');
         $sOptionUrl = (App()->getController()->action->id == "surveysgroups") ?
             App()->getController()->createUrl(
-                'admin/themeoptions/sa/updatesurveygroup',
+                'themeOptions/updateSurveyGroup',
                 array("id" => $this->id, "gsid" => $gsid)
             ) :
             App()->getController()->createUrl(
-                'admin/themeoptions/sa/update',
+                'themeOptions/update',
                 array("id" => $this->id)
             );
 
-        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
-        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
-
+        $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
+        $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid"=> (int) $gsid));
 
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'

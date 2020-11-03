@@ -129,6 +129,39 @@ return array(
             'bootstrap',
         )
     ),
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+            'config.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
+    'modaleditor' => array(
+        'devBaseUrl' => 'assets/packages/modaleditor/',
+        'basePath' => 'core.modaleditor',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/modaleditor.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ckeditor',
+        )
+    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
@@ -336,27 +369,27 @@ return array(
             'adminbasics'
         )
     ),
-    'textelements' => array(
-        'devBaseUrl' => 'assets/packages/textelements/',
-        'basePath' => 'core.textelements',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/lstextelements.js',
-            )
-            : array(
-                'build.min/js/lstextelements.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
+//    'textelements' => array(
+//        'devBaseUrl' => 'assets/packages/textelements/',
+//        'basePath' => 'core.textelements',
+//        'position' =>CClientScript::POS_END,
+//        'js' => (
+//            $debug > 0
+//            ? array(
+//                'build/js/lstextelements.js',
+//            )
+//            : array(
+//                'build.min/js/lstextelements.js'
+//            )
+//        ),
+//        'css' => array(
+//            'build.min/css/main.css'
+//        ),
+//        'depends' => array(
+//            'adminbasics',
+//            'admintoppanel',
+//        )
+//    ),
     'datasectextelements' => array(
         'devBaseUrl' => 'assets/packages/datasecuritysettings/',
         'basePath' => 'core.datasecuritysettings',
@@ -420,26 +453,6 @@ return array(
             'ace',
             'admintoppanel',
             
-        )
-    ),
-    'labelsets' => array(
-        'devBaseUrl' => 'assets/packages/labelsets/',
-        'basePath' => 'core.labelsets',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/labelsets.js'
-            )
-            : array(
-                'build.min/js/labelsets.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
         )
     ),
     'lstutorial' => array(
@@ -527,7 +540,7 @@ return array(
         )
     ),
 
-    'emailtemplatesold' => array(
+    'emailtemplates' => array(
         'devBaseUrl' => 'assets/packages/emailtemplates/',
         'basePath' => 'core.emailtemplates',
         'position' =>CClientScript::POS_BEGIN,
@@ -539,28 +552,6 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-        )
-    ),
-
-    'emailtemplates' => array(
-        'devBaseUrl' => 'assets/packages/emailtemplates/',
-        'basePath' => 'core.emailtemplates',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/emailtemplates.js'
-            )
-            : array(
-                'build.min/js/emailtemplates.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'ace',
         )
     ),
 

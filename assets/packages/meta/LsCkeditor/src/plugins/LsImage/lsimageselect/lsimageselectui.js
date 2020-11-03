@@ -18,10 +18,6 @@ export default class ImageSelectUI extends Plugin {
 
         editor.ui.componentFactory.add( 'selectImage', locale => {
             const dropdownView = createDropdown( locale );
-            this.getImages().then(
-                (resolve) => { this._parseSelectables( resolve, dropdownView); },
-                (reject) => { console.error(reject); }
-			);
 
             dropdownView.set( {
                 class: 'ck-scrollbar',
@@ -42,18 +38,6 @@ export default class ImageSelectUI extends Plugin {
 
             return dropdownView;
 		});
-	}
-	
-	getImages() {
- 		const editor = this.editor;
-        return new Promise((resolve,reject) => {
-            $.ajax({
-                url: LS.createUrl('admin/filemanager/sa/getFilesForSurvey'),
-                data: LS.ld.merge({},editor.config.get('lsExtension:ajaxOptions')),
-                success: resolve,
-                error: reject
-            })
-        });
 	}
 	
 	_parseSelectables(resolve, dropdownView) {
