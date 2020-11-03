@@ -951,11 +951,11 @@ LS.questionEditor = (function () {
     });
 
     $.when.apply($, promises).done(
-      function () {
+      function (...args) {
         /* $('#quickadd').dialog('close'); */
         // TODO: What is item here?
         // TODO: Too dynamic to use "arguments", better to know.
-        arguments.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
+        args.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
             const { html } = item;
             const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
