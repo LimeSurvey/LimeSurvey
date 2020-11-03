@@ -1985,6 +1985,7 @@ class tokens extends Survey_Common_Action
             $aInvalidTokenList = array();
             $aInvalidEmailList = array();
             $aInvalidFormatList = array();
+            $aPluginErrorMessageList = array();
             $aModelErrorList = array();
             $aFirstLine = array();
 
