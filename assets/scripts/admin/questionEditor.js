@@ -609,7 +609,8 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * Previews the labels in a label set after selecting it in the select box
+   * Previews the labels in a modal after selecting it in the select box
+   *
    * @param {number} lid Label set id
    * @return {void}
    */
@@ -1016,7 +1017,7 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * Used when???
+   * Used for "Save as label set"?
    *
    * @param {event} event
    * @return {void}
@@ -1028,7 +1029,7 @@ LS.questionEditor = (function () {
       throw 'abort';
     }
 
-    switch ($(target).attr('id')) {
+    switch (target.getAttribute('id')) {
         case 'newlabel':
             if (!flag[0]) {
               $('#lasets').parent().remove();
@@ -1057,6 +1058,9 @@ LS.questionEditor = (function () {
               flag[0] = false;
             }
             break;
+        default:
+            alert('Internal error: Unsupported ');
+            throw 'abort';
     }
   }
 
@@ -1084,58 +1088,58 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * ???
+   * Called when saving new label set
+   *
    * @return {void}
    */
-  function ajaxreqsave() {
+  function saveLabelSetAjax() {
     // todo: scale id is not defined
-    /*
-       const lid = $('#lasets').val() ? $('#lasets').val() : 0;
+    const scaleId = 1;
+    const lid = $('#lasets').val() ? $('#lasets').val() : 0;
     // get code for the current scale
     const code = [];
     if ($('.code').length > 0) { // Deactivated survey
-    $('.code').each(function () {
-    if ($(this).attr('id').substr(-1) === scaleId) code.push($(this).val());
-    });
+      $('.code').each(function () {
+        if ($(this).attr('id').substr(-1) === scaleId) code.push($(this).val());
+      });
     } else { // Activated survey
-    $('.answertable input[name^="code_"]').each(function () {
-    if ($(this).attr('name').substr(-1) === scaleId) code.push($(this).attr('value'));
-    });
+      $('.answertable input[name^="code_"]').each(function () {
+        if ($(this).attr('name').substr(-1) === scaleId) code.push($(this).attr('value'));
+      });
     }
 
     const answers = {};
     const languages = languageJson.langs.split(';');
 
     for (let x in languages) {
-    answers[languages[x]] = [];
-    $('.answer').each(function () {  // jshint ignore: line
-    if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) answers[languages[x]].push($(this).val());
-    });
+      answers[languages[x]] = [];
+      $('.answer').each(function () {  // jshint ignore: line
+        if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) answers[languages[x]].push($(this).val());
+      });
     }
 
     $.post(languageJson.lasaveurl, {
-laname: $('#laname').val(), lid, code, answers,
-}, (data) => {
-    // $("#saveaslabel").dialog('close');
-    $('#saveaslabelModal').modal('hide');
-    $('#dialog-confirm-replaceModal').modal('hide');
+      laname: $('#laname').val(), lid, code, answers,
+    }, (data) => {
+      // $("#saveaslabel").dialog('close');
+      $('#saveaslabelModal').modal('hide');
+      $('#dialog-confirm-replaceModal').modal('hide');
 
-    if ($.parseJSON(data) === 'ok') {
-    if ($('#dialog-result').is(':visible')) {
-    $('#dialog-result-content').empty().append(lasuccess);
-    $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
-    } else {
-    $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
-    $('#dialog-result-content').empty().append(lasuccess);
-    $('#dialog-result').show();
-    }
-    } else {
-    $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
-    $('#dialog-result-content').empty().append(lafail);
-    $('#dialog-result').show();
-    }
+      if ($.parseJSON(data) === 'ok') {
+        if ($('#dialog-result').is(':visible')) {
+          $('#dialog-result-content').empty().append(lasuccess);
+          $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
+        } else {
+          $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
+          $('#dialog-result-content').empty().append(lasuccess);
+          $('#dialog-result').show();
+        }
+      } else {
+        $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
+        $('#dialog-result-content').empty().append(lafail);
+        $('#dialog-result').show();
+      }
     });
-    */
   }
 
   /**
@@ -1167,13 +1171,13 @@ laname: $('#laname').val(), lid, code, answers,
   /**
    * @return {void}
    */
-  function savelabel() {
+  function saveLabelSet() {
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
     if (lid === 0) {
       const response = ajaxcheckdup();
       response.then(() => {
         if (check) {
-          ajaxreqsave();
+          saveLabelSetAjax();
         }
       });
     } else {
@@ -1182,7 +1186,7 @@ laname: $('#laname').val(), lid, code, answers,
         $('#strReplaceMessage').html(data);
         $('#dialog-confirm-replaceModal').modal();
         $('#btnlconfirmreplace').click(() => {
-          ajaxreqsave();
+          saveLabelSetAjax();
         });
       });
     }
@@ -1254,7 +1258,7 @@ laname: $('#laname').val(), lid, code, answers,
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
-    $('#btnsave').click(savelabel);
+    $('#btnsavelabelset').click(saveLabelSet);
     updateRowProperties();
 
     bindExpandRelevanceEquation();
