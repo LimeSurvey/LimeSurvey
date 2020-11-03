@@ -322,29 +322,26 @@ class ThemeOptionsController extends LSBaseController
     public function actionUpdateSurvey() : void
     {
         $sid = $this->getSurveyIdFromGetRequest();
-
-        if (Permission::model()->hasGlobalPermission('templates', 'update') ||
-            Permission::model()->hasSurveyPermission($sid,'surveysettings','update'))
-            {
-                // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
-                $model = TemplateConfiguration::getInstance(null, null, $sid);
-
-                // turn ajaxmode off as default behavior
-                $model = $this->turnAjaxmodeOffAsDefault($model);
-                $model->save();
-
-                if (isset($_POST['TemplateConfiguration'])) {
-                    $model->attributes = $_POST['TemplateConfiguration'];
-                    if ($model->save()) {
-                        App()->user->setFlash('success', gT('Theme options saved.'));
-                        $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid));
-                    }
-                }
-            $this->updateCommon($model, $sid);
-        } else {
-            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')
+            && !Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        // Did we really need hasGlobalPermission template ? We are inside survey : hasSurveyPermission only seem better
+        $model = TemplateConfiguration::getInstance(null, null, $sid);
+
+        // turn ajaxmode off as default behavior
+        $model = $this->turnAjaxmodeOffAsDefault($model);
+        $model->save();
+
+        if (isset($_POST['TemplateConfiguration'])) {
+            $model->attributes = $_POST['TemplateConfiguration'];
+            if ($model->save()) {
+                App()->user->setFlash('success', gT('Theme options saved.'));
+                $this->redirect(array("themeOptions/updateSurvey", 'surveyid' => $sid));
+            }
+        }
+        $this->updateCommon($model, $sid);
     }
 
     /**
@@ -359,28 +356,27 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null) : void
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            // @todo : review permission : template permission or group permission ?
-            $sTemplateName = $id !== null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
-            $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
-
-            if ($model->bJustCreated === true && $l === null) {
-                $this->redirect(array("themeOptions/updateSurveyGroup/", 'id'=>$id, 'gsid'=>$gsid, 'l'=>1));
-            }
-
-            if (isset($_POST['TemplateConfiguration'])) {
-                $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
-                $model->attributes = $_POST['TemplateConfiguration'];
-                if ($model->save()) {
-                    App()->user->setFlash('success', gT('Theme options saved.'));
-                }
-            }
-
-            $this->updateCommon($model);
-        } else {
-            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->redirect(App()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')
+            && !Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        $sTemplateName = $id !== null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
+        $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
+
+        if ($model->bJustCreated === true && $l === null) {
+            $this->redirect(array("themeOptions/updateSurveyGroup/", 'id'=>$id, 'gsid'=>$gsid, 'l'=>1));
+        }
+
+        if (isset($_POST['TemplateConfiguration'])) {
+            $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
+            $model->attributes = $_POST['TemplateConfiguration'];
+            if ($model->save()) {
+                App()->user->setFlash('success', gT('Theme options saved.'));
+            }
+        }
+
+        $this->updateCommon($model);
     }
 
     /**
@@ -393,8 +389,7 @@ class ThemeOptionsController extends LSBaseController
     public function actionSetAdminTheme(string $sAdminThemeName) : void
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            App()->setFlashMessage(gt("We are sorry but you don't have permissions to do this."), 'error');
-            $this->redirect(array('/admin'));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
@@ -410,68 +405,66 @@ class ThemeOptionsController extends LSBaseController
     public function actionIndex() : void
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
-            $aData = array();
-            $oSurveyTheme = new TemplateConfiguration();
-            $aData['oAdminTheme']  = new AdminTheme();
-            $aData['oQuestionTheme'] = new QuestionTheme;
-            $canImport = true;
-            $importErrorMessage = null;
-
-            if (!is_writable(App()->getConfig('tempdir'))) {
-                $canImport = false;
-                $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
-            } else if (!is_writable(App()->getConfig('userthemerootdir'))) {
-                $canImport = false;
-                $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-            } else if (!function_exists("zip_open")) {
-                $canImport = false;
-                $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
-            }
-
-            /// FOR GRID View
-            $filterForm = App()->request->getPost('TemplateConfiguration', false);
-            if ($filterForm) {
-                $oSurveyTheme->setAttributes($filterForm, false);
-                if (array_key_exists('template_description', $filterForm)) {
-                    $oSurveyTheme->template_description = $filterForm['template_description'];
-                }
-                if (array_key_exists('template_type', $filterForm)) {
-                    $oSurveyTheme->template_type = $filterForm['template_type'];
-                }
-                if (array_key_exists('template_extends', $filterForm)) {
-                    $oSurveyTheme->template_extends = $filterForm['template_extends'];
-                }
-            }
-
-            $filterForm = App()->request->getPost('QuestionTheme', false);
-            if ($filterForm) {
-                $aData['oQuestionTheme']->setAttributes($filterForm, false);
-                if (array_key_exists('description', $filterForm)) {
-                    $aData['oQuestionTheme']->description = $filterForm['description'];
-                }
-                if (array_key_exists('core_theme', $filterForm)) {
-                    $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
-                }
-                if (array_key_exists('extends', $filterForm)) {
-                    $aData['oQuestionTheme']->extends = $filterForm['extends'];
-                }
-            }
-
-            // Page size
-            if (App()->request->getParam('pageSize')) {
-                App()->user->setState('pageSizeTemplateView', (int) App()->request->getParam('pageSize'));
-            }
-
-            $aData['oSurveyTheme'] = $oSurveyTheme;
-            $aData['canImport']  = $canImport;
-            $aData['importErrorMessage']  = $importErrorMessage;
-            $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
-
-            $this->render('index', $aData);
-        } else {
-            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->redirect(App()->createUrl("/admin"));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        $aData = array();
+        $oSurveyTheme = new TemplateConfiguration();
+        $aData['oAdminTheme']  = new AdminTheme();
+        $aData['oQuestionTheme'] = new QuestionTheme;
+        $canImport = true;
+        $importErrorMessage = null;
+
+        if (!is_writable(App()->getConfig('tempdir'))) {
+            $canImport = false;
+            $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
+        } else if (!is_writable(App()->getConfig('userthemerootdir'))) {
+            $canImport = false;
+            $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
+        } else if (!function_exists("zip_open")) {
+            $canImport = false;
+            $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
+        }
+
+        /// FOR GRID View
+        $filterForm = App()->request->getPost('TemplateConfiguration', false);
+        if ($filterForm) {
+            $oSurveyTheme->setAttributes($filterForm, false);
+            if (array_key_exists('template_description', $filterForm)) {
+                $oSurveyTheme->template_description = $filterForm['template_description'];
+            }
+            if (array_key_exists('template_type', $filterForm)) {
+                $oSurveyTheme->template_type = $filterForm['template_type'];
+            }
+            if (array_key_exists('template_extends', $filterForm)) {
+                $oSurveyTheme->template_extends = $filterForm['template_extends'];
+            }
+        }
+
+        $filterForm = App()->request->getPost('QuestionTheme', false);
+        if ($filterForm) {
+            $aData['oQuestionTheme']->setAttributes($filterForm, false);
+            if (array_key_exists('description', $filterForm)) {
+                $aData['oQuestionTheme']->description = $filterForm['description'];
+            }
+            if (array_key_exists('core_theme', $filterForm)) {
+                $aData['oQuestionTheme']->core_theme = $filterForm['core_theme'] == '1' || $filterForm['core_theme'] == '0' ? intval($filterForm['core_theme']) : '';
+            }
+            if (array_key_exists('extends', $filterForm)) {
+                $aData['oQuestionTheme']->extends = $filterForm['extends'];
+            }
+        }
+
+        // Page size
+        if (App()->request->getParam('pageSize')) {
+            App()->user->setState('pageSizeTemplateView', (int) App()->request->getParam('pageSize'));
+        }
+
+        $aData['oSurveyTheme'] = $oSurveyTheme;
+        $aData['canImport']  = $canImport;
+        $aData['importErrorMessage']  = $importErrorMessage;
+        $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
+
+        $this->render('index', $aData);
     }
 
     /**
@@ -594,17 +587,29 @@ class ThemeOptionsController extends LSBaseController
     public function actionReset(int $gsid) : void
     {
         $templatename = App()->request->getPost('templatename');
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            TemplateConfiguration::uninstall($templatename);
-            TemplateManifest::importManifest($templatename);
-            App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
-            $this->redirect(array("themeOptions/index"));
-        } else {
-            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->redirect(
-                array("/admin/surveysgroups/sa/update/", 'id'=>$gsid)
-            );
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')
+            && !Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')
+        ) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+
+        if($gsid) {
+            $oTemplateConfiguration = TemplateConfiguration::model()->find("gsid = :gsid AND template_name = :templatename",
+                array(":gsid" => $gsid, ":templatename" => $templatename)
+            );
+            if(empty($oTemplateConfiguration)) {
+                throw new CHttpException(401, gT("Invalid template configuration for this group."));
+            }
+            $oTemplateConfiguration->setToInherit();
+            if($oTemplateConfiguration->save()) {
+                App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
+            }
+            $this->redirect(array("admin/surveysgroups/sa/update", 'id' => $gsid, "#" => "templateSettingsFortThisGroup"));
+        }
+        TemplateConfiguration::uninstall($templatename);
+        TemplateManifest::importManifest($templatename);
+        App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
+        $this->redirect(array("themeOptions/index"));
     }
 
     /**
