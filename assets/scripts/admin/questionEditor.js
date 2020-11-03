@@ -1008,6 +1008,7 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function getLabel() {
+    console.log('getLabel');
     // TODO
     //const answer_table = $(this).parent().children().eq(0);
     //const scaleId = LS.removechars($(this).attr('id'));
@@ -1023,26 +1024,35 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function setLabel(event /*: Event */) /*: void */ {
+    console.log('setLabel');
     const target = event.target;
     if (!(target instanceof HTMLElement)) {
       alert('target is not an HTMLElement');
       throw 'abort';
     }
 
+    const template = document.createElement('template');
+    let child;
     const targetParent = target.parentNode;
+    if (!(targetParent instanceof HTMLElement)) {
+      throw 'Internal error: targetParent is not an instance of HTMLElement';
+    }
+
+    // TODO: Split each case into a function.
     switch (target.getAttribute('id')) {
         case 'newlabel':
             const lasets = document.getElementById('lasets');
             if (lasets) {
               lasets.remove();
             }
-            if (targetParent instanceof HTMLElement) {
-              targetParent.after(
-                `<p class="label-name-wrapper"><label for="laname">${languageJson.sLabelSetName}:</label> ` +
-                  '<input type="text" name="laname" id="laname"></p>'
-              );
-            } else {
-              throw 'Internal error: targetParent is not an instance of HTMLElement';
+
+            template.innerHTML = `<p id="lasets" class="label-name-wrapper">
+                 <label for="laname">${languageJson.sLabelSetName}:</label>
+                 <input type="text" name="laname" id="laname">
+               </p>`;
+            child = template.content.firstChild;
+            if (child) {
+              targetParent.after(child);
             }
             break;
         case 'replacelabel':
@@ -1050,13 +1060,21 @@ LS.questionEditor = (function () {
             if (laname) {
               laname.remove();
             }
-            if (targetParent instanceof HTMLElement) {
-              targetParent.after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
-            } else {
-              throw 'Internal error: targetParent is not an instance of HTMLElement';
+
+            template.innerHTML = `
+              <p id="laname" class="label-name-wrapper">
+                <select name="laname" id="lasets">
+                  <option value=""></option>
+                </select>
+              </p>' 
+            `;
+            child = template.content.firstChild;
+            if (child) {
+              targetParent.after(child);
             }
             $('#lasets option[value=""]').remove();
             $.getJSON(languageJson.lanameurl, (data) => {
+              console.log('getJSON');
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
                   $('#lasets').append(`<option value="${key}">${val}</option>`);
@@ -1074,6 +1092,8 @@ LS.questionEditor = (function () {
 
   /*:: declare function ajaxcheckdup(): Promise<mixed> */
   /**
+   * TODO: Used where???
+   *
    * @return {Promise}
    */
   function ajaxcheckdup() {
@@ -1101,6 +1121,7 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function saveLabelSetAjax() {
+    console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
@@ -1126,28 +1147,35 @@ LS.questionEditor = (function () {
       });
     }
 
-    $.post(languageJson.lasaveurl, {
-      laname: $('#laname').val(), lid, code, answers,
-    }, (data) => {
-      // $("#saveaslabel").dialog('close');
-      $('#saveaslabelModal').modal('hide');
-      $('#dialog-confirm-replaceModal').modal('hide');
+    $.post(
+      languageJson.lasaveurl,
+      {
+        laname: $('#laname').val(),
+        lid,
+        code,
+        answers
+      },
+      (data) => {
+        console.log('data', data);
+        // $("#saveaslabel").dialog('close');
+        $('#saveaslabelModal').modal('hide');
+        $('#dialog-confirm-replaceModal').modal('hide');
 
-      if ($.parseJSON(data) === 'ok') {
-        if ($('#dialog-result').is(':visible')) {
-          $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
-          $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
+        if ($.parseJSON(data) === 'ok') {
+          if ($('#dialog-result').is(':visible')) {
+            $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
+            $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
+          } else {
+            $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
+            $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
+            $('#dialog-result').show();
+          }
         } else {
-          $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
-          $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
+          $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
+          $('#dialog-result-content').empty().append(languageJson.labelSetFail);
           $('#dialog-result').show();
         }
-      } else {
-        $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
-        $('#dialog-result-content').empty().append(languageJson.labelSetFail);
-        $('#dialog-result').show();
-      }
-    });
+      });
   }
 
   /**
