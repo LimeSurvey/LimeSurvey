@@ -647,7 +647,9 @@ class Permission extends LSActiveRecord
         if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID)
+            || $this->hasSurveysInGroupPermission($oSurvey->gsid, 'surveys', $sGlobalCRUD, $iUserID)
+            || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
