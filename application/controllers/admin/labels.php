@@ -438,6 +438,13 @@ class labels extends Survey_Common_Action
         echo ls_json_encode($output);
     }
 
+    /**
+     * Save label set via Ajax
+     * Used in question editor
+     * Echoes JSON
+     *
+     * @return void
+     */
     public function ajaxSets()
     {
         $lid = (int) Yii::app()->getRequest()->getPost('lid');
@@ -474,11 +481,11 @@ class labels extends Survey_Common_Action
                     $res = 'fail';
                 }
                 
-                $labelI10N = new LabelL10n;
-                $labelI10N->language = $lang;
-                $labelI10N->label_id = $label->id;
-                $labelI10N->title = $ans;
-                if (!$labelI10N->save()) {
+                $labell10n = new LabelL10n;
+                $labell10n->language = $lang;
+                $labell10n->label_id = $label->id;
+                $labell10n->title = $ans;
+                if (!$labell10n->save()) {
                     $res = 'fail';
                 }
             }

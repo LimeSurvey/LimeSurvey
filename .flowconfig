@@ -3,5 +3,3 @@
 .*/assets/packages/.*
 [lints]
 all=error
-[libs]
-jquery.js.flow

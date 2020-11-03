@@ -58,13 +58,13 @@ LS.questionEditor = (function () {
     throw 'abort';
   }
 
-  /** @type {array} Used in setLabel */
-  let flag = [];
   /** @type {boolean} Used in ajaxcheckdup */
   let check = true;
 
   /*:: declare function updateRowProperties(): void */
   /**
+   * Rebind onclick events for subquestions and answer options?
+   *
    * @return {void}
    */
   function updateRowProperties() {
@@ -1022,44 +1022,52 @@ LS.questionEditor = (function () {
    * @param {event} event
    * @return {void}
    */
-  function setlabel(event /*: Event */) /*: void */ {
+  function setLabel(event /*: Event */) /*: void */ {
     const target = event.target;
     if (!(target instanceof HTMLElement)) {
       alert('target is not an HTMLElement');
       throw 'abort';
     }
 
+    const targetParent = target.parentNode;
     switch (target.getAttribute('id')) {
         case 'newlabel':
-            if (!flag[0]) {
-              $('#lasets').parent().remove();
-              $(target).parent().after(`<p class="label-name-wrapper"><label for="laname">${languageJson.sLabelSetName}:</label> ` +
-                                       '<input type="text" name="laname" id="laname"></p>');
-                                       flag[0] = true;
-                                       flag[1] = false;
+            const lasets = document.getElementById('lasets');
+            if (lasets) {
+              lasets.remove();
+            }
+            if (targetParent instanceof HTMLElement) {
+              targetParent.after(
+                `<p class="label-name-wrapper"><label for="laname">${languageJson.sLabelSetName}:</label> ` +
+                  '<input type="text" name="laname" id="laname"></p>'
+              );
+            } else {
+              throw 'Internal error: targetParent is not an instance of HTMLElement';
             }
             break;
-
         case 'replacelabel':
-            if (!flag[1]) {
-              $('#laname').parent().remove();
-              $(target).parent().after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
-              $.getJSON(languageJson.lanameurl, (data) => {
-                $.each(data, (key, val) => {
-                  if (typeof val === 'string') {
-                    $('#lasets').append(`<option value="${key}">${val}</option>`);
-                  } else {
-                    throw 'val is not string';
-                  }
-                });
-              });
-              $('#lasets option[value=""]').remove();
-              flag[1] = true;
-              flag[0] = false;
+            const laname = document.getElementById('laname');
+            if (laname) {
+              laname.remove();
             }
+            if (targetParent instanceof HTMLElement) {
+              targetParent.after('<p class="label-name-wrapper"><select name="laname" id="lasets"><option value=""></option></select></p>');
+            } else {
+              throw 'Internal error: targetParent is not an instance of HTMLElement';
+            }
+            $('#lasets option[value=""]').remove();
+            $.getJSON(languageJson.lanameurl, (data) => {
+              $.each(data, (key, val) => {
+                if (typeof val === 'string') {
+                  $('#lasets').append(`<option value="${key}">${val}</option>`);
+                } else {
+                  throw 'val is not string';
+                }
+              });
+            });
             break;
         default:
-            alert('Internal error: Unsupported ');
+            alert('Internal error: Unsupported id in target (setLabel)');
             throw 'abort';
     }
   }
@@ -1256,8 +1264,7 @@ LS.questionEditor = (function () {
 
     $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
-    $('input[name=savelabeloption]:radio').click(setlabel);
-    flag = [false, false];
+    $('input[name=savelabeloption]:radio').click(setLabel);
     $('#btnsavelabelset').click(saveLabelSet);
     updateRowProperties();
 
