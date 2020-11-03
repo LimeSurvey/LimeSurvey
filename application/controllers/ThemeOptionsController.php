@@ -376,7 +376,7 @@ class ThemeOptionsController extends LSBaseController
             }
         }
 
-        $this->updateCommon($model);
+        $this->updateCommon($model, null, $gsid);
     }
 
     /**
@@ -659,7 +659,6 @@ class ThemeOptionsController extends LSBaseController
     {
          /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
          $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
-
          $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
          $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
          $aTemplateConfiguration       = $oModelWithInheritReplacement->getOptionPageAttributes();
@@ -696,7 +695,9 @@ class ThemeOptionsController extends LSBaseController
             'aOptionAttributes'      => $aOptionAttributes,
             'sid'             => $sid,
             'oParentOptions'  => $oParentOptions,
-            'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load
+            'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
+            'sid' => $sid,
+            'gsid' => $gsid,
         );
 
         if ($sid !== null) {

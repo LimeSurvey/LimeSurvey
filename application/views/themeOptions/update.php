@@ -5,8 +5,6 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
-$gsid = Yii::app()->request->getQuery('gsid', null);
-$sid = Yii::app()->request->getQuery('surveyid', null);
 ?>
 <?php if (empty($model->sid)): ?>
 <!-- This is only visible when we're not in survey view. -->
@@ -17,13 +15,11 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
 
                 <?php
                   $sThemeOptionUrl = App()->createUrl("themeOptions");
-                  $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid));
-
-                    $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
+                  $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid, "#" => 'templateSettingsFortThisGroup'));
+                  $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
                 ?>
                 <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
                     <span class="fa fa-backward"></span>
-                    &nbsp;&nbsp;
                     <?php eT('Close'); ?>
                 </a>
 
