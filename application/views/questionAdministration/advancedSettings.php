@@ -58,7 +58,8 @@
                                 'subquestions' => $question->subquestions ? $question->subquestions : [$question->getEmptySubquestion()],
                                 'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
-                                'language'     => $oSurvey->language
+                                'language'     => $oSurvey->language,
+                                'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
                             ],
                             true
                         ); ?>
@@ -77,7 +78,8 @@
                                 'answers'    => $question->answers ? $question->answers : [$question->getEmptyAnswerOption()],
                                 'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
-                                'language'   => $oSurvey->language
+                                'language'   => $oSurvey->language,
+                                'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
                             ],
                             true
                         ); ?>

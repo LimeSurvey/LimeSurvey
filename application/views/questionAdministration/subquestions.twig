@@ -104,7 +104,7 @@
                     {{ gT('Quick add...') }}
                 </button>
 
-                {% if has_permissions %}
+                {% if hasLabelSetPermission %}
                     <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
                         {{ gT('Save as label set') }}
                     </button>
