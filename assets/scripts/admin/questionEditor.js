@@ -763,7 +763,7 @@ LS.questionEditor = (function () {
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
           try {
-            const label /*: {code: string} */ = $(item).data('label');
+            const label /*: {code: string, title: string} */ = $(item).data('label');
             console.log('row', row);
             const $row = $(row);
             console.log('$row', $row);
@@ -955,7 +955,7 @@ LS.questionEditor = (function () {
         /* $('#quickadd').dialog('close'); */
         // TODO: What is item here?
         // TODO: Too dynamic to use "arguments", better to know.
-        arguments.forEach((item /*: {lang: string, langtable: _$, html: string} */) => {
+        arguments.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
             const { html } = item;
             const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
@@ -972,7 +972,7 @@ LS.questionEditor = (function () {
             }
             htmlRowObject.find('td.relevance-equation').find('input').val(1);
 
-            item.langtable.find('tbody').append(htmlRowObject);
+            $(item.langtable).find('tbody').append(htmlRowObject);
           });
         });
         $('#quickaddarea').val('');
@@ -1127,16 +1127,16 @@ LS.questionEditor = (function () {
 
       if ($.parseJSON(data) === 'ok') {
         if ($('#dialog-result').is(':visible')) {
-          $('#dialog-result-content').empty().append(lasuccess);
+          $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
           $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
         } else {
           $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
-          $('#dialog-result-content').empty().append(lasuccess);
+          $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
           $('#dialog-result').show();
         }
       } else {
         $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
-        $('#dialog-result-content').empty().append(lafail);
+        $('#dialog-result-content').empty().append(languageJson.labelSetFail);
         $('#dialog-result').show();
       }
     });
