@@ -20,12 +20,11 @@ top of things.
 ## Making changes
 
 * Create a topic branch from where you want to base your work.
-  * This is usually the master branch.
-  * Only target release branches if you are certain your fix must be on that
-    branch.
-  * To quickly create a topic branch based on master; `git checkout -b
-    fix/master/my_contribution master`. Please avoid working directly on the
-    `master` branch.
+  * Bug fixes go into the master branch
+  * New features go into the develop branch
+  * To quickly create a topic branch based on develop; `git checkout -b
+    fix/develop/my_contribution develop`. Please avoid working directly on the
+    `develop` or `master` branch.
 * Make commits of logical units.
 * Check for unnecessary whitespace with `git diff --check` before committing.
 * Make sure your commit messages are in the proper format - check out our 
