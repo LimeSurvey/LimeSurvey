@@ -1207,6 +1207,10 @@ LS.questionEditor = (function () {
       },
    ).then(() => {
    }).fail((xhr, textStatus, errorThrown) => {
+     LS.LsGlobalNotifier.create(
+       xhr.responseJSON.message,
+       'well well-lg bg-danger text-center'
+     );
      console.log('xhr', xhr);
      console.log('textStatus', textStatus);
      console.log('errorThrown', errorThrown);
