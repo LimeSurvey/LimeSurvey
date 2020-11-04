@@ -57,13 +57,16 @@ class SurveysGroupsController extends Survey_Common_Action
                 $modelSettings->setToInherit();
 
                 if ($modelSettings->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
+                    $this->getController()->redirect(
+                        App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
+                    );
                 }
                 // What happen if SurveysGroups saved but no SurveysGroupsettings ?
             }
         }
         $aData = array(
-            'model' => $model
+            'model' => $model,
+            'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#'=>'settingsForThisGroup')),
         );
         $aData['aRigths'] = array(
             'update' => true,
@@ -134,7 +137,8 @@ class SurveysGroupsController extends Survey_Common_Action
         }
 
         $aData = array(
-            'model' => $model
+            'model' => $model,
+            'action' => App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup')),
         );
         $oSurveySearch = new Survey('search');
         $oSurveySearch->gsid = $model->gsid;
@@ -805,7 +809,7 @@ class SurveysGroupsController extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $sGroupTitle = $oGroupToDelete->title;
-        $returnUrl = App()->getRequest()->getPost('returnUrl', array('surveyAdministration/listsurveys'));
+        $returnUrl = App()->getRequest()->getPost('returnUrl', array('surveyAdministration/listsurveys', '#' => 'surveygroups'));
         if ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
             $this->getController()->redirect($returnUrl);
