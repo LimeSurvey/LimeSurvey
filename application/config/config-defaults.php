@@ -112,6 +112,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 // -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
 
 // Experimental parameters, only change if you know what you're doing
 //

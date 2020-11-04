@@ -9,14 +9,14 @@ var LS = LS || {
 function updateParameters()
 {
 if ($('#bounceprocessing input:radio:checked').val()!='L'){
-        $("#bounceaccounttype").attr('disabled','disabled');
+        $("#bounceaccounttype label").addClass('disabled');
         $("#bounceaccounthost").attr('disabled','disabled');
         $("#bounceaccountuser").attr('disabled','disabled');
         $("#bounceaccountpass").attr('disabled','disabled');
         $('#bounceaccountencryption label').addClass('disabled');
     }
     else {
-        $("#bounceaccounttype").removeAttr('disabled');
+        $("#bounceaccounttype label").removeClass('disabled');
         $("#bounceaccounthost").removeAttr('disabled');
         $("#bounceaccountuser").removeAttr('disabled');
         $("#bounceaccountpass").removeAttr('disabled');

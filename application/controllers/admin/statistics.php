@@ -40,7 +40,6 @@ class statistics extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $imageurl = Yii::app()->getConfig("imageurl");
         $aData = array('imageurl' => $imageurl);
-        $oSurvey = Survey::model()->findByPk($surveyid);
 
         /*
          * We need this later:
@@ -110,11 +109,23 @@ class statistics extends Survey_Common_Action
         //still no survey ID -> error
         $aData['surveyid'] = $surveyid;
 
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
+        $oSurvey=Survey::model()->findByPk($surveyid); 
+        if (!$oSurvey){
+            Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+        } 
+
+        if (!$oSurvey->isActive){
+            Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$surveyid}"));
+        }        
 
         // Set language for questions and answers to base language of this survey
-        $language = $oSurvey->language;
-        $aData['language'] = $language;
-
+        $aData['language']= $oSurvey->language;
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
@@ -517,6 +528,9 @@ class statistics extends Survey_Common_Action
      */
     function listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         Yii::app()->loadHelper('admin/statistics');
         $helper = new statistics_helper();
         $aData['data'] = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
@@ -545,18 +559,23 @@ class statistics extends Survey_Common_Action
         $tempdir = Yii::app()->getConfig("tempdir");
         $MyCache = new pCache($tempdir . '/');
         $aData['success'] = 1;
-        $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
 
         if (isset($_POST['cmd']) && isset($_POST['id'])) {
+            $sStatisticsLanguage = sanitize_languagecode($_POST['sStatisticsLanguage']);
             $sQCode = $_POST['id'];
             if (!is_numeric(substr($sQCode, 0, 1))) {
                 // Strip first char when not numeric (probably T or D)
                 $sQCode = substr($sQCode, 1);
             }
             list($qsid, $qgid, $qqid) = explode("X", substr($sQCode, 0), 3);
-            $survey = Survey::model()->findByPk($qsid);
 
-            $aFieldmap = createFieldMap($survey, 'full', false, false, $sStatisticsLanguage);
+            if (!Permission::model()->hasSurveyPermission($qsid, 'statistics', 'read')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
+
+            $oSurvey = Survey::model()->findByPk($qsid);
+
+            $aFieldmap = createFieldMap($oSurvey, 'full', false, false, $sStatisticsLanguage);
             $qtype = $aFieldmap[$sQCode]['type'];
             $qqid = $aFieldmap[$sQCode]['qid'];
             $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
@@ -656,10 +675,27 @@ class statistics extends Survey_Common_Action
         $maxchars = 50;
         $statisticsoutput = '';
         $cr_statisticsoutput = '';
-        $survey = Survey::model()->findByPk($surveyid);
 
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')) {
+          throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
+        if (!$oSurvey){
+            Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
+            $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+
+        } 
+
+        if (!$oSurvey->isActive){
+            Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$oSurveyid}"));
+        }        
+
+
+        
         // Set language for questions and answers to base language of this survey
-        $language = $survey->language;
+        $language = $oSurvey->language;
         $summary = array();
         $summary[0] = "datestampE";
         $summary[1] = "datestampG";

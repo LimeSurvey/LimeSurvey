@@ -869,14 +869,14 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * Get surveymenu configuration
+     * Get surveymenu configuration from table surveymenu and prepares
      *
-     * @todo this function can go directly into Surveymenu, why implemted it here?
+     * @todo this function can go directly into Surveymenu, why implemted it here? ($this is used here ...)
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      * 
      * @param string $position Position
      * 
-     * @return string
+     * @return array
      */
     public function getSurveyMenus($position = '')
     {
@@ -890,8 +890,6 @@ class Survey extends LSActiveRecord
             $this,
             $position
         );
-        //merge them
-        $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
 
         return $aDefaultSurveyMenus + $aThisSurveyMenues;
     }

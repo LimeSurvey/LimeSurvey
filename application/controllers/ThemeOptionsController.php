@@ -352,7 +352,7 @@ class ThemeOptionsController extends LSBaseController
      * If update is successful, the browser will be redirected to the 'view' page.
      *
      * @param integer $id   ID of model.
-     * @param integer $gsid ?
+     * @param integer $gsid id of survey group
      * @param null    $l    ?
      *
      * @return void
@@ -365,7 +365,7 @@ class ThemeOptionsController extends LSBaseController
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
             if ($model->bJustCreated === true && $l === null) {
-                $this->redirect(array("themeOptions/updateSurveyGroup/", ['id'=>$id, 'gsid'=>$gsid, 'l'=>1]));
+                $this->redirect(array("themeOptions/updateSurveyGroup/", 'id'=>$id, 'gsid'=>$gsid, 'l'=>1));
             }
 
             if (isset($_POST['TemplateConfiguration'])) {
@@ -373,7 +373,6 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     App()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->redirect(array("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));
                 }
             }
 
@@ -400,7 +399,7 @@ class ThemeOptionsController extends LSBaseController
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
         SettingGlobal::setSetting('admintheme', $sAdmintheme);
-        $this->redirect(array("themeOptions/index#adminthemes"));
+        $this->redirect(array("themeOptions/index","#" => "adminthemes"));
     }
 
     /**
@@ -603,7 +602,7 @@ class ThemeOptionsController extends LSBaseController
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->redirect(
-                array("/admin/surveysgroups/sa/update/", ['id'=>$gsid])
+                array("/admin/surveysgroups/sa/update/", 'id'=>$gsid)
             );
         }
     }
