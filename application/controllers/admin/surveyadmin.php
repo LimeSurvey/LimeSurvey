@@ -1162,7 +1162,8 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['sSummaryHeader'] = gT("Survey structure import summary");
                 $aPathInfo = pathinfo($_FILES['the_file']['name']);
                 // check mime_type of file 
-                $mime=mime_content_type($_FILES['the_file']['tmp_name']);
+                $mimeType = LSFileHelper::getMimeType($_FILES['the_file']['tmp_name'], null, false);
+
 
                 if (isset($aPathInfo['extension'])) {
                     $sExtension = $aPathInfo['extension'];
@@ -1179,15 +1180,15 @@ class SurveyAdmin extends Survey_Common_Action
             if ($action == 'importsurvey') {
 
                 $sFullFilepath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(30).'.'.$sExtension;
-                if(!in_array($mime,['text/tab-separated-values','application/octet-stream','text/plain'])){
-                    $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($mime));
-                    $aData['bFailed'] = true; 
-                }elseif ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+                if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
                     $aData['sErrorMessage'] = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024).'<br>';
                     $aData['bFailed'] = true;
                 } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($sExtension));
                     $aData['bFailed'] = true;
+                }elseif(!in_array($mimeType,['text/tab-separated-values','text/plain'])){
+                    $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($mime));
+                    $aData['bFailed'] = true; 
                 } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                     $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     $aData['bFailed'] = true;
