@@ -1118,43 +1118,101 @@ LS.questionEditor = (function () {
   /**
    * Called when saving new label set
    *
+   * @param {Event} e
    * @return {void}
    */
-  function saveLabelSetAjax() {
+  function saveLabelSetAjax(e /*: Event */) {
     console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
-    const lid = $('#lasets').val() ? $('#lasets').val() : 0;
-    // get code for the current scale
-    const code = [];
-    if ($('.code').length > 0) { // Deactivated survey
-      $('.code').each(function () {
-        if ($(this).attr('id').substr(-1) === scaleId) code.push($(this).val());
+    const lasets = document.getElementById('lasets');
+    let lid;
+    if (lasets instanceof HTMLInputElement) {
+      lid = lasets.value;
+    } else {
+      lid = 0;
+    }
+
+    // Get question/answer option codes for the current scale
+    const codes = [];
+    //if (!(e.target instanceof HTMLElement)) {
+      //throw 'nope';
+    //}
+    //const targetParent = e.target.parentNode;
+    const codeInputs = document.querySelectorAll('.code');
+    if (codeInputs.length > 0) { // Deactivated survey
+      codeInputs.forEach((codeInput) => {
+        if (codeInput instanceof HTMLInputElement) {
+          const id = codeInput.getAttribute('id');
+          if (id != null && parseInt(id.substr(-1)) === scaleId) {
+            codes.push(codeInput.value);
+          }
+        }
       });
     } else { // Activated survey
       $('.answertable input[name^="code_"]').each(function () {
-        if ($(this).attr('name').substr(-1) === scaleId) code.push($(this).attr('value'));
+        if ($(this).attr('name').substr(-1) === scaleId) codes.push($(this).attr('value'));
       });
     }
+    console.log('codes', codes);
 
     const answers = {};
     const languages = languageJson.langs.split(';');
 
+    // TODO: use languages.forEach
     for (let x in languages) {
       answers[languages[x]] = [];
-      $('.answer').each(function () {  // jshint ignore: line
-        if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) answers[languages[x]].push($(this).val());
+      $('.answer').each(function loop() {
+        if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) {
+          answers[languages[x]].push($(this).val());
+        }
       });
     }
 
-    $.post(
+    /*
+    const response = await fetch(
       languageJson.lasaveurl,
       {
-        laname: $('#laname').val(),
-        lid,
-        code,
-        answers
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        // TODO: FormData here
+        body: JSON.stringify(
+          {
+            laname: $('input[name=laname]').val(),
+            lid: lid,
+            code: codes,
+            answers: answers,
+            [languageJson.csrf.tokenName]: languageJson.csrf.token
+          },
+        ),
+        credentials: 'include'
+      }
+    );
+    if (response.ok) {
+      console.log(await response.json());
+    } else {
+      alert('Internal error: Could not POST request: ' + response.status + ', ' + response.statusText);
+      throw 'abort';
+    }
+    */
+   $.post(
+      languageJson.lasaveurl,
+      {
+        laname: $('input[name=laname]').val(),
+        lid: lid,
+        code: codes,
+        answers: answers,
       },
+   ).then(() => {
+   }).fail((xhr, textStatus, errorThrown) => {
+     console.log('xhr', xhr);
+     console.log('textStatus', textStatus);
+     console.log('errorThrown', errorThrown);
+   });
+
+        /*
       (data) => {
         console.log('data', data);
         // $("#saveaslabel").dialog('close');
@@ -1175,7 +1233,9 @@ LS.questionEditor = (function () {
           $('#dialog-result-content').empty().append(languageJson.labelSetFail);
           $('#dialog-result').show();
         }
-      });
+      }
+    );
+    */
   }
 
   /**
@@ -1205,15 +1265,16 @@ LS.questionEditor = (function () {
   }
 
   /**
+   * @param {Event} e
    * @return {void}
    */
-  function saveLabelSet() {
+  function saveLabelSet(e) {
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
     if (lid === 0) {
       const response = ajaxcheckdup();
       response.then(() => {
         if (check) {
-          saveLabelSetAjax();
+          saveLabelSetAjax(e);
         }
       });
     } else {
@@ -1222,7 +1283,7 @@ LS.questionEditor = (function () {
         $('#strReplaceMessage').html(data);
         $('#dialog-confirm-replaceModal').modal();
         $('#btnlconfirmreplace').click(() => {
-          saveLabelSetAjax();
+          saveLabelSetAjax(e);
         });
       });
     }

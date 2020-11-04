@@ -33,6 +33,10 @@ $scriptVariables = [
         'duplicateanswercode'     => gT('Error: You are trying to use duplicate answer codes.','js'),
         'sAssessmentValue'        => gT('Assessment value','js'),
         'scalecount'              => $scalecount,
+    ],
+    'csrf' => [
+        'tokenName'               => Yii::app()->request->csrfTokenName,
+        'token'                   => Yii::app()->request->csrfToken,
     ]
 ];
 

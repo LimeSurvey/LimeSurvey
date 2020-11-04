@@ -444,6 +444,7 @@ class labels extends Survey_Common_Action
      * Echoes JSON
      *
      * @return void
+     * @todo Permission check
      */
     public function ajaxSets()
     {
@@ -451,6 +452,13 @@ class labels extends Survey_Common_Action
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', array());
+        if (empty($answers)) {
+            // TODO: Do helper for these kinds of errors?
+            header('Content-Type: application/json');
+            http_response_code(405);
+            die(json_encode(['message' => 'No answers']));
+        }
+
         //Create label set
         $language = "";
         foreach ($answers as $lang => $answer) {
