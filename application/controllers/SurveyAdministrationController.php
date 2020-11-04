@@ -132,8 +132,8 @@ class SurveyAdministrationController extends LSBaseController
         // $aData['display']['surveysummary'] = true;
 
         // Last survey visited
-        $setting_entry = 'last_survey_' . App()->user->getId();
-        SettingGlobal::setSetting($setting_entry, $iSurveyID);
+        $userId = App()->user->getId();
+        SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
@@ -141,13 +141,11 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID;
         // TODO: getGlobalSetting() DEPRECATED
-        $lastquestion = getGlobalSetting($setting_entry);
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID . '_gid';
+        $lastquestion = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID);
 
         // TODO: getGlobalSetting() DEPRECATED
-        $lastquestiongroup = getGlobalSetting($setting_entry);
+        $lastquestiongroup = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID . '_gid');
 
         if ($lastquestion != null && $lastquestiongroup != null) {
             $aData['showLastQuestion'] = true;

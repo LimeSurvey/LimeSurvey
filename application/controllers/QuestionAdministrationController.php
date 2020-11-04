@@ -435,7 +435,10 @@ class QuestionAdministrationController extends LSBaseController
 
         // Compile the newly stored data to update the FE
         //$oNewQuestion = Question::model()->findByPk($oQuestion->qid);
-        $oNewQuestion = Question::model()->find('sid = :sid AND qid = :qid', [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]);
+        $oNewQuestion = Question::model()->find(
+            'sid = :sid AND qid = :qid',
+            [':sid' => $iSurveyId, ':qid' => (int) $oQuestion->qid]
+        );
         $aCompiledQuestionData = $this->getCompiledQuestionData($oNewQuestion);
         $aQuestionAttributeData = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
         $aQuestionGeneralOptions = $this->getGeneralOptions(
