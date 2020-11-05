@@ -320,9 +320,10 @@ class SurveysGroupsController extends Survey_Common_Action
         /* Find all current user list with rights */
         /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
         $oCriteria = new CDbCriteria;
-        $oCriteria->group ='uid';
-        $oCriteria->compare("entity","SurveysGroups"); // on SurveyGroup
-        $oCriteria->compare("entity_id",$model->primaryKey); // on this SurveyGroup
+        $oCriteria->select = ['uid','entity','entity_id'];
+        $oCriteria->group = 'uid';
+        $oCriteria->compare("entity", "SurveysGroups"); // on SurveyGroup
+        $oCriteria->compare("entity_id", $model->primaryKey); // on this SurveyGroup
         $aExistingUsers = CHtml::listData(Permission::model()->findAll($oCriteria),'uid','uid');
         $oExistingUsers = array();
         $aCurrentsUserRights = array();

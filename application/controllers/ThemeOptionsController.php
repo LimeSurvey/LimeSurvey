@@ -404,7 +404,7 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionIndex() : void
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'read')) {
+        if (!Permission::model()->hasGlobalPermission('templates', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aData = array();
@@ -697,7 +697,7 @@ class ThemeOptionsController extends LSBaseController
             'oParentOptions'  => $oParentOptions,
             'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
             'sid' => $sid,
-            'gsid' => $gsid,
+            'gsid' => $gsid
         );
 
         if ($sid !== null) {
