@@ -451,12 +451,15 @@ class labels extends Survey_Common_Action
         $lid = (int) Yii::app()->getRequest()->getPost('lid');
         $answers = Yii::app()->getRequest()->getPost('answers');
         $code = Yii::app()->getRequest()->getPost('code');
+        $labelName = Yii::app()->getRequest()->getPost('laname');
+
+        if (empty($labelName)) {
+            throw new CHttpException(405, gT('Could not save label set: Label set name is empty.'));
+        }
+
         $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', array());
         if (empty($answers)) {
-            // TODO: Do helper for these kinds of errors?
-            header('Content-Type: application/json');
-            http_response_code(405);
-            die(json_encode(['message' => 'No answers']));
+            throw new CHttpException(405,  gT('Could not save label set: Found no answers.'));
         }
 
         //Create label set
@@ -475,26 +478,56 @@ class labels extends Survey_Common_Action
         } else {
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
         }
+
+/*
+Array
+(
+    [answeroptions[1] => Array
+        (
+            [0] => Array
+                (
+                    [answeroptionl10n] => Array
+                        (
+                            [en] => 
+                            [sq] => 
+                        )
+
+                )
+
+        )
+
+)
+*/
+
         $res = 'ok'; //optimistic
-        foreach ($answers as $lang => $answer) {
-            foreach ($answer as $key => $ans) {
+        foreach ($answers as $answer) {
+            foreach ($answer as $i => $answeroptionl10ns) {
                 $label = new Label;
                 
                 $label->lid = $lid;
-                $label->code = $code[$key];
-                $label->sortorder = $key;
-                $label->language = $lang;
-                $label->assessment_value = isset($aAssessmentValues[$key]) ? $aAssessmentValues[$key] : 0;
+                $label->code = $code[$i];
+                $label->sortorder = $i;
+                $label->assessment_value = isset($aAssessmentValues[$i]) ? $aAssessmentValues[$i] : 0;
                 if (!$label->save()) {
                     $res = 'fail';
                 }
-                
-                $labell10n = new LabelL10n;
-                $labell10n->language = $lang;
-                $labell10n->label_id = $label->id;
-                $labell10n->title = $ans;
-                if (!$labell10n->save()) {
-                    $res = 'fail';
+
+                foreach($answeroptionl10ns as $langs) {
+                  foreach ($langs as $lang => $content) {
+                    $labell10n = new LabelL10n;
+                    //echo '<pre>';
+                    //var_dump($answeroptionl10ns);
+                    //var_dump($lang);
+                    //var_dump($label->id);
+                    //var_dump($content);
+                    //die;
+                    $labell10n->language = $lang;
+                    $labell10n->label_id = $label->id;
+                    $labell10n->title = $content;
+                    if (!$labell10n->save()) {
+                      $res = 'fail';
+                    }
+                  }
                 }
             }
         }

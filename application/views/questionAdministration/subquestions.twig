@@ -28,7 +28,7 @@
             <!-- Subquestions table -->
             <!-- NB: Both questions and answer options uses class "answertable". -->
             <table
-                class='answertable table table-responsive'
+                class='answertable subquestions-table table table-responsive'
                 id='subquestions_{{lang}}_{{scale_id}}'
                 data-scaleid='{{ scale_id }}'
                 data-input-data-id='add-subquestion-input-javascript-datas'
@@ -105,7 +105,13 @@
                 </button>
 
                 {% if hasLabelSetPermission %}
-                    <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
+                    <button
+                        class='bthsaveaslabel btn btn-default'
+                        id='bthsaveaslabel_{{ scale_id }}'
+                        type='button'
+                        onclick="LS.questionEditor.showLabelSetSaver(event, 'subquestions-table');"
+                        data-target="#saveaslabelModal"
+                    >
                         {{ gT('Save as label set') }}
                     </button>
                 {% endif %}

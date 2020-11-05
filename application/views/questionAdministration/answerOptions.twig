@@ -18,7 +18,7 @@
 
             <!-- Answer options table -->
             <table
-                class='answertable table table-responsive'
+                class='answertable answeroptions-table table table-responsive'
                 id='answeroptions_{{lang}}_{{scale_id}}'
                 data-scaleid='{{ scale_id }}'
                 data-input-data-id='add-answer-option-input-javascript-datas'
@@ -104,7 +104,13 @@
                 </button>
 
                 {% if hasLabelSetPermission %}
-                    <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
+                    <button
+                        class='bthsaveaslabel btn btn-default'
+                        id='bthsaveaslabel_{{ scale_id }}'
+                        type='button'
+                        onclick="LS.questionEditor.showLabelSetSaver(event, 'answeroptions-table');"
+                        data-target="#saveaslabelModal"
+                    >
                         {{ gT('Save as label set') }}
                     </button>
                 {% endif %}

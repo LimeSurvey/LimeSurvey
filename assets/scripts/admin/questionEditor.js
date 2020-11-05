@@ -604,6 +604,7 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function labelSetDestruct() {
+    console.log('labelSetDestruct');
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
   }
@@ -1119,9 +1120,10 @@ LS.questionEditor = (function () {
    * Called when saving new label set
    *
    * @param {Event} e
+   * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
    * @return {void}
    */
-  function saveLabelSetAjax(e /*: Event */) {
+  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
     console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
@@ -1135,21 +1137,25 @@ LS.questionEditor = (function () {
 
     // Get question/answer option codes for the current scale
     const codes = [];
-    //if (!(e.target instanceof HTMLElement)) {
-      //throw 'nope';
-    //}
-    //const targetParent = e.target.parentNode;
-    const codeInputs = document.querySelectorAll('.code');
-    if (codeInputs.length > 0) { // Deactivated survey
+    const table = document.querySelector('.' + tableClassName);
+    if (table == null) {
+      throw 'found no table with class .' + tableClassName;
+    }
+
+    const codeInputs = table.querySelectorAll('.code');
+    console.log('codeInputs', codeInputs);
+    if (codeInputs.length > 0) {
+      // Deactivated survey
       codeInputs.forEach((codeInput) => {
         if (codeInput instanceof HTMLInputElement) {
-          const id = codeInput.getAttribute('id');
-          if (id != null && parseInt(id.substr(-1)) === scaleId) {
-            codes.push(codeInput.value);
-          }
+          codes.push(codeInput.value);
+        } else {
+          throw 'codeInputs is not an HTMLInputElement';
         }
       });
-    } else { // Activated survey
+    } else {
+      // Activated survey
+      // TODO
       $('.answertable input[name^="code_"]').each(function () {
         if ($(this).attr('name').substr(-1) === scaleId) codes.push($(this).attr('value'));
       });
@@ -1157,17 +1163,17 @@ LS.questionEditor = (function () {
     console.log('codes', codes);
 
     const answers = {};
-    const languages = languageJson.langs.split(';');
 
-    // TODO: use languages.forEach
-    for (let x in languages) {
-      answers[languages[x]] = [];
-      $('.answer').each(function loop() {
-        if ($(this).attr('id').substr(-1) === scaleId && $(this).attr('id').indexOf(languages[x]) !== -1) {
-          answers[languages[x]].push($(this).val());
+    const tables = document.querySelectorAll('.' + tableClassName);
+    tables.forEach((table) => {
+      table.querySelectorAll('.answer').forEach((answerInput) => {
+        if (answerInput instanceof HTMLInputElement) {
+          answers[answerInput.name] = answerInput.value;
+        } else {
+          throw 'answerInput is not an HTMLInputElement';
         }
       });
-    }
+    });
 
     /*
     const response = await fetch(
@@ -1200,46 +1206,47 @@ LS.questionEditor = (function () {
    $.post(
       languageJson.lasaveurl,
       {
-        laname: $('input[name=laname]').val(),
-        lid: lid,
-        code: codes,
+        laname:  $('input[name=laname]').val(),
+        lid:     lid,
+        code:    codes,
         answers: answers,
       },
-   ).then(() => {
-   }).fail((xhr, textStatus, errorThrown) => {
-     LS.LsGlobalNotifier.create(
-       xhr.responseJSON.message,
-       'well well-lg bg-danger text-center'
-     );
-     console.log('xhr', xhr);
-     console.log('textStatus', textStatus);
-     console.log('errorThrown', errorThrown);
+   ).then((data) => {
+     console.log('data', data);
+     // $("#saveaslabel").dialog('close');
+     $('#saveaslabelModal').modal('hide');
+     $('#dialog-confirm-replaceModal').modal('hide');
+
+     if ($.parseJSON(data) === 'ok') {
+       if ($('#dialog-result').is(':visible')) {
+         $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
+         $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
+       } else {
+         $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
+         $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
+         $('#dialog-result').show();
+       }
+     } else {
+       $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
+       $('#dialog-result-content').empty().append(languageJson.labelSetFail);
+       $('#dialog-result').show();
+     }
+   }).fail((xhr /*: XMLHttpRequest */, textStatus, errorThrown) => {
+     console.log(xhr);
+     console.log(textStatus);
+     console.log(errorThrown);
+     if (xhr.status === 500) {
+       LS.LsGlobalNotifier.create(
+         errorThrown,
+         'well-lg bg-danger text-center'
+       );
+     } else {
+       LS.LsGlobalNotifier.create(
+         xhr.responseJSON.message,
+         'well-lg bg-danger text-center'
+       );
+     }
    });
-
-        /*
-      (data) => {
-        console.log('data', data);
-        // $("#saveaslabel").dialog('close');
-        $('#saveaslabelModal').modal('hide');
-        $('#dialog-confirm-replaceModal').modal('hide');
-
-        if ($.parseJSON(data) === 'ok') {
-          if ($('#dialog-result').is(':visible')) {
-            $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
-            $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
-          } else {
-            $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
-            $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
-            $('#dialog-result').show();
-          }
-        } else {
-          $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
-          $('#dialog-result-content').empty().append(languageJson.labelSetFail);
-          $('#dialog-result').show();
-        }
-      }
-    );
-    */
   }
 
   /**
@@ -1269,31 +1276,37 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * @param {Event} e
+   * @param {Event} event
+   * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
    * @return {void}
    */
-  function saveLabelSet(e) {
+  function onClickSaveLabelSet(event /*: Event */, tableClassName /*: string */) {
+    console.log('tableClassName', tableClassName);
+    // TODO: What is lid?
+    // TODO: Where is lasets defined???
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
     if (lid === 0) {
       const response = ajaxcheckdup();
       response.then(() => {
         if (check) {
-          saveLabelSetAjax(e);
+          saveLabelSetAjax(event, tableClassName);
         }
       });
     } else {
+      console.log('here');
       const aLanguages = languageJson.langs.split(';');
       $.post(languageJson.sCheckLabelURL, { languages: aLanguages, lid, bCheckAssessments: 1 }, (data) => {
         $('#strReplaceMessage').html(data);
         $('#dialog-confirm-replaceModal').modal();
         $('#btnlconfirmreplace').click(() => {
-          saveLabelSetAjax(e);
+          saveLabelSetAjax(event, tableClassName);
         });
       });
     }
   }
   /**
    * @return {boolean}
+   * @todo Works?
    */
   function codeDuplicatesCheck() {
     // $('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
@@ -1358,7 +1371,6 @@ LS.questionEditor = (function () {
     $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
     $('input[name=savelabeloption]:radio').click(setLabel);
-    $('#btnsavelabelset').click(saveLabelSet);
     updateRowProperties();
 
     bindExpandRelevanceEquation();
@@ -1502,6 +1514,8 @@ LS.questionEditor = (function () {
     },
 
     /**
+     * Used in onclick event in Twig template.
+     *
      * @param {Event} event
      * @param {string} source
      */
@@ -1518,7 +1532,24 @@ LS.questionEditor = (function () {
       $('#labelsetbrowserModal').modal('show');
 
       initLabelSetModal(event);
-    }
+    },
 
+    /**
+     * Used in onclick event in Twig template.
+     *
+     * @param {Event} event
+     * @param {string} source
+     */
+    showLabelSetSaver: function(event /*: Event */, tableClassName /*: string */) {
+      const button = document.getElementById('btnsavelabelset');
+      if (button == null) {
+        throw 'Found no btnsavelabelset';
+      }
+      button.onclick = () => {
+        event.preventDefault();
+        onClickSaveLabelSet(event, tableClassName);
+      };
+      $('#saveaslabelModal').modal('show');
+    }
   };
 })();
