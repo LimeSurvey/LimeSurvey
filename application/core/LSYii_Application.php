@@ -399,6 +399,12 @@ class LSYii_Application extends CWebApplication
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
         }
+        if (Yii::app()->request->isAjaxRequest &&
+            $event->exception instanceof CHttpException) {
+            header('Content-Type: application/json');
+            http_response_code($event->exception->statusCode);
+            die(json_encode(['message' => $event->exception->getMessage()]));
+        }
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
             /* Can restrict to admin ? */
