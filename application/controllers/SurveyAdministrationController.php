@@ -92,6 +92,12 @@ class SurveyAdministrationController extends LSBaseController
     public function actionView()
     {
         $iSurveyID = $this->getSurveyIdFromGetRequest();
+
+        if (!Permission::model()->hasSurveyPermission((int)$iSurveyID, 'survey', 'read')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $beforeSurveyAdminView = new PluginEvent('beforeSurveyAdminView');
         $beforeSurveyAdminView->set('surveyId', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveyAdminView);
@@ -178,24 +184,6 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * Loads list of surveys and its few quick properties.
-     *
-     * @deprecated not used anymore (let it here for a while to see if bugs come up)
-     *
-     * @access public
-     * @return void
-     */
-    /**
-    public function actionIndex()
-    {
-        $this->redirect(
-            array(
-                'surveyAdministration/listsurveys'
-            )
-        );
-    }*/
-
-    /**
      * List Surveys.
      *
      * @return void
@@ -208,6 +196,8 @@ class SurveyAdministrationController extends LSBaseController
 
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $aData['issuperadmin'] = true;
+        }else{
+
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
@@ -358,8 +348,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $esrow = $this->fetchSurveyInfo('newsurvey');
 
-
-        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
         $aData['esrow'] = $esrow;
@@ -378,7 +366,7 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         //Prepare the edition panes
-        $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
+    //    $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
 
         $defaultLanguage = App()->getConfig('defaultlang');
 
@@ -629,6 +617,22 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionGetCurrentEditorValues($sid)
     {
+        //Permission check
+        if(!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')){
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("No permission"),
+                        'debug' => null
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
         $iSurveyId = (int)$sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -712,6 +716,12 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleTheme()
     {
+        //only superadmin can do this
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
@@ -737,6 +747,11 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
@@ -793,7 +808,7 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * AjaxRequest get questionGroup with containing questions
      *
-     * @todo this could go to the questiongroupAdministrationController
+     * @todo this could go to the questiongroupAdministrationController ?
      *
      * @param int $surveyid Given Survey ID
      *
@@ -916,7 +931,6 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * Method to call current date information by ajax
-
      *
      * @return JSON | string
      * @throws CException
@@ -924,6 +938,8 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetDateFormatOptions()
     {
         $aRawDateFormats = getDateFormatData();
+
+        //todo: does this action needs a permission check? what permission should be checked?
 
         return $this->renderPartial(
             '/admin/super/_renderJson',
@@ -1024,6 +1040,23 @@ class SurveyAdministrationController extends LSBaseController
     public function actionGetDataSecTextSettings($sid = null)
     {
         $iSurveyId = (int)$sid;
+
+        //permission check ...
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'read')) {
+            return $this->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => false,
+                        'message' => gT("No permission"),
+                        'debug' => null
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
@@ -1715,6 +1748,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return void
      */
+    /*
     private function actionEditSurvey_json()
     {
         $operation = Yii::app()->request->getPost('oper');
@@ -1727,7 +1761,7 @@ class SurveyAdministrationController extends LSBaseController
                 }
             }
         }
-    }
+    }*/
 
     /**
      * New system of rendering content
@@ -1908,6 +1942,8 @@ class SurveyAdministrationController extends LSBaseController
 
     /**
      * @param int $surveyid Given Survey ID.
+     *
+     * @deprecated this action is never used
      *
      * @return void
      * @todo   Add TypeDoc.
@@ -2181,6 +2217,12 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionExpireMultipleSurveys()
     {
+        //permission check: only superadmin is allowed to do this
+        if(!Permission::model()->hasGlobalPermission('superadmin')){
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->redirect(Yii::app()->request->urlReferrer);
+        }
+
         $sSurveys = $_POST['sItems'];
         $aSIDs = json_decode($sSurveys);
         $aResults = array();
@@ -2812,6 +2854,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Returns data for text edit.
      *
+     * BE CAREFUL (this function is not called directly, but by call_user_func_array and the name of function in db .. )
+     *
      * @param Survey $survey Given Survey.
      *
      * @return array
@@ -2842,7 +2886,6 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         App()->getClientScript()->registerPackage('ace');
-        App()->getClientScript()->registerPackage('textelements');
         $aData = $aTabTitles = $aTabContents = array();
         return $aData;
     }

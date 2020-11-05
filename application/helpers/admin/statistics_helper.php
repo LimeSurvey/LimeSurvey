@@ -410,12 +410,12 @@ function buildSelects($allfields, $surveyid, $language)
                 elseif ($firstletter == "N" || $firstletter == "K") {
                     //value greater than
                     if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_float($_POST[$pv]);
                     }
 
                     //value less than
                     if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_float($_POST[$pv]);
                     }
                 }
 
