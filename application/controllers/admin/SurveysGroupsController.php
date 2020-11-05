@@ -641,7 +641,7 @@ class SurveysGroupsController extends Survey_Common_Action
                         ":entity_id" => $id,
                         ":uid" => $userId,
                         ":permission" => $sPermission
-                    ),
+                    )
                 );
                 foreach(array_keys($aSurveysGroupsPermissions[$sPermission]['current']) as $sCrud) {
                     if($aSurveysGroupsPermissions[$sPermission][$sCrud]) {
@@ -685,7 +685,7 @@ class SurveysGroupsController extends Survey_Common_Action
                     'checked'=> false,
                     'disabled' => !Permission::model()->hasSurveyGroupPermission($id,$sPermission,'export'),
                     'indeterminate'=> false
-                ),
+                )
             );
             $aSurveysInGroupPermissions[$sPermission]['entity'] = 'SurveysInGroup';
             if ($type == 'user') {
@@ -696,7 +696,7 @@ class SurveysGroupsController extends Survey_Common_Action
                         ":entity_id" => $id,
                         ":uid" => $userId,
                         ":permission" => $sPermission
-                    ),
+                    )
                 );
                 foreach(array_keys($aSurveysInGroupPermissions[$sPermission]['current']) as $sCrud) {
                     if($aSurveysInGroupPermissions[$sPermission][$sCrud]) {
@@ -784,7 +784,7 @@ class SurveysGroupsController extends Survey_Common_Action
                     $uid,
                     $id,
                     $entity,
-                    $aPermissionSet,
+                    $aPermissionSet
                 );
             }
         }
