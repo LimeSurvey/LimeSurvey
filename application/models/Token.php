@@ -199,7 +199,7 @@ abstract class Token extends Dynamic
         $db->createCommand()->createTable($sTableName, $fields, $options);
 
         /**
-         * The random component in the index name is needed because MSSQL is being the dorky kid and 
+         * The random component in the index name is needed because Postgres is being the dorky kid and 
          * complaining about duplicates when renaming the table and trying to use the same index again 
          * on a new token table (for example on reactivation)
          */
@@ -212,7 +212,7 @@ abstract class Token extends Dynamic
                 $db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
                 break;
             case 'pgsql':
-                $db->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
+                $db->createCommand()->createIndex('idx_email_'.$surveyId.'_'.rand(1, 50000), $sTableName, 'email', false);
                 break;
         }
 
@@ -379,7 +379,7 @@ abstract class Token extends Dynamic
             array('remindercount', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('email', 'filter', 'filter'=>'trim'),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true, 'except'=>'allowinvalidemail'),
-            array('usesleft', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('usesleft', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true, 'min'=>-2147483647, 'max'=>2147483647),
             array('mpid', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('blacklisted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('validfrom', 'date','format'=>['yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty'=>true),

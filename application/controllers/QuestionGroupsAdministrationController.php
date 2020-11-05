@@ -1,9 +1,7 @@
 <?php
 
-
 class QuestionGroupsAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions
@@ -570,7 +568,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$iSurveyId));
     }
 
-
     /**
      * Ajax request
      *
@@ -876,7 +873,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * Returns the rendered question group topbar.
+     * @todo document me.
      *
      * @param integer $sid ID of survey
      * @param null |integer   $gid ID of group
@@ -1040,5 +1037,4 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         return $storeValid;
     }
-
 }

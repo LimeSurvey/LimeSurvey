@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.22 (build 201019) to 4.3.23 (build 201026) October 26, 2020
+-Fixed issue: View access to survey group even though no permission (Carsten Schmitz)
+-Fixed issue: Update issue with invalid datetime value stored in startdate/datestamp field of response table (Carsten Schmitz)
+-Fixed issue: Preinstall Comfort Update Checker plugin on installation (Eddy)
+-Fixed issue: Don't update survey group if no POST was submitted (Carsten Schmitz)
+-Fixed issue: DB error when trying to activate already activated survey (Carsten Schmitz)
+-Fixed issue: Create token table on Postgres throws index error, if done repeatedly (Carsten Schmitz)
+-Fixed issue #16769: Unable to embed in iframe (using config.php) for Chrome (Denis Chenu)
+-Fixed issue #16766: Simple user reset Survey group to default one (Denis Chenu)
+-Fixed issue #16758: PHP7.1 + debug set : PHP Warning A non-numeric value encountered (Denis Chenu)
+-Fixed issue #16744: No error shown on logic file if error exist on group (Denis Chenu)
+-Fixed issue #16674: Array Type:F: Column width falsely calculated (nadnx)
+-Fixed issue #16501: Navigation Problems on iPhone and Mac (Adam Zammit)
+-Fixed issue #16454: Sometimes, question_order is assigned from survey_id (GabrielJenik)
+-Fixed issue #16130:  empty directory parameter on "LimeSurveyFileManager" (eliasmagn)
+#Updated translation: Portuguese (Portugal) by pmduque
+#Updated translation: Myanmar by yarzaryeni
+#Updated translation: Japanese by a_ochi11
+#Updated translation: Italian by ritapas, Caramiagigante
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Chinese (Taiwan) (Traditional) by Yeeeeeet
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.21 (build 201015) to 4.3.22 (build 201019) October 19, 2020
 -Fixed issue: Database error if email subject is too long (Carsten Schmitz)
 -Fixed issue #16745: Title for ranking question gets codes instead of quotes (Denis Chenu)
