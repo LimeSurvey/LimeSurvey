@@ -9,7 +9,6 @@
     <?=TbHtml::formTb(null, App()->createUrl('userManagement/deleteUser'), 'post', ["id"=>"UserManagement--modalform"])?>
         <input type="hidden" name="userid" value="<?= $userId ?>" />
         <input type="hidden" name="user" value="<?= $sUserName ?>" />
-        <input type="hidden" name="YII_CSRF_TOKEN" value="<?= ls_json_encode(Yii::app()->request->csrfToken) ?>" />
         <button class="btn btn-primary btn-ok" id="submitForm"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></button>
         <button class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
     </form>
