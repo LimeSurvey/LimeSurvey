@@ -312,7 +312,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aSurveysInGroupPermissions = Permission::model()->getEntityBasePermissions('SurveysInGroup');
         $aDefinitionPermissions = array_merge(
             $aSurveysGroupsPermissions,
-            $aSurveysInGroupPermissions,
+            $aSurveysInGroupPermissions
         );
         foreach($aDefinitionPermissions as $permissionKey => $aPermission) {
             $aDefinitionPermissions[$permissionKey]['maxCrud'] = count(array_filter(array_intersect_key($aPermission,array_flip($aCruds)))); // Used for mixed class
@@ -708,7 +708,7 @@ class SurveysGroupsController extends Survey_Common_Action
         }
         $aPermissions = array_merge(
             $aSurveysGroupsPermissions,
-            $aSurveysInGroupPermissions,
+            $aSurveysInGroupPermissions
         );
         $aData = array(
             'model' => $model,
