@@ -167,18 +167,6 @@ if ($hasSurveyTranslatePermission) {
             'id' => 'quick_translation_button',
         ];
         array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['quick_translation']);
-    } else {
-        // Quick-translation disabled
-        // TODO: In Vue onClick Alert add
-        $buttons['quick_translation'] = [
-            'url' => '#',
-            'type' => 'alert',
-            'alerttext' => gT('Currently there are no additional languages configured for this survey.'),
-            'icon' => 'fa fa-language',
-            'name' => gT('Quick-translation'),
-            'id' => 'quick_translation_button',
-        ];
-        array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['quick_translation']);
     }
 }
 

@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.24 (build 201102) to 4.3.25 (build 201105) November 4, 2020
+-Fixed issue [security]: Unauthorized access to statistics of a survey with certain permission configurations (Carsten Schmitz)
+-Fixed issue : visually disable account type buttons when global configuration is set (Vilius Šumskas)
+-Fixed issue #16804: Upgrading from very old versions not possible (Carsten Schmitz)
+
+
 Changes from 4.3.23 (build 201026) to 4.3.24 (build 201102) November 2, 2020
 -Fixed issue: Database error in statistics when entering invalid information in number or date filter (Carsten Schmitz)
 -Fixed issue: #16790: Survey participant / Token editor doesn't correctly reflect reminder status when survey in anonymous mode (Adam Zammit)

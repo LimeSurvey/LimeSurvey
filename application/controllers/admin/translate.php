@@ -625,7 +625,7 @@ class translate extends Survey_Common_Action
                     'qid' => false,
                     'description' => gT("Reminder email subject"),
                     'HTMLeditorType' => "email",
-                    'HTMLeditorDisplay' => "l",
+                    'HTMLeditorDisplay' => "",
                     'associated' => "emailreminderbody"
                 );
             break;
@@ -979,21 +979,18 @@ class translate extends Survey_Common_Action
                 $minHeight = "25px";
             } else if ($amTypeOptions["HTMLeditorDisplay"] == "Modal") {
                 $minHeight = "30px";
-            }            
-            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
-                array(
-                    'class' => 'col-sm-10',
-                    'cols' => '75',
-                    'rows' => $nrows,
-                    'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update'),
-                    'style' => "min-height: $minHeight;",                    
-                )
+            }
+            $aDisplayOptions = array(
+                'class' => 'col-sm-10',
+                'cols' => '75',
+                'rows' => $nrows,
+                'readonly' => !Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update')
             );
             if ($type=='group') {
                 $aDisplayOptions['maxlength']=100; 
             }
 
-            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,$aDisplayOptions);
+            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto, $aDisplayOptions);
             $htmleditor_data = array(
                 "edit".$type,
                 $type."_newvalue_".$i,
@@ -1012,14 +1009,17 @@ class translate extends Survey_Common_Action
     }
 
     /**
+     * @param $htmleditor
      * @param string[] $aData
+     * @return mixed
      */
     private function _loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
         $displayType = strtolower($htmleditor["HTMLeditorDisplay"]);
+        $displayTypeIsEmpty = empty($displayType);
 
-        if ($displayType == "inline" || empty($displayType)) {
+        if ($displayType == "inline" || $displayTypeIsEmpty) {
             $editor_function = "getEditor";
         } else if ($displayType == "popup") {
             $editor_function = "getPopupEditor";
@@ -1028,7 +1028,6 @@ class translate extends Survey_Common_Action
             $editor_function = "getModalEditor";
             $aData[2] = $htmleditor['description'];            
         }
-
         return call_user_func_array($editor_function, $aData);
     }
 
