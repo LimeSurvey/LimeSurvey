@@ -479,59 +479,40 @@ class labels extends Survey_Common_Action
             Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
         }
 
-/*
-Array
-(
-    [answeroptions[1] => Array
-        (
-            [0] => Array
-                (
-                    [answeroptionl10n] => Array
-                        (
-                            [en] => 
-                            [sq] => 
-                        )
+        try {
+          $transaction = Yii::app()->db->beginTransaction();
+          foreach ($answers as $answer) {
+              foreach ($answer as $i => $answeroptionl10ns) {
+                  $label = new Label;
+                  
+                  $label->lid = $lid;
+                  $label->code = $code[$i];
+                  $label->sortorder = $i;
+                  $label->assessment_value = isset($aAssessmentValues[$i]) ? $aAssessmentValues[$i] : 0;
+                  if (!$label->save()) {
+                    throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
+                  }
 
-                )
-
-        )
-
-)
-*/
-
-        $res = 'ok'; //optimistic
-        foreach ($answers as $answer) {
-            foreach ($answer as $i => $answeroptionl10ns) {
-                $label = new Label;
-                
-                $label->lid = $lid;
-                $label->code = $code[$i];
-                $label->sortorder = $i;
-                $label->assessment_value = isset($aAssessmentValues[$i]) ? $aAssessmentValues[$i] : 0;
-                if (!$label->save()) {
-                    $res = 'fail';
-                }
-
-                foreach($answeroptionl10ns as $langs) {
-                  foreach ($langs as $lang => $content) {
-                    $labell10n = new LabelL10n;
-                    //echo '<pre>';
-                    //var_dump($answeroptionl10ns);
-                    //var_dump($lang);
-                    //var_dump($label->id);
-                    //var_dump($content);
-                    //die;
-                    $labell10n->language = $lang;
-                    $labell10n->label_id = $label->id;
-                    $labell10n->title = $content;
-                    if (!$labell10n->save()) {
-                      $res = 'fail';
+                  foreach($answeroptionl10ns as $langs) {
+                    foreach ($langs as $lang => $content) {
+                      $labell10n = new LabelL10n;
+                      $labell10n->language = $lang;
+                      $labell10n->label_id = $label->id;
+                      $labell10n->title = $content;
+                      if (!$labell10n->save()) {
+                        throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
+                      }
                     }
                   }
-                }
-            }
+              }
+          }
+          $transaction->commit();
+        } catch (Exception $exception) {
+          $transaction->rollback();
+          throw new CHttpException(500, 'Could not save label set: ' . $exception->getMessage());
         }
-        echo ls_json_encode($res);
+
+        eT('Label set successfully saved');
     }
 
     public function getLabelSetsForQuestion() {

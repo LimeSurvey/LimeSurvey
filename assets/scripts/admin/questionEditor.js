@@ -1211,30 +1211,12 @@ LS.questionEditor = (function () {
         code:    codes,
         answers: answers,
       },
-   ).then((data) => {
-     console.log('data', data);
-     // $("#saveaslabel").dialog('close');
-     $('#saveaslabelModal').modal('hide');
-     $('#dialog-confirm-replaceModal').modal('hide');
-
-     if ($.parseJSON(data) === 'ok') {
-       if ($('#dialog-result').is(':visible')) {
-         $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
-         $('#dialog-result').effect('pulsate', { times: 3 }, 3000);
-       } else {
-         $('#dialog-result').removeClass('alert-warning').addClass('alert-success');
-         $('#dialog-result-content').empty().append(languageJson.labelSetSuccess);
-         $('#dialog-result').show();
-       }
-     } else {
-       $('#dialog-result').removeClass('alert-success').addClass('alert-warning');
-       $('#dialog-result-content').empty().append(languageJson.labelSetFail);
-       $('#dialog-result').show();
-     }
+   ).then((result) => {
+       LS.LsGlobalNotifier.create(
+         result,
+         'well-lg bg-success text-center'
+       );
    }).fail((xhr /*: XMLHttpRequest */, textStatus, errorThrown) => {
-     console.log(xhr);
-     console.log(textStatus);
-     console.log(errorThrown);
      if (xhr.status === 500) {
        LS.LsGlobalNotifier.create(
          errorThrown,
