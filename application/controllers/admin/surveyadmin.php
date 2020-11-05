@@ -1186,7 +1186,7 @@ class SurveyAdmin extends Survey_Common_Action
                 } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($sExtension));
                     $aData['bFailed'] = true;
-                }elseif(!in_array($mimeType,['text/tab-separated-values','text/plain'])){
+                }elseif(!in_array($mimeType,['text/tab-separated-values','text/plain','application/xml','application/zip','text/xml'])){
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($mime));
                     $aData['bFailed'] = true; 
                 } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
