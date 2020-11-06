@@ -452,6 +452,28 @@ class LayoutHelper
     }
 
     /**
+     * New Topbar
+     * @param $aData
+     */
+    public static function renderTopbar($aData) {
+
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'name' => 'surveyTopbar_view',
+                'topbarId' => 'surveybarid',
+            ],
+            $aData['topBar']
+        );
+        if (!empty($aData['topBar']['leftSideView'])) $aData['topBar']['leftSideContent'] = App()->getController()->renderPartial($aData['topBar']['leftSideView'], $aData, true);
+        if (!empty($aData['topBar']['rightSideView'])) $aData['topBar']['rightSideContent'] = App()->getController()->renderPartial($aData['topBar']['rightSideView'], $aData, true);
+
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');
+        return Yii::app()->getController()->renderPartial("/topbars/" . $aData['topBar']['name'], $aData['topBar'], true);
+    }
+
+    /**
+     * Vue Topbar
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {
