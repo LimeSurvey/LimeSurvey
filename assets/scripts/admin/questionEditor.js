@@ -1260,6 +1260,45 @@ LS.questionEditor = (function () {
    */
   }
 
+    /**
+     *
+     * @param code
+     * @returns {boolean}
+     */
+  function checkCodeUniqueness(code: string) {
+      let isValid;
+      let checkCodePromise = getCheckUniquenessPromise(code);
+
+      checkCodePromise.then((response) => {
+          isValid = true;
+      }).catch((error) => {
+          isValid = false;
+      });
+
+      return isValid;
+  }
+
+    /**
+     *
+     * @returns {Promise}
+     */
+  function getCheckUniquenessPromise(code: string) {
+      return new Promise((resolve, reject) => {
+          $ajax({
+              url: checkCodeUniquenessURL,
+              method: 'GET',
+              data: { code },
+              dataType: 'json',
+              success: (data) => {
+                  resolve(data);
+              },
+              error: (data) => {
+                  reject(data);
+              }
+          });
+      });
+  }
+
   /**
    * @param {event} event
    * @param {object} ui ??
@@ -1401,6 +1440,19 @@ LS.questionEditor = (function () {
     // Hide help tips by default.
     $('.question-option-help').hide();
 
+    $('#questionCode').focusout( () => {
+        const checkCodeUniquenessURL = '';
+        let code = $('#questionCode').val();
+        if (code !== undefined || code !== '') {
+            console.log('Question Code: ' + code);
+            let isValid = checkCodeUniqueness(code);
+            if (!isValid) {
+                console.log('Error Code is not unqiue.');
+            }
+            console.log('IsValid: ' + isValid);
+        }
+    });
+
     // Hide all language except the selected one.
     $('.lang-switch-button').on('click', function langSwitchOnClick() {
       const lang = $(this).data('lang');
@@ -1418,7 +1470,7 @@ LS.questionEditor = (function () {
 
     // Land on summary page if qid != 0 (not new question).
     const qidInput = document.querySelector('input[name="question[qid]"]');
-    if (qidInput == null) {
+    if (qidInput === null) {
       alert('Internal error: Could not find qidInput');
       throw 'abort';
     }
