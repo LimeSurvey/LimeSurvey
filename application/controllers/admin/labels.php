@@ -445,6 +445,8 @@ class labels extends Survey_Common_Action
      *
      * @return void
      * @todo Permission check
+     * @todo Split in two, one for save, one for update.
+     * @todo Move save logic into service class.
      */
     public function ajaxSets()
     {

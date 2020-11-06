@@ -1123,7 +1123,7 @@ LS.questionEditor = (function () {
    * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
    * @return {void}
    */
-  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
+  async function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
     console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
@@ -1175,24 +1175,32 @@ LS.questionEditor = (function () {
       });
     });
 
-    /*
+    const token = $.ajaxSetup().data.YII_CSRF_TOKEN;
     const response = await fetch(
       languageJson.lasaveurl,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data'
+          //'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+          'X-CSRFToken': token
         },
         // TODO: FormData here
+        /*
         body: JSON.stringify(
           {
             laname: $('input[name=laname]').val(),
             lid: lid,
             code: codes,
             answers: answers,
+            YII_CSRF_TOKEN: token,
             [languageJson.csrf.tokenName]: languageJson.csrf.token
           },
         ),
+        */
+        body: new URLSearchParams({
+          YII_CSRF_TOKEN: token
+        }).toString(),
         credentials: 'include'
       }
     );
@@ -1202,7 +1210,8 @@ LS.questionEditor = (function () {
       alert('Internal error: Could not POST request: ' + response.status + ', ' + response.statusText);
       throw 'abort';
     }
-    */
+
+   /*
    $.post(
       languageJson.lasaveurl,
       {
@@ -1211,16 +1220,29 @@ LS.questionEditor = (function () {
         code:    codes,
         answers: answers,
       },
-   ).then((result) => {
-       LS.LsGlobalNotifier.create(
-         result,
-         'well-lg bg-success text-center'
-       );
-   }).fail((xhr /*: XMLHttpRequest */, textStatus, errorThrown) => {
+   ).always((result) => {
+     console.log('then');
+     console.log(result);
+     LS.LsGlobalNotifier.create(
+       result,
+       'well-lg bg-success text-center'
+     );
+   });
+   */
+
+     /*
+   }).fail((xhr, textStatus, errorThrown) => {
+     console.log('fail');
+     console.log(xhr);
      if (xhr.status === 500) {
        LS.LsGlobalNotifier.create(
          errorThrown,
          'well-lg bg-danger text-center'
+       );
+     } else if (xhr.status === 401) {
+       LS.LsGlobalNotifier.create(
+         "Not logged in",
+         'well-lg bg-warning text-center'
        );
      } else {
        LS.LsGlobalNotifier.create(
@@ -1228,7 +1250,14 @@ LS.questionEditor = (function () {
          'well-lg bg-danger text-center'
        );
      }
-   });
+   }).complete((xhr) => {
+     console.log('complete');
+     console.log(xhr);
+   }).success((xhr) => {
+     console.log('success');
+     console.log(xhr);
+   });;
+   */
   }
 
   /**
