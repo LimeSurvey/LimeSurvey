@@ -38,12 +38,10 @@ $layoutHelper->renderSurveySidemenu($aData);
 echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
-//New general top bar (VueComponent)
-if (!isset($aData['renderSpecificTopbar'])) {
-    $layoutHelper->renderGeneraltopbar($aData);
-}
 
 echo '<div id="pjax-content" class="col-12">';
+
+echo LayoutHelper::renderTopbar($aData);
 
 echo '<div id="in_survey_common" '
     . 'class="container-fluid ls-flex-column fill col-12"'
@@ -55,10 +53,6 @@ $layoutHelper->notifications();
 
 echo $content;
 
-//$this->_generaltopbarAdditions($aData);
-if (!isset($aData['renderSpecificTopbar'])) {
-    $layoutHelper->renderGeneralTopbarAdditions($aData);
-}
 echo "</div>\n";
 echo "</div>\n";
 echo "</div>\n";
