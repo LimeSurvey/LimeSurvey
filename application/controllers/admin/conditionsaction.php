@@ -27,36 +27,38 @@ class conditionsaction extends Survey_Common_Action
     /**
      * @var array
      */
-    private $stringComparisonOperators;
+    private array $stringComparisonOperators;
 
     /**
      * @var array
      */
-    private $nonStringComparisonOperators;
+    private array $nonStringComparisonOperators;
 
     /**
      * @var int
      */
-    private $iSurveyID;
+    private int $iSurveyID;
 
     /**
      * @var string
      */
-    private $language;
+    private string $language;
 
     /**
      * True if there exists a survey participants table for this survey
      * @var boolean
      */
-    private $tokenTableExists;
+    private bool $tokenTableExists;
 
     /**
      * @var array
      */
-    private $tokenFieldsAndNames;
+    private array $tokenFieldsAndNames;
 
     /**
      * Init some stuff
+     * @param null $controller
+     * @param null $id
      */
     public function __construct($controller = null, $id = null)
     {
@@ -89,13 +91,15 @@ class conditionsaction extends Survey_Common_Action
 
     /**
      * Main Entry Method.
-     * 
+     *
      * @param string $subaction Given Subaction
-     * @param int    $iSurveyID Given Survey ID
-     * @param int    $gid       Given Group ID
-     * @param int    $qid       Given Question ID
-     * 
+     * @param int $iSurveyID Given Survey ID
+     * @param int $gid Given Group ID
+     * @param int $qid Given Question ID
+     *
      * @return void
+     * @throws CException
+     * @throws CHttpException
      */
     public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
     {
@@ -642,7 +646,10 @@ class conditionsaction extends Survey_Common_Action
     }
 
     /**
+     * @param $iSurveyID
      * @return void
+     * @throws CException
+     * @throws CHttpException
      */
     protected function resetSurveyLogic($iSurveyID)
     {
@@ -879,6 +886,7 @@ class conditionsaction extends Survey_Common_Action
     /**
      * Used by quick-add form to add conditions async
      * @return void
+     * @throws CException
      */
     public function quickAddCondition()
     {
@@ -1029,6 +1037,7 @@ class conditionsaction extends Survey_Common_Action
     /**
      * @param array $args
      * @return void
+     * @throws CException
      */
     protected function renumberScenarios(array $args)
     {
@@ -1050,6 +1059,7 @@ class conditionsaction extends Survey_Common_Action
     /**
      * @param array $args
      * @return void
+     * @throws CException
      */
     protected function copyConditions(array $args)
     {
@@ -1199,7 +1209,9 @@ class conditionsaction extends Survey_Common_Action
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
+     * @param bool $sRenderFile
      * @return void
+     * @throws CHttpException
      */
     protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
@@ -1358,6 +1370,7 @@ class conditionsaction extends Survey_Common_Action
     /**
      * @param array $theserows
      * @return array (cquestion, canswers)
+     * @throws CException
      */
     protected function getCAnswersAndCQuestions(array $theserows)
     {
@@ -1713,6 +1726,7 @@ class conditionsaction extends Survey_Common_Action
      * Get html for add/edit condition form
      * @param array $args
      * @return string
+     * @throws CException
      */
     protected function getEditConditionForm(array $args)
     {
@@ -1793,6 +1807,8 @@ class conditionsaction extends Survey_Common_Action
     /**
      * Form used in quick-add modal
      * @param array $args
+     * @return string|string[]|null
+     * @throws CException
      */
     protected function getQuickAddConditionForm(array $args)
     {
@@ -1997,6 +2013,7 @@ class conditionsaction extends Survey_Common_Action
      * @param array $postrows
      * @param array $args
      * @return string html
+     * @throws CException
      */
     protected function getQuestionNavOptions($theserows, $postrows, $args)
     {

@@ -167,6 +167,8 @@ class SurveyController extends LSYii_Controller
         $oTemplate = $oSurvey->templateModel;
 
         $aSurveyInfo = $oSurvey->attributes;
+        $aSurveyInfo['admin'] = $oSurvey->oOptions->admin;
+        $aSurveyInfo['adminemail'] = $oSurvey->oOptions->adminemail;
         $aSurveyInfo['aError'] = $aReplacementData;
 
         Yii::app()->twigRenderer->renderTemplateFromFile(
