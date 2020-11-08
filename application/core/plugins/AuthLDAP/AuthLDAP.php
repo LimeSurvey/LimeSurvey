@@ -524,7 +524,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // If specifed, check group membership
             if ($groupsearchbase != '' && $groupsearchfilter != '') {
                 $keywords = array('$username', '$userdn');
-                $substitutions = array($username, $userdn);
+                $substitutions = array($username, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
                 $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
