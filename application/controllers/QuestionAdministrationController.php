@@ -2758,4 +2758,44 @@ class QuestionAdministrationController extends LSBaseController
         }
         return $aQuestionTypeGroups;
     }
+
+    /**
+     * Checks given answer code is unique.
+     * @param string $code
+     * @return string
+     */
+    public function checkAnswerCodeIsUnique(string $code): string
+    {
+        
+    }
+
+    /**
+     * Checks if given Sub Question Code is unique.
+     * @param string $code
+     * @return string
+     */
+    public function checkSubQuestionCodeIsUnique(string $code): string
+    {
+
+    }
+
+    /**
+     * Checks if given Question Code is unique.
+     * @param string $code
+     * @return string
+     */
+    public function checkQuestionCodeIsUnique(string $code): string
+    {
+
+    }
+
+    /**
+     * Checks if code is unique.
+     * @param string $code
+     * @return bool
+     */
+    private function checkCode(string $code): bool
+    {
+
+    }
 }

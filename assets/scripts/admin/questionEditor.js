@@ -1440,7 +1440,7 @@ LS.questionEditor = (function () {
     // Hide help tips by default.
     $('.question-option-help').hide();
 
-    // Check Question Editor is unique.
+    // Check Question Code is unique.
     $('#questionCode').focusout( () => {
         console.log('General Settings URL: ' + generalSettingsUrl);
         const checkCodeUniquenessURL = '';
@@ -1459,6 +1459,8 @@ LS.questionEditor = (function () {
      $('#answerCode').focusout( () => {
         // Answer code
      });
+
+     // Check Sub Question Code is unique.
 
     // Hide all language except the selected one.
     $('.lang-switch-button').on('click', function langSwitchOnClick() {
