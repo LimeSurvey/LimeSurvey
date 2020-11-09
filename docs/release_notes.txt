@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.24.5 (build 201104) to 3.24.6 (build 201109) November 9, 2020
+-Fixed issue: Allow to login if LDAP user's DN contains double quotes (#1649) (Vilius Šumskas)
+-Fixed issue #16808: Dump while accesing statistics (#1642) (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by cdorin
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by ritapas, lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, eddylackmann
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.24.4 (build 201103) to 3.24.5 (build 201104) November 4, 2020
 -Fixed issue [security]: Unauthorized access to statistics of a survey with certain permission configurations (Carsten Schmitz)
 -Fixed issue #16804: Upgrading from very old versions not possible (Carsten Schmitz)
