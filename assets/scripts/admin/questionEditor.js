@@ -1262,30 +1262,33 @@ LS.questionEditor = (function () {
 
     /**
      *
-     * @param code
+     * @param code {string}
      * @returns {boolean}
      */
-  function checkCodeUniqueness(code: string) {
-      let isValid;
-      let checkCodePromise = getCheckUniquenessPromise(code);
-
-      checkCodePromise.then((response) => {
-          isValid = true;
-      }).catch((error) => {
-          isValid = false;
-      });
-
-      return isValid;
+  function checkCodeUniqueness(code) {
+      let isValid = false;
+      console.log('Is Valid: ' + isValid.toString());
+      const checkQuestionCodeIsUniqueURL = '/QuestionAdministrationController/checkQuestionCodeisUnique/';
+      let checkCodePromise = getCheckUniquenessPromise(checkQuestionCodeIsUniqueURL, code);
+      console.log('CheckCodePromise: ' + checkCodePromise);
+      // checkCodePromise.then((response) => {
+      //     isValid = true;
+      // }).catch((error) => {
+      //     isValid = false;
+      // });
+      //
+      // return isValid;
   }
 
     /**
-     *
+     * @param {string} url,
+     * @param {string} code
      * @returns {Promise}
      */
-  function getCheckUniquenessPromise(code: string) {
+  function getCheckUniquenessPromise(url, code) {
       return new Promise((resolve, reject) => {
-          $ajax({
-              url: checkCodeUniquenessURL,
+          $.ajax({
+              url: url,
               method: 'GET',
               data: { code },
               dataType: 'json',
@@ -1440,18 +1443,19 @@ LS.questionEditor = (function () {
     // Hide help tips by default.
     $('.question-option-help').hide();
 
+    /*****************************************/
     // Check Question Code is unique.
     $('#questionCode').focusout( () => {
-        console.log('General Settings URL: ' + generalSettingsUrl);
-        const checkCodeUniquenessURL = '';
         let code = $('#questionCode').val();
         if (code !== undefined || code !== '') {
             console.log('Question Code: ' + code);
             let isValid = checkCodeUniqueness(code);
-            if (!isValid) {
-                console.log('Error Code is not unqiue.');
-            }
-            console.log('IsValid: ' + isValid);
+        //     if (!isValid) {
+        //         console.log('Error Code is not unqiue.');
+        //     }
+        //     console.log('IsValid: ' + isValid);
+        } else {
+            console.log('Question Code is empty');
         }
     });
 
@@ -1461,6 +1465,7 @@ LS.questionEditor = (function () {
      });
 
      // Check Sub Question Code is unique.
+    /*****************************************/
 
     // Hide all language except the selected one.
     $('.lang-switch-button').on('click', function langSwitchOnClick() {
