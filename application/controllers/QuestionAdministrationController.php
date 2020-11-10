@@ -99,6 +99,7 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $questionId
      * @return void
+     * @throws CHttpException
      */
     public function actionEdit($questionId)
     {
@@ -122,8 +123,9 @@ class QuestionAdministrationController extends LSBaseController
      * Helper function to render form.
      * Used by create and edit actions.
      *
-     * @param Question $oQuestion
+     * @param Question $question
      * @return void
+     * @throws CException
      * @todo Move to service class
      */
     public function renderFormAux(Question $question)
@@ -2764,9 +2766,9 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $code
      * @return string
      */
-    public function checkAnswerCodeIsUnique(string $code): string
+    public function actionCheckAnswerCodeIsUnique(string $code): string
     {
-        
+        return '';
     }
 
     /**
@@ -2774,9 +2776,9 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $code
      * @return string
      */
-    public function checkSubQuestionCodeIsUnique(string $code): string
+    public function actionCheckSubQuestionCodeIsUnique(string $code): string
     {
-
+        return '';
     }
 
     /**
@@ -2784,9 +2786,9 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $code
      * @return string
      */
-    public function checkQuestionCodeIsUnique(string $code): string
+    public function actionCheckQuestionCodeIsUnique(string $code): string
     {
-
+        return '';
     }
 
     /**
@@ -2796,6 +2798,6 @@ class QuestionAdministrationController extends LSBaseController
      */
     private function checkCode(string $code): bool
     {
-
+        return true;
     }
 }

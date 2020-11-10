@@ -1268,7 +1268,7 @@ LS.questionEditor = (function () {
   function checkCodeUniqueness(code) {
       let isValid = false;
       console.log('Is Valid: ' + isValid.toString());
-      const checkQuestionCodeIsUniqueURL = '/QuestionAdministrationController/checkQuestionCodeisUnique/';
+      const checkQuestionCodeIsUniqueURL = 'questionAdministration/checkQuestionCodeIsUnique';
       let checkCodePromise = getCheckUniquenessPromise(checkQuestionCodeIsUniqueURL, code);
       console.log('CheckCodePromise: ' + checkCodePromise);
       // checkCodePromise.then((response) => {
@@ -1286,17 +1286,24 @@ LS.questionEditor = (function () {
      * @returns {Promise}
      */
   function getCheckUniquenessPromise(url, code) {
+     // const token = $.ajaxSetup().data.YII_CSRF_TOKEN;
+        console.log('URL: ' + url);
       return new Promise((resolve, reject) => {
           $.ajax({
               url: url,
               method: 'GET',
-              data: { code },
+              //data: { YII_CSRF_TOKEN: token, code: code },
+              data: { code: code },
               dataType: 'json',
               success: (data) => {
                   resolve(data);
+                  console.log('Success');
+                  console.log(data);
               },
               error: (data) => {
                   reject(data);
+                  console.log('Error');
+                  console.log(data);
               }
           });
       });
