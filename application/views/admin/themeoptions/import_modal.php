@@ -7,7 +7,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="importModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo CHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+            <?php echo CHtml::form(array('admin/themes/sa/templateupload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div class="modal-title h4">
