@@ -465,6 +465,21 @@ class LayoutHelper
             ],
             $aData['topBar']
         );
+        
+        if ($aData['topBar']['name']=='surveyTopbar_view') {
+            // Try to get SID from $aData['topBar'] or $aData
+            if (!empty($aData['topBar']['sid'])) $sid = $aData['topBar']['sid'];
+            if (empty($sid) && !empty($aData['sid'])) $sid = $aData['sid'];
+
+            // If there is a SID, add the Survey Topbar data to the topBar array
+            if (!empty($sid)) {
+                $aData['topBar'] = array_merge(
+                    self::getSurveyTopbarData($sid),
+                    $aData['topBar']
+                );
+            }
+        }
+
         if (!empty($aData['topBar']['leftSideView'])) $aData['topBar']['leftSideContent'] = App()->getController()->renderPartial($aData['topBar']['leftSideView'], $aData, true);
         if (!empty($aData['topBar']['rightSideView'])) $aData['topBar']['rightSideContent'] = App()->getController()->renderPartial($aData['topBar']['rightSideView'], $aData, true);
 
@@ -592,6 +607,94 @@ class LayoutHelper
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
 
 
+    }
+
+    /**
+     * This Method is returning the Data for Survey Top Bar
+     *
+     * @param int $sid Given Survey ID
+     *
+     * @return array
+     * @throws CException
+     *
+     */
+    protected static function getSurveyTopbarData($sid)
+    {
+        $oSurvey = Survey::model()->findByPk($sid);
+        $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+        $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
+        $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
+        $hasSurveyTranslatePermission = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
+        $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
+            || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+        $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
+        $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+        $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
+
+        $isActive = $oSurvey->active == 'Y';
+        $condition = array('sid' => $sid, 'parent_qid' => 0);
+        $sumcount = Question::model()->countByAttributes($condition);
+        $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
+        $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
+        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"),
+                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"),
+                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+
+        if (!$isActive) {
+            $context = gT("Preview survey");
+            $contextbutton = 'preview_survey';
+        } else {
+            $context = gT("Execute survey");
+            $contextbutton = 'execute_survey';
+        }
+
+        $language = $oSurvey->language;
+        $conditionsCount = Condition::model()->with(array('questions' => array('condition' => 'sid =' . $sid)))->count();
+
+        // Put menu items in tools menu
+        $event = new PluginEvent('beforeToolsMenuRender', App()->getController());
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $extraToolsMenuItems = $event->get('menuItems');
+
+        // Add new menus in survey bar
+        $event = new PluginEvent('beforeSurveyBarRender', App()->getController());
+        $event->set('surveyId', $oSurvey->sid);
+        App()->getPluginManager()->dispatchEvent($event);
+        $beforeSurveyBarRender = $event->get('menus');
+
+        $showToolsMenu = $hasDeletePermission
+            || $hasSurveyTranslatePermission
+            || $hasSurveyContentPermission
+            || !is_null($extraToolsMenuItems);
+
+        return array(
+            'sid' => $sid,
+            'oSurvey' => $oSurvey,
+            'canactivate' => $canactivate,
+            'expired' => $expired,
+            'notstarted' => $notstarted,
+            'context' => $context,
+            'contextbutton' => $contextbutton,
+            'language' => $language,
+            'sumcount' => $sumcount,
+            'hasSurveyContentPermission' => $hasSurveyContentPermission,
+            'hasDeletePermission' => $hasDeletePermission,
+            'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
+            'hasAdditionalLanguages' => $hasAdditionalLanguages,
+            'conditionsCount' => $conditionsCount,
+            'hasSurveyReadPermission' => $hasSurveyReadPermission,
+            'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
+            'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
+            'hasResponsesReadPermission' => $hasResponsesReadPermission,
+            'hasSurveyActivationPermission' => $hasSurveyActivationPermission,
+            'hasResponsesStatisticsReadPermission' => $hasResponsesStatisticsReadPermission,
+            'extraToolsMenuItems' => $extraToolsMenuItems ?? [],
+            'beforeSurveyBarRender' => $beforeSurveyBarRender ?? [],
+            'showToolsMenu' => $showToolsMenu,
+        );
     }
 
 }
