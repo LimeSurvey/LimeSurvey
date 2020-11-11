@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-11-11 11:00:07+00:00\n"
+"POT-Creation-Date: 2020-11-11 15:21:02+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1367,9 +1367,9 @@ msgstr ""
 #: application/controllers/admin/saved.php:39
 #: application/controllers/admin/saved.php:86
 #: application/controllers/admin/statistics.php:113
-#: application/controllers/admin/statistics.php:532
-#: application/controllers/admin/statistics.php:573
-#: application/controllers/admin/statistics.php:680
+#: application/controllers/admin/statistics.php:533
+#: application/controllers/admin/statistics.php:574
+#: application/controllers/admin/statistics.php:681
 #: application/controllers/admin/surveyadmin.php:143
 #: application/controllers/admin/surveyadmin.php:1096
 #: application/controllers/admin/surveyadmin.php:1841
@@ -3740,7 +3740,7 @@ msgid "Preserve response IDs"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:301
-#: application/controllers/admin/statistics.php:135
+#: application/controllers/admin/statistics.php:136
 #: application/helpers/userstatistics_helper.php:2639
 msgid "Quick statistics"
 msgstr ""
@@ -3756,8 +3756,8 @@ msgstr ""
 #: application/controllers/admin/responses.php:1085
 #: application/controllers/admin/saved.php:128
 #: application/controllers/admin/saved.php:132
-#: application/controllers/admin/statistics.php:852
-#: application/controllers/admin/statistics.php:859
+#: application/controllers/admin/statistics.php:853
+#: application/controllers/admin/statistics.php:860
 #: application/views/admin/dataentry/delete.php:7
 #: application/views/admin/dataentry/vvimport_result.php:34
 #: application/views/admin/responses/browseallfiltered_view.php:3
@@ -3857,7 +3857,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:1293
 #: application/controllers/admin/responses.php:72
 #: application/controllers/admin/statistics.php:118
-#: application/controllers/admin/statistics.php:685
+#: application/controllers/admin/statistics.php:686
 #: application/controllers/admin/surveyadmin.php:1230
 #: application/core/Survey_Common_Action.php:690
 #: application/core/Survey_Common_Action.php:955
@@ -5393,28 +5393,28 @@ msgid "Saved response deleted."
 msgstr ""
 
 #: application/controllers/admin/statistics.php:123
-#: application/controllers/admin/statistics.php:691
+#: application/controllers/admin/statistics.php:692
 msgid "This survey is not active and has no responses."
 msgstr ""
 
-#: application/controllers/admin/statistics.php:219
-#: application/controllers/admin/statistics.php:506
+#: application/controllers/admin/statistics.php:220
+#: application/controllers/admin/statistics.php:507
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr ""
 
-#: application/controllers/admin/statistics.php:220
-#: application/controllers/admin/statistics.php:224
-#: application/controllers/admin/statistics.php:507
-#: application/controllers/admin/statistics.php:510
+#: application/controllers/admin/statistics.php:221
+#: application/controllers/admin/statistics.php:225
+#: application/controllers/admin/statistics.php:508
+#: application/controllers/admin/statistics.php:511
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr ""
 
-#: application/controllers/admin/statistics.php:223
-#: application/controllers/admin/statistics.php:509
+#: application/controllers/admin/statistics.php:224
+#: application/controllers/admin/statistics.php:510
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr ""
 
-#: application/controllers/admin/statistics.php:860
+#: application/controllers/admin/statistics.php:861
 #: application/core/LsDefaultDataSets.php:28
 #: application/helpers/questionHelper.php:415
 #: application/helpers/questionHelper.php:426
