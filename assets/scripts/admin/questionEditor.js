@@ -1268,16 +1268,22 @@ LS.questionEditor = (function () {
   function checkCodeUniqueness(code) {
       let isValid = false;
       console.log('Is Valid: ' + isValid.toString());
-      const checkQuestionCodeIsUniqueURL = 'questionAdministration/checkQuestionCodeIsUnique';
+      const checkQuestionCodeIsUniqueURL = languageJson.checkQuestionCodeIsUniqueURL;
       let checkCodePromise = getCheckUniquenessPromise(checkQuestionCodeIsUniqueURL, code);
-      console.log('CheckCodePromise: ' + checkCodePromise);
-      // checkCodePromise.then((response) => {
-      //     isValid = true;
-      // }).catch((error) => {
-      //     isValid = false;
-      // });
-      //
-      // return isValid;
+      checkCodePromise.then((response) => {
+          console.log('Status: ' +  response.status);
+          console.log(response.statusText);
+          console.log(response.statusCode);
+           isValid = true;
+          console.log('Is Valid: ' + isValid.toString());
+      }).catch((error) => {
+          console.log('Status: ' +  error.status);
+          console.log(error);
+           isValid = false;
+          console.log('Is Valid: ' + isValid.toString());
+      });
+
+      return isValid;
   }
 
     /**
@@ -1286,13 +1292,11 @@ LS.questionEditor = (function () {
      * @returns {Promise}
      */
   function getCheckUniquenessPromise(url, code) {
-     // const token = $.ajaxSetup().data.YII_CSRF_TOKEN;
         console.log('URL: ' + url);
       return new Promise((resolve, reject) => {
           $.ajax({
               url: url,
               method: 'GET',
-              //data: { YII_CSRF_TOKEN: token, code: code },
               data: { code: code },
               dataType: 'json',
               success: (data) => {
