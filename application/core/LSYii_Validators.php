@@ -109,25 +109,7 @@ class LSYii_Validators extends CValidator
      */
     public function xssFilter($value)
     {
-        $filter = new CHtmlPurifier();
-        $filter->options = array(
-            'AutoFormat.RemoveEmpty'=>false,
-            'Core.NormalizeNewlines'=>false,
-            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
-            'HTML.SafeObject'=>true, // To allow including youtube
-            'Output.FlashCompat'=>true,
-            'Attr.EnableID'=>true, // Allow to set id
-            'Attr.AllowedFrameTargets'=>array('_blank', '_self'),
-            'URI.AllowedSchemes'=>array(
-                'http' => true,
-                'https' => true,
-                'mailto' => true,
-                'ftp' => true,
-                'nntp' => true,
-                'news' => true,
-                )
-        );
-        // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
+        $filter = LSYii_HtmlPurifier::getXssPurifier();
 
         // to enable video or something else we must use the config object of HTML-Purifier
         $config = $filter->getPurifier()->config;
