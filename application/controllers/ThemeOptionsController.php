@@ -652,17 +652,19 @@ class ThemeOptionsController extends LSBaseController
      */
     private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null) : void
     {
-         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-         $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
+        /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
+        $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
 
-         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
-         $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
-         $aTemplateConfiguration       = $oModelWithInheritReplacement->getOptionPageAttributes();
-         App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
+        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oTemplate->path);
 
-        if ($aOptionAttributes['optionsPage'] === 'core') {
-             App()->clientScript->registerPackage('themeoptions-core');
-             $templateOptionPage = '';
+        $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
+        $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
+        App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        
+        if ($aOptionAttributes['optionsPage'] == 'core') {
+            App()->clientScript->registerPackage('themeoptions-core');
+            $templateOptionPage = '';
         } else {
              $templateOptionPage = $oModelWithInheritReplacement->optionPage;
         }
