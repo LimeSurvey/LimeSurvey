@@ -6826,11 +6826,15 @@
                         }
                         // what about optional vs. mandatory comment and 'other' fields?
                         break;
+                    
                     case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                         $anyUnanswered = false;
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
                         if (isset($qattr['multiflexible_checkbox']) && $qattr['multiflexible_checkbox'] == 1)
                         {
+                            // For Numeric Array question types with Checkbox layout, if is enough for mandatory, we flag it as answered. If not, we flag it as anunserwed. 
+                            // So we use the same logic as for reviewing mandatory violations.                       
+
                             // Need to check whether there is at least one checked box per row
                             foreach ($LEM->q2subqInfo[$qid]['subqs'] as $sq)
                             {
@@ -6857,10 +6861,7 @@
                         }
                         else
                         {
-                            if (count($unansweredSQs) > 0)
-                            {
-                                $anyUnanswered = true; // TODO - what about 'other'?
-                            }
+                            $anyUnanswered = (count($unansweredSQs) > 0);
                         }
                         break;
                     default:
