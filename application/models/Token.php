@@ -237,7 +237,11 @@ abstract class Token extends Dynamic
      */
     public function generateToken($tokenlength = NULL)
     {
-        $iTokenLength = $tokenlength ? $tokenlength : $this->survey->tokenlength;
+        if ($tokenlength) {
+            $iTokenLength = $tokenlength;
+        } else {
+            $iTokenLength = isset($this->survey) && is_numeric($this->survey->oOptions->tokenlength) ? $this->survey->oOptions->tokenlength : 15;
+        }
         $this->token = $this->_generateRandomToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
