@@ -255,13 +255,12 @@ abstract class Token extends Dynamic
      * Generates a token for this object.
      * @throws CHttpException
      */
-    public function generateToken($tokenlength = NULL)
+    public function generateToken($iTokenLength = NULL)
     {
-        if ($tokenlength) {
-            $iTokenLength = $tokenlength;
-        } else {
+        if(empty($iTokenLength)) {
             $iTokenLength = $this->getSurveyTokenLength();
-        }
+        }        
+        
         $this->token = $this->_generateRandomToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
