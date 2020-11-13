@@ -61,6 +61,9 @@ abstract class Token extends Dynamic
     /** @var int Maximum token length */
     const MAX_LENGTH = 36;
 
+    /** @var int Default token length */
+    const DEFAULT_LENGTH = 15;
+
     /**
      * Set defaults
      * @inheritdoc
@@ -232,6 +235,23 @@ abstract class Token extends Dynamic
     }
 
     /**
+     * Get survey token length from survey. 
+     * Use default if not possible.
+     */
+    public function getSurveyTokenLength()
+    {
+        // Use default token length
+        $iTokenLength = self::DEFAULT_LENGTH;        
+
+        // Use survey token length, if defined
+        if (isset($this->survey) && !empty($this->survey->oOptions) && !empty($this->survey->oOptions->tokenlength) && is_numeric($this->survey->oOptions->tokenlength)) {
+            $iTokenLength = $this->survey->oOptions->tokenlength;
+        }
+
+        return $iTokenLength;
+    }
+
+    /**
      * Generates a token for this object.
      * @throws CHttpException
      */
@@ -240,7 +260,7 @@ abstract class Token extends Dynamic
         if ($tokenlength) {
             $iTokenLength = $tokenlength;
         } else {
-            $iTokenLength = isset($this->survey) && is_numeric($this->survey->oOptions->tokenlength) ? $this->survey->oOptions->tokenlength : 15;
+            $iTokenLength = $this->getSurveyTokenLength();
         }
         $this->token = $this->_generateRandomToken($iTokenLength);
         $counter = 0;
@@ -301,7 +321,7 @@ abstract class Token extends Dynamic
             throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
         }
         $surveyId = $this->dynamicId;
-        $iTokenLength = isset($this->survey) && is_numeric($this->survey->oOptions->tokenlength) ? $this->survey->oOptions->tokenlength : 15;
+        $iTokenLength = $this->getSurveyTokenLength();
 
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
