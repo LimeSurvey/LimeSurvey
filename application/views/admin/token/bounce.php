@@ -96,7 +96,7 @@
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value'=> $settings['bounceaccountencryption'] ,
+                                        'value'=> strtolower($settings['bounceaccountencryption']),
                                         'selectOptions'=>array(
                                             "off"=>gT("Off (insecure)",'unescaped'),
                                             "ssl"=>gT("SSL/TLS",'unescaped'),
