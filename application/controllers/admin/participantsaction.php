@@ -765,6 +765,8 @@ $url .= "_view"; });
     {
         $this->checkPermission('import');
 
+        LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
+
         if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
@@ -774,11 +776,7 @@ $url .= "_view"; });
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
-            Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'csv') {
+        if (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
         } else {
