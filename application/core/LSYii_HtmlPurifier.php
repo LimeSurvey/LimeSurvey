@@ -52,7 +52,8 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
         // Enable video
-        $config = $instance->getConfig();
+		$config = $instance->getConfig();
+
         if (!empty($config)) {
             $config->set('HTML.DefinitionID', 'html5-definitions');
             $def = $config->maybeGetRawHTMLDefinition();
@@ -65,8 +66,8 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
                     'Common', // attribute collection
                     array( // attributes
                         'src' => 'URI',
-                'id' => 'Text',
-                    'poster' => 'Text',
+                        'id' => 'Text',
+                        'poster' => 'Text',
                         'width' => 'Pixels#' . $max,
                         'height' => 'Pixels#' . $max,
                         'controls' => 'Bool#controls',

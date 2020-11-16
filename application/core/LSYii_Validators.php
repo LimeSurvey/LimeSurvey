@@ -111,45 +111,6 @@ class LSYii_Validators extends CValidator
     {
         $filter = LSYii_HtmlPurifier::getXssPurifier();
 
-        // to enable video or something else we must use the config object of HTML-Purifier
-        $config = $filter->getPurifier()->config;
-
-        // enable video
-        $config->set('HTML.DefinitionID', 'html5-definitions');
-
-        $def = $config->maybeGetRawHTMLDefinition();
-        $max = $config->get('HTML.MaxImgLength');
-        if ($def) {
-            $def->addElement(
-                'video',   // name
-                'Inline',  // content set
-                'Flow', // allowed children
-                'Common', // attribute collection
-                array( // attributes
-                    'src' => 'URI',
-                    'id' => 'Text',
-                    'poster' => 'Text',
-                    'width' => 'Pixels#' . $max,
-                    'height' => 'Pixels#' . $max,
-                    'controls' => 'Bool#controls',
-                    'autobuffer' => 'Bool#autobuffer',
-                    'autoplay' => 'Bool#autoplay',
-                    'loop' => 'Bool#loop',
-                    'muted' => 'Bool#muted'
-                )
-            );
-            $def->addElement(
-                'source',   // name
-                'Inline',  // content set
-                'Empty', // allowed children
-                null, // attribute collection
-                array( // attributes
-                    'src*' => 'URI',
-                    'type' => 'Enum#video/mp4,video/webm',
-                )
-            );
-        }
-
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $filter->purify($value));
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
