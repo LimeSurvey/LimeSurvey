@@ -174,6 +174,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ca']['radixpoint'] = 1;
     $supportedLanguages['ca']['momentjs'] = 'ca';
 
+    // Chichewa
+    $supportedLanguages['ny']['description'] = gT('Chichewa');
+    $supportedLanguages['ny']['nativedescription'] = 'Chichewa';
+    $supportedLanguages['ny']['rtl'] = false;
+    $supportedLanguages['ny']['dateformat'] = 5;
+    $supportedLanguages['ny']['radixpoint'] = 0;
+
     // Chinese (Simplified)
     $supportedLanguages['zh-Hans']['description'] = gT('Chinese (Simplified)');
     $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';

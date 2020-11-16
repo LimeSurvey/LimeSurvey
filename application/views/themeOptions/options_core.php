@@ -204,11 +204,38 @@ $bInherit = (!empty($aTemplateConfiguration['sid']) || !empty($aTemplateConfigur
                         }
                     }
                     echo '</div>';
+
+                    if ($category == 'Images') {
                 ?>
+                    <div class="row action_hide_on_inherit">
+                        <div class="container-fluid ls-space margin bottom-15 top-15">
+                            <div class="row ls-space margin bottom-15">
+                                <div class="col-sm-6">
+                                    <?php printf( gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize()/1024/1024); ?>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span id="fileselector_frontend">
+                                        <label class="btn btn-default col-xs-8" for="upload_image_frontend">
+                                            <input class="hidden" id="upload_image_frontend" name="upload_image_frontend" type="file">
+                                            <i class="fa fa-upload ls-space margin right-10"></i>
+                                            <?php eT("Upload"); ?>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="progress">
+                                    <div id="upload_progress_frontend" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                        <span class="sr-only">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <?php } ?>
 
                 </div>
-                
-            
 
         </div>
 

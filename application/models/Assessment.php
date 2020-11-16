@@ -155,7 +155,8 @@ class Assessment extends LSActiveRecord
             array(
                 'name' => 'message',
                 'htmlOptions' => ['class' => 'col-sm-5'],
-                "type" => 'html', // This show all html (filtered, raw show unfiltered html) … maybe need another type , something like strip tag and ellipsize ?
+                'value'=>'viewHelper::flatEllipsizeText($data->message,true,0)',
+                "type" => 'raw'
             )
         );
     }
