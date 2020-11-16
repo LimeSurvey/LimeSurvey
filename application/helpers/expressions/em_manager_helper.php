@@ -5561,6 +5561,26 @@
                                 $val=NULL;
                             }
                             break;
+                        case '|': //FILE UPLOAD QUESTION
+                            if (!preg_match('/_filecount$/', $key))
+                            {
+                                $aFiles = json_decode($val);
+                                $iSize=@count($aFiles);
+                                if (!is_null($aFiles) && $iSize > 0)
+                                {
+                                    for ($i = 0; $i < $iSize; $i++)
+                                    {
+                                        // Decode html entities
+                                        $aFiles[$i]->title = html_entity_decode($aFiles[$i]->title, ENT_QUOTES);
+                                        $aFiles[$i]->comment = html_entity_decode($aFiles[$i]->comment, ENT_QUOTES);
+                                        $aFiles[$i]->name = html_entity_decode($aFiles[$i]->name, ENT_QUOTES);
+                                        $aFiles[$i]->filename = html_entity_decode($aFiles[$i]->filename, ENT_QUOTES);
+                                        $aFiles[$i]->ext = html_entity_decode($aFiles[$i]->ext, ENT_QUOTES);
+                                    }
+                                    $val = ls_json_encode($aFiles);
+                                }
+                            }
+                            break;
                         default:
                             // @todo : control length of DB string, if answers in single choice is valid too (for example) ?
                             break;
@@ -8952,11 +8972,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             }
 
                                             // Re-encode html entities
-                                            $aFiles[$i]->title = htmlentities($aFiles[$i]->title, ENT_QUOTES);
-                                            $aFiles[$i]->comment = htmlentities($aFiles[$i]->comment, ENT_QUOTES);
-                                            $aFiles[$i]->name = htmlentities($aFiles[$i]->name, ENT_QUOTES);
-                                            $aFiles[$i]->filename = htmlentities($aFiles[$i]->filename, ENT_QUOTES);
-                                            $aFiles[$i]->ext = htmlentities($aFiles[$i]->ext, ENT_QUOTES);
+                                            $aFiles[$i]->title = htmlentities($aFiles[$i]->title, ENT_QUOTES, null, false);
+                                            $aFiles[$i]->comment = htmlentities($aFiles[$i]->comment, ENT_QUOTES, null, false);
+                                            $aFiles[$i]->name = htmlentities($aFiles[$i]->name, ENT_QUOTES, null, false);
+                                            $aFiles[$i]->filename = htmlentities($aFiles[$i]->filename, ENT_QUOTES, null, false);
+                                            $aFiles[$i]->ext = htmlentities($aFiles[$i]->ext, ENT_QUOTES, null, false);
                                         }
                                         $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
                                     }

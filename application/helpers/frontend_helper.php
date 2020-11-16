@@ -117,6 +117,23 @@ function loadanswers()
                         // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
                         // question types (NKD)
                         $_SESSION['survey_'.$surveyid][$column] = '';
+                    } elseif ($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == '|' && !preg_match('/_filecount$/', $column)) {
+                        $aFiles = json_decode($value);
+                        $iSize=@count($aFiles);
+                        if (!is_null($aFiles) && $iSize > 0)
+                        {
+                            for ($i = 0; $i < $iSize; $i++)
+                            {
+                                // Encode html entities
+                                $aFiles[$i]->title = htmlentities($aFiles[$i]->title, ENT_QUOTES, null, false);
+                                $aFiles[$i]->comment = htmlentities($aFiles[$i]->comment, ENT_QUOTES, null, false);
+                                $aFiles[$i]->name = htmlentities($aFiles[$i]->name, ENT_QUOTES, null, false);
+                                $aFiles[$i]->filename = htmlentities($aFiles[$i]->filename, ENT_QUOTES, null, false);
+                                $aFiles[$i]->ext = htmlentities($aFiles[$i]->ext, ENT_QUOTES, null, false);
+                            }
+                            $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
+                            $_SESSION['survey_'.$surveyid][$column] = $value;
+                        }
                     } else {
                         $_SESSION['survey_'.$surveyid][$column] = $value;
                     }
