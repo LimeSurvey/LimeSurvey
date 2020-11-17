@@ -1039,46 +1039,54 @@ LS.questionEditor = (function () {
       throw 'Internal error: targetParent is not an instance of HTMLElement';
     }
 
+    // Cleanup any previous HTML.
+    const lasets = document.getElementById('lasets');
+    if (lasets) {
+        lasets.remove();
+    }
+    const laname = document.getElementById('laname');
+    if (laname) {
+        laname.remove();
+    }
+
     // TODO: Split each case into a function.
     switch (target.getAttribute('id')) {
+        // Save as new label set.
         case 'newlabel':
-            const lasets = document.getElementById('lasets');
-            if (lasets) {
-              lasets.remove();
-            }
-
             template.innerHTML = `<p id="lasets" class="label-name-wrapper">
                  <label for="laname">${languageJson.sLabelSetName}:</label>
                  <input type="text" name="laname" id="laname">
                </p>`;
-            child = template.content.firstChild;
+            child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
             }
             break;
+        // Replace an existing label set.
         case 'replacelabel':
-            const laname = document.getElementById('laname');
-            if (laname) {
-              laname.remove();
-            }
-
             template.innerHTML = `
               <p id="laname" class="label-name-wrapper">
-                <select name="laname" id="lasets">
+                <select name="laname">
                   <option value=""></option>
                 </select>
               </p>' 
             `;
-            child = template.content.firstChild;
+            // 
+            child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
             }
-            $('#lasets option[value=""]').remove();
+            //$('#lasets option[value=""]').remove();
+            const select = document.querySelector('select[name="laname"]');
+            if (!select) {
+                alert('Found no <select>');
+                throw 'abort';
+            }
             $.getJSON(languageJson.lanameurl, (data) => {
               console.log('getJSON');
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
-                  $('#lasets').append(`<option value="${key}">${val}</option>`);
+                  $(select).append(`<option value="${key}">${val}</option>`);
                 } else {
                   throw 'val is not string';
                 }
