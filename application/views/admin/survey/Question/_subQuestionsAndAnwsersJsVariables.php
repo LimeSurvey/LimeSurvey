@@ -1,6 +1,7 @@
 <?php
 /**
  * This subview render the javaScript variables for subQuestion_view and answerOptions_view
+ * TODO: Move this view to questionAdministration folder.
  */
 
 // Common variables between subquestions / answers options
@@ -14,7 +15,8 @@ $scriptVariables = [
     'labelSetSuccess'  => gT('The records have been saved successfully!'),
     'labelSetFail'     =>  gT('Sorry, the request failed!'),
     'lanameurl'        => Yii::app()->createUrl('/admin/labels/sa/getAllSets'),
-    'lasaveurl'        => Yii::app()->createUrl('/admin/labels/sa/ajaxSets'),
+    'lasaveurl'        => Yii::app()->createUrl('/admin/labels/sa/ajaxSave'),
+    'laupdateurl'      => Yii::app()->createUrl('/admin/labels/sa/ajaxUpdate'),
     'lsdetailurl'      => Yii::app()->createUrl('/questionAdministration/getLabelsetDetails'),
     'lspickurl'        => Yii::app()->createUrl('/questionAdministration/getLabelsetPicker'),
     'sCheckLabelURL'   => Yii::app()->createUrl('/questionAdministration/checkLabel'),

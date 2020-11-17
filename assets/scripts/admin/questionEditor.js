@@ -1019,13 +1019,13 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * Used for "Save as label set"?
+   * Used for "Save as label set"
    *
    * @param {event} event
    * @return {void}
    */
-  function setLabel(event /*: Event */) /*: void */ {
-    console.log('setLabel');
+  function saveAsLabelSetOptionClick(event /*: Event */) /*: void */ {
+    console.log('saveAsLabelSetOptionClick');
     const target = event.target;
     if (!(target instanceof HTMLElement)) {
       alert('target is not an HTMLElement');
@@ -1094,7 +1094,7 @@ LS.questionEditor = (function () {
             });
             break;
         default:
-            alert('Internal error: Unsupported id in target (setLabel)');
+            alert('Internal error: Unsupported id in target (saveAsLabelSetOptionClick)');
             throw 'abort';
     }
   }
@@ -1131,7 +1131,7 @@ LS.questionEditor = (function () {
    * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
    * @return {void}
    */
-  async function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
+  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
     console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
@@ -1165,7 +1165,9 @@ LS.questionEditor = (function () {
       // Activated survey
       // TODO
       $('.answertable input[name^="code_"]').each(function () {
-        if ($(this).attr('name').substr(-1) === scaleId) codes.push($(this).attr('value'));
+        if ($(this).attr('name').substr(-1) === scaleId) {
+            codes.push($(this).attr('value'));
+        }
       });
     }
     console.log('codes', codes);
@@ -1183,6 +1185,7 @@ LS.questionEditor = (function () {
       });
     });
 
+    /*
     const token = $.ajaxSetup().data.YII_CSRF_TOKEN;
     const response = await fetch(
       languageJson.lasaveurl,
@@ -1194,7 +1197,6 @@ LS.questionEditor = (function () {
           'X-CSRFToken': token
         },
         // TODO: FormData here
-        /*
         body: JSON.stringify(
           {
             laname: $('input[name=laname]').val(),
@@ -1205,10 +1207,9 @@ LS.questionEditor = (function () {
             [languageJson.csrf.tokenName]: languageJson.csrf.token
           },
         ),
-        */
-        body: new URLSearchParams({
-          YII_CSRF_TOKEN: token
-        }).toString(),
+        //body: new URLSearchParams({
+          //YII_CSRF_TOKEN: token
+        //}).toString(),
         credentials: 'include'
       }
     );
@@ -1218,25 +1219,59 @@ LS.questionEditor = (function () {
       alert('Internal error: Could not POST request: ' + response.status + ', ' + response.statusText);
       throw 'abort';
     }
+    */
 
-   /*
-   $.post(
-      languageJson.lasaveurl,
-      {
-        laname:  $('input[name=laname]').val(),
-        lid:     lid,
-        code:    codes,
-        answers: answers,
+    // NB: "Save as new label set" uses <input>, update existing uses <select>.
+    let laname = $('input[name=laname]').val();
+    let url;
+    let labelSetId;
+    if (laname) {
+      url = languageJson.lasaveurl;
+    } else {
+      laname = $('select[name=laname]').text();
+      // TODO: Duplicated to lid?
+      labelSetId = $('select[name=laname]').val();
+      url = languageJson.laupdateurl;
+    }
+
+    $.ajax({
+      url: languageJson.lasaveurl,
+      method: 'POST',
+      data: {
+        laname,
+        lid,
+        answers,
+        labelSetId,
+        codes,
       },
-   ).always((result) => {
-     console.log('then');
-     console.log(result);
-     LS.LsGlobalNotifier.create(
-       result,
-       'well-lg bg-success text-center'
-     );
-   });
-   */
+      /**
+       * @param {any} data
+       * @param {string} textStatus
+       * @param {any} jqXHR
+       * @return {void}
+       */
+      success(successMessage, textStatus, jqXHR) {
+        LS.LsGlobalNotifier.create(
+          successMessage,
+          'well-lg bg-success text-center'
+        );
+      },
+      /**
+       * @param {any} data
+       * @param {string} textStatus
+       * @param {any} jqXHR
+       * @return {void}
+       */
+      error(data, textStatus, jqXHR) {
+        //console.log('data', data);
+        //console.log('textStatus', textStatus);
+        //console.log('jqXHR', jqXHR);
+        LS.LsGlobalNotifier.create(
+          data.responseJSON.message,
+          'well-lg bg-danger text-center'
+        );
+      }
+    });
 
      /*
    }).fail((xhr, textStatus, errorThrown) => {
@@ -1389,7 +1424,7 @@ LS.questionEditor = (function () {
 
     $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
-    $('input[name=savelabeloption]:radio').click(setLabel);
+    $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();
 
     bindExpandRelevanceEquation();
