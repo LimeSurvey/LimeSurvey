@@ -117,18 +117,24 @@ class SurveysGroupsController extends Survey_Common_Action
                 /* Move this to model */
                 $postSurveysGroups['alwaysavailable'] = 1;
             }
-            $model->attributes = $postSurveysGroups;
-
-            // prevent loop
+            // parent_id control
             if (!empty($postSurveysGroups['parent_id'])) {
-                $sgid = $postSurveysGroups['parent_id'] ;
-                $ParentSurveyGroup = $this->loadModel($sgid);
+                $parentId = $postSurveysGroups['parent_id'] ;
+                /* Check permission */
+                $aAvailableParents = $model->getParentGroupOptions($model->gsid);
+                if (!array_key_exists($parentId, $aAvailableParents)) {
+                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"),CHtml::encode($parentId)), 'error');
+                    $postSurveysGroups['parent_id'] = $model->parent_id;
+                }
+                /* avoid loop */
+                $ParentSurveyGroup = $this->loadModel($parentId);
                 $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
                 if ( in_array( $model->gsid, $aParentsGsid  ) ) {
                     Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
                     $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
                 }
             }
+            $model->attributes = $postSurveysGroups;
             if ($model->save()) {
                 if (App()->request->getPost('saveandclose') !== null){
                     $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));

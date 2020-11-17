@@ -341,15 +341,21 @@ class SurveysGroups extends LSActiveRecord
 
     public function getParentGroupOptions($gsid = null)
     {
+        $criteria = new CDbCriteria;
         if (!empty($gsid)){
-            $oSurveysGroups = SurveysGroups::model()->findAll('gsid != :gsid', array(':gsid' => $gsid));
-        } else {
-            $oSurveysGroups = SurveysGroups::model()->findAll();
+            $criteria->compare("t.gsid", '<>'. $gsid);
         }
+        // Permission
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
+        if($gsid && $this->parent_id) {
+            /* If gsid is set : be sure to add current parent */
+            $criteria->compare("t.gsid", $this->parent_id, false, 'OR');
+        }
+        $oSurveysGroups = SurveysGroups::model()->findAll($criteria);
         $options = [
             '' => gT('No parent group')
         ];
-
 
         foreach ($oSurveysGroups as $oSurveysGroup) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
