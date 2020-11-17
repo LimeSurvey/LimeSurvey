@@ -11,7 +11,7 @@
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
                         "questionI10N[$oSurvey->language][question]",
-                        $oQuestion->questionl10ns[$oSurvey->language]->question ?? '',
+                        $question->questionl10ns[$oSurvey->language]->question ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
@@ -19,8 +19,8 @@
                         "question_" . $oSurvey->language,
                         "[".gT("Question:","js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
-                        $oQuestion->gid ?? 0,
-                        $oQuestion->sid ?? 0,
+                        $question->gid ?? 0,
+                        $question->sid ?? 0,
                         $action = '');
                     ?>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="htmleditor input-group">
                     <?= CHtml::textArea(
                         "questionI10N[$oSurvey->language][help]",
-                        $oQuestion->questionl10ns[$oSurvey->language]->help ?? '',
+                        $question->questionl10ns[$oSurvey->language]->help ?? '',
                         array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")
                     ); ?>
                     <?= getEditor(
@@ -42,8 +42,8 @@
                         "help_".$oSurvey->language,
                         "[".gT("Help:", "js")."](".$oSurvey->language.")",
                         $oSurvey->sid,
-                        $oQuestion->gid ?? 0,
-                        $oQuestion->qid ?? 0,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
                         $action = ''
                     ); ?>
                 </div>

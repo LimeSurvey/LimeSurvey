@@ -320,9 +320,8 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // Rollback at failure.
+        $transaction = Yii::app()->db->beginTransaction();
         try {
-            $transaction = Yii::app()->db->beginTransaction();
-
             if ($questionData['question']['qid'] == 0) {
                 $questionData['question']['qid'] = null;
                 $question = $this->storeNewQuestionData($questionData['question']);
