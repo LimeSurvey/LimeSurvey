@@ -491,7 +491,7 @@ class labels extends Survey_Common_Action
 
         $labelSetId = (int) Yii::app()->getRequest()->getPost('labelSetId');
         if (empty($labelSetId)) {
-            throw new CHttpException(400, gT('Could not update label set: Label set name is empty.'));
+            throw new CHttpException(400, gT('Could not update label set: Label set id is empty.'));
         }
 
         $labelSet = LabelSet::model()->findByPk($labelSetId);

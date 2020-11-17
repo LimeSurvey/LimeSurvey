@@ -1235,7 +1235,7 @@ LS.questionEditor = (function () {
     }
 
     $.ajax({
-      url: languageJson.lasaveurl,
+      url,
       method: 'POST',
       data: {
         laname,
