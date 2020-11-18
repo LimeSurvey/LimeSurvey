@@ -108,6 +108,7 @@ $this->renderPartial(
                                 "textElements",
                                 [
                                     'oSurvey'         => $oSurvey,
+                                    'question'        => $question,
                                     'aStructureArray' => $aQuestionTypeGroups,
                                     'questionTypes'   => $aQuestionTypeStateList,
                                 ]

@@ -34,6 +34,39 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.26 (build 201110) to 4.3.27 (build 201116) November 16, 2020
++New feature #16649: enable video in spite of active xss filtering (Gabriel Jenik)
+-Fixed issue: Assessment editing not properly working if quota messages contain HTML (Carsten Schmitz)
+-Fixed issue #16827: Dump while accessing statistics (Gabriel Jenik)
+-Fixed issue #16817: Missing MIME type check on survey import (Abdulrahman Ahmad Al Bataineh)
+-Fixed issue #16748: Upload file (logo) missing in fruity and bootswatch (Gabriel Jenik)
+-Fixed issue #16110: resources not found (vanilla based template) (Gabriel Jenik)
+-Fixed issue #16748: Upload file (logo) missing in fruity and bootswatch (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by jmlopez
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by ritapas, lfanfoni
+#Updated translation: Finnish by tigger, Jmantysalo
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Simplified) by liumingjun
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.3.25 (build 201105) to 4.3.26 (build 201110) November 9, 2020
+-Fixed issue: Allow to login if LDAP user's DN contains double quotes (#1649) (Vilius Šumskas)
+-Fixed issue #16819: Delete a single user in user management and throw an exception. (#1646) (Gabriel Jenik)
+-Fixed issue #16576: Problems with the error message when a token is already used (inherit). (Jessica Höck)
+#Updated translation: Spanish (Spain) by cdorin
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by ritapas, lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.24 (build 201102) to 4.3.25 (build 201105) November 4, 2020
 -Fixed issue [security]: Unauthorized access to statistics of a survey with certain permission configurations (Carsten Schmitz)
 -Fixed issue : visually disable account type buttons when global configuration is set (Vilius Šumskas)

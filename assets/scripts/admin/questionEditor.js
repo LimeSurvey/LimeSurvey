@@ -1019,13 +1019,13 @@ LS.questionEditor = (function () {
   }
 
   /**
-   * Used for "Save as label set"?
+   * Used for "Save as label set"
    *
    * @param {event} event
    * @return {void}
    */
-  function setLabel(event /*: Event */) /*: void */ {
-    console.log('setLabel');
+  function saveAsLabelSetOptionClick(event /*: Event */) /*: void */ {
+    console.log('saveAsLabelSetOptionClick');
     const target = event.target;
     if (!(target instanceof HTMLElement)) {
       alert('target is not an HTMLElement');
@@ -1039,46 +1039,54 @@ LS.questionEditor = (function () {
       throw 'Internal error: targetParent is not an instance of HTMLElement';
     }
 
+    // Cleanup any previous HTML.
+    const lasets = document.getElementById('lasets');
+    if (lasets) {
+        lasets.remove();
+    }
+    const laname = document.getElementById('laname');
+    if (laname) {
+        laname.remove();
+    }
+
     // TODO: Split each case into a function.
     switch (target.getAttribute('id')) {
+        // Save as new label set.
         case 'newlabel':
-            const lasets = document.getElementById('lasets');
-            if (lasets) {
-              lasets.remove();
-            }
-
             template.innerHTML = `<p id="lasets" class="label-name-wrapper">
                  <label for="laname">${languageJson.sLabelSetName}:</label>
                  <input type="text" name="laname" id="laname">
                </p>`;
-            child = template.content.firstChild;
+            child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
             }
             break;
+        // Replace an existing label set.
         case 'replacelabel':
-            const laname = document.getElementById('laname');
-            if (laname) {
-              laname.remove();
-            }
-
             template.innerHTML = `
               <p id="laname" class="label-name-wrapper">
-                <select name="laname" id="lasets">
+                <select name="laname">
                   <option value=""></option>
                 </select>
               </p>' 
             `;
-            child = template.content.firstChild;
+            // 
+            child = template.content.firstElementChild;
             if (child) {
               targetParent.after(child);
             }
-            $('#lasets option[value=""]').remove();
+            //$('#lasets option[value=""]').remove();
+            const select = document.querySelector('select[name="laname"]');
+            if (!select) {
+                alert('Found no <select>');
+                throw 'abort';
+            }
             $.getJSON(languageJson.lanameurl, (data) => {
               console.log('getJSON');
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
-                  $('#lasets').append(`<option value="${key}">${val}</option>`);
+                  $(select).append(`<option value="${key}">${val}</option>`);
                 } else {
                   throw 'val is not string';
                 }
@@ -1086,7 +1094,7 @@ LS.questionEditor = (function () {
             });
             break;
         default:
-            alert('Internal error: Unsupported id in target (setLabel)');
+            alert('Internal error: Unsupported id in target (saveAsLabelSetOptionClick)');
             throw 'abort';
     }
   }
@@ -1123,7 +1131,7 @@ LS.questionEditor = (function () {
    * @param {string} tableClassName 'subquestions-table' or 'answeroptions-table'
    * @return {void}
    */
-  async function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
+  function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
     console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
@@ -1157,7 +1165,9 @@ LS.questionEditor = (function () {
       // Activated survey
       // TODO
       $('.answertable input[name^="code_"]').each(function () {
-        if ($(this).attr('name').substr(-1) === scaleId) codes.push($(this).attr('value'));
+        if ($(this).attr('name').substr(-1) === scaleId) {
+            codes.push($(this).attr('value'));
+        }
       });
     }
     console.log('codes', codes);
@@ -1175,6 +1185,7 @@ LS.questionEditor = (function () {
       });
     });
 
+    /*
     const token = $.ajaxSetup().data.YII_CSRF_TOKEN;
     const response = await fetch(
       languageJson.lasaveurl,
@@ -1186,7 +1197,6 @@ LS.questionEditor = (function () {
           'X-CSRFToken': token
         },
         // TODO: FormData here
-        /*
         body: JSON.stringify(
           {
             laname: $('input[name=laname]').val(),
@@ -1197,10 +1207,9 @@ LS.questionEditor = (function () {
             [languageJson.csrf.tokenName]: languageJson.csrf.token
           },
         ),
-        */
-        body: new URLSearchParams({
-          YII_CSRF_TOKEN: token
-        }).toString(),
+        //body: new URLSearchParams({
+          //YII_CSRF_TOKEN: token
+        //}).toString(),
         credentials: 'include'
       }
     );
@@ -1210,25 +1219,60 @@ LS.questionEditor = (function () {
       alert('Internal error: Could not POST request: ' + response.status + ', ' + response.statusText);
       throw 'abort';
     }
+    */
 
-   /*
-   $.post(
-      languageJson.lasaveurl,
-      {
-        laname:  $('input[name=laname]').val(),
-        lid:     lid,
-        code:    codes,
-        answers: answers,
+    // NB: "Save as new label set" uses <input>, update existing uses <select>.
+    let laname = $('input[name=laname]').val();
+    let url;
+    let labelSetId;
+    if (laname) {
+      url = languageJson.lasaveurl;
+    } else {
+      laname = $('select[name=laname]').text();
+      // TODO: Duplicated to lid?
+      labelSetId = $('select[name=laname]').val();
+      url = languageJson.laupdateurl;
+    }
+
+    $.ajax({
+      url,
+      method: 'POST',
+      data: {
+        laname,
+        lid,
+        answers,
+        labelSetId,
+        codes,
       },
-   ).always((result) => {
-     console.log('then');
-     console.log(result);
-     LS.LsGlobalNotifier.create(
-       result,
-       'well-lg bg-success text-center'
-     );
-   });
-   */
+      /**
+       * @param {any} data
+       * @return {void}
+       */
+      success(successMessage) {
+        LS.LsGlobalNotifier.create(
+          successMessage,
+          'well-lg bg-success text-center'
+        );
+      },
+      /**
+       * @param {any} data
+       * @return {void}
+       */
+      error(data) {
+        //console.log('data', data);
+        //console.log('textStatus', textStatus);
+        //console.log('jqXHR', jqXHR);
+        if (data.responseJSON) {
+          LS.LsGlobalNotifier.create(
+            data.responseJSON.message,
+            'well-lg bg-danger text-center'
+          );
+        } else {
+          alert('Internal eror from Ajax call');
+          throw 'abort';
+        }
+      }
+    });
 
      /*
    }).fail((xhr, textStatus, errorThrown) => {
@@ -1434,7 +1478,7 @@ LS.questionEditor = (function () {
 
     $('#labelsets').click(showLabelSetPreview);
     $('.bthsaveaslabel').click(getLabel);
-    $('input[name=savelabeloption]:radio').click(setLabel);
+    $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
     updateRowProperties();
 
     bindExpandRelevanceEquation();

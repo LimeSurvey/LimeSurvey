@@ -230,7 +230,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
                 self::$webDriver->switchTo()->frame($iframe);
                 // Edit the question text
                 $question = self::$webDriver->findElement(WebDriverBy::tagName('body'));
-                sleep(1);
+                sleep(2);
                 $question->clear()->sendKeys($text);
                 // Switch back to main content
                 self::$webDriver->switchTo()->defaultContent();
