@@ -2788,12 +2788,34 @@ class QuestionAdministrationController extends LSBaseController
 
     /**
      * Checks if given Question Code is unique.
-     * @param string $code
-     * @return string
+     * Echo 'true' if code is unique, otherwise 'false'.
+     *
+     * @param int $qid Question id
+     * @param string $code Question code (title in db)
+     * @return void
      */
-    public function actionCheckQuestionCodeIsUnique(string $code): string
+    public function actionCheckQuestionCodeUniqueness(int $qid, string $code)
     {
-        return '';
+        if ($qid === 0) {
+            $count = Question::model()->countByAttributes(
+                [
+                    'title' => $code
+                ]
+            );
+            echo $count > 0 ? 'false' : 'true';
+        } else {
+            $question = Question::model()->findByPk($qid);
+            if (empty($question)) {
+                throw new CHttpException(404, gT("Invalid question id"));
+            }
+            $count = Question::model()->countByAttributes(
+                [
+                    'title' => $code
+                ],
+                'qid <> ' . (int) $qid
+            );
+            echo $count > 0 ? 'false' : 'true';
+        }
     }
 
     /**

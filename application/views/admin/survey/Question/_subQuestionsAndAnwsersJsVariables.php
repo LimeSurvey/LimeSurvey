@@ -40,7 +40,7 @@ $scriptVariables = [
         'tokenName'               => Yii::app()->request->csrfTokenName,
         'token'                   => Yii::app()->request->csrfToken,
     ],
-    'checkQuestionCodeIsUniqueURL' =>  Yii::app()->createUrl('questionAdministration/checkAnswerCodeIsUnique'),
+    'checkQuestionCodeIsUniqueURL' =>  Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'),
     'checkSubQuestionCodeIsUniqueURl' =>  Yii::app()->createUrl(''),
     'checkAnswerCodeIsUniqueURL' =>  Yii::app()->createUrl(''),
 ];

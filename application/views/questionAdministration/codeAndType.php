@@ -37,16 +37,21 @@ $oQuestionSelector = $this->beginWidget(
 <div class="form-group col-sm-6 scoped-responsive-fix-height">
     <label for="questionCode"><?= gT('Code'); ?></label>
     <div class="scoped-keep-in-line">
-        <input
-            text="text"
-            class="form-control"
-            id="questionCode"
-            name="question[title]"
-            value="<?= $question->title; ?>"
-            :maxlength="this.maxQuestionCodeLength"
-            :required="true"
-            :readonly="!(editQuestion || isCreateQuestion || initCopy)"
-        />
+        <!-- TODO: Max lenght. -->
+        <!-- TODO: Read-only when survey is active. -->
+        <?php if ($oSurvey->active !== 'Y'): ?>
+          <input
+              text="text"
+              class="form-control"
+              id="questionCode"
+              name="question[title]"
+              value="<?= $question->title; ?>"
+              required="true"
+              onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
+          />
+        <?php else: ?>
+          <span><?= $question->title; ?></span>
+        <?php endif; ?>
         <!--
         <type-counter 
             :countable="currentQuestionCode.length"
@@ -55,7 +60,7 @@ $oQuestionSelector = $this->beginWidget(
         />
         -->
     </div>
-    <p class="well bg-warning scoped-highten-z" v-if="noCodeWarning!=null">{{noCodeWarning}}</p>
+    <p id="question-code-unique-warning" class="hidden text-warning"><?= gT('Question codes must be unique.'); ?></p>
 </div>
 <div class="form-group col-sm-6 contains-question-selector">
     <label for="questionCode"><?= gT('Question type'); ?></label>

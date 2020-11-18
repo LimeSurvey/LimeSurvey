@@ -1336,25 +1336,25 @@ LS.questionEditor = (function () {
      * @returns {Promise}
      */
   function getCheckUniquenessPromise(url, code) {
-        console.log('URL: ' + url);
-      return new Promise((resolve, reject) => {
-          $.ajax({
-              url: url,
-              method: 'GET',
-              data: { code: code },
-              dataType: 'json',
-              success: (data) => {
-                  resolve(data);
-                  console.log('Success');
-                  console.log(data);
-              },
-              error: (data) => {
-                  reject(data);
-                  console.log('Error');
-                  console.log(data);
-              }
-          });
+    console.log('URL: ' + url);
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: url,
+        method: 'GET',
+        data: { code: code },
+        dataType: 'json',
+        success: (data) => {
+          resolve(data);
+          console.log('Success');
+          console.log(data);
+        },
+        error: (data) => {
+          reject(data);
+          console.log('Error');
+          console.log(data);
+        }
       });
+    });
   }
 
   /**
@@ -1500,7 +1500,8 @@ LS.questionEditor = (function () {
 
     /*****************************************/
     // Check Question Code is unique.
-    $('#questionCode').focusout( () => {
+    /*
+    $('#questionCode').focusout(() => {
         let code = $('#questionCode').val();
         if (code !== undefined || code !== '') {
             console.log('Question Code: ' + code);
@@ -1513,6 +1514,7 @@ LS.questionEditor = (function () {
             console.log('Question Code is empty');
         }
     });
+    */
 
     // Check Answer Code is unique.
      $('#answerCode').focusout( () => {
@@ -1682,6 +1684,34 @@ LS.questionEditor = (function () {
         onClickSaveLabelSet(event, tableClassName);
       };
       $('#saveaslabelModal').modal('show');
+    },
+
+    /**
+     * Check with Ajax if question code (title) is unique.
+     *
+     * @param {string} code
+     * @param {number} qid Question id
+     * @return {void}
+     */
+    checkQuestionCodeUniqueness: function(code, qid) {
+      $('#question-code-unique-warning').addClass('hidden');
+      $.ajax({
+        url: languageJson.checkQuestionCodeIsUniqueURL,
+        method: 'GET',
+        data: {
+          qid,
+          code
+        },
+        success: (data) => {
+          if (data !== 'true') {
+            $('#question-code-unique-warning').removeClass('hidden');
+          }
+        },
+        error: (data) => {
+          alert('Internal error: ' + data);
+          throw 'abort';
+        }
+      });
     }
   };
 })();
