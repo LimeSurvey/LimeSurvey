@@ -1564,7 +1564,7 @@ LS.questionEditor = (function () {
   return {
     /**
      * Update question attributes (general and advanced settings) when selecting question type.
-     * Used by question selector modal, so not wrapped in closure.
+     * Used by question selector modal.
      *
      * @param {string} questionType - One-letter string of question type
      * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
@@ -1690,7 +1690,7 @@ LS.questionEditor = (function () {
      * Check with Ajax if question code (title) is unique.
      *
      * @param {string} code
-     * @param {number} qid Question id
+     * @param {number} qid Question id (0 when creating new question)
      * @return {void}
      */
     checkQuestionCodeUniqueness: function(code, qid) {
