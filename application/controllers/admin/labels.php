@@ -501,8 +501,6 @@ class labels extends Survey_Common_Action
             throw new CHttpException(400, gT('Found no label set with this id'));
         }
 
-        Label::model()->deleteAll('lid = :lid', [':lid' => $labelSetId]);
-
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $assessmentValues = $request->getPost('assessmentvalues', []);
@@ -526,6 +524,7 @@ class labels extends Survey_Common_Action
     {
         try {
           $transaction = Yii::app()->db->beginTransaction();
+          Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
           foreach ($answers as $answer) {
               foreach ($answer as $i => $answeroptionl10ns) {
                   $label = new Label;
