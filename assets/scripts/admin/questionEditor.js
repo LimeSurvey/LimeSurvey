@@ -1246,11 +1246,9 @@ LS.questionEditor = (function () {
       },
       /**
        * @param {any} data
-       * @param {string} textStatus
-       * @param {any} jqXHR
        * @return {void}
        */
-      success(successMessage, textStatus, jqXHR) {
+      success(successMessage) {
         LS.LsGlobalNotifier.create(
           successMessage,
           'well-lg bg-success text-center'
@@ -1258,18 +1256,21 @@ LS.questionEditor = (function () {
       },
       /**
        * @param {any} data
-       * @param {string} textStatus
-       * @param {any} jqXHR
        * @return {void}
        */
-      error(data, textStatus, jqXHR) {
+      error(data) {
         //console.log('data', data);
         //console.log('textStatus', textStatus);
         //console.log('jqXHR', jqXHR);
-        LS.LsGlobalNotifier.create(
-          data.responseJSON.message,
-          'well-lg bg-danger text-center'
-        );
+        if (data.responseJSON) {
+          LS.LsGlobalNotifier.create(
+            data.responseJSON.message,
+            'well-lg bg-danger text-center'
+          );
+        } else {
+          alert('Internal eror from Ajax call');
+          throw 'abort';
+        }
       }
     });
 

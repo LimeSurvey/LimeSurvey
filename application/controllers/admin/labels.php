@@ -485,11 +485,13 @@ class labels extends Survey_Common_Action
      */
     public function ajaxUpdate()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'edit')) {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             throw new CHttpException(403, gT('Access denied'));
         }
 
-        $labelSetId = (int) Yii::app()->getRequest()->getPost('labelSetId');
+        $request = Yii::app()->request;
+
+        $labelSetId = (int) $request->getPost('labelSetId');
         if (empty($labelSetId)) {
             throw new CHttpException(400, gT('Could not update label set: Label set id is empty.'));
         }
