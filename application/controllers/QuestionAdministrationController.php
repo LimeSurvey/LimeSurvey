@@ -140,7 +140,7 @@ class QuestionAdministrationController extends LSBaseController
         );
         App()->getClientScript()->registerScriptFile(
             App()->getConfig('adminscripts') . 'questionEditor.js',
-            CClientScript::POS_BEGIN
+            CClientScript::POS_END
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
@@ -2797,6 +2797,7 @@ class QuestionAdministrationController extends LSBaseController
     public function actionCheckQuestionCodeUniqueness(int $qid, string $code)
     {
         if ($qid === 0) {
+            // TODO: Per survey, not globally.
             $count = Question::model()->countByAttributes(
                 [
                     'title' => $code
@@ -2808,6 +2809,7 @@ class QuestionAdministrationController extends LSBaseController
             if (empty($question)) {
                 throw new CHttpException(404, gT("Invalid question id"));
             }
+            // TODO: Use validate().
             $count = Question::model()->countByAttributes(
                 [
                     'title' => $code
@@ -2819,12 +2821,45 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * Checks if code is unique.
-     * @param string $code
-     * @return bool
+     * Checks if given Question Code is unique.
+     * Echo 'true' if code is unique, otherwise 'false'.
+     *
+     * @param int $sid Survey id
+     * @param string $sqid Subquestion id; prefixed with "new" when not yet saved to database
+     * @param string $code Subquestion code
+     * @return void
      */
-    private function checkCode(string $code): bool
+    public function actionCheckSubquestionCodeUniqueness($sid, $sqid, $code)
     {
-        return true;
+        $sid = (int) $sid;
+        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+
+        $survey = Survey::model()->findByPk($sid);
+        if (empty($survey)) {
+            throw new CHttpException(404, gT("Invalid survey id"));
+        }
+
+        if (strpos($sqid, 'new') !== false) {
+            // New subquestion, not yet saved.
+            $count = Question::model()->countByAttributes(
+                [
+                    'title' => $code,
+                    'sid'   => $sid
+                ],
+                'parent_qid IS NOT NULL'
+            );
+            echo $count > 0 ? 'false' : 'true';
+        } else {
+            // Existing subquestion.
+            $subquestion = Question::model()->findByPk($sqid);
+            if (empty($subquestion)) {
+                throw new CHttpException(404, gT("Invalid subquestion id"));
+            }
+            $subquestion->title = $code;
+            // NB: Echoes "true" or "false".
+            echo json_encode($subquestion->validate());
+        }
     }
 }

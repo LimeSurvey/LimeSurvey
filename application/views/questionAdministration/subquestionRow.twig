@@ -47,6 +47,7 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
+            <!-- TODO: What is "oldCode"??? -->
             {% if oldCode %}
                 <input
                     type='hidden'
@@ -65,6 +66,7 @@
                 class='code code-title'
                 value="{{ subquestion.title }}"
                 required='required'
+                onfocusout="LS.questionEditor.checkSubquestionCodeUniqueness($(this).val(), '{{ subquestion.qid}}');"
             />
         </td>
 

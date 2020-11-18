@@ -61,6 +61,14 @@ LS.questionEditor = (function () {
   /** @type {boolean} Used in ajaxcheckdup */
   let check = true;
 
+  /** @type {number} */
+  const sid = parseInt($('input[name=sid]').val());
+  if (isNaN(sid)) {
+    alert($('input[name=sid]').val());
+    alert('Internal error: No survey id found');
+    throw 'abort';
+  }
+
   /*:: declare function updateRowProperties(): void */
   /**
    * Rebind onclick events for subquestions and answer options?
@@ -616,10 +624,9 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function showLabelSetPreview(lid /*: number */) /*: void */ {
-    const surveyid = $('input[name=sid]').val();
     return $.ajax({
       url: languageJson.lsdetailurl,
-      data: {sid: surveyid, lid},
+      data: {sid, lid},
       cache: true,
       success(json /*: {results: Array<{label_name: string, labels: Array<{code: string, title: string}>}>, languages: {}} */) {
         if (json.languages === []) {
@@ -699,10 +706,9 @@ LS.questionEditor = (function () {
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
-    const surveyid = $('input[name=sid]').val();
     $.ajax({
       url: languageJson.lspickurl,
-      data: { sid: surveyid, match: 1 },
+      data: { sid, match: 1 },
       success(jsonString) {
         if (jsonString.success !== true) {
           $('#labelsetpreview').html(`<p class='alert'>${languageJson.strNoLabelSet}</p>`);
@@ -735,7 +741,6 @@ LS.questionEditor = (function () {
    * @return {void}
    */
   function transferLabels(type /*: string */, source /*: string */) /*: void */ {
-    //const surveyid = $('input[name=sid]').val();
     //const languages = languageJson.langs.split(';');
     //const labels = [];
     const scaleId = $('#current_scale_id').val();
@@ -1709,6 +1714,41 @@ LS.questionEditor = (function () {
         },
         error: (data) => {
           alert('Internal error: ' + data);
+          throw 'abort';
+        }
+      });
+    },
+
+    /**
+     * @param {string} code
+     * @param {string} sqid Subquestion id (newXXXX when creating new subquestion)
+     * @return {void}
+     */
+    checkSubquestionCodeUniqueness: function(code, sqid) {
+      // TODO: Hide error message.
+      console.log('code', code);
+      console.log('sqid', sqid);
+      $.ajax({
+        url: languageJson.checkSubquestionCodeIsUniqueURL,
+        method: 'GET',
+        data: {
+          sqid,
+          code,
+          // NB: sid is defined at top of module.
+          sid
+        },
+        statusCode: {
+          '403': () => {
+            alert('nooo');
+          }
+        },
+        success: (data) => {
+          if (data !== 'true') {
+            // TODO: Show error message
+          }
+        },
+        error: (data) => {
+          alert('Internal error: ' + JSON.stringify(data));
           throw 'abort';
         }
       });
