@@ -131,6 +131,8 @@ LS.questionEditor = (function () {
   }
 
   /**
+   * TODO: Needed when sorting? Why?
+   *
    * @param {event} event
    * @param {object} ui
    * @return {void}
@@ -1309,26 +1311,31 @@ LS.questionEditor = (function () {
   }
 
   /**
+   * Update translation of subquestion/answer option after sort.
+   *
    * @param {event} event
    * @param {object} ui ??
    * @return {void}
    */
   function aftermove(event, ui) {
+    console.log('aftermove');
     // But first we have change the sortorder in translations, too
     const $that = ui.item;
     const newindex = Number($that.parent().children().index($that) + 1);
     const oldindex = $that.data('oldindex');
     const languages = languageJson.langs.split(';');
+    console.log('newindex', newindex);
+    console.log('oldindex', oldindex);
 
-    // TODO: Replace with $.each()? Other order of value/key in callback.
-    _.forEach(languages, (curLanguage, x) => {
+    languages.forEach((curLanguage, x) => {
       if (x > 0) {
-        // const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
+        const tablebody = $(`#tabpage_${languages[x]}`).find('tbody');
+        // 
         if (newindex < oldindex) {
           $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).before($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
         } else {
           $(`#tabpage_${languages[x]} tbody tr:nth-child(${newindex})`).after($(`#tabpage_${languages[x]} tbody tr:nth-child(${oldindex})`));
-          // tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
+          tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
         }
       }
     });
