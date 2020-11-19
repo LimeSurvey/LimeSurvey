@@ -1309,59 +1309,6 @@ LS.questionEditor = (function () {
    */
   }
 
-    /**
-     *
-     * @param code {string}
-     * @returns {boolean}
-     */
-  function checkCodeUniqueness(code) {
-      let isValid = false;
-      console.log('Is Valid: ' + isValid.toString());
-      const checkQuestionCodeIsUniqueURL = languageJson.checkQuestionCodeIsUniqueURL;
-      let checkCodePromise = getCheckUniquenessPromise(checkQuestionCodeIsUniqueURL, code);
-      checkCodePromise.then((response) => {
-          console.log('Status: ' +  response.status);
-          console.log(response.statusText);
-          console.log(response.statusCode);
-           isValid = true;
-          console.log('Is Valid: ' + isValid.toString());
-      }).catch((error) => {
-          console.log('Status: ' +  error.status);
-          console.log(error);
-           isValid = false;
-          console.log('Is Valid: ' + isValid.toString());
-      });
-
-      return isValid;
-  }
-
-    /**
-     * @param {string} url,
-     * @param {string} code
-     * @returns {Promise}
-     */
-  function getCheckUniquenessPromise(url, code) {
-    console.log('URL: ' + url);
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        url: url,
-        method: 'GET',
-        data: { code: code },
-        dataType: 'json',
-        success: (data) => {
-          resolve(data);
-          console.log('Success');
-          console.log(data);
-        },
-        error: (data) => {
-          reject(data);
-          console.log('Error');
-          console.log(data);
-        }
-      });
-    });
-  }
-
   /**
    * @param {event} event
    * @param {object} ui ??
@@ -1704,6 +1651,7 @@ LS.questionEditor = (function () {
         url: languageJson.checkQuestionCodeIsUniqueURL,
         method: 'GET',
         data: {
+          sid,
           qid,
           code
         },
@@ -1718,40 +1666,5 @@ LS.questionEditor = (function () {
         }
       });
     },
-
-    /**
-     * @param {string} code
-     * @param {string} sqid Subquestion id (newXXXX when creating new subquestion)
-     * @return {void}
-     */
-    checkSubquestionCodeUniqueness: function(code, sqid) {
-      // TODO: Hide error message.
-      console.log('code', code);
-      console.log('sqid', sqid);
-      $.ajax({
-        url: languageJson.checkSubquestionCodeIsUniqueURL,
-        method: 'GET',
-        data: {
-          sqid,
-          code,
-          // NB: sid is defined at top of module.
-          sid
-        },
-        statusCode: {
-          '403': () => {
-            alert('nooo');
-          }
-        },
-        success: (data) => {
-          if (data !== 'true') {
-            // TODO: Show error message
-          }
-        },
-        error: (data) => {
-          alert('Internal error: ' + JSON.stringify(data));
-          throw 'abort';
-        }
-      });
-    }
   };
 })();

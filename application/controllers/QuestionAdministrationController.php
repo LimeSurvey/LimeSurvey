@@ -2790,17 +2790,30 @@ class QuestionAdministrationController extends LSBaseController
      * Checks if given Question Code is unique.
      * Echo 'true' if code is unique, otherwise 'false'.
      *
+     * @param int $sid Survey id
      * @param int $qid Question id
      * @param string $code Question code (title in db)
      * @return void
      */
-    public function actionCheckQuestionCodeUniqueness(int $qid, string $code)
+    public function actionCheckQuestionCodeUniqueness($sid, $qid, string $code)
     {
+        $sid = (int) $sid;
+        $qid = (int) $qid;
+        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+
+        $survey = Survey::model()->findByPk($sid);
+        if (empty($survey)) {
+            throw new CHttpException(404, gT("Invalid survey id"));
+        }
+
         if ($qid === 0) {
             // TODO: Per survey, not globally.
             $count = Question::model()->countByAttributes(
                 [
-                    'title' => $code
+                    'title' => $code,
+                    'sid'   => $sid
                 ]
             );
             echo $count > 0 ? 'false' : 'true';
@@ -2812,54 +2825,13 @@ class QuestionAdministrationController extends LSBaseController
             // TODO: Use validate().
             $count = Question::model()->countByAttributes(
                 [
-                    'title' => $code
+                    'title' => $code,
+                    'sid'   => $sid
                 ],
                 'qid <> ' . (int) $qid
             );
             echo $count > 0 ? 'false' : 'true';
         }
-    }
-
-    /**
-     * Checks if given Question Code is unique.
-     * Echo 'true' if code is unique, otherwise 'false'.
-     *
-     * @param int $sid Survey id
-     * @param string $sqid Subquestion id; prefixed with "new" when not yet saved to database
-     * @param string $code Subquestion code
-     * @return void
-     */
-    public function actionCheckSubquestionCodeUniqueness($sid, $sqid, $code)
-    {
-        $sid = (int) $sid;
-        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create')) {
-            throw new CHttpException(403, gT('No permission'));
-        }
-
-        $survey = Survey::model()->findByPk($sid);
-        if (empty($survey)) {
-            throw new CHttpException(404, gT("Invalid survey id"));
-        }
-
-        if (strpos($sqid, 'new') !== false) {
-            // New subquestion, not yet saved.
-            $count = Question::model()->countByAttributes(
-                [
-                    'title' => $code,
-                    'sid'   => $sid
-                ],
-                'parent_qid IS NOT NULL'
-            );
-            echo $count > 0 ? 'false' : 'true';
-        } else {
-            // Existing subquestion.
-            $subquestion = Question::model()->findByPk($sqid);
-            if (empty($subquestion)) {
-                throw new CHttpException(404, gT("Invalid subquestion id"));
-            }
-            $subquestion->title = $code;
-            // NB: Echoes "true" or "false".
-            echo json_encode($subquestion->validate());
-        }
+        Yii::app()->end();
     }
 }
