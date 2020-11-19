@@ -41,8 +41,15 @@
         {% set sPattern = (subquestion.title)?"^([a-zA-Z0-9]*|"~subquestion.title~")$":"^[a-zA-Z0-9]*$" %}
 
         <!-- Move icon -->
-        <td class="move-icon" >
-            <span class="fa fa-bars bigIcons"></span>
+        <td
+          style="text-align: center;"
+        >
+            <span
+              class="fa fa-bars bigIcons move-icon"
+              role="button"
+              data-toggle="tooltip"
+              data-title="{{ gT("Drag to sort") }}"
+            ></span>
         </td>
 
         <!-- Code (title) -->
@@ -114,7 +121,8 @@
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
             <input
-                data-toggle="tooltip"data-title="{{ gT("Click to expand") }}"
+                data-toggle="tooltip"
+                data-title="{{ gT("Click to expand") }}"
                 type='text'
                 class='relevance form-control input'
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][relevance]'

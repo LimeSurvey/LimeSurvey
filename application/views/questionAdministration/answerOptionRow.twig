@@ -25,8 +25,15 @@
     {% if first %}
         {% set pattern = (answerOption.code)?"^([a-zA-Z0-9]*|"~answerOption.code~")$":"^[a-zA-Z0-9]*$" %}
         <!-- Move icon -->
-        <td class="move-icon" >
-            <span class="fa fa-bars bigIcons"></span>
+        <td
+          style="text-align: center;"
+        >
+            <span
+              class="fa fa-bars bigIcons move-icon"
+              role="button"
+              data-toggle="tooltip"
+              data-title="{{ gT("Drag to sort") }}"
+            ></span>
         </td>
 
         <!-- Code -->
