@@ -163,7 +163,7 @@ class UserGroupController extends LSBaseController
             if ($aFilteredUserGroups > 0) {
                 $aData["useradddialog"] = true;
 
-                $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL"]);
+                $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL ORDER BY uid"]);
                 $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
                     return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
                 });
