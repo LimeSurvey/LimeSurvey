@@ -10,7 +10,7 @@
             'aCurrentsUserRights' => $aCurrentsUserRights,
         ));
     } ?>
-    <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'permission', 'create')) : ?>
+    <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'permission', 'update')) : ?>
         <h2 class="pagetitle h3"><?php eT('Add permissions:');?></h2>
         <?php if(!empty($oAddUserList)) {
             $this->renderPartial('surveysgroups/permission/addUserForm',array('model'=>$model,'oAddUserList'=>$oAddUserList));

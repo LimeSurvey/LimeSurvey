@@ -444,10 +444,10 @@ class SurveysGroups extends LSActiveRecord
                 'img' => ' fa fa-edit',
             ),
             'permission' => array(
-                'create' => true,
+                'create' => false, /* since need update to set permission */
                 'read' => true,
                 'update' => true,
-                'delete' => true,
+                'delete' => true, /* update ? */
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey group security"),

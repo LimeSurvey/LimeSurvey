@@ -330,6 +330,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $oCriteria->group = 'uid';
         $oCriteria->compare("entity", "SurveysGroups"); // on SurveyGroup
         $oCriteria->compare("entity_id", $model->primaryKey); // on this SurveyGroup
+        $oCriteria->compare("uid", "<>".App()->user->getId()); // not self user
         $aExistingUsers = CHtml::listData(Permission::model()->findAll($oCriteria),'uid','uid');
         $oExistingUsers = array();
         $aCurrentsUserRights = array();
@@ -362,6 +363,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 }
             }
         }
+
         $oAddUserList  = array();
         $oAddGroupList  = array();
         if (Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
@@ -519,6 +521,9 @@ class SurveysGroupsController extends Survey_Common_Action
         if(!in_array($to, getUserList('onlyuidarray'))) {
             throw new CHttpException(403, gT("You do not have permission to this user."));
         }
+        if ($to == App()->user->getId()) {
+            throw new CHttpException(403, gT("You do not set your own permission."));
+        }
         $this->permissionsSet($id, $to, 'user');
     }
 
@@ -539,6 +544,9 @@ class SurveysGroupsController extends Survey_Common_Action
         }
         if(!in_array($uid, getUserList('onlyuidarray'))) {
             throw new CHttpException(403, gT("You do not have permission to this user."));
+        }
+        if ($uid == App()->user->getId()) {
+            throw new CHttpException(403, gT("You do not delete your own permission."));
         }
         Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = :entity", array(
             ':uid' => $uid,
