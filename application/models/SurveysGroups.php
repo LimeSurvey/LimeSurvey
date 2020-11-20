@@ -390,15 +390,24 @@ class SurveysGroups extends LSActiveRecord
     protected static function getPermissionCriteria()
     {
         $criteriaPerm = new CDbCriteria;
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {
+            /* owner of surveygroup */
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
+            /* Simple permission on SurveysGroup inside a group */
+            $criteriaPerm->mergeWith(array(
+                'join'=>"LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='".Yii::app()->user->id."') ",
+            ));
+            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
+            /* Permission on Survey inside a group */
             $criteriaPerm->mergeWith(array(
                 'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
-                        LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+                        LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='".Yii::app()->user->id."') ",
             ));
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
-            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
-            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+            $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
+            /* default survey group is always avaliable */
+            $criteriaPerm->compare('t.gsid', '1', false, 'OR');
+            /* survey group set as avaiable */
             $criteriaPerm->compare('t.alwaysavailable', '1', false, 'OR'); // Is public
         }
         return $criteriaPerm;
