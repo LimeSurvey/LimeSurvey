@@ -454,6 +454,7 @@ class labels extends Survey_Common_Action
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $labelName = $request->getPost('laname');
+        $languages = implode(' ', $request->getPost('languages'));
         $assessmentValues = $request->getPost('assessmentvalues', []);
 
         if (empty($labelName)) {
@@ -461,14 +462,9 @@ class labels extends Survey_Common_Action
         }
 
         if (empty($answers)) {
-            throw new CHttpException(400,  gT('Could not save label set: Found no answers.'));
+            throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
         }
 
-        // Create label set.
-        $languages = "";
-        foreach ($answers as $lang => $_) {
-            $languages .= $lang . " ";
-        }
         $lset             = new LabelSet();
         $lset->label_name = $request->getPost('laname');
         $lset->languages  = trim($languages);
@@ -523,37 +519,38 @@ class labels extends Survey_Common_Action
     private function saveLabelSetAux($lid, $codes, $answers, $assessmentValues)
     {
         try {
-          $transaction = Yii::app()->db->beginTransaction();
-          Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
-          foreach ($answers as $answer) {
-              foreach ($answer as $i => $answeroptionl10ns) {
-                  $label = new Label;
-                  
-                  $label->lid = $lid;
-                  $label->code = $codes[$i];
-                  $label->sortorder = $i;
-                  $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
-                  if (!$label->save()) {
-                    throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
-                  }
-
-                  foreach($answeroptionl10ns as $langs) {
-                    foreach ($langs as $lang => $content) {
-                      $labell10n = new LabelL10n;
-                      $labell10n->language = $lang;
-                      $labell10n->label_id = $label->id;
-                      $labell10n->title = $content;
-                      if (!$labell10n->save()) {
+            $transaction = Yii::app()->db->beginTransaction();
+            Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
+            $i = 0;
+            foreach ($answers as $answer) {
+                foreach ($answer as $answeroptionl10ns) {
+                    $label = new Label();
+                    $label->lid = $lid;
+                    $label->code = $codes[$i];
+                    $label->sortorder = $i;
+                    $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                    if (!$label->save()) {
                         throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
-                      }
                     }
-                  }
-              }
-          }
-          $transaction->commit();
+
+                    foreach ($answeroptionl10ns as $langs) {
+                        foreach ($langs as $lang => $content) {
+                            $labell10n = new LabelL10n();
+                            $labell10n->language = $lang;
+                            $labell10n->label_id = $label->id;
+                            $labell10n->title = $content;
+                            if (!$labell10n->save()) {
+                                throw new Exception('Could not save label l10n: ' . json_encode($label->getErrors()));
+                            }
+                        }
+                    }
+                }
+                $i++;
+            }
+            $transaction->commit();
         } catch (Exception $exception) {
-          $transaction->rollback();
-          throw new CHttpException(500, 'Could not save label set: ' . $exception->getMessage());
+            $transaction->rollback();
+            throw new CHttpException(500, $exception->getMessage());
         }
     }
 

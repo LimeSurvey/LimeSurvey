@@ -43,8 +43,8 @@ declare var LS: any
 // Wrap it in closure to avoid global variables.
 // TODO: Use modules? https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 // TODO: Include functions from assets/packages/adminbasics/src/pages/subquestionandanswers.js
-// TODO: Use class for quick-add
-// TODO: Use class for label sets
+// TODO: Use component for quick-add
+// TODO: Use component for label sets
 LS.questionEditor = (function () {
 
   // TODO: Does not work with pjax loading.
@@ -548,7 +548,8 @@ LS.questionEditor = (function () {
   /**
    * @param {string} sSourceCode
    * @return {string}
-   * @todo Used in label sets?
+   * @todo Used in label sets? But not in question editor?
+   * @todo Remove
    */
   function getNextCode(sSourceCode) {  // jshint ignore: line
     const sourcecode = sSourceCode;
@@ -1249,6 +1250,7 @@ LS.questionEditor = (function () {
         answers,
         labelSetId,
         codes,
+        languages: languageJson.langs.split(';')
       },
       /**
        * @param {any} data
