@@ -465,13 +465,19 @@ class labels extends Survey_Common_Action
             throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
         }
 
-        $lset             = new LabelSet();
-        $lset->label_name = $request->getPost('laname');
-        $lset->languages  = trim($languages);
-        $lset->save();
-        $lid = getLastInsertID($lset->tableName());
-
-        $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
+        try {
+            $transaction      = Yii::app()->db->beginTransaction();
+            $lset             = new LabelSet();
+            $lset->label_name = $request->getPost('laname');
+            $lset->languages  = trim($languages);
+            $lset->save();
+            $lid = getLastInsertID($lset->tableName());
+            $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transation->rollback();
+            throw new CHttpException(500, $exception->getMessage());
+        }
 
         eT('Label set successfully saved');
     }
@@ -500,8 +506,18 @@ class labels extends Survey_Common_Action
         $answers   = $request->getPost('answers');
         $codes     = $request->getPost('codes');
         $assessmentValues = $request->getPost('assessmentvalues', []);
+        $languages = implode(' ', $request->getPost('languages'));
 
-        $this->saveLabelSetAux($labelSetId, $codes, $answers, $assessmentValues);
+        try {
+            $transaction = Yii::app()->db->beginTransaction();
+            $labelSet->languages = $languages;
+            $labelSet->update();
+            $this->saveLabelSetAux($labelSetId, $codes, $answers, $assessmentValues);
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transaction->rollback();
+            throw new CHttpException(500, $exception->getMessage());
+        }
 
         eT('Label set successfully updated');
     }
@@ -518,39 +534,32 @@ class labels extends Survey_Common_Action
      */
     private function saveLabelSetAux($lid, $codes, $answers, $assessmentValues)
     {
-        try {
-            $transaction = Yii::app()->db->beginTransaction();
-            Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
-            $i = 0;
-            foreach ($answers as $answer) {
-                foreach ($answer as $answeroptionl10ns) {
-                    $label = new Label();
-                    $label->lid = $lid;
-                    $label->code = $codes[$i];
-                    $label->sortorder = $i;
-                    $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
-                    if (!$label->save()) {
-                        throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
-                    }
+        Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
+        $i = 0;
+        foreach ($answers as $answer) {
+            foreach ($answer as $answeroptionl10ns) {
+                $label = new Label();
+                $label->lid = $lid;
+                $label->code = $codes[$i];
+                $label->sortorder = $i;
+                $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                if (!$label->save()) {
+                    throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
+                }
 
-                    foreach ($answeroptionl10ns as $langs) {
-                        foreach ($langs as $lang => $content) {
-                            $labell10n = new LabelL10n();
-                            $labell10n->language = $lang;
-                            $labell10n->label_id = $label->id;
-                            $labell10n->title = $content;
-                            if (!$labell10n->save()) {
-                                throw new Exception('Could not save label l10n: ' . json_encode($label->getErrors()));
-                            }
+                foreach ($answeroptionl10ns as $langs) {
+                    foreach ($langs as $lang => $content) {
+                        $labell10n = new LabelL10n();
+                        $labell10n->language = $lang;
+                        $labell10n->label_id = $label->id;
+                        $labell10n->title = $content;
+                        if (!$labell10n->save()) {
+                            throw new Exception('Could not save label l10n: ' . json_encode($label->getErrors()));
                         }
                     }
                 }
-                $i++;
             }
-            $transaction->commit();
-        } catch (Exception $exception) {
-            $transaction->rollback();
-            throw new CHttpException(500, $exception->getMessage());
+            $i++;
         }
     }
 
