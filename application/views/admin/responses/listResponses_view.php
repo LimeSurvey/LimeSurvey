@@ -141,7 +141,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                     'header' => gT("First name"),
                                     'name' => 'tokens.firstname',
                                     'id' => 'firstname',
-                                    'type' => 'raw',
                                     'value' => '$data->firstNameForGrid',
                                     'filter' => TbHtml::textField(
                                         'SurveyDynamic[firstname_filter]',
@@ -154,7 +153,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                 $aColumns[] = array(
                                     'header' => gT("Last name"),
                                     'name' => 'tokens.lastname',
-                                    'type' => 'raw',
                                     'id' => 'lastname',
                                     'value' => '$data->lastNameForGrid',
                                     'filter' => TbHtml::textField(
