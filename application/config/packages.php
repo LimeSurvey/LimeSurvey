@@ -160,33 +160,6 @@ return array(
             'ckeditor',
         )
     ),
-    'pjax' => array(
-        'devBaseUrl' => 'assets/packages/pjax/',
-        'basePath' => 'core.pjax',
-        'js' => array(
-            'pjax.js',
-        ),
-        'depends' => array(
-            'lslog',
-        )
-    ),
-    'pjaxbackend' => array(
-        'devBaseUrl' => 'assets/packages/pjax/',
-        'basePath' => 'core.pjax',
-        'js' => (
-            $debug > 0 ?
-            array(
-                'pjax.js',
-                'loadPjax.js'
-            )
-            : array(
-                'min/pjax.combined.min.js',
-            )
-        ),
-        'depends' => array(
-            'lslog',
-        )
-    ),
     'panelintegration' => array(
        'devBaseUrl' => 'assets/packages/panelintegration/',
        'basePath' => 'core.panelintegration',
@@ -521,7 +494,6 @@ return array(
         ),
         'depends' => array(
             'jquery',
-            'pjaxbackend',
             'lslog'
         )
     ),

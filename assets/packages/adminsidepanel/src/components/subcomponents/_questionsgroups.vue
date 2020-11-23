@@ -368,7 +368,6 @@ export default {
                                 <a
                                     :href="question.link"  
                                     class="col-9 pjax question-question-list-item-link display-as-container" 
-                                    @click.stop.prevent="openQuestion(question)" 
                                 > 
                                     <span 
                                         class="question_text_ellipsize" 

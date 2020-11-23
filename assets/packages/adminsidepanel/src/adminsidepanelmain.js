@@ -150,7 +150,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
     };
 
     const createPanelAppliance = () => {
-        window.singletonPjax();
+        //window.singletonPjax();
         if (document.getElementById("vue-sidebar-container")) {
             panelNameSpace['sidemenu'] = createSideMenu();
         }
