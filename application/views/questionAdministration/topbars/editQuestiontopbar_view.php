@@ -211,30 +211,26 @@
                     </li>
                     <li>
                         <div class="topbarbutton">
-                            <a type="button" href=
-                                "/_limesurvey/index.php/admin/export/sa/question/surveyid/355832/gid/10/qid/77"
+                            <a type="button" href='<?php echo $this->createUrl('admin/export/sa/question/surveyid/' . $question->sid . "/gid/" . $question->gid . "/qid/" . $question->qid); ?>'
                                 id="export_button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
                                     class="icon-export icon"></i>&nbsp;Export&nbsp;</a></div>
                     </li>
                     <li>
                         <div class="topbarbutton">
-                            <a type="button" href=
-                                "/_limesurvey/index.php/questionAdministration/copyQuestion?surveyId=355832&amp;questionGroupId=10&amp;questionId=77"
+                            <a type="button" href='<?php echo $this->createUrl("questionAdministration/copyQuestion/surveyId/" . $question->sid . "/questionGroupId/" . $question->gid. "/questionId/" . $question->qid);?>'
                                 id="copy_button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
                                     class="icon-copy icon"></i>&nbsp;Copy&nbsp;</a></div>
                     </li>
                     <li>
                         <div class="topbarbutton">
-                            <a type="button" href=
-                                "/_limesurvey/index.php/admin/conditions/sa/index/subaction/editconditionsform/surveyid/355832/gid/10/qid/77"
+                            <a type="button" href='<?php echo $this->createUrl('admin/conditions/sa/index/subaction/editconditionsform/surveyid/'. $question->sid .'/gid/' . $question->gid . '/qid/' . $question->qid);?>'
                                 id="conditions_button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
                                     class="icon-conditions icon"></i>&nbsp;Condition
                                 designer&nbsp;</a></div>
                     </li>
                     <li>
                         <div class="topbarbutton">
-                            <a type="button" href=
-                                "/_limesurvey/index.php/questionAdministration/importView?surveyid=355832"
+                            <a type="button" href= <?php echo $this->createUrl('questionAdministration/importView/surveyid/' . $question->sid); ?>
                                 id="import-button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
                                     class="icon-import icon"></i>&nbsp;Import
                                 question&nbsp;</a></div>
