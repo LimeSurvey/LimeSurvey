@@ -294,8 +294,7 @@ class RegisterController extends LSYii_Controller
         $aMessage['mail-thanks'] = gT("Thank you for registering to participate in this survey.");
         if($mailerSent) {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-            $oToken->sent = $today;
-            $oToken->encryptSave();
+            Token::model($iSurveyId)->updateByPk($iTokenId, array('sent' => $today));
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
@@ -354,7 +353,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();
-            $oToken->encryptSave();
+            $oToken->encryptSave(true);
             $this->sMailMessage = gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;
         }
