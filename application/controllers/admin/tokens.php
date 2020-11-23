@@ -456,7 +456,7 @@ class tokens extends Survey_Common_Action
                             $token->$k = $v;
                         }
 
-                        $bUpdateSuccess = $token->encryptSave();
+                        $bUpdateSuccess = $token->encryptSave(true);
                         if ($bUpdateSuccess) {
                             $aResults[$iTokenId]['status']    = true;
                             $aResults[$iTokenId]['message']   = gT('Updated');
@@ -703,7 +703,7 @@ class tokens extends Survey_Common_Action
                 // AutoExecute
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
-                $inresult = $token->encryptSave();
+                $inresult = $token->encryptSave(true);
                 $aData['success'] = $inresult;
                 $aData['errors'] = $token->getErrors();
             } else {
@@ -848,7 +848,7 @@ class tokens extends Survey_Common_Action
                     $token->$k = $v;
                 }
 
-                $result = $token->encryptSave();
+                $result = $token->encryptSave(true);
 
                 if ($result) {
                     \ls\ajax\AjaxHelper::outputSuccess($sOutput.gT('The survey participant was successfully updated.'));
@@ -1006,7 +1006,7 @@ class tokens extends Survey_Common_Action
                 $token->generateToken($aData['tokenlength']);
 
                 $existingtokens[$token->token] = true;
-                $token->encryptSave();
+                $token->encryptSave(true);
                 $newDummyToken++;
             }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);

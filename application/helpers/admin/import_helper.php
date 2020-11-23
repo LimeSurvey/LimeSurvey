@@ -2368,7 +2368,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
 
         $token = Token::create($iSurveyID, 'allowinvalidemail');
         $token->setAttributes($insertdata, false);
-        if (!$token->encryptSave()) {
+        if (!$token->encryptSave(true)) {
             $results['warnings'][] = CHtml::errorSummary($token, gT("Skipped participant entry:"));
         } else {
             $results['tokens']++;
