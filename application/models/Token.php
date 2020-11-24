@@ -352,9 +352,17 @@ abstract class Token extends Dynamic
     {
         $aRules = array(
             array('token', 'unique', 'allowEmpty' => true),
+            array('token', 'length', 'min' => 0, 'max'=>36),
+            array('token', 'filter', 'filter'=>array(self::class,'sanitizeToken')),
             array('firstname', 'LSYii_Validators'),
             array('lastname', 'LSYii_Validators'),
+            array('language', 'LSYii_Validators', 'isLanguage'=>true),
             array(implode(',', $this->tableSchema->columnNames), 'safe'),
+            /* pseudo date : force date or specific string ? */
+            array('remindersent', 'length', 'min' => 0, 'max'=>17),
+            array('remindersent', 'filter', 'filter'=>'strip_tags'),
+            array('completed', 'length', 'min' => 0, 'max'=>17),
+            array('remindersent', 'filter', 'filter'=>'strip_tags'),
             array('remindercount', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('email', 'filter', 'filter'=>'trim'),
             array('email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true, 'allowMultiple'=>true, 'except'=>'allowinvalidemail'),
@@ -366,7 +374,7 @@ abstract class Token extends Dynamic
             array('emailstatus', 'default', 'value' => 'OK'),
         );
         foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
-                $aRules[] = array($key, 'LSYii_Validators', 'except'=>'FinalSubmit');
+            $aRules[] = array($key, 'LSYii_Validators', 'except'=>'FinalSubmit');
         }
         return $aRules;
     }
