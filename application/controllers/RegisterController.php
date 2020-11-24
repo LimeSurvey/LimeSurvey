@@ -122,7 +122,7 @@ class RegisterController extends LSYii_Controller
         $this->aRegisterErrors = $event->get('aRegisterErrors');
         $iTokenId = $event->get('iTokenId');
         // Test if we come from register form (and submit)
-        if ((Yii::app()->request->getPost('register')) && !$iTokenId) {
+        if ((App()->request->getPost('register')) && !$iTokenId) {
             self::getRegisterErrors($iSurveyId);
             if (empty($this->aRegisterErrors)) {
                 $iTokenId = self::getTokenId($iSurveyId);
@@ -159,8 +159,8 @@ class RegisterController extends LSYii_Controller
 
         // Check the security question's answer
         if (isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha'])) {
-            $sLoadSecurity = Yii::app()->request->getPost('loadsecurity', '');
-            $captcha = Yii::app()->getController()->createAction("captcha");
+            $sLoadSecurity = App()->request->getPost('loadsecurity', '');
+            $captcha = App()->getController()->createAction("captcha");
             $captchaCorrect = $captcha->validate($sLoadSecurity, false);
 
             if (!$captchaCorrect) {
@@ -202,8 +202,8 @@ class RegisterController extends LSYii_Controller
         $aData['active'] = $oSurvey->active;        
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;
-        $aData['sFirstName'] = Yii::app()->request->getPost('register_firstname', '');
-        $aData['sLastName'] = Yii::app()->request->getPost('register_lastname', '');
+        $aData['sFirstName'] = $oToken->firstname;
+        $aData['sLastName'] = $oToken->lastname;
         $aData['sEmail'] = $oToken->email;
         $aData['thissurvey'] = $oSurvey->attributes;
 
@@ -369,14 +369,14 @@ class RegisterController extends LSYii_Controller
         $sLanguage = Yii::app()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
         $aFieldValue = array();
-        $aFieldValue['sFirstName'] = Yii::app()->request->getPost('register_firstname', '');
-        $aFieldValue['sLastName'] = Yii::app()->request->getPost('register_lastname', '');
-        $aFieldValue['sEmail'] = Yii::app()->request->getPost('register_email', '');
+        $aFieldValue['sFirstName'] = App()->request->getPost('register_firstname', '');
+        $aFieldValue['sLastName'] = App()->request->getPost('register_lastname', '');
+        $aFieldValue['sEmail'] = App()->request->getPost('register_email', '');
         $aRegisterAttributes = $aSurveyInfo['attributedescriptions'];
         $aFieldValue['aAttribute'] = array();
         foreach ($aRegisterAttributes as $key=>$aRegisterAttribute) {
             if ($aRegisterAttribute['show_register'] == 'Y') {
-                $aFieldValue['aAttribute'][$key] = Yii::app()->request->getPost('register_'.$key, '');
+                $aFieldValue['aAttribute'][$key] = App()->request->getPost('register_'.$key, '');
             }
         }
         return $aFieldValue;

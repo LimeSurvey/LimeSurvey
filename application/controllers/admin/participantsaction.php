@@ -702,7 +702,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         $participant->attributes = $aData;
-        $participant->encryptSave();
+        $participant->encryptSave(true);
 
         foreach ($extraAttributes as $htmlName => $attributeValue) {
             list(, $attribute_id) = explode('_', $htmlName);
