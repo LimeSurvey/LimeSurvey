@@ -78,6 +78,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->layout = 'main';
         }
 
+        // Used in question editor (pjax).
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-ace');
+
         return parent::beforeRender($view);
     }
 
