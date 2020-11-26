@@ -23,6 +23,10 @@ $this->renderPartial(
 }
 </style>
 
+<!-- NB: These must be inside #pjax-content to work with pjax. -->
+<?= $jsVariablesHtml; ?>
+<?= $modalsHtml; ?>
+
 <!-- Create form for question -->
 <div class="side-body">
 

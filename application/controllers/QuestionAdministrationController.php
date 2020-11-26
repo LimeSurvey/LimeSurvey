@@ -160,18 +160,19 @@ class QuestionAdministrationController extends LSBaseController
         unset($advancedSettings['Attribute']);
 
         // Add <input> with JSON as value, used by JavaScript.
-        $this->renderPartial(
+        $jsVariablesHtml = $this->renderPartial(
             '/admin/survey/Question/_subQuestionsAndAnwsersJsVariables',
             [
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
                 'scalecount'        => 1
-            ]
+            ],
+            true
         );
 
         // TODO: Problem with CSRF cookie when entering directly after login.
-        echo Yii::app()->twigRenderer->renderViewFromFile(
+        $modalsHtml =  Yii::app()->twigRenderer->renderViewFromFile(
             '/application/views/questionAdministration/modals.twig',
             [],
             true
@@ -193,7 +194,9 @@ class QuestionAdministrationController extends LSBaseController
                     $question->gid,
                     // TODO: question_template
                     'core'
-                )
+                ),
+                'jsVariablesHtml'       => $jsVariablesHtml,
+                'modalsHtml'            => $modalsHtml
             ]
         );
     }

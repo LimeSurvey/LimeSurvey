@@ -34,7 +34,11 @@ declare var LS: any
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document, LS */
+/* globals $, _, alert, document */
+
+var LS = LS || {};
+// Public functions are put here.
+LS.questionEditor = {};
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
@@ -45,7 +49,13 @@ declare var LS: any
 // TODO: Include functions from assets/packages/adminbasics/src/pages/subquestionandanswers.js
 // TODO: Use component for quick-add
 // TODO: Use component for label sets
-LS.questionEditor = (function () {
+$(document).on('ready pjax:scriptcomplete', function () {
+
+  // TODO: Routing?
+  if (window.location.href.indexOf('questionAdministration') === -1) {
+    console.log('Not on question editor page, do not run question editor script');
+    return;
+  }
 
   // TODO: Does not work with pjax loading.
   /** @type {Object} */
@@ -54,8 +64,8 @@ LS.questionEditor = (function () {
   try {
     languageJson = JSON.parse(unescape(value));
   } catch (e) {
-    alert('Internal error: Could not parse language JSON');
-    throw 'abort';
+    console.error('Could not parse language JSON - not on question editor page?');
+    return;
   }
 
   /** @type {boolean} Used in ajaxcheckdup */
@@ -64,9 +74,8 @@ LS.questionEditor = (function () {
   /** @type {number} */
   const sid = parseInt($('input[name=sid]').val());
   if (isNaN(sid)) {
-    alert($('input[name=sid]').val());
-    alert('Internal error: No survey id found');
-    throw 'abort';
+    console.error('No survey id found - not on question editor page?');
+    return;
   }
 
   /*:: declare function updateRowProperties(): void */
@@ -1395,135 +1404,8 @@ LS.questionEditor = (function () {
     return cansubmit;
   }
 
-  /* Event added on document for all button (new one added in js too)
-   * @todo used?
-   */
-  $(document).on('click', '#editsubquestionsform :submit', () => {
-    // Validate duplicate before try to submit: surely some other javascript elsewhere
-    return codeDuplicatesCheck();
-  });
-
-  $(document).on('ready pjax:scriptcomplete', () => {
-    //$('.answertable tbody').sortable({
-    $('.answertable tbody').sortable({
-      containment: 'parent',
-      start: startmove,
-      stop: endmove,
-      update: aftermove,
-      handle: '.move-icon',
-      distance: 3,
-    });
-
-    $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
-    $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
-    $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
-    $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
-
-    $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
-
-    $('#quickaddModal').on('show.bs.modal', (e) => {
-      const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
-      const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
-      if (tableId === '') {
-        alert('Internal error: Did not find tableId');
-        throw 'abort';
-      }
-
-      $('#btnqainsert').off('click').on('click', () => {
-        quickAddLabels(scaleId, 'add', tableId);
-      });
-
-      $('#btnqareplace').off('click').on('click', () => {
-        quickAddLabels(scaleId, 'replace', tableId);
-      });
-    });
-
-    $('#labelsets').click(showLabelSetPreview);
-    $('.bthsaveaslabel').click(getLabel);
-    $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
-    updateRowProperties();
-
-    bindExpandRelevanceEquation();
-
-    // Since save button is not inside the form, we need to trigger it manually.
-    $('#save-button').on('click', (ev) => {
-      ev.preventDefault();
-      $('#edit-question-form').submit();
-      return false;
-    });
-
-    // Init Ace script editor.
-    $('.ace:not(.none)').ace({
-      mode: 'javascript',
-    });
-
-    // Hide help tips by default.
-    $('.question-option-help').hide();
-
-    /*****************************************/
-    // Check Question Code is unique.
-    /*
-    $('#questionCode').focusout(() => {
-        let code = $('#questionCode').val();
-        if (code !== undefined || code !== '') {
-            console.log('Question Code: ' + code);
-            let isValid = checkCodeUniqueness(code);
-        //     if (!isValid) {
-        //         console.log('Error Code is not unqiue.');
-        //     }
-        //     console.log('IsValid: ' + isValid);
-        } else {
-            console.log('Question Code is empty');
-        }
-    });
-    */
-
-    // Check Answer Code is unique.
-     $('#answerCode').focusout( () => {
-        // Answer code
-     });
-
-     // Check Sub Question Code is unique.
-    /*****************************************/
-
-    // Hide all language except the selected one.
-    $('.lang-switch-button').on('click', function langSwitchOnClick() {
-      const lang = $(this).data('lang');
-      const langClass = `.lang-${lang}`;
-      $('.lang-hide').hide();
-      $(langClass).show();
-    });
-  });
-
-  $(document).on('ready pjax:scriptcomplete', function () {
-    // Hide all languages except main.
-    $('.lang-hide').hide();
-    const languages = languageJson.langs.split(';');
-    $('.lang-' + languages[0]).show();
-
-    // Land on summary page if qid != 0 (not new question).
-    const qidInput = document.querySelector('input[name="question[qid]"]');
-    if (qidInput === null) {
-      alert('Internal error: Could not find qidInput');
-      throw 'abort';
-    }
-    if (qidInput instanceof HTMLInputElement) {
-      if (parseInt(qidInput.value) !== 0) {
-        $('#advanced-question-editor').hide();
-        $('#question-create-topbar').hide();
-        $('#question-edit-topbar').hide();
-      } else {
-        $('#advanced-question-editor').show();
-        $('#question-create-topbar').show();
-      }
-    } else {
-      alert('Internal error: qidInput is not an HTMLInputElement');
-      throw 'abort';
-    }
-  });
-
-  // Return public functions to LS.questionEditor module.
-  return {
+  // Public functions for LS.questionEditor module.
+  LS.questionEditor = {
     /**
      * Update question attributes (general and advanced settings) when selecting question type.
      * Used by question selector modal.
@@ -1688,4 +1570,128 @@ LS.questionEditor = (function () {
 
     }
   };
-})();
+
+  /* Event added on document for all button (new one added in js too)
+   * @todo used?
+   */
+  $(document).on('click', '#editsubquestionsform :submit', () => {
+    // Validate duplicate before try to submit: surely some other javascript elsewhere
+    return codeDuplicatesCheck();
+  });
+
+  // Below, things run on pjax:scriptcomplete.
+
+    $('.answertable tbody').sortable({
+      containment: 'parent',
+      start: startmove,
+      stop: endmove,
+      update: aftermove,
+      handle: '.move-icon',
+      distance: 3,
+    });
+
+    $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
+    $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
+    $('.btnaddanswer').on('click.subquestions', addAnswerOptionInput);
+    $('.btndelanswer').on('click.subquestions', deleteAnswerOptionInput);
+
+    $('#labelsetbrowserModal').on('hidden.bs.modal.', labelSetDestruct);
+
+    $('#quickaddModal').on('show.bs.modal', (e) => {
+      const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
+      const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      if (tableId === '') {
+        alert('Internal error: Did not find tableId');
+        throw 'abort';
+      }
+
+      $('#btnqainsert').off('click').on('click', () => {
+        quickAddLabels(scaleId, 'add', tableId);
+      });
+
+      $('#btnqareplace').off('click').on('click', () => {
+        quickAddLabels(scaleId, 'replace', tableId);
+      });
+    });
+
+    $('#labelsets').click(showLabelSetPreview);
+    $('.bthsaveaslabel').click(getLabel);
+    $('input[name=savelabeloption]:radio').click(saveAsLabelSetOptionClick);
+    updateRowProperties();
+
+    bindExpandRelevanceEquation();
+
+    // Since save button is not inside the form, we need to trigger it manually.
+    $('#save-button').on('click', (ev) => {
+      ev.preventDefault();
+      $('#edit-question-form').submit();
+      return false;
+    });
+
+    // Init Ace script editor.
+    $('.ace:not(.none)').ace({
+      mode: 'javascript',
+    });
+
+    // Hide help tips by default.
+    $('.question-option-help').hide();
+
+    /*****************************************/
+    // Check Question Code is unique.
+    /*
+    $('#questionCode').focusout(() => {
+        let code = $('#questionCode').val();
+        if (code !== undefined || code !== '') {
+            console.log('Question Code: ' + code);
+            let isValid = checkCodeUniqueness(code);
+        //     if (!isValid) {
+        //         console.log('Error Code is not unqiue.');
+        //     }
+        //     console.log('IsValid: ' + isValid);
+        } else {
+            console.log('Question Code is empty');
+        }
+    });
+    */
+
+    // Check Answer Code is unique.
+     $('#answerCode').focusout( () => {
+        // Answer code
+     });
+
+     // Check Sub Question Code is unique.
+    /*****************************************/
+
+    // Hide all language except the selected one.
+    $('.lang-switch-button').on('click', function langSwitchOnClick() {
+      const lang = $(this).data('lang');
+      const langClass = `.lang-${lang}`;
+      $('.lang-hide').hide();
+      $(langClass).show();
+    });
+
+    // Hide all languages except main.
+    $('.lang-hide').hide();
+    const languages = languageJson.langs.split(';');
+    $('.lang-' + languages[0]).show();
+
+    // Land on summary page if qid != 0 (not new question).
+    const qidInput = document.querySelector('input[name="question[qid]"]');
+    if (qidInput === null) {
+      alert('Internal error: Could not find qidInput');
+      throw 'abort';
+    }
+    if (qidInput instanceof HTMLInputElement) {
+      if (parseInt(qidInput.value) !== 0) {
+        $('#advanced-question-editor').hide();
+        $('#question-create-topbar').hide();
+        $('#question-edit-topbar').hide();
+      } else {
+        $('#advanced-question-editor').show();
+        $('#question-create-topbar').show();
+      }
+    } else {
+      alert('Internal error: qidInput is not an HTMLInputElement');
+      throw 'abort';
+    }
+});
