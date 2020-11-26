@@ -1676,5 +1676,16 @@ LS.questionEditor = (function () {
         }
       });
     },
+
+    /**
+     * When clicking save, first check if codes etc are valid.
+     *
+     * @param {Event} event
+     * @return {void}
+     */
+    checkIfSaveIsValid: function(event) {
+      event.preventDefault();
+
+    }
   };
 })();
