@@ -34,16 +34,6 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
 
 $layoutHelper->renderSurveySidemenu($aData);
 
-// TODO: For sake of pjax, we still need this, but hidden.
-/*
-<div id="vue-topbar-container" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0; margin: 0;">
-    <topbar
-        initialsid='<?= $aData['sid']; ?>'
-        initialtype='<?= 'hide'; ?>'
-    />
-</div>
- */
-
 echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
