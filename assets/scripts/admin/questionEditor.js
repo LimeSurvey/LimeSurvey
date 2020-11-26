@@ -57,6 +57,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
     return;
   }
 
+  // TODO: Remove this when Vue topbar is removed.
+  $('#vue-topbar-container').hide();
+
   // TODO: Does not work with pjax loading.
   /** @type {Object} */
   let languageJson;
