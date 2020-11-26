@@ -178,6 +178,7 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         $this->aData['renderSpecificTopbar'] = 'editQuestiontopbar_view';
+        $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
         $this->render(
             'create',
             [
@@ -1052,7 +1053,8 @@ class QuestionAdministrationController extends LSBaseController
         $gid = (int)$gid;
         $qid = (int)$qid;
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-        $aQuestionTypeMetadata = QuestionType::modelsAttributes();
+       // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         $oDefaultValues = self::getDefaultValues($iSurveyID, $gid, $qid);
@@ -1065,11 +1067,15 @@ class QuestionAdministrationController extends LSBaseController
             'langopts'     => $oDefaultValues,
             'questionrow'  => $oQuestion->attributes,
             'gid'          => $gid,
-            'qtproperties' => $aQuestionTypeMetadata,
+            'questionMetaData' => $questionMetaData
+            //'qtproperties' => $aQuestionTypeMetadata,
         ];
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['closebutton']['url'] = 'questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid; // Close button
+        $this->createUrl("questionAdministration/view",
+            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]);
+        $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl("questionAdministration/view",
+            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]);
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
@@ -1081,7 +1087,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['topBar']['showCloseButton'] = true;
         $aData['topBar']['closeButtonUrl'] = $this->createUrl(
             'questionAdministration/view/',
-            ['sid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
+            ['surveyid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
         );
         $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(
             $iSurveyID,

@@ -228,6 +228,7 @@
                                     class="icon-conditions icon"></i>&nbsp;Condition
                                 designer&nbsp;</a></div>
                     </li>
+                    <br>
                     <li>
                         <div class="topbarbutton">
                             <a type="button" href= <?php echo $this->createUrl('questionAdministration/importView/surveyid/' . $question->sid); ?>
@@ -235,6 +236,21 @@
                                     class="icon-import icon"></i>&nbsp;Import
                                 question&nbsp;</a></div>
                     </li>
+                    <?php if ($this->aData['hasdefaultvalues'] == 1) {?>
+                    <li>
+                        <div class="topbarbutton">
+                            <a
+                                type="button"
+                                href= "<?php echo $this->createUrl("questionAdministration/editdefaultvalues",
+                                ["surveyid" => $question->sid , "gid" => $question->gid , "qid" => $question->qid]); ?>"
+                                id="default_value_button"
+                                data-btntype="1"
+                                class="btn navbar-btn button btn-default btn-default">
+                                <i class="icon-defaultanswers"></i>&nbsp;Edit default values&nbsp;
+                            </a>
+                        </div>
+                    </li>
+                    <?php } ?>
                     <li class="slotbutton-content"></li>
                 </ul>
             </div>
