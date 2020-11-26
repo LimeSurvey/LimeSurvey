@@ -1991,7 +1991,7 @@ class remotecontrol_handle
                 }
                 
                 $oToken->setAttributes($aTokenData, false);
-                if ($oToken->encryptSave()) {
+                if ($oToken->encryptSave(true)) {
                     return $oToken->attributes;
                 } else {
                     return array('status' => $oToken->getErrors());

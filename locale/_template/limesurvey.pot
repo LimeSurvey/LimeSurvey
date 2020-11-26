@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-11-23 09:19:34+00:00\n"
+"POT-Creation-Date: 2020-11-25 10:08:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3781,7 +3781,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:205
 #: application/controllers/admin/responses.php:206
 #: application/controllers/admin/tokens.php:1625
-#: application/models/TemplateManifest.php:168 application/models/Token.php:91
+#: application/models/TemplateManifest.php:168 application/models/Token.php:94
 #: application/views/admin/quotas/viewquotas_view.php:78
 #: application/views/admin/token/exportdialog.php:17
 #: tmp/runtime/twig_cache/26/26acd84a0498f72a55fa7894fc1115d83b96e979c8f4cc03e6a28f15a7db28a3.php:55
@@ -5242,7 +5242,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:200
 #: application/helpers/common_helper.php:1280
 #: application/helpers/common_helper.php:2805
-#: application/models/SurveyLink.php:235 application/models/Token.php:85
+#: application/models/SurveyLink.php:235 application/models/Token.php:88
 #: application/models/TokenDynamic.php:715
 #: application/views/admin/dataentry/caption_view.php:36
 msgid "Access code"
@@ -5251,7 +5251,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:201
 #: application/helpers/common_helper.php:2785
 #: application/models/Participant.php:241
-#: application/models/ParticipantShare.php:224 application/models/Token.php:81
+#: application/models/ParticipantShare.php:224 application/models/Token.php:84
 #: application/models/TokenDynamic.php:681
 #: application/views/admin/export/exportresult_panels/_token-control.php:23
 #: application/views/admin/responses/listResponses_view.php:140
@@ -5264,7 +5264,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:202
 #: application/helpers/common_helper.php:2790
 #: application/models/Participant.php:242
-#: application/models/ParticipantShare.php:219 application/models/Token.php:82
+#: application/models/ParticipantShare.php:219 application/models/Token.php:85
 #: application/models/TokenDynamic.php:689
 #: application/views/admin/export/exportresult_panels/_token-control.php:26
 #: application/views/admin/responses/listResponses_view.php:153
@@ -10260,35 +10260,35 @@ msgstr ""
 #: application/helpers/common_helper.php:2795
 #: application/models/Participant.php:243
 #: application/models/ParticipantShare.php:229
-#: application/models/SavedControl.php:186 application/models/Token.php:83
+#: application/models/SavedControl.php:186 application/models/Token.php:86
 #: application/models/TokenDynamic.php:697
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/themes/templateeditor_register_view.php:11
 msgid "Email address"
 msgstr ""
 
-#: application/helpers/common_helper.php:2800 application/models/Token.php:84
+#: application/helpers/common_helper.php:2800 application/models/Token.php:87
 #: application/models/TokenDynamic.php:706
 msgid "Email status"
 msgstr ""
 
-#: application/helpers/common_helper.php:2810 application/models/Token.php:86
+#: application/helpers/common_helper.php:2810 application/models/Token.php:89
 msgid "Language code"
 msgstr ""
 
-#: application/helpers/common_helper.php:2815 application/models/Token.php:88
+#: application/helpers/common_helper.php:2815 application/models/Token.php:91
 msgid "Invitation sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2820 application/models/Token.php:89
+#: application/helpers/common_helper.php:2820 application/models/Token.php:92
 msgid "Last reminder sent date"
 msgstr ""
 
-#: application/helpers/common_helper.php:2825 application/models/Token.php:90
+#: application/helpers/common_helper.php:2825 application/models/Token.php:93
 msgid "Total numbers of sent reminders"
 msgstr ""
 
-#: application/helpers/common_helper.php:2830 application/models/Token.php:92
+#: application/helpers/common_helper.php:2830 application/models/Token.php:95
 #: application/models/TokenDynamic.php:766
 msgid "Uses left"
 msgstr ""
@@ -13875,7 +13875,7 @@ msgstr ""
 msgid "Participant"
 msgstr ""
 
-#: application/models/Participant.php:245 application/models/Token.php:87
+#: application/models/Participant.php:245 application/models/Token.php:90
 msgid "Blacklisted"
 msgstr ""
 
@@ -15163,27 +15163,27 @@ msgstr ""
 msgid "Core"
 msgstr ""
 
-#: application/models/Token.php:79
+#: application/models/Token.php:82
 msgid "Access code ID"
 msgstr ""
 
-#: application/models/Token.php:80
+#: application/models/Token.php:83
 #: application/views/admin/token/massive_actions/_update_results.php:17
 msgid "Participant ID"
 msgstr ""
 
-#: application/models/Token.php:93 application/models/TokenDynamic.php:773
+#: application/models/Token.php:96 application/models/TokenDynamic.php:773
 #: application/views/admin/token/dummytokenform.php:91
 #: application/views/admin/token/massive_actions/_update.php:327
 #: application/views/admin/token/tokenform.php:387
 msgid "Valid from"
 msgstr ""
 
-#: application/models/Token.php:94 application/models/TokenDynamic.php:781
+#: application/models/Token.php:97 application/models/TokenDynamic.php:781
 msgid "Valid until"
 msgstr ""
 
-#: application/models/Token.php:263
+#: application/models/Token.php:286
 msgid "Failed to generate random string for token. Please check your configuration and ensure that the openssl or mcrypt extension is enabled."
 msgstr ""
 

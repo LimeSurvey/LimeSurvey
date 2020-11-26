@@ -630,7 +630,7 @@ class Participant extends LSActiveRecord
         }
 
         try {
-            $result = $oParticipant->encryptSave();
+            $result = $oParticipant->encryptSave(true);
             if (!$result) {
                 return $this->flattenErrorMessages($oParticipant->getErrors());
             }

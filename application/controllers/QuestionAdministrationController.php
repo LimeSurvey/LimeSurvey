@@ -403,7 +403,7 @@ class QuestionAdministrationController extends LSBaseController
             );
         }
 
-        // TODO: Redirect to edit form.
+        // TODO: Redirect happens in try-catch above.
         // Return success message.
         $this->renderJSON(
             [
