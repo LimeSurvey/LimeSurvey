@@ -22,6 +22,8 @@
  *   flow check-contents < assets/scripts/admin/questionEditor.js
  * To check with jshint:
  *   jshint assets/scripts/admin/questionEditor.js
+ *
+ * Translations from PHP are fetched from application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php.
  */
 
 // Flow declarations. The TypeScript declaration are in decl.d.ts.
@@ -37,6 +39,7 @@ declare var LS: any
 /* globals $, _, alert, document */
 
 var LS = LS || {};
+
 // Public functions are put here.
 LS.questionEditor = {};
 
@@ -592,6 +595,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    *
    * @param sNewValue
    * @returns {boolean} False if codes are not unique
+   * @todo Remove
    */
   function areCodesUnique(sNewValue) {  // jshint ignore: line
     const languages = languageJson.langs.split(';');
@@ -699,10 +703,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
+   * Initialise the "Save as label set" modal.
+   *
    * @param {Event} e
    * @return {void}
-   * @todo Fix name
-   * @todo What does it do?
    */
   function initLabelSetModal(e) {
     const target = e.target;
@@ -738,7 +742,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $('#labelsets').append(newOption).trigger('change');
           });
         }
-      },
+      }
+      // TODO: error?
     });
 
     // Label set select2 element.
@@ -1384,27 +1389,26 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
     }
   }
+
   /**
+   * Mark subquestion code as error if it's not unique.
+   * Bound to subquestion code onfocusout.
+   *
+   * @param {HTMLElement} table
    * @return {boolean}
-   * @todo Works?
+   * @todo Dual scale
    */
-  function codeDuplicatesCheck() {
-    // $('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
-    const languages = languageJson.langs.split(';');
-    let cansubmit = true;
-    $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
-      const codearray = [];
-      $(this).find('tr .code').each(function () {
-        codearray.push($(this).val().toLowerCase());
-      });
-      const theDuplicate = LS.arrHasDupesWhich(codearray);
-      if (theDuplicate !== false) {
-        $('#error-modal .modal-body-text').html(languageJson.subquestions.duplicatesubquestioncode);
-        $('#error-modal').modal();
-        cansubmit = false;
+  function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
+    const codeInputs = table.querySelectorAll('input.code');
+    const codes = [...codeInputs].map((input) => {
+      if (input instanceof HTMLInputElement) {
+        return input.value;
+      } else {
+        throw 'input is not an HTMLInputElement';
       }
     });
-    return cansubmit;
+    const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
+    return codes.length === uniqueCodes.length;
   }
 
   // Public functions for LS.questionEditor module.
@@ -1597,16 +1601,29 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       });
       return false;
+    },
+
+    /**
+     * @param {HTMLElement} table
+     * @return {void}
+     * @todo Dual scale
+     */
+    showSubquestionCodeUniqueError: function(that /*: HTMLInputElement */) {
+      const table = that.closest('table');
+      if (!(table instanceof HTMLElement)) {
+        throw 'Found no table';
+      }
+      if (!checkSubquestionCodeUnique(table)) {
+        $(that.parentElement).addClass('has-error');
+        LS.LsGlobalNotifier.create(
+          languageJson.subquestions.duplicatesubquestioncode,
+          'well-lg bg-danger text-center'
+        );
+      } else {
+        $(that.parentElement).removeClass('has-error');
+      }
     }
   };
-
-  /* Event added on document for all button (new one added in js too)
-   * @todo used?
-   */
-  $(document).on('click', '#editsubquestionsform :submit', () => {
-    // Validate duplicate before try to submit: surely some other javascript elsewhere
-    return codeDuplicatesCheck();
-  });
 
   // Below, things run on pjax:scriptcomplete.
 
@@ -1688,9 +1705,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // Answer code
      });
 
-     // Check Sub Question Code is unique.
-    /*****************************************/
-
     // Hide all language except the selected one.
     $('.lang-switch-button').on('click', function langSwitchOnClick() {
       const lang = $(this).data('lang');
@@ -1705,6 +1719,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('.lang-' + languages[0]).show();
 
     // Land on summary page if qid != 0 (not new question).
+    // TODO: Fix
     const qidInput = document.querySelector('input[name="question[qid]"]');
     if (qidInput === null) {
       alert('Internal error: Could not find qidInput');

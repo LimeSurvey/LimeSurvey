@@ -25,14 +25,6 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            <input
-                class="code code-title"
-                type='hidden'
-                name='subquestions[{{ position }}][{{ scale_id }}][code]'   {# TODO: uniformisation with  $scale_id and  $position #}
-                value="{{ subquestion.title }}"
-                maxlength='20'
-                size='5'
-            />
             {{ subquestion.title }}
         </td>
 
@@ -73,6 +65,7 @@
                 class='code code-title'
                 value="{{ subquestion.title }}"
                 required='required'
+                onfocusout="LS.questionEditor.showSubquestionCodeUniqueError(this);"
             />
         </td>
 
