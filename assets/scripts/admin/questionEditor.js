@@ -1566,11 +1566,37 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * When clicking save, first check if codes etc are valid.
      *
      * @param {Event} event
-     * @return {void}
+     * @return {boolean}
      */
     checkIfSaveIsValid: function(event) {
       event.preventDefault();
-
+      const qid = parseInt($('input[name="question[qid]"]').val());
+      const code = $('input[name="question[title]"]').val();
+      $.ajax({
+        url: languageJson.checkQuestionCodeIsUniqueURL,
+        method: 'GET',
+        data: {
+          sid,
+          qid,
+          code
+        },
+        success: (data) => {
+          if (data === 'true') {
+            // TODO: Check other things too.
+            const button = document.getElementById('submit-create-question');
+            if (button instanceof HTMLElement) {
+              button.click();
+            }
+          } else {
+            $('#question-code-unique-warning').removeClass('hidden');
+          }
+        },
+        error: (data) => {
+          alert('Internal error: ' + data);
+          throw 'abort';
+        }
+      });
+      return false;
     }
   };
 

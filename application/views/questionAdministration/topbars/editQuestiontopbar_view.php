@@ -38,7 +38,12 @@
                     <li>
                         <div class="topbarbutton">
                             <!-- Save and close -->
-                            <a id="save-and-close-button-create-question" class="btn btn-default" role="button">
+                            <a
+                                id="save-and-close-button-create-question"
+                                class="btn btn-default"
+                                role="button"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event);"
+                            >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save and close");?>
                             </a>
@@ -81,7 +86,12 @@
                     <li>
                         <div class="topbarbutton">
                             <!-- Save and close -->
-                            <a id="save-and-close-button-create-question" class="btn btn-default" role="button">
+                            <a
+                                id="save-and-close-button-create-question"
+                                class="btn btn-default"
+                                role="button"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event);"
+                            >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save and close");?>
                             </a>
@@ -258,11 +268,3 @@
     </div>
 </div>
 <?php endif; ?>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#save-and-close-button-create-question").click(function() {
-            document.getElementById("submit-create-question").click();
-        });
-    });
-</script>
