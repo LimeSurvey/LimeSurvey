@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-11-23 09:19:19+00:00\n"
+"POT-Creation-Date: 2020-11-27 12:43:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7077,11 +7077,11 @@ msgstr ""
 msgid "Web server authentication method is not allowed for this user"
 msgstr ""
 
-#: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:69
+#: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:62
 msgid "Update available"
 msgstr ""
 
-#: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:72
+#: application/core/plugins/ComfortUpdateChecker/ComfortUpdateChecker.php:65
 msgid "Security update available"
 msgstr ""
 
