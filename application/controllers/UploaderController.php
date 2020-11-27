@@ -184,7 +184,7 @@ class UploaderController extends SurveyController
                 /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
                 /* Check if can find mime type of favicon.ico , without extension */
                 /* Use CFileHelper because sure it work with included */
-                if(CFileHelper::getExtensionByMimeType(APPPATH."favicon.ico", null) != 'ico') {
+                if(empty(LSFileHelper::getMimeType(APPPATH."favicon.ico", null, null)) ) {
                     $disableCheck = true;
                     Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
                     if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
