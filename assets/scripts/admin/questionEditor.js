@@ -1607,21 +1607,35 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {HTMLElement} table
      * @return {void}
      * @todo Dual scale
+     * @todo Check length of subquestion code.
      */
     showSubquestionCodeUniqueError: function(that /*: HTMLInputElement */) {
       const table = that.closest('table');
       if (!(table instanceof HTMLElement)) {
         throw 'Found no table';
       }
+
+      // Check uniqueness.
       if (!checkSubquestionCodeUnique(table)) {
         $(that.parentElement).addClass('has-error');
         LS.LsGlobalNotifier.create(
           languageJson.subquestions.duplicatesubquestioncode,
           'well-lg bg-danger text-center'
         );
-      } else {
-        $(that.parentElement).removeClass('has-error');
+        return;
       }
+
+      // Check too long subquestion code.
+      const code = that.value;
+      if (code.length > 20) {
+        $(that.parentElement).addClass('has-error');
+        LS.LsGlobalNotifier.create(
+          'Subquestion code is too long. Maximal number of characters is: 20.',
+          'well-lg bg-danger text-center'
+        );
+        return;
+      }
+      $(that.parentElement).removeClass('has-error');
     }
   };
 

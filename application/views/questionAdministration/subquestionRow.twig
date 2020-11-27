@@ -51,6 +51,7 @@
                 <input
                     type='hidden'
                     class='oldcode code-title'
+                    maxlength="20"
                     id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
                     name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
                     value="{{ subquestion.title }}"
@@ -65,6 +66,7 @@
                 class='code code-title'
                 value="{{ subquestion.title }}"
                 required='required'
+                maxlength="20"
                 onfocusout="LS.questionEditor.showSubquestionCodeUniqueError(this);"
             />
         </td>
