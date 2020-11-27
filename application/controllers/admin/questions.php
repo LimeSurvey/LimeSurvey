@@ -865,7 +865,9 @@ class questions extends Survey_Common_Action
         $html      = array();
         $first     = true;
         $qid = 'new'.rand(0, 99999);
+        $scale_id = (int) $scale_id; // Do not trust user input
         foreach ($languages as $language) {
+            $language=sanitize_languagecode($language);
             $html[$language] = $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
             $first = false;
         }
