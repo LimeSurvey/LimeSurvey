@@ -39,6 +39,9 @@ echo '<div '
     . '>';
 if (!isset($aData['renderSpecificTopbar'])) {
     $layoutHelper->renderGeneraltopbar($aData);
+} else {
+    // Render hidden Vue component. Needed because of pjax.
+    $layoutHelper->renderGeneraltopbar(['sid' => 0, 'qid' => 0, 'gid' => 0]);
 }
 
 echo '<div id="pjax-content" class="col-12">';
