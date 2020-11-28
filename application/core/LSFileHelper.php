@@ -67,7 +67,7 @@ class LSFileHelper extends CFileHelper
             return $mimeType;
         }
         /* magic_database not set : return */
-        if(is_null(App()->getConfig('magic_database'))) {
+        if (empty(App()->getConfig('magic_database'))) {
             return $mimeType;
         }
         /* Use parent with magic_database from config */
