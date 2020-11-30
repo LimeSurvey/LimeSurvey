@@ -2592,7 +2592,7 @@ class QuestionAdministrationController extends LSBaseController
                 $answer->code = $data['code'];
                 $answer->sortorder = 0;  // TODO
                 $answer->assessment_value = 0;  // TODO
-                $answer->scale_id = 0;  // TODO
+                $answer->scale_id = $scaleId;
                 if (!$answer->save()) {
                     throw new CHttpException(
                         500,
