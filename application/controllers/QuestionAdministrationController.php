@@ -369,7 +369,7 @@ class QuestionAdministrationController extends LSBaseController
                 $question->deleteAllAnswers();
                 $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
-                if ($question->questionType->subquestions === 1) {
+                if ($question->questionType->subquestions > 0) {
                     $this->storeSubquestions(
                         $question,
                         $request->getPost('subquestions')
@@ -2502,8 +2502,10 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $subquestion->title      = $data['code'];
-                $subquestion->relevance  = $data['relevance'];
-                $subquestion->scale_id   = 0;  // TODO
+                if ($scaleId === 0) {
+                    $subquestion->relevance  = $data['relevance'];
+                }
+                $subquestion->scale_id   = $scaleId;
                 if (!$subquestion->save()) {
                     throw new CHttpException(
                         500,

@@ -1419,9 +1419,9 @@ class Question extends LSActiveRecord
             $criteria->order = 'sortorder, code ASC';
             $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
             $results[$scale_id] = Answer::model()->findAll($criteria);
-        }
-        if (empty($results)) {
-            $results[0] = $this->getEmptyAnswerOption();
+            if (empty($results[$scale_id])) {
+                $results[$scale_id] = [$this->getEmptyAnswerOption()];
+            }
         }
         return $results;
     }
@@ -1441,9 +1441,9 @@ class Question extends LSActiveRecord
             $criteria->order = 'question_order, title ASC';
             $criteria->params = [':parent_qid' => $this->qid, ':scale_id' => $scale_id];
             $results[$scale_id] = Question::model()->findAll($criteria);
-        }
-        if (empty($results)) {
-            $results[0] = $this->getEmptySubquestion();
+            if (empty($results[$scale_id])) {
+                $results[$scale_id] = [$this->getEmptySubquestion()];
+            }
         }
         return $results;
     }
