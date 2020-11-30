@@ -120,10 +120,10 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
                 display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
 
             if (show_title != 0)
-                display += '<td class="upload title">'+htmlspecialchars(jsonobj[i].title)+'</td>';
+                display += '<td class="upload title">'+htmlentities(jsonobj[i].title,null,null,false)+'</td>';
             if (show_comment != 0)
-                display += '<td class="upload comment">'+htmlspecialchars(jsonobj[i].comment)+'</td>';
-            display +='<td class="upload edit">'+htmlspecialchars(decodeURIComponent(jsonobj[i].name))+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
+                display += '<td class="upload comment">'+htmlentities(jsonobj[i].comment,null,null,false)+'</td>';
+            display +='<td class="upload edit">'+htmlentities(decodeURIComponent(jsonobj[i].name),null,null,false)+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         }
         display += '</tbody></table>';
 
