@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.1 (build 201124) to 3.25.2 (build 201131) November 30, 2020
+-Fixed issue: Hardening for subquestions addition (Carsten Schmitz)
+-Fixed issue #16865: Unable to export as PDF with PHP7.4  (Denis Chenu)
+-Fixed issue #16861: ComfortUpdateChecker can broke with other plugin (Denis Chenu)
+-Fixed issue #16855: Upload File MIME Type Check Error (Denis Chenu)
+-Fixed issue #16729: Message has no translation (Gabriel Jenik)
+-Fixed issue #16656  uploading files in chrome corrupts the response and loses the uploaded file (Gabriel Jenik)
+#Updated translation: Ukrainian by EyeseeU
+#Updated translation: Estonian by ritapas
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.25.0 (build 201117) to 3.25.1 (build 201124) November 23, 2020
 -Fixed issue [security] #16845: Persistent XSS in browse response (Denis Chenu)
 #Updated translation: Polish by elissa
