@@ -7,12 +7,12 @@
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
     <div class="lang-hide lang-{{ lang }}">
-        {% for scale_id in range(0,scalecount-1) %}
+        {% for scale_id in range(0, scalecount - 1) %}
 
-            {% set position=1 %}
-            {%  if scalecount>1 %}
+            {% set position = 1 %}
+            {%  if scalecount > 1 %}
                 <div class='header ui-widget-header' style='margin-top:5px;'>
-                    {{ sprintf(gT("Answer scale %s"),scale_id+1) }}
+                    <i>{{ sprintf(gT("Answer scale %s"), scale_id + 1) }}</i>
                 </div>
             {% endif %}
 
@@ -61,7 +61,7 @@
 
                 <!-- Body -->
                 <tbody>
-                    {% for answerOption in answers %}
+                    {% for answerOption in answers[scale_id] %}
                         <!-- Line tag -->
                         {% include 'answerOptionRow.twig' with {
                             'activated'         : activated,

@@ -8,7 +8,7 @@
 <!-- Loop all language, and then hide all but the current selected one with JS. -->
 {% for lang in allLanguages %}
     <div class="lang-hide lang-{{ lang }}">
-        {% for scale_id in range(0,scalecount-1) %}
+        {% for scale_id in range(0, scalecount - 1) %}
             {% set anscount = subquestions|length %}
             {# TODO : check the rendering of XSCALES / Y SCALES #}
 
@@ -16,11 +16,11 @@
             {% if scalecount > 1 %}
                 {% if scale_id==0 %}
                     <div class='header ui-widget-header'>
-                        {{ gT("Y-Scale") }}
+                        <i>{{ gT("Y-Scale") }}</i>
                     </div>
                 {% else %}
                     <div class='header ui-widget-header'>
-                        {{ gT("X-Scale") }}
+                        <i>{{ gT("X-Scale") }}</i>
                     </div>
                 {% endif %}
             {% endif %}
@@ -64,7 +64,7 @@
 
                 <!-- Body -->
                 <tbody>
-                    {% for subquestion in subquestions %}
+                    {% for subquestion in subquestions[scale_id] %}
                         <!-- Line tag -->
                         {% include 'subquestionRow.twig' with {
                             'position'  : position,

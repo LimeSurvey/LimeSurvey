@@ -54,8 +54,9 @@
                             '/application/views/questionAdministration/subquestions.twig',
                             [
                                 'activated'    => $oSurvey->active !== 'N',
-                                'scalecount'   => 1,
-                                'subquestions' => $question->subquestions ? $question->subquestions : [$question->getEmptySubquestion()],
+                                // NB: questionType->subquestions === subquestion scale count
+                                'scalecount'   => $question->questionType->subquestions,
+                                'subquestions' => $question->getScaledSubquestions(),
                                 'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'language'     => $oSurvey->language,
@@ -74,8 +75,8 @@
                             [
                                 'activated'  => $oSurvey->active !== 'N',
                                 'oldCode'    => true,
-                                'scalecount' => 1,
-                                'answers'    => $question->answers ? $question->answers : [$question->getEmptyAnswerOption()],
+                                'scalecount' => $question->questionType->answerscales,
+                                'answers'    => $question->getScaledAnswerOptions(),
                                 'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,
                                 'language'   => $oSurvey->language,

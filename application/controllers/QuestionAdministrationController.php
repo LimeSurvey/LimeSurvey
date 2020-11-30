@@ -166,7 +166,7 @@ class QuestionAdministrationController extends LSBaseController
                 'anslangs'          => $question->survey->allLanguages,
                 // TODO
                 'assessmentvisible' => false,
-                'scalecount'        => 1
+                'scalecount'        => $question->questionType->answerscales
             ],
             true
         );

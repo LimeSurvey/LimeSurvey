@@ -1362,6 +1362,7 @@ class Question extends LSActiveRecord
 
     /**
      * Used by question create form.
+     *
      * @return Question
      */
     public function getEmptySubquestion()
@@ -1376,6 +1377,7 @@ class Question extends LSActiveRecord
 
     /**
      * Used by question create form.
+     *
      * @return Answer
      */
     public function getEmptyAnswerOption()
@@ -1400,5 +1402,49 @@ class Question extends LSActiveRecord
         $answer->answerl10ns = $l10n;
 
         return $answer;
+    }
+
+    /**
+     * Get array of answers options, depending on scale count for this question type.
+     *
+     * @return array Like [0 => Answer[]] or [0 => Answer[], 1 => Answer[]]
+     */
+    public function getScaledAnswerOptions()
+    {
+        $answerScales = $this->questionType->answerscales;
+        $results = [];
+        for ($scale_id = 0; $scale_id < $answerScales; $scale_id++) {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
+            $criteria->order = 'sortorder, code ASC';
+            $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
+            $results[$scale_id] = Answer::model()->findAll($criteria);
+        }
+        if (empty($results)) {
+            $results[0] = $this->getEmptyAnswerOption();
+        }
+        return $results;
+    }
+
+    /**
+     * Get array of subquestions, depending on scale count for this question type.
+     *
+     * @return array Like [0 => Question[]] or [0 => Question[], 1 => Question[]]
+     */
+    public function getScaledSubquestions()
+    {
+        $subquestionScale = $this->questionType->subquestions;
+        $results = [];
+        for ($scale_id = 0; $scale_id < $subquestionScale; $scale_id++) {
+            $criteria = new CDbCriteria();
+            $criteria->condition = 'parent_qid = :parent_qid AND scale_id = :scale_id';
+            $criteria->order = 'question_order, title ASC';
+            $criteria->params = [':parent_qid' => $this->qid, ':scale_id' => $scale_id];
+            $results[$scale_id] = Question::model()->findAll($criteria);
+        }
+        if (empty($results)) {
+            $results[0] = $this->getEmptySubquestion();
+        }
+        return $results;
     }
 }
