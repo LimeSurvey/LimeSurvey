@@ -76,7 +76,7 @@
                             'rows' => '10',
                             'cols' => '40',
                             'data-filetype' => 'javascript',
-                            'class' => 'ace default', // . $sTemplateEditorMode,
+                            'class' => 'form-control', // . $sTemplateEditorMode,
                         ]
                     ); ?>
                     <p class="alert well">
