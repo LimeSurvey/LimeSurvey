@@ -1816,6 +1816,8 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Gets default value(s) for a question or subquestion from table defaultvalue_l10ns
+     *
      * @param int $iSurveyID
      * @param int $gid
      * @param int $qid
