@@ -62,12 +62,16 @@ class LSFileHelper extends CFileHelper
     public static function getMimeType($file,$magicFile=null,$checkExtension=true)
     {
         $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
-        if((!empty($magicFile) && $mimeType != "application/octet-stream") || !is_null($magicFile)) {
+        /* Parent already return something valid : return */
+        if((!empty($magicFile) && $mimeType != "application/octet-stream")) {
             return $mimeType;
         }
-        if(empty($magicFile) && Yii::app()->getConfig('magic_database')) {
-            $magicFile = Yii::app()->getConfig('magic_database');
+        /* magic_database not set : return */
+        if(is_null(App()->getConfig('magic_database'))) {
+            return $mimeType;
         }
+        /* Use parent with magic_database from config */
+        $magicFile = Yii::app()->getConfig('magic_database');
         // Some PHP version can throw Notice with some files, disable this notice issue #15565
         $iErrorReportingState = error_reporting();
         error_reporting(0);
