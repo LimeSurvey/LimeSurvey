@@ -59,6 +59,7 @@
                 maxlength='5'
                 pattern='{{ pattern }}'
                 required='required'
+                onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
             />
         </td>
         {# If survey is not active, and it's not the first language : no move button, code not editable #}

@@ -1391,8 +1391,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * Mark subquestion code as error if it's not unique.
-   * Bound to subquestion code onfocusout.
+   * Check if table has any duplicated code.
    *
    * @param {HTMLElement} table
    * @return {boolean}
@@ -1400,6 +1399,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function checkSubquestionCodeUnique(table /*: HTMLElement */) /*: boolean */ {
     const codeInputs = table.querySelectorAll('input.code');
+    // Get all codes from code input node list.
     const codes = [...codeInputs].map((input) => {
       if (input instanceof HTMLInputElement) {
         return input.value;
@@ -1409,6 +1409,46 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     const uniqueCodes = codes.filter((value, index, self) => self.indexOf(value) === index);
     return codes.length === uniqueCodes.length;
+  }
+
+  /**
+   * Return a function that can be used to check code uniqueness.
+   * Used by subquestions and answer options.
+   *
+   * @param {string} msg Error message to show.
+   * @return {(HTMLInputElement) => void}
+   */
+  function createCheckUniqueFunction(msg /*: string */) /*: (HTMLInputElement) => void */ {
+    return (that) => {
+      const table = that.closest('table');
+      if (!(table instanceof HTMLElement)) {
+        throw 'Found no table';
+      }
+
+      // Check uniqueness.
+      if (!checkSubquestionCodeUnique(table)) {
+        $(that.parentElement).addClass('has-error');
+        LS.LsGlobalNotifier.create(
+          msg,
+          'well-lg bg-danger text-center'
+        );
+        return;
+      }
+
+      // Check too long subquestion code.
+      // TODO: maxlength attribute
+      const code = that.value;
+      if (code.length > 20) {
+        $(that.parentElement).addClass('has-error');
+        LS.LsGlobalNotifier.create(
+          // TODO: Translation
+          'Subquestion code is too long. Maximal number of characters is: 20.',
+          'well-lg bg-danger text-center'
+        );
+        return;
+      }
+      $(that.parentElement).removeClass('has-error');
+    };
   }
 
   // Public functions for LS.questionEditor module.
@@ -1604,39 +1644,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     },
 
     /**
+     * Mark subquestion code as error if it's not unique.
+     * Bound to subquestion code onfocusout.
+     *
      * @param {HTMLElement} table
      * @return {void}
      * @todo Dual scale
      * @todo Check length of subquestion code.
      */
-    showSubquestionCodeUniqueError: function(that /*: HTMLInputElement */) {
-      const table = that.closest('table');
-      if (!(table instanceof HTMLElement)) {
-        throw 'Found no table';
-      }
-
-      // Check uniqueness.
-      if (!checkSubquestionCodeUnique(table)) {
-        $(that.parentElement).addClass('has-error');
-        LS.LsGlobalNotifier.create(
-          languageJson.subquestions.duplicatesubquestioncode,
-          'well-lg bg-danger text-center'
-        );
-        return;
-      }
-
-      // Check too long subquestion code.
-      const code = that.value;
-      if (code.length > 20) {
-        $(that.parentElement).addClass('has-error');
-        LS.LsGlobalNotifier.create(
-          'Subquestion code is too long. Maximal number of characters is: 20.',
-          'well-lg bg-danger text-center'
-        );
-        return;
-      }
-      $(that.parentElement).removeClass('has-error');
-    }
+    showSubquestionCodeUniqueError: createCheckUniqueFunction(languageJson.subquestions.duplicatesubquestioncode),
+    showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
   // Below, things run on pjax:scriptcomplete.
