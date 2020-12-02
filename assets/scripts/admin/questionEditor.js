@@ -862,12 +862,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
    *
    * @param {number} scaleId
    * @param {string} addOrReplace - Either 'add' or 'replace'
-   * @param {string} tableId
+   * @param {string} tableId - suqbuestions_$lang_$scaleid or answeroptions_$lang_$scaleid
    * @return {void}
    * @todo Unit-test this? How? With classes?
    * @todo Factor out functions.
    */
-  function quickAddLabels(scaleId, addOrReplace, tableId) {
+  function quickAddLabels(scaleId /*: number */, addOrReplace /*: string */, tableId /*: string */) {
     //const sID = $('input[name=sid]').val();
     //const gID = $('input[name=gid]').val();
     //const qID = $('input[name=qid]').val();
@@ -944,7 +944,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
-      // TODO: This should come from the server.
       const quid = `new${Math.floor(Math.random() * 10000)}`;
 
       // TODO: What's happening here?
@@ -957,14 +956,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
           answers[language] = [];
         }
         if (lsreplace) {
-          $(`#subquestions_${language}_${scaleId} tbody`).empty();
+          if (tableId.indexOf('subquestion') > -1) {
+            $(`#subquestions_${language}_${scaleId} tbody`).empty();
+          } else {
+            $(`#answeroptions_${language}_${scaleId} tbody`).empty();
+          }
         }
         answers[language].push(
           { text: thisrow[(parseInt(x) + 1)], code: thisrow[0], quid },
         );
       });
-
-      // $('#subquestions_'+languages[x]+'_'+scaleId+' tbody').append(tablerows);
     });
 
     // TODO: One call per language, really?
