@@ -4295,7 +4295,7 @@ function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
     FROM {{user_in_groups}} AS b
     LEFT JOIN (SELECT * FROM {{permissions}}
     WHERE entity_id = {$surveyid} and entity='survey') AS c ON b.uid = c.uid WHERE c.uid IS NULL
-    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
+    ) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL ORDER BY a.name";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query(); //Checked
     $aResult = $surveyidresult->readAll();
 
