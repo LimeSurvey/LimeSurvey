@@ -158,7 +158,7 @@ class printablesurvey extends Survey_Common_Action
             foreach ($arGroups as $arQuestionGroup) {
                 // ---------------------------------------------------
                 // START doing groups
-                $arQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'gid' => $arQuestionGroup['gid']]);
+                $arQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'gid' => $arQuestionGroup['gid']], array('order'=>'question_order ASC'));
 
                 if (!empty($arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description)) {
                     $group_desc = $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description;
