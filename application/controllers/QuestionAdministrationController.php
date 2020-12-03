@@ -2599,13 +2599,19 @@ class QuestionAdministrationController extends LSBaseController
      */
     private function storeAnswerOptions($question, $answerOptionsArray)
     {
+        $i = 0;
         foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
             foreach ($answerOptionArray as $scaleId => $data) {
                 $answer = new Answer();
                 $answer->qid = $question->qid;
                 $answer->code = $data['code'];
-                $answer->sortorder = 0;  // TODO
-                $answer->assessment_value = 0;  // TODO
+                $answer->sortorder = $i;
+                $i++;
+                if (isset($data['assessment'])) {
+                    $answer->assessment_value = $data['assessment'];
+                } else {
+                    $answer->assessment_value = 0;
+                }
                 $answer->scale_id = $scaleId;
                 if (!$answer->save()) {
                     throw new CHttpException(
