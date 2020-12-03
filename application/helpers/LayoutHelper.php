@@ -457,18 +457,16 @@ class LayoutHelper
      */
     public static function renderTopbar($aData) {
 
-        $oTopbarConfig = TopbarConfiguration::fromViewData($aData);
+        $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
 
-        if (!empty($oTopbarConfig->leftSideView)) $aData['topBar']['leftSideContent'] = App()->getController()->renderPartial($oTopbarConfig->leftSideView, $aData, true);
-        if (!empty($oTopbarConfig->rightSideView)) $aData['topBar']['rightSideContent'] = App()->getController()->renderPartial($oTopbarConfig->rightSideView, $aData, true);
-
-        // Temporary fix before implementing the TopbarWidget
-        $aData['topBar']['name'] = $oTopbarConfig->viewName;
-        $aData['topBar']['topbarId'] = $oTopbarConfig->id;
-        $aData['topBar'] = array_merge($oTopbarConfig->data, $aData['topBar']);
-
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');
-        return Yii::app()->getController()->renderPartial("/topbars/" . $aData['topBar']['name'], $aData['topBar'], true);
+        return Yii::app()->getController()->widget(
+            'ext.TopbarWidget.TopbarWidget', 
+            array(
+                'config' => $oTopbarConfig,
+                'aData' => $aData,
+            ),
+            true
+        );
     }
 
     /**

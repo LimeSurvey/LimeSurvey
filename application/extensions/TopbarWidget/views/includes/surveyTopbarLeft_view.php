@@ -7,7 +7,7 @@
 <?php if (!$oSurvey->isActive): ?>
     <!-- activate -->
     <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]); ?>" role="button">
+        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo App()->createUrl("surveyAdministration/activate/", ['iSurveyID' => $sid]); ?>" role="button">
             <?php eT("Activate this survey"); ?>
         </a>
 
@@ -30,7 +30,7 @@
 
     <!-- Stop survey -->
     <?php if ($canactivate): ?>
-        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>" role="button">
+        <a class="btn btn-danger btntooltip" href="<?php echo App()->createUrl("surveyAdministration/deactivate/", ['iSurveyID' => $sid]); ?>" role="button">
             <i class="fa fa-stop-circle" ></i>
             <?php eT("Stop this survey"); ?>
         </a>
@@ -50,7 +50,7 @@
         <ul class="dropdown-menu" style="min-width : 252px;">
             <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                 <li>
-                    <a target='_blank' id='<?= $contextbutton ?>_<?= $tmp_lang?>' href='<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$tmp_lang)); ?>'>
+                    <a target='_blank' id='<?= $contextbutton ?>_<?= $tmp_lang?>' href='<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$tmp_lang)); ?>'>
                         <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                     </a>
                 </li>
@@ -60,7 +60,7 @@
 
     <!-- uniq language -->
     <?php else: ?>
-        <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>' href="<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
             <span class="icon-do" ></span>
             <?php echo $context; ?>
         </a>
@@ -83,7 +83,7 @@
 
                 <!-- Delete survey -->
                 <li>
-                    <a href="<?php echo $this->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]); ?>">
+                    <a href="<?php echo App()->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]); ?>">
                         <span class="fa fa-trash" ></span>
                         <?php eT("Delete survey"); ?>
                     </a>
@@ -97,7 +97,7 @@
 
                     <!-- Quick-translation -->
                     <li>
-                        <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
+                        <a href="<?php echo App()->createUrl("admin/translate/sa/index/surveyid/{$oSurvey->sid}"); ?>">
                         <span class="fa fa-language" ></span>
                         <?php eT("Quick-translation"); ?>
                         </a>
@@ -119,7 +119,7 @@
                 <?php if ($conditionsCount > 0):?>
                     <li>
                         <!-- condition -->
-                        <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
+                        <a href="<?php echo App()->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$oSurvey->sid}"); ?>">
                             <span class="icon-resetsurveylogic" ></span>
                             <?php eT("Reset conditions"); ?>
                         </a>
@@ -143,7 +143,7 @@
 
                     <!-- Survey logic file -->
                     <li>
-                        <a href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
+                        <a href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/"); ?>' >
                             <span class="icon-expressionmanagercheck" ></span>
                             <?php eT("Survey logic file"); ?>
                         </a>
@@ -159,7 +159,7 @@
                         <!-- Languages -->
 
                         <li>
-                            <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
+                            <a  href='<?php echo App()->createUrl("admin/expressions/sa/survey_logic_file/sid/$oSurvey->sid/lang/$tmp_lang"); ?>'>
                                 <span class="icon-expressionmanagercheck" ></span>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                             </a>
@@ -178,7 +178,7 @@
 
                 <!-- Straight -->
                 <li>
-                    <a href="<?php echo $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
+                    <a href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/straight"); ?>">
                     <span class="icon-resetsurveylogic" ></span>
                     <?php eT("Straight"); ?>
                     </a>
@@ -186,7 +186,7 @@
 
                 <!-- By question group -->
                 <li>
-                <a href="<?php echo $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
+                <a href="<?php echo App()->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$sid}/subaction/bygroup"); ?>">
                     <span class="icon-resetsurveylogic" ></span>
                     <?php eT("By question group"); ?>
                 </a>

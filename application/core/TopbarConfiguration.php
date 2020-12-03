@@ -20,17 +20,24 @@ class TopbarConfiguration
     /** @var string Name of the view used to render the right side of the topbar */
     private $rightSideView = '';
 
-    /** @var array List of properties that can have public getter */
-    private static $publicReadableProperties = ['viewName', 'id', 'data', 'leftSideView', 'rightSideView', 'surveyData'];
-
+    /**
+     * Creates and instance of TopbarConfiguration based on the received $config array, 
+     * which is expected to have the following keys (all keys are optional):
+     *  'name' => The name of the main view to use.
+     *  'topbarId' => The topbar ID. Will normally be used as ID for container html element of the topbar.
+     *  'leftSideView' => The name of the view to use for the left side of the topbar.
+     *  'rightSideView' => The name of the view to use for the right side of the topbar.
+     * 
+     * @param array $config
+     */
     public function __construct(array $config = [])
     {
         // Set defaults
         $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
         $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
 
-        if (isset($config['leftSideView'])) $this->$leftSideView = $config['leftSideView'];
-        if (isset($config['rightSideView'])) $this->$rightSideView = $config['rightSideView'];
+        if (isset($config['leftSideView'])) $this->leftSideView = $config['leftSideView'];
+        if (isset($config['rightSideView'])) $this->rightSideView = $config['rightSideView'];
 
         $this->data = $config;
 
@@ -50,7 +57,7 @@ class TopbarConfiguration
      * @param array $aData
      * @return TopbarConfiguration
      */
-    public static function fromViewData($aData)
+    public static function createFromViewData($aData)
     {
         $config = isset($aData['topBar']) ? $aData['topBar'] : [];
 
@@ -69,7 +76,8 @@ class TopbarConfiguration
      * @throws CException
      *
      */
-    protected function getSurveyTopbarData($sid) {
+    protected function getSurveyTopbarData($sid)
+    {
         $oSurvey = Survey::model()->findByPk($sid);
         $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
         $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
@@ -147,19 +155,34 @@ class TopbarConfiguration
         );
     }
 
-    /**
-     * Magic function returns the value of the requested property, if and only if it is a
-     * 'publically readble' property.
-     *
-     * @param  string $property
-     * @return mixed
-     */
-    public function __get($property)
+    public function getViewName()
     {
-        if (in_array($property, $this::$publicReadableProperties) && property_exists(get_class($this), $property)) {
-            return $this->$property;
-        }
-        throw new Exception("TopbarConfiguration has no property '$property'");
+        return $this->viewName;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function getLeftSideView()
+    {
+        return $this->leftSideView;
+    }
+
+    public function getRightSideView()
+    {
+        return $this->rightSideView;
+    }
+
+    public function getSurveyData()
+    {
+        return $this->surveyData;
     }
 
 }
