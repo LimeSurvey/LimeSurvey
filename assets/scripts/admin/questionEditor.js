@@ -56,7 +56,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
-    console.log('Not on question editor page, do not run question editor script');
+    console.trace('Not on question editor page, do not run question editor script');
     return;
   }
 
@@ -631,7 +631,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function labelSetDestruct() {
-    console.log('labelSetDestruct');
     $('#labelsets').select2('destroy');
     $('#labelsetpreview').empty();
   }
@@ -790,9 +789,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         .each((i, item) => {
           try {
             const label /*: {code: string, title: string} */ = $(item).data('label');
-            console.log('row', row);
             const $row = $(row);
-            console.log('$row', $row);
             let $tr;
             // TODO: Use classes instead of if-statements.
             if (source === 'subquestions') {
@@ -981,25 +978,47 @@ $(document).on('ready pjax:scriptcomplete', function () {
       function (...args) {
         /* $('#quickadd').dialog('close'); */
         // TODO: What is item here?
-        // TODO: Too dynamic to use "arguments", better to know.
         args.forEach((item /*: {lang: string, langtable: {}, html: string} */) => {
           answers[item.lang].forEach((row /*: {quid: string, text: string, code: string} */) => {
-            const { html } = item;
-            const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
-            const htmlRowObject = $(htmlQuid);
-            if (htmlRowObject.length === 0) {
-              alert('Internal error: Could not find htmlRowObject');
+            try {
+              const { html } = item;
+              const htmlQuid = html.replace(/{{quid_placeholder}}/g, row.quid);
+
+              // Create HTMLElement from HTML string.
+              const wrapper = document.createElement('tbody');
+              wrapper.innerHTML = htmlQuid;
+              const tableRow = wrapper.firstElementChild;
+              if (!tableRow) {
+                throw 'Could not find tableRow with id ' + htmlQuid;
+              }
+              if (!(tableRow instanceof HTMLElement)) {
+                throw 'tableRow is not an HTMLElement';
+              }
+
+              // Insert value and text into HTML.
+              const inputText = tableRow.querySelector('input.answer');
+              if (!(inputText instanceof HTMLInputElement)) {
+                throw 'inputText is not an HTMLInputElement';
+              }
+              inputText.value = row.text;
+              const inputCode = tableRow.querySelector('input.code');
+              if (inputCode instanceof HTMLInputElement) {
+                inputCode.value = row.code;
+              } else {
+                // Ignore.
+              }
+              const relevanceEquation = tableRow.querySelector('td.relevance-equation input');
+              if (relevanceEquation instanceof HTMLInputElement) {
+                relevanceEquation.value = '1';
+              } else {
+                // Do nothing.
+              }
+
+              $(item.langtable).find('tbody').append(tableRow);
+            } catch (e) {
+              alert(e);
               throw 'abort';
             }
-            htmlRowObject.find('input.answer').val(row.text);
-            if (htmlRowObject.find('input.code').length > 0) {
-              htmlRowObject.find('input.code').val(row.code);
-            } else {
-              htmlRowObject.find('td.code-title').text(row.code);
-            }
-            htmlRowObject.find('td.relevance-equation').find('input').val(1);
-
-            $(item.langtable).find('tbody').append(htmlRowObject);
           });
         });
         $('#quickaddarea').val('');
@@ -1034,7 +1053,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function getLabel() {
-    console.log('getLabel');
     // TODO
     //const answer_table = $(this).parent().children().eq(0);
     //const scaleId = LS.removechars($(this).attr('id'));
@@ -1050,7 +1068,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function saveAsLabelSetOptionClick(event /*: Event */) /*: void */ {
-    console.log('saveAsLabelSetOptionClick');
     const target = event.target;
     if (!(target instanceof HTMLElement)) {
       alert('target is not an HTMLElement');
@@ -1108,7 +1125,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 throw 'abort';
             }
             $.getJSON(languageJson.lanameurl, (data) => {
-              console.log('getJSON');
               $.each(data, (key, val) => {
                 if (typeof val === 'string') {
                   $(select).append(`<option value="${key}">${val}</option>`);
@@ -1157,7 +1173,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function saveLabelSetAjax(e /*: Event */, tableClassName /*: string */) {
-    console.log('saveLabelSetAjax');
     // todo: scale id is not defined
     const scaleId = 1;
     const lasets = document.getElementById('lasets');
@@ -1176,7 +1191,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     const codeInputs = table.querySelectorAll('.code');
-    console.log('codeInputs', codeInputs);
     if (codeInputs.length > 0) {
       // Deactivated survey
       codeInputs.forEach((codeInput) => {
@@ -1195,7 +1209,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       });
     }
-    console.log('codes', codes);
 
     const answers = {};
 
@@ -1239,7 +1252,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
     );
     if (response.ok) {
-      console.log(await response.json());
     } else {
       alert('Internal error: Could not POST request: ' + response.status + ', ' + response.statusText);
       throw 'abort';
@@ -1285,9 +1297,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
        * @return {void}
        */
       error(data) {
-        //console.log('data', data);
-        //console.log('textStatus', textStatus);
-        //console.log('jqXHR', jqXHR);
         if (data.responseJSON) {
           LS.LsGlobalNotifier.create(
             data.responseJSON.message,
@@ -1302,8 +1311,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
      /*
    }).fail((xhr, textStatus, errorThrown) => {
-     console.log('fail');
-     console.log(xhr);
      if (xhr.status === 500) {
        LS.LsGlobalNotifier.create(
          errorThrown,
@@ -1321,11 +1328,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
        );
      }
    }).complete((xhr) => {
-     console.log('complete');
-     console.log(xhr);
    }).success((xhr) => {
-     console.log('success');
-     console.log(xhr);
    });;
    */
   }
@@ -1338,14 +1341,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function aftermove(event, ui) {
-    console.log('aftermove');
     // But first we have change the sortorder in translations, too
     const $that = ui.item;
     const newindex = Number($that.parent().children().index($that) + 1);
     const oldindex = $that.data('oldindex');
     const languages = languageJson.langs.split(';');
-    console.log('newindex', newindex);
-    console.log('oldindex', oldindex);
 
     languages.forEach((curLanguage, x) => {
       if (x > 0) {
@@ -1367,7 +1367,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function onClickSaveLabelSet(event /*: Event */, tableClassName /*: string */) {
-    console.log('tableClassName', tableClassName);
     // TODO: What is lid?
     // TODO: Where is lasets defined???
     const lid = $('#lasets').val() ? $('#lasets').val() : 0;
@@ -1379,7 +1378,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       });
     } else {
-      console.log('here');
       const aLanguages = languageJson.langs.split(';');
       $.post(languageJson.sCheckLabelURL, { languages: aLanguages, lid, bCheckAssessments: 1 }, (data) => {
         $('#strReplaceMessage').html(data);
@@ -1724,14 +1722,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
     $('#questionCode').focusout(() => {
         let code = $('#questionCode').val();
         if (code !== undefined || code !== '') {
-            console.log('Question Code: ' + code);
             let isValid = checkCodeUniqueness(code);
         //     if (!isValid) {
-        //         console.log('Error Code is not unqiue.');
         //     }
-        //     console.log('IsValid: ' + isValid);
         } else {
-            console.log('Question Code is empty');
         }
     });
     */
