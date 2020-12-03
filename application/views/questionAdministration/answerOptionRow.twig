@@ -2,7 +2,6 @@
  /**
  * Answer option row view
  *
- * @var int $position
  * @var bool $first
  * @var bool $assessmentvisible
  * @var int $scale_id
@@ -16,14 +15,13 @@
 #}
 
 <tr
-    class='row-container row_{{ position }}'
-    id='row_{{ language }}_{{ position }}_{{ question.qid }}_{{ scale_id }}'
-    data-common-id="{{ position }}_{{ question.qid }}_{{ scale_id }}"
+    class='row-container'
+    id='row_{{ language }}_{{ answerOption.aid }}_{{ scale_id }}'
+    data-common-id="{{ answerOption.aid }}_{{ scale_id }}"
 >
 
     {# If survey is not activated and first language #}
     {% if first %}
-        {% set pattern = (answerOption.code)?"^([a-zA-Z0-9]*|"~answerOption.code~")$":"^[a-zA-Z0-9]*$" %}
         <!-- Move icon -->
         <td
           style="text-align: center;"
@@ -43,8 +41,8 @@
             <input
                 type='hidden'
                 class='oldcode code-title'
-                id='answeroptions[{{ position }}][{{ scale_id }}][oldcode]'
-                name='answeroptions[{{ position }}][{{ scale_id }}][oldcode]'
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][oldcode]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][oldcode]'
                 value="{{ answerOption.code }}"
             />
             {% endif %}
@@ -52,12 +50,11 @@
             <input
                 type='text'
                 class="code form-control input"
-                id='answeroptions[{{ position }}][{{ scale_id }}][code]'
-                name='answeroptions[{{ position }}][{{ scale_id }}][code]'
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
                 class='code code-title'
                 value="{{ answerOption.code }}"
                 maxlength='5'
-                pattern='{{ pattern }}'
                 required='required'
                 onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
             />
@@ -76,8 +73,8 @@
             <input
                 type='text'
                 class='assessment form-control input'
-                id='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
-                name='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
                 maxlength='5'
                 size='5'
@@ -89,8 +86,8 @@
             <input
                 type='text'
                 class='assessment'
-                id='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
-                name='answeroptions[{{ position }}][{{ scale_id }}][assessment]'
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][assessment]'
                 value="{{ answerOption.assessment_value }}"
                 maxlength='5'
                 size='5'
@@ -112,8 +109,8 @@
                 type='text'
                 size='20'
                 class='answer form-control input'
-                id='answeroptions[{{ position }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
-                name='answeroptions[{{ position }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example answer option") }}'
                 value="{{ answerOptionl10n.answer }}"
             />
