@@ -42,11 +42,11 @@ $this->renderPartial(
                 $activeOverview = 'active';
                 $activeEditor = '';
                 $visibilityOverview = ''; //should be displayed
-                $visibilityEditor = 'style="display:none;"'; //should not be displayed
+                $visibilityEditor = 'style="display:none;"';
             } else {
                 $activeOverview = '';
                 $activeEditor = 'active';
-                $visibilityOverview = 'style="display:none;"'; //should not be displayed
+                $visibilityOverview = 'style="display:none;"';
                 $visibilityEditor = ''; //should be displayed
             }
             ?>
@@ -77,7 +77,7 @@ $this->renderPartial(
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
             <input type="hidden" name="question[qid]" value="<?= $question->qid; ?>" />
-            <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="overview" />
+            <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="<?=$this->aData['tabOverviewEditor']?>" />
             <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
             <input
                 type='submit'

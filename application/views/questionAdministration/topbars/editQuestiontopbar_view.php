@@ -15,70 +15,7 @@
 }
 </style>
 
-<?php if ($question->qid === 0): ?>
-<div id="question-create-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
-    <div class="topbarpanel">
-        <nav class="navbar navbar-default scoped-topbar-nav" style="border: none;">
-            <div class="ls-flex ls-flex-row ls-space padding top-5">
-                <ul class="col-sm-4 nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row grow-2 text-left">
-                    <li>
-                        <div class="topbarbutton">
-                            <a class="btn btn-default"
-                               href="<?php echo Yii::App()->createUrl('questionAdministration/importView', ['surveyid' => $surveyId]); ?>"
-                               role="button">
-                                <span class="icon-import"></span>
-                                <?php eT('Import a question'); ?>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row align-content-flex-end text-right padding-left scoped-switch-floats">
-
-                    <!-- Right Buttons -->
-                    <li>
-                        <div class="topbarbutton">
-                            <!-- Save and close -->
-                            <a
-                                id="save-and-close-button-create-question"
-                                class="btn btn-default"
-                                role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
-                            >
-                                <i class="fa fa-check-square"></i>
-                                <?php eT("Save");?>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="topbarbutton">
-                            <!-- Save and close -->
-                            <a
-                                id="save-and-close-button-create-question"
-                                class="btn btn-default"
-                                role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
-                            >
-                                <i class="fa fa-check-square"></i>
-                                <?php eT("Save and close");?>
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="topbarbutton">
-                            <!-- Close -->
-                            <a class="btn btn-danger" href="<?php echo $closeBtnUrl; ?>" role="button">
-                                <span class="fa fa-close"></span>
-                                <?php eT("Close");?>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
-<?php else: ?>
-<div id="question-edit-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
+<div id="question-create-edit-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
     <div class="topbarpanel">
         <nav class="navbar navbar-default scoped-topbar-nav" style="border: none;">
             <div class="ls-flex ls-flex-row ls-space padding top-5">
@@ -139,7 +76,6 @@
         </nav>
     </div>
 </div>
-<?php endif; ?>
 
 <?php if ($question->qid !== 0): ?>
 <div id="question-summary-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">

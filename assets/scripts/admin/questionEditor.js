@@ -1525,8 +1525,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // Show summary page.
     showOverview: function () {
       $('#advanced-question-editor').hide();
-      $('#question-create-topbar').hide();
-      $('#question-edit-topbar').hide();
+      $('#question-create-edit-topbar').hide();
       $('#question-overview').show();
       $('#question-summary-topbar').show();
     },
@@ -1535,8 +1534,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#question-overview').hide();
       $('#question-summary-topbar').hide();
       $('#advanced-question-editor').show();
-      $('#question-create-topbar').show();
-      $('#question-edit-topbar').show();
+      $('#question-create-edit-topbar').show();
     },
 
     /**
@@ -1765,13 +1763,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
       throw 'abort';
     }
     if (qidInput instanceof HTMLInputElement) {
-      if (parseInt(qidInput.value) !== 0) {
-       // $('#advanced-question-editor').hide();
-        $('#question-create-topbar').hide();
-        $('#question-edit-topbar').hide();
+      if (parseInt(qidInput.value) === 0) {
+        $('#question-create-edit-topbar').show();
       } else {
-       // $('#advanced-question-editor').show();
-        $('#question-create-topbar').show();
+        if($('#tab-overview-editor-input').val() === 'editor'){
+            $('#question-create-edit-topbar').show();
+            $('#question-summary-topbar').hide();
+        }else{
+            $('#question-summary-topbar').show();
+            $('#question-create-edit-topbar').hide();
+        }
       }
     } else {
       alert('Internal error: qidInput is not an HTMLInputElement');
