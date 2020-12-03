@@ -932,17 +932,17 @@ class SurveyDynamic extends LSActiveRecord
             );
 
             foreach($aAnswers as $key=>$value){
-                $aAnswerText[$value['code']] = Answer::model()->getAnswerFromCode($value->qid, $value->code, $sLanguage, $value->scale_id);
+                $aAnswerText[$value['scale_id']][$value['code']] = Answer::model()->getAnswerFromCode($value->qid, $value->code, $sLanguage, $value->scale_id);
             }
 
             $tempFieldname = $fieldname.'#0';
             $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
-            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname.'#1';
             $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
-            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
