@@ -1016,7 +1016,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
               $(item.langtable).find('tbody').append(tableRow);
             } catch (e) {
-              alert(e);
+              alert('Internal error:' + e);
               throw 'abort';
             }
           });
