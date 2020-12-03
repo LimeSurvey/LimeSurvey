@@ -703,6 +703,7 @@ class QuestionAdministrationController extends LSBaseController
         // TODO: Fix question type 'A'. Needed?
         $oQuestion = $this->getQuestionObject($qid, 'A', $gid);
         $answerOption = $oQuestion->getEmptyAnswerOption();
+        $answerOption->aid = $qid;
 
         //Capture "true" and "false" as strings
         if (is_string($first)) {
@@ -745,10 +746,13 @@ class QuestionAdministrationController extends LSBaseController
      * Calculate the next subquestion code based on previous codes.
      *
      * @param array $stringCodes
-     * @return string
+     * @return array
      */
     private function calculateNextCode(array $stringCodes)
     {
+        if (empty($stringCodes)) {
+            return ['A1', 0];
+        }
         // We get the numerical part of each code and we store them in Arrays
         // One array is to store the pure numerical values (so we can search in it for the greates value, and increment it)
         // Another array is to store the string values (so we keep all the prefixed "0")

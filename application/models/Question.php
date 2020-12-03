@@ -1383,6 +1383,8 @@ class Question extends LSActiveRecord
     public function getEmptyAnswerOption()
     {
         $answer = new Answer();
+        // TODO: Assuming no collision.
+        $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
         // TODO: Customize
         $answer->code = 'A1';
