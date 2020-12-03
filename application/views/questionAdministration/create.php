@@ -37,7 +37,20 @@ $this->renderPartial(
             role="group"
             data-toggle="buttons"
         >
-            <label class="btn btn-default active" onclick="LS.questionEditor.showOverview();">
+            <?php
+            if ($this->aData['tabOverviewEditor'] === 'overview') {
+                $activeOverview = 'active';
+                $activeEditor = '';
+                $visibilityOverview = ''; //should be displayed
+                $visibilityEditor = 'style="display:none;"'; //should not be displayed
+            } else {
+                $activeOverview = '';
+                $activeEditor = 'active';
+                $visibilityOverview = 'style="display:none;"'; //should not be displayed
+                $visibilityEditor = ''; //should be displayed
+            }
+            ?>
+            <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
                 <input 
                     type="radio" 
                     name="question-overview-switch"
@@ -45,7 +58,7 @@ $this->renderPartial(
                 />
                 <?= gt('Question overview'); ?>
             </label>
-            <label class="btn btn-default" onclick="LS.questionEditor.showEditor();">
+            <label class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
                 <input
                     type="radio"
                     name="question-overview-switch"
@@ -64,6 +77,7 @@ $this->renderPartial(
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
             <input type="hidden" name="question[qid]" value="<?= $question->qid; ?>" />
+            <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="overview" />
             <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
             <input
                 type='submit'
@@ -72,7 +86,7 @@ $this->renderPartial(
                 id = 'submit-create-question'
                 name="savecreate"
             />
-            <div id="advanced-question-editor">
+            <div id="advanced-question-editor" <?= $visibilityEditor?>>
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">
                         <x-test id="action::addQuestion"></x-test>
@@ -145,7 +159,7 @@ $this->renderPartial(
 
     <!-- Show summary page if we're editing or viewing. -->
     <?php if ($question->qid !== 0): ?>
-        <div class="container-fluid" id="question-overview">
+        <div class="container-fluid" id="question-overview" <?= $visibilityOverview?>>
             <form>
             <!-- Question summary -->
             <div class="container-center scoped-new-questioneditor">

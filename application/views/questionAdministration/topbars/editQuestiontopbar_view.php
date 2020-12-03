@@ -42,7 +42,21 @@
                                 id="save-and-close-button-create-question"
                                 class="btn btn-default"
                                 role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event);"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
+                            >
+                                <i class="fa fa-check-square"></i>
+                                <?php eT("Save");?>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="topbarbutton">
+                            <!-- Save and close -->
+                            <a
+                                id="save-and-close-button-create-question"
+                                class="btn btn-default"
+                                role="button"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
                             >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save and close");?>
@@ -90,7 +104,21 @@
                                 id="save-and-close-button-create-question"
                                 class="btn btn-default"
                                 role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event);"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor' );"
+                            >
+                                <i class="fa fa-check-square"></i>
+                                <?php eT("Save");?>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="topbarbutton">
+                            <!-- Save and close -->
+                            <a
+                                id="save-and-close-button-create-question"
+                                class="btn btn-default"
+                                role="button"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'overview');"
                             >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save and close");?>

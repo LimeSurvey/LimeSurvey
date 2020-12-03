@@ -1611,9 +1611,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * When clicking save, first check if codes etc are valid.
      *
      * @param {Event} event
+     * @param {string} tabQuestionEditor
      * @return {boolean}
      */
-    checkIfSaveIsValid: function(event) {
+    checkIfSaveIsValid: function(event, tabQuestionEditor = 'editor') {
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
@@ -1630,6 +1631,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
+                if(tabQuestionEditor === 'editor'){
+                    $('#tab-overview-editor-input').val('editor');
+                }else{
+                    $('#tab-overview-editor-input').val('overview');
+                }
               button.click();
             }
           } else {
@@ -1752,6 +1758,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix
+
     const qidInput = document.querySelector('input[name="question[qid]"]');
     if (qidInput === null) {
       alert('Internal error: Could not find qidInput');
@@ -1759,11 +1766,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
     if (qidInput instanceof HTMLInputElement) {
       if (parseInt(qidInput.value) !== 0) {
-        $('#advanced-question-editor').hide();
+       // $('#advanced-question-editor').hide();
         $('#question-create-topbar').hide();
         $('#question-edit-topbar').hide();
       } else {
-        $('#advanced-question-editor').show();
+       // $('#advanced-question-editor').show();
         $('#question-create-topbar').show();
       }
     } else {

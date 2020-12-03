@@ -98,10 +98,11 @@ class QuestionAdministrationController extends LSBaseController
      * Show question edit form.
      *
      * @param int $questionId
+     * @param string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId)
+    public function actionEdit($questionId, $tabOverviewEditor = 'overview')
     {
         $questionId = (int) $questionId;
 
@@ -116,6 +117,7 @@ class QuestionAdministrationController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
+        $this->aData['tabOverviewEditor'] = $tabOverviewEditor;
         $this->renderFormAux($question);
     }
 
@@ -151,6 +153,7 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $this->aData['questionbar']['buttons']['view'] = true;
+        $this->aData['sidemenu']['landOnSideMenuTab']         = 'structure';
         $this->aData['title_bar']['title'] =
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
@@ -391,7 +394,12 @@ class QuestionAdministrationController extends LSBaseController
             // All done, redirect to edit form.
             App()->setFlashMessage('Question saved', 'success');
             $question->refresh();
-            $this->redirect(['questionAdministration/edit/questionId/' . $question->qid]);
+            $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
+            //only those two values are valid
+            if(!($tabOverviewEditorValue==='overview' || $tabOverviewEditorValue==='editor')){
+                $tabOverviewEditorValue = 'overview';
+            }
+            $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
