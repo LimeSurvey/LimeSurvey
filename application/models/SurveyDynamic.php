@@ -576,7 +576,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getFirstNameForGrid()
     {
         if (is_object($this->tokens)) {
-            return '<strong>'.$this->tokens->firstname.'</strong>';
+            return $this->tokens->firstname;
         }
 
     }
@@ -587,7 +587,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getLastNameForGrid()
     {
         if (is_object($this->tokens)) {
-            return '<strong>'.$this->tokens->lastname.'</strong>';
+            return $this->tokens->lastname;
         }
     }
 
