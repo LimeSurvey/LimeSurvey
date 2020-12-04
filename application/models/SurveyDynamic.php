@@ -581,7 +581,7 @@ class SurveyDynamic extends LSActiveRecord
             if (!empty($tokens)){
                 $tokens->decrypt();
             }
-            return '<strong>'.$tokens->firstname.'</strong>';
+            return $tokens->firstname;
         }
 
     }
@@ -594,7 +594,7 @@ class SurveyDynamic extends LSActiveRecord
         // Last name is already decrypted in getFirstNameForGrid method, if we do it again it would try to decrypt it again ( and fail )
         $tokens = $this->tokens;
         if (is_object($tokens)) {
-            return '<strong>'.$tokens->lastname.'</strong>';
+            return $tokens->lastname;
         }
     }
 
