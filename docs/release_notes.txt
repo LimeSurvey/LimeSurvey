@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.2 (build 201131) to 3.25.3 (build 201208) December 7, 2020
+-Fixed issue #16875: strong tag displayed in First and Last name column of Survey responses page (Denis Chenu)
+-Fixed issue #16733: When importing a theme bigger in size than the allowed php.ini settings, there is no proper description of the error (Gabriel Jenik)
+#Updated translation: Portuguese (Brazil) by marciojv
+#Updated translation: Dutch by c_schmitz, L191, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1, c_schmitz
+#Updated translation: Basque by zatarain
+
+
 Changes from 3.25.1 (build 201124) to 3.25.2 (build 201131) November 30, 2020
 -Fixed issue: Hardening for subquestions addition (Carsten Schmitz)
 -Fixed issue #16865: Unable to export as PDF with PHP7.4  (Denis Chenu)
