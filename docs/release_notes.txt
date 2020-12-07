@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.29 (build 201130) to 4.3.30 (build 201207) December 7, 2020
+-Fixed issue #16875: strong tag displayed in First and Last name column of Survey responses page (Denis Chenu)
+-Fixed issue # 16824: Quota : Back to the previous page, one click is not recognized, you need to click again (#1676) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by hurricane, samarta
+#Updated translation: Portuguese (Portugal) by hurricane
+#Updated translation: Portuguese (Brazil) by marciojv
+#Updated translation: Hebrew by MeirOverferst
+#Updated translation: Greek by kiolalis
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
 Changes from 4.3.28 (build 201123) to 4.3.29 (build 201130) November 30, 2020
 -Fixed issue: Hardening for subquestions addition (Carsten Schmitz)
 -Fixed issue #16865: Unable to export as PDF with PHP7.4 (Denis Chenu)
