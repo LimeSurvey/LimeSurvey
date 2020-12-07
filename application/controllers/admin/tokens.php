@@ -1989,12 +1989,13 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
+            LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', App()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
+
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            } elseif (strtolower($oFile->getExtensionName()) != 'csv') {
+
+            if (strtolower($oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
             } elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');

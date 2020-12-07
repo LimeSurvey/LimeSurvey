@@ -177,14 +177,23 @@ class questions extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
+        try {
+            LSUploadHelper::checkUploadedFileSize('the_file');
+        } catch (Exception $ex) {
+            $message = '<p>'.\viewHelper::flatten($ex->getMessage()).'</p>
+                <a class="btn btn-default btn-lg"
+                href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$iSurveyID.'">'
+                .gT("Return to question list").'</a></p>';
+                $this->_renderWrappedTemplate('super', 'messagebox', array('title'=>gT('Error'), 'message'=>$message));
+                die();
+        }
+
         if ($action == 'importquestion') {
             $sFullFilepath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(20);
             $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
             $fatalerror = '';
 
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                $fatalerror = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024).'<br>';
-            } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 $fatalerror = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.").'<br>';
             }
 
@@ -198,7 +207,9 @@ class questions extends Survey_Common_Action
             }
 
             if ($fatalerror != '') {
-                unlink($sFullFilepath);
+                if (file_exists($sFullFilepath)) {
+                    unlink($sFullFilepath);
+                }
                 $message = '<p>'.$fatalerror.'</p>
                 <a class="btn btn-default btn-lg"
                 href="'.$this->getController()->createUrl('admin/survey/sa/listquestions/surveyid/').'/'.$iSurveyID.'">'
