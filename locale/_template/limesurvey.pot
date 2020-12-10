@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-12-08 09:15:38+00:00\n"
+"POT-Creation-Date: 2020-12-10 17:41:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1652,15 +1652,15 @@ msgstr ""
 #: application/helpers/qanda_helper.php:1362
 #: application/helpers/qanda_helper.php:1695
 #: application/helpers/qanda_helper.php:1753
-#: application/helpers/qanda_helper.php:3603
-#: application/helpers/qanda_helper.php:3657
-#: application/helpers/qanda_helper.php:3764
-#: application/helpers/qanda_helper.php:3804
-#: application/helpers/qanda_helper.php:4142
-#: application/helpers/qanda_helper.php:4194
-#: application/helpers/qanda_helper.php:4335
-#: application/helpers/qanda_helper.php:5078
-#: application/helpers/qanda_helper.php:5079
+#: application/helpers/qanda_helper.php:3606
+#: application/helpers/qanda_helper.php:3660
+#: application/helpers/qanda_helper.php:3767
+#: application/helpers/qanda_helper.php:3807
+#: application/helpers/qanda_helper.php:4145
+#: application/helpers/qanda_helper.php:4197
+#: application/helpers/qanda_helper.php:4338
+#: application/helpers/qanda_helper.php:5081
+#: application/helpers/qanda_helper.php:5082
 #: application/helpers/userstatistics_helper.php:644
 #: application/helpers/userstatistics_helper.php:681
 #: application/helpers/userstatistics_helper.php:1454
@@ -5220,7 +5220,7 @@ msgstr ""
 #: application/helpers/common_helper.php:4592
 #: application/helpers/qanda_helper.php:1257
 #: application/helpers/qanda_helper.php:1857
-#: application/helpers/qanda_helper.php:4318
+#: application/helpers/qanda_helper.php:4321
 #: application/views/admin/dataentry/content_view.php:153
 #: application/views/admin/dataentry/content_view.php:165
 #: tmp/runtime/twig_cache/57/5797afcbba9f6933f20098fecef3715c770cf938e10e87439b798ac5565414d4.php:80
@@ -7667,10 +7667,10 @@ msgid "Full"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:121
-#: application/helpers/qanda_helper.php:4445
-#: application/helpers/qanda_helper.php:4459
-#: application/helpers/qanda_helper.php:4473
-#: application/helpers/qanda_helper.php:4474
+#: application/helpers/qanda_helper.php:4448
+#: application/helpers/qanda_helper.php:4462
+#: application/helpers/qanda_helper.php:4476
+#: application/helpers/qanda_helper.php:4477
 #: application/models/Assessment.php:130
 #: application/views/admin/assessments/assessments_edit.php:24
 #: application/views/admin/export/generatestats/_statisticsoutput_answer.php:55
@@ -9966,77 +9966,77 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:2875
+#: application/helpers/qanda_helper.php:2876
 msgid "Please click and drag the slider handles to enter your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3132
+#: application/helpers/qanda_helper.php:3135
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:3196
+#: application/helpers/qanda_helper.php:3199
 msgid "Click to set the location or drag and drop the pin. You may may also enter coordinates"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4053
+#: application/helpers/qanda_helper.php:4056
 msgid "A table with a subquestion on each row. You have to select your answer."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4057
+#: application/helpers/qanda_helper.php:4060
 msgid "A table with a subquestion on each row. The answer options are contained in the table header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4111
+#: application/helpers/qanda_helper.php:4114
 msgid "After the answer options a cell does give some information."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4384
+#: application/helpers/qanda_helper.php:4387
 msgid "A table of subquestions on each cell. The subquestion texts are in the column header and relate the particular row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4438
+#: application/helpers/qanda_helper.php:4441
 msgid "Each answer may only be a number."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4448
-#: application/helpers/qanda_helper.php:4463
+#: application/helpers/qanda_helper.php:4451
+#: application/helpers/qanda_helper.php:4466
 msgid "Grand total"
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4453
+#: application/helpers/qanda_helper.php:4456
 msgid "The last row shows the total for the column."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4466
+#: application/helpers/qanda_helper.php:4469
 msgid "The last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4482
+#: application/helpers/qanda_helper.php:4485
 msgid "The last row shows the total for the column and the last column shows the total for the row."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4710
+#: application/helpers/qanda_helper.php:4713
 msgid "A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4769
+#: application/helpers/qanda_helper.php:4772
 msgid "Please check the matching combinations."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4780
+#: application/helpers/qanda_helper.php:4783
 msgid "Please enter only numbers."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:4786
+#: application/helpers/qanda_helper.php:4789
 msgid "Please select an answer for each combination."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5167
+#: application/helpers/qanda_helper.php:5170
 msgid "Error: There are no answers defined for this question."
 msgstr ""
 
-#: application/helpers/qanda_helper.php:5171
-#: application/helpers/qanda_helper.php:5551
+#: application/helpers/qanda_helper.php:5174
+#: application/helpers/qanda_helper.php:5554
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr ""
 
