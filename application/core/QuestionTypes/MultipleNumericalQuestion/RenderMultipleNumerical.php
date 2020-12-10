@@ -167,7 +167,17 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $sDisplayStyle = '';
 
-            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            $dispVal = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            if ($dispVal && is_string($dispVal)) {
+                // Fix reloaded DECIMAL value
+                if ($dispVal[0] == ".") {
+                    // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                    $dispVal = "0" . $dispVal;
+                }
+                if (strpos($dispVal, ".")) {
+                    $dispVal = rtrim(rtrim($dispVal, "0"), ".");
+                }
+            }
             $dispVal = str_replace('.', $this->sSeparator, $dispVal);
 
             if (!$this->useSliderLayout) {
