@@ -2740,15 +2740,16 @@ function do_multiplenumeric($ia)
                 $sValue                = null;
             }
 
-            // Fix the display value : Value is stored as decimal in SQL. Issue when reloading survey
-            if($sValue && $sValue[0] == ".") {
-                // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-                $sValue = "0" . $sValue;
+            if ($sValue && is_string($sValue)) {
+                // Fix reloaded DECIMAL value
+                if ($sValue[0] == ".") {
+                    // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                    $sValue = "0" . $sValue;
+                }
+                if (strpos($sValue, ".")) {
+                    $sValue = rtrim(rtrim($sValue, "0"), ".");
+                }
             }
-            if (strpos($sValue, ".")) {
-                $sValue = rtrim(rtrim($sValue, "0"), ".");
-            }
-            // End of DECIMAL fix : get the nulber value
             $sUnformatedValue = $sValue ? $sValue : '';
             if (strpos($sValue, ".")) {
                 $sValue = str_replace('.', $sSeparator, $sValue);
@@ -2936,13 +2937,15 @@ function do_numerical($ia)
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
-    // Fix the display value : Value is stored as decimal in SQL
-    if($fValue && $fValue[0] == ".") {
-        // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
-        $fValue = "0" . $fValue;
-    }
-    if (strpos($fValue, ".")) {
-        $fValue = rtrim(rtrim($fValue, "0"), ".");
+    if ($fValue && is_string($fValue)) {
+        // Fix reloaded DECIMAL value
+        if ($fValue[0] == ".") {
+            // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+            $fValue = "0" . $fValue;
+        }
+        if (strpos($fValue, ".")) {
+            $fValue = rtrim(rtrim($fValue, "0"), ".");
+        }
     }
     $fValue = str_replace('.', $sSeparator, $fValue);
 
