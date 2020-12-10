@@ -147,7 +147,7 @@ class emailtemplates extends Survey_Common_Action
                 );
 
                 $aLanguageSetting = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
-                $aLanguageSetting->setAttributes($attributes, false);
+                $aLanguageSetting->setAttributes($attributes);
                 if (!$aLanguageSetting->save()){
                     $sErrors = '<br/>';
                     foreach ($aLanguageSetting->getErrors() as $sError) {
