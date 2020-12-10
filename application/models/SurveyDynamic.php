@@ -911,17 +911,17 @@ class SurveyDynamic extends LSActiveRecord
             );
 
             foreach($aAnswers as $key=>$value){
-                $aAnswerText[$value['code']] = $value['answer'];
+                $aAnswerText[$value['scale_id']][$value['code']] = $value['answer'];
             }
 
             $tempFieldname = $fieldname.'#0';
             $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
-            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[0][$oResponses[$tempFieldname]]) ? $aAnswerText[0][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][0] = $sAnswerText;
 
             $tempFieldname = $fieldname.'#1';
             $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
-            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $sAnswerText = isset($aAnswerText[1][$oResponses[$tempFieldname]]) ? $aAnswerText[1][$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
             $aQuestionAttributes['answervalues'][1] = $sAnswerText;
         }
 
