@@ -1266,9 +1266,9 @@ class SurveyAdmin extends Survey_Common_Action
     public function copy()
     {
         if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
-            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
