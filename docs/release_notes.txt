@@ -34,6 +34,53 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.29 (build 201130) to 4.3.30 (build 201207) December 7, 2020
+-Fixed issue #16875: strong tag displayed in First and Last name column of Survey responses page (Denis Chenu)
+-Fixed issue # 16824: Quota : Back to the previous page, one click is not recognized, you need to click again (#1676) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by hurricane, samarta
+#Updated translation: Portuguese (Portugal) by hurricane
+#Updated translation: Portuguese (Brazil) by marciojv
+#Updated translation: Hebrew by MeirOverferst
+#Updated translation: Greek by kiolalis
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
+Changes from 4.3.28 (build 201123) to 4.3.29 (build 201130) November 30, 2020
+-Fixed issue: Hardening for subquestions addition (Carsten Schmitz)
+-Fixed issue #16865: Unable to export as PDF with PHP7.4 (Denis Chenu)
+-Fixed issue #16861: ComfortUpdateChecker can broke with other plugin  (Denis Chenu)
+-Fixed issue #16855: Upload File MIME Type Check Error (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by samarta, hurricane
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by hshirosaki
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Estonian by ritapas
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, imacat
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.3.27 (build 201116) to 4.3.28 (build 201123) November 23, 2020
+-Fixed issue [security] #16841: XSS vulnerability with registration (Denis Chenu)
+-Fixed issue #16847: Sort users when adding to usergroup (jmantysalo)
+-Fixed issue #16042  generated token length is too short with add participants() (Gabriel Jenik)
+-Fixed issue #15428: 15428: cross-hover in matrix questions (theme option) not implemented for array by column (#1645) (Gabriel Jenik)
+-Fixed issue #16042: Generated token length is too short with add_participants(Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Latvian by exnovo
+#Updated translation: Greek by kiolalis
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Chinese (Simplified) by c_schmitz, johnxan
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.26 (build 201110) to 4.3.27 (build 201116) November 16, 2020
 +New feature #16649: enable video in spite of active xss filtering (Gabriel Jenik)
 -Fixed issue: Assessment editing not properly working if quota messages contain HTML (Carsten Schmitz)

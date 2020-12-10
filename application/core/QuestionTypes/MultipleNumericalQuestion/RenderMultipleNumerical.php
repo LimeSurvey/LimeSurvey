@@ -167,7 +167,18 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $sDisplayStyle = '';
 
-            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            $dispVal = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            if ($dispVal && is_string($dispVal)) {
+                // Fix reloaded DECIMAL value
+                if ($dispVal[0] == ".") {
+                    // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+                    $dispVal = "0" . $dispVal;
+                }
+                if (strpos($dispVal, ".")) {
+                    $dispVal = rtrim(rtrim($dispVal, "0"), ".");
+                }
+            }
+            $sUnformatedValue = $dispVal; // Send the real value for slider
             $dispVal = str_replace('.', $this->sSeparator, $dispVal);
 
             if (!$this->useSliderLayout) {
@@ -221,26 +232,6 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 $sliderleft  = (isset($sliderleft)) ? $sliderleft : null;
                 $sliderright = (isset($sliderright)) ? $sliderright : null;
 
-                // The value of the slider depends on many possible different parameters, by order of priority :
-                // 1. The value stored in the session
-                if (isset($this->aSurveySessionArray[$myfname])) {
-                    $sValue                = $this->aSurveySessionArray[$myfname];
-                // 2. Else the default Answer   (set by EM and stored in session, so same case than 1)
-                } elseif ($this->sliderOptionsArray['slider_default'] !== "" && $this->sliderOptionsArray['slider_default_set']) {
-                    $sValue                = $this->sliderOptionsArray['slider_default'];
-                // 3. Else the slider_default value : if slider_default_set set the value here
-                } else {
-                    $sValue                = null;
-                }
-
-                // 4. Else the middle start or slider_default or nothing : leave the value to "" for the input, show slider pos at this position
-                $sUnformatedValue = $sValue ? $sValue : '';
-
-                if (strpos($sValue, ".")) {
-                    $sValue = rtrim(rtrim($sValue, "0"), ".");
-                    $sValue = str_replace('.', $this->sSeparator, $sValue);
-                }
-
                 $aRows[] = array_merge(
                     array(
                         'sDisplayStyle'          => '',
@@ -267,24 +258,9 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'integeronly'            => $this->getQuestionAttribute('num_value_int_only'),
                         'basename'               => $this->sSGQA,
                         'sSeparator'             => $this->sSeparator,
-                    ), $this->sliderOptionsArray);
-                // array(
-                //     'textarea'               => false,
-                //     'sDisplayStyle'          => '',
-                //     'alert'                  => $alert,
-                //     'myfname'                => $myfname,
-                //     'labelname'              => 'answer'.$myfname,
-                //     'dispVal'                => $dispVal,
-                //     'question'               => $sSubquestionText,
-                //     'numbersonly'            => $this->numbersonly,
-                //     'maxlength'              => $this->maxlength,
-                //     'inputsize'              => $this->inputsize,
-                //     'extraclass'             => $this->extraclass,
-                //     'prefix'                 => $this->prefix,
-                //     'suffix'                 => $this->suffix,
-                //     'sInputContainerWidth'   => $this->widthArray['sInputContainerWidth'],
-                //     'sLabelWidth'            => $this->widthArray['sLabelWidth'],
-                //     );
+                    ),
+                    $this->sliderOptionsArray
+                );
             }
 
             $this->inputnames[] = $myfname;
