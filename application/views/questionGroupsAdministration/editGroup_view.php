@@ -1,17 +1,6 @@
 <?php
     echo PrepareEditorScript(false, $this);
     $count = 0;
-
-    //render the topbar for group edit
-    $this->renderPartial(
-        'topbars/' . $renderSpecificTopbar,
-        [
-            'oSurvey' => $oSurvey,
-            'surveyid' => $surveyid,
-            'gid' => $gid,
-            'condarray' => $condarray,
-        ]
-    );
 ?>
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -29,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$sid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')); ?>
+                <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')); ?>
                     
                     <input type="hidden" name="questionGroup[gid]" id="questionGroup[gid]" value="<?=$oQuestionGroup['gid']?>">
                     <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?=$oQuestionGroup['sid']?>"> 

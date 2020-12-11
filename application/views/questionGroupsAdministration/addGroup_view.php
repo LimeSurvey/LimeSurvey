@@ -6,15 +6,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('addQuestionGroup');
-
-//render the topbar for group overview
-$this->renderPartial(
-    'topbars/' . $renderSpecificTopbar,
-    [
-        'surveyid' => $surveyid,
-        'closeBtnUrl' => $closeBtnUrl,
-    ]
-);
 ?>
 
 <!-- addGroup -->

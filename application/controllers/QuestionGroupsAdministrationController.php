@@ -114,7 +114,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
             . " (".gT("ID").":".$iSurveyID.")";
-        $aData['renderSpecificTopbar'] = 'groupTopbar_view';
+        
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'groupTopbarLeft_view';
+        $aData['topBar']['rightSideView'] = 'groupTopbarRight_view';
 
         ///////////
         // sidemenu
@@ -192,6 +195,11 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['gid'] = $gid;
         $aData['tabtitles'] = $aTabTitles;
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+        $aData['oSurvey'] = $oSurvey;
+        if ($gid!==null) {
+            $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
+        }
+        $aData['condarray'] = $condarray;
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (".gT("ID").":".$surveyid.")";
@@ -204,7 +212,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'landOnSideMenuTab' => $landOnSideMenuTab
             ]
         );
-        $aData['renderSpecificTopbar'] = 'addGroupTopbar_view';
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'editGroupTopbarLeft_view';
+        $aData['topBar']['rightSideView'] = 'editGroupTopbarRight_view';
 
         ///////////
         // sidemenu
@@ -269,7 +280,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'surveyid' => $surveyid
             ]
         );
-        $aData['renderSpecificTopbar'] = 'addGroupTopbar_view';
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'addGroupTopbarLeft_view';
+        $aData['topBar']['rightSideView'] = 'addGroupTopbarRight_view';
 
         ///////////
         // sidemenu
@@ -467,7 +481,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
             /*$aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;
             $aData['topBar']['showSaveButton'] = true;*/
-            $aData['renderSpecificTopbar'] = 'importGroupTopbar_view';
+            $aData['topBar']['name'] = 'baseTopbar_view';
+            $aData['topBar']['rightSideView'] = 'importGroupTopbarRight_view';
             
 
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title

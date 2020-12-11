@@ -8,9 +8,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('importQuestionGroup');
-
-//render the topbar for group import
-$this->renderPartial('topbars/' . $renderSpecificTopbar, []);
 ?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Import question group"); ?></h3>

@@ -3,17 +3,6 @@
  * @var QuestionGroupsAdministrationController $this
  * @var Survey $oSurvey
  */
-
-//render the topbar for group overview
-$this->renderPartial(
-    'topbars/' . $renderSpecificTopbar,
-    [
-        'oSurvey' => $oSurvey,
-        'surveyid' => $surveyid,
-        'gid' => $gid,
-        'condarray' => $condarray,
-    ]
-);
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class='container-fluid'>
