@@ -1416,11 +1416,13 @@ class Question extends LSActiveRecord
         $answerScales = $this->questionType->answerscales;
         $results = [];
         for ($scale_id = 0; $scale_id < $answerScales; $scale_id++) {
-            $criteria = new CDbCriteria();
-            $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
-            $criteria->order = 'sortorder, code ASC';
-            $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
-            $results[$scale_id] = Answer::model()->findAll($criteria);
+            if (!empty($this->qid)) {
+                $criteria = new CDbCriteria();
+                $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
+                $criteria->order = 'sortorder, code ASC';
+                $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
+                $results[$scale_id] = Answer::model()->findAll($criteria);
+            }
             if (empty($results[$scale_id])) {
                 $results[$scale_id] = [$this->getEmptyAnswerOption()];
             }
@@ -1438,11 +1440,13 @@ class Question extends LSActiveRecord
         $subquestionScale = $this->questionType->subquestions;
         $results = [];
         for ($scale_id = 0; $scale_id < $subquestionScale; $scale_id++) {
-            $criteria = new CDbCriteria();
-            $criteria->condition = 'parent_qid = :parent_qid AND scale_id = :scale_id';
-            $criteria->order = 'question_order, title ASC';
-            $criteria->params = [':parent_qid' => $this->qid, ':scale_id' => $scale_id];
-            $results[$scale_id] = Question::model()->findAll($criteria);
+            if (!empty($this->qid)) {
+                $criteria = new CDbCriteria();
+                $criteria->condition = 'parent_qid = :parent_qid AND scale_id = :scale_id';
+                $criteria->order = 'question_order, title ASC';
+                $criteria->params = [':parent_qid' => $this->qid, ':scale_id' => $scale_id];
+                $results[$scale_id] = Question::model()->findAll($criteria);
+            }
             if (empty($results[$scale_id])) {
                 $results[$scale_id] = [$this->getEmptySubquestion()];
             }
