@@ -25,7 +25,7 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            {{ subquestion.title }}
+            {{ subquestion.title|escape('html_attr') }}
         </td>
 
     {# If survey is not activated and first language : move button, code editable   #}
@@ -54,7 +54,7 @@
                     maxlength="20"
                     id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
                     name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][oldcode]'
-                    value="{{ subquestion.title }}"
+                    value="{{ subquestion.title|escape('html_attr') }}"
                 />
             {% endif %}
 
@@ -64,7 +64,7 @@
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
                 class='code code-title'
-                value="{{ subquestion.title }}"
+                value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
                 onfocusout="LS.questionEditor.showSubquestionCodeUniqueError(this);"
@@ -80,7 +80,7 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            {{ subquestion.title }}
+            {{ subquestion.title|escape('html_attr') }}
         </td>
     {% endif %}
 
@@ -95,7 +95,7 @@
                 id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][subquestionl10n][{{ language }}]'
                 name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][subquestionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example subquestion","js") }}'
-                value="{{ subquestionl10n.question }}"
+                value="{{ subquestionl10n.question|escape('html_attr') }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
             <span class="input-group-addon">
@@ -139,7 +139,7 @@
             <button class="btn btn-default btn-sm btnaddsubquestion">
                 <i
                     class="icon-add text-success"
-                    data-code="{{ subquestion.title }}"
+                    data-code="{{ subquestion.title|escape('html_attr') }}"
                     data-toggle="tooltip"
                     data-scale-id="{{ scale_id }}"
                     data-placement="bottom"
