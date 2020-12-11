@@ -327,26 +327,6 @@ return array(
        )
     ),
     
-    'filemanager' => array(
-        'devBaseUrl' => 'assets/packages/filemanager/',
-        'basePath' => 'core.filemanager',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/filemanager.js',
-            )
-            : array(
-                'build.min/js/filemanager.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
     'datasectextelements' => array(
         'devBaseUrl' => 'assets/packages/datasecuritysettings/',
         'basePath' => 'core.datasecuritysettings',
