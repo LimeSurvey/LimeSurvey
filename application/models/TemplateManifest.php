@@ -1425,7 +1425,12 @@ class TemplateManifest extends TemplateConfiguration
         $fontOptions = '';
         $fontPackages = App()->getClientScript()->fontPackages;
         $coreFontPackages = $fontPackages['core'];
-        $userFontPackages = $fontPackages['user'];
+        // TODO: Why not set?
+        if (isset($fontPackages['user'])) {
+            $userFontPackages = $fontPackages['user'];
+        } else {
+            $userFontPackages = [];
+        }
 
         // generate CORE fonts package list
         $i = 0;
