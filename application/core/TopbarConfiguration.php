@@ -11,9 +11,6 @@ class TopbarConfiguration
     /** @var array Data to be passed to the view */
     private $data = array();
 
-    /** @var array Extra data for topbar */
-    private $extraData = array();
-
     /** @var string Name of the view used to render the left side of the topbar */
     private $leftSideView = '';
 
@@ -25,6 +22,8 @@ class TopbarConfiguration
         'surveyTopbar_view' => 'TopbarConfiguration::getSurveyTopbarData',
         'responsesTopbarLeft_view' => 'TopbarConfiguration::getResponsesTopbarData',
         'surveyTopbarRight_view' => 'TopbarConfiguration::getRightSurveyTopbarData',
+        'tokensTopbarLeft_view' => 'TopbarConfiguration::getTokensTopbarData',
+        'tokensTopbarRight_view' => 'TopbarConfiguration::getTokensTopbarData',
     ];
 
     /**
@@ -34,7 +33,6 @@ class TopbarConfiguration
      *  'topbarId' => The topbar ID. Will normally be used as ID for container html element of the topbar.
      *  'leftSideView' => The name of the view to use for the left side of the topbar.
      *  'rightSideView' => The name of the view to use for the right side of the topbar.
-     *  'extraDataMethod' => The name of the 'callable' to use to retrieve extra data for the topbar (ex: responses::getResponsesTopBarData). The method must exist and accept a SID as parameter.
      * 
      * @param array $config
      */
@@ -48,25 +46,11 @@ class TopbarConfiguration
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
         } elseif (!empty($config['showSaveButton'])||!empty($config['showCloseButton'])||!empty($config['showImportButton'])||!empty($config['showExportButton'])) {
-            // If no right side view has been specified, and showSaveButton is set, use the default right side view.
+            // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
 
         $this->data = $config;
-
-        /*// If the topbar is the general survey topbar, set the proper extraDataMethod
-        if ($this->viewName == 'surveyTopbar_view') {
-            $config["extraDataMethod"] = "TopbarConfiguration::getSurveyTopbarData";
-        }
-
-        // If "extraDataMethod" is specified, and exists, call it and add the result to the data array
-        if (!empty($config["extraDataMethod"])) {
-            $this->extraData = call_user_func($config["extraDataMethod"], !empty($this->data['sid']) ? $this->data['sid'] : null);
-            $this->data = array_merge(
-                $this->extraData,
-                $this->data
-            );
-        }*/
     }
 
     /**
@@ -253,6 +237,39 @@ class TopbarConfiguration
 
         return array(
             'closeUrl' => $closeUrl,
+        );
+    }
+
+    /**
+     * Returns Data for Tokens Top Bar
+     *
+     * @param $sid
+     * @return array
+     * @throws CException
+     */
+    public static function getTokensTopbarData($sid)
+    {
+        if (empty($sid)) return [];
+
+        $survey = Survey::model()->findByPk($sid);
+
+        $hasTokensReadPermission   = Permission::model()->hasSurveyPermission($sid, 'tokens', 'read');
+        $hasTokensCreatePermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+        $hasTokensExportPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'export');
+        $hasTokensImportPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'import');
+        $hasTokensUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'update');
+        $hasTokensDeletePermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'delete');
+        $hasSurveySettingsUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update');
+
+        return array(
+            'oSurvey' => $survey,
+            'hasTokensReadPermission'   => $hasTokensReadPermission,
+            'hasTokensCreatePermission' => $hasTokensCreatePermission,
+            'hasTokensExportPermission'  => $hasTokensExportPermission,
+            'hasTokensImportPermission' => $hasTokensImportPermission,
+            'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
+            'hasTokensDeletePermission' => $hasTokensDeletePermission,
+            'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
         );
     }
 
