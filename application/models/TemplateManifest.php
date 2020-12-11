@@ -893,7 +893,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Delete files and engine node inside the DOM
+     * Delete engine node inside the DOM, except the optionspage configuration
      *
      * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
      */
@@ -904,12 +904,15 @@ class TemplateManifest extends TemplateConfiguration
         // Then we delete the nodes that should be inherit
         $aNodesToDelete     = array();
         //$aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
-        $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
+
+        $oEngine            = $oConfig->getElementsByTagName('engine')->item(0);
+        $aNodesToDelete[]   = $oEngine->childNodes;
 
         foreach ($aNodesToDelete as $node) {
             // If extended template already extend another template, it will not have those nodes
-            if (is_a($node, 'DOMNode')) {
-                $oConfig->removeChild($node);
+            // Don't remove 'optionspage' node
+            if (is_a($node, 'DOMNode') && $node->nodeName != 'optionspage') {
+                $oEngine->removeChild($node);
             }
         }
     }
