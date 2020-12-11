@@ -25,7 +25,7 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            {{ subquestion.title|escape('html_attr') }}
+            {{ subquestion.title|escape('html') }}
         </td>
 
     {# If survey is not activated and first language : move button, code editable   #}
@@ -80,7 +80,7 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            {{ subquestion.title|escape('html_attr') }}
+            {{ subquestion.title|escape('html') }}
         </td>
     {% endif %}
 
