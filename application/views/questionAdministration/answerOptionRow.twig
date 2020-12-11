@@ -117,7 +117,7 @@
             <span class="input-group-addon">
                 {{ getEditor(
                     "editanswer",
-                    "answer_"~language~"_"~question.qid~"_"~scale_id,
+                    "answeroptions["~answerOption.aid~"]["~scale_id~"][answeroptionl10n]["~language~"]",
                     "["~gT("Answer option:", "js")~"]("~language~")",
                     question.sid,
                     question.gid,

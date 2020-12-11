@@ -91,9 +91,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * @return {void}
    */
   function updateRowProperties() {
-    const sID = $('input[name=sid]').val();
-    const gID = $('input[name=gid]').val();
-    const qID = $('input[name=qid]').val();
+    var sID = $('input[name=sid]').val();
+    var gID = $('input[name=gid]').val();
+    var qID = $('input[name=qid]').val();
+    sID = $.isNumeric(sID) ? sID : '';
+    gID = $.isNumeric(gID) ? gID : '';
+    qID = $.isNumeric(qID) ? qID : '';
 
     /**
      * This function adjusts the alternating table rows
@@ -130,17 +133,22 @@ $(document).on('ready pjax:scriptcomplete', function () {
         updateIfEmpty($(this).find('.assessment'), 'id', `assessment_${uniqueRowId}_${scaleId}`);
         updateIfEmpty($(this).find('.assessment'), 'name', `assessment_${uniqueRowId}_${scaleId}`);
         // Newly inserted row editor button
-        $(this).find('.editorLink').attr(
-          'href',
-          `javascript:start_popup_editor(
-            'answer_${language}_${uniqueRowId}_${scaleId}','[Answer:](${language})','${sID}','${gID}','${qID}','editanswer','editanswer'
-          )`
-        );
-        $(this).find('.editorLink').attr('id', `answer_${language}_${uniqueRowId}_${scaleId}_ctrl`);
-        $(this).find('.btneditanswerena').attr('id', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrlena`);
-        $(this).find('.btneditanswerena').attr('name', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrlena`);
-        $(this).find('.btneditanswerdis').attr('id', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrldis`);
-        $(this).find('.btneditanswerdis').attr('name', `answer_${language}_${uniqueRowId}_${scaleId}_popupctrldis`);
+        $(this).find('.editorLink').each(function( index ) {
+          var inputName = $(this).closest('.input-group').find('input[type=text]').first().attr('name');
+          if (inputName) {
+            $(this).attr(
+              'href',
+              `javascript:start_popup_editor(
+                '${inputName}','[Answer:](${language})','${sID}','${gID}','${qID}','editanswer','editanswer'
+              )`
+            );
+            $(this).attr('id', `${inputName}_ctrl`);
+            $(this).find('.btneditanswerena').attr('id', `${inputName}_popupctrlena`);
+            $(this).find('.btneditanswerena').attr('name', `${inputName}_popupctrlena`);
+            $(this).find('.btneditanswerdis').attr('id', `${inputName}_popupctrldis`);
+            $(this).find('.btneditanswerdis').attr('name', `${inputName}_popupctrldis`);
+          }
+        });
       });
     });
   }

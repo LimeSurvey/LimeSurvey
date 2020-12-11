@@ -101,11 +101,11 @@
             <span class="input-group-addon">
                 {{ getEditor(
                     "editanswer",
-                    "subquestion_"~language~"_"~subquestion.qid~"_"~scale_id,
+                    "subquestions["~subquestion.qid~"]["~scale_id~"][subquestionl10n]["~language~"]",
                     "["~gT("Subquestion:", "js")~"]("~language~")",
                     subquestion.sid,
                     gid,
-                    subquestion.qid,
+                    (subquestion.qid matches '/^\\d+$/') ? subquestion.qid : "",
                     'editanswer'
                 ) }}
             </span>
