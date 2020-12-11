@@ -91,6 +91,7 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = $this->getQuestionObject(null, 'F', null);
         $oQuestion->sid = $surveyid;
 
+        $this->aData['tabOverviewEditor'] = 'overview';
         $this->renderFormAux($oQuestion);
     }
 

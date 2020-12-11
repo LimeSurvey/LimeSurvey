@@ -64,6 +64,10 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->layout = 'layout_questioneditor';
         }
 
+        // Used in question editor (pjax).
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-ace');
+
         return parent::beforeRender($view);
     }
 

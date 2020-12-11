@@ -26,6 +26,7 @@ $this->renderPartial(
 <!-- NB: These must be inside #pjax-content to work with pjax. -->
 <?= $jsVariablesHtml; ?>
 <?= $modalsHtml; ?>
+<? $visibilityEditor = ''; //should be displayed ?>
 
 <!-- Create form for question -->
 <div class="side-body">
@@ -47,7 +48,6 @@ $this->renderPartial(
                 $activeOverview = '';
                 $activeEditor = 'active';
                 $visibilityOverview = 'style="display:none;"';
-                $visibilityEditor = ''; //should be displayed
             }
             ?>
             <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
