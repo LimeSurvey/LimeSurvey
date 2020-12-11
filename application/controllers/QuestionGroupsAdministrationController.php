@@ -100,9 +100,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
         $aData['condarray'] = $condarray;
 
-        //App()->getClientScript()->registerPackage('ace');
-        //App()->getClientScript()->registerPackage('questiongroupeditor');
-
         $oQuestionGroup = $this->getQuestionGroupObject($iSurveyID, $gid);
         $grow           = $oQuestionGroup->attributes;
         $grow['group_name'] = $oQuestionGroup->questiongroupl10ns[$baselang]->group_name ?? '';
@@ -112,21 +109,12 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $aData['surveyid']; //importend for frontend to render topbar
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
             . " (".gT("ID").":".$iSurveyID.")";
-        $aData['questiongroupbar']['buttons']['view'] = true;
-
-        $aData['questiongroupbar']['buttonspreview'] = true;
-        $aData['questiongroupbar']['savebutton']['form'] = true;
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
-        if (sanitize_paranoid_string(App()->request->getParam('sa') == 'add')) {
-            $aData['questiongroupbar']['importbutton'] = true;
-        }
-        $aData['topBar']['showCloseButton'] = false;
+        $aData['renderSpecificTopbar'] = 'groupTopbar_view';
 
         ///////////
         // sidemenu
@@ -201,22 +189,14 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $aData['surveyid']; //importend for frontend to render topbar
         $aData['gid'] = $gid;
         $aData['tabtitles'] = $aTabTitles;
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (".gT("ID").":".$surveyid.")";
-        $aData['questiongroupbar']['buttons']['view'] = true;
-
-        $aData['questiongroupbar']['buttonspreview'] = true;
-        $aData['questiongroupbar']['savebutton']['form'] = true;
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
-        if (sanitize_paranoid_string(App()->request->getParam('sa') == 'add')) {
-            $aData['questiongroupbar']['importbutton'] = true;
-        }
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl(
+        
+        $aData['closeBtnUrl'] = $this->createUrl(
             'questionGroupsAdministration/view',
             [
                 'surveyid' => $surveyid,
@@ -224,8 +204,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 'landOnSideMenuTab' => $landOnSideMenuTab
             ]
         );
-        $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
+        $aData['renderSpecificTopbar'] = 'addGroupTopbar_view';
 
         ///////////
         // sidemenu
@@ -279,25 +258,18 @@ class QuestionGroupsAdministrationController extends LSBaseController
         //$aData['display']['menu_bars']['surveysummary'] = 'addgroup';
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
         $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $aData['surveyid']; //importend for frontend to render topbar
         $aData['grplangs'] = $aSurveyLanguages;
         $aData['baselang'] = $sBaseLanguage;
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (".gT("ID").":".$surveyid.")";
-        $aData['questiongroupbar']['savebutton']['form'] = true;
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = true;
-        if (sanitize_paranoid_string(App()->request->getParam('sa') == 'add')) {
-            $aData['questiongroupbar']['importbutton'] = true;
-        }
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl(
+        $aData['closeBtnUrl'] = $this->createUrl(
             'questionGroupsAdministration/listquestiongroups',
             [
                 'surveyid' => $surveyid
             ]
         );
-        $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
+        $aData['renderSpecificTopbar'] = 'addGroupTopbar_view';
 
         ///////////
         // sidemenu
@@ -476,7 +448,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * @return void
      */
-    public function actionImportView($surveyid)
+    public function actionImportView($surveyid, $landOnSideMenuTab = 'structure')
     {
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -486,22 +458,23 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['sidemenu']['state'] = false;
             $aData['sidemenu']['questiongroups'] = true;
+            $aData['sidemenu']['landOnSideMenuTab'] = $landOnSideMenuTab;
 
-            $aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
+            /*$aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
-            $aData['surveybar']['savebutton']['text'] = gt('Import');
+            $aData['surveybar']['savebutton']['text'] = gt('Import');*/
             $aData['surveyid'] = $surveyid;
-            $aData['sid'] = $surveyid;
+            /*$aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;
-            $aData['topBar']['showSaveButton'] = true;
+            $aData['topBar']['showSaveButton'] = true;*/
+            $aData['renderSpecificTopbar'] = 'importGroupTopbar_view';
+            
 
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
                 ." (".gT("ID").":".$iSurveyID.")";
 
             $this->aData = $aData;
-            $this->render('importGroup_view', [
-                'surveyid' => $this->aData['surveyid']
-            ]);
+            $this->render('importGroup_view', $aData);
         } else {
             App()->user->setFlash('error', gT("Access denied"));
             $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid));
@@ -729,6 +702,15 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         $landOnSideMenuTab = 'structure';
+        if (empty($sScenario)) {
+            if (App()->request->getPost('save-and-close', '')) {
+                $sScenario = 'save-and-close';
+            } elseif (App()->request->getPost('saveandnew', '')) {
+                $sScenario = 'save-and-new';
+            } elseif (App()->request->getPost('saveandnewquestion', '')) {
+                $sScenario = 'save-and-new-question';
+            }
+        }
         switch ($sScenario) {
             case 'save-and-new-question':
                 $sRedirectUrl = $this->createUrl(
@@ -901,6 +883,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
+     * @deprecated
      * @todo document me.
      *
      * @param integer $sid ID of survey

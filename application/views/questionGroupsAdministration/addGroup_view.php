@@ -7,6 +7,14 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('addQuestionGroup');
 
+//render the topbar for group overview
+$this->renderPartial(
+    'topbars/' . $renderSpecificTopbar,
+    [
+        'surveyid' => $surveyid,
+        'closeBtnUrl' => $closeBtnUrl,
+    ]
+);
 ?>
 
 <!-- addGroup -->
@@ -33,7 +41,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
         </ul>
 
         <!-- form -->
-        <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$sid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30 ')); ?>
+        <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"), 'post', array('id'=>'newquestiongroup', 'name'=>'newquestiongroup', 'class'=>'form30 ')); ?>
             <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?=$surveyid?>"> 
             <!-- tab content -->
             <div class="tab-content">

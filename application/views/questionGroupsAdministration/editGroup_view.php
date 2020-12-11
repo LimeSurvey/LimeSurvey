@@ -1,6 +1,17 @@
 <?php
     echo PrepareEditorScript(false, $this);
     $count = 0;
+
+    //render the topbar for group edit
+    $this->renderPartial(
+        'topbars/' . $renderSpecificTopbar,
+        [
+            'oSurvey' => $oSurvey,
+            'surveyid' => $surveyid,
+            'gid' => $gid,
+            'condarray' => $condarray,
+        ]
+    );
 ?>
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
