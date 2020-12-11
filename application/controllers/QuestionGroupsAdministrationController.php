@@ -333,7 +333,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
        // $aData['display']['menu_bars']['listquestiongroups'] = true;
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
-        $aData['surveybar']['buttons']['newgroup']           = true;
         $aData['title_bar']['title']                         =
             $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['subaction']                                  = gT("Question groups in this survey");
@@ -353,11 +352,14 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $model['language'] = $baselang;
        // $aData['model']    = $model; --> no need here ...
 
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'listquestiongroupsTopbarLeft_view';
+
         $this->aData = $aData;
         $this->render('listquestiongroups', [
             'model' => $model,
             'surveyid' => $iSurveyID,
-            'surveybar' => $aData['surveybar'],
+            'surveybar' => [],
             'oSurvey'   => $survey,
         ]);
     }

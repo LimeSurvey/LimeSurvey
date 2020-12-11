@@ -37,7 +37,12 @@ class TopbarConfiguration
         $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
 
         if (isset($config['leftSideView'])) $this->leftSideView = $config['leftSideView'];
-        if (isset($config['rightSideView'])) $this->rightSideView = $config['rightSideView'];
+        if (isset($config['rightSideView'])) {
+            $this->rightSideView = $config['rightSideView'];
+        } elseif (!empty($config['showSaveButton'])) {
+            // If no right side view has been specified, and showSaveButton is set, use the default right side view.
+            $this->rightSideView = "surveyTopbarRight_view";
+        }
 
         $this->data = $config;
 

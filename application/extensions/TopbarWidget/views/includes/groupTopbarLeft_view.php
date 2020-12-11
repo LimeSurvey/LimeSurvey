@@ -60,3 +60,20 @@
         </a>
     <?php endif; ?>
 <?php endif; ?>
+
+<!-- Check survey logic -->
+<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
+    <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+        <span class="icon-expressionmanagercheck"></span>
+        <?php eT("Check logic for current group"); ?>
+    </a>
+<?php endif; ?>
+
+<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')):?>
+    <!-- Export -->
+    <a class="btn btn-default " href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
+        <span class="icon-export"></span>
+        <?php eT("Export this question group"); ?>
+    </a>
+<?php endif; ?>
+

@@ -272,8 +272,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
             "/surveyAdministration/listsurveys"
         );
-        $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
-        $aData['surveybar']['buttons']['newquestion']   = true;
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
@@ -298,6 +296,10 @@ class QuestionAdministrationController extends LSBaseController
         // We filter the current survey id
         $model->sid = $oSurvey->sid;
         $aData['model'] = $model;
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
+
         $this->aData = $aData;
 
         $this->render("listquestions", $aData);
