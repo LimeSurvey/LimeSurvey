@@ -78,7 +78,7 @@ class emailtemplates extends Survey_Common_Action
         $aData['grplangs'] = $grplangs;
 
         $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'emailtemplatesTopbarRight_view';
+        $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
         
         App()->getClientScript()->registerPackage('emailtemplates');
         App()->getClientScript()->registerPackage('expressionscript');

@@ -1885,7 +1885,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;

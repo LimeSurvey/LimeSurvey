@@ -7,10 +7,6 @@
                     <?php eT("Export a VV survey file"); ?>
                 </h4>
             </div>
-            <div class="col-md-6 text-right">
-                <?php echo CHtml::submitButton(gT('Export results', 'unescaped'), array('class' => 'btn btn-primary')); ?>
-                <?php echo CHtml::hiddenField('subaction', 'export'); ?>
-            </div>
         </div>
         <h3></h3>
     </div>
@@ -97,6 +93,8 @@
                     </div>
                 </div>
             </div>
+            <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-default hidden')); ?>
+            <?php echo CHtml::hiddenField('subaction','export'); ?>
             <form>
         </div>
     </div>
