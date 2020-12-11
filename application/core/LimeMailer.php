@@ -37,7 +37,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* @var string[] Array for barebone url and url */
     public $aUrlsPlaceholders = [];
 
-    /*  @var string[] Array of replacements */
+    /*  @var string[] Array of replacements key was replaced by value */
     public $aReplacements = [];
 
     /**
@@ -280,7 +280,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (is_string($aUrlsPlaceholders)) {
             $aUrlsPlaceholders = [$aUrlsPlaceholders];
         }
-        $this->aUrlsPlaceholders = array_merge($this->aUrlsPlaceholders, $aUrlsPlaceholders);
+        $this->aUrlsPlaceholders = array_unique(array_merge($this->aUrlsPlaceholders, $aUrlsPlaceholders));
     }
 
     /**
@@ -630,13 +630,16 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $aTokenReplacements[strtoupper($attribute)] = $value;
             }
         }
-        /* Did we need to check if each url are in $this->aUrlsPlaceholders ? */
+        /* Set the minimal url and add it to Placeholders */
         $aTokenReplacements["OPTOUTURL"] = App()->getController()
             ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
+        $this->addUrlsPlaceholders("OPTOUT");
         $aTokenReplacements["OPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
+        $this->addUrlsPlaceholders("OPTIN");
         $aTokenReplacements["SURVEYURL"] = App()->getController()
             ->createAbsoluteUrl("/survey/index", array("sid"=>$this->surveyId, "token"=>$token,"lang"=>$language));
+        $this->addUrlsPlaceholders("SURVEY");
         return $aTokenReplacements;
     }
 
