@@ -1,57 +1,17 @@
 <?php
 /**
- * @var $aQuestionTypeList array
  * @var $jsData            array
  * @var $aQuestionTypeStateList array
  * TODO: move logic from the view to controller
  */
 
-$aQuestionTypeGroups = array();
+Yii::app()->loadHelper("admin/htmleditor");
+PrepareEditorScript(true, $this);
 
-if (App()->session['questionselectormode'] !== 'default') {
-    $selectormodeclass = App()->session['questionselectormode'];
-} else {
-    $selectormodeclass = App()->getConfig('defaultquestionselectormode');
-}
-uasort($aQuestionTypeList, "questionTitleSort");
-foreach ($aQuestionTypeList as $questionType) {
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-    if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
-        $aQuestionTypeGroups[$htmlReadyGroup] = array(
-            'questionGroupName' => $questionType['group']
-        );
-    }
-        $imageName = $questionType['question_type'];
-    if ($imageName == ":") {
-        $imageName = "COLON";
-    } elseif ($imageName == "|") {
-        $imageName = "PIPE";
-    } elseif ($imageName == "*") {
-        $imageName = "EQUATION";
-    }
-        $questionType['type'] = $questionType['question_type'];
-    $questionType['detailpage'] = '
-        <div class="col-sm-12 currentImageContainer">
-            <img src="' . $questionType['image_path'] . '" />
-        </div>';
-    if ($imageName == 'S') {
-        $questionType['detailpage'] = '
-            <div class="col-sm-12 currentImageContainer">
-                <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
-                <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
-            </div>';
-    }
-        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
-}
+Yii::app()->getClientScript()->registerPackage('jquery-ace'); 
+Yii::app()->getClientScript()->registerScript('editorfiletype', "editorfiletype ='javascript';", CClientScript::POS_HEAD);
+
 ?>
-<?php $this->renderPartial(
-    "_jsVariables",
-    [
-        'data' => $jsData,
-        'aStructureArray' => $aQuestionTypeGroups,
-        'aQuestionTypes' => $aQuestionTypeStateList
-    ]
-); ?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
@@ -62,14 +22,23 @@ foreach ($aQuestionTypeList as $questionType) {
                 'class' => 'form30 ',
                 'id' => 'frmeditquestion',
                 'name' => 'frmeditquestion',
-                'data-isvuecomponent' => 1
+                //'data-isvuecomponent' => 1
             )
         ); ?>
         <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor"/>
 
         <div id="advancedQuestionEditor">
-            <app/>
+
+            </div>
         </div>
         </form>
     </div>
 </div>
+
+<script>
+jQuery(document).on('ready', function () {
+    $('.ace:not(.none)').ace({
+        'mode' : 'javascript'
+    });
+});
+</script>

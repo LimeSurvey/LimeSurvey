@@ -1672,7 +1672,7 @@ class dataentry extends Survey_Common_Action
 
                             $aToken = new Token($surveyid);  
                             $aToken->setAttributes($tokendata, false);  
-                            $aToken->encryptSave();
+                            $aToken->encryptSave(true);
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
                         }
                         if ($saver['email']) {

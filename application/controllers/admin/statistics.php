@@ -126,6 +126,7 @@ class statistics extends Survey_Common_Action
 
         // Set language for questions and answers to base language of this survey
         $aData['language']= $oSurvey->language;
+        $language = $oSurvey->language;
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);

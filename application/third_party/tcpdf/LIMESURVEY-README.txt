@@ -1,1 +1,3 @@
-Not updated tcpdf 6.2.25 version. Remove examples directory.
+Updated tcpdf 6.3.5 version.
+- https://github.com/tecnickcom/TCPDF/releases/tag/6.3.5
+- Remove examples directory.

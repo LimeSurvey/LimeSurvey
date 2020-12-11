@@ -27,33 +27,33 @@ class conditionsaction extends Survey_Common_Action
     /**
      * @var array
      */
-    private array $stringComparisonOperators;
+    private $stringComparisonOperators;
 
     /**
      * @var array
      */
-    private array $nonStringComparisonOperators;
+    private $nonStringComparisonOperators;
 
     /**
      * @var int
      */
-    private int $iSurveyID;
+    private $iSurveyID;
 
     /**
      * @var string
      */
-    private string $language;
+    private $language;
 
     /**
      * True if there exists a survey participants table for this survey
      * @var boolean
      */
-    private bool $tokenTableExists;
+    private $tokenTableExists;
 
     /**
      * @var array
      */
-    private array $tokenFieldsAndNames;
+    private $tokenFieldsAndNames;
 
     /**
      * Init some stuff

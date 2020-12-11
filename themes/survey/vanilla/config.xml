@@ -89,6 +89,9 @@
 
     <!-- Here datas about how LimeSurvey should load the theme -->
     <engine>
+        <!-- core: use core options view file, custom: use customized options.twig view file -->
+        <optionspage>core</optionspage>
+
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>
             <name>bootstrap</name>

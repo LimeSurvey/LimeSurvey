@@ -64,13 +64,17 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $this->layout = 'layout_questioneditor';
         }
 
+        // Used in question editor (pjax).
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-ace');
+
         return parent::beforeRender($view);
     }
 
     /**
      * Renders the html for the question group view.
      *
-     * @param int $surveyid
+     * @param int $surveyid    survey id is important here for new questiongroups without groupid
      * @param int $gid
      * @param string $landOnSideMenuTab
      *
@@ -137,7 +141,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     /**
      * Renders the html for the question group edit.
      *
-     * @param int $surveyid
+     * @param int $surveyid    survey id is important here if group does not exist
      * @param int $gid
      * @param string $landOnSideMenuTab
      *
@@ -238,7 +242,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
      * Render view to add new question group.
      *
      * @param int $surveyid
-     * @param int $gid
      * @param string $landOnSideMenuTab
      *
      * * @return void
@@ -504,14 +507,13 @@ class QuestionGroupsAdministrationController extends LSBaseController
      *
      * @access public
      *
-     * @param integer $iSurveyId ID of survey
      * @param integer $iGroupId  ID of group
      * @param boolean $asJson    Value of to Render as JSON
      *
      * @return void
      * @throws CHttpException if not authorized or invalid question group
      */
-    public function actionDelete($iSurveyId = null, $iGroupId = null, $asJson = false)
+    public function actionDelete($iGroupId = null, $asJson = false)
     {
         if (is_null($iGroupId)) {
             $iGroupId = App()->getRequest()->getPost('gid');
@@ -668,7 +670,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     {
         $iQuestionGroupId = (int) $iQuestionGroupId;
         $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
-        if ($oQuestionGroup == null || (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read'))) {
+        if ($oQuestionGroup == null || (!Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read'))) {
             $this->renderJSON([]);
         }
         $aQuestions = [];
@@ -768,7 +770,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 );
         }
 
-        $success = $this->applyI10N($oQuestionGroup, $questionGroupI10N);
+        $this->applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $aQuestionGroup = $oQuestionGroup->attributes;
         LimeExpressionManager::ProcessString('{' . $aQuestionGroup['grelevance'] . '}');
@@ -900,8 +902,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
     }
 
     /**
-     * @deprecated
-     * @todo document me.
+     * Ajax request to get the question group topbar as json (see view question_group_topbar)
      *
      * @param integer $sid ID of survey
      * @param null |integer   $gid ID of group

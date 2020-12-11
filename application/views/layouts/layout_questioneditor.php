@@ -34,7 +34,6 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
 
 $layoutHelper->renderSurveySidemenu($aData);
 
-
 echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';

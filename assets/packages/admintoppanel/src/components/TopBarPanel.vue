@@ -237,6 +237,8 @@ export default {
         });
     },
     render(h) {
+        // TODO: Might be hidden if menu is not the Vue component.
+        $('#vue-topbar-container').show();
         return (
             <div class="topbarpanel">
                 <nav class="navbar navbar-default scoped-topbar-nav">

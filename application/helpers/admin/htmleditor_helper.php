@@ -132,7 +132,6 @@
      * @param int|null $gID       Group ID
      * @param int|null $qID       Question ID
      * @param string   $action    Action
-     * 
      * @return string
      */
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)

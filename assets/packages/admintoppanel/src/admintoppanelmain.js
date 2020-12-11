@@ -36,4 +36,3 @@ if(window.TopBarVue === undefined)  {
     });
     window.TopBarVue = true;
 }
-
