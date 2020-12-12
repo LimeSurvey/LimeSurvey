@@ -99,14 +99,18 @@ $this->renderPartial(
 
                     <!-- Question code and question type selector -->
                     <div class="row">
-                        <?php $this->renderPartial(
+                        <?php
+                        $questionTheme = QuestionTheme::findQuestionMetaData($question->type);
+                        $this->renderPartial(
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,
                                 'question'            => $question,
-                                'aStructureArray'     => $aQuestionTypeGroups,
                                 'questionTypes'       => $aQuestionTypeStateList,
-                                'aQuestionTypeGroups' => $aQuestionTypeGroups
+                                'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                                'questionThemeTitle'  => $questionTheme['title'],
+                                'questionThemeName'   => $questionTheme['name'],
+                                'questionThemeClass'  => ($questionTheme['settings'])->class
                             ]
                         ); ?>
                     </div>

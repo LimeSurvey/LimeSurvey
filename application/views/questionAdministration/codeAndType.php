@@ -1,4 +1,9 @@
 <?php
+
+/**@var Question $question */
+/**@var string $questionThemeTitle */
+/**@var string $questionThemeClass */
+
 $generalSettingsUrl = $this->createUrl(
     'questionAdministration/getGeneralSettingsHTML',
     ['surveyId' => $question->sid, 'questionId' => $question->qid]
@@ -19,14 +24,18 @@ $oQuestionSelector = $this->beginWidget(
         'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
         'value' => $question->type,
+        'theme' => $questionThemeName,
         'debug' => YII_DEBUG,
-        'currentSelected' => Question::getQuestionTypeName($question->type),
+        'currentSelected' => $questionThemeTitle, //todo: use questiontheme instead ...
         'optionArray' => [
-            'selectedClass' => Question::getQuestionClass($question->type),
+            'selectedClass' => $questionThemeClass,//Question::getQuestionClass($question->type),
             'onUpdate' => [
                 'value',
+                'theme',
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
-                "$('#question_type').val(value); LS.questionEditor.updateQuestionAttributes(value, '$generalSettingsUrl', '$advancedSettingsUrl');"
+                "$('#question_type').val(value);
+                 $('#question_template').val(theme); 
+                LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl');"
             ]
         ]
     ]
@@ -71,4 +80,5 @@ $oQuestionSelector = $this->beginWidget(
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
+    <input type="hidden" id="question_template" name="question[template]" value="<?= 'core'; ?>" />
 </div>

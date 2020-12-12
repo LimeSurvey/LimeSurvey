@@ -1391,10 +1391,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme the question theme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1415,7 +1416,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->qid,
             $questionType,
             $question->gid,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
     }
@@ -1531,10 +1532,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1555,7 +1557,7 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $this->getAdvancedOptions(
             $question->qid,
             $questionType,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial(
             "advancedSettings",
@@ -2113,7 +2115,9 @@ class QuestionAdministrationController extends LSBaseController
     private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
+
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+        //todo actionGetAdvancedOptions missing here? (question_template should be used here)
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
         // TODO: Why can empty array be saved as value?
         foreach ($advancedSettings as &$category) {
@@ -2125,6 +2129,11 @@ class QuestionAdministrationController extends LSBaseController
         }
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
+        //here we get a Question object (also if question is new --> QuestionCreate)
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
+
+
         return $advancedSettings;
     }
 

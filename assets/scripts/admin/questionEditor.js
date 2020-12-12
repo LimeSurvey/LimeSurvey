@@ -1463,12 +1463,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * Used by question selector modal.
      *
      * @param {string} questionType - One-letter string of question type
+     * @param {string} questionTheme - One-letter string of question type
      * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
      * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
      * @return {Promise}
      */
     // eslint-disable-next-line no-unused-vars
-    updateQuestionAttributes: async function (questionType, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
+    updateQuestionAttributes: async function (questionType, questionTheme, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
       // If same question type, do nothing.
       // Else, fetch new HTML from server.
       $('#ls-loading').show();
@@ -1477,7 +1478,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType },
+          data: { questionType, questionTheme }, //todo add question_template (e.g. 'bootstrap_buttons' it's the theme) here
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1491,7 +1492,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: advancedSettingsUrl,
           method: 'GET',
-          data: { questionType },
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
