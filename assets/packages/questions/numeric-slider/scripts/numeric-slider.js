@@ -151,7 +151,7 @@ var LSSlider = function (options) {
             if (custom_handle != null) {
                var customStyleSheet = $('<style></style>');
                customStyleSheet.attr('type','text/css');
-               customStyleSheet.text('#' + elementObject.attr('id') + ' .slider-handle.custom::before { content: "' + custom_handle + '" }');
+               customStyleSheet.text('#' + elementObject.attr('id') + '-container .slider-handle.custom::before { content: "\\' + custom_handle + '" }');
                customStyleSheet.appendTo('body');
                 // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
