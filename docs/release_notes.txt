@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.3 (build 201208) to 3.25.4 (build 201215) December 14, 2020
+-Fixed issue #16891: PHP 7.4 + debug : PHP Notice with numeric question type (Denis Chenu)
+-Fixed issue #16863: Multi Numeric Slider custom Font Awesome icons (Gabriel Jenik)
+-Fixed issue #16854: Cannot attach PDF to email invitation (email template for surveys) (Gabriel Jenik)
+-Fixed issue #16761: Wrong details shown at print answer overview for dual scale questions (Gabriel Jenik)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by kiolalis
+
+
 Changes from 3.25.2 (build 201131) to 3.25.3 (build 201208) December 7, 2020
 -Fixed issue #16875: strong tag displayed in First and Last name column of Survey responses page (Denis Chenu)
 -Fixed issue #16733: When importing a theme bigger in size than the allowed php.ini settings, there is no proper description of the error (Gabriel Jenik)
