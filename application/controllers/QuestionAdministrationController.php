@@ -2130,8 +2130,7 @@ class QuestionAdministrationController extends LSBaseController
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
         //here we get a Question object (also if question is new --> QuestionCreate)
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
+     //   $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
 
 
         return $advancedSettings;

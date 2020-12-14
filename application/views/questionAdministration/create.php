@@ -48,6 +48,7 @@ $this->renderPartial(
                 $activeOverview = '';
                 $activeEditor = 'active';
                 $visibilityOverview = 'style="display:none;"';
+                $visibilityEditor = '';
             }
             ?>
             <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
