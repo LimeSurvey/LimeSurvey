@@ -1440,7 +1440,6 @@ class tokens extends Survey_Common_Action
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
-                $mail->addUrlsPlaceholders(array('OPTOUT', 'OPTIN', 'SURVEY'));
                 foreach ($emresult as $emrow) {
                     $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'],$bIsInvitation)) {

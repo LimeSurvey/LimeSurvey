@@ -30,7 +30,6 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     $mail->setSurvey($iSurveyID);
     $mail->emailType = $sType;
     $mail->replaceTokenAttributes = true;
-    $mail->addUrlsPlaceholders(array('OPTOUT', 'OPTIN', 'SURVEY'));
     foreach ($aResultTokens as $aTokenRow) {
         $mail = \LimeMailer::getInstance();
         $mail->setToken($aTokenRow['token']);

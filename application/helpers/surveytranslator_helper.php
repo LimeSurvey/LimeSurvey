@@ -362,6 +362,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['el']['radixpoint'] = 1;
     $supportedLanguages['el']['momentjs'] = 'el';
 
+    // Greenlandic
+    $supportedLanguages['kal']['description'] = gT('Greenlandic');
+    $supportedLanguages['kal']['nativedescription'] = 'Kalaallisut';
+    $supportedLanguages['kal']['rtl'] = false;
+    $supportedLanguages['kal']['dateformat'] = 2;
+    $supportedLanguages['kal']['radixpoint'] = 1;
+    $supportedLanguages['kal']['momentjs'] = null;
+
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');
     $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';

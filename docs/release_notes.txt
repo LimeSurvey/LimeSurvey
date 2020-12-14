@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.30 (build 201207) to 4.3.31 (build 201214) December 14, 2020
+-Fixed issue : barebone URL are not replaced for text email (Denis Chenu)
+-Fixed issue #16901: @@SURVEYURL@@ not replaced when register (Denis Chenu)
+-Fixed issue #16892: When reload response ; multinumerci shown 0000 at end of string (Denis Chenu)
+-Fixed issue #16891: PHP 7.4 + debug : PHP Notice with numeric question type (Denis Chenu)
+-Fixed issue #16776  question index marks pages with fully answered questions as unanswered  (Gabriel Jenik)
+-Fixed issue #16749: Make sure Vanilla and Bootswatch look like Fruity (Gabriel Jenik)
+-Fixed issue #16670: Extended theme shows all options in one page (Gabriel Jenik)
+-Fixed issue #16500: Printable survey have no 'group_order' and 'question_order' attribute (Gabriel Jenik)
+-Fixed issue #16308: Multi Numeric Slider custom Font Awesome icons (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Italian by ritapas
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by kiolalis
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by llamaloverbg
+
+
 Changes from 4.3.29 (build 201130) to 4.3.30 (build 201207) December 7, 2020
 -Fixed issue #16875: strong tag displayed in First and Last name column of Survey responses page (Denis Chenu)
 -Fixed issue # 16824: Quota : Back to the previous page, one click is not recognized, you need to click again (#1676) (Gabriel Jenik)
