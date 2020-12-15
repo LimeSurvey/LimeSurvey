@@ -1265,6 +1265,10 @@ class SurveyAdmin extends Survey_Common_Action
      */
     public function copy()
     {
+        if (!Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
         $aData = [];
@@ -1339,7 +1343,7 @@ class SurveyAdmin extends Survey_Common_Action
                 } elseif (!Survey::model()->findByPk($iSurveyID)) {
                     $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
-                } elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
+                } elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                     $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
                     $aData['bFailed'] = true;
                 } else {
