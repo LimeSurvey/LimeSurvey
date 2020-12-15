@@ -109,6 +109,8 @@ class QuestionType extends StaticModel
      * @param string $language
      * @return array
      *
+     * @deprecated use the new xml-version implemented in function findQuestionMetaData($type) in QuestionTheme
+     *
      * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
 

@@ -664,6 +664,7 @@ class Survey_Common_Action extends CAction
                 $aData['qrrow'] = $qrrow;
                 $aData['baselang'] = $baselang;
 
+                // TODO: Don't call getAdvancedSettingsWithValues without a question object.
                 $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
 
                 $DisplayArray = array();

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Models\Services;
 
 use LimeSurvey\Datavalueobjects\CopyQuestionValues;
@@ -209,7 +208,8 @@ class CopyQuestion
             $copiedDefaultAnswer->dvid = null;
             if ($copiedDefaultAnswer->save()) {
                 //copy languages if needed
-                $defaultValLanguages = \DefaultValueL10n::model()->findAllByAttributes(['dvid' => $defaultAnswer->dvid]);
+                $defaultValLanguages = \DefaultValueL10n::model()
+                  ->findAllByAttributes(['dvid' => $defaultAnswer->dvid]);
                 foreach ($defaultValLanguages as $defaultAnswerL10n) {
                     $copieDefaultAnswerLanguage = new \DefaultValueL10n();
                     $copieDefaultAnswerLanguage->attributes = $defaultAnswerL10n->attributes;

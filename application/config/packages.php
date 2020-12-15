@@ -86,11 +86,9 @@ return array(
         'devBaseUrl'  => 'assets/packages/template-core/',
         'basePath' => 'core.template-core',
         'css'=> array(
-            'spectrum.css',
             'template-core.css',
         ),
         'js'=>array(
-            'spectrum.js',
             'template-core.js',
         ),
         'depends' => array(
@@ -329,67 +327,6 @@ return array(
        )
     ),
     
-    'adminbottompanel' => array(
-       'devBaseUrl' => 'assets/packages/adminbottompanel/',
-       'basePath' => 'core.adminbottompanel',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/adminbottompanel.js',
-            )
-            : array(
-                'build.min/js/adminbottompanel.js'
-            )
-        ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
-       'depends' => array(
-           'adminbasics'
-       )
-    ),
-    'filemanager' => array(
-        'devBaseUrl' => 'assets/packages/filemanager/',
-        'basePath' => 'core.filemanager',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/filemanager.js',
-            )
-            : array(
-                'build.min/js/filemanager.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
-//    'textelements' => array(
-//        'devBaseUrl' => 'assets/packages/textelements/',
-//        'basePath' => 'core.textelements',
-//        'position' =>CClientScript::POS_END,
-//        'js' => (
-//            $debug > 0
-//            ? array(
-//                'build/js/lstextelements.js',
-//            )
-//            : array(
-//                'build.min/js/lstextelements.js'
-//            )
-//        ),
-//        'css' => array(
-//            'build.min/css/main.css'
-//        ),
-//        'depends' => array(
-//            'adminbasics',
-//            'admintoppanel',
-//        )
-//    ),
     'datasectextelements' => array(
         'devBaseUrl' => 'assets/packages/datasecuritysettings/',
         'basePath' => 'core.datasecuritysettings',
@@ -409,50 +346,6 @@ return array(
         'depends' => array(
             'adminbasics',
             'admintoppanel',
-        )
-    ),
-    'questiongroupeditor' => array(
-        'devBaseUrl' => 'assets/packages/questiongroup/',
-        'basePath' => 'core.questiongroup',
-        'position' =>CClientScript::POS_END,
-        'js' =>  (
-            $debug > 0
-            ? array(
-                'build/js/questiongroupedit.js'
-            )
-            : array(
-                'build.min/js/questiongroupedit.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
-    'questioneditor' => array(
-        'devBaseUrl' => 'assets/packages/questioneditor/',
-        'basePath' => 'core.questioneditor',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/questionedit.js'
-            )
-            : array(
-                'build.min/js/questionedit.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'ace',
-            'admintoppanel',
-            
         )
     ),
     'lstutorial' => array(
@@ -534,21 +427,6 @@ return array(
         'js' => array(
             'surveymenufunctionswrapper'.$minVersion.'.js',
             'surveymenuentryfunctions'.$minVersion.'.js',
-        ),
-        'depends' => array(
-            'adminbasics',
-        )
-    ),
-
-    'emailtemplates' => array(
-        'devBaseUrl' => 'assets/packages/emailtemplates/',
-        'basePath' => 'core.emailtemplates',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'popup-dialog.css'
-        ),
-        'js' => array(
-            'emailtemplates'.$minVersion.'.js',
         ),
         'depends' => array(
             'adminbasics',

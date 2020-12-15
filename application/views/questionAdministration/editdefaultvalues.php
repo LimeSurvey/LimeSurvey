@@ -1,9 +1,8 @@
 <?php
 /**
- * Send email invitations
  * @var AdminController $this
  * @var Survey $oSurvey
- * @var array $qtproperties
+ * @var stdClass $questionMetaData these are the settings from table question_theme (see function QuestionTheme::findQuestionMetaData)
  * @var array $questionrow
  * @var array $langopts
  * @var string $hasUpdatePermission
@@ -27,12 +26,12 @@
                 <div class="tab-content">
                     <?php foreach ($oSurvey->allLanguages as $i => $language) : ?>
                         <div id='df_<?php echo $language ?>' class="tab-pane fade in <?php echo $i == 0 ? 'active' : '' ?>">
-                            <?php if ($qtproperties[$questionrow['type']]['answerscales'] > 0) : ?>
-                                <?php for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['answerscales']; $scale_id++) : ?>
+                            <?php if ((int)$questionMetaData->answerscales > 0) : ?>
+                                <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
                                     <div class="form-group col-sm-12">
                                         <label class=" control-label" for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
-                                            <?php $qtproperties[$questionrow['type']]['answerscales'] > 1
+                                            <?php (int)$questionMetaData->answerscales > 1
                                                 ? printf(gT('Default answer for scale %s:'), $scale_id)
                                                 : printf(gT('Default answer value:'), $scale_id) ?>
                                         </label>
@@ -68,10 +67,10 @@
                                 <?php endfor; ?>
                             <?php endif; ?>
                             <?php /* If there are subquestions and no answerscales */ ?>
-                            <?php if ($qtproperties[$questionrow['type']]['answerscales'] == 0 && $qtproperties[$questionrow['type']]['subquestions'] > 0) : ?>
-                                <?php for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['subquestions']; $scale_id++) : ?>
+                            <?php if ($questionMetaData->answerscales == 0 && (int)$questionMetaData->subquestions > 0) : ?>
+                                <?php for ($scale_id = 0; $scale_id < (int)$questionMetaData->subquestions; $scale_id++) : ?>
                                     <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
-                                    <?php if ($qtproperties[$questionrow['type']]['subquestions'] > 1) : ?>
+                                    <?php if ((int)$questionMetaData->subquestions > 1) : ?>
                                         <div class='header ui-widget-header'>
                                             <?php echo sprintf(gT('Default answer for scale %s:'), $scale_id) ?>
                                         </div>
@@ -125,7 +124,7 @@
                                     <?php endif; ?>
                                 <?php endfor; ?>
                             <?php endif; ?>
-                            <?php if ($qtproperties[$questionrow['type']]['answerscales'] == 0 && $qtproperties[$questionrow['type']]['subquestions'] == 0) : ?>
+                            <?php if ($questionMetaData->answerscales == 0 && $questionMetaData->subquestions == 0) : ?>
                                 <?php
                                 /*
                                 case 'D':
@@ -141,7 +140,6 @@
                                 $widgetOptions = [
                                     'language' => $language,
                                     'questionrow' => $questionrow,
-                                    'qtproperties' => $qtproperties,
                                     'langopts' => $langopts,
                                 ];
                                 $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', ['widgetOptions' => $widgetOptions]);
@@ -151,9 +149,20 @@
                                         <label class="col-sm-12 control-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                             <?php eT("Default value:") ?>
                                         </label>
+                                        <?php
+                                            $defaultValue = DefaultValue::model()->findByAttributes(['qid' => $questionrow['qid']]);
+                                            if($defaultValue !== null){
+                                                $defaultValueLanguage = DefaultValueL10n::model()->findByAttributes(['dvid' => $defaultValue->dvid, 'language' => $language]);
+                                                $defaultValueLanguageText = $defaultValueLanguage->defaultvalue;
+                                            }else{
+                                                $defaultValueLanguageText = '';
+                                            }
+                                        ?>
                                         <div class="col-sm-12">
-                                            <textarea <?php echo $hasUpdatePermission; ?> cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
-                                                                                          id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>test</textarea>
+                                            <textarea <?php echo $hasUpdatePermission; ?>
+                                                cols='50'
+                                                name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
+                                                id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php echo $defaultValueLanguageText;?></textarea>
                                         </div>
                                     </div>
                                 <?php endif;  //temporary solution?>

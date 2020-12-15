@@ -158,8 +158,9 @@ class AdminController extends LSYii_Controller
                 App()->user->setReturnUrl(App()->request->requestUri);
 
                 // If this is an ajax call, don't redirect, but echo login modal instead
-                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                $isAjax = Yii::app()->request->isAjaxRequest;
                 if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    http_response_code(401);
                     Yii::import('application.helpers.admin.ajax_helper', true);
                     ls\ajax\AjaxHelper::outputNotLoggedIn();
                     return;

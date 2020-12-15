@@ -460,7 +460,7 @@ class tokens extends Survey_Common_Action
                             $token->$k = $v;
                         }
 
-                        $bUpdateSuccess = $token->encryptSave();
+                        $bUpdateSuccess = $token->encryptSave(true);
                         if ($bUpdateSuccess) {
                             $aResults[$iTokenId]['status']    = true;
                             $aResults[$iTokenId]['message']   = gT('Updated');
@@ -707,7 +707,7 @@ class tokens extends Survey_Common_Action
                 // AutoExecute
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
-                $inresult = $token->encryptSave();
+                $inresult = $token->encryptSave(true);
                 $aData['success'] = $inresult;
                 $aData['errors'] = $token->getErrors();
             } else {
@@ -851,7 +851,7 @@ class tokens extends Survey_Common_Action
                     $token->$k = $v;
                 }
 
-                $result = $token->encryptSave();
+                $result = $token->encryptSave(true);
 
                 if ($result) {
                     \ls\ajax\AjaxHelper::outputSuccess($sOutput.gT('The survey participant was successfully updated.'));
@@ -1009,7 +1009,7 @@ class tokens extends Survey_Common_Action
                 $token->generateToken($aData['tokenlength']);
 
                 $existingtokens[$token->token] = true;
-                $token->encryptSave();
+                $token->encryptSave(true);
                 $newDummyToken++;
             }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -1991,6 +1991,7 @@ class tokens extends Survey_Common_Action
             $aInvalidTokenList = array();
             $aInvalidEmailList = array();
             $aInvalidFormatList = array();
+            $aPluginErrorMessageList = array();
             $aModelErrorList = array();
             $aFirstLine = array();
 
@@ -2172,7 +2173,30 @@ class tokens extends Survey_Common_Action
                             }
                         }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken) {
+                        // Dispatch beforeTokenImport event
+                        $aOptions = array(
+                            'csvcharset' => $sUploadCharset,
+                            'filterduplicatetoken' => $bFilterDuplicateToken,
+                            'filterblankemail' => $bFilterBlankEmail,
+                            'allowinvalidemail' => $bAllowInvalidEmail,
+                            'filterduplicatefields' => $aFilterDuplicateFields,
+                            'separator' => $sSeparator,
+                            'showwarningtoken' => Yii::app()->request->getPost('showwarningtoken'),
+                        );
+                        $aEventResult = $this->dispatchBeforeTokenImport($iSurveyId, $aWriteArray, $iRecordCount, $aOptions);
+                        $bPluginReportedError = $aEventResult['pluginReportedError'];
+                        $bImportDone = $aEventResult['importDone'];
+
+                        if ($bPluginReportedError) {
+                            // If plugin says import is not valid, append the error
+                            $sErrorMessage = $aEventResult['errorMessage'];
+                            $aPluginErrorMessageList[$sErrorMessage][] = $aEventResult['tokenSpecificErrorMessage'];
+                        } else {
+                            // If plugin says import is OK, replace token data from the event
+                            $aWriteArray = $aEventResult['token'];
+                        }
+
+                        if (!$bDuplicateFound && !$bInvalidEmail && !$bInvalidToken && !$bPluginReportedError && !$bImportDone) {
                             // unset all empty value
                             foreach ($aWriteArray as $key=>$value) {
                                 if ($aWriteArray[$key] == "") {
@@ -2196,8 +2220,11 @@ class tokens extends Survey_Common_Action
                                 $errors = ($oToken->getErrors());
                                 $aModelErrorList[] = sprintf(gT("Line %s : %s"), $iRecordCount, print_r($errors, true));
                             } else {
-                                $iRecordImported++;
+                                $bImportDone = true;
                             }
+                        }
+                        if ($bImportDone) {
+                            $iRecordImported++;
                         }
                         $iRecordOk++;
                     }
@@ -2214,6 +2241,7 @@ class tokens extends Survey_Common_Action
                 $aData['aInvalidTokenList'] = $aInvalidTokenList;
                 $aData['aInvalidFormatList'] = $aInvalidFormatList;
                 $aData['aInvalidEmailList'] = $aInvalidEmailList;
+                $aData['aPluginErrorMessageList'] = $aPluginErrorMessageList;
                 $aData['aModelErrorList'] = $aModelErrorList;
                 $aData['iInvalidEmailCount'] = $iInvalidEmailCount;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -2820,5 +2848,61 @@ class tokens extends Survey_Common_Action
         return isset($_SESSION[$cacheName])
             && isset($_SESSION[$cacheName][$sType][$tid])
             && $_SESSION[$cacheName][$sType][$tid] > 0;
+    }
+
+    /**
+     * Dispatches the beforeTokenImport event
+     * @return array
+     */
+    protected function dispatchBeforeTokenImport($iSurveyId, $aToken, $iRecordCount, $aOptions)
+    {
+        $aParams = array_merge(
+            array(
+                'csvcharset' => 'UTF-8',
+                'filterduplicatetoken' => false,
+                'filterblankemail' => true,
+                'allowinvalidemail' => false,
+                'filterduplicatefields' => array(),
+                'separator' => ',',
+                'showwarningtoken' => true,
+            ),
+            $aOptions
+        );
+        $event = new PluginEvent('beforeTokenImport');
+        $event->set('importType', 'CSV');
+        $event->set('surveyId', $iSurveyId);
+        $event->set('params', $aParams);
+        $event->set('recordCount', $iRecordCount);
+        $event->set('token', $aToken);
+        $event->set('importDone', false);
+        $event->set('importValid', true);
+        App()->getPluginManager()->dispatchEvent($event);
+
+        $bPluginReportedError = !$event->get('importValid');
+        $bImportDone = $event->get('importDone');
+
+        $sTokenSpecificErrorMessage = '';
+        $sErrorMessage = '';
+        if ($bPluginReportedError) {
+            $sErrorMessage = $event->get('errorMessage');
+            if (empty($sErrorMessage)) {
+                $sErrorMessage = gT("%s records with other errors");
+            }
+
+            $sTokenSpecificErrorMessage = $event->get('tokenSpecificErrorMessage');
+            if (empty($sTokenSpecificErrorMessage)) {
+                $sTokenSpecificErrorMessage = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, $aToken['firstname'], $aToken['lastname'], $aToken['email']);
+            }
+        }
+
+        $aResult = array(
+            'pluginReportedError' => $bPluginReportedError,
+            'importDone' => $bImportDone,
+            'errorMessage' => $sErrorMessage,
+            'tokenSpecificErrorMessage' => $sTokenSpecificErrorMessage,
+            'token' => $event->get('token')
+        );
+
+        return $aResult;
     }
 }

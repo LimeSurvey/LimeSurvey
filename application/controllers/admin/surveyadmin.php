@@ -1211,6 +1211,9 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['sHeader'] = gT("Import survey data");
                 $aData['sSummaryHeader'] = gT("Survey structure import summary");
                 $aPathInfo = pathinfo($_FILES['the_file']['name']);
+                // check mime_type of file 
+                $mimeType = LSFileHelper::getMimeType($_FILES['the_file']['tmp_name'], null, false);
+
 
                 if (isset($aPathInfo['extension'])) {
                     $sExtension = $aPathInfo['extension'];
@@ -1233,6 +1236,9 @@ class SurveyAdmin extends Survey_Common_Action
                 } elseif (!in_array(strtolower($sExtension), array('lss', 'txt', 'tsv', 'lsa'))) {
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($sExtension));
                     $aData['bFailed'] = true;
+                }elseif(!in_array($mimeType,['text/tab-separated-values','text/plain','application/xml','application/zip','text/xml'])){
+                    $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), CHtml::encode($mime));
+                    $aData['bFailed'] = true; 
                 } elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                     $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     $aData['bFailed'] = true;

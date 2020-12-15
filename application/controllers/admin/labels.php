@@ -438,55 +438,136 @@ class labels extends Survey_Common_Action
         echo ls_json_encode($output);
     }
 
-    public function ajaxSets()
+    /**
+     * Save label set via Ajax
+     * Used in question editor
+     * Echoes JSON
+     *
+     * @return void
+     * @todo Permission check
+     * @todo Move save logic into service class.
+     */
+    public function ajaxSave()
     {
-        $lid = (int) Yii::app()->getRequest()->getPost('lid');
-        $answers = Yii::app()->getRequest()->getPost('answers');
-        $code = Yii::app()->getRequest()->getPost('code');
-        $aAssessmentValues = Yii::app()->getRequest()->getPost('assessmentvalues', array());
-        //Create label set
-        $language = "";
-        foreach ($answers as $lang => $answer) {
-            $language .= $lang." ";
-        }
-        $language = trim($language);
-        if ($lid == 0) {
-            $lset = new LabelSet;
-            $lset->label_name = Yii::app()->getRequest()->getPost('laname');
-            $lset->languages = $language;
-            $lset->save();
+        $request   = Yii::app()->getRequest();
+        $lid       = (int) $request->getPost('lid');
+        $answers   = $request->getPost('answers');
+        $codes     = $request->getPost('codes');
+        $labelName = $request->getPost('laname');
+        $languages = implode(' ', $request->getPost('languages'));
+        $assessmentValues = $request->getPost('assessmentvalues', []);
 
+        if (empty($labelName)) {
+            throw new CHttpException(400, gT('Could not save label set: Label set name is empty.'));
+        }
+
+        if (empty($answers)) {
+            throw new CHttpException(400, gT('Could not save label set: Found no answers.'));
+        }
+
+        try {
+            $transaction      = Yii::app()->db->beginTransaction();
+            $lset             = new LabelSet();
+            $lset->label_name = $request->getPost('laname');
+            $lset->languages  = trim($languages);
+            $lset->save();
             $lid = getLastInsertID($lset->tableName());
-        } else {
-            Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
+            $this->saveLabelSetAux($lid, $codes, $answers, $assessmentValues);
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transation->rollback();
+            throw new CHttpException(500, $exception->getMessage());
         }
-        $res = 'ok'; //optimistic
-        foreach ($answers as $lang => $answer) {
-            foreach ($answer as $key => $ans) {
-                $label = new Label;
-                
-                $label->lid = $lid;
-                $label->code = $code[$key];
-                $label->sortorder = $key;
-                $label->language = $lang;
-                $label->assessment_value = isset($aAssessmentValues[$key]) ? $aAssessmentValues[$key] : 0;
-                if (!$label->save()) {
-                    $res = 'fail';
-                }
-                
-                $labelI10N = new LabelL10n;
-                $labelI10N->language = $lang;
-                $labelI10N->label_id = $label->id;
-                $labelI10N->title = $ans;
-                if (!$labelI10N->save()) {
-                    $res = 'fail';
-                }
-            }
-        }
-        echo ls_json_encode($res);
+
+        eT('Label set successfully saved');
     }
 
-    public function getLabelSetsForQuestion() {
+    /**
+     * @return void
+     */
+    public function ajaxUpdate()
+    {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            throw new CHttpException(403, gT('Access denied'));
+        }
+
+        $request = Yii::app()->request;
+
+        $labelSetId = (int) $request->getPost('labelSetId');
+        if (empty($labelSetId)) {
+            throw new CHttpException(400, gT('Could not update label set: Label set id is empty.'));
+        }
+
+        $labelSet = LabelSet::model()->findByPk($labelSetId);
+        if (empty($labelSet)) {
+            throw new CHttpException(400, gT('Found no label set with this id'));
+        }
+
+        $answers   = $request->getPost('answers');
+        $codes     = $request->getPost('codes');
+        $assessmentValues = $request->getPost('assessmentvalues', []);
+        $languages = implode(' ', $request->getPost('languages'));
+
+        try {
+            $transaction = Yii::app()->db->beginTransaction();
+            $labelSet->languages = $languages;
+            $labelSet->update();
+            $this->saveLabelSetAux($labelSetId, $codes, $answers, $assessmentValues);
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transaction->rollback();
+            throw new CHttpException(500, $exception->getMessage());
+        }
+
+        eT('Label set successfully updated');
+    }
+
+    /**
+     * Helper function to save label set from question editor.
+     *
+     * @param int $lid Label set id
+     * @param array $codes
+     * @param array $answers
+     * @param array $assessmentValues
+     * @return void
+     * @throws Exception
+     */
+    private function saveLabelSetAux($lid, $codes, $answers, $assessmentValues)
+    {
+        Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
+        $i = 0;
+        foreach ($answers as $answer) {
+            foreach ($answer as $answeroptionl10ns) {
+                $label = new Label();
+                $label->lid = $lid;
+                $label->code = $codes[$i];
+                $label->sortorder = $i;
+                $label->assessment_value = isset($assessmentValues[$i]) ? $assessmentValues[$i] : 0;
+                if (!$label->save()) {
+                    throw new Exception('Could not save label: ' . json_encode($label->getErrors()));
+                }
+
+                foreach ($answeroptionl10ns as $langs) {
+                    foreach ($langs as $lang => $content) {
+                        $labell10n = new LabelL10n();
+                        $labell10n->language = $lang;
+                        $labell10n->label_id = $label->id;
+                        $labell10n->title = $content;
+                        if (!$labell10n->save()) {
+                            throw new Exception('Could not save label l10n: ' . json_encode($label->getErrors()));
+                        }
+                    }
+                }
+            }
+            $i++;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function getLabelSetsForQuestion()
+    {
         $languages = Yii::app()->request->getParam('languages', null);
         $oCriteria = new CDbCriteria();
         if ($languages != null) {

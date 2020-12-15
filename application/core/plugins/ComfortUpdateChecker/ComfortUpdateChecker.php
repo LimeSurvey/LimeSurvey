@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Update Checker for Comfort Update users
  * Copyright (C) LimeSurvey GmbH
@@ -9,12 +8,6 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-
-define('ROOT_FOLDER', __DIR__ . '/');
-
-//loads libraries
-require_once(ROOT_FOLDER . 'helpers/CUCMenuClass.php');
-
 
 class ComfortUpdateChecker extends PluginBase
 {
@@ -44,7 +37,7 @@ class ComfortUpdateChecker extends PluginBase
 
     public function init()
     {
-
+        Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
         $this->subscribe('beforeAdminMenuRender');
     }
 
@@ -88,7 +81,7 @@ class ComfortUpdateChecker extends PluginBase
 
                 $aMenuItems[] = (new \LimeSurvey\Menu\MenuItem($aMenuItemAdminOptions));
 
-                $oNewMenu = new CUCMenuClass($aMenuItemAdminOptions);
+                $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
                 //Check if display only for security update is true in plugin settings and display it otherwhise display all 
                 if ($this->get('only_security_update', null, null, false) && $update[key($update)]->security_update) {

@@ -208,7 +208,7 @@ if ($hasDeletePermission) {
                 'id' => 'delete_current_question_group',
                 'url' => '#',
                 'dataurl' => $this->createUrl("questionGroupsAdministration/delete/", ["asJson" => true]),
-                'postdata' => json_encode(['gid' => $gid, 'surveyid' => $sid]),
+                'postdata' => json_encode(['gid' => $gid]),
                 'type' => 'confirm',
                 'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
                 'icon' => 'fa fa-trash',

@@ -581,7 +581,7 @@ class SurveyDynamic extends LSActiveRecord
             if (!empty($tokens)){
                 $tokens->decrypt();
             }
-            return '<strong>'.$tokens->firstname.'</strong>';
+            return $tokens->firstname;
         }
 
     }
@@ -594,7 +594,7 @@ class SurveyDynamic extends LSActiveRecord
         // Last name is already decrypted in getFirstNameForGrid method, if we do it again it would try to decrypt it again ( and fail )
         $tokens = $this->tokens;
         if (is_object($tokens)) {
-            return '<strong>'.$tokens->lastname.'</strong>';
+            return $tokens->lastname;
         }
     }
 
@@ -604,9 +604,9 @@ class SurveyDynamic extends LSActiveRecord
     public function getTokenForGrid()
     {
         if (is_object($this->tokens) && !is_null($this->tokens->tid)) {
-            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens", array("sa"=>"edit", "iSurveyId"=>self::$sid, "iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
+            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens", array("sa"=>"edit", "iSurveyId"=>self::$sid, "iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".CHtml::encode($this->token)."&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
         } else {
-            $sToken = '<span class="badge badge-success">'.strip_tags($this->token).'</span>';
+            $sToken = '<span class="badge badge-success">'.CHtml::encode($this->token).'</span>';
         }
 
         return $sToken;
