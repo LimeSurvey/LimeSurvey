@@ -188,10 +188,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   /**
    * @param {number} i
-   * @param {string} source
+   * @param {string} source Either 'subquestions' or 'answeroptions'
    * @return {Promise<XMLHttpRequest>}
    */
-  function addInputPredefined(i /*: number */, source) /*: Promise<XMLHttpRequest> */ {
+  function addInputPredefined(i /*: number */, source /*: string */) /*: Promise<XMLHttpRequest> */ {
     // TODO: Support answer options
     let $dataInput;
     if (source === 'subquestions') {
@@ -772,12 +772,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
     //const labels = [];
     const scaleId = $('#current_scale_id').val();
 
+    /**
+     * result is {lang: html} object.
+     */
     addInputPredefined(1, source).then((result) => {
       $.each(result, (lang, row) => {
+          /*
         if (!(row instanceof HTMLElement)) {
-          alert('Internal error: row is not an HTMLElement');
+          alert('Internal error: row is not an HTMLElement but a ' + (typeof row));
           throw 'abort';
         }
+        */
 
         // TODO: Answer options
         const tableId = `#${source}_${lang}_${scaleId}`;
@@ -823,9 +828,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
             if ($row.find('td.code-title').find('input[type=text]').length > 0) {
               $row.find('td.code-title').find('input[type=text]').val(label.code);
-            } else {
+            } else if ($row.find('td.code-title').length > 0) {
               $row.find('td.code-title').text(label.code);
+            } else {
+              throw 'Found nowhere to put label.code';
             }
+
             if ($row.find('td.relevance-equation').find('input[type=text]').length > 0) {
               $row.find('td.relevance-equation').find('input[type=text]').val(1);
             } else {
