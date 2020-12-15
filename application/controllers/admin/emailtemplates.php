@@ -88,7 +88,6 @@ class emailtemplates extends Survey_Common_Action
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
         
-        App()->getClientScript()->registerPackage('emailtemplates');
         App()->getClientScript()->registerPackage('expressionscript');
         
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
@@ -298,9 +297,7 @@ class emailtemplates extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerPackage('emailtemplates');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
 }

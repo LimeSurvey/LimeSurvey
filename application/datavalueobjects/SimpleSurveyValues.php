@@ -72,6 +72,4 @@ class SimpleSurveyValues
     {
         $this->surveyGroupId = $surveyGroupId;
     }
-
-
 }

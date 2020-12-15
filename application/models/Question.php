@@ -281,28 +281,29 @@ class Question extends LSActiveRecord
      * This function returns an array of the advanced attributes for the particular question
      * including their values set in the database
      *
-     * @access public
-     * @param int $iQuestionID  The question ID - if 0 then all settings will use the default value
-     * @param string $sQuestionType  The question type
-     * @param int $iSurveyID
-     * @param string $sLanguage  If you give a language then only the attributes for that language are returned
+     * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
      * @return array
      */
-    public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage = null)
+    public function getAdvancedSettingsWithValues($sLanguage = null)
     {
+        $oSurvey = $this->survey;
+        if (empty($oSurvey)) {
+            throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
+        }
         if (is_null($sLanguage)) {
-            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            $aLanguages = array_merge(
+                [$oSurvey->language],
+                $oSurvey->additionalLanguages
+            );
         } else {
             $aLanguages = array($sLanguage);
         }
-        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
+        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($this->qid, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type);
 
         // If the question has a custom template, we first check if it provides custom attributes
-
-        $oQuestion = Question::model()->find(array('condition'=>'qid=:qid', 'params'=>array(':qid'=>$iQuestionID)));
-        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion);
+        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
 
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute) {
@@ -327,6 +328,23 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * As getAdvancedSettingsWithValues but with category as array key.
+     * Used by advanced settings widget.
+     *
+     * @param string|null $sLanguage
+     * @return array
+     */
+    public function getAdvancedSettingsWithValuesByCategory($sLanguage = null)
+    {
+        $aAttributeNames = $this->getAdvancedSettingsWithValues($sLanguage);
+        $aByCategory = [];
+        foreach ($aAttributeNames as $aAttribute) {
+            $aByCategory[$aAttribute['category']][] = $aAttribute;
+        }
+        return $aByCategory;
+    }
+
+    /**
      * Add custom attributes (if there are any custom attributes). It also removes all attributeNames where inputType is
      * empty. Otherwise (not adding and removing anything)it returns the incoming parameter $aAttributeNames.
      *
@@ -338,6 +356,9 @@ class Question extends LSActiveRecord
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
         if (isset($aAttributeValues['question_template']) && ($aAttributeValues['question_template'] != 'core')) {
+            if (empty($oQuestion)) {
+                throw new Exception('oQuestion cannot be empty');
+            }
             $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
             if ($oQuestionTemplate->bHasCustomAttributes) {
                 // Add the custom attributes to the list
@@ -450,9 +471,32 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Delete all question and its subQuestion Answers
+     * Delete all subquestions that belong to this question.
+     *
+     * @return void
+     * @todo Duplication from delete()
      */
-    private function deleteAllAnswers()
+    public function deleteAllSubquestions()
+    {
+        $ids = $this->allSubQuestionIds;
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+        $res = Question::model()->deleteAll((new CDbCriteria())->addInCondition('qid', $ids));
+        QuestionAttribute::model()->deleteAll($qidsCriteria);
+        QuestionL10n::model()->deleteAll($qidsCriteria);
+        QuotaMember::model()->deleteAll($qidsCriteria);
+        $defaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach($defaultValues as $defaultValue){
+            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultValue->dvid));
+        }
+    }
+
+    /**
+     * Delete all question and its subQuestion Answers
+     *
+     * @return void
+     */
+    public function deleteAllAnswers()
     {
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
@@ -1314,5 +1358,99 @@ class Question extends LSActiveRecord
                 }
             }
         }
+    }
+
+    /**
+     * Used by question create form.
+     *
+     * @return Question
+     */
+    public function getEmptySubquestion()
+    {
+        $question = new Question();
+        $question->qid = 0;
+        // TODO: Customize
+        $question->title = 'SQ001';
+        $question->relevance = 1;
+        return $question;
+    }
+
+    /**
+     * Used by question create form.
+     *
+     * @return Answer
+     */
+    public function getEmptyAnswerOption()
+    {
+        $answer = new Answer();
+        // TODO: Assuming no collision.
+        $answer->aid = 'new' . rand(1, 100000);
+        $answer->sortorder = 0;
+        // TODO: Customize
+        $answer->code = 'A1';
+
+        $l10n = [];
+        foreach ($this->survey->allLanguages as $language) {
+            $l10n[$language] = new AnswerL10n();
+            $l10n[$language]->setAttributes(
+                [
+                    'aid'      => 0,
+                    'answer'   => '',
+                    'language' => $language,
+                ],
+                false
+            );
+        }
+        $answer->answerl10ns = $l10n;
+
+        return $answer;
+    }
+
+    /**
+     * Get array of answers options, depending on scale count for this question type.
+     *
+     * @return array Like [0 => Answer[]] or [0 => Answer[], 1 => Answer[]]
+     */
+    public function getScaledAnswerOptions()
+    {
+        $answerScales = $this->questionType->answerscales;
+        $results = [];
+        for ($scale_id = 0; $scale_id < $answerScales; $scale_id++) {
+            if (!empty($this->qid)) {
+                $criteria = new CDbCriteria();
+                $criteria->condition = 'qid = :qid AND scale_id = :scale_id';
+                $criteria->order = 'sortorder, code ASC';
+                $criteria->params = [':qid' => $this->qid, ':scale_id' => $scale_id];
+                $results[$scale_id] = Answer::model()->findAll($criteria);
+            }
+            if (empty($results[$scale_id])) {
+                $results[$scale_id] = [$this->getEmptyAnswerOption()];
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Get array of subquestions, depending on scale count for this question type.
+     *
+     * @return array Like [0 => Question[]] or [0 => Question[], 1 => Question[]]
+     */
+    public function getScaledSubquestions()
+    {
+        $subquestionScale = $this->questionType->subquestions;
+        $results = [];
+        for ($scale_id = 0; $scale_id < $subquestionScale; $scale_id++) {
+            if (!empty($this->qid)) {
+                $criteria = new CDbCriteria();
+                $criteria->condition = 'parent_qid = :parent_qid AND scale_id = :scale_id';
+                $criteria->order = 'question_order, title ASC';
+                $criteria->params = [':parent_qid' => $this->qid, ':scale_id' => $scale_id];
+                $results[$scale_id] = Question::model()->findAll($criteria);
+            }
+            if (empty($results[$scale_id])) {
+                $results[$scale_id] = [$this->getEmptySubquestion()];
+            }
+        }
+        return $results;
     }
 }

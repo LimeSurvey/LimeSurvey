@@ -1932,8 +1932,11 @@ function do_multipleshorttext($ia)
     return array($answer, $inputnames);
 }
 
-// -----------------------------------------------------------------
-// @todo: Can remove DB query by passing in answer list from EM
+/**
+ * @deprecated 4.?.?
+ * @see RenderMultipleNumerical
+ * @see DataSetMultipleNumerical
+ */
 function do_multiplenumeric($ia)
 {
     global $thissurvey;
@@ -2323,9 +2326,15 @@ function do_numerical($ia)
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
 
-    // Fix the display value : Value is stored as decimal in SQL then return dot and 0 after dot. Seems only for numerical question type
-    if (strpos($fValue, ".")) {
-        $fValue = rtrim(rtrim($fValue, "0"), ".");
+    if ($fValue && is_string($fValue)) {
+        // Fix reloaded DECIMAL value
+        if ($fValue[0] == ".") {
+            // issue #15684 mssql SAVE 0.01 AS .0100000000, set it at 0.0100000000
+            $fValue = "0" . $fValue;
+        }
+        if (strpos($fValue, ".")) {
+            $fValue = rtrim(rtrim($fValue, "0"), ".");
+        }
     }
     $fValue = str_replace('.', $sSeparator, $fValue);
 

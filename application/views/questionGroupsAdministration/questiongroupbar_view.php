@@ -102,7 +102,7 @@
                         <?php if (empty($condarray)):?>
                             <!-- can delete group and question -->
                             <button class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal"
-                                data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?>'
+                                data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$gid])); ?>'
                                 data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"); ?>">
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>

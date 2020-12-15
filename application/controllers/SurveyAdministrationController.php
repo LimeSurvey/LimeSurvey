@@ -78,6 +78,10 @@ class SurveyAdministrationController extends LSBaseController
             $this->layout = 'main';
         }
 
+        // Used in question editor (pjax).
+        App()->getClientScript()->registerPackage('ace');
+        App()->getClientScript()->registerPackage('jquery-ace');
+
         return parent::beforeRender($view);
     }
 
@@ -132,8 +136,8 @@ class SurveyAdministrationController extends LSBaseController
         // $aData['display']['surveysummary'] = true;
 
         // Last survey visited
-        $setting_entry = 'last_survey_' . App()->user->getId();
-        SettingGlobal::setSetting($setting_entry, $iSurveyID);
+        $userId = App()->user->getId();
+        SettingGlobal::setSetting('last_survey_' . $userId, $iSurveyID);
 
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->createUrl("surveyAdministration/listsurveys");
@@ -141,13 +145,11 @@ class SurveyAdministrationController extends LSBaseController
         $aData['sidemenu']["survey_menu"] = true;
 
         // We get the last question visited by user for this survey
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID;
         // TODO: getGlobalSetting() DEPRECATED
-        $lastquestion = getGlobalSetting($setting_entry);
-        $setting_entry = 'last_question_' . App()->user->getId() . '_' . $iSurveyID . '_gid';
+        $lastquestion = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID);
 
         // TODO: getGlobalSetting() DEPRECATED
-        $lastquestiongroup = getGlobalSetting($setting_entry);
+        $lastquestiongroup = getGlobalSetting('last_question_' . $userId . '_' . $iSurveyID . '_gid');
 
         if ($lastquestion != null && $lastquestiongroup != null) {
             $aData['showLastQuestion'] = true;
@@ -1859,6 +1861,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['moreInfo'] = $temp;
         }
 
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
 
@@ -1940,16 +1943,17 @@ class SurveyAdministrationController extends LSBaseController
     }
 
     /**
-     * @param int $iSurveyID Given Survey ID.
+     * @param int $surveyid Given Survey ID.
      *
      * @deprecated this action is never used
      *
      * @return void
      * @todo   Add TypeDoc.
      */
-    public function actionGetUrlParamsJSON($iSurveyID)
+    public function actionGetUrlParamsJSON($surveyid)
     {
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = (int) $surveyid;
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
         $aSurveyParameters = SurveyURLParameter::model()->findAll('sid=:sid', [':sid' => $iSurveyID]);
         $aData = array(
             'rows' => []
@@ -1958,11 +1962,12 @@ class SurveyAdministrationController extends LSBaseController
             $row = $oSurveyParameter->attributes;
 
             if ($oSurveyParameter->targetqid != '') {
-                $row['questionTitle'] = $oSurveyParameter->question->title;
+                $row['questionTitle'] = $oSurveyParameter->question->title . ": " . ellipsize(flattenText($oSurveyParameter->question->questionl10ns[$sBaseLanguage]->question, false, true), 43, .70);
             }
 
             if ($oSurveyParameter->targetsqid != '') {
-                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
+                //$row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
+                $row['questionTitle'] .= (' - ' . ellipsize(flattenText($oSurveyParameter->subquestion->questionl10ns[$sBaseLanguage]->question, false, true), 30, .75));
             }
 
             $row['qid'] = $oSurveyParameter->targetqid;
@@ -3024,10 +3029,32 @@ class SurveyAdministrationController extends LSBaseController
     private function tabPanelIntegration($survey, $sLang = null)
     {
         $aData = [];
-        $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
+        $oResult = Question::model()->with('subquestions')->findAll("t.sid={$survey->sid} AND (t.type = 'T'  OR t.type = 'Q'  OR  t.type = 'S') AND t.parent_qid = 0");
         $aQuestions = [];
-        foreach ($oResult as $aRecord) {
-            $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionl10ns[$survey->language]->attributes);
+        foreach ($oResult as $oRecord) {
+            if (count($oRecord->subquestions)) {
+                foreach ($oRecord->subquestions as $oSubquestion) {
+                    $aQuestions[] = array_merge(
+                        $oRecord->attributes, 
+                        $oRecord->questionl10ns[$survey->language]->attributes,
+                        array(
+                            'sqid' => $oSubquestion->qid, 
+                            'sqtitle' => $oSubquestion->title, 
+                            'sqquestion' => $oSubquestion->questionl10ns[$survey->language]->question
+                        )
+                    );
+                }
+            } else {
+                $aQuestions[] = array_merge(
+                    $oRecord->attributes, 
+                    $oRecord->questionl10ns[$survey->language]->attributes,
+                    array(
+                        'sqid' => null, 
+                        'sqtitle' => null, 
+                        'sqquestion' => null
+                    )
+                );
+            }
         }
 
         $aData['jsData'] = [
@@ -3041,22 +3068,25 @@ class SurveyAdministrationController extends LSBaseController
                 'Subquestion ID' => gT('Subquestion ID'),
                 'Add URL parameter' => gT('Add URL parameter'),
                 'Edit URL parameter' => gT('Edit URL parameter'),
-                'Add URL parameter' => gT('Add URL parameter'),
                 'Parameter' => gT('Parameter'),
                 'Target question' => gT('Target question'),
                 'No target question' => gT('(No target question)'),
                 'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
+                'No parameters defined' => gT('No parameters defined'),
+                'Search prompt' => gT('Search:'),
+                'Progress' => gT('Showing _START_ to _END_ of _TOTAL_ entries'),
                 'No, cancel' => gT('No, cancel'),
                 'Yes, delete' => gT('Yes, delete'),
                 'Save' => gT('Save'),
                 'Cancel' => gT('Cancel'),
             ],
-            "questionList" => $aQuestions,
             "surveyid" => $survey->sid,
             "getParametersUrl" => Yii::app()->createUrl('surveyAdministration/getUrlParamsJson', array('surveyid' => $survey->sid)),
         ];
+        $aData['questions'] = $aQuestions;
 
         App()->getClientScript()->registerPackage('panelintegration');
+        App()->getClientScript()->registerPackage('jquery-datatable');
         return $aData;
     }
 

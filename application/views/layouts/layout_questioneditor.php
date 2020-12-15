@@ -34,13 +34,14 @@ echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_templat
 
 $layoutHelper->renderSurveySidemenu($aData);
 
-
 echo '<div '
     . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
     . '>';
-//New general top bar (VueComponent)
 if (!isset($aData['renderSpecificTopbar'])) {
     $layoutHelper->renderGeneraltopbar($aData);
+} else {
+    // Render hidden Vue component. Needed because of pjax.
+    $layoutHelper->renderGeneraltopbar(['sid' => 0, 'qid' => 0, 'gid' => 0]);
 }
 
 echo '<div id="pjax-content" class="col-12">';

@@ -174,6 +174,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ca']['radixpoint'] = 1;
     $supportedLanguages['ca']['momentjs'] = 'ca';
 
+    // Chichewa
+    $supportedLanguages['ny']['description'] = gT('Chichewa');
+    $supportedLanguages['ny']['nativedescription'] = 'Chichewa';
+    $supportedLanguages['ny']['rtl'] = false;
+    $supportedLanguages['ny']['dateformat'] = 5;
+    $supportedLanguages['ny']['radixpoint'] = 0;
+
     // Chinese (Simplified)
     $supportedLanguages['zh-Hans']['description'] = gT('Chinese (Simplified)');
     $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
@@ -354,6 +361,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['el']['dateformat'] = 8;
     $supportedLanguages['el']['radixpoint'] = 1;
     $supportedLanguages['el']['momentjs'] = 'el';
+
+    // Greenlandic
+    $supportedLanguages['kal']['description'] = gT('Greenlandic');
+    $supportedLanguages['kal']['nativedescription'] = 'Kalaallisut';
+    $supportedLanguages['kal']['rtl'] = false;
+    $supportedLanguages['kal']['dateformat'] = 2;
+    $supportedLanguages['kal']['radixpoint'] = 1;
+    $supportedLanguages['kal']['momentjs'] = null;
 
     // Hebrew
     $supportedLanguages['he']['description'] = gT('Hebrew');

@@ -286,7 +286,7 @@ class QuestionGroup extends LSActiveRecord
             if (is_null($condarray)) {
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
+                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$this->gid]))).' })" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'
