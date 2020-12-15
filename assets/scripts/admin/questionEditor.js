@@ -1558,6 +1558,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {string} source
      */
     showLabelSetPicker: function(event /*: Event */, source /*: string */) {
+      $('#btnlsreplace').off('click');
+      $('#btnlsinsert').off('click');
       $('#btnlsreplace').on('click', (e) => {
         e.preventDefault();
         transferLabels('replace', source);
