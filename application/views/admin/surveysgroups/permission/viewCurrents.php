@@ -1,6 +1,6 @@
     <div class="well">
-        <p><?= gT("User listed here can see groups in lists and view descriptions and other settings. It's the minial right, youhave to use delete action to remve this right.") ?></p>
-        <p><?= gT("This surveys group are shown in list for user with rigths on survey group, user with rigths an a survey inside this group and if this groups was set as available.") ?></p>
+        <p><?= gT("User listed here can see groups in lists and view descriptions and other settings. This is the minimal right, you have to use delete action to remove this right.") ?></p>
+        <p><?= gT("This surveys group are shown in list for user with rigths on survey group, user with any rights on one survey inside this group and if this groups was set as available.") ?></p>
     </div>
     <?php if(!empty($oExistingUsers)) {
         $this->renderPartial('surveysgroups/permission/currentUsersList',array(
