@@ -777,6 +777,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
      */
     addInputPredefined(1, source).then((result) => {
       $.each(result, (lang, row) => {
+        if (lang.length !== 2) {
+          alert('Internal error: lang must have exactly two characters, but is ' + lang);
+          throw 'abort';
+        }
           /*
         if (!(row instanceof HTMLElement)) {
           alert('Internal error: row is not an HTMLElement but a ' + (typeof row));
