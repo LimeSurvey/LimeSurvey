@@ -58,7 +58,7 @@ $this->renderPartial(
                 />
                 <?= gt('Question overview'); ?>
             </label>
-            <label class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
+            <label id="questionEditorButton" class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
                 <input
                     type="radio"
                     name="question-overview-switch"
