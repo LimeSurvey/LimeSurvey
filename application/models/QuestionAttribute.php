@@ -457,6 +457,20 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
+     * Returns the value for attribute 'question_template'.
+     *
+     * @return string|null question_template or null if it not exists
+     */
+    public static function getQuestionTemplateValue($questionID){
+        $question_template = QuestionAttribute::model()->findByAttributes([
+            'qid' => $questionID,
+            'attribute' => 'question_template'
+        ]);
+
+        return $question_template->value;
+    }
+
+    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML

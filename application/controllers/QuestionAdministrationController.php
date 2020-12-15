@@ -150,6 +150,11 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
+       $questionTemplate = 'core';
+        if ($question->qid !== 0) {
+            $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
+        }
+
         $this->aData['surveyid'] = $question->sid;
         $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
@@ -159,7 +164,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, 'core');  // TODO: question_template
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionTemplate);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
@@ -189,6 +194,7 @@ class QuestionAdministrationController extends LSBaseController
             [
                 'oSurvey'                => $question->survey,
                 'question'               => $question,
+                'questionTemplate'       => $questionTemplate,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
                 'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
                 'advancedSettings'       => $advancedSettings,
@@ -2117,7 +2123,6 @@ class QuestionAdministrationController extends LSBaseController
         //here we get a Question object (also if question is new --> QuestionCreate)
 
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        //todo actionGetAdvancedOptions missing here? (question_template should be used here)
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
         // TODO: Why can empty array be saved as value?
         foreach ($advancedSettings as &$category) {
@@ -2129,9 +2134,6 @@ class QuestionAdministrationController extends LSBaseController
         }
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
-        //here we get a Question object (also if question is new --> QuestionCreate)
-     //   $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
-
 
         return $advancedSettings;
     }

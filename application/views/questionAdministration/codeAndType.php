@@ -80,5 +80,5 @@ $oQuestionSelector = $this->beginWidget(
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
-    <input type="hidden" id="question_template" name="question[template]" value="<?= 'core'; ?>" />
+    <input type="hidden" id="question_template" name="question[question_template]" value="<?= $questionThemeName; ?>" />
 </div>
