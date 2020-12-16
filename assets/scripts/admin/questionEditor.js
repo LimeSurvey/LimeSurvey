@@ -409,9 +409,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
       _.forEach(languages, (curLanguage, x) => {
         // TODO: This is the only row that's different from deleteSubquestionInput().
-        const $tablerow = $(`#row_${languages[x]}_${info[2]}_${info[3]}_${info[4]}`);
+        const rowId = `#row_${languages[x]}_${info[2]}_${info[3]}`;
+        const $tablerow = $(rowId);
         if ($tablerow.length === 0) {
-          alert('Internal error: Could not find row to delete');
+          console.error('info', info);
+          alert('Internal error: Could not find row to delete with id ' + rowId);
           throw 'abort';
         }
         if (x === 0) {
