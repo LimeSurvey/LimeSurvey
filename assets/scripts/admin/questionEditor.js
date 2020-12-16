@@ -187,12 +187,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * @param {number} i
+   * @param {number} position
    * @param {string} source Either 'subquestions' or 'answeroptions'
    * @return {Promise<XMLHttpRequest>}
    */
-  function addInputPredefined(i /*: number */, source /*: string */) /*: Promise<XMLHttpRequest> */ {
-    // TODO: Support answer options
+  function fetchLabelSetPredefined(position /*: number */, source /*: string */) /*: Promise<XMLHttpRequest> */ {
     let $dataInput;
     if (source === 'subquestions') {
        $dataInput = $('#add-subquestion-input-javascript-datas');
@@ -204,7 +203,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     if ($dataInput.length === 0) {
-      alert('Internal error: Found no data element in addInputPredefined');
+      alert('Internal error: Found no data element in fetchLabelSetPredefined');
       throw 'abort';
     }
 
@@ -215,7 +214,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       gid: $dataInput.data('gid'),
       codes: JSON.stringify({lbl_1: 'eins'}),  // jshint ignore:line
       scale_id: scaleId,  // jshint ignore:line
-      position: i,
+      position: position,
       type: 'subquestion',
       languages: JSON.stringify($dataInput.data('languages').join(';')),
     };
@@ -775,7 +774,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     /**
      * result is {lang: html} object.
      */
-    addInputPredefined(1, source).then((result) => {
+    fetchLabelSetPredefined(1, source).then((result) => {
       $.each(result, (lang, row) => {
         if (lang.length !== 2) {
           alert('Internal error: lang must have exactly two characters, but is ' + lang);
@@ -802,6 +801,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           });
         }
 
+        // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
           try {
@@ -847,6 +847,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $row.find('td.code-title').find('input[type=text]').val(label.code);
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
+
+            if (source === 'subquestions') {
+              $table.find('.btnaddsubquestion').off('click.subquestions').on('click.subquestions', addSubquestionInput);
+              $table.find('.btndelsubquestion').off('click.subquestions').on('click.subquestions', deleteSubquestionInput);
+            } else {
+              $table.find('.btnaddanswer').off('click.subquestions').on('click.subquestions', addAnswerOptionInput);
+              $table.find('.btndelanswer').off('click.subquestions').on('click.subquestions', deleteAnswerOptionInput);
+            }
           } catch (e) {
             alert('Internal error in transferLabels: ' + e);
             throw 'abort';
