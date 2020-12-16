@@ -133,7 +133,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         updateIfEmpty($(this).find('.assessment'), 'id', `assessment_${uniqueRowId}_${scaleId}`);
         updateIfEmpty($(this).find('.assessment'), 'name', `assessment_${uniqueRowId}_${scaleId}`);
         // Newly inserted row editor button
-        $(this).find('.editorLink').each(function( index ) {
+        $(this).find('.editorLink').each(function() {
           var inputName = $(this).closest('.input-group').find('input[type=text]').first().attr('name');
           if (inputName) {
             $(this).attr(
@@ -1416,9 +1416,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
    * Used by subquestions and answer options.
    *
    * @param {string} msg Error message to show.
-   * @return {(HTMLInputElement) => void}
+   * @return {(HTMLInputElement) => boolean} HTMLInputElement is the table row or element.
    */
-  function createCheckUniqueFunction(msg /*: string */) /*: (HTMLInputElement) => void */ {
+  function createCheckUniqueFunction(msg /*: string */) /*: (HTMLElement) => boolean */ {
     return (that) => {
       const table = that.closest('table');
       if (!(table instanceof HTMLElement)) {
@@ -1432,22 +1432,27 @@ $(document).on('ready pjax:scriptcomplete', function () {
           msg,
           'well-lg bg-danger text-center'
         );
-        return;
+        return false;
       }
 
       // Check too long subquestion code.
+      // NB: Might not be input element when checking from "Save" button.
       // TODO: maxlength attribute
-      const code = that.value;
-      if (code.length > 20) {
-        $(that.parentElement).addClass('has-error');
-        LS.LsGlobalNotifier.create(
-          // TODO: Translation
-          'Subquestion code is too long. Maximal number of characters is: 20.',
-          'well-lg bg-danger text-center'
-        );
-        return;
+      if (that instanceof HTMLInputElement) {
+        const code = that.value;
+        if (code.length > 20) {
+          $(that.parentElement).addClass('has-error');
+          LS.LsGlobalNotifier.create(
+            // TODO: Translation
+            'Subquestion code is too long. Maximal number of characters is: 20.',
+            'well-lg bg-danger text-center'
+          );
+          return false;
+        }
       }
+
       $(that.parentElement).removeClass('has-error');
+      return true;
     };
   }
 
@@ -1617,6 +1622,21 @@ $(document).on('ready pjax:scriptcomplete', function () {
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
+
+      const firstSubquestionRow = document.querySelector('.subquestions-table tr');
+      if (firstSubquestionRow) {
+        // This will show error message if subquestion code is not unique.
+        if (!LS.questionEditor.showSubquestionCodeUniqueError(firstSubquestionRow)) {
+          return false;
+        }
+      }
+
+      const firstAnsweroptionRow = document.querySelector('.answeroptions-table tr');
+      // This will show error message if answer option code is not unique.
+      if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+        return false;
+      }
+
       $.ajax({
         url: languageJson.checkQuestionCodeIsUniqueURL,
         method: 'GET',
