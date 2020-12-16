@@ -599,35 +599,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
   }
 
   /**
-   * Check if all existing codes are unique
-   * If sNewValue is not empty then only sNewValue is checked for uniqueness against the existing codes
-   *
-   * @param sNewValue
-   * @returns {boolean} False if codes are not unique
-   * @todo Remove
-   */
-  function areCodesUnique(sNewValue) {  // jshint ignore: line
-    const languages = languageJson.langs.split(';');
-    let dupefound = false;
-    $(`#tabpage_${languages[0]} .answertable tbody`).each(function () {
-      let codearray = [];
-      $(this).find('tr .code').each(function () {
-        codearray.push($(this).val());
-      });
-      if (sNewValue !== '') {
-        codearray = LS.getUnique(codearray);
-        codearray.push(sNewValue);
-      }
-      if (LS.arrHasDupes(codearray)) {
-        dupefound = true;
-      }
-    });
-    if (dupefound) {
-      return false;
-    }
-  }
-
-  /**
    * @return {void}
    */
   //function popupeditor() {
@@ -1747,20 +1718,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     // Hide help tips by default.
     $('.question-option-help').hide();
-
-    /*****************************************/
-    // Check Question Code is unique.
-    /*
-    $('#questionCode').focusout(() => {
-        let code = $('#questionCode').val();
-        if (code !== undefined || code !== '') {
-            let isValid = checkCodeUniqueness(code);
-        //     if (!isValid) {
-        //     }
-        } else {
-        }
-    });
-    */
 
     // Check Answer Code is unique.
      $('#answerCode').focusout( () => {
