@@ -941,7 +941,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = (int) substr($sDateTime, 6, 2);
                     $iHour = (int) substr($sDateTime, 8, 2);
                     $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = date('D, d M Y  h:i a', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
                     $sQuery = 'SELECT count(*) as recordcount FROM '.$sTableName;
 
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
