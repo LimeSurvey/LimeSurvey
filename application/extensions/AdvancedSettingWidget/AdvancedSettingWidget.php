@@ -5,6 +5,9 @@ class AdvancedSettingWidget extends CWidget
     /** @var AdvancedSetting */
     public $setting;
 
+    /** @var Survey */
+    public $survey;
+
     /**
      * @todo Classes instead of array.
      * @return void

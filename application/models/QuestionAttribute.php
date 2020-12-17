@@ -91,6 +91,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param integer $iQuestionID
      * @param string $sAttributeName
      * @param string $sValue
+     * @param string $sLanguage
      * @return CDbDataReader
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
