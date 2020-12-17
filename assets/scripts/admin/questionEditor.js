@@ -322,7 +322,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $defer.resolve({ lang: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert('Internal error: ' + errormessage);
+        alert('Internal error in quick add: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
     });
@@ -1016,7 +1016,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
               $(item.langtable).find('tbody').append(tableRow);
             } catch (e) {
-              alert('Internal error:' + e);
+              alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
             }
           });
@@ -1522,7 +1522,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        alert(`Internal error: ${ex}`);
+        console.error(ex);
+        alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
 
@@ -1605,7 +1606,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
-          alert('Internal error: ' + data);
+          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
           throw 'abort';
         }
       });
@@ -1663,8 +1664,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $('#question-code-unique-warning').removeClass('hidden');
           }
         },
-        error: (data) => {
-          alert('Internal error: ' + data);
+        error: (response) => {
+          alert('Internal error in checkIfSaveIsValid: ' + response);
           throw 'abort';
         }
       });
