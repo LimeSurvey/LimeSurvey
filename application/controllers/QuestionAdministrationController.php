@@ -319,6 +319,8 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
+        $calledWithAjax = (int) $request->getPost('ajax');
+
         $question = Question::model()->findByPk((int) $questionData['question']['qid']);
 
         // Different permission check when sid vs qid is given.
@@ -399,14 +401,19 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->commit();
 
             // All done, redirect to edit form.
-            App()->setFlashMessage('Question saved', 'success');
             $question->refresh();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if(!($tabOverviewEditorValue==='overview' || $tabOverviewEditorValue==='editor')){
                 $tabOverviewEditorValue = 'overview';
             }
-            $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
+            if ($calledWithAjax) {
+                App()->setFlashMessage(gT('Question saved'), 'success');
+                $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
+            } else {
+                echo gT('Question saved');
+                Yii::app()->end();
+            }
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
@@ -420,17 +427,6 @@ class QuestionAdministrationController extends LSBaseController
                 )
             );
         }
-
-        // TODO: Redirect happens in try-catch above.
-        // Return success message.
-        $this->renderJSON(
-            [
-                'success' => true,
-                'message' => gT('Question successfully stored'),
-            ]
-        );
-        // TODO: Needed?
-        App()->close();
     }
 
     /**

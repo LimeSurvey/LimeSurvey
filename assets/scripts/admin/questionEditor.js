@@ -1613,6 +1613,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     /**
      * When clicking save, first check if codes etc are valid.
+     * Also post using Ajax.
      *
      * @param {Event} event
      * @param {string} tabQuestionEditor
@@ -1622,6 +1623,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
+      const saveWithAjax = event.target.dataset.saveWithAjax === 'true';
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
@@ -1652,19 +1654,55 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
-                if(tabQuestionEditor === 'editor'){
-                    $('#tab-overview-editor-input').val('editor');
-                }else{
-                    $('#tab-overview-editor-input').val('overview');
+              if(tabQuestionEditor === 'editor'){
+                $('#tab-overview-editor-input').val('editor');
+              }else{
+                $('#tab-overview-editor-input').val('overview');
+              }
+
+              if (saveWithAjax) {
+                const data = {};
+                const form = document.getElementById('edit-question-form');
+                if (!(form instanceof HTMLFormElement)) {
+                  throw 'form is not HTMLFormElement';
                 }
-              button.click();
+
+                $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
+                  data[x.name] = x.value;
+                }); 
+                // Signal to controller that we're posting via Ajax.
+                data.ajax = true;
+
+                $('#ls-loading').show();
+                $.post({
+                  data,
+                  url: form.action,
+                  success: (message) => {
+                    $('#ls-loading').hide();
+                    LS.LsGlobalNotifier.create(
+                      message,
+                      'well-lg bg-primary text-center'
+                    );
+                  },
+                  error: (message) => {
+                    $('#ls-loading').hide();
+                    LS.LsGlobalNotifier.create(
+                      message,
+                      'well-lg bg-danger text-center'
+                    );
+                  }
+                });
+              } else {
+                // Just submit form.
+                button.click();
+              }
             }
           } else {
             $('#question-code-unique-warning').removeClass('hidden');
           }
         },
-        error: (data) => {
-          alert('Internal error: ' + data);
+        error: (response) => {
+          alert('Internal error: ' + response);
           throw 'abort';
         }
       });

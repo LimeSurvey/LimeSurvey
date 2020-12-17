@@ -36,12 +36,13 @@
                     <!-- Right Buttons -->
                     <li>
                         <div class="topbarbutton">
-                            <!-- Save and close -->
+                            <!-- Save -->
                             <a
                                 id="save-button-create-question"
                                 class="btn btn-default"
                                 role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor' );"
+                                data-save-with-ajax="true"
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
                             >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save");?>
