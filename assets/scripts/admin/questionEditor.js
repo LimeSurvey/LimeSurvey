@@ -1633,9 +1633,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
 
       const firstAnsweroptionRow = document.querySelector('.answeroptions-table tr');
-      // This will show error message if answer option code is not unique.
-      if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
-        return false;
+      if (firstAnsweroptionRow) {
+        // This will show error message if answer option code is not unique.
+        if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          return false;
+        }
       }
 
       $.ajax({
