@@ -1,3 +1,5 @@
+<?php /**@var array $questionTheme */ ?>
+
 <div class="col-lg-12 content-right">
 
     <!-- Summary Table -->
@@ -99,12 +101,15 @@
                 </strong>
             </td>
             <td>
-                <?php echo $questionTypes[$question->type]['description']; ?>
+                <?php
+                    echo $questionTheme['title'] . '(Type: ' .$questionTheme['question_type'] . ')';
+                //echo $questionTypes[$question->type]['description'];
+                ?>
             </td>
         </tr>
 
         <!-- Warning : You need to add answer -->
-        <?php if ($answersCount == 0 && $questionTypes[$question->type]['answerscales'] > 0):?>
+        <?php if ($answersCount == 0 && (int)$questionTheme['settings']->answerscales > 0):?>
         <tr>
             <td>
             </td>
@@ -119,7 +124,7 @@
         <?php endif; ?>
 
         <!--  Warning : You need to add subquestions to this question -->
-        <?php  if ($subquestionsCount == 0 && $questionTypes[$question->type]['subquestions'] > 0): ?>
+        <?php  if ($subquestionsCount == 0 && (int)$questionTheme['settings']->subquestions > 0): ?>
             <tr>
                 <td></td>
                 <td>

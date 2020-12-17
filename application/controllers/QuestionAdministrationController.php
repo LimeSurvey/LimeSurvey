@@ -196,7 +196,6 @@ class QuestionAdministrationController extends LSBaseController
                 'question'               => $question,
                 'questionTemplate'       => $questionTemplate,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
-                'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
                 'advancedSettings'       => $advancedSettings,
                 'generalSettings'        => $this->getGeneralOptions(
                     $question->qid,
@@ -838,10 +837,12 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @return void
      */
+    /*   not used anymore (deprecated functions)
     public function actionGetQuestionTypeList()
     {
         $this->renderJSON(QuestionType::modelsAttributes());
     }
+    */
 
     /**
      * @todo document me.
@@ -850,13 +851,14 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $sQuestionType
      * @return void
      */
+    /*   not used anymore (deprecated functions)
     public function actionGetQuestionTypeInformation($sQuestionType)
     {
         $aTypeInformations = QuestionType::modelsAttributes();
         $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
 
         $this->renderJSON($aQuestionTypeInformation);
-    }
+    }*/
 
     /**
      * Renders the top bar definition for questions as JSON document
@@ -871,9 +873,6 @@ class QuestionAdministrationController extends LSBaseController
         $sid = $oQuestion->sid;
         $gid = $oQuestion->gid;
         $qid = $oQuestion->qid;
-        $questionTypes = QuestionType::modelsAttributes();
-        // TODO: Rename Variable for better readability.
-        $qrrow = $oQuestion->attributes;
         $ownsSaveButton = true;
         $ownsImportButton = true;
 
@@ -895,8 +894,7 @@ class QuestionAdministrationController extends LSBaseController
                 'hasReadPermission'   => $hasReadPermission,
                 'gid'                 => $gid,
                 'qid'                 => $qid,
-                'qrrow'               => $qrrow,
-                'qtypes'              => $questionTypes,
+                'hasdefaultvalues'    => (int)(QuestionTheme::findQuestionMetaData($oQuestion->type)['settings']->hasdefaultvalues),
                 'ownsSaveButton'      => $ownsSaveButton,
                 'ownsImportButton'    => $ownsImportButton,
             ],
@@ -1079,7 +1077,7 @@ class QuestionAdministrationController extends LSBaseController
         $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-        $oDefaultValues = self::getDefaultValues($iSurveyID, $gid, $qid);
+        $oDefaultValues = self::getDefaultValues($iSurveyID, $gid, $qid, $questionMetaData);
 
         $aData = [
             'oQuestion'    => $oQuestion,
@@ -1842,14 +1840,16 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $iSurveyID
      * @param int $gid
      * @param int $qid
+     * @param stdClass $questionMetaData the question meta data (like hasdefaultvalues etc.)
      * @return array Array with defaultValues
      */
-    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid)
+    public static function getDefaultValues(int $iSurveyID, int $gid, int $qid, stdClass $questionMetaData)
     {
         $aDefaultValues = [];
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
         $aQuestionAttributes = $oQuestion->attributes;
-        $aQuestionTypeMetadata = QuestionType::modelsAttributes();
+        //$aQuestionTypeMetadata = QuestionType::modelsAttributes();
+
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         foreach ($oSurvey->allLanguages as $language) {
@@ -1857,8 +1857,8 @@ class QuestionAdministrationController extends LSBaseController
             $aDefaultValues[$language][$aQuestionAttributes['type']] = [];
 
             // If there are answerscales
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] > 0) {
-                for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales']; $scale_id++) {
+            if ( (int)$questionMetaData->answerscales > 0) {
+                for ($scale_id = 0; $scale_id < (int)$questionMetaData->answerscales; $scale_id++) {
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
 
                     $defaultvalue = DefaultValue::model()->with('defaultvaluel10ns')->find(
@@ -1905,9 +1905,9 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             // If there are subquestions and no answerscales
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] > 0) {
-                for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions']; $scale_id++) {
+            if ((int)$questionMetaData->answerscales == 0 &&
+                (int)$questionMetaData->subquestions > 0) {
+                for ($scale_id = 0; $scale_id < (int)$questionMetaData->subquestions; $scale_id++) {
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
 
                     $sqresult = Question::model()
@@ -1958,8 +1958,8 @@ class QuestionAdministrationController extends LSBaseController
                     }
                 }
             }
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] == 0) {
+            if ((int)$questionMetaData->answerscales == 0 &&
+                (int)$questionMetaData->subquestions == 0) {
                 $defaultvalue = DefaultValue::model()
                     ->with('defaultvaluel10ns')
                     ->find(

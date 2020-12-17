@@ -107,7 +107,6 @@ $this->renderPartial(
                             [
                                 'oSurvey'             => $oSurvey,
                                 'question'            => $question,
-                                'questionTypes'       => $aQuestionTypeStateList,
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups,
                                 'questionThemeTitle'  => $questionTheme['title'],
                                 'questionThemeName'   => $questionTheme['name'],
@@ -133,7 +132,6 @@ $this->renderPartial(
                                     'oSurvey'         => $oSurvey,
                                     'question'        => $question,
                                     'aStructureArray' => $aQuestionTypeGroups,
-                                    'questionTypes'   => $aQuestionTypeStateList,
                                 ]
                             ); ?>
                         </div>
@@ -180,7 +178,7 @@ $this->renderPartial(
                         "summary",
                         [
                             'question'         => $question,
-                            'questionTypes'     => $aQuestionTypeStateList,
+                            'questionTheme'    => $questionTheme,
                             'answersCount'      => count($question->answers),
                             'subquestionsCount' => count($question->subquestions),
                             'advancedSettings'  => $advancedSettings

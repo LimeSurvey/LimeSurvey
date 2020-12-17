@@ -344,7 +344,7 @@ if ($hasUpdatePermission) {
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['conditions']);
 
-    if ($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
+    if ($hasdefaultvalues > 0) {
         $buttons['default_values'] = [
             'url' => $this->createUrl("questionAdministration/editdefaultvalues", ["surveyid" => $sid , "gid" => $gid , "qid" => $qid]),
             'name' => gT("Edit default anwers"),
