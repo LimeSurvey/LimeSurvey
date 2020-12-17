@@ -56,7 +56,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
-    console.trace('Not on question editor page, do not run question editor script');
     return;
   }
 
