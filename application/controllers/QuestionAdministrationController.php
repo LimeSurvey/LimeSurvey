@@ -150,6 +150,11 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
+       $questionTemplate = 'core';
+        if ($question->qid !== 0) {
+            $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
+        }
+
         $this->aData['surveyid'] = $question->sid;
         $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
@@ -159,7 +164,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, 'core');  // TODO: question_template
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionTemplate);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
@@ -189,6 +194,7 @@ class QuestionAdministrationController extends LSBaseController
             [
                 'oSurvey'                => $question->survey,
                 'question'               => $question,
+                'questionTemplate'       => $questionTemplate,
                 'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
                 'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
                 'advancedSettings'       => $advancedSettings,
@@ -1391,10 +1397,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme the question theme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1415,7 +1422,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->qid,
             $questionType,
             $question->gid,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
     }
@@ -1531,10 +1538,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1555,7 +1563,7 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $this->getAdvancedOptions(
             $question->qid,
             $questionType,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial(
             "advancedSettings",
@@ -2113,6 +2121,7 @@ class QuestionAdministrationController extends LSBaseController
     private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
+
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
         // TODO: Why can empty array be saved as value?
@@ -2125,6 +2134,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
+
         return $advancedSettings;
     }
 

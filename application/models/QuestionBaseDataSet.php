@@ -63,11 +63,12 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Always hide question => if available
         */
         $generalOptions = [
+            /*
             'question_template' => QuestionThemeGeneralOption::make(
                 $this->oQuestion,
                 $this->sQuestionType,
                 $question_template
-            ),
+            ),*/
             'gid'             => GroupSelectorGeneralOption::make($this->oQuestion, $this->sLanguage),
             'other'           => new OtherGeneralOption($this->oQuestion),
             'mandatory'       => new MandatoryGeneralOption($this->oQuestion),

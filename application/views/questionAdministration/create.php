@@ -48,6 +48,7 @@ $this->renderPartial(
                 $activeOverview = '';
                 $activeEditor = 'active';
                 $visibilityOverview = 'style="display:none;"';
+                $visibilityEditor = '';
             }
             ?>
             <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
@@ -58,7 +59,7 @@ $this->renderPartial(
                 />
                 <?= gt('Question overview'); ?>
             </label>
-            <label class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
+            <label id="questionEditorButton" class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
                 <input
                     type="radio"
                     name="question-overview-switch"
@@ -99,14 +100,18 @@ $this->renderPartial(
 
                     <!-- Question code and question type selector -->
                     <div class="row">
-                        <?php $this->renderPartial(
+                        <?php
+                        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionTemplate);
+                        $this->renderPartial(
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,
                                 'question'            => $question,
-                                'aStructureArray'     => $aQuestionTypeGroups,
                                 'questionTypes'       => $aQuestionTypeStateList,
-                                'aQuestionTypeGroups' => $aQuestionTypeGroups
+                                'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                                'questionThemeTitle'  => $questionTheme['title'],
+                                'questionThemeName'   => $questionTheme['name'],
+                                'questionThemeClass'  => ($questionTheme['settings'])->class
                             ]
                         ); ?>
                     </div>

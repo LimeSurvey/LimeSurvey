@@ -616,12 +616,18 @@ class QuestionTheme extends LSActiveRecord
      *
      * @return mixed $baseQuestions Questions as Array or Object
      */
-    public static function findQuestionMetaData($question_type, $language = '')
+    public static function findQuestionMetaData($question_type, $question_template = 'core', $language = '')
     {
         $criteria = new CDbCriteria();
-        $criteria->condition = 'extends = :extends';
-        $criteria->addCondition('question_type = :question_type', 'AND');
-        $criteria->params = [':extends' => '', ':question_type' => $question_type];
+
+        if($question_template === 'core') {
+            $criteria->condition = 'extends = :extends';
+            $criteria->addCondition('question_type = :question_type', 'AND');
+            $criteria->params = [':extends' => '', ':question_type' => $question_type];
+        }else{
+            $criteria->addCondition('question_type = :question_type AND name = :name');
+            $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
+        }
 
         $baseQuestion = self::model()->query($criteria, false, false);
 

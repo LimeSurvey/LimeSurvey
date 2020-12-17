@@ -38,7 +38,7 @@
                         <div class="topbarbutton">
                             <!-- Save and close -->
                             <a
-                                id="save-and-close-button-create-question"
+                                id="save-button-create-question"
                                 class="btn btn-default"
                                 role="button"
                                 onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor' );"
