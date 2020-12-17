@@ -1481,9 +1481,22 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
+            $newTitle = Yii::app()->request->getParam('title');
+            $oldQuestion = Question::model()->findByAttributes(['title' => $newTitle, 'sid' => $surveyId]);
+            if (!empty($oldQuestion)) {
+                Yii::app()->user->setFlash('error', gT("Duplicate question code"));
+                $this->redirect(
+                    $this->createUrl('surveyAdministration/view/',
+                        [
+                            'surveyid' => $surveyId,
+                        ]
+                    )
+                );
+            }
+
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
-            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionCode($newTitle);
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
