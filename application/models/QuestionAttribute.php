@@ -523,6 +523,16 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
         }
+
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        foreach ($aAttributes as $attributeName => $attribute) {
+          foreach ($attribute as $fieldName => $value) {
+            if ($value === []) {
+              $aAttributes[$attributeName][$fieldName] = null;
+            }
+          }
+        }
+
         return $aAttributes;
     }
 
