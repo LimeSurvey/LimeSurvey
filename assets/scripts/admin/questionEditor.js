@@ -1641,6 +1641,50 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       }
 
+      // Helper function after unique check.
+      const saveFormWithAjax /*: (void) => (void) */ = () => {
+        const data = {};
+        const form = document.getElementById('edit-question-form');
+        if (!(form instanceof HTMLFormElement)) {
+          throw 'form is not HTMLFormElement';
+        }
+
+        $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
+          data[x.name] = x.value;
+        });
+        // Signal to controller that we're posting via Ajax.
+        data.ajax = true;
+
+        // Show loading gif.
+        $('#ls-loading').show();
+
+        // Post complete form to controller.
+        $.post({
+          data,
+          url: form.action,
+          success: (message) => {
+            // Hide loading gif.
+            $('#ls-loading').hide();
+
+            // Update the side-bar.
+            LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
+
+            // Show confirm message.
+            LS.LsGlobalNotifier.create(
+              message,
+              'well-lg bg-primary text-center'
+            );
+          },
+          error: (message) => {
+            $('#ls-loading').hide();
+            LS.LsGlobalNotifier.create(
+              message,
+              'well-lg bg-danger text-center'
+            );
+          }
+        });
+      };
+
       $.ajax({
         url: languageJson.checkQuestionCodeIsUniqueURL,
         method: 'GET',
@@ -1661,37 +1705,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               }
 
               if (saveWithAjax) {
-                const data = {};
-                const form = document.getElementById('edit-question-form');
-                if (!(form instanceof HTMLFormElement)) {
-                  throw 'form is not HTMLFormElement';
-                }
-
-                $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
-                  data[x.name] = x.value;
-                }); 
-                // Signal to controller that we're posting via Ajax.
-                data.ajax = true;
-
-                $('#ls-loading').show();
-                $.post({
-                  data,
-                  url: form.action,
-                  success: (message) => {
-                    $('#ls-loading').hide();
-                    LS.LsGlobalNotifier.create(
-                      message,
-                      'well-lg bg-primary text-center'
-                    );
-                  },
-                  error: (message) => {
-                    $('#ls-loading').hide();
-                    LS.LsGlobalNotifier.create(
-                      message,
-                      'well-lg bg-danger text-center'
-                    );
-                  }
-                });
+                saveFormWithAjax();
               } else {
                 // Just submit form.
                 button.click();
