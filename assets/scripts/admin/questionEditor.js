@@ -38,10 +38,8 @@ declare var LS: any
 // Globals for jshint.
 /* globals $, _, alert, document */
 
+// NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
-
-// Public functions are put here.
-LS.questionEditor = {};
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
