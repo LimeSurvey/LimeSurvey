@@ -1618,11 +1618,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
      * @param {string} tabQuestionEditor
      * @return {boolean}
      */
-    checkIfSaveIsValid: function(event, tabQuestionEditor = 'editor') {
+    checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
-      const saveWithAjax = event.target.dataset.saveWithAjax === 'true';
+      const target = event.currentTarget;
+      if (!(target instanceof HTMLElement)) {
+        alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        return false;
+      }
+      const saveWithAjax = target.dataset.saveWithAjax === 'true';
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
@@ -1652,7 +1657,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           data[x.name] = x.value;
         });
         // Signal to controller that we're posting via Ajax.
-        data.ajax = true;
+        data.ajax = 1;
 
         // Show loading gif.
         $('#ls-loading').show();
@@ -1661,25 +1666,40 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.post({
           data,
           url: form.action,
-          success: (message) => {
+          success: (response /*: string */, textStatus /*: string */) => {
+            const json = JSON.parse(response);
+
             // Hide loading gif.
             $('#ls-loading').hide();
 
             // Update the side-bar.
             LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
 
-            // Show confirm message.
-            LS.LsGlobalNotifier.create(
-              message,
-              'well-lg bg-primary text-center'
-            );
+            if (textStatus === 'success') {
+              // Show confirm message.
+              LS.LsGlobalNotifier.create(
+                json.message,
+                'well-lg bg-primary text-center'
+              );
+            } else {
+              // Show error message.
+              LS.LsGlobalNotifier.create(
+                json.message,
+                'well-lg bg-danger text-center'
+              );
+            }
           },
-          error: (message) => {
+          error: (data) => {
             $('#ls-loading').hide();
-            LS.LsGlobalNotifier.create(
-              message,
-              'well-lg bg-danger text-center'
-            );
+            if (data.responseJSON) {
+              LS.LsGlobalNotifier.create(
+                data.responseJSON.message,
+                'well-lg bg-danger text-center'
+              );
+            } else {
+              alert('Internal error from saveFormWithAjax: no data.responseJSON found');
+              throw 'abort';
+            }
           }
         });
       };

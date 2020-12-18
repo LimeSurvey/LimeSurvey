@@ -408,18 +408,17 @@ class QuestionAdministrationController extends LSBaseController
                 $tabOverviewEditorValue = 'overview';
             }
             if ($calledWithAjax) {
+                echo json_encode(['message' => gT('Question saved')]);
+                Yii::app()->end();
+            } else {
                 App()->setFlashMessage(gT('Question saved'), 'success');
                 $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
-            } else {
-                echo gT('Question saved');
-                Yii::app()->end();
             }
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
                 500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString(),
+                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
                 0,
                 App()->createUrl(
                     'surveyAdministration/view/',

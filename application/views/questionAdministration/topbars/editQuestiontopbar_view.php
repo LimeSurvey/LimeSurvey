@@ -41,7 +41,9 @@
                                 id="save-button-create-question"
                                 class="btn btn-default"
                                 role="button"
-                                data-save-with-ajax="true"
+                                <?php if ($question->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
+                                    data-save-with-ajax="true"
+                                <?php endif; ?>
                                 onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
                             >
                                 <i class="fa fa-check-square"></i>
