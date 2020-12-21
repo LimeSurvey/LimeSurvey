@@ -61,7 +61,7 @@ foreach($systemInfos as &$systemInfo) {
 
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-sm-4 text-center"  >
-                <a href='http://donate.limesurvey.org' target="_blank">
+                <a href='https://account.limesurvey.org/nbill?action=orders&task=order&cid=27' target="_blank">
                     <img alt='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
