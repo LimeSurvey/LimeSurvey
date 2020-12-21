@@ -2203,9 +2203,9 @@ class Participant extends LSActiveRecord
         });
         return $returner;
     }
-    public function getOwnerOptions(){
-
-        return [];
+    public function getOwnerOptions()
+    {
+        return CHtml::listData(User::model()->findAll(),'uid','full_name');
     }
 
     /**
