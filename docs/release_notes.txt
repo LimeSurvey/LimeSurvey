@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.4 (build 201215) to 3.25.5 (build 201222) December 21, 2020
+-Fixed issue #16849: Question radio button with Question Theme "Bootstrap Buttons" does not keep value in "Other" field (Gabriel Jenik)
+-Fixed issue #16799: User with read + create survey : invalid list shown (Gabriel Jenik)
+#Updated translation: Spanish (Spain) by MeirOverferst
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Greek by kiolalis
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Arabic by aziztarik
+
+
 Changes from 3.25.3 (build 201208) to 3.25.4 (build 201215) December 14, 2020
 -Fixed issue #16891: PHP 7.4 + debug : PHP Notice with numeric question type (Denis Chenu)
 -Fixed issue #16863: Multi Numeric Slider custom Font Awesome icons (Gabriel Jenik)
