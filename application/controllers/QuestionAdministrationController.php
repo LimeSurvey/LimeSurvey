@@ -2626,6 +2626,11 @@ class QuestionAdministrationController extends LSBaseController
         $i = 0;
         foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
             foreach ($answerOptionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new Exception(
+                        'code is not set in data: ' . json_encode($data)
+                    );
+                }
                 $answer = new Answer();
                 $answer->qid = $question->qid;
                 $answer->code = $data['code'];
