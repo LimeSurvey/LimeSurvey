@@ -147,7 +147,7 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
-        App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
        $questionTemplate = 'core';
