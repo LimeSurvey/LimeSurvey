@@ -855,6 +855,9 @@ class SurveysGroupsController extends Survey_Common_Action
 
     /**
      * Lists all models.
+     *
+     * @todo Why we don't need permission check here?
+     * @return void
      */
     public function index()
     {
