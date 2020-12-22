@@ -25,10 +25,9 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function view($id)
     {
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'read')) {
+        if (!Permission::model()->hasSurveyGroupPermission($id, SurveysGroups::getMinimalPermissionRead(), 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-
         $this->render('view', array(
             'model'=>$this->loadModel($id),
         ));
@@ -854,9 +853,8 @@ class SurveysGroupsController extends Survey_Common_Action
     }
 
     /**
-     * Lists all models.
-     *
-     * @todo Why we don't need permission check here?
+     * Lists all models
+     * Only list SurveysGroup according to Permission, user must just be loggued.
      * @return void
      */
     public function index()
