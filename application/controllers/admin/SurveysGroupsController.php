@@ -14,6 +14,8 @@
  * Surveys Groups Controller
  */
 
+use LimeSurvey\Models\Services\SurveyGroupCreator;
+
 class SurveysGroupsController extends Survey_Common_Action
 {
 
@@ -41,35 +43,35 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function create()
     {
-        $model = new SurveysGroups;
-        if (!Permission::model()->hasGlobalPermission('surveysgroups','create')) {
+        if (!Permission::model()->hasGlobalPermission('surveysgroups', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+
+        $model = new SurveysGroups();
         /* Move to SurveysGroup model init ? */
         $model->owner_id = Yii::app()->user->id;
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (Yii::app()->getRequest()->getPost('SurveysGroups')) {
-            $model->attributes = Yii::app()->getRequest()->getPost('SurveysGroups');
-            $model->created_by = $model->owner_id = Yii::app()->user->id;
-            if ($model->save()) {
-                // save new SurveysGroupsettings record
-                $modelSettings = new SurveysGroupsettings;
-                $modelSettings->gsid = $model->gsid;
-                $modelSettings->setToInherit();
-
-                if ($modelSettings->save()) {
-                    $this->getController()->redirect(
-                        App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
-                    );
-                }
-                // What happen if SurveysGroups saved but no SurveysGroupsettings ?
+        $user = Yii::app()->user;
+        $request = Yii::app()->request;
+        if ($request->getPost('SurveysGroups')) {
+            $service = new SurveyGroupCreator(
+                $request,
+                $user,
+                $model,
+                new SurveysGroupsettings()
+            );
+            if ($service->save()) {
+                $this->getController()->redirect(
+                    App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
+                );
             }
         }
+
         $aData = array(
             'model' => $model,
-            'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#'=>'settingsForThisGroup')),
+            'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#' => 'settingsForThisGroup')),
         );
         $aData['aRigths'] = array(
             'update' => true,
@@ -81,16 +83,16 @@ class SurveysGroupsController extends Survey_Common_Action
                 'form' => 'surveys-groups-form'
             ),
             'returnbutton' => array(
-                'url' => $this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')),
+                'url' => $this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')),
                 'text' => gT('Close'),
             )
         );
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
-        $userCriteria = new CDbCriteria;
+        $userCriteria = new CDbCriteria();
         $userCriteria->select = array("uid", "users_name", "full_name");
         $userCriteria->order = "full_name";
-        $userCriteria->addInCondition('uid',$aUserIds);
+        $userCriteria->addInCondition('uid', $aUserIds);
         $aData['oUsers'] = User::model()->findAll($userCriteria);
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
