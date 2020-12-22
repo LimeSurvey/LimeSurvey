@@ -106,7 +106,6 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function update($id)
     {
-        $bRedirect = 0;
         $model = $this->loadModel($id);
         if (!empty(App()->getRequest()->getPost('SurveysGroups'))) {
             if (!Permission::model()->hasSurveyGroupPermission($id, 'group', 'update')) {
