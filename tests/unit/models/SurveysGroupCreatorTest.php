@@ -17,6 +17,9 @@ class SurveysGroupCreatorTest extends TestCase
         \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
+    /**
+     * Fail when POST lacks mandatory fields.
+     */
     public function testBasicFailure()
     {
         // No need to mock LSWebUser.
@@ -32,6 +35,25 @@ class SurveysGroupCreatorTest extends TestCase
             'name' => 'moo'
         ]);
 
+        $surveysGroups = $this->getSurveysGroupsMock();
+        $surveysGroupsettings = $this->getSurveysGroupssettingsMock();
+
+        $service = new SurveysGroupCreator(
+            $request,
+            $user,
+            $surveysGroups,
+            $surveysGroupsettings
+        );
+        $this->assertFalse($service->save());
+        // Exactly two errors when title and sort order are null.
+        $this->assertCount(2, $surveysGroups->errors);
+    }
+
+    /**
+     * @return SurveysGroups mock object
+     */
+    private function getSurveysGroupsMock()
+    {
         $surveysGroups = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
@@ -60,6 +82,11 @@ class SurveysGroupCreatorTest extends TestCase
             'hasSurveys'
         ]);
 
+        return $surveysGroups;
+    }
+
+    private function getSurveysGroupssettingsMock()
+    {
         $surveysGroupsettings = $this
             ->getMockBuilder(SurveysGroupsettings::class)
             ->setMethods(['save', 'attributes'])
@@ -121,14 +148,6 @@ class SurveysGroupCreatorTest extends TestCase
             'ipanonymize'
         ]);
 
-        $service = new SurveysGroupCreator(
-            $request,
-            $user,
-            $surveysGroups,
-            $surveysGroupsettings
-        );
-        $this->assertFalse($service->save());
-        // Exactly two errors when title and sort order are null.
-        $this->assertCount(2, $surveysGroups->errors);
+        return $surveysGroupsettings;
     }
 }
