@@ -294,7 +294,7 @@ class SurveysGroups extends LSActiveRecord
         $sDeleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
         $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
-        $sPermissionUrl = App()->createUrl("admin/surveysgroups/sa/permissions", array("id"=>$this->gsid));
+        $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id"=>$this->gsid));
         $button = '';
         if(Permission::model()->hasSurveyGroupPermission($this->gsid,'group','read')) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
