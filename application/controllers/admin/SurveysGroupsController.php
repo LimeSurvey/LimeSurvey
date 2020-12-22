@@ -604,6 +604,7 @@ class SurveysGroupsController extends Survey_Common_Action
     }
     /**
      * Shown permissions list for user (or group)
+     *
      * @param integer $id SurveysGroups id
      * @param integer $id user or group id
      * @param string $type user or group
@@ -858,6 +859,10 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function index()
     {
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $model = new SurveysGroups('search');
         $aData = array(
             'model' => $model
