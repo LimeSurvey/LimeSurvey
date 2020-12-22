@@ -765,10 +765,11 @@ class SurveysGroupsController extends Survey_Common_Action
     }
 
     /**
-     * Shown permissions list for user (or group)
+     * Save current permissions for user (or group)
+     * use POST value for usezr id or group id
+     * redirect (in all cas) to surveysgroups permission or to user set permission (permissionsSet function)
      * @param integer $id SurveysGroups id
-     * @param integer $id user or group id
-     * @param string $type user or group
+     * @return void
      */
     public function permissionsSave($id)
     {
