@@ -699,11 +699,19 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function getButtons()
     {
-        // don't show any buttons if user doesn't have update permission
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
-            return '';
-        }
+        
         $gsid = App()->request->getQuery('id', null);
+        // don't show any buttons if user doesn't have update permission
+        if(!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            /* Global settings */
+            if (empty($gsid) || App()->getController()->action->id != "surveysgroups") {
+                return '';
+            }
+            /* SureysGroups settings */
+            if (!Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')) {
+                return '';
+            }
+        }
         $sEditorUrl = App()->getController()->createUrl(
             'admin/themes/sa/view',
             array("templatename" => $this->template_name)

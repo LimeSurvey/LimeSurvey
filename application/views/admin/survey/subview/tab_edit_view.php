@@ -17,7 +17,7 @@ if (isset($scripts)) {
     echo $scripts;
 
     $iSurveyID = App()->request->getParam('surveyid');
-    App()->session['FileManagerContent'] = "edit:survey:{$iSurveyID}";
+    App()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
     initKcfinder();
 }
 

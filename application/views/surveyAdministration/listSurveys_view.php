@@ -36,7 +36,7 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
 
         <div id="surveygroups" class="tab-pane">
-            <?php if(Permission::model()->hasGlobalPermission('surveys','create')):?>
+            <?php if(Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
                 <div class="col-12">
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
                         <span class="icon-add text-success"></span>

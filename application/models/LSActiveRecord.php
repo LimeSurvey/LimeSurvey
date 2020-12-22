@@ -445,4 +445,33 @@ class LSActiveRecord extends CActiveRecord
         }
         
     }
+
+    /**
+     * Get the owner id of this record
+     * Used for Permission, to be extendable for each model with owner
+     * @return integer|null
+     */
+    public function getOwnerId()
+    {
+        return null;
+    }
+
+    /**
+     * Get Permission data for Permission object
+     * @param string $key
+     * @return array
+     */
+    public static function getPermissionData($key = null)
+    {
+        return array();
+    }
+
+    /**
+     * Get minimal permission name (for read value)
+     * @return null|string
+     */
+    public static function getMinimalPermissionRead()
+    {
+        return null;
+    }
 }

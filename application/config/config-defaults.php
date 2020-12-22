@@ -250,6 +250,10 @@ $config['disablescriptwithxss'] = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
 
+// ownerManageAllSurveysInGroup
+// If this option is set to true, then oner of a group
+// have all rights on surveys in is group
+$config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.

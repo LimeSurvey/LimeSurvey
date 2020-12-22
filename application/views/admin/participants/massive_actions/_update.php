@@ -34,7 +34,7 @@
                 </div>
                 <label class="col-sm-3 control-label"  for='owner_uid'><?php eT("Owner?"); ?></label>
                 <div class="col-sm-8">
-                    <?php echo TbHtml::dropDownList('owner_uid', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getOwnerOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                    <?php echo TbHtml::dropDownList('owner_uid', 'lskeep', ['lskeep' => gT('Keep old value')] + $model->getOwnerOptions(), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
                 </div>
             </div>
         <?php } ?>

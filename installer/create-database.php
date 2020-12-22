@@ -666,6 +666,7 @@ function populateDatabase($oDB){
             'sortorder' => "integer NOT NULL",
             'owner_id' => "integer NULL",
             'parent_id' => "integer NULL",
+            'alwaysavailable' => "boolean NULL",
             'created' => "datetime NULL",
             'modified' => "datetime NULL",
             'created_by' => "integer NOT NULL"
