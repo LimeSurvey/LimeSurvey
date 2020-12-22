@@ -55,7 +55,6 @@ class SurveysGroupCreator
         $this->surveysGroup->created_by = $this->user->id;
         if ($this->surveysGroup->save()) {
             // Save new SurveysGroupsettings record
-            $this->surveysGroupsettings = new SurveysGroupsettings();
             $this->surveysGroupsettings->gsid = $this->surveysGroup->gsid;
             $this->surveysGroupsettings->setToInherit();
 
