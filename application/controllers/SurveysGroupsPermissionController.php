@@ -20,6 +20,31 @@ class SurveysGroupsPermissionController extends LSBaseController
     public $defaultAction = 'index';
 
     /**
+     * It's import to have the accessRules set (security issue).
+     * Only logged in users should have access to actions. All other permissions
+     * should be checked in the action itself.
+     *
+     * @return array
+     */
+    public function accessRules()
+    {
+        return [
+            [
+                'allow',
+                'actions' => [],
+                'users'   => ['*'], //everybody
+            ],
+            [
+                'allow',
+                'actions' => ['view'],
+                'users'   => ['@'], //only login users
+            ],
+            ['deny'], //always deny all actions not mentioned above
+        ];
+    }
+
+
+    /**
      * Shown permissions list, allow to add user and group,
      * No action done
      * @param integer$id SurveysGroups id
