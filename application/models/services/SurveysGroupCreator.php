@@ -44,9 +44,9 @@ class SurveysGroupCreator
     }
 
     /**
-     * Save the SurveysGroups and SurveysGroupsettings models with data from the request.
+     * Saves the SurveysGroups and SurveysGroupsettings models with data from the request.
      *
-     * @return boolean
+     * @return boolean True on success.
      * @todo What happen if SurveysGroups saved but no SurveysGroupsettings? Transaction?
      */
     public function save()
