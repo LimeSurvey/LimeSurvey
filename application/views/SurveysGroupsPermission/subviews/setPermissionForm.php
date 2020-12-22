@@ -4,7 +4,7 @@
 ?>
 <?php
     echo CHtml::beginForm(
-    array( "admin/surveysgroups/sa/permissionsSave", 'id'=>$model->gsid),
+    array( "surveysGroupsPermission/save", 'id'=>$model->gsid),
     'post',
     array('class'=>'setPermissionsForm', 'id'=> 'permissionsSave')
 ); ?>

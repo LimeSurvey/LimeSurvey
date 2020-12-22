@@ -4,7 +4,7 @@
     <p><?php
         echo CHtml::link(
             gT("Continue."),
-            array( "admin/surveysgroups/sa/permissions", 'id'=>$model->gsid),
+            array( "surveysGroupsPermission/index", 'id'=>$model->gsid),
             array('class' => 'btn btn-default')
         );
     ?> </p>

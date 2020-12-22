@@ -12,7 +12,7 @@
     <p><?php
         echo CHtml::link(
             gT("Set the permission for this user group on this group."),
-            array( "admin/surveysgroups/sa/permissionsUserGroupSet", 'id'=>$model->gsid, 'to' => $ugid),
+            array( "surveysGroupsPermission/viewUserGroup", 'id'=>$model->gsid, 'to' => $ugid),
             array('class' => 'btn btn-default')
         );
     ?> </p>
