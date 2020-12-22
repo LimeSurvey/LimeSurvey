@@ -85,6 +85,9 @@ class SurveysGroupCreatorTest extends TestCase
         return $surveysGroups;
     }
 
+    /**
+     * @return SurveysGroupsettings mock object
+     */
     private function getSurveysGroupssettingsMock()
     {
         $surveysGroupsettings = $this
