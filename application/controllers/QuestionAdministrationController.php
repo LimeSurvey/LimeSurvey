@@ -147,7 +147,7 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
-        App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
        $questionTemplate = 'core';
@@ -1481,9 +1481,22 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
+            $newTitle = Yii::app()->request->getParam('title');
+            $oldQuestion = Question::model()->findByAttributes(['title' => $newTitle, 'sid' => $surveyId]);
+            if (!empty($oldQuestion)) {
+                Yii::app()->user->setFlash('error', gT("Duplicate question code"));
+                $this->redirect(
+                    $this->createUrl('surveyAdministration/view/',
+                        [
+                            'surveyid' => $surveyId,
+                        ]
+                    )
+                );
+            }
+
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
-            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionCode($newTitle);
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
@@ -2613,6 +2626,11 @@ class QuestionAdministrationController extends LSBaseController
         $i = 0;
         foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
             foreach ($answerOptionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new Exception(
+                        'code is not set in data: ' . json_encode($data)
+                    );
+                }
                 $answer = new Answer();
                 $answer->qid = $question->qid;
                 $answer->code = $data['code'];

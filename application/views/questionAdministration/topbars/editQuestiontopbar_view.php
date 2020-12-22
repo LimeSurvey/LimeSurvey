@@ -192,7 +192,7 @@
                     <li>
                         <div class="topbarbutton">
                             <a type="button" href='<?php echo $this->createUrl("questionAdministration/copyQuestion/surveyId/" . $question->sid . "/questionGroupId/" . $question->gid. "/questionId/" . $question->qid);?>'
-                                id="copy_button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
+                                id="copy_button" data-btntype="1" class="btn navbar-btn button btn-default pjax"><i 
                                     class="icon-copy icon"></i>&nbsp;Copy&nbsp;</a></div>
                     </li>
                     <li>

@@ -779,6 +779,7 @@ class Permission extends LSActiveRecord
      * Return the global permission list as array
      * @param string $key the specific permission
      * @return array of crud if $key is set, array of permissio array by crud …
+     * @todo Use data value object instead of array.
      */
     public static function getGlobalPermissionData($key = null)
     {

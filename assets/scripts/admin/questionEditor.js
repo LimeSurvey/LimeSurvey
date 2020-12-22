@@ -38,10 +38,8 @@ declare var LS: any
 // Globals for jshint.
 /* globals $, _, alert, document */
 
+// NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
-
-// Public functions are put here.
-LS.questionEditor = {};
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
@@ -56,7 +54,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
-    console.trace('Not on question editor page, do not run question editor script');
     return;
   }
 
@@ -323,7 +320,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $defer.resolve({ lang: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert('Internal error: ' + errormessage);
+        alert('Internal error in quick add: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
     });
@@ -1017,7 +1014,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
               $(item.langtable).find('tbody').append(tableRow);
             } catch (e) {
-              alert('Internal error:' + e);
+              alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
             }
           });
@@ -1523,7 +1520,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        alert(`Internal error: ${ex}`);
+        console.error(ex);
+        alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
 
@@ -1606,7 +1604,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
-          alert('Internal error: ' + data);
+          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
           throw 'abort';
         }
       });
@@ -1633,9 +1631,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
 
       const firstAnsweroptionRow = document.querySelector('.answeroptions-table tr');
-      // This will show error message if answer option code is not unique.
-      if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
-        return false;
+      if (firstAnsweroptionRow) {
+        // This will show error message if answer option code is not unique.
+        if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          return false;
+        }
       }
 
       $.ajax({
@@ -1662,8 +1662,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
             $('#question-code-unique-warning').removeClass('hidden');
           }
         },
-        error: (data) => {
-          alert('Internal error: ' + data);
+        error: (response) => {
+          alert('Internal error in checkIfSaveIsValid: ' + response);
           throw 'abort';
         }
       });
