@@ -334,9 +334,9 @@ class Permission extends LSActiveRecord
     /**
      * Set global permissions to the user id
      *
-     * @param int $iNewUID
-     * @param mixed $iEntityID
-     * @param string $sEntityName
+     * @param int $iUserID the user id
+     * @param mixed $iEntityID the entity id
+     * @param string $sEntityName  the entity name (Object)
      * @return null|self::model()
      */
     public static function setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName)
@@ -365,6 +365,7 @@ class Permission extends LSActiveRecord
         $oPermission->save();
         return $oPermission;
     }
+
     /**
      * Set global permissions to the user id
      *

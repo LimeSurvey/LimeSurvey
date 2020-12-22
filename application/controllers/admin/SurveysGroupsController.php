@@ -503,7 +503,7 @@ class SurveysGroupsController extends Survey_Common_Action
             )
         );
         foreach($oUserInGroups as $oUserInGroup) {
-            $oPermission = Permission::setMinimalEntityPermission($oUserInGroup->uid, $id, 'SurveysGroups');
+            Permission::setMinimalEntityPermission($oUserInGroup->uid, $id, 'SurveysGroups');
         }
         // Did we check something ? Some warning if group is empty for example ?
         $result['success'] = gT("User group added.");
