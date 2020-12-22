@@ -405,8 +405,10 @@ class SurveysGroupsController extends Survey_Common_Action
     }
 
     /**
-     * Add user in permission
-     * @param integer$id SurveysGroups id
+     * Add minimal permission (read) to user
+     * Show result and allow to set other permissions
+     * @param integer $id SurveysGroups id
+     * @return void
      */
     public function permissionsAddUser($id)
     {
@@ -453,8 +455,10 @@ class SurveysGroupsController extends Survey_Common_Action
         $this->_renderWrappedTemplate('surveysgroups', 'permissions', $aData);
     }
     /**
-     * Add user in permission
-     * @param integer$id SurveysGroups id
+     * Add minimal permission (read) to all users in a group of user
+     * Show result and allow to set other permissions
+     * @param integer $id SurveysGroups id
+     * @return void
      */
     public function permissionsAddUserGroup($id)
     {

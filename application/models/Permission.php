@@ -58,10 +58,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Returns the base permissions
+     * Returns the base permissions for survey
+     * @see self::getEntityBasePermissions
      *
-     * @access public
-     * @static
      * @return array
      */
     public static function getSurveyBasePermissions()
@@ -70,11 +69,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Return Permission for an object
-     * @param string $sEntityName muts be an existing object child of LSActiveRecord
-     * @access public
-     * @static
-     * @return array
+     * Return Permission for an object, using object::getPermissionData directly
+     * @param string $sEntityName must be an existing object child of LSActiveRecord
+     * @return array of permission : each permission with array of available crud
      */
     public static function getEntityBasePermissions($sEntityName)
     {
@@ -98,7 +95,6 @@ class Permission extends LSActiveRecord
     /**
      * Return minimal permission name (for read value)
      * @param string $sEntityName must be an existing object child of LSActiveRecord
-     * @static
      * @return null|string
      */
     public static function getEntityMinimalPermissionRead($sEntityName)
@@ -109,9 +105,7 @@ class Permission extends LSActiveRecord
     /**
      * Returns the global permissions including description and title
      *
-     * @access public
-     * @static
-     * @return array
+     * @return array of array of permission 
      */
     public static function getGlobalBasePermissions()
     {
@@ -780,6 +774,11 @@ class Permission extends LSActiveRecord
         return null;
     }
 
+    /**
+     * Return the global permission list as array
+     * @param string $key the specific permission
+     * @return array of crud if $key is set, array of permissio array by crud …
+     */
     public static function getGlobalPermissionData($key = null)
     {
         $aPermissions = array(
@@ -839,7 +838,10 @@ class Permission extends LSActiveRecord
         );
         return $key == null ? $aPermissions : ($aPermissions[$key] ?? $key);
     }
-
+    /**
+     * Used in application/views/admin/surveymenu_entries/_form.php
+     * @return array
+     */
     public static function getPermissionList()
     {
         $aPermissions = array_merge(self::getSurveyBasePermissions(), self::getGlobalBasePermissions());
@@ -848,6 +850,10 @@ class Permission extends LSActiveRecord
         }, $aPermissions);
     }
 
+    /**
+     * Get the translation of each CRUD
+     * @return array crud=>translation
+     */
     public static function getPermissionGradeList()
     {
         return [
