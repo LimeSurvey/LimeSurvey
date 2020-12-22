@@ -19,10 +19,16 @@ class SurveysGroupsController extends Survey_Common_Action
 
     /**
      * Displays a particular model.
+     *
      * @param integer $id the ID of the model to be displayed
+     * @return void
      */
     public function view($id)
     {
+        if (!Permission::model()->hasSurveyGroupPermission($id, 'surveysettings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
         $this->render('view', array(
             'model'=>$this->loadModel($id),
         ));
@@ -31,6 +37,8 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @return void
      */
     public function create()
     {
@@ -91,8 +99,10 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Show and updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     *
      * @todo : check if this function can be called with >hasSurveyGroupPermission($id, 'group', 'read')
      * @param integer $id the ID of the model to be updated
+     * @return void
      */
     public function update($id)
     {
