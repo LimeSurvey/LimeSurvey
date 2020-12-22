@@ -47,7 +47,8 @@ class SurveysGroupsPermissionController extends LSBaseController
     /**
      * Shown permissions list, allow to add user and group,
      * No action done
-     * @param integer$id SurveysGroups id
+     * @param integer $id SurveysGroups id
+     * @return void
      */
     public function actionIndex($id)
     {
@@ -239,6 +240,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             'error' => false,
         );
         /* All seems OK */
+        /** @var UserInGroup[] */
         $oUserInGroups = UserInGroup::model()->findAll(
             'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveysgroupOwnerId',
             array(
@@ -260,6 +262,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * Shown permissions list for user
      * @param integer $id SurveysGroups id
      * @param integer $to user id
+     * @return void
      */
     public function actionViewUser($id, $to)
     {
@@ -279,7 +282,8 @@ class SurveysGroupsPermissionController extends LSBaseController
     /**
      * Shown permissions list for user group
      * @param integer $id SurveysGroups id
-     * @param integer $id group id
+     * @param integer $to group id
+     * @return void
      */
     public function actionViewUserGroup($id, $to)
     {
@@ -304,6 +308,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionSave($id)
     {
         $model = $this->loadModel($id);
+        $uid = null;
         if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
@@ -358,6 +363,7 @@ class SurveysGroupsPermissionController extends LSBaseController
      * Shown permissions list for user (or group)
      * @param integer $id SurveysGroups id
      * @param integer $uid user id
+     * @return void
      */
     public function actionDeleteUser($id, $uid)
     {
@@ -404,13 +410,14 @@ class SurveysGroupsPermissionController extends LSBaseController
     /**
      * Shown permissions list for user or group
      * @param integer $id SurveysGroups id
-     * @param integer $id user or group id
+     * @param integer $to user or group id
      * @param string $type user or group
      * @return void
      */
     private function viewUserOrUserGroup($id, $to, $type = 'user')
     {
         $model = $this->loadModel($id);
+        $userId = null;
         if ($type == 'user') {
             $oUserGroup = null;
             $oUser = User::model()->findByPk($to);
