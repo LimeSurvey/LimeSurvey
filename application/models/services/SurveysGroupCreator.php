@@ -11,7 +11,7 @@ use SurveysGroupsettings;
  * Service class for survey group creation.
  * All dependencies are injected to enable mocking.
  */
-class SurveyGroupCreator
+class SurveysGroupCreator
 {
     /** @var LSHttpRequest */
     private $request;
@@ -47,7 +47,7 @@ class SurveyGroupCreator
      * Save the SurveysGroups and SurveysGroupsettings models with data from the request.
      *
      * @return boolean
-     * @todo What happen if SurveysGroups saved but no SurveysGroupsettings?
+     * @todo What happen if SurveysGroups saved but no SurveysGroupsettings? Transaction?
      */
     public function save()
     {

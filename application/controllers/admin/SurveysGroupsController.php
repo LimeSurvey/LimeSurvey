@@ -14,7 +14,7 @@
  * Surveys Groups Controller
  */
 
-use LimeSurvey\Models\Services\SurveyGroupCreator;
+use LimeSurvey\Models\Services\SurveysGroupCreator;
 
 class SurveysGroupsController extends Survey_Common_Action
 {
@@ -56,7 +56,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $user = Yii::app()->user;
         $request = Yii::app()->request;
         if ($request->getPost('SurveysGroups')) {
-            $service = new SurveyGroupCreator(
+            $service = new SurveysGroupCreator(
                 $request,
                 $user,
                 $model,
