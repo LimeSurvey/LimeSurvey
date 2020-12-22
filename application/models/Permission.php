@@ -746,6 +746,11 @@ class Permission extends LSActiveRecord
 
     }
 
+    /**
+     * @param string $key
+     * @return array
+     * @todo Use data value object instead of array.
+     */
     public static function getGlobalPermissionData($key = null)
     {
         $aPermissions = array(
