@@ -95,6 +95,7 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Show and updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     * @todo : check if this function can be called with >hasSurveyGroupPermission($id, 'group', 'read')
      * @param integer $id the ID of the model to be updated
      */
     public function update($id)
@@ -181,6 +182,7 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Show the survey settings menue for a particular group
      * @param integer $id group id, used for permission control
+     * @todo camelCase here and globalsettings->surveysettingmenues
      * @return void
      */
     public function surveysettingmenues($id) {
