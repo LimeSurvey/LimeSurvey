@@ -67,7 +67,7 @@ class PermissionTest extends TestCase
     }
 
     /**
-     * User is not superadmin and survey group is owned by other use.
+     * User is not superadmin and survey group is owned by other user.
      */
     public function testOwnershipFailure()
     {
