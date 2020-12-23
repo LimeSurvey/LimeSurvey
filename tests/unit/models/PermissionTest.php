@@ -85,10 +85,10 @@ class PermissionTest extends TestCase
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysInGroup', 'getEntity'])
+            ->setMethods(['getUserId', 'getSurveysGroup', 'getEntity'])
             ->getMock();
         $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getSurveysInGroup')->willReturn($surveysGroup);
+        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
         $surveysGroupsId = 999;
