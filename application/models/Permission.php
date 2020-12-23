@@ -658,7 +658,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveyGroupPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = SurveysGroups::model()->findByPk($iSurveyGroupId);
+        $oGroup = $this->getSurveysGroup($iSurveyGroupId);
         if (!$oGroup) {
             return false;
         }
@@ -768,9 +768,11 @@ class Permission extends LSActiveRecord
             return null;
         }
         /* allow to get it dynamically from any model */
-        if(method_exists($sEntityName,'model') && $sEntityName::model()->findByPk($iEntityID)) {
+        $oEntity = $this->getEntity($sEntityName, $iEntityID);
+        // TODO: Check HasOwnershipInterface instead?
+        if (method_exists($sEntityName, 'model') && $oEntity) {
             // Or check if $sEntityName is a child of LSActiveRecord ?
-            return $sEntityName::model()->findByPk($iEntityID)->getOwnerId();
+            return $oEntity->getOwnerId();
         }
         return null;
     }
@@ -903,5 +905,24 @@ class Permission extends LSActiveRecord
     public function getSurveysInGroup($iSurveyGroupId)
     {
         return SurveysInGroup::model()->findByPk($iSurveyGroupId);
+    }
+
+    /**
+     * @param int $iSurveyGroupId
+     * @return SurveysGroups|null
+     */
+    public function getSurveysGroup($iSurveyGroupId)
+    {
+        return SurveysGroups::model()->findByPk($iSurveyGroupId);
+    }
+
+    /**
+     * @param string $sEntityName
+     * @param int $iEntityID
+     * @return Object
+     */
+    public function getEntity($sEntityName, $iEntityID)
+    {
+        return $sEntityName::model()->findByPk($iEntityID);
     }
 }
