@@ -17,32 +17,29 @@ Yii::app()->getClientScript()->registerScript(
 
 <div class="col-lg-12 list-surveys">
 
-    <?php $this->renderPartial('super/fullpagebar_view', array(
-        'fullpagebar' => array(
-            'returnbutton'=>array(
-                'url'=>'surveyAdministration/listsurveys#surveygroups',
-                'text'=>gT('Close'),
-            ),
-            'savebutton' => array(
-                'form' => 'survey-settings-options-form'
-            ),
-            'saveandclosebutton' => array(
-                'form' => 'survey-settings-options-form'
-                )
-                )
-            )); ?>
+    <?php
+    $this->renderPartial(
+        'super/fullpagebar_view',
+        array(
+            'fullpagebar' => $buttons,
+        )
+    );
+    ?>
+
     <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
     <div class="row">
         <div id="surveySettingsForThisGroup" style="display: flex; flex-wrap:nowrap;">
             <div id="global-sidebar-container">
                 <global-sidemenu />
             </div>
-            <div id="pjax-content" class="tab-content col-md-10">                
-            <div class="row">
-                <div class="alert alert-info controls col-sm-12" role="alert">
-                    <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
+            <div id="pjax-content" class="tab-content col-md-10">
+                <?php if(Permission::model()->hasSurveyGroupPermission($model->gsid, 'surveysettings', 'update')) : ?>
+                <div class="row">
+                    <div class="alert alert-info controls col-sm-12" role="alert">
+                        <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
+                    </div>
                 </div>
-            </div>
+                <?php endif; ?>
             <?php echo CHtml::form(array("admin/surveysgroups/sa/surveysettings/id/".$oSurvey->gsid."/#surveySettingsGeneral"), 'post', array('id'=>'survey-settings-options-form')); ?>    
                 <div class="tab-content col-md-10">
                 <?php if($partial == '_generaloptions_panel') { ?> 

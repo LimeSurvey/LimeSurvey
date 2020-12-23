@@ -2237,8 +2237,7 @@ class Participant extends LSActiveRecord
     }
     public function getOwnerOptions()
     {
-
-        return [];
+        return CHtml::listData(User::model()->findAll(),'uid','full_name');
     }
 
     /**

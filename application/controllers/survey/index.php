@@ -89,7 +89,7 @@ class index extends CAction
 
                 $aErrors  = array(gT('Error'));
                 $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
-                if(Permission::getUserId()) {
+                if(Permission::model()->getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
@@ -244,7 +244,7 @@ class index extends CAction
                 $event->set('reason', 'noPreviewPermission');
 
                 App()->getPluginManager()->dispatchEvent($event);
-                if(Permission::getUserId()) {
+                if(Permission::model()->getUserId()) {
                     throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
                 }
                 throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));

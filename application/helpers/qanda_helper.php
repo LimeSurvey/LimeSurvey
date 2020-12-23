@@ -2818,7 +2818,7 @@ function do_hugefreetext($ia)
         'maxlength'=>$maxlength,
         'placeholder'=>$placeholder,
     );
-    $answer = doRender('/survey/questions/answer/longfreetext/answer', $itemDatas, true);
+    $answer = doRender('/survey/questions/answer/hugefreetext/answer', $itemDatas, true);
 
     if (trim($aQuestionAttributes['time_limit']) != '') {
         $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);

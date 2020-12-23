@@ -34,9 +34,35 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#save-and-close-button-copy-question").click(function() {
-            //$("#form_copy_question").submit();
-            document.getElementById("submit-copy-question").click();
+        $("#save-and-close-button-copy-question").click(function(event) {
+            event.preventDefault();
+            $('#question-code-unique-warning').addClass('hidden');
+
+            const sid = $('input[name=surveyId]').val();
+            const qid = 0;
+            const code = $('input[name=title]').val();
+
+            $.ajax({
+              url: "<?= Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'); ?>",
+              method: 'GET',
+              data: {
+                sid,
+                qid,
+                code
+              },
+              success: (data) => {
+                if (data === 'true') {
+                    document.getElementById("submit-copy-question").click();
+                } else {
+                    $('#question-code-unique-warning').removeClass('hidden');
+                }
+              },
+              error: (data) => {
+                alert('Internal error: ' + data);
+                throw 'abort';
+              }
+            });
+            return false;
         });
     });
 </script>

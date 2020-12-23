@@ -93,7 +93,7 @@
                         <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
                     <?php endif; ?>
                         <?php foreach ($settings as $setting): ?>
-                            <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting]); ?>
+                            <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting, 'survey' => $oSurvey]); ?>
                         <?php endforeach; ?>
                     </div>
                 <?php endforeach; ?>

@@ -13,7 +13,7 @@
 <!-- NB: These must be inside #pjax-content to work with pjax. -->
 <?= $jsVariablesHtml; ?>
 <?= $modalsHtml; ?>
-<? $visibilityEditor = ''; //should be displayed ?>
+<?php $visibilityEditor = ''; //should be displayed ?>
 
 <!-- Create form for question -->
 <div class="side-body">
@@ -35,6 +35,7 @@
                 $activeOverview = '';
                 $activeEditor = 'active';
                 $visibilityOverview = 'style="display:none;"';
+                $visibilityEditor = '';
             }
             ?>
             <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
@@ -45,7 +46,7 @@
                 />
                 <?= gt('Question overview'); ?>
             </label>
-            <label class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
+            <label id="questionEditorButton" class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
                 <input
                     type="radio"
                     name="question-overview-switch"
@@ -86,7 +87,9 @@
 
                     <!-- Question code and question type selector -->
                     <div class="row">
-                        <?php $this->renderPartial(
+                        <?php
+                        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionTemplate);
+                        $this->renderPartial(
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,

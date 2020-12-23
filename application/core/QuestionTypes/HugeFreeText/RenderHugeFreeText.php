@@ -22,7 +22,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
 {
     public function getMainView()
     {
-        return '/survey/questions/answer/longfreetext/answer';
+        return '/survey/questions/answer/hugefreetext/answer';
     }
     
     public function getRows()

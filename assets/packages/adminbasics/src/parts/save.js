@@ -41,7 +41,6 @@ const SaveController = () => {
         }
     },
     stopDisplayLoadingState = () => {
-        LOG.log('StopLoadingIconAnimation');
         LS.EventBus.$emit('loadingFinished');
         // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
@@ -235,11 +234,8 @@ const SaveController = () => {
             let item = checkItem.check;
             $(document).off(checkItem.on+'.centralsave', item);
 
-            LOG.log('saveBindings', checkItem, $(item));
-
             if ($(item).length > 0) {
                 $(document).on(checkItem.on+'.centralsave', item, checkItem.run);
-                LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });
 

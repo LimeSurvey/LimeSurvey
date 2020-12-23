@@ -144,7 +144,7 @@ class UploaderController extends SurveyController
                     "msg" => gT("Sorry, there was an error uploading your file.")
                 );
                 /* Show error code for user forcedSuperAdmin right */
-                if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                if( Permission::isForcedSuperAdmin(Permission::model()->getUserId()) ) {
                     $return['msg'] = sprintf(gT("Sorry, there was an error uploading your file, error code : %s."),$_FILES['uploadfile']['error']);
                 }
                 //header('Content-Type: application/json');
@@ -192,7 +192,7 @@ class UploaderController extends SurveyController
                 if(empty(LSFileHelper::getMimeType(APPPATH."favicon.ico", null, null)) ) {
                     $disableCheck = true;
                     Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
-                    if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                    if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::model()->getUserId()) ) {
                         /* This is a security issue and a server issue : always show at forced super admin */
                         throw new CHttpException(500, "Unable to check mime type of files, please activate FileInfo on server.");
                     }
@@ -273,7 +273,7 @@ class UploaderController extends SurveyController
                 "msg" => gT("An unknown error occured")
             );
             /* Add information for for user forcedSuperAdmin right */
-            if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+            if( Permission::isForcedSuperAdmin(Permission::model()->getUserId()) ) {
                 $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."),$_FILES['uploadfile']['tmp_name'],$randfileloc);
             }
             //header('Content-Type: application/json');

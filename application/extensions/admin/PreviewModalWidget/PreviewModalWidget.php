@@ -58,6 +58,12 @@ class PreviewModalWidget extends CWidget
     public $value = null;
 
     /**
+     * QuestionTheme name
+     * @var string
+     */
+    public $theme = '';
+
+    /**
      * This may be the value also, but oftentimes you'd want this to be an easy to read title
      * @var string
      */
@@ -174,6 +180,7 @@ class PreviewModalWidget extends CWidget
                     $this->optionArray,
                     [
                         'value' => $this->value,
+                        'theme' => $this->theme,
                         'debugString' => $this->debugKeyCheck,
                         'debug' => $this->debug,
                         'viewType' => $this->view

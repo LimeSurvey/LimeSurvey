@@ -164,8 +164,13 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
-        App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
+
+       $questionTemplate = 'core';
+        if ($question->qid !== 0) {
+            $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
+        }
 
         $this->aData['surveyid'] = $question->sid;
         $this->aData['sid'] = $question->sid;
@@ -176,7 +181,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, 'core');  // TODO: question_template
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionTemplate);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
@@ -344,6 +349,8 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
+        $calledWithAjax = (int) $request->getPost('ajax');
+
         $question = Question::model()->findByPk((int) $questionData['question']['qid']);
 
         // Different permission check when sid vs qid is given.
@@ -424,7 +431,6 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->commit();
 
             // All done, redirect to edit form.
-            App()->setFlashMessage('Question saved', 'success');
             $question->refresh();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
@@ -486,8 +492,7 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->rollback();
             throw new LSJsonException(
                 500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString(),
+                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
                 0,
                 App()->createUrl(
                     'surveyAdministration/view/',
@@ -495,17 +500,6 @@ class QuestionAdministrationController extends LSBaseController
                 )
             );
         }
-
-        // TODO: Redirect happens in try-catch above.
-        // Return success message.
-        $this->renderJSON(
-            [
-                'success' => true,
-                'message' => gT('Question successfully stored'),
-            ]
-        );
-        // TODO: Needed?
-        App()->close();
     }
 
     /**
@@ -1482,10 +1476,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme the question theme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1506,7 +1501,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->qid,
             $questionType,
             $question->gid,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]);
     }
@@ -1578,9 +1573,22 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
+            $newTitle = Yii::app()->request->getParam('title');
+            $oldQuestion = Question::model()->findByAttributes(['title' => $newTitle, 'sid' => $surveyId]);
+            if (!empty($oldQuestion)) {
+                Yii::app()->user->setFlash('error', gT("Duplicate question code"));
+                $this->redirect(
+                    $this->createUrl('surveyAdministration/view/',
+                        [
+                            'surveyid' => $surveyId,
+                        ]
+                    )
+                );
+            }
+
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
-            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionCode($newTitle);
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
@@ -1635,10 +1643,11 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $surveyId
      * @param string $questionType One-char string
+     * @param string $questionTheme
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1659,7 +1668,7 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $this->getAdvancedOptions(
             $question->qid,
             $questionType,
-            'core'  // TODO: question_template
+            $questionTheme
         );
         $this->renderPartial(
             "advancedSettings",
@@ -2217,6 +2226,7 @@ class QuestionAdministrationController extends LSBaseController
     private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
+
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
         // TODO: Why can empty array be saved as value?
@@ -2229,6 +2239,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
+
         return $advancedSettings;
     }
 
@@ -2707,6 +2718,11 @@ class QuestionAdministrationController extends LSBaseController
         $i = 0;
         foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
             foreach ($answerOptionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new Exception(
+                        'code is not set in data: ' . json_encode($data)
+                    );
+                }
                 $answer = new Answer();
                 $answer->qid = $question->qid;
                 $answer->code = $data['code'];

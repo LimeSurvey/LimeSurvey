@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-12-10 17:42:10+00:00\n"
+"POT-Creation-Date: 2020-12-12 14:05:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,7 +98,7 @@ msgid "Back"
 msgstr ""
 
 #: application/controllers/AdminController.php:88
-#: application/controllers/admin/tokens.php:2381
+#: application/controllers/admin/tokens.php:2380
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
@@ -432,14 +432,14 @@ msgstr ""
 #: application/controllers/admin/tokens.php:930
 #: application/controllers/admin/tokens.php:1088
 #: application/controllers/admin/tokens.php:1373
-#: application/controllers/admin/tokens.php:1591
-#: application/controllers/admin/tokens.php:1708
-#: application/controllers/admin/tokens.php:1953
-#: application/controllers/admin/tokens.php:2291
-#: application/controllers/admin/tokens.php:2348
-#: application/controllers/admin/tokens.php:2436
-#: application/controllers/admin/tokens.php:2504
-#: application/controllers/admin/tokens.php:2545
+#: application/controllers/admin/tokens.php:1590
+#: application/controllers/admin/tokens.php:1707
+#: application/controllers/admin/tokens.php:1952
+#: application/controllers/admin/tokens.php:2290
+#: application/controllers/admin/tokens.php:2347
+#: application/controllers/admin/tokens.php:2435
+#: application/controllers/admin/tokens.php:2503
+#: application/controllers/admin/tokens.php:2544
 #: application/controllers/admin/translate.php:93
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:10
 #: application/helpers/admin/statistics_helper.php:2401
@@ -730,8 +730,8 @@ msgstr ""
 #: application/controllers/QuestionEditorController.php:172
 #: application/controllers/admin/surveyadmin.php:1782
 #: application/controllers/admin/tokens.php:1226
-#: application/controllers/admin/tokens.php:1571
-#: application/controllers/admin/tokens.php:2365
+#: application/controllers/admin/tokens.php:1570
+#: application/controllers/admin/tokens.php:2364
 #: application/extensions/LimeScript/LimeScript.php:26
 #: application/helpers/SurveyRuntimeHelper.php:1429
 #: application/views/admin/conditions/deleteAllConditions.php:23
@@ -1387,12 +1387,12 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1201
 #: application/controllers/admin/tokens.php:1258
 #: application/controllers/admin/tokens.php:1363
-#: application/controllers/admin/tokens.php:1600
-#: application/controllers/admin/tokens.php:1698
-#: application/controllers/admin/tokens.php:1943
-#: application/controllers/admin/tokens.php:2279
-#: application/controllers/admin/tokens.php:2338
-#: application/controllers/admin/tokens.php:2397
+#: application/controllers/admin/tokens.php:1599
+#: application/controllers/admin/tokens.php:1697
+#: application/controllers/admin/tokens.php:1942
+#: application/controllers/admin/tokens.php:2278
+#: application/controllers/admin/tokens.php:2337
+#: application/controllers/admin/tokens.php:2396
 #: application/controllers/admin/useraction.php:59
 #: application/controllers/admin/useraction.php:103
 #: application/controllers/admin/useraction.php:204
@@ -2047,7 +2047,7 @@ msgstr ""
 #: application/controllers/admin/surveyadmin.php:1184
 #: application/controllers/admin/surveyadmin.php:2559
 #: application/controllers/admin/themes.php:1310
-#: application/controllers/admin/tokens.php:1984
+#: application/controllers/admin/tokens.php:1983
 #: application/libraries/ExtensionInstaller/FileFetcherUploadZip.php:180
 #: application/models/UserParser.php:26
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
@@ -2970,7 +2970,7 @@ msgid "No answer"
 msgstr ""
 
 #: application/controllers/admin/conditionsaction.php:672
-#: application/controllers/admin/tokens.php:1564
+#: application/controllers/admin/tokens.php:1563
 #: application/controllers/admin/useraction.php:178
 #: application/helpers/SurveyRuntimeHelper.php:1154
 #: application/views/admin/dataentry/import.php:32
@@ -3057,7 +3057,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:925
 #: application/controllers/admin/printablesurvey.php:938
 #: application/controllers/admin/quotas.php:581
-#: application/controllers/admin/tokens.php:2301
+#: application/controllers/admin/tokens.php:2300
 #: application/core/Survey_Common_Action.php:1174
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:201
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
@@ -3241,7 +3241,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:927
 #: application/controllers/admin/printablesurvey.php:940
 #: application/controllers/admin/quotas.php:582
-#: application/controllers/admin/tokens.php:2303
+#: application/controllers/admin/tokens.php:2302
 #: application/core/Survey_Common_Action.php:1172
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
@@ -3780,7 +3780,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:253
 #: application/controllers/admin/responses.php:205
 #: application/controllers/admin/responses.php:206
-#: application/controllers/admin/tokens.php:1625
+#: application/controllers/admin/tokens.php:1624
 #: application/models/TemplateManifest.php:168 application/models/Token.php:94
 #: application/views/admin/quotas/viewquotas_view.php:78
 #: application/views/admin/token/exportdialog.php:17
@@ -6024,8 +6024,8 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:398
 #: application/controllers/admin/surveypermission.php:581
 #: application/controllers/admin/surveypermission.php:679
-#: application/controllers/admin/tokens.php:2560
-#: application/controllers/admin/tokens.php:2601
+#: application/controllers/admin/tokens.php:2559
+#: application/controllers/admin/tokens.php:2600
 #: application/controllers/admin/useraction.php:841
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
@@ -6581,57 +6581,57 @@ msgstr ""
 msgid "Participant attribute descriptions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1455
+#: application/controllers/admin/tokens.php:1454
 msgid "Invitation %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1457
+#: application/controllers/admin/tokens.php:1456
 msgid "Reminder %s skipped, already sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1466
+#: application/controllers/admin/tokens.php:1465
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Access code is not yet valid."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1469
+#: application/controllers/admin/tokens.php:1468
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Access code is not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1478
+#: application/controllers/admin/tokens.php:1477
 msgid "Invitation sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1481
+#: application/controllers/admin/tokens.php:1480
 msgid "Reminder sent to:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1490
+#: application/controllers/admin/tokens.php:1489
 msgid "An error happen when save this survey participant email sent date (id:%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1513
+#: application/controllers/admin/tokens.php:1512
 msgid "Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1542
+#: application/controllers/admin/tokens.php:1541
 msgid "All emails were sent."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1544
+#: application/controllers/admin/tokens.php:1543
 msgid "Not all emails were sent:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1546
+#: application/controllers/admin/tokens.php:1545
 msgid "Some entries had a validity date set which was not yet valid or not valid anymore."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1549
+#: application/controllers/admin/tokens.php:1548
 msgid "Some emails were not sent because the server did not accept the email(s) or some other error occured."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1552
-#: application/controllers/admin/tokens.php:2315
-#: application/controllers/admin/tokens.php:2319
+#: application/controllers/admin/tokens.php:1551
+#: application/controllers/admin/tokens.php:2314
+#: application/controllers/admin/tokens.php:2318
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -6640,60 +6640,60 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1565
+#: application/controllers/admin/tokens.php:1564
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1566
+#: application/controllers/admin/tokens.php:1565
 msgid "having a valid email address"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1567
+#: application/controllers/admin/tokens.php:1566
 msgid "not having been sent an invitation already"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1568
+#: application/controllers/admin/tokens.php:1567
 msgid "not having already completed the survey"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1569
+#: application/controllers/admin/tokens.php:1568
 msgid "having an access code"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1570
+#: application/controllers/admin/tokens.php:1569
 msgid "having at least one use left"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1618
+#: application/controllers/admin/tokens.php:1617
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:6
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:55
 #: application/views/admin/token/exportdialog.php:134
 msgid "Export participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1625
+#: application/controllers/admin/tokens.php:1624
 #: application/views/admin/token/exportdialog.php:16
 msgid "All participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1625
+#: application/controllers/admin/tokens.php:1624
 #: application/views/admin/token/exportdialog.php:18
 msgid "Not completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1627
+#: application/controllers/admin/tokens.php:1626
 #: application/views/admin/token/exportdialog.php:19
 msgid "Not started"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1628
+#: application/controllers/admin/tokens.php:1627
 #: application/views/admin/token/exportdialog.php:20
 msgid "Started but not yet completed"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1632
-#: application/controllers/admin/tokens.php:1648
-#: application/controllers/admin/tokens.php:1657
+#: application/controllers/admin/tokens.php:1631
+#: application/controllers/admin/tokens.php:1647
+#: application/controllers/admin/tokens.php:1656
 #: application/models/Assessment.php:141
 #: application/views/admin/responses/listResponses_view.php:121
 #: application/views/admin/token/exportdialog.php:35
@@ -6702,178 +6702,178 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1641
+#: application/controllers/admin/tokens.php:1640
 #: application/views/admin/token/exportdialog.php:12
 msgid "Survey status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1646
+#: application/controllers/admin/tokens.php:1645
 #: application/views/admin/token/exportdialog.php:28
 msgid "Invitation status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1649
+#: application/controllers/admin/tokens.php:1648
 #: application/views/admin/token/exportdialog.php:36
 msgid "Invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1650
+#: application/controllers/admin/tokens.php:1649
 #: application/views/admin/token/exportdialog.php:37
 msgid "Not invited"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1655
+#: application/controllers/admin/tokens.php:1654
 #: application/views/admin/token/exportdialog.php:46
 msgid "Reminder status:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1658
+#: application/controllers/admin/tokens.php:1657
 #: application/views/admin/token/exportdialog.php:54
 msgid "Reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1659
+#: application/controllers/admin/tokens.php:1658
 #: application/views/admin/token/exportdialog.php:55
 msgid "No reminder(s) sent"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1664
+#: application/controllers/admin/tokens.php:1663
 #: application/views/admin/token/exportdialog.php:64
 msgid "Filter by language:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1669
+#: application/controllers/admin/tokens.php:1668
 #: application/views/admin/token/exportdialog.php:80
 msgid "Filter by email address:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1670
+#: application/controllers/admin/tokens.php:1669
 #: application/views/admin/token/exportdialog.php:86
 msgid "Only export entries which contain this string in the email address."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1674
+#: application/controllers/admin/tokens.php:1673
 #: application/views/admin/token/exportdialog.php:96
 msgid "Delete exported participants:"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1675
+#: application/controllers/admin/tokens.php:1674
 #: application/views/admin/token/exportdialog.php:108
 msgid "Warning: Deleted participants entries cannot be recovered."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1679
+#: application/controllers/admin/tokens.php:1678
 msgid "Quote equations"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1680
+#: application/controllers/admin/tokens.php:1679
 msgid "Warning: Quotes all content that starts with an equal sign to prevent CSV injections"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1735
+#: application/controllers/admin/tokens.php:1734
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1916
+#: application/controllers/admin/tokens.php:1915
 msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1926
+#: application/controllers/admin/tokens.php:1925
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1986
+#: application/controllers/admin/tokens.php:1985
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:1988
+#: application/controllers/admin/tokens.php:1987
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2083
+#: application/controllers/admin/tokens.php:2082
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2104
+#: application/controllers/admin/tokens.php:2103
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2125
-#: application/controllers/admin/tokens.php:2140
-#: application/controllers/admin/tokens.php:2850
+#: application/controllers/admin/tokens.php:2124
+#: application/controllers/admin/tokens.php:2139
+#: application/controllers/admin/tokens.php:2849
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2148
-#: application/controllers/admin/tokens.php:2154
+#: application/controllers/admin/tokens.php:2147
+#: application/controllers/admin/tokens.php:2153
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2203
+#: application/controllers/admin/tokens.php:2202
 msgid "Line %s : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2298
-#: application/controllers/admin/tokens.php:2322
+#: application/controllers/admin/tokens.php:2297
+#: application/controllers/admin/tokens.php:2321
 msgid "Create access codes"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2299
+#: application/controllers/admin/tokens.php:2298
 msgid "Clicking 'Yes' will generate access codes for all those in this participant list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2313
+#: application/controllers/admin/tokens.php:2312
 msgid "Only {n} access code has been created.|Only {n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2314
+#: application/controllers/admin/tokens.php:2313
 msgid "Need {n} access code.|Need {n} access codes."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2318
+#: application/controllers/admin/tokens.php:2317
 msgid "{n} access code has been created.|{n} access codes have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2359
-#: application/controllers/admin/tokens.php:2377
+#: application/controllers/admin/tokens.php:2358
+#: application/controllers/admin/tokens.php:2376
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2360
+#: application/controllers/admin/tokens.php:2359
 msgid "If you delete this table access codes will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2360
+#: application/controllers/admin/tokens.php:2359
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2363
+#: application/controllers/admin/tokens.php:2362
 msgid "Delete table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2378
+#: application/controllers/admin/tokens.php:2377
 msgid "The participant table has now been removed and access codes are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2378
+#: application/controllers/admin/tokens.php:2377
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2426
+#: application/controllers/admin/tokens.php:2425
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2529
+#: application/controllers/admin/tokens.php:2528
 #: application/views/admin/token/tokenwarning.php:13
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2535
+#: application/controllers/admin/tokens.php:2534
 msgid "Participant table already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2557
-#: application/controllers/admin/tokens.php:2639
+#: application/controllers/admin/tokens.php:2556
+#: application/controllers/admin/tokens.php:2638
 #: application/core/LsDefaultDataSets.php:27
 #: application/views/admin/survey/breadcrumb.php:107
 #: application/views/admin/survey/topbar/survey_topbar.php:343
@@ -6881,19 +6881,19 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2558
+#: application/controllers/admin/tokens.php:2557
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2598
+#: application/controllers/admin/tokens.php:2597
 msgid "Import old participant table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2599
+#: application/controllers/admin/tokens.php:2598
 msgid "A survey participants table has been created for this survey and the old participants were imported."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2845
+#: application/controllers/admin/tokens.php:2844
 msgid "%s records with other errors"
 msgstr ""
 
@@ -13117,283 +13117,287 @@ msgid "Greek"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:360
-msgid "Hebrew"
+msgid "Greenlandic"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:368
-msgid "Hindi"
+msgid "Hebrew"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:376
-msgid "Hungarian"
+msgid "Hindi"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:384
-msgid "Icelandic"
+msgid "Hungarian"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:392
-msgid "Indonesian"
+msgid "Icelandic"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:400
+msgid "Indonesian"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:408
 msgid "Irish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:409
+#: application/helpers/surveytranslator_helper.php:417
 msgid "Italian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:417
+#: application/helpers/surveytranslator_helper.php:425
 msgid "Italian (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:426
+#: application/helpers/surveytranslator_helper.php:434
 msgid "Japanese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:434
+#: application/helpers/surveytranslator_helper.php:442
 msgid "Kazakh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:442
+#: application/helpers/surveytranslator_helper.php:450
 msgid "Kannada"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:450
+#: application/helpers/surveytranslator_helper.php:458
 msgid "Kinyarwanda"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:458
+#: application/helpers/surveytranslator_helper.php:466
 msgid "Korean"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:466
+#: application/helpers/surveytranslator_helper.php:474
 msgid "Kirundi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:474
+#: application/helpers/surveytranslator_helper.php:482
 msgid "Kurdish (Sorani)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:483
+#: application/helpers/surveytranslator_helper.php:491
 msgid "Kurdish (Kurmanji)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:492
+#: application/helpers/surveytranslator_helper.php:500
 msgid "Kyrgyz"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:500
+#: application/helpers/surveytranslator_helper.php:508
 msgid "Latvian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:508
+#: application/helpers/surveytranslator_helper.php:516
 msgid "Lithuanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:516
+#: application/helpers/surveytranslator_helper.php:524
 msgid "Luxembourgish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:524
+#: application/helpers/surveytranslator_helper.php:532
 msgid "Macedonian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:532
+#: application/helpers/surveytranslator_helper.php:540
 msgid "Malay"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:540
+#: application/helpers/surveytranslator_helper.php:548
 msgid "Malayalam"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:548
+#: application/helpers/surveytranslator_helper.php:556
 msgid "Maltese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:556
+#: application/helpers/surveytranslator_helper.php:564
 msgid "Marathi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:564
+#: application/helpers/surveytranslator_helper.php:572
 msgid "Mongolian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:572
+#: application/helpers/surveytranslator_helper.php:580
 msgid "Montenegrin"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:581
+#: application/helpers/surveytranslator_helper.php:589
 msgid "Myanmar (Burmese)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:589
+#: application/helpers/surveytranslator_helper.php:597
 msgid "Norwegian (Bokmal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:597
+#: application/helpers/surveytranslator_helper.php:605
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:605
+#: application/helpers/surveytranslator_helper.php:613
 msgid "Occitan"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:613
+#: application/helpers/surveytranslator_helper.php:621
 msgid "Pashto"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:621
+#: application/helpers/surveytranslator_helper.php:629
 msgid "Persian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:629
+#: application/helpers/surveytranslator_helper.php:637
 msgid "Papiamento (Curaçao & Bonaire)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:638
+#: application/helpers/surveytranslator_helper.php:646
 msgid "Polish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:646
+#: application/helpers/surveytranslator_helper.php:654
 msgid "Polish (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:655
+#: application/helpers/surveytranslator_helper.php:663
 msgid "Portuguese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:663
+#: application/helpers/surveytranslator_helper.php:671
 msgid "Portuguese (Brazilian)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:671
+#: application/helpers/surveytranslator_helper.php:679
 msgid "Punjabi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:679
+#: application/helpers/surveytranslator_helper.php:687
 msgid "Romanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:697
+#: application/helpers/surveytranslator_helper.php:705
 msgid "Russian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:715
+#: application/helpers/surveytranslator_helper.php:723
 msgid "Serbian (Cyrillic)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:723
+#: application/helpers/surveytranslator_helper.php:731
 msgid "Serbian (Latin)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:731
+#: application/helpers/surveytranslator_helper.php:739
 msgid "Sinhala"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:739
+#: application/helpers/surveytranslator_helper.php:747
 msgid "Slovak"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:747
+#: application/helpers/surveytranslator_helper.php:755
 msgid "Slovenian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:755
-#: application/helpers/surveytranslator_helper.php:764
+#: application/helpers/surveytranslator_helper.php:763
+#: application/helpers/surveytranslator_helper.php:772
 msgid "Somali"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:772
+#: application/helpers/surveytranslator_helper.php:780
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:780
+#: application/helpers/surveytranslator_helper.php:788
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:788
+#: application/helpers/surveytranslator_helper.php:796
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:797
+#: application/helpers/surveytranslator_helper.php:805
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:805
+#: application/helpers/surveytranslator_helper.php:813
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:813
+#: application/helpers/surveytranslator_helper.php:821
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:821
+#: application/helpers/surveytranslator_helper.php:829
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:830
+#: application/helpers/surveytranslator_helper.php:838
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:838
+#: application/helpers/surveytranslator_helper.php:846
 msgid "Tagalog"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:846
+#: application/helpers/surveytranslator_helper.php:854
 msgid "Telugu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:854
+#: application/helpers/surveytranslator_helper.php:862
 msgid "Tajik"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:862
+#: application/helpers/surveytranslator_helper.php:870
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:870
+#: application/helpers/surveytranslator_helper.php:878
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:878
+#: application/helpers/surveytranslator_helper.php:886
 msgid "Tigrinya"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:886
+#: application/helpers/surveytranslator_helper.php:894
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:895
+#: application/helpers/surveytranslator_helper.php:903
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:903
+#: application/helpers/surveytranslator_helper.php:911
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:911
+#: application/helpers/surveytranslator_helper.php:919
 msgid "Uyghur"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:919
+#: application/helpers/surveytranslator_helper.php:927
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:927
+#: application/helpers/surveytranslator_helper.php:935
 msgid "Welsh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:935
+#: application/helpers/surveytranslator_helper.php:943
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:963
+#: application/helpers/surveytranslator_helper.php:971
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:964
+#: application/helpers/surveytranslator_helper.php:972
 msgid "Comma (,)"
 msgstr ""
 

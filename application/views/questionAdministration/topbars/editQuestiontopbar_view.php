@@ -36,12 +36,15 @@
                     <!-- Right Buttons -->
                     <li>
                         <div class="topbarbutton">
-                            <!-- Save and close -->
+                            <!-- Save -->
                             <a
-                                id="save-and-close-button-create-question"
+                                id="save-button-create-question"
                                 class="btn btn-default"
                                 role="button"
-                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor' );"
+                                <?php if ($question->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
+                                    data-save-with-ajax="true"
+                                <?php endif; ?>
+                                onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
                             >
                                 <i class="fa fa-check-square"></i>
                                 <?php eT("Save");?>
@@ -192,7 +195,7 @@
                     <li>
                         <div class="topbarbutton">
                             <a type="button" href='<?php echo $this->createUrl("questionAdministration/copyQuestion/surveyId/" . $question->sid . "/questionGroupId/" . $question->gid. "/questionId/" . $question->qid);?>'
-                                id="copy_button" data-btntype="1" class="btn navbar-btn button btn-default btn-default"><i 
+                                id="copy_button" data-btntype="1" class="btn navbar-btn button btn-default pjax"><i 
                                     class="icon-copy icon"></i>&nbsp;Copy&nbsp;</a></div>
                     </li>
                     <li>

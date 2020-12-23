@@ -327,27 +327,6 @@ return array(
        )
     ),
     
-    'datasectextelements' => array(
-        'devBaseUrl' => 'assets/packages/datasecuritysettings/',
-        'basePath' => 'core.datasecuritysettings',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/datasecuritysettings.js'
-            )
-            : array(
-                'build.min/js/datasecuritysettings.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',

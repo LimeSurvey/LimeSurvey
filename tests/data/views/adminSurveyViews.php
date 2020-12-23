@@ -31,7 +31,7 @@ return [
     // --------------------------------------------------
 
     // adding elements to survey
-    ['addQuestion', ['route'=>'questionAdministration/view/surveyid/{SID}', 'noAdminInFront' => true]],
+    ['addQuestion', ['route'=>'questionAdministration/create/surveyid/{SID}', 'noAdminInFront' => true]],
     ['addQuestionGroup', ['route'=>'questionGroupsAdministration/add/surveyid/{SID}', 'noAdminInFront' => true]],
     ['importQuestionGroup', ['route'=>'questionGroupsAdministration/importview/surveyid/{SID}', 'noAdminInFront' => true]],
     ['addQuota', ['route'=>'quotas/sa/newquota/surveyid/{SID}']],

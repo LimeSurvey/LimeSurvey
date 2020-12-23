@@ -577,7 +577,7 @@ class QuestionTemplate extends CFormModel
             "R" => 'ranking',
             "S" => 'shortfreetext',
             "T" => 'longfreetext',
-            "U" => 'longfreetext',
+            "U" => 'hugefreetext',
             "X" => 'boilerplate',
             "Y" => 'yesno',
             "!" => 'list_dropdown',

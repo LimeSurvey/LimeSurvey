@@ -91,6 +91,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param integer $iQuestionID
      * @param string $sAttributeName
      * @param string $sValue
+     * @param string $sLanguage
      * @return CDbDataReader
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
@@ -457,6 +458,20 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
+     * Returns the value for attribute 'question_template'.
+     *
+     * @return string|null question_template or null if it not exists
+     */
+    public static function getQuestionTemplateValue($questionID){
+        $question_template = QuestionAttribute::model()->findByAttributes([
+            'qid' => $questionID,
+            'attribute' => 'question_template'
+        ]);
+
+        return $question_template->value;
+    }
+
+    /**
      * Read question attributes from XML file and convert it to array
      *
      * @param string $sXmlFilePath Path to XML
@@ -508,6 +523,16 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
         }
+
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        foreach ($aAttributes as $attributeName => $attribute) {
+          foreach ($attribute as $fieldName => $value) {
+            if ($value === []) {
+              $aAttributes[$attributeName][$fieldName] = null;
+            }
+          }
+        }
+
         return $aAttributes;
     }
 
