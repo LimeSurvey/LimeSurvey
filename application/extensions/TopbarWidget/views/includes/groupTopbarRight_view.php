@@ -1,12 +1,12 @@
 <!-- Edit button -->
-<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+<?php if($hasSurveyContentUpdatePermission): ?>
     <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
         <span class="icon-edit"></span>
         <?php eT("Question group editor");?>
     </a>
 <?php endif; ?>
 
-<?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')):?>
+<?php if($hasSurveyContentDeletePermission):?>
 
     <!-- Delete -->
     <?php if( $oSurvey->active != "Y" ):?>

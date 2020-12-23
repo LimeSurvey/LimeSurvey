@@ -50,7 +50,7 @@
         <ul class="dropdown-menu" style="min-width : 252px;">
             <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                 <li>
-                    <a target='_blank' id='<?= $contextbutton ?>_<?= $tmp_lang?>' href='<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$tmp_lang)); ?>'>
+                    <a target='_blank' id='<?= $contextbutton ?>_button_<?= $tmp_lang?>' href='<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$tmp_lang)); ?>'>
                         <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
                     </a>
                 </li>
@@ -60,7 +60,7 @@
 
     <!-- uniq language -->
     <?php else: ?>
-        <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+        <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>_button' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
             <span class="icon-do" ></span>
             <?php echo $context; ?>
             <i class="icon fa fa-external-link"></i>

@@ -734,7 +734,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             case 'save-and-new-question':
                 $sRedirectUrl = $this->createUrl(
                     // TODO: Double check
-                    'questionAdministration/view/',
+                    'questionAdministration/create/',
                     [
                         'surveyid' => $iSurveyId,
                         'gid' => $oQuestionGroup->gid,

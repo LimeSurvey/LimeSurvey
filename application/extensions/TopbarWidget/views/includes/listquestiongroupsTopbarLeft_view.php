@@ -9,7 +9,7 @@
             <?php eT("Import group"); ?>
         </button>
     </span>
-<?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
+<?php elseif ($hasSurveyContentCreatePermission): ?>
     <!-- Add group -->
     <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("qquestionGroupsAdministration/add/surveyid/".$surveyid); ?>" role="button">
         <span class="icon-add"></span>

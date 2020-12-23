@@ -9,7 +9,7 @@
             <?php eT("Import a question"); ?>
         </button>
     </span>
-<?php elseif (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'create')): ?>
+<?php elseif ($hasSurveyContentCreatePermission): ?>
     <?php if (!$oSurvey->groups): ?>
         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block">
             <button type="button" class="btn btn-default btntooltip" disabled="disabled">

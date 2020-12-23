@@ -21,9 +21,19 @@ class TopbarConfiguration
     private $extraDataMapping = [
         'surveyTopbar_view' => 'TopbarConfiguration::getSurveyTopbarData',
         'responsesTopbarLeft_view' => 'TopbarConfiguration::getResponsesTopbarData',
+        'responseViewTopbarRight_view' => 'TopbarConfiguration::getResponsesTopbarData',
         'surveyTopbarRight_view' => 'TopbarConfiguration::getRightSurveyTopbarData',
         'tokensTopbarLeft_view' => 'TopbarConfiguration::getTokensTopbarData',
         'tokensTopbarRight_view' => 'TopbarConfiguration::getTokensTopbarData',
+        'questionTopbar_view' => 'TopbarConfiguration::getQuestionTopbarData',
+        'questionTopbarLeft_view' => 'TopbarConfiguration::getQuestionTopbarData',
+        'questionTopbarRight_view' => 'TopbarConfiguration::getQuestionTopbarData',
+        'editQuestionTopbarLeft_view' => 'TopbarConfiguration::getQuestionTopbarData',
+        'listquestionsTopbarLeft_view' => 'TopbarConfiguration::getQuestionTopbarData',
+        'editGroupTopbarLeft_view' => 'TopbarConfiguration::getGroupTopbarData',
+        'groupTopbarLeft_view' => 'TopbarConfiguration::getGroupTopbarData',
+        'groupTopbarRight_view' => 'TopbarConfiguration::getGroupTopbarData',
+        'listquestiongroupsTopbarLeft_view' => 'TopbarConfiguration::getGroupTopbarData',
     ];
 
     /**
@@ -64,7 +74,9 @@ class TopbarConfiguration
         $config = isset($aData['topBar']) ? $aData['topBar'] : [];
 
         // If 'sid' is not specified in the topbar config, but is present in the $aData array, assign it to the config
-        if (empty($config['sid']) && isset($aData['sid'])) $config['sid'] = $aData['sid'];
+        $sid = self::getSid($config);
+        if (empty($sid)) $sid = self::getSid($aData);
+        if (!empty($sid)) $config['sid'] = $sid;
      
         return new self($config);
     }
@@ -207,6 +219,7 @@ class TopbarConfiguration
         $hasStatisticsReadPermission  = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
         $hasResponsesExportPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
         $hasResponsesDeletePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'delete');
+        $hasResponsesUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'update');
         $isActive                     = $survey->active;
         $isTimingEnabled              = $survey->savetimings;
 
@@ -217,6 +230,7 @@ class TopbarConfiguration
             'hasStatisticsReadPermission'  => $hasStatisticsReadPermission,
             'hasResponsesExportPermission' => $hasResponsesExportPermission,
             'hasResponsesDeletePermission' => $hasResponsesDeletePermission,
+            'hasResponsesUpdatePermission' => $hasResponsesUpdatePermission,
             'isActive' => $isActive,
             'isTimingEnabled' => $isTimingEnabled,
         );
@@ -271,6 +285,69 @@ class TopbarConfiguration
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
         );
+    }
+
+    /**
+     * Returns Data for QuestionEditor Top Bar
+     *
+     * @param $sid
+     * @return array
+     * @throws CException
+     */
+    public static function getQuestionTopbarData($sid)
+    {
+        if (empty($sid)) return [];
+
+        $survey = Survey::model()->findByPk($sid);
+
+        $hasSurveyContentUpdatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+        $hasSurveyContentReadPermission   = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        $hasSurveyContentExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+        $hasSurveyContentCreatePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'create');
+        $hasSurveyContentDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
+
+        $languages = [];
+        foreach ($survey->allLanguages as $language) {
+            $languages[$language] = getLanguageNameFromCode($language, false);
+        }
+
+        return array(
+            'oSurvey' => $survey,
+            'hasSurveyContentUpdatePermission' => $hasSurveyContentUpdatePermission,
+            'hasSurveyContentReadPermission' => $hasSurveyContentReadPermission,
+            'hasSurveyContentExportPermission' => $hasSurveyContentExportPermission,
+            'hasSurveyContentCreatePermission' => $hasSurveyContentCreatePermission,
+            'hasSurveyContentDeletePermission' => $hasSurveyContentDeletePermission,
+            'surveyLanguages' => $languages,
+        );
+    }
+
+    /**
+     * Returns Data for Groups Top Bar
+     *
+     * @param $sid
+     * @return array
+     * @throws CException
+     */
+    public static function getGroupTopbarData($sid)
+    {
+        return self::getQuestionTopbarData($sid);
+    }
+
+    /**
+     * Tries to retrieve the survey ID from the config
+     */
+    protected static function getSid($config)
+    {
+        if (!empty($config['sid'])) {
+            return $config['sid'];
+        } elseif (!empty($config['surveyid'])) {
+            return $config['surveyid'];
+        } elseif (!empty($config['surveyId'])) {
+            return $config['surveyId'];
+        } elseif (!empty($config['oSurvey'])) {
+            return $config['oSurvey']->sid;
+        }
     }
 
     public function getViewName()
