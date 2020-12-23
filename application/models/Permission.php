@@ -649,22 +649,22 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given survey group
-     * 
-     * @param $iGroupId integer The survey ID
-     * @param $sPermission string Name of the permission
-     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     *
+     * @param integer $iSurveyGroupId The survey group ID
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasSurveyGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasSurveyGroupPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = SurveysGroups::model()->findByPk($iGroupId);
+        $oGroup = SurveysGroups::model()->findByPk($iSurveyGroupId);
         if (!$oGroup) {
             return false;
         }
         // Get global correspondance for surveysgroups rigth, keep it in case in develop
         $sGlobalCRUD = $sCRUD;
-        return $this->hasGlobalPermission('surveysgroups', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
+        return $this->hasGlobalPermission('surveysgroups', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyGroupId, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
