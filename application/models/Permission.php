@@ -669,16 +669,16 @@ class Permission extends LSActiveRecord
 
     /**
      * Checks if a user has a certain permission in the given surveys inside survey group
-     * 
-     * @param $iGroupId integer The survey ID
-     * @param $sPermission string Name of the permission
-     * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     *
+     * @param integer $iSurveyGroupId The survey group ID
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasSurveysInGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasSurveysInGroupPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = $this->getSurveysInGroup($iGroupId);
+        $oGroup = $this->getSurveysInGroup($iSurveyGroupId);
         if (!$oGroup) {
             return false;
         }
@@ -689,7 +689,7 @@ class Permission extends LSActiveRecord
         if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
-        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iGroupId, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
+        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyGroupId, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -894,14 +894,14 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Get SurveysInGroup with id $iGroupId
+     * Get SurveysInGroup with id $iSurveyGroupId
      * NB: This method needs to be public so that it can be mocked.
      *
-     * @param int $iGroupId
+     * @param int $iSurveyGroupId
      * @return SurveysInGroup|null
      */
-    public function getSurveysInGroup($iGroupId)
+    public function getSurveysInGroup($iSurveyGroupId)
     {
-        return SurveysInGroup::model()->findByPk($iGroupId);
+        return SurveysInGroup::model()->findByPk($iSurveyGroupId);
     }
 }
