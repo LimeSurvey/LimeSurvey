@@ -678,7 +678,7 @@ class Permission extends LSActiveRecord
      */
     public function hasSurveysInGroupPermission($iGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = SurveysInGroup::model()->findByPk($iGroupId);
+        $oGroup = $this->getSurveysInGroup($iGroupId);
         if (!$oGroup) {
             return false;
         }
@@ -891,5 +891,17 @@ class Permission extends LSActiveRecord
         }
 
         return $results;
+    }
+
+    /**
+     * Get SurveysInGroup with id $iGroupId
+     * NB: This method needs to be public so that it can be mocked.
+     *
+     * @param int $iGroupId
+     * @return SurveysInGroup|null
+     */
+    public function getSurveysInGroup($iGroupId)
+    {
+        return SurveysInGroup::model()->findByPk($iGroupId);
     }
 }
