@@ -119,7 +119,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 $oCriteria->addInCondition("uid", $authorizedUsersList);
             }
             $oCriteria->addNotInCondition("uid", $aExistingUsers);
-            $oCriteria->compare("uid", "<>" . Permission::getUserId());
+            $oCriteria->compare("uid", "<>" . Permission::model()->getUserId());
             $oCriteria->order = "users_name";
             $oAddUserList = User::model()->findAll($oCriteria);
             /* User group according to rights */

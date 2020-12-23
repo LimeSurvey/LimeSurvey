@@ -210,7 +210,7 @@ class Survey extends LSActiveRecord
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
         if(!(Yii::app() instanceof CConsoleApplication)) {
-            $iUserid = Permission::getUserId();
+            $iUserid = Permission::model()->getUserId();
             if($iUserid) {
                 $this->owner_id = $iUserid;
                 $oUser = User::model()->findByPk($iUserid);

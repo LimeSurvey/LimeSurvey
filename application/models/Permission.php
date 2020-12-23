@@ -532,7 +532,7 @@ class Permission extends LSActiveRecord
 
         /* Always return false for guests */
         // TODO: should not be necessary
-        $iUserID = self::getUserId($iUserID);
+        $iUserID = $this->getUserId($iUserID);
         if (!$iUserID && $iUserID !== 0) {
             return false;
         }
@@ -733,7 +733,7 @@ class Permission extends LSActiveRecord
      * @return int user id
      * @throws Exception
      */
-    public static function getUserId($iUserID = null)
+    public function getUserId($iUserID = null)
     {
         if (is_null($iUserID) && $iUserID !== 0) {
             if (Yii::app() instanceof CConsoleApplication) {
