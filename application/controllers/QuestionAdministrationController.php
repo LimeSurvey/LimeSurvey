@@ -210,6 +210,7 @@ class QuestionAdministrationController extends LSBaseController
         $viewData = [
             'oSurvey'                => $question->survey,
             'oQuestion'               => $question,
+            'questionTemplate'       => $questionTemplate,
             'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
             'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
             'advancedSettings'       => $advancedSettings,

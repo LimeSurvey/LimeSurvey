@@ -91,9 +91,11 @@
                             [
                                 'oSurvey'             => $oSurvey,
                                 'question'            => $oQuestion,
-                                'aStructureArray'     => $aQuestionTypeGroups,
                                 'questionTypes'       => $aQuestionTypeStateList,
-                                'aQuestionTypeGroups' => $aQuestionTypeGroups
+                                'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                                'questionThemeTitle'  => $questionTheme['title'],
+                                'questionThemeName'   => $questionTheme['name'],
+                                'questionThemeClass'  => ($questionTheme['settings'])->class
                             ]
                         ); ?>
                     </div>
