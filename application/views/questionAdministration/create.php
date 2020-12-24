@@ -88,7 +88,7 @@
                     <!-- Question code and question type selector -->
                     <div class="row">
                         <?php
-                        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionTemplate);
+                        $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                         $this->renderPartial(
                             "codeAndType",
                             [

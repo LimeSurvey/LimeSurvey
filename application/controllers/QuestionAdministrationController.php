@@ -438,56 +438,62 @@ class QuestionAdministrationController extends LSBaseController
                 $tabOverviewEditorValue = 'overview';
             }
 
-            $landOnSideMenuTab = 'structure';
-            if (empty($sScenario)) {
-                if (App()->request->getPost('save-and-close', '')) {
-                    $sScenario = 'save-and-close';
-                } elseif (App()->request->getPost('saveandnew', '')) {
-                    $sScenario = 'save-and-new';
-                } elseif (App()->request->getPost('saveandnewquestion', '')) {
-                    $sScenario = 'save-and-new-question';
+            if ($calledWithAjax) {
+                echo json_encode(['message' => gT('Question saved')]);
+                Yii::app()->end();
+            } else {
+                App()->setFlashMessage(gT('Question saved'), 'success');
+                $landOnSideMenuTab = 'structure';
+                if (empty($sScenario)) {
+                    if (App()->request->getPost('save-and-close', '')) {
+                        $sScenario = 'save-and-close';
+                    } elseif (App()->request->getPost('saveandnew', '')) {
+                        $sScenario = 'save-and-new';
+                    } elseif (App()->request->getPost('saveandnewquestion', '')) {
+                        $sScenario = 'save-and-new-question';
+                    }
                 }
+                switch ($sScenario) {
+                    case 'save-and-new-question':
+                        $sRedirectUrl = $this->createUrl(
+                            // TODO: Double check
+                            'questionAdministration/create/',
+                            [
+                                'surveyid' => $iSurveyId,
+                                'gid' => $question->gid,
+                            ]
+                        );
+                        break;
+                    case 'save-and-new':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/add/',
+                            [
+                                'surveyid' => $iSurveyId,
+                            ]
+                        );
+                        break;
+                    case 'save-and-close':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/view/',
+                            [
+                                'surveyid' => $iSurveyId,
+                                'gid' => $question->gid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab
+                            ]
+                        );
+                        break;
+                    default:
+                        $sRedirectUrl = $this->createUrl(
+                            'questionAdministration/edit/',
+                            [
+                                'questionId' => $question->qid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab,
+                                'tabOverviewEditor' => $tabOverviewEditorValue,
+                            ]
+                        );
+                }
+                $this->redirect($sRedirectUrl);
             }
-            switch ($sScenario) {
-                case 'save-and-new-question':
-                    $sRedirectUrl = $this->createUrl(
-                        // TODO: Double check
-                        'questionAdministration/create/',
-                        [
-                            'surveyid' => $iSurveyId,
-                            'gid' => $question->gid,
-                        ]
-                    );
-                    break;
-                case 'save-and-new':
-                    $sRedirectUrl = $this->createUrl(
-                        'questionGroupsAdministration/add/',
-                        [
-                            'surveyid' => $iSurveyId,
-                        ]
-                    );
-                    break;
-                case 'save-and-close':
-                    $sRedirectUrl = $this->createUrl(
-                        'questionGroupsAdministration/view/',
-                        [
-                            'surveyid' => $iSurveyId,
-                            'gid' => $question->gid,
-                            'landOnSideMenuTab' => $landOnSideMenuTab
-                        ]
-                    );
-                    break;
-                default:
-                    $sRedirectUrl = $this->createUrl(
-                        'questionAdministration/edit/',
-                        [
-                            'questionId' => $question->qid,
-                            'landOnSideMenuTab' => $landOnSideMenuTab,
-                            'tabOverviewEditor' => $tabOverviewEditorValue,
-                        ]
-                    );
-            }
-            $this->redirect($sRedirectUrl);
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
