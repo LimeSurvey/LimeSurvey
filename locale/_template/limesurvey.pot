@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-12-12 14:05:52+00:00\n"
+"POT-Creation-Date: 2020-12-23 12:11:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15172,6 +15172,7 @@ msgid "Access code ID"
 msgstr ""
 
 #: application/models/Token.php:83
+#: application/views/admin/participants/massive_actions/_update_results.php:17
 #: application/views/admin/token/massive_actions/_update_results.php:17
 msgid "Participant ID"
 msgstr ""
@@ -18024,12 +18025,6 @@ msgstr ""
 
 #: application/views/admin/participants/massive_actions/_update.php:59
 msgid "Blacklisted?"
-msgstr ""
-
-#: application/views/admin/participants/massive_actions/_update_results.php:17
-#: application/views/admin/surveymenu/massive_action/_update_results.php:17
-#: application/views/admin/surveymenu_entries/massive_action/_update_results.php:17
-msgid "Survey menu entry ID"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:7
@@ -21591,6 +21586,11 @@ msgstr ""
 #: application/views/admin/surveymenu/massive_action/_update.php:64
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:82
 msgid "User?"
+msgstr ""
+
+#: application/views/admin/surveymenu/massive_action/_update_results.php:17
+#: application/views/admin/surveymenu_entries/massive_action/_update_results.php:17
+msgid "Survey menu entry ID"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:19
