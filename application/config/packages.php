@@ -51,6 +51,8 @@ return array(
             'fontawesome',
         )
     ),
+
+    // TODO: Delete this? See #15108.
     'embeddables' => array(
         'devBaseUrl'  => 'assets/packages/embeddables/',
         'basePath' => 'core.embeddables',
