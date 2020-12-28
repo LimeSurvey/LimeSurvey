@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.5 (build 201222) to 3.25.6 (build 201229) December 28, 2020
+-Fixed issue #16906: Version disclosure via limesurvey.pot (Denis Chenu)
+-Fixed issue #16862: Not possible to batch-edit owners for Central Participant database (Gabriel Jenik)
+#Updated translation: Macedonian by SimonaOgnenovska
+
+
 Changes from 3.25.4 (build 201215) to 3.25.5 (build 201222) December 21, 2020
 -Fixed issue #16849: Question radio button with Question Theme "Bootstrap Buttons" does not keep value in "Other" field (Gabriel Jenik)
 -Fixed issue #16799: User with read + create survey : invalid list shown (Gabriel Jenik)
