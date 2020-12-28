@@ -227,9 +227,10 @@ class database extends Survey_Common_Action
         $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
         $sQuestionType = $arQuestion['type'];
 
-        $aQuestionTypeList = Question::typeList();
-        if ($aQuestionTypeList[$sQuestionType]['answerscales'] > 0 && $aQuestionTypeList[$sQuestionType]['subquestions'] == 0) {
-            for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['answerscales']; $iScaleID++) {
+       // $aQuestionTypeList = Question::typeList();
+        $questionThemeMetaData = QuestionTheme::findQuestionMetaData($sQuestionType);
+        if ((int)$questionThemeMetaData['settings']->answerscales > 0 && $questionThemeMetaData['settings']->subquestions == 0) {
+            for ($iScaleID = 0; $iScaleID < (int)$questionThemeMetaData['settings']->answerscales; $iScaleID++) {
                 foreach ($aSurveyLanguages as $sLanguage) {
                     if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage))) {
                         $this->_updateDefaultValues($this->iQuestionID, 0, $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage));
@@ -240,11 +241,11 @@ class database extends Survey_Common_Action
                 }
             }
         }
-        if ($aQuestionTypeList[$sQuestionType]['subquestions'] > 0) {
+        if ((int)$questionThemeMetaData['settings']->subquestions > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 $arQuestions = Question::model()->with('questionl10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
 
-                for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['subquestions']; $iScaleID++) {
+                for ($iScaleID = 0; $iScaleID < (int)$questionThemeMetaData['settings']->subquestions; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
                         if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage.'_'.$aSubquestionrow['qid']))) {
                             $this->_updateDefaultValues($this->iQuestionID, $aSubquestionrow['qid'], $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage.'_'.$aSubquestionrow['qid']));
@@ -253,7 +254,7 @@ class database extends Survey_Common_Action
                 }
             }
         }
-        if ($aQuestionTypeList[$sQuestionType]['answerscales'] == 0 && $aQuestionTypeList[$sQuestionType]['subquestions'] == 0) {
+        if ($questionThemeMetaData['settings']->answerscales == 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
                 // Qick and dirty insert for yes/no defaul value
                 // write the the selectbox option, or if "EM" is slected, this value to table
