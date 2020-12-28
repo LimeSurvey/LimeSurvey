@@ -51,6 +51,13 @@ Changes from 4.3.32 (build 201221) to 4.4.0-RC1 (build 201223) December 22, 2020
 -Fixed issue #15428: 15428: cross-hover in matrix questions (theme option) not implemented for array by column (#1645) (Gabriel Jenik)
 
 
+Changes from 4.3.32 (build 201221) to 4.3.33 (build 201228) December 28, 2020
+-Fixed issue #16906: Version disclosure via limesurvey.pot (Denis Chenu)
+-Fixed issue #16894: Not possible to batch-edit owners for Central Participant database (#1688) (Gabriel Jenik)
+#Updated translation: Romanian by cdorin
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz, katy50306, terrywei, sylsylsylvie, CTFang, TuTu_chen, scott306lr, Yeeeeeet
+
+
 Changes from 4.3.31 (build 201214) to 4.3.32 (build 201221) December 21, 2020
 -Fixed issue #16895: Question radio button with Question Theme "Bootstrap Buttons" does not keep value in "Other" field (#1683) (Gabriel Jenik)
 -Fixed issue #16829 :hugefreetext question type twig and xml file config error (NDDDA)
