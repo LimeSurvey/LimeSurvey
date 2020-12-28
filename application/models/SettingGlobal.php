@@ -24,6 +24,7 @@
  */
 class SettingGlobal extends LSActiveRecord
 {
+    const DBVERSION_NUMBER = 'DBVersion'; //this is the attribute stg_name in table for db version
 
     /**
      * @var string[] settings that must only come from php files
@@ -161,5 +162,17 @@ class SettingGlobal extends LSActiveRecord
             }
         }
         return $iAssetNumber;
+    }
+
+    /**
+     * Returns db version number from table settings_global or null if dbversion does not exist.
+     *
+     * @return int | null
+     */
+    static public function getDBVersionNumber(){
+        /**@var SettingGlobal $dbVersion */
+        $dbVersion = self::model()->findByAttributes(['stg_name' => self::DBVERSION_NUMBER] );
+
+        return ($dbVersion === null) ? null : (int)$dbVersion->stg_value;
     }
 }
