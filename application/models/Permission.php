@@ -896,18 +896,21 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Get SurveysInGroup with id $iSurveyGroupId
+     * Get SurveysInGroup with id $iSurveysInGroupId
      * NB: This method needs to be public so that it can be mocked.
      *
-     * @param int $iSurveyGroupId
+     * @param int $iSurveysInGroupId
      * @return SurveysInGroup|null
      */
-    public function getSurveysInGroup($iSurveyGroupId)
+    public function getSurveysInGroup($iSurveysInGroupId)
     {
-        return SurveysInGroup::model()->findByPk($iSurveyGroupId);
+        return SurveysInGroup::model()->findByPk($iSurveysInGroupId);
     }
 
     /**
+     * Get SurveysGroup with id $iSurveyGroupId
+     * NB: This method needs to be public so that it can be mocked.
+     *
      * @param int $iSurveyGroupId
      * @return SurveysGroups|null
      */
@@ -917,6 +920,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * Get object with $iEntityID of type $sEntityName
+     * NB: This method needs to be public so that it can be mocked.
+     *
      * @param string $sEntityName
      * @param int $iEntityID
      * @return Object

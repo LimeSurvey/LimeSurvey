@@ -51,6 +51,8 @@ return array(
             'fontawesome',
         )
     ),
+
+    // TODO: Delete this? See #15108.
     'embeddables' => array(
         'devBaseUrl'  => 'assets/packages/embeddables/',
         'basePath' => 'core.embeddables',
@@ -186,26 +188,6 @@ return array(
         'depends' => array(
             'lslog',
         )
-    ),
-    'panelintegration' => array(
-       'devBaseUrl' => 'assets/packages/panelintegration/',
-       'basePath' => 'core.panelintegration',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/panelintegration.js',
-            )
-            : array(
-                'build.min/js/panelintegration.js'
-            )
-        ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
-       'depends' => array(
-           'adminbasics',
-       )
     ),
     'globalsidepanel' => array(
        'devBaseUrl' => 'assets/packages/globalsidepanel/',
@@ -348,14 +330,6 @@ return array(
         'js' => array(
             // 'build/lslog'.$minVersion.'.js',
             'build/lslog.js',
-        )
-    ),
-    'lshelp' => array(
-        'devBaseUrl' => 'assets/packages/lshelp/',
-        'basePath' => 'core.lshelp',
-        'position' =>CClientScript::POS_BEGIN,
-        'js' => array(
-            'build/lshelper'.$minVersion.'.js',
         )
     ),
     'panelboxes' => array(

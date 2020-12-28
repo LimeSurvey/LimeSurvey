@@ -26,9 +26,6 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function view($id)
     {
-        if (!Permission::model()->hasSurveyGroupPermission($id, SurveysGroups::getMinimalPermissionRead(), 'read')) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
-        }
         $this->render('view', array(
             'model'=>$this->loadModel($id),
         ));
@@ -381,6 +378,9 @@ class SurveysGroupsController extends Survey_Common_Action
         $model = SurveysGroups::model()->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
+        }
+        if (!Permission::model()->hasSurveyGroupPermission($id, SurveysGroups::getMinimalPermissionRead())) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         return $model;
     }
