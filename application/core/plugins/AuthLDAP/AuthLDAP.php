@@ -177,7 +177,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($oEvent->get('sEntityName') != 'global' || $oEvent->get('sPermission') != 'auth_ldap' || $oEvent->get('sCRUD') != 'read') {
             return;
         }
-        $iUserId = Permission::getUserId($oEvent->get('iUserID'));
+        $iUserId = Permission::model()->getUserId($oEvent->get('iUserID'));
         if ($iUserId == 1) {
             $oEvent->set('bPermission', (bool) $this->get('allowInitialUser'));
         }

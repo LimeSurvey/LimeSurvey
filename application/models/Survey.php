@@ -210,7 +210,7 @@ class Survey extends LSActiveRecord
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
         if(!(Yii::app() instanceof CConsoleApplication)) {
-            $iUserid = Permission::getUserId();
+            $iUserid = Permission::model()->getUserId();
             if($iUserid) {
                 $this->owner_id = $iUserid;
                 $oUser = User::model()->findByPk($iUserid);
@@ -596,28 +596,17 @@ class Survey extends LSActiveRecord
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
+     * @see issue https://bugs.limesurvey.org/view.php?id=16799
      * @access public
      * @param int $loginID
      * @return CActiveRecord
-     *
      */
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        if (Permission::model()->hasGlobalPermission('surveys', 'read', $loginID)) {
-            // Test global before adding criteria
-            return $this;
-        }
         $criteria = $this->getDBCriteria();
-        $criteria->mergeWith(array(
-            'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)
-                            OR owner_id = :owner_id',
-        ));
-        $criteria->params[':uid'] = $loginID;
-        $criteria->params[':permission'] = 'survey';
-        $criteria->params[':owner_id'] = $loginID;
-        $criteria->params[':entity'] = 'survey';
-
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
         return $this;
     }
 
@@ -1630,18 +1619,8 @@ class Survey extends LSActiveRecord
         $criteria->with = $aWithRelations;
 
         // Permission
-        // Note: reflect Permission::hasPermission
-        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
-            $criteriaPerm = new CDbCriteria;
-
-            // Multiple ON conditions with string values such as 'survey'
-            $criteriaPerm->mergeWith(array(
-                'join'=>"LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
-            ));
-            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
-            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
-            $criteria->mergeWith($criteriaPerm, 'AND');
-        }
+        $criteriaPerm = self::getPermissionCriteria();
+        $criteria->mergeWith($criteriaPerm, 'AND');
         // $criteria->addCondition("t.blabla == 'blub'");
         $dataProvider = new CActiveDataProvider('Survey', array(
             'sort'=>$sort,
@@ -1656,6 +1635,52 @@ class Survey extends LSActiveRecord
         return $dataProvider;
     }
 
+    /**
+     * Get criteria from Permission
+     * @param $userid for thius user id , if not set : get current one 
+     * @return CDbCriteria
+     */
+    protected static function getPermissionCriteria( $userid = null)
+    {
+        if(!$userid) {
+            $userid = Yii::app()->user->id;
+        }
+        // Note: reflect Permission::hasPermission
+        $criteriaPerm = new CDbCriteria;
+        $criteriaPerm->params = array();
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read', $userid)) {
+
+            /* it's the owner of the survey */
+            $criteriaPerm->compare('t.owner_id', $userid, false);
+
+            /* Read is set on survey */
+            $criteriaPerm->mergeWith(
+                array(
+                    'join' => "LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = t.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid= :surveypermissionuserid) ",
+            ));
+            $criteriaPerm->params[':surveypermissionuserid'] = $userid;
+            $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
+
+            /* Read on Surveys in group */
+            $criteriaPerm->mergeWith(
+                array(
+                    'join' => "LEFT JOIN {{permissions}} AS surveysingrouppermissions ON (surveysingrouppermissions.entity_id = t.gsid AND surveysingrouppermissions.entity='surveysingroup' AND surveysingrouppermissions.uid= :surveysingrouppermissionuserid) ",
+            ));
+            $criteriaPerm->params[':surveysingrouppermissionuserid'] = $userid;
+            $criteriaPerm->compare('surveysingrouppermissions.read_p', '1', false, 'OR'); // This mean : update, export … didn't allow see in list
+
+            /* Under condition : owner of group */
+            if(App()->getConfig('ownerManageAllSurveysInGroup')) {
+                $criteriaPerm->mergeWith(
+                    array(
+                        'join' => "LEFT JOIN {{surveys_groups}} AS surveysgroupsowner ON (surveysgroupsowner.gsid = t.gsid) ",
+                ));
+                $criteriaPerm->compare('surveysgroupsowner.owner_id',$userid , false, 'OR');
+            }
+        }
+        /* Place for a new event */
+        return $criteriaPerm;
+    }
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
@@ -2088,6 +2113,129 @@ return $s->hasTokensTable; });
     public function getOwnerUserName()
     {
         return isset($this->owner["users_name"]) ? $this->owner["users_name"] : "";
+    }
+
+    /**
+     * Get the owner id of this Survey
+     * Used for Permission
+     * @return integer
+     */
+    public function getOwnerId()
+    {
+        return $this->owner_id;
+    }
+
+    /**
+     * @inheritdoc
+     * @todo use it in surveyspermission 
+     */
+    public static function getMinimalPermissionRead()
+    {
+        return 'survey';
+    }
+
+    /**
+     * Get Permission data for Permission object
+     * @param string $key
+     * @return array
+     */
+    public static function getPermissionData($key = null)
+    {
+        $aPermission = array(
+            'assessments' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Assessments"),
+                'description' => gT("Permission to create/view/update/delete assessments rules for a survey"),
+                'img' => ' fa fa-comment',
+            ),
+            'quotas' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Quotas"),
+                'description' => gT("Permission to create/view/update/delete quota rules for a survey"),
+                'img' => ' fa fa-tasks',
+            ),
+            'responses' => array(
+                'title' => gT("Responses"),
+                'description' => gT("Permission to create(data entry)/view/update/delete/import/export responses"),
+                'img' => ' icon-browse',
+            ),
+            'statistics' => array(
+                'create' => false,
+                'update' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Statistics"),
+                'description' => gT("Permission to view statistics"),
+                'img' => ' fa fa-bar-chart',
+            ),
+            'survey' => array(
+                'create' => false,
+                'update' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey deletion"),
+                'description' => gT("Permission to delete a survey"),
+                'img' => ' fa fa-trash',
+            ),
+            'surveyactivation' => array(
+                'create' => false,
+                'read' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey activation"),
+                'description' => gT("Permission to activate/deactivate a survey"),
+                'img' => ' fa fa-play',
+            ),
+            'surveycontent' => array(
+                'title' => gT("Survey content"),
+                'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
+                'img' => ' fa fa-file-text-o',
+            ),
+            'surveylocale' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey text elements"),
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
+                'img' => ' fa fa-edit',
+            ),
+            'surveysecurity' => array(
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey security"),
+                'description' => gT("Permission to modify survey security settings"),
+                'img' => ' fa fa-shield',
+            ),
+            'surveysettings' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Survey settings"),
+                'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
+                'img' => ' fa fa-gears',
+            ),
+            'tokens' => array(
+                'title' => gT("Participants"), 'description' => gT("Permission to create/update/delete/import/export participants"),
+                'img' => ' fa fa-user',
+            ),
+            'translations' => array(
+                'create' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Quick translation"),
+                'description' => gT("Permission to view & update the translations using the quick-translation feature"),
+                'img' => ' fa fa-language',
+            ),
+        );
+
+        return $key == null ? $aPermission : $aPermission[$key];
     }
 
     /*

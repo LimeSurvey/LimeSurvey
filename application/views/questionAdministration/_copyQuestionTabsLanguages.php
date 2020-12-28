@@ -26,6 +26,7 @@
         );
         ?>
         <span class='text-warning'><?php  eT("Required"); ?> </span>
+        <p id="question-code-unique-warning" class="hidden text-warning"><?= gT('Question codes must be unique.'); ?></p>
     </div>
 </div>
 

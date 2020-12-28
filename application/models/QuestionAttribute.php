@@ -91,6 +91,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param integer $iQuestionID
      * @param string $sAttributeName
      * @param string $sValue
+     * @param string $sLanguage
      * @return CDbDataReader
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
@@ -522,6 +523,16 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
         }
+
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        foreach ($aAttributes as $attributeName => $attribute) {
+          foreach ($attribute as $fieldName => $value) {
+            if ($value === []) {
+              $aAttributes[$attributeName][$fieldName] = null;
+            }
+          }
+        }
+
         return $aAttributes;
     }
 

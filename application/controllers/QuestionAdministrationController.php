@@ -147,7 +147,7 @@ class QuestionAdministrationController extends LSBaseController
         );
         // TODO: No difference between true and false?
         PrepareEditorScript(false, $this);
-        App()->session['FileManagerContent'] = "edit:survey:{$question->sid}";
+        App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
        $questionTemplate = 'core';
@@ -318,6 +318,8 @@ class QuestionAdministrationController extends LSBaseController
         $questionData['advancedSettings'] = (array) $request->getPost('advancedSettings');
         $questionData['question']['sid']  = $iSurveyId;
 
+        $calledWithAjax = (int) $request->getPost('ajax');
+
         $question = Question::model()->findByPk((int) $questionData['question']['qid']);
 
         // Different permission check when sid vs qid is given.
@@ -398,20 +400,24 @@ class QuestionAdministrationController extends LSBaseController
             $transaction->commit();
 
             // All done, redirect to edit form.
-            App()->setFlashMessage('Question saved', 'success');
             $question->refresh();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
             if(!($tabOverviewEditorValue==='overview' || $tabOverviewEditorValue==='editor')){
                 $tabOverviewEditorValue = 'overview';
             }
-            $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
+            if ($calledWithAjax) {
+                echo json_encode(['message' => gT('Question saved')]);
+                Yii::app()->end();
+            } else {
+                App()->setFlashMessage(gT('Question saved'), 'success');
+                $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
+            }
         } catch (CException $ex) {
             $transaction->rollback();
             throw new LSJsonException(
                 500,
-                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString(),
+                gT('An error happened:') . "\n" . $ex->getMessage() . PHP_EOL,
                 0,
                 App()->createUrl(
                     'surveyAdministration/view/',
@@ -419,17 +425,6 @@ class QuestionAdministrationController extends LSBaseController
                 )
             );
         }
-
-        // TODO: Redirect happens in try-catch above.
-        // Return success message.
-        $this->renderJSON(
-            [
-                'success' => true,
-                'message' => gT('Question successfully stored'),
-            ]
-        );
-        // TODO: Needed?
-        App()->close();
     }
 
     /**
@@ -1479,9 +1474,22 @@ class QuestionAdministrationController extends LSBaseController
         //save the copy ...savecopy (submitbtn pressed ...)
         $savePressed = Yii::app()->request->getParam('savecopy');
         if (isset($savePressed) && $savePressed !== null) {
+            $newTitle = Yii::app()->request->getParam('title');
+            $oldQuestion = Question::model()->findByAttributes(['title' => $newTitle, 'sid' => $surveyId]);
+            if (!empty($oldQuestion)) {
+                Yii::app()->user->setFlash('error', gT("Duplicate question code"));
+                $this->redirect(
+                    $this->createUrl('surveyAdministration/view/',
+                        [
+                            'surveyid' => $surveyId,
+                        ]
+                    )
+                );
+            }
+
             $copyQuestionValues = new \LimeSurvey\Datavalueobjects\CopyQuestionValues();
             $copyQuestionValues->setOSurvey($oSurvey);
-            $copyQuestionValues->setQuestionCode(Yii::app()->request->getParam('title'));
+            $copyQuestionValues->setQuestionCode($newTitle);
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
@@ -2613,6 +2621,11 @@ class QuestionAdministrationController extends LSBaseController
         $i = 0;
         foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
             foreach ($answerOptionArray as $scaleId => $data) {
+                if (!isset($data['code'])) {
+                    throw new Exception(
+                        'code is not set in data: ' . json_encode($data)
+                    );
+                }
                 $answer = new Answer();
                 $answer->qid = $question->qid;
                 $answer->code = $data['code'];

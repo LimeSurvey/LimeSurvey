@@ -30,8 +30,7 @@ class GlobalSettings extends Survey_Common_Action
         parent::__construct($controller, $id);
 
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
-            Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->getController()->redirect(App()->createUrl("/admin"));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
     }
 
@@ -67,6 +66,9 @@ class GlobalSettings extends Survey_Common_Action
 
     private function _displaySettings()
     {
+        if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         Yii::app()->loadHelper('surveytranslator');
         $data = [];
         $data['title'] = "hi";

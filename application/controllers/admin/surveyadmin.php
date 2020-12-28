@@ -1879,7 +1879,6 @@ class SurveyAdmin extends Survey_Common_Action
             "getParametersUrl" => Yii::app()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $survey->sid)),
         ];
 
-        App()->getClientScript()->registerPackage('panelintegration');
         return $aData;
     }
 

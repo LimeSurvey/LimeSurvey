@@ -673,7 +673,7 @@ class participantsaction extends Survey_Common_Action
             $aResults['global']['message'] = gT('Nothing to update');
         }
 
-        Yii::app()->getController()->renderPartial('/admin/surveymenu/massive_action/_update_results', array('aResults' => $aResults));
+        Yii::app()->getController()->renderPartial('/admin/participants/massive_actions/_update_results', array('aResults' => $aResults));
     }
 
     /**

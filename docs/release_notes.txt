@@ -34,6 +34,43 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.32 (build 201221) to 4.4.0-RC1 (build 201223) December 22, 2020
++New feature: Integrated global user administration settings and admin creation email template (Eddy Lackmann)
++New feature : Global permission for Survey groups (Denis Chenu)
++New feature #16812 : Make invitation/reminder sending rate configurable (Vilius Šumskas)
++New feature #16440: Survey group Permission : always available in list (Denis Chenu)
++New Feature #16429: Added config variable to implicitly declare MyISAM engine when creating tables in MySQL (#1447) (Jens Eeckhout)
+-Fixed issue: zoho L41-T44 Quick translation does not work. (Jessica Höck)
+-Fixed issue: Preinstall Comfort Update Checker plugin on installation (Eddy)
+-Fixed issue: Database exception is shown when trying to reload responses for/resume an inactive survey (Carsten Schmitz)
+-Fixed issue #16906: Version disclosure via limesurvey.pot (Denis Chenu)
+-Fixed issue #16898: Pop Up Editor does not work inside the Question Editor (GabrielJenik)
+-Fixed issue #16897: Subquestions are being automatically picked up from previous (sub)questions (GabrielJenik)
+-Fixed issue #16896: Javascript shown when editing subquestions (GabrielJenik)
+-Fixed issue #16894: Not possible to batch-edit owners for Central Participant database (#1688) (Gabriel Jenik)
+-Fixed issue #15428: 15428: cross-hover in matrix questions (theme option) not implemented for array by column (#1645) (Gabriel Jenik)
+
+
+Changes from 4.3.31 (build 201214) to 4.3.32 (build 201221) December 21, 2020
+-Fixed issue #16895: Question radio button with Question Theme "Bootstrap Buttons" does not keep value in "Other" field (#1683) (Gabriel Jenik)
+-Fixed issue #16829 :hugefreetext question type twig and xml file config error (NDDDA)
+-Fixed issue #16764: Language changer displays languages in current language instead of native language (Jelle Sebreghts)
+-Fixed issue #16741: Filtering on responses for questions of type Array Dual Scale was not working in Statistics (#1653) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Greek by kiolalis
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.3.30 (build 201207) to 4.3.31 (build 201214) December 14, 2020
 -Fixed issue : barebone URL are not replaced for text email (Denis Chenu)
 -Fixed issue #16901: @@SURVEYURL@@ not replaced when register (Denis Chenu)

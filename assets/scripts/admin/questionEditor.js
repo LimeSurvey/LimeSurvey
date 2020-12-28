@@ -38,10 +38,8 @@ declare var LS: any
 // Globals for jshint.
 /* globals $, _, alert, document */
 
+// NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
-
-// Public functions are put here.
-LS.questionEditor = {};
 
 /**
  * BELOW IS FROM LS3 assets/scripts/admin/subquestions.js
@@ -56,7 +54,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   // TODO: Routing?
   if (window.location.href.indexOf('questionAdministration') === -1) {
-    console.trace('Not on question editor page, do not run question editor script');
     return;
   }
 
@@ -323,7 +320,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $defer.resolve({ lang: language, langtable: $langTable, html: htmlrow });
       },
       error(html, status) {
-        alert('Internal error: ' + errormessage);
+        alert('Internal error in quick add: ' + errormessage);
         $defer.reject([html, status, errormessage]);
       },
     });
@@ -1017,7 +1014,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
               $(item.langtable).find('tbody').append(tableRow);
             } catch (e) {
-              alert('Internal error:' + e);
+              alert('Internal error in quickAddLabels:' + e);
               throw 'abort';
             }
           });
@@ -1523,7 +1520,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $('#ls-loading').hide();
         // TODO: How to show internal errors?
         // eslint-disable-next-line no-alert
-        alert(`Internal error: ${ex}`);
+        console.error(ex);
+        alert(`Internal error in updateQuestionAttributes: ${ex}`);
       }
     },
 
@@ -1606,7 +1604,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         },
         error: (data) => {
-          alert('Internal error: ' + data);
+          alert('Internal error in checkQuestionCodeUniqueness: ' + data);
           throw 'abort';
         }
       });
@@ -1614,15 +1612,22 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     /**
      * When clicking save, first check if codes etc are valid.
+     * Also post using Ajax.
      *
      * @param {Event} event
      * @param {string} tabQuestionEditor
      * @return {boolean}
      */
-    checkIfSaveIsValid: function(event, tabQuestionEditor = 'editor') {
+    checkIfSaveIsValid: function(event /*: Event */, tabQuestionEditor = 'editor') {
       event.preventDefault();
       const qid = parseInt($('input[name="question[qid]"]').val());
       const code = $('input[name="question[title]"]').val();
+      const target = event.currentTarget;
+      if (!(target instanceof HTMLElement)) {
+        alert('Internal error in checkIfSaveIsValid: target is not an HTMLElement, but ' + typeof target);
+        return false;
+      }
+      const saveWithAjax = target.dataset.saveWithAjax === 'true';
 
       const firstSubquestionRow = document.querySelector('.subquestions-table tr');
       if (firstSubquestionRow) {
@@ -1633,10 +1638,71 @@ $(document).on('ready pjax:scriptcomplete', function () {
       }
 
       const firstAnsweroptionRow = document.querySelector('.answeroptions-table tr');
-      // This will show error message if answer option code is not unique.
-      if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
-        return false;
+      if (firstAnsweroptionRow) {
+        // This will show error message if answer option code is not unique.
+        if (!LS.questionEditor.showAnswerOptionCodeUniqueError(firstAnsweroptionRow)) {
+          return false;
+        }
       }
+
+      // Helper function after unique check.
+      const saveFormWithAjax /*: (void) => (void) */ = () => {
+        const data = {};
+        const form = document.getElementById('edit-question-form');
+        if (!(form instanceof HTMLFormElement)) {
+          throw 'form is not HTMLFormElement';
+        }
+
+        $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
+          data[x.name] = x.value;
+        });
+        // Signal to controller that we're posting via Ajax.
+        data.ajax = 1;
+
+        // Show loading gif.
+        $('#ls-loading').show();
+
+        // Post complete form to controller.
+        $.post({
+          data,
+          url: form.action,
+          success: (response /*: string */, textStatus /*: string */) => {
+            const json = JSON.parse(response);
+
+            // Hide loading gif.
+            $('#ls-loading').hide();
+
+            // Update the side-bar.
+            LS.EventBus.$emit('updateSideBar', {'updateQuestions': true});
+
+            if (textStatus === 'success') {
+              // Show confirm message.
+              LS.LsGlobalNotifier.create(
+                json.message,
+                'well-lg bg-primary text-center'
+              );
+            } else {
+              // Show error message.
+              LS.LsGlobalNotifier.create(
+                json.message,
+                'well-lg bg-danger text-center'
+              );
+            }
+          },
+          error: (data) => {
+            $('#ls-loading').hide();
+            if (data.responseJSON) {
+              LS.LsGlobalNotifier.create(
+                data.responseJSON.message,
+                'well-lg bg-danger text-center'
+              );
+            } else {
+              alert('Internal error from saveFormWithAjax: no data.responseJSON found');
+              throw 'abort';
+            }
+          }
+        });
+      };
 
       $.ajax({
         url: languageJson.checkQuestionCodeIsUniqueURL,
@@ -1651,19 +1717,25 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // TODO: Check other things too.
             const button = document.getElementById('submit-create-question');
             if (button instanceof HTMLElement) {
-                if(tabQuestionEditor === 'editor'){
-                    $('#tab-overview-editor-input').val('editor');
-                }else{
-                    $('#tab-overview-editor-input').val('overview');
-                }
-              button.click();
+              if(tabQuestionEditor === 'editor'){
+                $('#tab-overview-editor-input').val('editor');
+              }else{
+                $('#tab-overview-editor-input').val('overview');
+              }
+
+              if (saveWithAjax) {
+                saveFormWithAjax();
+              } else {
+                // Just submit form.
+                button.click();
+              }
             }
           } else {
             $('#question-code-unique-warning').removeClass('hidden');
           }
         },
-        error: (data) => {
-          alert('Internal error: ' + data);
+        error: (response) => {
+          alert('Internal error in checkIfSaveIsValid: ' + response);
           throw 'abort';
         }
       });

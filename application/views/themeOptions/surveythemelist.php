@@ -24,8 +24,8 @@
                     $pageSize,
                     Yii::app()->params['pageSizeOptions'],
                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
-                )          
-            ),            
+                )
+            ),
             'columns' => array(
                 array(
                     'id'=>'id',

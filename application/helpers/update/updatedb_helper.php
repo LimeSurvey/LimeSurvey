@@ -3202,7 +3202,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
+        /** THIS CAME FROM MASTER **/
+        //~ if ($iOldDBVersion < 429) {
+            //~ $oTransaction = $oDB->beginTransaction();
+            //~ extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
+            //~ $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
+            //~ $oTransaction->commit();
+        //~ }
+    
         if ($iOldDBVersion < 429) {
             // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
             $oTransaction = $oDB->beginTransaction();
@@ -3424,7 +3431,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          * Implemented default value for user administration global settings
          */
         if ($iOldDBVersion < 434) {
-
             $oTransaction = $oDB->beginTransaction();
             $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
             $oDB->createCommand()->insert('{{settings_global}}', [
@@ -3443,6 +3449,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ]);
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /* Add public boolean to surveygroup : view forl all in list */
+        if ($iOldDBVersion < 435) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 435), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
@@ -3515,8 +3529,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
-
-
 
 function extendDatafields429($oDB)
 {

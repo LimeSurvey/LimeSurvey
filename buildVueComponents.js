@@ -217,7 +217,6 @@ if(!single) {
             }
         },
         Promise.all([
-            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
             runGetDependenciesInFolder('assets/packages/meta/LSRTLPlugin')
         ])
     );
@@ -272,7 +271,6 @@ if(!single) {
             }
         },
         Promise.all([
-            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
             runGetDependenciesInFolder('assets/packages/meta/LSRTLPlugin')
         ])
     );
