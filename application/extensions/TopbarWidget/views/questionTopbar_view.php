@@ -8,7 +8,7 @@
 $aData = get_defined_vars();
 $leftSideContentSummary = $this->render('includes/questionTopbarLeft_view', get_defined_vars(), true);
 $leftSideContentEditor = $this->render('includes/editQuestionTopbarLeft_view', get_defined_vars(), true);
-$rightSideContent = $this->render('includes/questionTopbarRight_view', get_defined_vars(), true);
+$rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_defined_vars(), true);
 
 ?>
 

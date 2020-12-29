@@ -91,9 +91,16 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = $this->getQuestionObject(null, 'F', null);
         $oQuestion->sid = $surveyid;
 
-        $this->aData['showSaveButton'] = true;
         $this->aData['showSaveAndNewGroupButton'] = true;
         $this->aData['showSaveAndNewQuestionButton'] = true;
+        $this->aData['closeUrl'] = Yii::app()->createUrl(
+            'questionGroupsAdministration/view/',
+            [
+                'surveyid' => $oQuestion->sid,
+                'gid' => $oQuestion->gid,
+                'landOnSideMenuTab' => 'structure'
+            ]
+        );
 
         $this->aData['tabOverviewEditor'] = 'overview';
         $this->renderFormAux($oQuestion);
@@ -122,9 +129,6 @@ class QuestionAdministrationController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
-        $this->aData['showSaveButton'] = true;
-        $this->aData['showSaveAndCloseButton'] = true;
-        $this->aData['showCloseButton'] = true;
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
             [
@@ -134,7 +138,6 @@ class QuestionAdministrationController extends LSBaseController
                 'landOnSideMenuTab' => 'structure'
             ]
         );
-
         $this->aData['tabOverviewEditor'] = $tabOverviewEditor;
         $this->renderFormAux($question);
     }
@@ -205,6 +208,10 @@ class QuestionAdministrationController extends LSBaseController
         );
 
         $this->aData['topBar']['name'] = 'questionTopbar_view';
+        $this->aData['showSaveButton'] = true;
+        $this->aData['showSaveAndCloseButton'] = true;
+        $this->aData['showCloseButton'] = true;
+        
         //$this->aData['topBar']['leftSideView'] = 'questionTopbarLeft_view';
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
@@ -1559,9 +1566,7 @@ class QuestionAdministrationController extends LSBaseController
             . " (" . gT("ID") . ":" . $surveyId . ")";
 
         $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['rightSideView'] = 'questionTopbarRight_view';
-        $aData['showSaveAndCloseButton'] = true;
-        $aData['showCloseButton'] = true;
+        $aData['topBar']['rightSideView'] = 'copyQuestionTopbarRight_view';
         $aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
             [

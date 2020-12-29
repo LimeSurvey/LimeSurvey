@@ -87,19 +87,19 @@
         </a>
         <?php endif; ?>
     <?php endif; ?>
-
-    <!-- Import -->
-    <?php if($hasSurveyContentCreatePermission):?>
-        <?php if($oSurvey->active!='Y'): ?>
-            <a class="btn btn-default" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/$surveyid"); ?>" role="button">
-                <span class="icon-import icon"></span>
-                <?php eT("Import question"); ?>
-            </a>
-        <?php else: ?>
-            <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
-                <span class="icon-import icon"></span>
-                <?php eT("Import question"); ?>
-            </button>
-        <?php endif; ?>
-    <?php endif;?>
 <?php endif; ?>
+
+<!-- Import -->
+<?php if($hasSurveyContentCreatePermission):?>
+    <?php if($oSurvey->active!='Y'): ?>
+        <a class="btn btn-default" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/$surveyid"); ?>" role="button">
+            <span class="icon-import icon"></span>
+            <?php eT("Import question"); ?>
+        </a>
+    <?php else: ?>
+        <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
+            <span class="icon-import icon"></span>
+            <?php eT("Import question"); ?>
+        </button>
+    <?php endif; ?>
+<?php endif;?>
