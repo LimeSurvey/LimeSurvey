@@ -1123,7 +1123,7 @@ class remotecontrol_handle
                         libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
                     }
-                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
+                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID, true);
                 } else {
                                     return array('status' => 'Invalid extension');
                 }
