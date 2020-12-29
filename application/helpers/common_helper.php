@@ -1398,7 +1398,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $groupSeq = -1;
     $_groupOrder = -1;
 
-    //$qtypes = Question::typeList();
     $questionTypeMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
     foreach ($questions as $arow) {
         //For each question, create the appropriate field(s))

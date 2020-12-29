@@ -141,7 +141,6 @@ function checkQuestions($postsid, $iSurveyID)
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
-    //$qtypes = Question::typeList();
     $questionTypesMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
 
     $survey = Survey::model()->findByPk($iSurveyID);

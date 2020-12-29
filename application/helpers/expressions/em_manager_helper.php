@@ -9707,7 +9707,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            $qtypes = Question::typeList();
 
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
@@ -9871,7 +9870,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 $mandatory = (($q['info']['mandatory']=='Y' || $q['info']['mandatory']=='S') ? "<span class='mandatory'>*</span>" : '');
                 $type = $q['info']['type'];
-                $typedesc = $qtypes[$type]['description'];
+                //$qtypes = Question::typeList();
+                $questionThemeMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
+                $typedesc = $questionThemeMetaData[$type]->title;
                 $sgqas = explode('|',$q['sgqa']);
                 $qReplacement = array_merge($standardsReplacementFields,array(
                     'QID' => $q['info']['qid'],
