@@ -26,7 +26,7 @@ class TestHelper extends TestCase
         \Yii::import('application.helpers.common_helper', true);
         \Yii::import('application.helpers.replacements_helper', true);
         \Yii::import('application.helpers.surveytranslator_helper', true);
-        \Yii::app()->loadHelper('admin/import');
+        \Yii::import('application.helpers.admin.import_helper', true);
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
         \Yii::import('application.helpers.qanda_helper', true);
