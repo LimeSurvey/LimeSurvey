@@ -258,7 +258,8 @@
         $scriptCode = ""
         . "
             if($('#".$fieldname."').length >0){
-                var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
+                // NB: Can't use `var` if oCKeditorVarName includes [].
+                $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
                 if ($oCKeditorVarName) {
                         CKEDITOR.remove($oCKeditorVarName);
                     $oCKeditorVarName = null;
