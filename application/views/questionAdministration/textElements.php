@@ -19,12 +19,12 @@
                             array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
                         ); ?>
                         <?= getEditor(
-                            "questionI10N[$lang][question]",
                             "question_" . $lang,
+                            "questionI10N[$lang][question]",
                             "[".gT("Question:","js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
-                            $question->sid ?? 0,
+                            $question->qid ?? 0,
                             $action = '');
                         ?>
                     </div>
@@ -42,8 +42,8 @@
                             array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$lang}")
                         ); ?>
                         <?= getEditor(
-                            "questionI10N[$lang][help]",
                             "help_".$lang,
+                            "questionI10N[$lang][help]",
                             "[".gT("Help:", "js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
