@@ -221,7 +221,8 @@
         $toolbaroption = "";
         $sFileBrowserAvailable = '';
         $htmlformatoption = "";
-        $oCKeditorVarName = "oCKeditor_".str_replace("-", "_", $fieldname);
+        $oCKeditorVarName = "oCKeditor_".preg_replace("/[-\[]/", "_", $fieldname);
+        $oCKeditorVarName = str_replace(']', '', $oCKeditorVarName);
 
         if (($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
