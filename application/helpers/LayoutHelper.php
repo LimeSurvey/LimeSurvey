@@ -488,7 +488,6 @@ class LayoutHelper
             $aData['topBar']
         ); //$aData['topBar']['showSaveButton']['url']
 
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');
         Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
 
@@ -566,8 +565,6 @@ class LayoutHelper
             ],
             $aData['topBar']
         );
-
-        Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
 
         if (isset($aData['qid'])) {
             $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';

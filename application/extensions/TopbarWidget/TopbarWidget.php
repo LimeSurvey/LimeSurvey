@@ -17,9 +17,6 @@ class TopbarWidget extends CWidget
 
         if (is_null($this->config)) return;
         
-        // Register assets.
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');
-
         // Render the topbar
         $this->renderTopbar();
     }

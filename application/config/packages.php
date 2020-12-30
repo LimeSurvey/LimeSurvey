@@ -258,56 +258,6 @@ return array(
             'adminbasics',
         )
     ),
-    'admintoppanel' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/admintoppanel.js',
-            )
-            : array(
-                'build.min/js/admintoppanel.js'
-            )
-        ),
-       'depends' => array(
-           'adminbasics'
-       )
-    ),
-    
-    'admintoppanelltr' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'css' => ( $debug > 0
-            ? array(
-                'build/css/admintoppanel.css',
-            )
-            : array(
-                'build.min/css/admintoppanel.css'
-            )
-        ),
-       'depends' => array(
-           'admintoppanel'
-       )
-    ),
-    'admintoppanelrtl' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'css' => ( $debug > 0
-            ? array(
-                'build/css/admintoppanel.rtl.css',
-            )
-            : array(
-                'build.min/css/admintoppanel.rtl.css'
-            )
-        ),
-       'depends' => array(
-           'admintoppanel'
-       )
-    ),
     
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
