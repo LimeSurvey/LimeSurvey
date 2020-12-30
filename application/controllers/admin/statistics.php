@@ -813,7 +813,7 @@ class statistics extends Survey_Common_Action
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
         $aData['oStatisticsHelper'] = $helper;
-        $aData['menu']['expertstats'] = true;
+        $aData['expertstats'] = true;
         
 
         //Call the javascript file
@@ -851,10 +851,10 @@ class statistics extends Survey_Common_Action
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-        $aData['menu']['edition'] = true;
-        $aData['menu']['stats'] = true;
-        $aData['menu']['close'] = true;
-        $aData['topBar']['type'] = 'responses';
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['rightSideView'] = 'statisticsTopbarRight_view';
+
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;

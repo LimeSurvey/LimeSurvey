@@ -5,10 +5,6 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <a class="btn btn-default pull-right" href="#" role="button" id="send-reminders-button">
-        <span class="icon-invite" ></span>
-        <?php eT("Send reminders");?>
-    </a>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">

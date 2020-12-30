@@ -127,14 +127,10 @@
                         </div>
                     </div>                    
                 </div>
-                <div class="col-sm-12">
-                    <div class="buttons control-group ls-space padding top-5 col-md-6 col-md-offset-3 col-sm-12">
-                        <button class="btn btn-primary btn-block" type="submit" name="submit">
-                            <i class="fa fa-download"></i>
-                            <?php eT('Export participants'); ?>
-                        </button>
-                    </div>
-                </div>
+                <button class="btn btn-primary btn-block hidden" type="submit" name="submit">
+                    <i class="fa fa-download"></i>
+                    <?php eT('Export participants'); ?>
+                </button>
             </div>
             </form>
         </div>

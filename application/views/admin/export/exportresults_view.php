@@ -31,9 +31,6 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
                     ?>
                 </h4>
             </div>
-            <div class="col-md-6 text-right">
-                <input type='submit' class="btn btn-primary " value='<?php eT("Export"); ?>' id='exportresultsubmitbutton' />
-            </div>
         </div>
         <h3></h3>
     </div>
@@ -67,7 +64,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
             </div>
         </div>
     </div>
-
+    <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
 <?php

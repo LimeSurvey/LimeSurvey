@@ -19,13 +19,6 @@
                 </h4>
             </div>
             <div class="col-md-9 text-right">
-                <div class="col-md-9 text-right">
-                    <a href='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/".$surveyid); ?>' class="btn btn-primary">
-                        <span class="fa fa-bar-chart"></span>
-                        <?php eT("Expert mode"); ?>
-
-                    </a>
-                </div>
                 <div class="form-group">
                     <div >
                         <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>

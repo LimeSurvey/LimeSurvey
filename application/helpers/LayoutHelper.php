@@ -452,6 +452,25 @@ class LayoutHelper
     }
 
     /**
+     * New Topbar
+     * @param $aData
+     */
+    public static function renderTopbar($aData) {
+
+        $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
+
+        return Yii::app()->getController()->widget(
+            'ext.TopbarWidget.TopbarWidget', 
+            array(
+                'config' => $oTopbarConfig,
+                'aData' => $aData,
+            ),
+            true
+        );
+    }
+
+    /**
+     * Vue Topbar
      * @param $aData
      */
     public function renderGeneraltopbar($aData) {

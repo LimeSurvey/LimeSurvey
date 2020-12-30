@@ -10,7 +10,6 @@ $count=0;
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyEmailTemplates');
 
-
 App()->getClientScript()->registerScript( "EmailTemplateViews_variables", "
 var sReplaceTextConfirmation='".gT("This will replace the existing text. Continue?","js")."';
 var sKCFinderLanguage='".sTranslateLangCode2CK(App()->language)."';
