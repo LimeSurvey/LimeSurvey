@@ -221,6 +221,17 @@
         $toolbaroption = "";
         $sFileBrowserAvailable = '';
         $htmlformatoption = "";
+
+        // Compose JS variable name that will hold the CKEditor instance.
+        // This variable is named after the fieldname.
+        // As to sanitize it and not creating JS syntax errors:
+        // - replace any opening square brackets or "-" from the fieldname, to "_"
+        // - remove closing square brackets
+        // 
+        // Note: This sanitization process is not much needed now, but leave it in case is usefull for laters.
+        // This was used before by this function, when in prior times, fieldname could be derived 
+        // from the name of a textarea, and not just the id (as now)
+        // The name of a texarea can contain quare brackets. Then we needed to sanitize.
         $oCKeditorVarName = "oCKeditor_".preg_replace("/[-\[]/", "_", $fieldname);
         $oCKeditorVarName = str_replace(']', '', $oCKeditorVarName);
 
