@@ -60,7 +60,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
 
         if (activepopup == null)
         {
-            document.getElementsByName(fieldname)[0].readOnly=true;
+            document.getElementById(fieldname).readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
             popup = window.open('".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');

@@ -20,7 +20,7 @@
                         ); ?>
                         <?= getEditor(
                             "question_" . $lang,
-                            "questionI10N[$lang][question]",
+                            "question_" . $lang,
                             "[".gT("Question:","js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
@@ -43,7 +43,7 @@
                         ); ?>
                         <?= getEditor(
                             "help_".$lang,
-                            "questionI10N[$lang][help]",
+                            "help_".$lang,
                             "[".gT("Help:", "js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
