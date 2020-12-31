@@ -200,6 +200,9 @@ class QuestionAdministrationController extends LSBaseController
             true
         );
 
+        $showScriptField = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update') && 
+            SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id);
+
         // TODO: Problem with CSRF cookie when entering directly after login.
         $modalsHtml =  Yii::app()->twigRenderer->renderViewFromFile(
             '/application/views/questionAdministration/modals.twig',
@@ -233,6 +236,7 @@ class QuestionAdministrationController extends LSBaseController
                 // TODO: question_template
                 'core'
             ),
+            'showScriptField'       => $showScriptField,
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml
         ];
