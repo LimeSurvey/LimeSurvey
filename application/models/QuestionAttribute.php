@@ -459,8 +459,13 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Returns the value for attribute 'question_template'.
+     * Fetches the question_template from a question model.
+     * 
+     * Be carefull this attribute is not present in all questions.
+     * Even more, standard question types where question theme are not used (or custom question theme are not used),
+     * the attribute is missing. In those cases, the deault "core" is used.
      *
-     * @return string|null question_template or null if it not exists
+     * @return string question_template or 'core' if it not exists
      */
     public static function getQuestionTemplateValue($questionID){
         $question_template = QuestionAttribute::model()->findByAttributes([
@@ -468,7 +473,7 @@ class QuestionAttribute extends LSActiveRecord
             'attribute' => 'question_template'
         ]);
 
-        return $question_template->value;
+        return !empty($question_template) ? $question_template->value : 'core';
     }
 
     /**
