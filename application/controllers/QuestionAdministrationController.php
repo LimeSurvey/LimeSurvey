@@ -2646,6 +2646,7 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion->gid        = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
+                $questionOrder++;
                 $subquestion->title      = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance  = $data['relevance'];
