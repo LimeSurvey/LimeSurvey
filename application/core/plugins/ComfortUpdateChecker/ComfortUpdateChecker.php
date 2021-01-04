@@ -17,9 +17,11 @@ class ComfortUpdateChecker extends PluginBase
     static protected $description = 'Update Checker for Comfort Update users';
 
     static protected $name = 'ComfortUpdateChecker';
-    
-    protected $settings = [
 
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
+    protected $settings = [
         'only_security_update' => array(
             'type' => 'checkbox',
             'label' => 'Notification only for security updates',

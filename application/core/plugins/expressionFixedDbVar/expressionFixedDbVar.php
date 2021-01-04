@@ -3,9 +3,9 @@
  * expressionFixedDbVar : add some fixed DB var : SEED, STARTDATE … 
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019 LimeSurvey - Denis Chenu
  * @license GPL version 3
- * @version 1.0.0
+ * @version 1.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,11 @@ class expressionFixedDbVar extends PluginBase
     static protected $description = 'Add SEED and other DB var in ExpressionScript Engine.';
     static protected $name = 'expressionFixedDbVar';
 
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     /**
-    * @var array[] the settings
+    * @inheritdoc
     */
     protected $settings = array(
         'SEED' => array(

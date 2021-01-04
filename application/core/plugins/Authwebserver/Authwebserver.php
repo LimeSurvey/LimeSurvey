@@ -5,7 +5,10 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
     
     static protected $description = 'Core: Webserver authentication';
     static protected $name = 'Webserver';
-    
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     protected $settings = array(
         'strip_domain' => array(
             'type' => 'checkbox',

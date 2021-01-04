@@ -97,9 +97,12 @@ class PluginHelper extends Survey_Common_Action
 
         $pluginManager = App()->getPluginManager();
         $pluginInstance = $refClass->newInstance($pluginManager, $record->id);
+        /* Check if method is in allowed list */
+        if(is_array($pluginInstance->allowedPublicMethods) && !in_array($methodName,$pluginInstance->allowedPublicMethods)) {
+            throw new \CHttpException(400, sprintf(gT("Forbidden call of method %s for plugin %s"),$methodName,$pluginName));
+        }
 
         Yii::app()->setPlugin($pluginInstance);
-
         // Get plugin method, abort if not found
         try {
             $refMethod = $refClass->getMethod($methodName);

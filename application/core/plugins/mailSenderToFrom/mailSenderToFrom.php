@@ -4,9 +4,9 @@
  * Needed for some smtp server, see mantis issue #10529 <https://bugs.limesurvey.org/view.php?id=10529>
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019 LimeSurvey - Denis Chenu
  * @license MIT
- * @version 1.0.0
+ * @version 1.0.1
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,9 @@ class mailSenderToFrom extends PluginBase
     static protected $description = 'Set sender to the SMTP user.';
     static protected $name = 'mailSenderToFrom';
 
-    
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     public function init()
     {
         $this->subscribe('beforeEmail','beforeEmail');
