@@ -1,15 +1,15 @@
 # LimeSurvey LANGUAGE FILE.
-# Copyright (C) 2020 LimeSurvey
+# Copyright (C) 2021 LimeSurvey
 # This file is distributed under the same license as the LimeSurvey package.
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2020-12-23 12:11:37+00:00\n"
+"POT-Creation-Date: 2021-01-04 09:40:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
@@ -23841,6 +23841,7 @@ msgid "LimeSurvey installer"
 msgstr ""
 
 #: application/views/statistics_user_view.php:11
+#: tmp/runtime/twig_cache/20/20bfbdca52d9217b67bc1d70468e73d6171fed6ea99b5b1cb0ad8f09447424ef.php:69
 msgid "Total records in survey"
 msgstr ""
 
@@ -24354,6 +24355,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/27/274bce654ce589ce0d024a7249f2f643669a702153fffbf60069837e8344b0e2.php:147
 msgid "No info or no data found"
+msgstr ""
+
+#: tmp/runtime/twig_cache/27/27eb1a64f94e434124214809c495d713054aac8be4ca26369a80e1b845e64b05.php:55
+msgid "Public statistics"
 msgstr ""
 
 #: tmp/runtime/twig_cache/29/29965356f23fbd2e1d942d2f14f616643838b790dbb7e08a5ac24602a89be986.php:69
