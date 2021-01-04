@@ -121,6 +121,7 @@
                                     'question'        => $oQuestion,
                                     'aStructureArray' => $aQuestionTypeGroups,
                                     'questionTypes'   => $aQuestionTypeStateList,
+                                    'showScriptField' => $showScriptField,
                                 ]
                             ); ?>
                         </div>

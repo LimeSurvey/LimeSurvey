@@ -52,37 +52,39 @@
                         ); ?>
                     </div>
                 </div>
-                <div style="height: 300px;">
-                    <label class="col-sm-6">
-                        <?= gT('Script'); ?>
-                    </label>
-                    <div class="col-sm-6 text-right">
-                        <input 
-                            type="checkbox" 
-                            name="scriptForAllLanguages"
-                            id="selector--scriptForAllLanguages"
-                            v-model="scriptForAllLanugages"
-                        />&nbsp;
-                        <label for="selector--scriptForAllLanguages">
-                            <?= gT('Set for all languages'); ?>
+                <?php if ($showScriptField): ?>
+                    <div style="height: 300px;">
+                        <label class="col-sm-6">
+                            <?= gT('Script'); ?>
                         </label>
-                    </div>
+                        <div class="col-sm-6 text-right">
+                            <input 
+                                type="checkbox" 
+                                name="scriptForAllLanguages"
+                                id="selector--scriptForAllLanguages"
+                                v-model="scriptForAllLanugages"
+                            />&nbsp;
+                            <label for="selector--scriptForAllLanguages">
+                                <?= gT('Set for all languages'); ?>
+                            </label>
+                        </div>
 
-                    <?= CHtml::textArea(
-                        "questionI10N[$lang][script]",
-                        !empty($editfile) ? file_get_contents($editfile) : '',
-                        [
-                            'id' => "questionI10N[{$lang}][script]",
-                            'rows' => '10',
-                            'cols' => '40',
-                            'data-filetype' => 'javascript',
-                            'class' => 'form-control', // . $sTemplateEditorMode,
-                        ]
-                    ); ?>
-                    <p class="alert well">
-                        <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
-                    </p>
-                </div>
+                        <?= CHtml::textArea(
+                            "questionI10N[$lang][script]",
+                            !empty($editfile) ? file_get_contents($editfile) : '',
+                            [
+                                'id' => "questionI10N[{$lang}][script]",
+                                'rows' => '10',
+                                'cols' => '40',
+                                'data-filetype' => 'javascript',
+                                'class' => 'form-control', // . $sTemplateEditorMode,
+                            ]
+                        ); ?>
+                        <p class="alert well">
+                            <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php endforeach; ?>
