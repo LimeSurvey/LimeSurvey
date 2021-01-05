@@ -432,7 +432,9 @@ class SurveysGroupsPermissionController extends LSBaseController
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
+            new Permission()
         );
+
         $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData('SurveysGroups', $id, $userId);
         $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData('SurveysInGroup', $id, $userId);
         $aPermissions = array_merge(

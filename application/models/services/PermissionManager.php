@@ -24,16 +24,21 @@ class PermissionManager
     /** @var LSWebUser */
     private $user;
 
+    /** @var Permission model */
+    private $permission;
+
     /**
      * @param LSHttpRequest $request
      * @param LSWebUser $user
      */
     public function __construct(
         LSHttpRequest $request,
-        LSWebUser $user
+        LSWebUser $user,
+        Permission $permission
     ) {
         $this->request = $request;
         $this->user = $user;
+        $this->permission = $permission;
     }
 
     /**
@@ -45,7 +50,7 @@ class PermissionManager
      */
     public function getPermissionData($modelName, $modelId, $userId = null)
     {
-        $aObjectPermissions = Permission::getEntityBasePermissions($modelName);
+        $aObjectPermissions = Permission::getEntityBasePermissions($modelName); // Usage of static, db not needed
         if(empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
@@ -57,13 +62,13 @@ class PermissionManager
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
-                    'disabled' => !Permission::model()->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id),
+                    'disabled' => !$this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id),
                     'indeterminate' => false
                 );
             }
             /* If user id is set : update the data with permission of this user */
             if($userId) {
-                $oCurrentPermissions = Permission::model()->find(
+                $oCurrentPermissions = $this->permission->find(
                     "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
                     array(
                         ":entity" => $modelName,
@@ -79,7 +84,7 @@ class PermissionManager
                         $aObjectPermissions[$sPermission]['current'][$crud]['checked'] = $havePermissionSet;
                         /* The user didn't have the permission set, but have permission by other way (inherited, plugin …) */
                         if(!$havePermissionSet) {
-                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = Permission::model()->hasPermission($modelId, $modelName, $sPermission, $crud, $userId);
+                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $userId);
                         }
                     }
                 }
