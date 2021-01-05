@@ -48,7 +48,7 @@
                             'id' => CHtml::getIdByName("set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]"),
                             'uncheckValue' => 0,
                             /* See issue #14551 : https://bugs.limesurvey.org/view.php?id=14551 */
-                            'disabled' => null, // $aValues['disabled'], unused : in survey : user can set permission even if it don't have it.
+                            'disabled' => $aValues['disabled'],
                         )
                     );
                     }?>

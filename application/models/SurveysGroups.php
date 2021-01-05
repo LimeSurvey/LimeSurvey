@@ -444,7 +444,7 @@ class SurveysGroups extends LSActiveRecord
                 'img' => ' fa fa-edit',
             ),
             'permission' => array(
-                'create' => false, /* since need update to set permission */
+                'create' => true, /* allowed to add new users or group */
                 'read' => true,
                 'update' => true,
                 'delete' => true, /* update ? */

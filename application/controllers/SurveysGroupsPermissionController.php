@@ -111,6 +111,7 @@ class SurveysGroupsPermissionController extends LSBaseController
 
         $oAddUserList  = array();
         $oAddGroupList  = array();
+
         if (Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'create')) {
             /* Search user withouth rights on SurveyGroup */
             /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
@@ -350,7 +351,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         foreach ($set as $entity => $aPermissionSet) {
             foreach ($uids as $uid) {
                 /* Permission::model()->setPermissions return true or break */
-                $success = $success && !$PermissionManagerService->setPermissions($uid, $entity, $id);
+                $success = $success && $PermissionManagerService->setPermissions($uid, $entity, $id);
             }
         }
         if($success) {
@@ -448,11 +449,13 @@ class SurveysGroupsPermissionController extends LSBaseController
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
         );
-
-        $aData = array(
-            'model' => $model,
-            'subview' => 'setPermissionForm',
-            'buttons' => array(
+        $buttons = array(
+            'closebutton' => array(
+                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+            )
+        );
+        if(Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'update')) {
+            $buttons = array(
                 'savebutton' => array(
                     'form' => 'permissionsSave'
                 ),
@@ -461,8 +464,13 @@ class SurveysGroupsPermissionController extends LSBaseController
                 ),
                 'closebutton' => array(
                     'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-                ),
-            ),
+                )
+            );
+        }
+        $aData = array(
+            'model' => $model,
+            'subview' => 'setPermissionForm',
+            'buttons' => $buttons
         );
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,

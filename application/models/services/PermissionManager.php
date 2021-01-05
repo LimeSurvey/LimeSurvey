@@ -12,6 +12,9 @@ use LSHttpRequest;
 use LSWebUser;
 use Permission;
 
+use App;
+use CHtml;
+
 /**
  * Service class for managing permission
  */
@@ -112,6 +115,8 @@ class PermissionManager
             /* Nothing to do */
             return $success;
         }
+        /* string : function name to use for final Permission */
+        $permissionFunctionName = "has{$modelName}Permission";
         /* string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         $entityPermissionsToSet = $permissionsToSet[$modelName];
@@ -123,7 +128,7 @@ class PermissionManager
             $aSetPermissions[$sPermission] = array();
             foreach ($aCruds as $crud) {
                 /* Check if current user have the permission to set */
-                if($this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id)) {
+                if($this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $this->user->id)) {
                     $aSetPermissions[$sPermission][$crud] = !empty($aPermission[$crud]) && !empty($entityPermissionsToSet[$sPermission][$crud]);
                 }
             }
@@ -152,7 +157,7 @@ class PermissionManager
                 )
             );
             if(empty($oCurrentPermission)) {
-                $oCurrentPermission = $this->getNewPermission(); // ?????
+                $oCurrentPermission = $this->getNewPermission();
                 $oCurrentPermission->entity = $modelName;
                 $oCurrentPermission->entity_id = $modelId;
                 $oCurrentPermission->uid = $userId;
@@ -162,10 +167,12 @@ class PermissionManager
             foreach($aSetPermission as $crud => $permission) {
                 $oCurrentPermission->setAttribute("{$crud}_p",intval($permission));
             }
-            if($oCurrentPermission->save()) {
+            if(!$oCurrentPermission->save()) {
                 $success = false;
+                App()->setFlashMessage(CHtml::errorSummary($oCurrentPermission),'warning');
             }
         }
+        $this->permission::setMinimalEntityPermission($userId, $modelId, $modelName);
         return $success;
     }
 
