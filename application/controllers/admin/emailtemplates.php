@@ -99,7 +99,18 @@ class emailtemplates extends Survey_Common_Action
      */
     function update($iSurveyId)
     {
-        $uploadUrl = Yii::app()->getBaseUrl(true).substr(Yii::app()->getConfig('uploadurl'), strlen(Yii::app()->getConfig('publicurl')) - 1);
+        $sBaseUrl = Yii::app()->getBaseUrl();
+        $uploadUrl = Yii::app()->getConfig('uploadurl');
+        if (substr($uploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
+            $uploadUrl = substr($uploadUrl, strlen($sBaseUrl));
+        }
+        $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
+        $sPublicUrl = Yii::app()->getConfig("publicurl");
+        $aPublicUrl = parse_url($sPublicUrl);
+        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
+            $sBaseAbsoluteUrl = $sPublicUrl;
+        }
+        $uploadUrl = trim($sBaseAbsoluteUrl, "/").$uploadUrl;
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
