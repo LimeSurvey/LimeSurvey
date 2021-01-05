@@ -167,7 +167,7 @@
                     <?php $this->renderPartial(
                         "summary",
                         [
-                            'question'         => $question,
+                            'question'         => $oQuestion,
                             'questionTheme'    => $questionTheme,
                             'answersCount'      => count($oQuestion->answers),
                             'subquestionsCount' => count($oQuestion->subquestions),
