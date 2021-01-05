@@ -81,6 +81,8 @@ class User extends LSActiveRecord
         return array(
             array('users_name, password, email', 'required'),
             array('users_name', 'unique'),
+            array('users_name', 'length','max'=>64),
+            array('full_name', 'length','max'=>50),
             array('email', 'email'),
             array('full_name', 'LSYii_Validators'), // XSS if non super-admin
             array('parent_id', 'default', 'value'=>0),
