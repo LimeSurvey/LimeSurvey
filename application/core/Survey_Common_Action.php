@@ -614,6 +614,8 @@ class Survey_Common_Action extends CAction
     /**
      * Shows admin menu for question
      *
+     * @deprecated not in use anymore
+     *
      * @param array $aData
      */
     public function _questionbar($aData)

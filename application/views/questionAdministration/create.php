@@ -1,6 +1,8 @@
 <?php
 
 /** @var Survey $oSurvey */
+/** @var Question $oQuestion */
+/** @var string $questionTemplate */
 ?>
 
 <style>
@@ -94,7 +96,6 @@
                             [
                                 'oSurvey'             => $oSurvey,
                                 'question'            => $oQuestion,
-                                'questionTypes'       => $aQuestionTypeStateList,
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups,
                                 'questionThemeTitle'  => $questionTheme['title'],
                                 'questionThemeName'   => $questionTheme['name'],
@@ -120,7 +121,6 @@
                                     'oSurvey'         => $oSurvey,
                                     'question'        => $oQuestion,
                                     'aStructureArray' => $aQuestionTypeGroups,
-                                    'questionTypes'   => $aQuestionTypeStateList,
                                     'showScriptField' => $showScriptField,
                                 ]
                             ); ?>
@@ -168,7 +168,7 @@
                         "summary",
                         [
                             'question'         => $oQuestion,
-                            'questionTypes'     => $aQuestionTypeStateList,
+                            'questionTheme'    => $questionTheme,
                             'answersCount'      => count($oQuestion->answers),
                             'subquestionsCount' => count($oQuestion->subquestions),
                             'advancedSettings'  => $advancedSettings

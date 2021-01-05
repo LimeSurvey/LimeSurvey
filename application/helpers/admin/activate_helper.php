@@ -125,7 +125,7 @@ function checkGroup($postsid)
 * @param integer $iSurveyID
 * @return array|bool $faildcheck
 */
-function checkQuestions($postsid, $iSurveyID, $qtypes)
+function checkQuestions($postsid, $iSurveyID)
 {
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
@@ -141,6 +141,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
+    $questionTypesMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
 
     $survey = Survey::model()->findByPk($iSurveyID);
     $oDB = Yii::app()->db;
@@ -154,8 +155,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     $chkresult = $chkquery->queryAll();
 
     foreach ($chkresult as $chkrow) {
-        if ($qtypes[$chkrow['type']]['subquestions'] > 0) {
-            for ($i = 0; $i < $qtypes[$chkrow['type']]['subquestions']; $i++) {
+        if ((int)$questionTypesMetaData[$chkrow['type']]['settings']->subquestions > 0) {
+            for ($i = 0; $i < (int)$questionTypesMetaData[$chkrow['type']]['settings']->subquestions; $i++) {
                 $chaquery = Yii::app()->db->createCommand()
                     ->select('COUNT(qid)')
                     ->from('{{questions}}')
@@ -166,8 +167,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
                 }
             }
         }
-        if ($qtypes[$chkrow['type']]['answerscales'] > 0) {
-            for ($i = 0; $i < $qtypes[$chkrow['type']]['answerscales']; $i++) {
+        if ((int)$questionTypesMetaData[$chkrow['type']]['settings']->aswerscales > 0) {
+            for ($i = 0; $i < (int)$questionTypesMetaData[$chkrow['type']]['settings']->aswerscales; $i++) {
                 $chaquery = Yii::app()->db->createCommand()
                     ->select('COUNT(aid)')
                     ->from('{{answers}}')
