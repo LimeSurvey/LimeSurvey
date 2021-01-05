@@ -5097,11 +5097,14 @@
                             $value=NULL;  // can't upload a file via GET
                             break;
                     }
-                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                    $LEM->updatedValues[$knownVar['sgqa']]=array(
-                        'type'=>$knownVar['type'],
-                        'value'=>$value,
-                    );
+                    $qinfo = $LEM->questionSeq2relevance[$knownVar['qseq']];
+                    if (self::checkValidityAnswer($knownVar['type'],$value,$knownVar['sgqa'],$qinfo,false)) {
+                        $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                        $LEM->updatedValues[$knownVar['sgqa']]=array(
+                            'type'=>$knownVar['type'],
+                            'value'=>$value,
+                        );
+                    }
                 }
                 $LEM->_UpdateValuesInDatabase();
             }
