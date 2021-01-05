@@ -43,8 +43,8 @@ echo viewHelper::getViewTestTag('modifyUser');
                         <?php eT("Full name");?>
                     </label>
                     <div class="">
-                        <?php echo $form->textField($oUser, 'full_name');?>
-                    </div>
+                        <?php echo $form->textField($oUser, 'full_name', array('maxlength'=>50));?>
+                    </div> 
                 </div>
 
                 <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) || (Permission::isForcedSuperAdmin(Permission::getUserId())) ): ?>
