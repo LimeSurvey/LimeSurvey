@@ -93,7 +93,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 foreach ($aSurveysGroupsPermissions as $sPermission => $aPermissions) {
                     $aCurrentsUserRights[$oUser->uid][$sPermission] = array();
                     foreach (array_intersect_key($aPermissions, array_flip($aCruds)) as $sCrud => $available) {
-                        if ($available && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $oUser->uid)) {
+                        if ($available && Permission::model()->hasSurveysGroupsPermission($id, $sPermission, $sCrud, $oUser->uid)) {
                             $aCurrentsUserRights[$oUser->uid][$sPermission][] = $sCrud;
                         }
                     }
@@ -101,7 +101,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 foreach ($aSurveysInGroupPermissions as $sPermission => $aPermissions) {
                     $aCurrentsUserRights[$oUser->uid][$sPermission] = array();
                     foreach (array_intersect_key($aPermissions, array_flip($aCruds)) as $sCrud => $available) {
-                        if ($available && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $oUser->uid)) {
+                        if ($available && Permission::model()->hasSurveysGroupsPermission($id, $sPermission, $sCrud, $oUser->uid)) {
                             $aCurrentsUserRights[$oUser->uid][$sPermission][] = $sCrud;
                         }
                     }
@@ -111,7 +111,7 @@ class SurveysGroupsPermissionController extends LSBaseController
 
         $oAddUserList  = array();
         $oAddGroupList  = array();
-        if (Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+        if (Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'create')) {
             /* Search user withouth rights on SurveyGroup */
             /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
             $oCriteria = new CDbCriteria();
@@ -158,7 +158,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionAddUser($id)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+        if (!Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $uid = App()->getRequest()->getPost('uid');
@@ -210,7 +210,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionAddUserGroup($id)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+        if (!Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $ugid = App()->getRequest()->getPost('ugid');
@@ -310,7 +310,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     {
         $model = $this->loadModel($id);
         $uid = null;
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
+        if (!Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $type = App()->getRequest()->getPost('type', 'user');
@@ -376,7 +376,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionDeleteUser($id, $uid)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'delete')) {
+        if (!Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $oUser = User::model()->findByPk($uid);
@@ -490,7 +490,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'read')) {
+        if (!Permission::model()->hasSurveysGroupsPermission($id, 'permission', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         return $model;

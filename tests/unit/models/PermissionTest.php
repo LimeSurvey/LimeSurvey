@@ -28,13 +28,13 @@ class PermissionTest extends TestCase
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup'])
+            ->setMethods(['getUserId', 'getSurveysGroups'])
             ->getMock();
         $perm->method('getUserId')->willReturn(1);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
+        $perm->method('getSurveysGroups')->willReturn($surveysGroup);
 
         $surveysGroupsId = 999;
-        $this->assertTrue($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertTrue($perm->hasSurveysGroupsPermission($surveysGroupsId, 'permission', 'create'));
     }
 
     /**
@@ -56,14 +56,14 @@ class PermissionTest extends TestCase
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup', 'getEntity'])
+            ->setMethods(['getUserId', 'getSurveysGroups', 'getEntity'])
             ->getMock();
         $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
+        $perm->method('getSurveysGroups')->willReturn($surveysGroup);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
         $surveysGroupsId = 999;
-        $this->assertTrue($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertTrue($perm->hasSurveysGroupsPermission($surveysGroupsId, 'permission', 'create'));
     }
 
     /**
@@ -85,13 +85,13 @@ class PermissionTest extends TestCase
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup', 'getEntity'])
+            ->setMethods(['getUserId', 'getSurveysGroups', 'getEntity'])
             ->getMock();
         $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
+        $perm->method('getSurveysGroups')->willReturn($surveysGroup);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
         $surveysGroupsId = 999;
-        $this->assertFalse($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertFalse($perm->hasSurveysGroupsPermission($surveysGroupsId, 'permission', 'create'));
     }
 }

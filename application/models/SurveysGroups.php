@@ -194,7 +194,7 @@ class SurveysGroups extends LSActiveRecord
      */
     public function getHasViewSurveyGroupRight()
     {
-        return Permission::model()->hasSurveyGroupPermission($this->gsid, 'group', 'read');
+        return Permission::model()->hasSurveysGroupsPermission($this->gsid, 'group', 'read');
     }
 
     /**
@@ -296,17 +296,17 @@ class SurveysGroups extends LSActiveRecord
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id"=>$this->gsid));
         $button = '';
-        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'group','read')) {
+        if(Permission::model()->hasSurveysGroupsPermission($this->gsid,'group','read')) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
-        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'surveysettings','read')) {
+        if(Permission::model()->hasSurveysGroupsPermission($this->gsid,'surveysettings','read')) {
             $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
         }
-        if (Permission::model()->hasSurveyGroupPermission($this->gsid,'permission','read')) {
+        if (Permission::model()->hasSurveysGroupsPermission($this->gsid,'permission','read')) {
             $button .= '<a class="btn btn-default" href="'.$sPermissionUrl.'" role="button" data-toggle="tooltip" title="'.gT('Permission').'"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">'.gT('Permission').'</span></a>';
         }
         /* Can not delete group #1 + with survey */
-        if ($this->gsid!=1 && !$this->hasSurveys && Permission::model()->hasSurveyGroupPermission($this->gsid,'group','delete')) {
+        if ($this->gsid!=1 && !$this->hasSurveys && Permission::model()->hasSurveysGroupsPermission($this->gsid,'group','delete')) {
             $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 

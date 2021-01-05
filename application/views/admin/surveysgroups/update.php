@@ -24,7 +24,7 @@
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
-            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
+            <?php if(Permission::model()->hasSurveysGroupsPermission($model->primaryKey, 'group','read')):?>
                 <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
             <?php endif;?>
             <li><a href="#templateSettingsFortThisGroup"><?php eT('Themes options for this survey group'); ?></a></li>
@@ -41,7 +41,7 @@
                     ?>
                 </div>
             </div>
-            <?php if(Permission::model()->hasSurveyGroupPermission($model->primaryKey, 'group','read')):?>
+            <?php if(Permission::model()->hasSurveysGroupsPermission($model->primaryKey, 'group','read')):?>
                 <div id="settingsForThisGroup" class="tab-pane">
                     <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
                 </div>

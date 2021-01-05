@@ -671,9 +671,9 @@ class Permission extends LSActiveRecord
      * @param integer $iUserID User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasSurveyGroupPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasSurveysGroupsPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oGroup = $this->getSurveysGroup($iSurveyGroupId);
+        $oGroup = $this->getSurveysGroups($iSurveyGroupId);
         if (!$oGroup) {
             return false;
         }
@@ -929,7 +929,7 @@ class Permission extends LSActiveRecord
      * @param int $iSurveyGroupId
      * @return SurveysGroups|null
      */
-    public function getSurveysGroup($iSurveyGroupId)
+    public function getSurveysGroups($iSurveyGroupId)
     {
         return SurveysGroups::model()->findByPk($iSurveyGroupId);
     }

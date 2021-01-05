@@ -54,6 +54,7 @@ class PermissionManager
         if(empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
+        $permissionFunctionName = "has{$modelName}Permission";
         /* string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach (array_keys($aObjectPermissions) as $sPermission) {
@@ -62,7 +63,7 @@ class PermissionManager
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
-                    'disabled' => !$this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id),
+                    'disabled' => !$this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $this->user->id),
                     'indeterminate' => false
                 );
             }
@@ -84,7 +85,8 @@ class PermissionManager
                         $aObjectPermissions[$sPermission]['current'][$crud]['checked'] = $havePermissionSet;
                         /* The user didn't have the permission set, but have permission by other way (inherited, plugin …) */
                         if(!$havePermissionSet) {
-                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $userId);
+                            $functionName = "has{$modelName}Permission";
+                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $userId);
                         }
                     }
                 }
