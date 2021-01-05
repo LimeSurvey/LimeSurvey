@@ -227,7 +227,6 @@ class QuestionAdministrationController extends LSBaseController
             'oQuestion'               => $question,
             'questionTemplate'       => $questionTemplate,
             'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
-            //'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
             'advancedSettings'       => $advancedSettings,
             'generalSettings'        => $this->getGeneralOptions(
                 $question->qid,

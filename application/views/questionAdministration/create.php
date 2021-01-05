@@ -1,6 +1,8 @@
 <?php
 
 /** @var Survey $oSurvey */
+/** @var Question $oQuestion */
+/** @var string $questionTemplate */
 ?>
 
 <style>
