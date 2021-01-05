@@ -1,8 +1,7 @@
 <?php
-
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2020 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -11,8 +10,10 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * Surveys Groups Controller
+ * Surveys Groups Permission Controller
  */
+
+use LimeSurvey\Models\Services\PermissionManager;
 
 class SurveysGroupsPermissionController extends LSBaseController
 {
@@ -426,120 +427,19 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oUserGroup = UserGroup::model()->findByPk($to);
             $oUser = null;
         }
-        $aSurveysGroupsPermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
-        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
-        foreach (array_keys($aSurveysGroupsPermissions) as $sPermission) {
-            $aSurveysGroupsPermissions[$sPermission]['current'] = array(
-                'create' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'create'),
-                    'indeterminate' => false
-                ),
-                'read' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'read'),
-                    'indeterminate' => false
-                ),
-                'update' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'update'),
-                    'indeterminate' => false
-                ),
-                'delete' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'delete'),
-                    'indeterminate' => false
-                ),
-                'import' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'import'),
-                    'indeterminate' => false
-                ),
-                'export' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'export'),
-                    'indeterminate' => false
-                ),
-            );
-            $aSurveysGroupsPermissions[$sPermission]['entity'] = 'SurveysGroups';
-            if ($type == 'user') {
-                $oCurrentPermissions = Permission::model()->find(
-                    "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
-                    array(
-                        ":entity" => 'SurveysGroups',
-                        ":entity_id" => $id,
-                        ":uid" => $userId,
-                        ":permission" => $sPermission
-                    )
-                );
-                foreach (array_keys($aSurveysGroupsPermissions[$sPermission]['current']) as $sCrud) {
-                    if ($aSurveysGroupsPermissions[$sPermission][$sCrud]) {
-                        $havePermissionSet = !empty($oCurrentPermissions) && $oCurrentPermissions->getAttribute("{$sCrud}_p");
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
-                    }
-                }
-            }
-        }
-        $aSurveysInGroupPermissions = Permission::model()->getEntityBasePermissions('SurveysInGroup');
-        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
-        foreach (array_keys($aSurveysInGroupPermissions) as $sPermission) {
-            $aSurveysInGroupPermissions[$sPermission]['current'] = array(
-                'create' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'create'),
-                    'indeterminate' => false
-                ),
-                'read' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'read'),
-                    'indeterminate' => false
-                ),
-                'update' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'update'),
-                    'indeterminate' => false
-                ),
-                'delete' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'delete'),
-                    'indeterminate' => false
-                ),
-                'import' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'import'),
-                    'indeterminate' => false
-                ),
-                'export' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'export'),
-                    'indeterminate' => false
-                )
-            );
-            $aSurveysInGroupPermissions[$sPermission]['entity'] = 'SurveysInGroup';
-            if ($type == 'user') {
-                $oCurrentPermissions = Permission::model()->find(
-                    "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
-                    array(
-                        ":entity" => 'SurveysInGroup',
-                        ":entity_id" => $id,
-                        ":uid" => $userId,
-                        ":permission" => $sPermission
-                    )
-                );
-                foreach (array_keys($aSurveysInGroupPermissions[$sPermission]['current']) as $sCrud) {
-                    if ($aSurveysInGroupPermissions[$sPermission][$sCrud]) {
-                        $havePermissionSet = !empty($oCurrentPermissions) && $oCurrentPermissions->getAttribute("{$sCrud}_p");
-                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
-                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
-                    }
-                }
-            }
-        }
+        $user = App()->user;
+        $request = App()->request;
+        $PermissionManagerService = new PermissionManager(
+            $request,
+            $user,
+        );
+        $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData('SurveysGroups', $id, $userId);
+        $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData('SurveysInGroup', $id, $userId);
         $aPermissions = array_merge(
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
         );
+
         $aData = array(
             'model' => $model,
             'subview' => 'setPermissionForm',
