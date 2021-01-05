@@ -102,7 +102,7 @@
             </td>
             <td>
                 <?php
-                    echo $questionTheme['title'] . '(Type: ' .$questionTheme['question_type'] . ')';
+                    echo $questionTheme['title'] . ' (Type: ' .$questionTheme['question_type'] . ')';
                 //echo $questionTypes[$question->type]['description'];
                 ?>
             </td>
