@@ -19,12 +19,12 @@
                             array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
                         ); ?>
                         <?= getEditor(
-                            "questionI10N[$lang][question]",
+                            "question_" . $lang,
                             "question_" . $lang,
                             "[".gT("Question:","js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
-                            $question->sid ?? 0,
+                            $question->qid ?? 0,
                             $action = '');
                         ?>
                     </div>
@@ -42,7 +42,7 @@
                             array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$lang}")
                         ); ?>
                         <?= getEditor(
-                            "questionI10N[$lang][help]",
+                            "help_".$lang,
                             "help_".$lang,
                             "[".gT("Help:", "js")."](".$lang.")",
                             $oSurvey->sid,
@@ -52,37 +52,39 @@
                         ); ?>
                     </div>
                 </div>
-                <div style="height: 300px;">
-                    <label class="col-sm-6">
-                        <?= gT('Script'); ?>
-                    </label>
-                    <div class="col-sm-6 text-right">
-                        <input 
-                            type="checkbox" 
-                            name="scriptForAllLanguages"
-                            id="selector--scriptForAllLanguages"
-                            v-model="scriptForAllLanugages"
-                        />&nbsp;
-                        <label for="selector--scriptForAllLanguages">
-                            <?= gT('Set for all languages'); ?>
+                <?php if ($showScriptField): ?>
+                    <div style="height: 300px;">
+                        <label class="col-sm-6">
+                            <?= gT('Script'); ?>
                         </label>
-                    </div>
+                        <div class="col-sm-6 text-right">
+                            <input 
+                                type="checkbox" 
+                                name="scriptForAllLanguages"
+                                id="selector--scriptForAllLanguages"
+                                v-model="scriptForAllLanugages"
+                            />&nbsp;
+                            <label for="selector--scriptForAllLanguages">
+                                <?= gT('Set for all languages'); ?>
+                            </label>
+                        </div>
 
-                    <?= CHtml::textArea(
-                        "questionI10N[$lang][script]",
-                        !empty($editfile) ? file_get_contents($editfile) : '',
-                        [
-                            'id' => "questionI10N[{$lang}][script]",
-                            'rows' => '10',
-                            'cols' => '40',
-                            'data-filetype' => 'javascript',
-                            'class' => 'form-control', // . $sTemplateEditorMode,
-                        ]
-                    ); ?>
-                    <p class="alert well">
-                        <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
-                    </p>
-                </div>
+                        <?= CHtml::textArea(
+                            "questionI10N[$lang][script]",
+                            !empty($editfile) ? file_get_contents($editfile) : '',
+                            [
+                                'id' => "questionI10N[{$lang}][script]",
+                                'rows' => '10',
+                                'cols' => '40',
+                                'data-filetype' => 'javascript',
+                                'class' => 'form-control', // . $sTemplateEditorMode,
+                            ]
+                        ); ?>
+                        <p class="alert well">
+                            <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php endforeach; ?>

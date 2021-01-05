@@ -1,19 +1,6 @@
 <?php
 
 /** @var Survey $oSurvey */
-
-$this->renderPartial(
-    'topbars/' . $this->aData['renderSpecificTopbar'],
-    [
-        'closeBtnUrl'=> $this->createUrl(
-            'surveyAdministration/view/',
-            ['surveyid' => $oSurvey->sid]
-        ),
-        'surveyId' => $oSurvey->sid,
-        'question' => $question,
-    ]
-);
-
 ?>
 
 <style>
@@ -32,7 +19,7 @@ $this->renderPartial(
 <div class="side-body">
 
     <!-- Question overview switch (no summary on create, so hide then) -->
-    <?php if ($question->qid !== 0): ?>
+    <?php if ($oQuestion->qid !== 0): ?>
         <div
             class="btn-group pull-right clear"
             role="group"
@@ -77,7 +64,7 @@ $this->renderPartial(
         ); ?>
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
-            <input type="hidden" name="question[qid]" value="<?= $question->qid; ?>" />
+            <input type="hidden" name="question[qid]" value="<?= $oQuestion->qid; ?>" />
             <input type="hidden" name="tabOverviewEditor" id='tab-overview-editor-input' value="<?=$this->aData['tabOverviewEditor']?>" />
             <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
             <input
@@ -91,7 +78,7 @@ $this->renderPartial(
                 <div class="container-center scoped-new-questioneditor">
                     <div class="pagetitle h3 scoped-unset-pointer-events">
                         <x-test id="action::addQuestion"></x-test>
-                        <?php if ($question->qid === 0): ?>
+                        <?php if ($oQuestion->qid === 0): ?>
                             <?= gT('Create question'); ?>
                         <?php else: ?>
                             <?= gT('Edit question'); ?>
@@ -101,12 +88,12 @@ $this->renderPartial(
                     <!-- Question code and question type selector -->
                     <div class="row">
                         <?php
-                        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionTemplate);
+                        $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                         $this->renderPartial(
                             "codeAndType",
                             [
                                 'oSurvey'             => $oSurvey,
-                                'question'            => $question,
+                                'question'            => $oQuestion,
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups,
                                 'questionThemeTitle'  => $questionTheme['title'],
                                 'questionThemeName'   => $questionTheme['name'],
@@ -130,8 +117,9 @@ $this->renderPartial(
                                 "textElements",
                                 [
                                     'oSurvey'         => $oSurvey,
-                                    'question'        => $question,
+                                    'question'        => $oQuestion,
                                     'aStructureArray' => $aQuestionTypeGroups,
+                                    'showScriptField' => $showScriptField,
                                 ]
                             ); ?>
                         </div>
@@ -148,7 +136,7 @@ $this->renderPartial(
                         <?php $this->renderPartial(
                             "advancedSettings",
                             [
-                                'question'        => $question,
+                                'question'        => $oQuestion,
                                 'oSurvey'          => $oSurvey,
                                 'advancedSettings' => $advancedSettings,
                             ]
@@ -161,7 +149,7 @@ $this->renderPartial(
     </div>
 
     <!-- Show summary page if we're editing or viewing. -->
-    <?php if ($question->qid !== 0): ?>
+    <?php if ($oQuestion->qid !== 0): ?>
         <div class="container-fluid" id="question-overview" <?= $visibilityOverview?>>
             <form>
             <!-- Question summary -->
@@ -169,8 +157,8 @@ $this->renderPartial(
                 <div class="pagetitle h3" style="padding-top: 0; margin-top: 0;">
                     <?php eT('Question summary'); ?>&nbsp;
                     <small>
-                        <em><?= $question->title; ?></em>&nbsp;
-                        (ID: <?php echo (int) $question->qid;?>)
+                        <em><?= $oQuestion->title; ?></em>&nbsp;
+                        (ID: <?php echo (int) $oQuestion->qid;?>)
                     </small>
                 </div>
                 <div class="row">
@@ -179,8 +167,8 @@ $this->renderPartial(
                         [
                             'question'         => $question,
                             'questionTheme'    => $questionTheme,
-                            'answersCount'      => count($question->answers),
-                            'subquestionsCount' => count($question->subquestions),
+                            'answersCount'      => count($oQuestion->answers),
+                            'subquestionsCount' => count($oQuestion->subquestions),
                             'advancedSettings'  => $advancedSettings
                         ]
                     ); ?>

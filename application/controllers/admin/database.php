@@ -284,272 +284,290 @@ class database extends Survey_Common_Action
     }
 
     /**
-     * action to do when update question
+     * action to do when update answers options
      * @param integer $iSurveyID
      * @return void (redirect)
-     * @todo Deprecated, replaced by questionedit.php
      */
-    /*
-    private function actionUpdateQuestion($iSurveyID)
-    {
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+//    private function actionUpdateAnswerOptions($iSurveyID)
+//    {
+//        Yii::app()->loadHelper('database');
+//        $survey = Survey::model()->findByPk($iSurveyID);
+//        $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
+//        $sQuestionType = $arQuestion['type']; // Checked)
+//        $aQuestionTypeList = Question::typeList();
+//        $iScaleCount = $aQuestionTypeList[$sQuestionType]['answerscales'];
+//        /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
+//        /* @todo : add it to upgrage DB system, and see for the lsa */
+//        if ($sQuestionType == Question::QT_R_RANKING_STYLE && $survey->isActive) {
+//            QuestionAttribute::model()->find(
+//                "qid = :qid AND attribute = 'max_subquestions'",
+//                array(':qid' => $this->iQuestionID)
+//            );
+//
+//            $answerCount = Answer::model()->countByAttributes(array('qid' => $this->iQuestionID, 'language'=>$survey->language));
+//            $oQuestionAttribute = new QuestionAttribute();
+//            $oQuestionAttribute->qid = $this->iQuestionID;
+//            $oQuestionAttribute->attribute = 'max_subquestions';
+//            $oQuestionAttribute->value = $answerCount;
+//            $oQuestionAttribute->save();
+//        }
+//
+//        //First delete all answers
+//        $oldAnswers = Answer::model()->findAllByAttributes(array('qid'=>$this->iQuestionID));
+//        foreach ($oldAnswers as $oAnswer) {
+//            AnswerL10n::model()->deleteAllByAttributes(array('aid'=>$oAnswer->aid));
+//            $oAnswer->delete();
+//        }
+//        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+//        for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
+//            $iMaxCount = (int) Yii::app()->request->getPost('answercount_'.$iScaleID);
+//            for ($iSortOrderID = 1; $iSortOrderID < $iMaxCount; $iSortOrderID++) {
+//                $sCode = (string) sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
+//                $iAssessmentValue = (int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
+//
+//                    // Now we insert the answer
+//                $oAnswer = new Answer;
+//                $oAnswer->code              = $sCode;
+//                $oAnswer->qid               = $this->iQuestionID;
+//                $oAnswer->sortorder         = $iSortOrderID;
+//                $oAnswer->assessment_value  = $iAssessmentValue;
+//                $oAnswer->scale_id          = $iScaleID;
+//                $bAnswerSave = true;
+//                if (!$oAnswer->save()) {
+//                    $sErrors = '<br/>';
+//                    foreach ($oAnswer->getErrors() as $sError) {
+//                        $sErrors .= $sError[0].'<br/>';
+//                    }
+//
+//                    // Let's give a new to code to the answer to save it, so user entries are not lost
+//                    $bAnswerSave = false;
+//
+//                    while (!$bAnswerSave) {
+//                        $oAnswer->code = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+//                        if ($oAnswer->save()) {
+//                            $bAnswerSave = true;
+//                        }
+//                    }
+//
+//                    Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors, 'error');
+//                }
+//                if($bAnswerSave) {
+//                    foreach ($survey->allLanguages as $sLanguage) {
+//                        $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
+//                        // Fix bug with FCKEditor saving strange BR types
+//                        $sAnswerText = $this->oFixCKeditor->fixCKeditor($sAnswerText);
+//
+//                        // Now we insert the answers by language
+//                        $oAnswerL10n = new AnswerL10n;
+//                        $oAnswerL10n->aid = $oAnswer->aid;
+//                        $oAnswerL10n->answer            = $sAnswerText;
+//                        $oAnswerL10n->language          = $sLanguage;
+//                        $oAnswerL10n->save();
+//                    }
+//                    // Updating code (oldcode!==null) => update condition with the new code
+//                    $sOldCode = Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
+//                    if (isset($sOldCode) && $sCode !== $sOldCode) {
+//                        Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
+//                    }
+//                }
+//
+//            }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
+//        }
+//
+//        //This is SUPER important! Recalculating the ExpressionScript Engine state!
+//        LimeExpressionManager::SetDirtyFlag();
+//        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+//        $this->_resetEM();
+//
+//        if (!Yii::app()->request->getPost('bFullPOST')) {
+//            Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."), 'error');
+//        } else {
+//            Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
+//        }
+//        if (Yii::app()->request->getPost('close-after-save') === 'true') {
+//            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+//        }
+//        $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+//    }
 
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
-
-        $cqr = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
-        $oldtype = $cqr['type'];
-        $oldgid = $cqr['gid'];
-
-        $survey = Survey::model()->findByPk($iSurveyID);
-        // If the survey is activate the question type may not be changed
-        if ($survey->isActive) {
-            $sQuestionType = $oldtype;
-        } else {
-            $sQuestionType = Yii::app()->request->getPost('type');
-        }
-
-
-        /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563
-        if(Yii::app()->request->getPost('advancedquestionsettingsLoaded',true)) {
-            // Remove invalid question attributes on saving
-            $criteria = new CDbCriteria;
-            $criteria->compare('qid', $this->iQuestionID);
-            $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
-            // If the question has a custom template, we first check if it provides custom attributes
-            $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
-            if (is_object($oAttributeValues) && $oAttributeValues->value) {
-                $aAttributeValues['question_template'] = $oAttributeValues->value;
-            } else {
-                $aAttributeValues['question_template'] = 'core';
-            }
-            $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
-            foreach ($validAttributes as  $validAttribute) {
-                $criteria->compare('attribute', '<>'.$validAttribute['name']);
-            }
-            QuestionAttribute::model()->deleteAll($criteria);
-            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-            foreach ($validAttributes as $validAttribute) {
-                /* Readonly attribute : disable save
-                if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
-                    continue;
-                }
-                if ($validAttribute['i18n']) {
-                    /* Delete invalid language : not needed but cleaner
-                    $langCriteria = new CDbCriteria;
-                    $langCriteria->compare('qid', $this->iQuestionID);
-                    $langCriteria->compare('attribute', $validAttribute['name']);
-                    $langCriteria->addNotInCondition('language', $aLanguages);
-                    QuestionAttribute::model()->deleteAll($langCriteria);
-                    /* delete IS NULL too
-                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                    foreach ($aLanguages as $sLanguage) {
-                        // TODO sanitise XSS
-                        $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                        $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                        if ($iInsertCount > 0) {
-                            if ($value != '') {
-                                QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                            } else {
-                                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                            }
-                        } elseif ($value != '') {
-                            $attribute = new QuestionAttribute;
-                            $attribute->qid = $this->iQuestionID;
-                            $attribute->value = $value;
-                            $attribute->attribute = $validAttribute['name'];
-                            $attribute->language = $sLanguage;
-                            $attribute->save();
-                        }
-                    }
-                } else {
-                    $default = isset($validAttribute['default']) ? $validAttribute['default'] : '';
-                    $value = Yii::app()->request->getPost($validAttribute['name'], $default);
-                    if ($validAttribute['name'] == "slider_layout") {
-                        tracevar("delete $value");
-                    }
-                    /* we must have only one element, and this element must be null, then reset always (see #11980)*/
-                    /* We can update, but : this happen only for admin and not a lot, then : delete + add
-                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                    if ($value != $default) {
-                        if ($validAttribute['name'] == "slider_layout") {
-                            tracevar("save $value");
-                        }
-                        $attribute = new QuestionAttribute;
-                        $attribute->qid = $this->iQuestionID;
-                        $attribute->value = $value;
-                        $attribute->attribute = $validAttribute['name'];
-                        $attribute->save();
-                    }
-                }
-            }
-        }
-
-        $aQuestionTypeList = Question::typeList();
-        // These are the questions types that have no answers and therefore we delete the answer in that case
-        $iAnswerScales = $aQuestionTypeList[$sQuestionType]['answerscales'];
-        $iSubquestionScales = $aQuestionTypeList[$sQuestionType]['subquestions'];
-
-        /* Set the new question attribute with post value to fix it after
-        $fixedQuestionAttributes = array(
-            'preg' => Yii::app()->request->getPost('preg',''),
-            'other' => Yii::app()->request->getPost('other'),
-            'mandatory' => Yii::app()->request->getPost('mandatory'),
-            'relevance' => Yii::app()->request->getPost('relevance',''),
-        );
-
-        if ($sQuestionType == "!" || $sQuestionType == "L" || $sQuestionType == "M" || $sQuestionType == "P" ||
-        $sQuestionType == "F" || $sQuestionType == "H" ||
-        $sQuestionType == "X" || $sQuestionType == "") {
-            $fixedQuestionAttributes['preg'] = '';
-        }
-
-        // For Bootstrap Version using BAD YiiWheels switch only if needed
-        // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
-        if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
-            $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
-        }
-
-        // These are the questions types that have no mandatory property - so zap it accordingly
-        if ($sQuestionType == "X" || $sQuestionType == "|") {
-            $fixedQuestionAttributes['mandatory'] = 'N';
-        }
-
-        if ($oldtype != $sQuestionType) {
-            // TMSW Condition->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
-            //Make sure there are no conditions based on this question, since we are changing the type
-            $ccresult = Condition::model()->findAllByAttributes(array('cqid'=>$this->iQuestionID));
-            $cccount = count($ccresult);
-            foreach ($ccresult as $ccr) {
-                $qidarray[] = $ccr['qid'];
-            }
-        }
-        if (isset($cccount) && $cccount) {
-            Yii::app()->setFlashMessage(gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."), 'error');
-        } else {
-            if (!empty($this->iQuestionGroupID)) {
-                $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
-                $oQuestion = Question::model()->findByPk($this->iQuestionID);
-                $oQuestion->type = $sQuestionType; 
-                $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->preg = $fixedQuestionAttributes['preg'];
-                $oQuestion->gid = $this->iQuestionGroupID;
-                $oQuestion->other = Yii::app()->request->getPost('other');
-                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
-                $oQuestion->encrypted = Yii::app()->request->getPost('encrypted');
-                $oQuestion->relevance = Yii::app()->request->getPost('relevance');  
-                // Update question module
-                if (Yii::app()->request->getPost('module_name') != '') {
-                    // The question module is not empty. So it's an external question module.
-                    $oQuestion->modulename = Yii::app()->request->getPost('module_name');
-                } else {
-                    // If it was a module before, we must
-                    $oQuestion->modulename = '';
-                }
-                if ($oldgid != $this->iQuestionGroupID) {
-                    if (getGroupOrder($oldgid) > getGroupOrder($this->iQuestionGroupID)) {
-                        // TMSW Condition->Relevance:  What is needed here?
-
-                        // Moving question to a 'upper' group
-                        // insert question at the end of the destination group
-                        // this prevent breaking conditions if the target qid is in the dest group
-                        $insertorder = getMaxQuestionOrder($this->iQuestionGroupID) + 1;
-                        $oQuestion->question_order = $insertorder;
-                    } else {
-                        // Moving question to a 'lower' group
-                        // insert question at the beginning of the destination group
-                        Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID); // makes 1 spare room for new question at top of dest group
-                        $oQuestion->question_order = 0;
-                    }
-                }
-                
-                $uqresult = $oQuestion->save();              
-                foreach ($aSurveyLanguages as $qlang) {
-                    if (isset($qlang) && $qlang != "") {
-                        $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');
-                        $sQuestionHelp = Yii::app()->request->getPost('help_'.$qlang, '');
-                        $sQuestionText = $this->oFixCKeditor->fixCKeditor($sQuestionText);
-                        $sQuestionHelp = $this->oFixCKeditor->fixCKeditor($sQuestionHelp);
-                        $udata = array(
-                            'question' => $sQuestionText,
-                            'help' => $sQuestionHelp,
-                            'language' => $qlang
-                        );
-
-                        $oQuestionL10n = QuestionL10n::model()->findByAttributes(array("qid"=>$this->iQuestionID, 'language'=>$qlang));
-
-                        foreach ($udata as $k => $v) {
-                            $oQuestionL10n->$k = $v;
-                        }
-                        $uqresult = $oQuestionL10n->save(); 
-                        if (!$uqresult) {
-                            $bOnError = true;
-                            $aErrors = $oQuestion->getErrors();
-                            if (count($aErrors)) {
-                                foreach ($aErrors as $sAttribute=>$aStringErrors) {
-                                    foreach ($aStringErrors as $sStringErrors) {
-                                        Yii::app()->setFlashMessage(sprintf(gT("Question could not be updated with error on %s: %s"), $sAttribute, $sStringErrors), 'error');
-                                    }
-                                }
-                            } else {
-                                Yii::app()->setFlashMessage(gT("Question could not be updated."), 'error');
-                            }
-                        }
-                    }
-                }
-
-
-                // Update the group ID on subquestions, too
-                if ($oldgid != $this->iQuestionGroupID) {
-                    Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'parent_qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
-                    // if the group has changed then fix the sortorder of old and new group
-                    Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
-                    Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
-                    // If some questions have conditions set on this question's answers
-                    // then change the cfieldname accordingly
-                    Condition::model()->updateCFieldName($iSurveyID, $this->iQuestionID, $oldgid, $this->iQuestionGroupID);
-                }
-                // Update subquestions
-                if ($oldtype != $sQuestionType) {
-                    Question::model()->updateAll(array('type'=>$sQuestionType), 'parent_qid=:qid', array(':qid'=>$this->iQuestionID));
-                }
-
-                // Update subquestions if question module
-                if (Yii::app()->request->getPost('module_name') != '') {
-                    // The question module is not empty. So it's an external question module.
-                    Question::model()->updateAll(array('modulename'=>Yii::app()->request->getPost('module_name')), 'parent_qid=:qid', array(':qid'=>$this->iQuestionID));
-                } else {
-                    // If it was a module before, we must
-                    Question::model()->updateAll(array('modulename'=>''), 'parent_qid=:qid', array(':qid'=>$this->iQuestionID));
-                }
-
-                Answer::model()->deleteAllByAttributes(array('qid' => $this->iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));
-
-                // Remove old subquestion scales
-                Question::model()->deleteAllByAttributes(array('parent_qid' => $this->iQuestionID), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
-                if (!isset($bOnError) || !$bOnError) {
-                    // This really a quick hack and need a better system
-                    Yii::app()->setFlashMessage(gT("Question was successfully saved."));
-                }
-            } else {
-                Yii::app()->setFlashMessage(gT("Question could not be updated"), 'error');
-            }
-        }
-        //This is SUPER important! Recalculating the ExpressionScript Engine state!
-        LimeExpressionManager::SetDirtyFlag();
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
-        $this->_resetEM();
-
-        $closeAfterSave = Yii::app()->request->getPost('close-after-save') === 'true';
-
-        if ($closeAfterSave) {
-            // Redirect to summary
-            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
-        } else {
-            // Redirect to edit
-            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
-            // This works too: $this->getController()->redirect(Yii::app()->request->urlReferrer);
-        }
-    }*/
+    /**
+     * action to do when update subquestions
+     * @param integer $iSurveyID
+     * @return void
+     * @throws CHttpException
+     */
+//    private function actionSubQuestions($iSurveyID)
+//    {
+//        Yii::app()->loadHelper('database');
+//        $oSurvey = Survey::model()->findByPk($iSurveyID);
+//
+//        $aSurveyLanguages = $oSurvey->allLanguages;
+//        $sBaseLanguage = $oSurvey->language;
+//
+//        $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
+//        $sQuestionType = $arQuestion['type']; // Checked
+//        $aQuestionTypeList = Question::typeList();
+//        $iScaleCount = $aQuestionTypeList[$sQuestionType]['subquestions'];
+//        // First delete any deleted ids
+//        $aDeletedQIDs = explode(' ', trim(Yii::app()->request->getPost('deletedqids')));
+//
+//        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
+//        $aDeletedQIDs = array_unique($aDeletedQIDs, SORT_NUMERIC);
+//        foreach ($aDeletedQIDs as $iDeletedQID) {
+//            $iDeletedQID = (int) $iDeletedQID;
+//            if ($iDeletedQID > 0) {
+//                // don't remove undefined
+//                $iInsertCount = Question::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
+//                $iInsertCount += QuestionL10n::model()->deleteAllByAttributes(array('qid'=>$iDeletedQID));
+//                if (!$iInsertCount) {
+//                    Yii::app()->setFlashMessage(gT("Failed to delete subquestion"), 'error');
+//                }
+//            }
+//        }
+//
+//        //Determine ids by evaluating the hidden field
+//        $aRows = array();
+//        $aCodes = array();
+//        $aOldCodes = array();
+//        $aRelevance = array();
+//        foreach ($_POST as $sPOSTKey=>$sPOSTValue) {
+//            $sPOSTKey = explode('_', $sPOSTKey);
+//            if ($sPOSTKey[0] == 'answer') {
+//                $aRows[$sPOSTKey[3]][$sPOSTKey[1]][$sPOSTKey[2]] = $sPOSTValue;
+//            }
+//            if ($sPOSTKey[0] == 'code') {
+//                $aCodes[$sPOSTKey[2]][] = $sPOSTValue;
+//            }
+//            if ($sPOSTKey[0] == 'oldcode') {
+//                $aOldCodes[$sPOSTKey[2]][] = $sPOSTValue;
+//            }
+//            if ($sPOSTKey[0] == 'relevance') {
+//                $aRelevance[$sPOSTKey[2]][] = $sPOSTValue;
+//            }
+//        }
+//        $aInsertQID = array();
+//
+//        // Give existing subquestions a temporary random title (code) to avoid title duplication on update
+//        $aoSubquestions = Question::model()->findAllByAttributes(['parent_qid'=>$this->iQuestionID]);
+//        foreach ($aoSubquestions as $oSubQuestion) {
+//            $bAnswerSave = false;
+//            while (!$bAnswerSave) {
+//                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+//                if ($oSubQuestion->save()) {
+//                    $bAnswerSave = true;
+//                }
+//            }
+//        }
+//
+//        for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
+//            foreach ($aSurveyLanguages as $sLanguage) {
+//                $iPosition = 0;
+//                foreach ($aRows[$iScaleID][$sLanguage] as $iSubQuestionID=>$subquestionvalue) {
+//                    if (substr($iSubQuestionID, 0, 3) != 'new') {
+//                        //update record
+//                        $oSubQuestion = Question::model()->findByPk($iSubQuestionID);
+//                        $oSubQuestionL10n = QuestionL10n::model()->findByAttributes(array('qid'=>$iSubQuestionID, 'language'=>$sLanguage));
+//                        if (!is_object($oSubQuestion)) {
+//                            throw new CHttpException(502, "could not find subquestion $iSubQuestionID !");
+//                        }
+//                        $oSubQuestion->question_order = $iPosition + 1;
+//                        $oSubQuestion->title = $aCodes[$iScaleID][$iPosition];
+//                        $oSubQuestionL10n->question = $subquestionvalue;
+//                        $oSubQuestion->scale_id = $iScaleID;
+//                        $oSubQuestion->relevance = isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
+//                    } else {
+//                        // new record
+//                        if (!isset($aInsertQID[$iScaleID][$iPosition])) {
+//                            //new record: first (default) language
+//                            $oSubQuestion = new Question;
+//                            $oSubQuestionL10n = new QuestionL10n;
+//                            $oSubQuestion->sid = $iSurveyID;
+//                            $oSubQuestion->gid = $this->iQuestionGroupID;
+//                            $oSubQuestion->question_order = $iPosition + 1;
+//                            $oSubQuestion->title = $aCodes[$iScaleID][$iPosition];
+//                            $oSubQuestionL10n->question = $subquestionvalue;
+//                            $oSubQuestion->parent_qid = $this->iQuestionID;
+//                            $oSubQuestionL10n->language = $sLanguage;
+//                            $oSubQuestion->scale_id = $iScaleID;
+//                            $oSubQuestion->relevance = isset($aRelevance[$iScaleID][$iPosition]) ? $aRelevance[$iScaleID][$iPosition] : "";
+//                        } else {
+//                            //new record: additional language
+//                            $oSubQuestionL10n = QuestionL10n::model()->find("qid=:qid AND language=:language", array(":qid"=>$aInsertQID[$iScaleID][$iPosition], ':language'=>$sLanguage));
+//                            if (!$oSubQuestionL10n) {
+//                                $oSubQuestionL10n = new QuestionL10n;
+//                            }
+//                            $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
+//                            $oSubQuestionL10n->question = $subquestionvalue;
+//                            $oSubQuestionL10n->language = $sLanguage;
+//                        }
+//                    }
+//                    if (isset($oSubQuestion)) {
+//                        $bSubQuestionResult = $oSubQuestion->save();
+//                        $aInsertQID[$iScaleID][$iPosition] = $oSubQuestion->qid;
+//                        unset($oSubQuestion);
+//                    } else {
+//                        $bSubQuestionResult = true;
+//                    }
+//                    if (isset($oSubQuestionL10n)) {
+//                        if (empty($oSubQuestionL10n->qid)) {
+//                            $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
+//                        }
+//                        $bSubQuestionResult = $oSubQuestionL10n->save();
+//                        unset($oSubQuestionL10n);
+//                    }
+//
+//                    if ($bSubQuestionResult) {
+//                        if ($bSubQuestionResult !== true && substr($iSubQuestionID, 0, 3) != 'new' && isset($aOldCodes[$iScaleID][$iPosition]) && $aCodes[$iScaleID][$iPosition] !== $aOldCodes[$iScaleID][$iPosition]) {
+//                            Condition::model()->updateAll(array('cfieldname'=>'+'.$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID.$aCodes[$iScaleID][$iPosition], 'value'=>$aCodes[$iScaleID][$iPosition]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$this->iQuestionID, ':cfieldname'=>$iSurveyID.'X'.$this->iQuestionGroupID.'X'.$this->iQuestionID, ':value'=>$aOldCodes[$iScaleID][$iPosition]));
+//                        }
+//                    } else {
+//                        $aErrors = $oSubQuestion->getErrors();
+//                        if (count($aErrors)) {
+//                            foreach ($aErrors as $sAttribute=>$aStringErrors) {
+//                                foreach ($aStringErrors as $sStringErrors) {
+//                                    Yii::app()->setFlashMessage(sprintf(gT("Error on %s for subquestion %s: %s"), $sAttribute, $aCodes[$iScaleID][$iPosition], $sStringErrors), 'error');
+//                                }
+//                            }
+//
+//                            // Let's give a new to code to the answer to save it, so user entries are not lost
+//                            $bAnswerSave = false;
+//
+//                            while (!$bAnswerSave) {
+//                                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+//                                if ($oSubQuestion->save()) {
+//                                    $sError = '<strong>'.sprintf(gT('A code has been updated to %s.'), $oSubQuestion->title).'</strong><br/>';
+//                                    Yii::app()->setFlashMessage($sError, 'error');
+//                                    $bAnswerSave = true;
+//                                }
+//                            }
+//                        } else {
+//                            Yii::app()->setFlashMessage(sprintf(gT("Subquestions %s could not be updated."), $aCodes[$iScaleID][$iPosition]), 'error');
+//                        }
+//                    }
+//                    $iPosition++;
+//                }
+//            }
+//        }
+//
+//        //This is SUPER important! Recalculating the ExpressionScript Engine state!
+//        LimeExpressionManager::SetDirtyFlag();
+//        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+//        $this->_resetEM();
+//
+//        if (!isset($aErrors) || !count($aErrors)) {
+//            if (!Yii::app()->request->getPost('bFullPOST')) {
+//                Yii::app()->session['flashmessage'] = gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+//            } else {
+//                Yii::app()->session['flashmessage'] = gT("Subquestions were successfully saved.");
+//            }
+//        }
+//
+//        if (Yii::app()->request->getPost('close-after-save') === 'true') {
+//            $this->getController()->redirect(array('questionEditor/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+//        }
+//
+//        $this->getController()->redirect(array('/admin/questions/sa/subquestions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+//    }
 
     /**
      * action to do when update survey seetings + survey language

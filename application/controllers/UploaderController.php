@@ -117,6 +117,21 @@ class UploaderController extends SurveyController
 
         // TODO: Split into two controller methods.
         if ($sMode == "upload") {
+            // Check if $_FILES and $_POST are empty.
+            // That probably indicates post_max_size has been exceeded.
+            // https://www.php.net/manual/en/ini.core.php#ini.post-max-size
+            if (empty($_POST) && empty($_FILES)) {
+                if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                    throw new CHttpException(500, "Empty \$_POST and \$_FILES. Probably post_max_size was exceeded.");
+                }
+                $return = array(
+                    "success" => false,
+                    "msg" => gT("Sorry, there was an error uploading your file.")
+                );
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+
             $sTempUploadDir = $tempdir.'/upload/';
             // Check if exists and is writable
             if (!file_exists($sTempUploadDir)) {

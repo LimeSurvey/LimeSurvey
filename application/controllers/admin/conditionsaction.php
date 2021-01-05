@@ -117,10 +117,15 @@ class conditionsaction extends Survey_Common_Action
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
-        $aData['questionbar']['closebutton']['url'] = 'questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
-        $aData['questionbar']['buttons']['conditions'] = true;
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'conditionDesignerTopbarLeft_view';
+        $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
+        $aData['showCloseButton'] = true;
+        $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid); // Close button
+        $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
+        //$aData['questionbar']['buttons']['conditions'] = true;
 
-        switch ($subaction) {
+        /*switch ($subaction) {
             case 'editconditionsform':
                 $aData['questionbar']['buttons']['condition']['edit'] = true;
                 break;
@@ -136,7 +141,8 @@ class conditionsaction extends Survey_Common_Action
             default:
                 $aData['questionbar']['buttons']['condition']['edit'] = true;
                 break;
-        }
+        }*/
+
 
         $postSubaction = $request->getPost('subaction');
         if (!empty($postSubaction)) {

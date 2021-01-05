@@ -130,8 +130,10 @@ class saved extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($aData['iSurveyId']);
 
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
-        $aData['menu']['close'] = true;
-        $aData['menu']['edition'] = false;
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'responsesTopbarLeft_view';
+
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

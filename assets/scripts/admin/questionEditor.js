@@ -1653,6 +1653,14 @@ $(document).on('ready pjax:scriptcomplete', function () {
           throw 'form is not HTMLFormElement';
         }
 
+        try {
+          for (let instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+          }
+        } catch(e) {
+          console.ls.log('Seems no CKEDITOR4 is loaded');
+        }
+
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
           data[x.name] = x.value;
         });

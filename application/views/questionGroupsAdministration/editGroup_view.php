@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$sid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')); ?>
+                <?php echo CHtml::form(array("questionGroupsAdministration/saveQuestionGroupData/sid/{$surveyid}"), 'post', array('id'=>'frmeditgroup', 'name'=>'frmeditgroup', 'class'=>'form30 ')); ?>
                     
                     <input type="hidden" name="questionGroup[gid]" id="questionGroup[gid]" value="<?=$oQuestionGroup['gid']?>">
                     <input type="hidden" name="questionGroup[sid]" id="questionGroup[sid]" value="<?=$oQuestionGroup['sid']?>"> 

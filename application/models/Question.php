@@ -1369,8 +1369,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        // TODO: Customize
-        $question->title = 'SQ001';
+        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1386,8 +1385,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        // TODO: Customize
-        $answer->code = 'A1';
+        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {
