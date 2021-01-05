@@ -45,7 +45,7 @@ class PermissionManager
      */
     public function getPermissionData($modelName, $modelId, $userId = null)
     {
-        $aObjectPermissions = Permission::model()->getEntityBasePermissions($modelName);
+        $aObjectPermissions = Permission::getEntityBasePermissions($modelName);
         if(empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
