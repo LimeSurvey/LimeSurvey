@@ -487,27 +487,27 @@ class SurveysGroupsPermissionController extends LSBaseController
             $aSurveysInGroupPermissions[$sPermission]['current'] = array(
                 'create' => array(
                     'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'create'),
+                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'create'),
                     'indeterminate' => false
                 ),
                 'read' => array(
                     'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'read'),
+                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'read'),
                     'indeterminate' => false
                 ),
                 'update' => array(
                     'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'update'),
+                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'update'),
                     'indeterminate' => false
                 ),
                 'delete' => array(
                     'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'delete'),
+                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'delete'),
                     'indeterminate' => false
                 ),
                 'import' => array(
                     'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'import'),
+                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'import'),
                     'indeterminate' => false
                 ),
                 'export' => array(
