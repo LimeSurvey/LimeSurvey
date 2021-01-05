@@ -44,7 +44,7 @@ class PermissionManager
     /**
      * get the permission data
      * @param string $modelName the model name
-     * @param interger $modelId the model name
+     * @param integer $modelId the model id
      * @param integer $userId for this user id
      * @return array[] 
      */
@@ -97,9 +97,83 @@ class PermissionManager
     /**
      * @todo : Save Permission by POST value according to current user permssion
      * @see Permission::setPermissions
+     * @param mixed $iUserID
+     * @param string $modelName
+     * @param mixed $modelId
+     * @return boolean
      */
-    public function setPermissions()
+    public function setPermissions($userId, $modelName, $modelId)
     {
-        // @todo
+        $success = true;
+        $permissionsToSet = $this->request->getPost('set');
+        if (empty($permissionsToSet[$modelName])) {
+            /* Nothing to do */
+            return $success;
+        }
+        /* string[] Crud type array */
+        $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
+        $entityPermissionsToSet = $permissionsToSet[$modelName];
+        $aBasePermissions = Permission::getEntityBasePermissions($modelName);
+
+        /* string[] The array to set (or not) */
+        $aSetPermissions = array();
+        foreach ($aBasePermissions as $sPermission => $aPermission) {
+            $aSetPermissions[$sPermission] = array();
+            foreach ($aCruds as $crud) {
+                /* Check if current user have the permission to set */
+                if($this->permission->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id)) {
+                    $aSetPermissions[$sPermission][$crud] = !empty($aPermission[$crud]) && !empty($entityPermissionsToSet[$sPermission][$crud]);
+                }
+            }
+        }
+        /* remove uneeded Permission (user don't have any rights) */
+        $aSetPermissions = array_filter($aSetPermissions);
+        // Event
+        $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
+        $oEvent->set('aNewPermissions', $aSetPermissions);
+        if($modelName == 'Survey') {
+            $oEvent->set('iSurveyID', $modelId);
+        }
+        $oEvent->set('entity', $modelName); /* New in 4.4.X */
+        $oEvent->set('entityId', $modelId); /* New in 4.4.X */
+        $oEvent->set('iUserID', $userId);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+
+        foreach($aSetPermissions as $sPermission => $aSetPermission) {
+            $oCurrentPermission = $this->permission->find(
+                "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
+                array(
+                    ":entity" => $modelName,
+                    ":entity_id" => $modelId,
+                    ":uid" => $userId,
+                    ":permission" => $sPermission
+                )
+            );
+            if(empty($oCurrentPermission)) {
+                $oCurrentPermission = $this->getNewPermission(); // ?????
+                $oCurrentPermission->entity = $modelName;
+                $oCurrentPermission->entity_id = $modelId;
+                $oCurrentPermission->uid = $userId;
+                $oCurrentPermission->permission = $sPermission;
+            }
+            /* Set only the permission set in $aSetPermission : user have the rights */
+            foreach($aSetPermission as $crud => $permission) {
+                $oCurrentPermission->setAttribute("{$crud}_p",intval($permission));
+            }
+            if($oCurrentPermission->save()) {
+                $success = false;
+            }
+        }
+        return $success;
+    }
+
+    /**
+     * Create a new Permission Model
+     * To be mocked for test
+     * @return \Permission
+     */
+    public function getNewPermission()
+    {
+        return new Permission();
     }
 }

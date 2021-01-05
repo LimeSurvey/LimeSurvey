@@ -25,6 +25,7 @@
  * @property integer $create_p
  * @property integer $read_p
  * @property integer $update_p
+ * @property integer $delete_p
  * @property integer $import_p
  * @property integer $export_p
  *
@@ -55,6 +56,20 @@ class Permission extends LSActiveRecord
         /** @var self $model */
         $model = parent::model($class);
         return $model;
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        return array(
+            array('entity, entity_id, uid, permission', 'required'),
+            array('entity', 'length', 'max'=>50),
+            array('permission', 'length', 'max'=>100),
+            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value'=>0),
+            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly'=>true),
+        );
     }
 
     /**

@@ -339,18 +339,25 @@ class SurveysGroupsPermissionController extends LSBaseController
             $uids = array($uid);
         }
         $set = App()->getRequest()->getPost('set');
+        $user = App()->user;
+        $request = App()->request;
+        $PermissionManagerService = new PermissionManager(
+            $request,
+            $user,
+            new Permission()
+        );
+        $success = true;
         foreach ($set as $entity => $aPermissionSet) {
             foreach ($uids as $uid) {
                 /* Permission::model()->setPermissions return true or break */
-                Permission::model()->setPermissions(
-                    $uid,
-                    $id,
-                    $entity,
-                    $aPermissionSet
-                );
+                $success = $success && !$PermissionManagerService->setPermissions($uid, $entity, $id);
             }
         }
-        App()->setFlashMessage("Surveys groups permissions were successfully updated");
+        if($success) {
+            App()->setFlashMessage("Surveys groups permissions were successfully updated");
+        } else {
+            App()->setFlashMessage("An error happen when update surveys groups permissions", 'danger');
+        }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));
         }
