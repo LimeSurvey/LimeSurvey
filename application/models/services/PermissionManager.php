@@ -57,7 +57,7 @@ class PermissionManager
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
-                    'disabled' => !Permission::model()->hasPermission($modelId, $modelName, $sPermission, 'create'),
+                    'disabled' => !Permission::model()->hasPermission($modelId, $modelName, $sPermission, $crud, $this->user->id),
                     'indeterminate' => false
                 );
             }
