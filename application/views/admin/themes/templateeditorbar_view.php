@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('themeEditor');
             if(filename==""){
                 return false; // False click
             }
-            var allowedtypes=',<?php echo Yii::app()->getConfig('allowedthemeuploads'); ?>,';
+            var allowedtypes=',<?php echo Yii::app()->getConfig('allowedthemeuploads').','.Yii::app()->getConfig('allowedthemeimageformats'); ?>,';
             var lastdotpos=-1;
             var ext='';
             if ((lastdotpos=filename.lastIndexOf('.')) < 0)
