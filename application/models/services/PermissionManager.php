@@ -57,7 +57,6 @@ class PermissionManager
         if(empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
-        $permissionFunctionName = "has{$modelName}Permission";
         /* string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach (array_keys($aObjectPermissions) as $sPermission) {
@@ -66,7 +65,7 @@ class PermissionManager
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
-                    'disabled' => !$this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $this->user->id),
+                    'disabled' => !$this->getCurrentPermission($modelName, $modelId, $sPermission, $crud, $this->user->id),
                     'indeterminate' => false
                 );
             }
@@ -88,8 +87,7 @@ class PermissionManager
                         $aObjectPermissions[$sPermission]['current'][$crud]['checked'] = $havePermissionSet;
                         /* The user didn't have the permission set, but have permission by other way (inherited, plugin …) */
                         if(!$havePermissionSet) {
-                            $functionName = "has{$modelName}Permission";
-                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $userId);
+                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->getCurrentPermission($modelName, $modelId, $sPermission, $crud, $userId);
                         }
                     }
                 }
@@ -115,10 +113,10 @@ class PermissionManager
             /* Nothing to do */
             return $success;
         }
-        /* string : function name to use for final Permission */
-        $permissionFunctionName = "has{$modelName}Permission";
+
         /* string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
+        /* @array[] the permissions to set for this model (via POST value) */
         $entityPermissionsToSet = $permissionsToSet[$modelName];
         $aBasePermissions = Permission::getEntityBasePermissions($modelName);
 
@@ -127,8 +125,8 @@ class PermissionManager
         foreach ($aBasePermissions as $sPermission => $aPermission) {
             $aSetPermissions[$sPermission] = array();
             foreach ($aCruds as $crud) {
-                /* Check if current user have the permission to set */
-                if($this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $this->user->id)) {
+                /* Only set value if current user have the permission to set */
+                if($this->getCurrentPermission($modelName, $modelId, $sPermission, $crud, $this->user->id)) {
                     $aSetPermissions[$sPermission][$crud] = !empty($aPermission[$crud]) && !empty($entityPermissionsToSet[$sPermission][$crud]);
                 }
             }
@@ -185,4 +183,23 @@ class PermissionManager
     {
         return new Permission();
     }
+
+    /**
+     * get the current permission for the current user
+     * @param string $modelName the model name
+     * @param integer $modelId the model id
+     * @param string $sPermission the specific permission name
+     * @param string $crud the crud ('create', 'read', 'update', 'delete', 'import', 'export')
+     * @return boolean
+     */
+    public function getCurrentPermission($modelName, $modelId, $sPermission, $crud, $userId)
+    {
+        /* string : function name to use for final Permission */
+        $permissionFunctionName = "has{$modelName}Permission";
+        if(method_exists($this->permission,$permissionFunctionName)) {
+            return $this->permission->$permissionFunctionName($modelId, $sPermission, $crud, $userId);
+        }
+        return Permission::hasPermission(0, "global", $modelName, $crud , $this->user->id); // Only
+    }
+
 }
