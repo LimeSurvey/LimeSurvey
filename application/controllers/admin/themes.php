@@ -391,7 +391,7 @@ class themes extends Survey_Common_Action
             LSUploadHelper::checkUploadedFileSizeAndRedirect('upload_file', $redirectUrl);
 
             $oEditedTemplate        = Template::getInstance($templatename);
-            $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads');
+            $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads').','.Yii::app()->getConfig('allowedthemeimageformats');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
 
