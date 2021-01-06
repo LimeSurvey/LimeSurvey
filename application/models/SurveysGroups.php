@@ -481,4 +481,22 @@ class SurveysGroups extends LSActiveRecord
     {
         return $this->owner_id;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCurrentPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* If have global : return true */
+        if (Permission::model()->hasPermission(0, 'global', 'surveysgroups', $sCRUD, $iUserID)) {
+            return true;
+        }
+        /* Specific need gsid */
+        if(!$this->gsid) {
+            return false;
+        }
+        /* Finally : return specific one */
+        return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
+    }
+
 }

@@ -474,4 +474,17 @@ class LSActiveRecord extends CActiveRecord
     {
         return null;
     }
+
+    /**
+     * Get the permission of current model
+     * @param string $sPermission Name of the permission
+     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
+     * @param integer $iUserID User ID - if not given the one of the current user is used
+     * @return boolean
+     */
+    public function getCurrentPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* By default : check only global permission for class, sure superadmin have all rights */
+        return Permission::model()->hasPermission(0, 'global', get_class($this), $sCRUD, $iUserID);
+    }
 }

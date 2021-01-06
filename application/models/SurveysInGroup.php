@@ -70,4 +70,29 @@ class SurveysInGroup extends SurveysGroups
     {
         return null;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCurrentPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* If have global for surveys : return true */
+        $sGlobalCRUD = $sCRUD;
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
+            return true;
+        }
+        /* Specific need gsid */
+        if(!$this->gsid) {
+            return false;
+        }
+        /* Finally : return specific one */
+        return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
+    }
+
 }

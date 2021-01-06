@@ -342,16 +342,18 @@ class SurveysGroupsPermissionController extends LSBaseController
         $set = App()->getRequest()->getPost('set');
         $user = App()->user;
         $request = App()->request;
-        $PermissionManagerService = new PermissionManager(
-            $request,
-            $user,
-            new Permission()
-        );
         $success = true;
-        foreach ($set as $entity => $aPermissionSet) {
+        foreach ($set as $entityName => $aPermissionSet) {
+            /* Must get SurveysIngroup for SurveysIngroup entity */
+            $entity = $entityName::model()->findByPk($id);
+            $PermissionManagerService = new PermissionManager(
+                $request,
+                $user,
+                $entity
+            );
             foreach ($uids as $uid) {
                 /* Permission::model()->setPermissions return true or break */
-                $success = $success && $PermissionManagerService->setPermissions($uid, $entity, $id);
+                $success = $success && $PermissionManagerService->setPermissions($uid);
             }
         }
         if($success) {
@@ -440,11 +442,15 @@ class SurveysGroupsPermissionController extends LSBaseController
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
-            new Permission()
+            $model
         );
-
-        $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData('SurveysGroups', $id, $userId);
-        $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData('SurveysInGroup', $id, $userId);
+        $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData($userId);
+        $PermissionManagerService = new PermissionManager(
+            $request,
+            $user,
+            SurveysInGroup::model()->findByPk($id)
+        );
+        $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData($userId);
         $aPermissions = array_merge(
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
