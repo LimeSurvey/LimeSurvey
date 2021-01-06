@@ -76,6 +76,7 @@
                                 'activated'  => $oSurvey->active !== 'N',
                                 'oldCode'    => true,
                                 'scalecount' => $question->questionType->answerscales,
+                                'assessmentvisible' => $oSurvey->assessments === 'Y', //todo: check also 'I' if inherit...
                                 'answers'    => $question->getScaledAnswerOptions(),
                                 'question'     => $question,
                                 'allLanguages' => $oSurvey->allLanguages,

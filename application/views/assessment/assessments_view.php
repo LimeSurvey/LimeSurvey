@@ -65,7 +65,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                 ?>
               </div>
             </div>
-            <?php if ( Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create') ) { ?>
+            <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
                 <div class="col-sm-12">
                   <button class="btn btn-success" id="selector__assessment-add-new">
@@ -76,9 +76,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <?php } ?>
             <!-- Edition - Modal -->
             <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update'))  || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')) ) { ?>
-                <?php Yii::app()->getController()->renderPartial('/admin/assessments/assessments_delete', ['surveyid' => $surveyid]); ?>
+                <?php $this->renderPartial('assessments_delete', ['surveyid' => $surveyid]); ?>
                 <?php 
-                    Yii::app()->getController()->renderPartial('/admin/assessments/assessments_edit', [
+                    $this->renderPartial('assessments_edit', [
                             'surveyid' => $surveyid,
                             'actionvalue' => $actionvalue,
                             'editId' => $editId,

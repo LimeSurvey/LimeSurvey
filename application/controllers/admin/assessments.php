@@ -97,6 +97,8 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * @param array $aData
      * @param boolean $collectEdit
      * @return array
@@ -136,6 +138,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * Set search params from Yii grid view.
+     *
+     * REFACTORED
+     *
      * @param Assessment $oAssessments
      * @return void
      */
@@ -202,6 +207,8 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
+     *
+     * REFACTORED
      * @param int $iSurveyID
      * @param string $action
      * @return void
@@ -249,6 +256,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * return the groups of the current survey
+     *
+     * REFACTORED
+     *
      * @param Survey $oSurvey
      * @param array $aData
      * @return array $aGroups groupnames in array
