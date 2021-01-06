@@ -228,14 +228,9 @@ class themes extends Survey_Common_Action
             LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
             
             $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
-            $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
-            if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
-                $message = $checkImageContent['check'] === false 
-                    ? $checkImageContent['uploadresult'] 
-                    : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult']: null);
-                $debug = $checkImageContent['check'] === false 
-                    ? $checkImageContent['debug'] 
-                    : ($checkImageFilename['check'] === false ? $checkImageFilename['debug']: null);
+            if ($checkImageContent['check'] === false) {
+                $message = $checkImageContent['check'] === false ? $checkImageContent['uploadresult'] : null;
+                $debug = $checkImageContent['check'] === false ? $checkImageContent['debug'] : null;
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
