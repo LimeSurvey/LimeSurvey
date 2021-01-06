@@ -61,7 +61,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         <div class="row">
                             <div class="form-group col-md-4 col-sm-6">
                                 <label for="surveyTitle"><?= gt('Survey title')?></label>
-                                <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" >
+                                <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
                             </div>
                             <div class="form-group col-md-4 col-md-6">
                                 <label for="createsample" class="control-label"><?= gt('Create example question group and question?')?></label>
