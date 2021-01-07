@@ -78,6 +78,8 @@ class Assessments extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * REFACTOR: todo check if all rendered views set this before rendering...
+     *
      * @param string $sAction Current action, the folder to fetch views from
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
@@ -287,6 +289,8 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * @param array $aData
      * @return array
      */

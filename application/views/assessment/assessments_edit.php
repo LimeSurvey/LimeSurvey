@@ -6,7 +6,7 @@
   <div id="assesements-edit-add" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-        <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
+        <?php echo CHtml::form(array("/assessment/add/surveyid/$surveyid"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
           <div class="modal-header">
             <h4 class="modal-title"> </h4>
           </div>

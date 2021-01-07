@@ -78,8 +78,6 @@ class AssessmentController extends LSBaseController
         Yii::app()->setConfig("baselang", $surveyLanguage);
         Yii::app()->setConfig("assessmentlangs", $languages);
 
-        $this->aData['sidemenu']['landOnSideMenuTab']         = 'structure';
-
         $aData = [];
         $aData['survey'] = $oSurvey;
         $aData['surveyid'] = $iSurveyID;
@@ -89,25 +87,61 @@ class AssessmentController extends LSBaseController
 
         $this->prepareDataArray($aData);
 
-        $aData['asessementNotActivated'] = false;
-        if ($oSurvey->assessments != 'Y') {
-            $aData['asessementNotActivated'] = array(
-                'title' => gT("Assessments mode not activated"),
-                'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
-                    . gt("If you want to activate it click here:").'<br/>'
-                    . '<a type="submit" class="btn btn-primary" href="'
-                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate', 'surveyid'=> $iSurveyID])
-                    .'">'.gT('Activate assessements').'</a>',
-                'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
-        }
-        /*
-        $urls = [];
-        $urls['assessments']['assessments_view'][] = $aData;
-        */
+        //this part is from _renderWrapptemplate in old controller
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['gid'] = null; //important for rendering the sidebar ...(why?)
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
 
         $this->aData = $aData;
         $this->render('assessments_view', $this->aData);
-        //$this->_renderWrappedTemplate('', 'assessments/assessments_view', $aData);
+    }
+
+    /**
+     * Activates assessment mode for the survey.
+     *
+     * @param $surveyid
+     */
+    public function actionActivate($surveyid){
+
+        $iSurveyID = sanitize_int($surveyid);
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to activate assessment."), 'error');
+            $this->redirect(array("admin/"));
+        }
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey->assessments = "Y"; //activate assessment
+
+        if(!$oSurvey->save()){
+            Yii::app()->setFlashMessage(gT("Assessment could not be activated."), 'error');
+        }
+
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+    }
+
+    /**
+     * @param $surveyid
+     */
+    public function actionAdd($surveyid){
+        $iSurveyID = sanitize_int($surveyid);
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
+            $bFirst = true;
+            $iAssessmentID = -1;
+            $aLanguages = Yii::app()->getConfig("assessmentlangs");
+            foreach ($aLanguages as $sLanguage) {
+                $aData = $this->getAssessmentPostData($iSurveyID, $sLanguage);
+
+                if ($bFirst === false) {
+                    $aData['id'] = $iAssessmentID;
+                }
+                $assessment = Assessment::model()->insertRecords($aData);
+                if ($bFirst === true) {
+                    $bFirst = false;
+                    $iAssessmentID = $assessment->id;
+                }
+            }
+        }
+        $this->refresh();
     }
 
 
@@ -247,42 +281,28 @@ class AssessmentController extends LSBaseController
         return $aData;
     }
 
-
     /**
      * @param int $iSurveyID
-     * @param string $action
-     * @return void
+     * @param string $language
+     * @return array
      */
-    /*  --> is in index now
-    private function _showAssessments($iSurveyID, $action)
+    private function getAssessmentPostData($iSurveyID, $language)
     {
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-
-        $aData = [];
-        $aData['survey'] = $oSurvey;
-        $aData['surveyid'] = $iSurveyID;
-        $aData['action'] = $action;
-
-        Yii::app()->loadHelper('admin.htmleditor');
-
-        $this->prepareDataArray($aData);
-
-        $aData['asessementNotActivated'] = false;
-        if ($oSurvey->assessments != 'Y') {
-            $aData['asessementNotActivated'] = array(
-                'title' => gT("Assessments mode not activated"),
-                'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
-                    . gt("If you want to activate it click here:").'<br/>'
-                    . '<a type="submit" class="btn btn-primary" href="'
-                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate', 'surveyid'=> $iSurveyID])
-                    .'">'.gT('Activate assessements').'</a>',
-                'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
+        if (!isset($_POST['gid'])) {
+            $_POST['gid'] = 0;
         }
-        $urls = [];
-        $urls['assessments']['assessments_view'][] = $aData;
 
-        $this->_renderWrappedTemplate('', 'assessments/assessments_view', $aData);
-    }*/
+        return array(
+            'sid' => $iSurveyID,
+            'scope' => sanitize_paranoid_string(App()->request->getPost('scope')),
+            'gid' => App()->request->getPost('gid'),
+            'minimum' => (int) App()->request->getPost('minimum', 0),
+            'maximum' => (int) App()->request->getPost('maximum', 0),
+            'name' => App()->request->getPost('name_'.$language),
+            'language' => $language,
+            'message' => App()->request->getPost('assessmentmessage_'.$language)
+        );
+    }
 
 
 }
