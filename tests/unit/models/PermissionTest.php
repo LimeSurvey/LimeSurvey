@@ -20,7 +20,6 @@ class PermissionTest extends TestCase
      */
     public function testSuperAdmin()
     {
-        return;
         $surveysGroup = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
@@ -43,7 +42,6 @@ class PermissionTest extends TestCase
      */
     public function testOwnershipSuccess()
     {
-        return;
         // NB: Not 1 (superadmin).
         $userId = 2;
         $surveysGroup = $this
@@ -72,7 +70,6 @@ class PermissionTest extends TestCase
      */
     public function testOwnershipFailure()
     {
-        return;
         // NB: Not 1 (superadmin).
         $userId = 2;
         $surveysGroup = $this
