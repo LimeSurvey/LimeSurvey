@@ -653,7 +653,7 @@ class Permission extends LSActiveRecord
         if (!$oSurvey) {
             return false;
         }
-        return $oSurvey->hasPermission($iSurveyID, $sPermission, $sCRUD , $iUserID);
+        return $oSurvey->hasPermission($sPermission, $sCRUD , $iUserID);
     }
 
     /**
