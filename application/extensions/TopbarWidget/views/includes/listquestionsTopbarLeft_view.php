@@ -22,7 +22,7 @@
             </button>
         </span>
     <?php else :?>
-        <a class="btn btn-default" href='<?php echo Yii::App()->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid);
+        <a class="btn btn-default" href='<?php echo Yii::App()->createUrl("questionAdministration/create/surveyid/".$oSurvey->sid);
 ?>' role="button">
             <span class="icon-add"></span>
             <?php eT("Add new question"); ?>
