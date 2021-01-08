@@ -6,4 +6,5 @@ interface PermissionInterface
     public static function getPermissionData();
     public static function getMinimalPermissionRead();
     public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null);
+    public function getPrimaryKey();
 }

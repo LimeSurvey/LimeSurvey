@@ -699,7 +699,7 @@ class Permission extends LSActiveRecord
      */
     public function getUserId($iUserID = null)
     {
-        if (is_null($iUserID) && $iUserID !== 0) {
+        if (is_null($iUserID)) {
             if (Yii::app() instanceof CConsoleApplication) {
                 throw new Exception('Permission must not be tested with console application.');
             }

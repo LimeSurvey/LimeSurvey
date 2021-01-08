@@ -53,4 +53,14 @@ trait PermissionTrait
         /* No default global : adding it ? */
         return false;
     }
+
+    /**
+     * Implemented in CActiveRecord
+     * @see CActiveRecord->getPrimaryKey
+     * @throw Exception
+     */
+    public function getPrimaryKey()
+    {
+        throw new Exception('Not implemented');
+    }
 }
