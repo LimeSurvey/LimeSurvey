@@ -68,7 +68,7 @@ class PermissionManager
                 );
             }
             /* If user id is set : update the data with permission of this user */
-            if($userId) {
+            if(!is_null($userId)) {
                 $oCurrentPermission = $this->getDbPermission(
                     get_class($this->model),
                     $this->model->getPrimaryKey(),

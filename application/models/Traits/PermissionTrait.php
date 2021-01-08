@@ -39,7 +39,7 @@ trait PermissionTrait
      * @param integer $iUserID User ID - if not given the one of the current user is used
      * @return boolean
      */
-    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasPermission(/** @scrutinizer ignore-unused */ $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         if(empty($iUserID)) {
             if (Yii::app() instanceof CConsoleApplication) {
