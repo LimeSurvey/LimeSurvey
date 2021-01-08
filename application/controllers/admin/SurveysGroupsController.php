@@ -97,7 +97,6 @@ class SurveysGroupsController extends Survey_Common_Action
      * Show and updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @todo : check if this function can be called with >hasSurveysGroupsPermission($id, 'group', 'read')
      * @param integer $id the ID of the model to be updated
      * @return void
      */
@@ -105,7 +104,7 @@ class SurveysGroupsController extends Survey_Common_Action
     {
         $model = $this->loadModel($id);
         if (!empty(App()->getRequest()->getPost('SurveysGroups'))) {
-            if (!Permission::model()->hasSurveysGroupsPermission($id, 'group', 'update')) {
+            if (!$model->hasPermission('group', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
@@ -153,8 +152,8 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
         $aData['aRigths'] = array(
-            'update' => Permission::model()->hasSurveysGroupsPermission($id, 'group', 'update'),
-            'delete' => Permission::model()->hasSurveysGroupsPermission($id, 'group', 'delete'),
+            'update' => $model->hasPermission('group', 'update'),
+            'delete' => $model->hasPermission('group', 'delete'),
             'owner_id' => $model->owner_id == Yii::app()->user->id || Permission::model()->hasGlobalPermission('superadmin', 'read')
         );
 
@@ -188,7 +187,7 @@ class SurveysGroupsController extends Survey_Common_Action
      * @return void
      */
     public function surveysettingmenues($id) {
-        if (!Permission::model()->hasSurveysGroupsPermission($id, 'surveysettings', 'read')) {
+        if (!$this->loadModel($id)->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         /* Can not call gloalsettings contoller fuinction sice _construct check access … */
@@ -208,7 +207,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $bRedirect = 0;
         /** @var SurveysGroups $model */
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveysGroupsPermission($id, 'surveysettings', 'read')) {
+        if (!$model->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $aData = array(
@@ -222,7 +221,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurvey->setOptions(); //this gets the "values" from the group that inherits to this group ...
         $oSurvey->owner_id = $model->owner_id;
 
-        if (App()->getRequest()->isPostRequest && !Permission::model()->hasSurveysGroupsPermission($id, 'surveysettings', 'update')) {
+        if (App()->getRequest()->isPostRequest && !$model->hasPermission('surveysettings', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to update survey settings."));
         }
         //every $_POST checked here is one of the switchers(On|Off|Inherit) names
@@ -289,7 +288,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             ),
         );
-        if (Permission::model()->hasSurveysGroupsPermission($id, 'surveysettings', 'update')) {
+        if ($model->hasPermission('surveysettings', 'update')) {
             $aData['buttons']['savebutton'] = array(
                 'form' => 'survey-settings-options-form'
             );
@@ -310,7 +309,7 @@ class SurveysGroupsController extends Survey_Common_Action
     public function delete($id)
     {
         $oGroupToDelete = $this->loadModel($id);
-        if (!Permission::model()->hasSurveysGroupsPermission($id, 'group', 'delete')) {
+        if (!$oGroupToDelete->hasPermission('group', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $sGroupTitle = $oGroupToDelete->title;
@@ -379,7 +378,7 @@ class SurveysGroupsController extends Survey_Common_Action
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
-        if (!Permission::model()->hasSurveysGroupsPermission($id, SurveysGroups::getMinimalPermissionRead())) {
+        if (!$model->hasPermission(SurveysGroups::getMinimalPermissionRead())) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         return $model;

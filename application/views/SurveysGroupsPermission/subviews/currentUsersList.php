@@ -15,13 +15,13 @@
             <?php foreach($oExistingUsers as $oUser) : ?>
             <tr>
                 <td>
-                    <?php if (Permission::model()->hasSurveysGroupsPermission($model->gsid, 'permission', 'update')) : ?>
+                    <?php if ($model->hasPermission('permission', 'update')) : ?>
                         <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser",array('id'=>$model->gsid, 'to' => $oUser->uid));?>">
                             <span class="fa fa-pencil text-success" aria-hidden="true" title="<?= gT("Edit permissions") ?>"><span>
                             <span class="sr-only"><?= gT("Edit permissions") ?></span>
                         </a>
                     <?php endif; ?>
-                    <?php if (Permission::model()->hasSurveysGroupsPermission($model->gsid, 'permission', 'delete')) : ?>
+                    <?php if ($model->hasPermission('permission', 'delete')) : ?>
                         <?php $deleteUrl = App()->createUrl("surveysGroupsPermission/deleteUser", array(
                             'id'=>$model->gsid,
                             'uid' => $oUser->uid

@@ -5,8 +5,9 @@
  * Used for Permission on survey inside group : 
  *
  */
-class SurveysInGroup extends SurveysGroups
+class SurveysInGroup extends SurveysGroups implements PermissionInterface
 {
+    use PermissionTrait;
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -74,7 +75,7 @@ class SurveysInGroup extends SurveysGroups
     /**
      * @inheritdoc
      */
-    public function getCurrentPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         /* If have global for surveys : return true */
         $sGlobalCRUD = $sCRUD;
@@ -84,6 +85,7 @@ class SurveysInGroup extends SurveysGroups
         if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
             $sGlobalCRUD = 'update';
         }
+        /* Have surveys permission */
         if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }

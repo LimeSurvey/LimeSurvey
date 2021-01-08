@@ -90,6 +90,7 @@ class Permission extends LSActiveRecord
      */
     public static function getEntityBasePermissions($sEntityName)
     {
+        /* @todo : check $sEntityName implement PermissionInterface */
         $defaults = array(
             'create' => true,
             'read' => true,
@@ -114,6 +115,7 @@ class Permission extends LSActiveRecord
      */
     public static function getEntityMinimalPermissionRead($sEntityName)
     {
+        /* @todo : check $sEntityName implement PermissionInterface */
         return $sEntityName::getMinimalPermissionRead();
     }
 
@@ -553,7 +555,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName) && $sEntityName != 'role') {
+        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
             return true;
         }
 
@@ -581,16 +583,19 @@ class Permission extends LSActiveRecord
             return true;
         }
 
-        /* Find the roles the user is part of and return thoese permissions */
-        /* Ignore roles for surveypermissions */
+        /* Find the roles the user is part of and return those permissions */
+        /* roles are only for global permission */
         // @TODO add surveypermission to roles
-        $aRoles = self::getUserRole($iUserID);
-        if (safecount($aRoles) > 0 && $sEntityName != 'survey') {
-            $allowed = false;
-            foreach ($aRoles as $role) {
-                $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
+        if($sEntityName == 'global') {
+            $aRoles = self::getUserRole($iUserID);
+            if (safecount($aRoles) > 0 ) {
+                $allowed = false;
+                foreach ($aRoles as $role) {
+                    $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
+                }
+                /* Can return false ? Even if user have the specific right … */
+                return $allowed;
             }
-            return $allowed;
         }
 
         /* Check in permission DB and static it */
@@ -648,46 +653,7 @@ class Permission extends LSActiveRecord
         if (!$oSurvey) {
             return false;
         }
-        // Get global correspondance for surveys rigth
-        $sGlobalCRUD = $sCRUD;
-        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
-            $sGlobalCRUD = 'update';
-        }
-        return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID)
-            || $this->hasSurveysInGroupPermission($oSurvey->gsid, 'surveys', $sGlobalCRUD, $iUserID)
-            || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
-    }
-
-    /**
-     * Checks if a user has a certain permission in the given survey group
-     * @deprecated (can be remove before next RC)
-     * @see SurveysGroups->getPermission
-     * @param integer $iSurveyGroupId The survey group ID
-     * @param string $sPermission Name of the permission
-     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param integer $iUserID User ID - if not given the one of the current user is used
-     * @return bool True if user has the permission
-     */
-    public function hasSurveysGroupsPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
-    {
-        return SurveysGroups::model()->findByPk($iSurveyGroupId)->getCurrentPermission($sPermission, $sCRUD, $iUserID);
-    }
-
-    /**
-     * Checks if a user has a certain permission in the given surveys inside survey group
-     *
-     * @param integer $iSurveyGroupId The survey group ID
-     * @param string $sPermission Name of the permission
-     * @param string $sCRUD The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param integer $iUserID User ID - if not given the one of the current user is used
-     * @return bool True if user has the permission
-     */
-    public function hasSurveysInGroupPermission($iSurveyGroupId, $sPermission, $sCRUD = 'read', $iUserID = null)
-    {
-        return SurveysInGroup::model()->findByPk($iSurveyGroupId)->getCurrentPermission($sPermission, $sCRUD, $iUserID);
+        return $oSurvey->hasPermission($iSurveyID, $sPermission, $sCRUD , $iUserID);
     }
 
     /**
@@ -762,17 +728,18 @@ class Permission extends LSActiveRecord
     protected function getEntityOwnerId($iEntityID, $sEntityName)
     {
         /* know invalid entity */
-        if (in_array($sEntityName, array('global','template'))) {
+        if (in_array($sEntityName, array('global', 'template', 'role'))) {
             return null;
         }
         /* allow to get it dynamically from any model */
         $oEntity = $this->getEntity($sEntityName, $iEntityID);
-        // TODO: Check HasOwnershipInterface instead?
-        if (method_exists($sEntityName, 'model') && $oEntity) {
-            // Or check if $sEntityName is a child of LSActiveRecord ?
-            return $oEntity->getOwnerId();
+        if (empty($oEntity)) {
+            return null;
         }
-        return null;
+        if(!method_exists($oEntity,'getOwnerId')) {
+            return null;
+        }
+        return $oEntity->getOwnerId();
     }
 
     /**
@@ -891,30 +858,6 @@ class Permission extends LSActiveRecord
         }
 
         return $results;
-    }
-
-    /**
-     * Get SurveysInGroup with id $iSurveysInGroupId
-     * NB: This method needs to be public so that it can be mocked.
-     *
-     * @param int $iSurveysInGroupId
-     * @return SurveysInGroup|null
-     */
-    public function getSurveysInGroup($iSurveysInGroupId)
-    {
-        return SurveysInGroup::model()->findByPk($iSurveysInGroupId);
-    }
-
-    /**
-     * Get SurveysGroup with id $iSurveyGroupId
-     * NB: This method needs to be public so that it can be mocked.
-     *
-     * @param int $iSurveyGroupId
-     * @return SurveysGroups|null
-     */
-    public function getSurveysGroups($iSurveyGroupId)
-    {
-        return SurveysGroups::model()->findByPk($iSurveyGroupId);
     }
 
     /**

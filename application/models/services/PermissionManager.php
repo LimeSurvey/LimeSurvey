@@ -11,7 +11,7 @@ namespace LimeSurvey\Models\Services;
 use LSHttpRequest;
 use LSWebUser;
 use Permission;
-use LSActiveRecord;
+use PermissionInterface;
 
 use App;
 use CHtml;
@@ -21,14 +21,13 @@ use CHtml;
  */
 class PermissionManager
 {
-
     /** @var LSHttpRequest */
     private $request;
 
     /** @var LSWebUser */
     private $user;
 
-    /** @var LSActiveRecord model where permission is checked*/
+    /** @var PermissionInterface model where permission is checked*/
     private $model;
 
     /**
@@ -38,7 +37,7 @@ class PermissionManager
     public function __construct(
         LSHttpRequest $request,
         LSWebUser $user,
-        LSActiveRecord $model
+        PermissionInterface $model
     ) {
         $this->request = $request;
         $this->user = $user;
@@ -64,7 +63,7 @@ class PermissionManager
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
-                    'disabled' => !$this->model->getCurrentPermission($sPermission, $crud, $this->user->id),
+                    'disabled' => !$this->getCurrentPermission($sPermission, $crud, $this->user->id),
                     'indeterminate' => false
                 );
             }
@@ -83,7 +82,7 @@ class PermissionManager
                         $aObjectPermissions[$sPermission]['current'][$crud]['checked'] = $havePermissionSet;
                         /* The user didn't have the permission set, but have permission by other way (inherited, plugin …) */
                         if(!$havePermissionSet) {
-                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->model->getCurrentPermission($sPermission, $crud, $userId);
+                            $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->getCurrentPermission($sPermission, $crud, $userId);
                         }
                     }
                 }
@@ -120,7 +119,7 @@ class PermissionManager
             $aSetPermissions[$sPermission] = array();
             foreach ($aCruds as $crud) {
                 /* Only set value if current user have the permission to set */
-                if($this->model->getCurrentPermission($sPermission, $crud, $this->user->id)) {
+                if($this->getCurrentPermission($sPermission, $crud, $this->user->id)) {
                     $aSetPermissions[$sPermission][$crud] = !empty($aPermission[$crud]) && !empty($entityPermissionsToSet[$sPermission][$crud]);
                 }
             }
@@ -139,12 +138,20 @@ class PermissionManager
         App()->getPluginManager()->dispatchEvent($oEvent);
 
         foreach($aSetPermissions as $sPermission => $aSetPermission) {
-            $oCurrentPermission = $this->getOrCreateDbPermission(
+            $oCurrentPermission = $this->getDbPermission(
                 get_class($this->model),
                 $this->model->getPrimaryKey(),
                 $userId,
                 $sPermission
             );
+            if (empty($oCurrentPermission)) {
+                $oCurrentPermission = $this->setDbPermission(
+                    get_class($this->model),
+                    $this->model->getPrimaryKey(),
+                    $userId,
+                    $sPermission
+                );
+            }
             /* Set only the permission set in $aSetPermission : user have the rights */
             foreach($aSetPermission as $crud => $permission) {
                 $oCurrentPermission->setAttribute("{$crud}_p",intval($permission));
@@ -159,16 +166,25 @@ class PermissionManager
     }
 
     /**
-     * Get DB permission, create if needed 
+     * get the current permission
+     * To be mocked for test
+     * @return boolean
+     */
+    public function getCurrentPermission($sPermission, $crud, $userId)
+    {
+        if(empty($this->model)) {
+            return false;
+        }
+        return $this->model->hasPermission($sPermission, $crud, $userId);
+    }
+
+    /**
+     * Set a new DB permission
      * To be mocked for test
      * @return \Permission
      */
-    public function getOrCreateDbPermission($entityName, $entityId, $userId, $sPermission)
+    public function setDbPermission($entityName, $entityId, $userId, $sPermission)
     {
-        $oPermission = $this->getDbPermission($entityName, $entityId, $userId, $sPermission);
-        if ($oPermission) {
-            return $oPermission;
-        }
         $oPermission = new Permission;
         $oPermission->entity = $entityName;
         $oPermission->entity_id = $entityId;
@@ -176,6 +192,7 @@ class PermissionManager
         $oPermission->permission = $sPermission;
         return $oPermission;
     }
+
     /**
      * Get DB permission
      * To be mocked for test

@@ -356,10 +356,15 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null) : void
     {
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')
-            && !Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')
-        ) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        if (!Permission::model()->hasGlobalPermission('templates', 'update'))
+        {
+            if(empty($gsid)) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
+            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
+            if(empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
         }
         $sTemplateName = $id !== null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
         $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
@@ -586,12 +591,17 @@ class ThemeOptionsController extends LSBaseController
      */
     public function actionReset(int $gsid) : void
     {
-        $templatename = App()->request->getPost('templatename');
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')
-            && !Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')
-        ) {
-            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        if (!Permission::model()->hasGlobalPermission('templates', 'update'))
+        {
+            if(empty($gsid)) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
+            $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
+            if(empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+                throw new CHttpException(403, gT("You do not have permission to access this page."));
+            }
         }
+        $templatename = App()->request->getPost('templatename');
 
         if($gsid) {
             $oTemplateConfiguration = TemplateConfiguration::model()->find("gsid = :gsid AND template_name = :templatename",

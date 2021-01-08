@@ -15,7 +15,6 @@ if (!defined('BASEPATH')) {
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-
 use \LimeSurvey\PluginManager\PluginEvent;
 
 /**
@@ -152,8 +151,10 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
-class Survey extends LSActiveRecord
+class Survey extends LSActiveRecord implements PermissionInterface
 {
+    use PermissionTrait;
+
     /**
      * This is a static cache, it lasts only during the active request. If you ever need
      * to clear it, like on activation of a survey when in the same request a row is read,
@@ -1637,7 +1638,9 @@ class Survey extends LSActiveRecord
 
     /**
      * Get criteria from Permission
-     * @param $userid for thius user id , if not set : get current one 
+     * @param $userid for thius user id , if not set : get current one
+     * @todo : move to PermissionInterface
+     * @todo : create an event
      * @return CDbCriteria
      */
     protected static function getPermissionCriteria( $userid = null)
@@ -2236,6 +2239,29 @@ return $s->hasTokensTable; });
         );
 
         return $key == null ? $aPermission : $aPermission[$key];
+    }
+
+    /**
+     * @inheritdoc 
+     */
+    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        $sGlobalCRUD = $sCRUD;
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        /* Global */
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sCRUD, $iUserID)) {
+            return true;
+        }
+        /* Inherited by SurveysInGroup */
+        if(SurveysInGroup::model()->findByPk($this->gsid)->hasPermission($sPermission, $sCRUD, $iUserID)) {
+            return true;
+        }
+        return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
     /*
