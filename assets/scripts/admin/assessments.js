@@ -62,6 +62,8 @@ var bindAction = function(){
     $('#selector__assessment-add-new').on('click.assessments', function(){
         var editAddForm = $('#assesements-edit-add');
 
+        $('input[name=action]').val('assessmentadd');
+
         editAddForm.modal('show');
         editAddForm.on('shown.bs.modal',  function removeValues(){
             // We clear only visible input to keep the CSRF token

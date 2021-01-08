@@ -6,7 +6,7 @@
 <div id="assesements-delete" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>
+            <?php echo CHtml::form(array("assessment/delete/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>
                 <div class="modal-header"> 
                     <h4 class="modal-title"> 
                         <?php eT("Do you really want to delete this asessment rule?"); ?> 

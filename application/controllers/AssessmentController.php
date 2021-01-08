@@ -66,22 +66,15 @@ class AssessmentController extends LSBaseController
             $this->redirect(array("admin/"));
         }
 
-        $action = CHtml::encode(Yii::app()->request->getParam('action'));
+        //$action = CHtml::encode(Yii::app()->request->getParam('action'));
         $oSurvey =     Survey::model()->findByPk($iSurveyID);
-        $languages = $oSurvey->additionalLanguages;
-        $surveyLanguage = $oSurvey->language;
 
-        Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}"; //todo: do we nee this ??
-
-        array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
-
-        Yii::app()->setConfig("baselang", $surveyLanguage);
-        Yii::app()->setConfig("assessmentlangs", $languages);
+        $this->setLanguagesBeforeAction($oSurvey);
 
         $aData = [];
         $aData['survey'] = $oSurvey;
         $aData['surveyid'] = $iSurveyID;
-        $aData['action'] = $action;
+        //$aData['action'] = $action;
 
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -120,28 +113,121 @@ class AssessmentController extends LSBaseController
     }
 
     /**
+     * Save btn of modal view. This could be update or insert.
+     * Redirects to the correct action
+     *
+     * @param int $surveyid
+     *
+     */
+    public function actionInsertUpdate($surveyid){
+        //the post param 'action' could have the values 'assessmentupdate' or 'assessmentadd'
+        $actionInserUpdate = App()->request->getPost('action', 'assessmentadd');
+        if($actionInserUpdate === 'assessmentadd'){
+            $this->add($surveyid);
+        }
+        if($actionInserUpdate === 'assessmentupdate'){
+            $this->update($surveyid);
+        }
+
+        //this should not happen, unkwon action
+        Yii::app()->setFlashMessage(gT("Unkwon action for asessment."), 'error');
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+    }
+
+    /**
+     * Deletes an assessment.
+     *
+     * @param int $iSurveyID
+     * @param int $assessmentId
+     * @return void
+     */
+    private function actionDelete($iSurveyID, $assessmentId)
+    {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
+            Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
+            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID] ));
+        }
+    }
+
+    /**
+     * Insert the assessment with multilanguages
+     *
      * @param $surveyid
      */
-    public function actionAdd($surveyid){
+    private function add($surveyid){
         $iSurveyID = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
             $bFirst = true;
             $iAssessmentID = -1;
-            $aLanguages = Yii::app()->getConfig("assessmentlangs");
-            foreach ($aLanguages as $sLanguage) {
+            $languages = $oSurvey->additionalLanguages;
+            $surveyLanguage = $oSurvey->language;
+            array_unshift($languages, $surveyLanguage);
+            foreach ($languages as $sLanguage) {
                 $aData = $this->getAssessmentPostData($iSurveyID, $sLanguage);
-
                 if ($bFirst === false) {
                     $aData['id'] = $iAssessmentID;
                 }
                 $assessment = Assessment::model()->insertRecords($aData);
+
                 if ($bFirst === true) {
                     $bFirst = false;
                     $iAssessmentID = $assessment->id;
                 }
             }
         }
-        $this->refresh();
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+    }
+
+    /**
+     * Updates an assessment. Receives input from POST
+     *
+     * @param int $iSurveyID
+     * @return void
+     */
+    private function update($iSurveyID)
+    {
+        $iSurveyID = sanitize_int($iSurveyID);
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && App()->request->getPost('id', null) != null) {
+
+            $aid = App()->request->getPost('id', null);
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $languages = $oSurvey->additionalLanguages;
+            $surveyLanguage = $oSurvey->language;
+            array_unshift($languages, $surveyLanguage);
+            foreach ($languages as $language) {
+                $aData = $this->getAssessmentPostData($iSurveyID, $language);
+                Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
+            }
+            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID] ));
+        }
+    }
+
+    /**
+     * Feed JSON to modal.
+     *
+     * Gets the data for the assessment from db and gives it back to the modal view to show the values.
+     *
+     * @param int $surveyid
+     * @return void
+     */
+    public function actionEdit($surveyid)
+    {
+        $iAsessementId = App()->request->getParam('id');
+        $oAssessments = Assessment::model()->findAll("id=:id", [':id' => $iAsessementId]);
+        if ($oAssessments !== null && Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'update')) {
+            $aData = [];
+            $aData['editData'] = $oAssessments[0]->attributes;
+            foreach ($oAssessments as $oAssessment) {
+                $aData['models'][] = $oAssessment;
+                $aData['editData']['name_'.$oAssessment->language] = $oAssessment->name;
+                $aData['editData']['assessmentmessage_'.$oAssessment->language] = $oAssessment->message;
+            }
+            $action = 'assessmentedit';
+            $aData['action'] = $action;
+
+            $this->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
+        }
     }
 
 
@@ -304,5 +390,21 @@ class AssessmentController extends LSBaseController
         );
     }
 
+    /**
+     * Set languages config for assessment
+     *
+     * @param Survey $oSurvey
+     */
+    private function setLanguagesBeforeAction($oSurvey){
 
+        $languages = $oSurvey->additionalLanguages;
+        $surveyLanguage = $oSurvey->language;
+
+        Yii::app()->session['FileManagerContext'] = "edit:assessments:{$oSurvey->sid}"; //todo: do we nee this ??
+
+        array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
+
+        Yii::app()->setConfig("baselang", $surveyLanguage);
+        Yii::app()->setConfig("assessmentlangs", $languages);
+    }
 }

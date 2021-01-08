@@ -8,8 +8,8 @@
 Yii::app()->getClientScript()->registerScript(
     "AssessmentsVariables",
     "var strnogroup = '".gT("There are no groups available.", "js")."',\n
-    loadEditUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentopenedit'])."',\n
-    deleteUrl = '".$this->createUrl("admin/assessments/sa/index/", ["surveyid" => $surveyid, 'action' => 'assessmentdelete'])."';",
+    loadEditUrl = '".$this->createUrl("assessment/edit/", ["surveyid" => $surveyid])."',\n
+    deleteUrl = '".$this->createUrl("assessment/delete/", ["surveyid" => $surveyid])."';",
     LSYii_ClientScript::POS_BEGIN
 );
 
@@ -85,15 +85,12 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                 <?php 
                     $this->renderPartial('assessments_edit', [
                             'surveyid' => $surveyid,
-                            'actionvalue' => $actionvalue,
                             'editId' => $editId,
                             'assessmentlangs' => $assessmentlangs,
                             'baselang' => $baselang,
-                            'gid' => $gid,
-                            'action' => $action,
                             'groups' => isset($groups) ? $groups : []
                         ]
-                    ); 
+                    );
                 ?>
             <?php } ?>
       </div>

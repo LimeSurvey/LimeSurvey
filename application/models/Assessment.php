@@ -203,7 +203,7 @@ class Assessment extends LSActiveRecord
         foreach ($data as $k => $v) {
                     $assessment->$k = $v;
         }
-        $assessment->scope = isset($assessment->scope) ? $assessment->scope : '0';
+        $assessment->scope = isset($assessment->scope) ? $assessment->scope : 'T';
         $assessment->save();
 
         return $assessment;

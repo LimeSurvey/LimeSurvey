@@ -186,6 +186,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * Feed JSON to modal.
+     *
+     * REFACTORED
+     *
      * @param int $surveyid
      * @return void
      */
@@ -246,6 +249,9 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
+     *
+     * REFACTORED
+     *
      * @param int $iSurveyID
      * @return array
      */
@@ -312,6 +318,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * Inserts an assessment to the database. Receives input from POST
+     *
+     * REFACTORED
+     *
      * @param int $iSurveyID
      * @return void
      */
@@ -339,6 +348,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * Updates an assessment. Receives input from POST
+     *
+     * REFACTORED
+     *
      * @param int $iSurveyID
      * @return void
      */
@@ -357,6 +369,9 @@ class Assessments extends Survey_Common_Action
 
     /**
      * Deletes an assessment.
+     *
+     * REFACTORED
+     *
      * @param int $iSurveyID
      * @param int $assessmentId
      * @return void
@@ -369,6 +384,9 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
+     *
+     * REFACTORED
+     *
      * @param int $iSurveyID
      * @param string $language
      * @return array
