@@ -414,11 +414,10 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     }
 
     /**
-     * Get Permission data for Permission object
-     * @param string $key
+     * Get Permission data for SurveysGroup
      * @return array
      */
-    public static function getPermissionData($key = null)
+    public static function getPermissionData()
     {
         $aPermission = array(
             'group' => array(
@@ -455,12 +454,6 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 'img' => ' fa fa-shield',
             ),
         );
-        if ($key) {
-            if(isset($aPermission[$key])) {
-                return $aPermission[$key];
-            }
-            return null;
-        }
         return $aPermission;
     }
 

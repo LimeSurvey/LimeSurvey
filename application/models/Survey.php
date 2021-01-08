@@ -2138,11 +2138,10 @@ return $s->hasTokensTable; });
     }
 
     /**
-     * Get Permission data for Permission object
-     * @param string $key
+     * Get Permission data for Survey
      * @return array
      */
-    public static function getPermissionData($key = null)
+    public static function getPermissionData()
     {
         $aPermission = array(
             'assessments' => array(
@@ -2238,7 +2237,7 @@ return $s->hasTokensTable; });
             ),
         );
 
-        return $key == null ? $aPermission : $aPermission[$key];
+        return $aPermission;
     }
 
     /**
@@ -2254,11 +2253,11 @@ return $s->hasTokensTable; });
             $sGlobalCRUD = 'update';
         }
         /* Global */
-        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sCRUD, $iUserID)) {
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }
         /* Inherited by SurveysInGroup */
-        if(SurveysInGroup::model()->findByPk($this->gsid)->hasPermission($sPermission, $sCRUD, $iUserID)) {
+        if(SurveysInGroup::model()->findByPk($this->gsid)->hasPermission($sPermission, $sGlobalCRUD, $iUserID)) {
             return true;
         }
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);

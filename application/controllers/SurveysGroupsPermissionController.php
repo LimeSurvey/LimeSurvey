@@ -448,7 +448,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
-            SurveysInGroup::model()->findByPk($id)
+            /** @scrutinizer ignore-type : we alreadty check SurveysGroup then we have it*/ SurveysInGroup::model()->findByPk($id)
         );
         $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData($userId);
         $aPermissions = array_merge(

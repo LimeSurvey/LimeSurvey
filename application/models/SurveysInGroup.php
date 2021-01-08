@@ -26,7 +26,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
      * @param string $key
      * @return array
      */
-    public static function getPermissionData($key = null)
+    public static function getPermissionData()
     {
         $aPermission = array(
             'surveys' => array(
@@ -41,12 +41,6 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
                 'img' => ' fa fa-edit',
             ),
         );
-        if ($key) {
-            if(isset($aPermission[$key])) {
-                return $aPermission[$key];
-            }
-            return null;
-        }
         return $aPermission;
     }
 
