@@ -8,8 +8,8 @@
 Yii::app()->getClientScript()->registerScript(
     "AssessmentsVariables",
     "var strnogroup = '".gT("There are no groups available.", "js")."',\n
-    loadEditUrl = '".$this->createUrl("assessment/edit/", ["surveyid" => $surveyid])."',\n
-    deleteUrl = '".$this->createUrl("assessment/delete/", ["surveyid" => $surveyid])."';",
+    loadEditUrl = '".$this->createUrl("assessment/edit/", ["surveyid" => $surveyid])."',\n ';",
+   // deleteUrl = '".$this->createUrl("assessment/delete/", ["surveyid" => $surveyid])."';",
     LSYii_ClientScript::POS_BEGIN
 );
 
@@ -59,7 +59,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             )
                         ),
                         'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
-                        'htmlOptions' => array('class'=> 'table-responsive'),
+                        //'htmlOptions' => array('class'=> 'table-responsive'),
                         'itemsCssClass' => 'table table-responsive table-striped',
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
                         'ajaxType' => 'POST',

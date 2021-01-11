@@ -91,7 +91,7 @@ var bindAction = function(){
             error: function(err){
                 console.ls.error(err);
             }
-        })
+        });
     });
 
     $('#selector__assessements-delete-modal').on('click.assessments', function(){

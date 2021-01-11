@@ -21,7 +21,7 @@ class AssessmentController extends LSBaseController
             ],
             [
                 'allow',
-                'actions' => ['view'],
+                'actions' => ['activate', 'delete', 'edit', 'index', 'insertUpdate'],
                 'users'   => ['@'], //only login users
             ],
             ['deny'], //always deny all actions not mentioned above
@@ -40,12 +40,6 @@ class AssessmentController extends LSBaseController
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
-
-            // Needed to evaluate EM expressions in question summary
-            // See bug #11845
-            LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
-            LimeExpressionManager::StartProcessingPage(false, true);
-
             $this->layout = 'layout_questioneditor';
         }
 
@@ -53,7 +47,8 @@ class AssessmentController extends LSBaseController
     }
 
     /**
-     * Shows the list (if assessment is activated) or the button to activate assessment mode
+     * Renders th view for: show the list of assessments(if assessment is activated)
+     *                      or the button to activate assessment mode
      *
      * @param int $surveyid the survey id
      *
@@ -66,7 +61,6 @@ class AssessmentController extends LSBaseController
             $this->redirect(array("admin/"));
         }
 
-        //$action = CHtml::encode(Yii::app()->request->getParam('action'));
         $oSurvey =     Survey::model()->findByPk($iSurveyID);
 
         $this->setLanguagesBeforeAction($oSurvey);
@@ -74,7 +68,6 @@ class AssessmentController extends LSBaseController
         $aData = [];
         $aData['survey'] = $oSurvey;
         $aData['surveyid'] = $iSurveyID;
-        //$aData['action'] = $action;
 
         Yii::app()->loadHelper('admin.htmleditor');
 
@@ -137,15 +130,18 @@ class AssessmentController extends LSBaseController
     /**
      * Deletes an assessment.
      *
-     * @param int $iSurveyID
-     * @param int $assessmentId
+     * @param int $surveyid
      * @return void
      */
-    private function actionDelete($iSurveyID, $assessmentId)
+    public function actionDelete($surveyid)
     {
+        $iSurveyID = sanitize_int($surveyid);
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'delete')) {
+            //must be deleteAll because of languages...
+            $assessmentId = (int) App()->request->getPost('id');
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
-            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID] ));
+        }else{
+            Yii::app()->setFlashMessage(gT("You have no permission to delete assessments"), 'error');
         }
     }
 

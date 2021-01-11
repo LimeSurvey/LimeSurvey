@@ -1,22 +1,21 @@
 <?php
 /*
- * Assessments edit 
+ * Assessments delete
  */
 ?>
 <div id="assesements-delete" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo CHtml::form(array("assessment/delete/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>
+            <?php echo CHtml::form(array("assessment/delete/surveyid/$surveyid"), 'post', array('class'=>'form','id'=>'assessmentsdeleteform','name'=>'assessmentsdeleteform', 'role' => 'form'));?>
                 <div class="modal-header"> 
                     <h4 class="modal-title"> 
                         <?php eT("Do you really want to delete this asessment rule?"); ?> 
                     </h4> 
                 </div>
                 <div class="modal-body">
-                    <!-- action buttons -->
+                    <!-- delete params -->
                     <div>
                         <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-                        <input type='hidden' name='action' value='assessmentdelete' />
                         <input type='hidden' name='id' value='' />
                     </div>
                     <div class="row">
