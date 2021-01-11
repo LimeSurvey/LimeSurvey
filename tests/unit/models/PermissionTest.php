@@ -50,8 +50,10 @@ class PermissionTest extends TestCase
             ->getMock();
         $surveysGroup->method('save')->willReturn(true);
         $surveysGroup->method('attributes')->willReturn([
+            'gsid',
             'owner_id'
         ]);
+        $surveysGroup->gsid = 999;
         $surveysGroup->owner_id = $userId;
 
         $perm = $this
@@ -61,8 +63,7 @@ class PermissionTest extends TestCase
         $perm->method('getUserId')->willReturn($userId);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $surveysGroupsId = 999;
-        $this->assertTrue($surveysGroup->hasPermission('permission', 'create'));
+        $this->assertTrue($surveysGroup->hasPermission('permission', 'update'));
     }
 
     /**
@@ -78,8 +79,10 @@ class PermissionTest extends TestCase
             ->getMock();
         $surveysGroup->method('save')->willReturn(true);
         $surveysGroup->method('attributes')->willReturn([
+            'gsid',
             'owner_id'
         ]);
+        $surveysGroup->gsid = 999;
         $surveysGroup->owner_id = $userId + 1;
 
         $perm = $this
@@ -89,7 +92,6 @@ class PermissionTest extends TestCase
         $perm->method('getUserId')->willReturn($userId);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $surveysGroupsId = 999;
-        $this->assertFalse($surveysGroup->hasPermission('permission', 'create'));
+        $this->assertFalse($surveysGroup->hasPermission('permission', 'update'));
     }
 }

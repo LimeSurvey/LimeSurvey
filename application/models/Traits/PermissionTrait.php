@@ -42,9 +42,6 @@ trait PermissionTrait
     public function hasPermission(/** @scrutinizer ignore-unused */ $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         if(empty($iUserID)) {
-            if (Yii::app() instanceof CConsoleApplication) {
-                return true;
-            }
             $iUserID = \Permission::model()->getUserId();
         }
         if(\Permission::model()->hasGlobalPermission('superadmin', $sCRUD, $iUserID)) {
