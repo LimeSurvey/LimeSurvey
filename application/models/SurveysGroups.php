@@ -20,6 +20,10 @@
  */
 class SurveysGroups extends LSActiveRecord
 {
+
+    /* @var alwaysavailable : set default, and set for old DB*/
+    public $alwaysavailable = 0;
+
     /**
      * @return string the associated database table name
      */
