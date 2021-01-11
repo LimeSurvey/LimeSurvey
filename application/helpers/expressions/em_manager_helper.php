@@ -10712,6 +10712,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             'type'=>$knownVar['type'],
                             'value'=>$value,
                         );
+                        // Unset the starting value once it is applied.                        
+                        unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
                     }
                 }
                 $LEM->_UpdateValuesInDatabase();
