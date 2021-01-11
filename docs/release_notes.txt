@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.6 (build 201229) to 3.25.7 (build 210113) January 11, 2021
+-Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
+-Fixed issue: Database error when survey title too long (Carsten Schmitz)
+-Fixed issue #16948: Uploading an image through the theme options fails (#1711) (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+
+
 Changes from 3.25.5 (build 201222) to 3.25.6 (build 201229) December 28, 2020
 -Fixed issue #16906: Version disclosure via limesurvey.pot (Denis Chenu)
 -Fixed issue #16862: Not possible to batch-edit owners for Central Participant database (Gabriel Jenik)
