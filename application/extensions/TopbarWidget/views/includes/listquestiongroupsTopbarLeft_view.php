@@ -11,7 +11,7 @@
     </span>
 <?php elseif ($hasSurveyContentCreatePermission): ?>
     <!-- Add group -->
-    <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("qquestionGroupsAdministration/add/surveyid/".$surveyid); ?>" role="button">
+    <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/add/surveyid/".$surveyid); ?>" role="button">
         <span class="icon-add"></span>
         <?php eT('Add new group'); ?>
     </a>
