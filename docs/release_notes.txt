@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.0-RC2 (build 210104) to 4.4.0-RC3 (build 210112) January 11, 2021
+-Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
+-Fixed issue: Database error when survey title too long (Carsten Schmitz)
+-Fixed issue #15611: No HTML wrapper in public stats (#1696) (Gabriel Jenik)
+#Updated translation: Romanian by c_schmitz, filipguttman, enedelcu, cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+
+
 Changes from 4.4.0-RC1 (build 201223) to 4.4.0-RC2 (build 210104) January 4, 2021
 +New feature #16779: Keep graph on same statistics PDF page if possible (GabrielJenik)
 -Fixed issue #16932: When creating a survey with the default demo contents, the process halts (GabrielJenik)
