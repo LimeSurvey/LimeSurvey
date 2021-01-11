@@ -1028,7 +1028,7 @@ class questionHelper
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
             "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
-            "caption"=>gT('Allow reset the slider')
+            "caption"=>gT('Allow slider reset')
         );
 
         self::$attributes["slider_showminmax"] = array(
