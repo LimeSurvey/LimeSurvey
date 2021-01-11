@@ -20,30 +20,9 @@ class PermissionTest extends TestCase
      */
     public function testSuperAdmin()
     {
-        $surveysGroup = $this
-            ->getMockBuilder(SurveysGroups::class)
-            ->setMethods(['save', 'attributes'])
-            ->getMock();
-        $surveysGroup->method('save')->willReturn(true);
-        $surveysGroup->method('attributes')->willReturn([]);
+        $userId = 1;
+        $surveysGroupGid = 999;
 
-        $perm = $this
-            ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId'])
-            ->getMock();
-        $perm->method('getUserId')->willReturn(1);
-
-        $surveysGroupsId = 999;
-        $this->assertTrue($surveysGroup->hasPermission('permission', 'create'));
-    }
-
-    /**
-     * User is not superadmin and survey group is owned by this user.
-     */
-    public function testOwnershipSuccess()
-    {
-        // NB: Not 1 (superadmin).
-        $userId = 2;
         $surveysGroup = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
@@ -53,36 +32,7 @@ class PermissionTest extends TestCase
             'gsid',
             'owner_id'
         ]);
-        $surveysGroup->gsid = 999;
-        $surveysGroup->owner_id = $userId;
-
-        $perm = $this
-            ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getEntity'])
-            ->getMock();
-        $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getEntity')->willReturn($surveysGroup);
-
-        $this->assertTrue($surveysGroup->hasPermission('permission', 'update'));
-    }
-
-    /**
-     * User is not superadmin and survey group is owned by other user.
-     */
-    public function testOwnershipFailure()
-    {
-        // NB: Not 1 (superadmin).
-        $userId = 2;
-        $surveysGroup = $this
-            ->getMockBuilder(SurveysGroups::class)
-            ->setMethods(['save', 'attributes'])
-            ->getMock();
-        $surveysGroup->method('save')->willReturn(true);
-        $surveysGroup->method('attributes')->willReturn([
-            'gsid',
-            'owner_id'
-        ]);
-        $surveysGroup->gsid = 999;
+        $surveysGroup->gsid = $surveysGroupGid;
         $surveysGroup->owner_id = $userId + 1;
 
         $perm = $this
@@ -92,6 +42,68 @@ class PermissionTest extends TestCase
         $perm->method('getUserId')->willReturn($userId);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $this->assertFalse($surveysGroup->hasPermission('permission', 'update'));
+        $this->assertTrue($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
+    }
+
+    /**
+     * User is not superadmin and survey group is owned by this user.
+     */
+    public function testOwnershipSuccess()
+    {
+        // NB: Not 1 (superadmin).
+        $userId = 2;
+        $surveysGroupGid = 999;
+
+        $surveysGroup = $this
+            ->getMockBuilder(SurveysGroups::class)
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
+        $surveysGroup->method('save')->willReturn(true);
+        $surveysGroup->method('attributes')->willReturn([
+            'gsid',
+            'owner_id'
+        ]);
+        $surveysGroup->gsid = $surveysGroupGid;
+        $surveysGroup->owner_id = $userId;
+
+        $perm = $this
+            ->getMockBuilder(Permission::class)
+            ->setMethods(['getUserId', 'getEntity'])
+            ->getMock();
+        $perm->method('getUserId')->willReturn($userId);
+        $perm->method('getEntity')->willReturn($surveysGroup);
+
+        $this->assertTrue($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
+    }
+
+    /**
+     * User is not superadmin and survey group is owned by other user.
+     */
+    public function testOwnershipFailure()
+    {
+        // NB: Not 1 (superadmin).
+        $userId = 2;
+        $surveysGroupGid = 999;
+
+        $surveysGroup = $this
+            ->getMockBuilder(SurveysGroups::class)
+            ->setMethods(['save', 'attributes'])
+            ->getMock();
+        $surveysGroup->method('save')->willReturn(true);
+        $surveysGroup->method('attributes')->willReturn([
+            'gsid',
+            'owner_id'
+        ]);
+        $surveysGroup->gsid = $surveysGroupGid;
+        $surveysGroup->owner_id = $userId + 1;
+
+        $perm = $this
+            ->getMockBuilder(Permission::class)
+            ->setMethods(['getUserId', 'getEntity'])
+            ->getMock();
+        $perm->method('getUserId')->willReturn($userId);
+        $perm->method('getEntity')->willReturn($surveysGroup);
+
+        $this->assertFalse($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
     }
 }
