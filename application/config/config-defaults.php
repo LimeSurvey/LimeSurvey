@@ -85,7 +85,8 @@ $config['defaulttheme']              = 'fruity'; // This setting specifys the de
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
+$config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',

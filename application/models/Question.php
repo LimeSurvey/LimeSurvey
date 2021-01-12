@@ -582,7 +582,7 @@ class Question extends LSActiveRecord
      * subquestions : 0= Does not support subquestions x=Number of subquestion scales
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-     * @deprecated use QuestionType::modelsAttributes() instead
+     * @deprecated use QuestionTheme::findQuestionMetaDataForAllTypes() instead
      */
     public static function typeList($language = null)
     {

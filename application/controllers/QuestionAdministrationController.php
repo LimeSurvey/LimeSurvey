@@ -200,7 +200,7 @@ class QuestionAdministrationController extends LSBaseController
             true
         );
 
-        $showScriptField = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update') && 
+        $showScriptField = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update') &&
             SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id);
 
         // TODO: Problem with CSRF cookie when entering directly after login.
@@ -214,7 +214,7 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['showSaveButton'] = true;
         $this->aData['showSaveAndCloseButton'] = true;
         $this->aData['showCloseButton'] = true;
-        
+
         //$this->aData['topBar']['leftSideView'] = 'questionTopbarLeft_view';
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
@@ -227,7 +227,6 @@ class QuestionAdministrationController extends LSBaseController
             'oQuestion'               => $question,
             'questionTemplate'       => $questionTemplate,
             'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
-            'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
             'advancedSettings'       => $advancedSettings,
             'generalSettings'        => $this->getGeneralOptions(
                 $question->qid,
