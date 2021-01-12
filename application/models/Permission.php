@@ -539,7 +539,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName) && $sEntityName != 'role') {
+        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
             return true;
         }
 
@@ -764,7 +764,7 @@ class Permission extends LSActiveRecord
     protected function getEntityOwnerId($iEntityID, $sEntityName)
     {
         /* know invalid entity */
-        if (in_array($sEntityName, array('global','template'))) {
+        if (in_array($sEntityName, array('global','template','role',))) {
             return null;
         }
         /* allow to get it dynamically from any model */
