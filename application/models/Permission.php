@@ -525,7 +525,7 @@ class Permission extends LSActiveRecord
      * @param string $sEntityName string The entity name
      * @param $sPermission string Name of the permission
      * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @param $iUserID integer User ID - if not given the one of the current user is used, 0 is used for role permission (not related to user)
      * @return bool True if user has the permission
      */
     public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
@@ -576,7 +576,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
+        if ($iUserID === $this->getEntityOwnerId($iEntityID, $sEntityName)) {
             return true;
         }
 
@@ -686,6 +686,7 @@ class Permission extends LSActiveRecord
      */
     public function hasRolePermission($iRoleId, $sPermission, $sCRUD = 'read')
     {
+        /* Get permission foor user id = 0 */
         return $this->hasPermission($iRoleId, 'role', $sPermission, $sCRUD, 0);
     }
 
