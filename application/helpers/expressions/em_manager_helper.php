@@ -8870,7 +8870,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             $updates[$target] = $qattr[$src];
                         }
                     }
-                    if ($changeDB)
+                    if ($changeDB&&!empty($updates))
                     {
                         foreach  ($updates as $key=>$value)
                         {
