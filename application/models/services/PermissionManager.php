@@ -60,6 +60,10 @@ class PermissionManager
         foreach (array_keys($aObjectPermissions) as $sPermission) {
             $aObjectPermissions[$sPermission]['current'] = array();
             foreach($aCruds as $crud) {
+                if(!isset($aObjectPermissions[$sPermission][$crud])) {
+                    /* Not set mean true (in Survey on 3.X) */
+                    $aObjectPermissions[$sPermission][$crud] = true;
+                }
                 $aObjectPermissions[$sPermission]['current'][$crud] = array(
                     'checked' => false,
                     /* The checkbox are disable if currentuser don't have permission */
