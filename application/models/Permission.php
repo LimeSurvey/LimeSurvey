@@ -247,12 +247,14 @@ class Permission extends LSActiveRecord
      * Sets permissions (global or survey-specific) for a survey administrator
      * Checks what permissions may be set and automatically filters invalid ones.
      * A permission may be invalid if the permission does not exist or that particular user may not give that permission
+     * @deprecated : usage only for global Permission currently
      *
      * @param mixed $iUserID
      * @param mixed $iEntityID
      * @param string $sEntityName
      * @param mixed $aPermissions
-     * @param boolean $bBypassCheck
+     * @param boolean $bBypassCheck : by pass control of current permission for current user only for global permission
+     * @throw Exception
      * @return null|boolean
      */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck = false)
@@ -286,6 +288,10 @@ class Permission extends LSActiveRecord
                 unset($aBasePermissions['superadmin']);
             }
         } else {
+            if (in_array("PermissionInterface", class_implements($sEntityName))) {
+                /* model implement \PermissionInterface */
+                throw new Exception("Must use PermissionManager service");
+            }
             $aBasePermissions = Permission::model()->getEntityBasePermissions($sEntityName);
         }
 
@@ -413,6 +419,9 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * Give all permission of a specific user without permission control of current user
+     * Used when create survey
+     * @see mantis #16967: https://bugs.limesurvey.org/view.php?id=16967
      * @param integer $iUserID
      * @param integer $iSurveyID
      */
@@ -421,18 +430,30 @@ class Permission extends LSActiveRecord
         if ($iSurveyID == 0) {
             throw new InvalidArgumentException('Survey ID cannot be 0 (collides with superadmin permission entity id)');
         }
-
-        $aPermissions = $this->getSurveyBasePermissions();
-        $aPermissionsToSet = array();
+        $aPermissions = Survey::getPermissionData();
+        $aCrud = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach ($aPermissions as $sPermissionName => $aPermissionDetails) {
-            foreach ($aPermissionDetails as $sPermissionDetailKey => $sPermissionDetailValue) {
-                if (in_array($sPermissionDetailKey, array('create', 'read', 'update', 'delete', 'import', 'export')) && $sPermissionDetailValue == true) {
-                    $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey] = 1;
+            tracevar($aPermissionDetails);
+            $oPermission = Permission::model()->findByAttributes(array(
+                'entity' => 'survey',
+                'entity_id' => $iSurveyID,
+                'uid' => $iUserID,
+                'permission' => $sPermissionName
+            ));
+            if (empty($oPermission)) {
+                $oPermission = new Permission;
+                $oPermission->entity = 'survey';
+                $oPermission->entity_id = $iSurveyID;
+                $oPermission->uid = $iUserID;
+                $oPermission->permission = $sPermissionName;
+            }
+            foreach($aCrud as $crud) {
+                if(!isset($aPermissionDetails[$crud]) || $aPermissionDetails[$crud]) {
+                    $oPermission->setAttribute($crud."_p", 1);
                 }
             }
+            $oPermission->save();
         }
-
-        $this->setPermissions($iUserID, $iSurveyID, 'survey', $aPermissionsToSet);
     }
 
     /**
