@@ -77,6 +77,11 @@ class AssessmentController extends LSBaseController
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['gid'] = null; //important for rendering the sidebar ...(why?)
+        Yii::app()->getClientScript()->registerScript(
+            "AssessmentsVariables",
+            "var strnogroup = '".gT("There are no groups available.", "js")."',\n ';",
+            LSYii_ClientScript::POS_BEGIN
+        );
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
 
         $this->aData = $aData;

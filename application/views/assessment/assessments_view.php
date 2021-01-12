@@ -5,13 +5,6 @@
 
 // todo implement new ekeditor 1580136051118
 //echo PrepareEditorScript(true, $this);
-Yii::app()->getClientScript()->registerScript(
-    "AssessmentsVariables",
-    "var strnogroup = '".gT("There are no groups available.", "js")."',\n
-    loadEditUrl = '".$this->createUrl("assessment/edit/", ["surveyid" => $surveyid])."',\n ';",
-   // deleteUrl = '".$this->createUrl("assessment/delete/", ["surveyid" => $surveyid])."';",
-    LSYii_ClientScript::POS_BEGIN
-);
 
 $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']));
 
@@ -42,8 +35,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             <h4><?php eT("Assessment rules");?></h4>
             <div class="row">
               <div class="col-sm-12">
+                  <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider' => $model->search(),
                         'id' => 'assessments-grid',
                         'columns' => $model->getColumns(),
