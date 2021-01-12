@@ -28,7 +28,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $(".markrow").click(
         function(){
             $(this).removeClass('mixed');
-            $(this).closest('tr').find('input').prop('checked',$(this).prop('checked')).prop('indeterminate',false);
+            $(this).closest('tr').find('input:not(:disabled)').prop('checked',$(this).prop('checked')).prop('indeterminate',false);
             updateAllCheckboxes();
         }
     )
@@ -67,7 +67,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     {
         $('.table-permissions-set .extended').hide();
     }
-    /* Show on the all comuln the state of included checkbox */
+    /* Show on the all columnn the state of included checkbox */
     $('.table-permissions-set tbody tr').each(function(){
         if ($(this).find('.extended input:checkbox:checked').length == $(this).find('.extended input:checkbox').length) {
             /* All is checked */
@@ -81,10 +81,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             } else {
                 $(this).find('.markrow').prop('indeterminate',true).addClass('mixed');
             }
-            
         } else {
             /* Partially  checked */
             $(this).find('.markrow').prop('checked',true).addClass('mixed');
+        }
+        /* disabled : only in all */
+        if ($(this).find('.extended input:checkbox:disabled').length == $(this).find('.extended input:checkbox').length) {
+            $(this).find('.markrow').prop('disabled', true);
         }
     })
 
