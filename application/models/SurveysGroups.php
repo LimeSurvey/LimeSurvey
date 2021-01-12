@@ -11,7 +11,7 @@
  * @property integer $sortorder
  * @property integer $owner_id
  * @property integer $parent_id
- * @property boolean $alwaysavailable
+ * @property boolean|integer $alwaysavailable
  * @property string $created
  * @property string $modified
  * @property integer $created_by
@@ -21,7 +21,7 @@
 class SurveysGroups extends LSActiveRecord
 {
 
-    /* @var alwaysavailable : set default, and set for old DB*/
+    /* @var boolean|integer alwaysavailable : set default, and set for old DB , usage of integer for DB compatibility */
     public $alwaysavailable = 0;
 
     /**
