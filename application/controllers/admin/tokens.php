@@ -2432,6 +2432,9 @@ class tokens extends Survey_Common_Action
             if (Yii::app()->request->getPost('bounceprocessing') == 'L') {
                 $fieldvalue['bounceaccountencryption'] = Yii::app()->request->getPost('bounceaccountencryption');
                 $fieldvalue['bounceaccountuser'] = Yii::app()->request->getPost('bounceaccountuser');
+                if (Yii::app()->request->getPost('bounceaccountpass')!='somepassword'){
+                    $fieldvalue['bounceaccountpass'] = Yii::app()->request->getPost('bounceaccountpass');
+                }
                 $fieldvalue['bounceaccountpass'] = Yii::app()->request->getPost('bounceaccountpass');
                 $fieldvalue['bounceaccounttype'] = Yii::app()->request->getPost('bounceaccounttype');
                 $fieldvalue['bounceaccounthost'] = Yii::app()->request->getPost('bounceaccounthost');
