@@ -317,7 +317,7 @@ class AdminController extends LSYii_Controller
     public function getActionClasses()
     {
         return array(
-        'assessments'      => 'assessments',
+     //   'assessments'      => 'assessments',  REFACTORED
         'authentication'   => 'authentication',
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',

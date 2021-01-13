@@ -474,7 +474,7 @@ class LsDefaultDataSets
                 'comment-o',
                 'fontawesome',
                 '',
-                'admin/assessments/sa/index/',
+                'assessment/index',
                 '',
                 '',
                 '',
