@@ -77,8 +77,8 @@ class QuestionGroup extends LSActiveRecord
             'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
             'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
-    }    
- 
+    }
+
 
     /**
      * @param integer $iSurveyId
@@ -262,7 +262,7 @@ class QuestionGroup extends LSActiveRecord
 
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $url = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid");
+            $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
             $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
         }
 

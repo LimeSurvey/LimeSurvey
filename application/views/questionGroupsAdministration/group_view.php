@@ -77,7 +77,7 @@
 
                     <!-- create question in this group -->
                     <div class="col-lg-3">
-                        <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
+                        <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/view', array('surveyid'=>$surveyid,'gid'=>$gid)); ?>">
                             <div class="panel-heading">
                                 <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                             </div>
@@ -97,15 +97,15 @@
 
 <?php
 App()->getClientScript()->registerScript(
-    'activatePanelClickable', 
-    'LS.pageLoadActions.panelClickable()', 
-    LSYii_ClientScript::POS_POSTSCRIPT 
+    'activatePanelClickable',
+    'LS.pageLoadActions.panelClickable()',
+    LSYii_ClientScript::POS_POSTSCRIPT
 );
 
 // Reset topbar to "non-extended" mode.
 // If this view wasn't loaded by ajax (ex: from the side menu) this wouldn't be necessary
 Yii::app()->getClientScript()->registerScript(
-    "ViewGroup_topbar_switch", 'window.EventBus.$emit("doFadeEvent", false);', 
+    "ViewGroup_topbar_switch", 'window.EventBus.$emit("doFadeEvent", false);',
     LSYii_ClientScript::POS_END
 );
 ?>
