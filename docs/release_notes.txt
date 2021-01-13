@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.0-RC2 (build 210104) to 4.4.0-RC3 (build 210112) January 11, 2021
+-Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
+-Fixed issue: Database error when survey title too long (Carsten Schmitz)
+-Fixed issue #15611: No HTML wrapper in public stats (#1696) (Gabriel Jenik)
+#Updated translation: Romanian by c_schmitz, filipguttman, enedelcu, cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Japanese by nomoto
+
+
+Changes from 4.4.0-RC1 (build 201223) to 4.4.0-RC2 (build 210104) January 4, 2021
++New feature #16779: Keep graph on same statistics PDF page if possible (GabrielJenik)
+-Fixed issue #16932: When creating a survey with the default demo contents, the process halts (GabrielJenik)
+-Fixed issue #16930: HTML Editor inline mode not working in Question Editor View (GabrielJenik)
+-Fixed issue #16928: Script field should be hidden if in "my profile" script is disabled (GabrielJenik)
+-Fixed issue #16927: Non-numerical answer option prefix from my profile not working (GabrielJenik)
+-Fixed issue #16926: Reorder SQs and AOs for subquestion & answer options (GabrielJenik)
+-Fixed issue #16881: HTML editor popup broken (#1697) (Gabriel Jenik)
+-Fixed issue #16293: Question Type: File Upload attached file is too big, no error message but internal server error (GabrielJenik)
+#Updated translation: Romanian by cdorin
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz, katy50306, terrywei, sylsylsylvie, CTFang, TuTu_chen, scott306lr, Yeeeeeet
+
+
 Changes from 4.3.32 (build 201221) to 4.4.0-RC1 (build 201223) December 22, 2020
 +New feature: Integrated global user administration settings and admin creation email template (Eddy Lackmann)
 +New feature : Global permission for Survey groups (Denis Chenu)

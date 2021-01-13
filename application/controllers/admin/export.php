@@ -262,9 +262,10 @@ class export extends Survey_Common_Action
             );
 
             $data['sidemenu']['state'] = false;
-            $data['menu']['edition'] = true;
-            $data['menu']['export'] = true;
-            $data['menu']['close'] = true;
+
+            $data['topBar']['name'] = 'baseTopbar_view';
+            $data['topBar']['showExportButton'] = true;
+            $data['topBar']['showCloseButton'] = true;
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
@@ -428,8 +429,8 @@ class export extends Survey_Common_Action
 
             $data['sidemenu']['state'] = false;
 
-            $data['menu']['edition'] = true;
-            $data['menu']['close'] = true;
+            $data['topBar']['name'] = 'baseTopbar_view';
+            $data['topBar']['showCloseButton'] = true;
 
             $this->_renderWrappedTemplate('export', 'spss_view', $data);
             return;
@@ -620,12 +621,12 @@ class export extends Survey_Common_Action
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
             $aData['subaction'] = gt('Export a VV survey file');
-            $aData['topBar']['type'] = 'responses';
 
             $aData['sidemenu']['state'] = false;
-            $aData['menu']['edition'] = true;
-            $aData['menu']['export'] = true;
-            $aData['menu']['close'] = true;
+            
+            $aData['topBar']['name'] = 'baseTopbar_view';
+            $aData['topBar']['showExportButton'] = true;
+            $aData['topBar']['showCloseButton'] = true;
 
             $this->_renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {

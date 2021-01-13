@@ -582,7 +582,7 @@ class Question extends LSActiveRecord
      * subquestions : 0= Does not support subquestions x=Number of subquestion scales
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
-     * @deprecated use QuestionType::modelsAttributes() instead
+     * @deprecated use QuestionTheme::findQuestionMetaDataForAllTypes() instead
      */
     public static function typeList($language = null)
     {
@@ -1369,8 +1369,7 @@ class Question extends LSActiveRecord
     {
         $question = new Question();
         $question->qid = 0;
-        // TODO: Customize
-        $question->title = 'SQ001';
+        $question->title = (SettingsUser::getUserSettingValue('subquestionprefix', App()->user->id) ?? 'SQ') . '001';
         $question->relevance = 1;
         return $question;
     }
@@ -1386,8 +1385,7 @@ class Question extends LSActiveRecord
         // TODO: Assuming no collision.
         $answer->aid = 'new' . rand(1, 100000);
         $answer->sortorder = 0;
-        // TODO: Customize
-        $answer->code = 'A1';
+        $answer->code = (SettingsUser::getUserSettingValue('answeroptionprefix', App()->user->id) ?? 'AO') . '01';
 
         $l10n = [];
         foreach ($this->survey->allLanguages as $language) {

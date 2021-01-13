@@ -568,7 +568,6 @@ class Survey_Common_Action extends CAction
             $aData['topBar']
         );
         
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');     
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
 
@@ -591,8 +590,6 @@ class Survey_Common_Action extends CAction
             $aData['topBar']
         );
            
-        Yii::app()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ? 'admintoppanelrtl' : 'admintoppanelltr'));
-        
         if (isset($aData['qid'])) {
             $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
         } else if (isset($aData['gid'])) {
@@ -616,6 +613,8 @@ class Survey_Common_Action extends CAction
 
     /**
      * Shows admin menu for question
+     *
+     * @deprecated not in use anymore
      *
      * @param array $aData
      */

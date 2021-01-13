@@ -2854,8 +2854,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if($iOldDBVersion < 412) {
             $oTransaction = $oDB->beginTransaction();
-            $aGroups = array_keys(SurveysGroups::model()->findAll(array('index'=>'gsid')));
-            $aGroupSettings = array_keys(SurveysGroupsettings::model()->findAll(array('index'=>'gsid')));
+            $sSurveyGroupQuery = "SELECT gsid  from {{surveys_groups}} order by gsid";
+            $aGroups = $oDB->createCommand($sSurveyGroupQuery)->queryColumn();
+            $sSurveyGroupSettingsQuery = "SELECT gsid  from {{surveys_groupsettings}} order by gsid";
+            $aGroupSettings = $oDB->createCommand($sSurveyGroupSettingsQuery)->queryColumn();
             foreach ($aGroups as $group){
                 if (!array_key_exists($group, $aGroupSettings)){
                     $settings = new SurveysGroupsettings;
@@ -2909,11 +2911,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             
             // encrypt bounceaccountpass value in db
             alterColumn('{{surveys}}','bounceaccountpass',"text",true,'NULL');
-            $aSurveys = Survey::model()->findAll();
-            foreach($aSurveys as $oSurvey){
-                if (!empty($oSurvey->bounceaccountpass)){
-                    $oSurvey->bounceaccountpass = LSActiveRecord::encryptSingle($oSurvey->bounceaccountpass);
-                    $oSurvey->save();
+            $sSurveyQuery = "SELECT * from {{surveys}} order by sid";
+            $aSurveys = $oDB->createCommand($sSurveyQuery)->queryAll();
+            foreach ( $aSurveys as $aSurvey ) {            
+                if (!empty($aSurvey['bounceaccountpass'])){
+                    $oDB->createCommand()->update('{{surveys}}',['bounceaccountpass'=>LSActiveRecord::encryptSingle($aSurvey->bounceaccountpass)],"sid=".$aSurvey[sid]);
                 }
             }
 
@@ -3459,6 +3461,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 435), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 436) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{boxes}}', array('url' => 'themeOptions'), "url='admin/themeoptions'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 436), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

@@ -435,7 +435,7 @@ class themes extends Survey_Common_Action
             $templatename           = returnGlobal('templatename');
             $oEditedTemplate        = Template::getInstance($templatename);
             $screenname             = returnGlobal('screenname');
-            $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads');
+            $allowedthemeuploads    = Yii::app()->getConfig('allowedthemeuploads').','.Yii::app()->getConfig('allowedthemeimageformats');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
 

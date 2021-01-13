@@ -1376,7 +1376,6 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         }
         $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
     }
-    $qtypes = Question::typeList();
 
     // Main query
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
@@ -1399,6 +1398,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     $groupSeq = -1;
     $_groupOrder = -1;
 
+    $questionTypeMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
     foreach ($questions as $arow) {
         //For each question, create the appropriate field(s))
 
@@ -1427,7 +1427,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($qtypes[$arow['type']]['subquestions'] == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = array('fieldname'=>$fieldname, 'question'=>$arow['question'], 'gid'=>$arow['gid']);
             }
@@ -1521,7 +1521,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
         }
         // For Multi flexi question types
-        elseif ($qtypes[$arow['type']]['subquestions'] == 2 && $qtypes[$arow['type']]['answerscales'] == 0) {
+        elseif ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 2 && $questionTypeMetaData[$arow['type']]['settings']->answerscales == 0) {
             //MULTI FLEXI
             $abrows = getSubQuestions($surveyid, $arow['qid'], $sLanguage);
             //Now first process scale=1
@@ -4362,10 +4362,21 @@ function fixSubquestions()
     ->query();
     $aRecords = $surveyidresult->readAll();
 
-    $aQuestionTypes = QuestionType::modelsAttributes();
+    $dbVersionNumber = SettingGlobal::getDBVersionNumber();
+
+    if($dbVersionNumber < 148){
+        $aQuestionTypes = QuestionType::modelsAttributes();
+    }else{
+        $aQuestionTypes = QuestionTheme::findQuestionMetaDataForAllTypes(); //be careful!!! only use this if QuestionTheme already exists (see updateDB ...)
+    }
     while (count($aRecords) > 0) {
         foreach ($aRecords as $sv) {
-            if ($aQuestionTypes[$sv['type']]['subquestions']) {
+            if($dbVersionNumber < 148){
+                $hasSubquestions = $aQuestionTypes[$sv['type']]['subquestions'];
+            }else{
+                $hasSubquestions = (int)$aQuestionTypes[$sv['type']]['settings']->subquestions;
+            }
+            if ($hasSubquestions) {
                 // If the question type allows subquestions, set the type in each subquestion
                 Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->execute();
             } else {

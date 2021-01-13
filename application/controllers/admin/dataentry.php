@@ -81,10 +81,10 @@ class dataentry extends Survey_Common_Action
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
-        $aData['menu']['edition'] = true;
-        $aData['menu']['import'] = true;
-        $aData['menu']['close'] = true;
-        $aData['topBar']['type'] = 'responses';
+        
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['showImportButton'] = true;
+        $aData['topBar']['showCloseButton'] = true;
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
@@ -303,10 +303,10 @@ class dataentry extends Survey_Common_Action
 
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
-            $aData['menu']['edition'] = true;
-            $aData['menu']['import'] = true;
-            $aData['menu']['close'] = true;
-            $aData['topBar']['type'] = 'responses';
+            
+            $aData['topBar']['name'] = 'baseTopbar_view';
+            $aData['topBar']['showImportButton'] = true;
+            $aData['topBar']['showCloseButton'] = true;
 
             $this->_renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
@@ -1220,10 +1220,11 @@ class dataentry extends Survey_Common_Action
 
             $aViewUrls['output'] = $aDataentryoutput;
             $aData['sidemenu']['state'] = false;
-            $aData['menu']['edition'] = true;
-            $aData['menu']['save'] = true;
-            $aData['menu']['close'] = true;
-            $aData['topBar']['showSaveButton'] = true;
+
+            $aData['topBar']['name'] = 'baseTopbar_view';
+            $aData['topBar']['showSaveButton']  = true;
+            $aData['topBar']['showCloseButton'] = true;
+
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
@@ -1267,8 +1268,9 @@ class dataentry extends Survey_Common_Action
             Response::model($surveyid)->findByPk($id)->delete(true);
 
             $aData['sidemenu']['state'] = false;
-            $aData['menu']['edition'] = true;
-            $aData['menu']['close'] = true;
+
+            $aData['topBar']['name'] = 'baseTopbar_view';
+            $aData['topBar']['showCloseButton'] = true;
 
             $this->_renderWrappedTemplate('dataentry', 'delete', $aData);
         }
@@ -1710,6 +1712,8 @@ class dataentry extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['hiddenfields'] = $hiddenfields;
 
+            $aData['topBar']['name'] = 'baseTopbar_view';
+
             $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
         }
     }
@@ -2121,12 +2125,11 @@ class dataentry extends Survey_Common_Action
             $aViewUrls[] = 'active_html_view';
 
             $aData['sidemenu']['state'] = false;
-            $aData['menu']['edition'] = true;
-            $aData['menu']['save'] = true;
-            $aData['menu']['close'] = true;
+
+            $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showSaveButton']  = true;
             $aData['topBar']['showCloseButton'] = true;
-            $aData['topBar']['closeButtonUrl']  = $this->getController()->createUrl("surveyAdministration/view/", ['surveyid' => $surveyid]);
+
             $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }

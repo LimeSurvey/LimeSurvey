@@ -1602,7 +1602,6 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->setFlashMessage(gT("This survey is already active."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid'=>$iSurveyID));
         }
-        $qtypes = Question::typeList();
         Yii::app()->loadHelper("admin/activate");
 
         if (Yii::app()->request->getPost('ok') == '') {
@@ -1612,7 +1611,7 @@ class SurveyAdministrationController extends LSBaseController
 
             // Check consistency for groups and questions
             $failedgroupcheck = checkGroup($iSurveyID);
-            $failedcheck = checkQuestions($iSurveyID, $iSurveyID, $qtypes);
+            $failedcheck = checkQuestions($iSurveyID, $iSurveyID);
 
             $aData['failedcheck'] = $failedcheck;
             $aData['failedgroupcheck'] = $failedgroupcheck;
@@ -1888,7 +1887,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
+        $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
         if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;

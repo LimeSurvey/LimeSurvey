@@ -91,6 +91,17 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = $this->getQuestionObject(null, 'F', null);
         $oQuestion->sid = $surveyid;
 
+        $this->aData['showSaveAndNewGroupButton'] = true;
+        $this->aData['showSaveAndNewQuestionButton'] = true;
+        $this->aData['closeUrl'] = Yii::app()->createUrl(
+            'questionGroupsAdministration/view/',
+            [
+                'surveyid' => $oQuestion->sid,
+                'gid' => $oQuestion->gid,
+                'landOnSideMenuTab' => 'structure'
+            ]
+        );
+
         $this->aData['tabOverviewEditor'] = 'overview';
         $this->renderFormAux($oQuestion);
     }
@@ -118,6 +129,15 @@ class QuestionAdministrationController extends LSBaseController
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 
+        $this->aData['closeUrl'] = Yii::app()->createUrl(
+            'questionAdministration/view/',
+            [
+                'surveyid' => $question->sid,
+                'gid' => $question->gid,
+                'qid' => $question->qid,
+                'landOnSideMenuTab' => 'structure'
+            ]
+        );
         $this->aData['tabOverviewEditor'] = $tabOverviewEditor;
         $this->renderFormAux($question);
     }
@@ -180,6 +200,9 @@ class QuestionAdministrationController extends LSBaseController
             true
         );
 
+        $showScriptField = Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update') &&
+            SettingsUser::getUserSettingValue('showScriptEdit', App()->user->id);
+
         // TODO: Problem with CSRF cookie when entering directly after login.
         $modalsHtml =  Yii::app()->twigRenderer->renderViewFromFile(
             '/application/views/questionAdministration/modals.twig',
@@ -187,27 +210,41 @@ class QuestionAdministrationController extends LSBaseController
             true
         );
 
-        $this->aData['renderSpecificTopbar'] = 'editQuestiontopbar_view';
+        $this->aData['topBar']['name'] = 'questionTopbar_view';
+        $this->aData['showSaveButton'] = true;
+        $this->aData['showSaveAndCloseButton'] = true;
+        $this->aData['showCloseButton'] = true;
+
+        //$this->aData['topBar']['leftSideView'] = 'questionTopbarLeft_view';
+        $this->aData['sid'] = $question->sid;
+        $this->aData['gid'] = $question->gid;
+        $this->aData['qid'] = $question->qid;
+
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
+
+        $viewData = [
+            'oSurvey'                => $question->survey,
+            'oQuestion'               => $question,
+            'questionTemplate'       => $questionTemplate,
+            'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
+            'advancedSettings'       => $advancedSettings,
+            'generalSettings'        => $this->getGeneralOptions(
+                $question->qid,
+                $question->type,
+                $question->gid,
+                // TODO: question_template
+                'core'
+            ),
+            'showScriptField'       => $showScriptField,
+            'jsVariablesHtml'       => $jsVariablesHtml,
+            'modalsHtml'            => $modalsHtml
+        ];
+
+        $this->aData = array_merge($this->aData, $viewData);
+
         $this->render(
             'create',
-            [
-                'oSurvey'                => $question->survey,
-                'question'               => $question,
-                'questionTemplate'       => $questionTemplate,
-                'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
-                'aQuestionTypeStateList' => QuestionType::modelsAttributes(),
-                'advancedSettings'       => $advancedSettings,
-                'generalSettings'        => $this->getGeneralOptions(
-                    $question->qid,
-                    $question->type,
-                    $question->gid,
-                    // TODO: question_template
-                    'core'
-                ),
-                'jsVariablesHtml'       => $jsVariablesHtml,
-                'modalsHtml'            => $modalsHtml
-            ]
+            $viewData
         );
     }
 
@@ -248,8 +285,6 @@ class QuestionAdministrationController extends LSBaseController
         $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
             "/surveyAdministration/listsurveys"
         );
-        $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
-        $aData['surveybar']['buttons']['newquestion']   = true;
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
@@ -274,6 +309,10 @@ class QuestionAdministrationController extends LSBaseController
         // We filter the current survey id
         $model->sid = $oSurvey->sid;
         $aData['model'] = $model;
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'listquestionsTopbarLeft_view';
+
         $this->aData = $aData;
 
         $this->render("listquestions", $aData);
@@ -311,6 +350,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $request = App()->request;
         $iSurveyId = (int) $request->getPost('sid');
+        $sScenario = App()->request->getPost('scenario', '');
 
         $questionData = [];
         $questionData['question']         = (array) $request->getPost('question');
@@ -407,12 +447,62 @@ class QuestionAdministrationController extends LSBaseController
             if(!($tabOverviewEditorValue==='overview' || $tabOverviewEditorValue==='editor')){
                 $tabOverviewEditorValue = 'overview';
             }
+
             if ($calledWithAjax) {
                 echo json_encode(['message' => gT('Question saved')]);
                 Yii::app()->end();
             } else {
                 App()->setFlashMessage(gT('Question saved'), 'success');
-                $this->redirect(['questionAdministration/edit/questionId/' . $question->qid. '/tabOverviewEditor/' . $tabOverviewEditorValue]);
+                $landOnSideMenuTab = 'structure';
+                if (empty($sScenario)) {
+                    if (App()->request->getPost('save-and-close', '')) {
+                        $sScenario = 'save-and-close';
+                    } elseif (App()->request->getPost('saveandnew', '')) {
+                        $sScenario = 'save-and-new';
+                    } elseif (App()->request->getPost('saveandnewquestion', '')) {
+                        $sScenario = 'save-and-new-question';
+                    }
+                }
+                switch ($sScenario) {
+                    case 'save-and-new-question':
+                        $sRedirectUrl = $this->createUrl(
+                            // TODO: Double check
+                            'questionAdministration/create/',
+                            [
+                                'surveyid' => $iSurveyId,
+                                'gid' => $question->gid,
+                            ]
+                        );
+                        break;
+                    case 'save-and-new':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/add/',
+                            [
+                                'surveyid' => $iSurveyId,
+                            ]
+                        );
+                        break;
+                    case 'save-and-close':
+                        $sRedirectUrl = $this->createUrl(
+                            'questionGroupsAdministration/view/',
+                            [
+                                'surveyid' => $iSurveyId,
+                                'gid' => $question->gid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab
+                            ]
+                        );
+                        break;
+                    default:
+                        $sRedirectUrl = $this->createUrl(
+                            'questionAdministration/edit/',
+                            [
+                                'questionId' => $question->qid,
+                                'landOnSideMenuTab' => $landOnSideMenuTab,
+                                'tabOverviewEditor' => $tabOverviewEditorValue,
+                            ]
+                        );
+                }
+                $this->redirect($sRedirectUrl);
             }
         } catch (CException $ex) {
             $transaction->rollback();
@@ -923,8 +1013,8 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sid'] = $iSurveyID;
         $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
         $aData['gid'] = $groupid;
-        $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['rightSideView'] = 'importQuestionTopbarRight_view';
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
         $this->aData = $aData;
@@ -1100,11 +1190,21 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['explorer']['state'] = true;
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
-        $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['showCloseButton'] = true;
-        $aData['topBar']['closeButtonUrl'] = $this->createUrl(
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['leftSideView'] = 'editQuestionTopbarLeft_view';
+        $aData['topBar']['rightSideView'] = 'questionTopbarRight_view';
+        $aData['showSaveButton'] = true;
+        $aData['showSaveAndCloseButton'] = true;
+        $aData['showCloseButton'] = true;
+        $aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
-            ['surveyid' => $iSurveyID, 'gid' => $gid, 'qid' => $qid]
+            [
+                'surveyid' => $oQuestion->sid,
+                'gid' => $oQuestion->gid,
+                'qid' => $oQuestion->qid,
+                'landOnSideMenuTab' => 'structure'
+            ]
         );
         $aData['hasUpdatePermission'] = Permission::model()->hasSurveyPermission(
             $iSurveyID,
@@ -1195,7 +1295,7 @@ class QuestionAdministrationController extends LSBaseController
 			);
 		} else {
 			$redirect = Yii::app()->createUrl(
-				'surveyAdministration/listQuestions/',
+				'questionAdministration/listQuestions/',
 				[
 					'surveyid' => $surveyid,
 					'landOnSideMenuTab' => 'settings'
@@ -1215,7 +1315,7 @@ class QuestionAdministrationController extends LSBaseController
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
             $this->redirect($redirect);
-            $this->redirect(['questionAdministration/listquestions/surveyid/' . $surveyid]);
+            $this->redirect(['questionAdministration/listQuestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
@@ -1467,7 +1567,18 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
-        $aData['renderSpecificTopbar'] = 'copyQuestiontopbar_view'; //this goes directly into the view called by $this->render(...)
+
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['rightSideView'] = 'copyQuestionTopbarRight_view';
+        $aData['closeUrl'] = Yii::app()->createUrl(
+            'questionAdministration/view/',
+            [
+                'surveyid' => $oQuestion->sid,
+                'gid' => $oQuestion->gid,
+                'qid' => $oQuestion->qid,
+                'landOnSideMenuTab' => 'structure'
+            ]
+        );
 
         $aData['oSurvey'] = $oSurvey;
         $aData['oQuestionGroup'] = $oQuestionGroup;
@@ -2534,6 +2645,7 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion->gid        = $question->gid;
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
+                $questionOrder++;
                 $subquestion->title      = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance  = $data['relevance'];

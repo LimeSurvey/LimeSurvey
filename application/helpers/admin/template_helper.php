@@ -129,7 +129,7 @@ function is_template_editable($templatename)
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
+    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads').','.Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
 

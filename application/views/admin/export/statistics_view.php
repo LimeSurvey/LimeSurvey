@@ -22,23 +22,6 @@ echo viewHelper::getViewTestTag('statisticsIndex');
                     <?php eT("Statistics"); ?>
                 </h4>
             </div>
-            <div class="col-md-9 text-right">
-                <div class="col-md-12 text-right">
-                    <a href='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/simpleStatistics/surveyid/" . $surveyid); ?>' class="btn btn-primary">
-                        <span class="fa fa-bar-chart"></span>
-                        <?php eT("Simple mode"); ?>
-
-                    </a>
-                    <button class="btn btn-success" name="view-button" id="view-button" data-submit-form="1">
-                        <span class="fa"></span>
-                        <?php eT("View statistics"); ?>
-                    </button>
-                    <a href='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/" . $surveyid); ?>' id="" class="btn btn-default">
-                        <span class="fa fa-refresh text-success"></span>
-                        <?php eT("Clear"); ?>
-                    </a>
-                </div>
-            </div>
         </div>
         <h3></h3>
     </div>
