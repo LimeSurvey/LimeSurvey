@@ -802,6 +802,7 @@ class QuestionAdministrationController extends LSBaseController
             $first = $first == "false" ? false : true;
         }
 
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $stringCodes = json_decode($codes, true);
         [$answerOption->code, $newPosition] = $this->calculateNextCode($stringCodes);
 
@@ -810,8 +811,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $view = 'answerOptionRow.twig';
         $aData = array(
-            //'assessmentvisible' => $assessmentvisible == "false" ? false : true,
-            'assessmentvisible' => false,
+            'assessmentvisible' => Assessment::isAssessmentActive($surveyid),
             'assessment_value'  => '',
             'answerOption'      => $answerOption,
             'answerOptionl10n'  => $answerOption->answerl10ns[$language],
