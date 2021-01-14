@@ -53,8 +53,8 @@ class AssessmentController extends LSBaseController
      * @param int $surveyid the survey id
      *
      */
-    public function actionIndex($surveyid){
-
+    public function actionIndex($surveyid)
+    {
         $iSurveyID = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -93,7 +93,8 @@ class AssessmentController extends LSBaseController
      *
      * @param $surveyid
      */
-    public function actionActivate($surveyid){
+    public function actionActivate($surveyid)
+    {
 
         $iSurveyID = sanitize_int($surveyid);
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
@@ -103,7 +104,7 @@ class AssessmentController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oSurvey->assessments = "Y"; //activate assessment
 
-        if(!$oSurvey->save()){
+        if (!$oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Assessment could not be activated."), 'error');
         }
 
@@ -117,13 +118,14 @@ class AssessmentController extends LSBaseController
      * @param int $surveyid
      *
      */
-    public function actionInsertUpdate($surveyid){
+    public function actionInsertUpdate($surveyid)
+    {
         //the post param 'action' could have the values 'assessmentupdate' or 'assessmentadd'
         $actionInserUpdate = App()->request->getPost('action', 'assessmentadd');
-        if($actionInserUpdate === 'assessmentadd'){
+        if ($actionInserUpdate === 'assessmentadd') {
             $this->add($surveyid);
         }
-        if($actionInserUpdate === 'assessmentupdate'){
+        if ($actionInserUpdate === 'assessmentupdate') {
             $this->update($surveyid);
         }
 
@@ -155,7 +157,8 @@ class AssessmentController extends LSBaseController
      *
      * @param $surveyid
      */
-    private function add($surveyid){
+    private function add($surveyid)
+    {
         $iSurveyID = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'create')) {
@@ -190,7 +193,6 @@ class AssessmentController extends LSBaseController
     {
         $iSurveyID = sanitize_int($iSurveyID);
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update') && App()->request->getPost('id', null) != null) {
-
             $aid = App()->request->getPost('id', null);
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $languages = $oSurvey->additionalLanguages;
@@ -396,8 +398,8 @@ class AssessmentController extends LSBaseController
      *
      * @param Survey $oSurvey
      */
-    private function setLanguagesBeforeAction($oSurvey){
-
+    private function setLanguagesBeforeAction($oSurvey)
+    {
         $languages = $oSurvey->additionalLanguages;
         $surveyLanguage = $oSurvey->language;
 
