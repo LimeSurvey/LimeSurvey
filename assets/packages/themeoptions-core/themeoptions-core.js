@@ -333,6 +333,64 @@ var ThemeOptions = function () {
         });
     }
 
+    var removeVariationsFromField = function (fieldSelector) {
+        if ($(fieldSelector).val() === 'inherit') return;
+        try {
+            var currentValue = JSON.parse($(fieldSelector).val());
+        } catch (error) {
+            var currentValue = {};
+        }
+        var empty = true;
+        ['add','replace','remove'].forEach(function(action){
+            if (currentValue.hasOwnProperty(action)) {
+                currentValue[action] = currentValue[action].filter(function (item) {
+                    var itemToTest = action=='replace' ? item[1] : item;
+                    return !(/^css\/variations\/.*$/.test(itemToTest));
+                });
+                if (currentValue[action].length) empty = false;;
+            }
+        });
+        if (!empty) {
+            $(fieldSelector).val(JSON.stringify(currentValue));
+        } else {
+            $(fieldSelector).val(inheritPossible ? "inherit" : JSON.stringify({}));
+        }
+    }
+
+    var addVariationToField = function (file, fieldSelector, action) {
+        var defaultValue = {};
+        defaultValue[action] = [];
+
+        try {
+            var currentValue = JSON.parse($(fieldSelector).val());
+        } catch (error) {
+        }
+
+        if (!currentValue || currentValue==='inherit') var currentValue = defaultValue;
+        if (!currentValue.hasOwnProperty(action)) currentValue[action] = [];
+
+        if (action == 'replace') {
+            currentValue[action].push(["css/bootstrap.css", file]);
+        } else {
+            currentValue[action].push(file);
+        }
+        $(fieldSelector).val(JSON.stringify(currentValue));
+    }
+
+    var hotswapTheme = function () {
+        $('#simple_edit_options_cssframework').on('change', function (evt) {
+            var selectedTheme = $('#simple_edit_options_cssframework').val();
+            var selectedThemeMode = $('#simple_edit_options_cssframework').find("option[value='"+selectedTheme+"']").attr('data-mode') || 'add';
+
+            var filesField = selectedThemeMode == 'add' ? '#TemplateConfiguration_files_css' : '#TemplateConfiguration_cssframework_css';
+            removeVariationsFromField('#TemplateConfiguration_files_css');
+            removeVariationsFromField('#TemplateConfiguration_cssframework_css');
+            if (selectedTheme != 'inherit') {
+                addVariationToField(selectedTheme, filesField, selectedThemeMode);
+            }
+        });
+    }
+
     ///////////////
     // Event methods
     // -- These methods are triggered on events. Please see `bind´ method for more information
@@ -368,7 +426,8 @@ var ThemeOptions = function () {
         hotswapGeneralInherit();
         hotswapColorPicker();
         hotswapFontField();
-        hotswapFruityTheme();
+        //hotswapFruityTheme();
+        hotswapTheme();
     };
 
     var run = function () {
