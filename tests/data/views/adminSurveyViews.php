@@ -19,7 +19,7 @@ return [
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
     ['surveyParticipantTokenOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/tokens/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
-    ['surveyAssessments', ['route'=>'assessments/sa/index/surveyid/{SID}']],
+    ['surveyAssessments', ['route'=>'assessment/index/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyNotificationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/notification/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyPublicationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/publication/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
