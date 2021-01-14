@@ -3469,8 +3469,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-
-        if($iOldDBVersion < 436){
+        if($iOldDBVersion < 437){
             $oTransaction = $oDB->beginTransaction();
             //refactore controller assessment (surveymenu_entry link changes to new controller rout)
             $oDB->createCommand()->update(
@@ -3480,7 +3479,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 "name='assessments'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 436), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 437), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
