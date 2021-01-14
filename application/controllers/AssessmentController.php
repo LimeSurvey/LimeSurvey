@@ -127,8 +127,8 @@ class AssessmentController extends LSBaseController
             $this->update($surveyid);
         }
 
-        //this should not happen, unkwon action
-        Yii::app()->setFlashMessage(gT("Unkwon action for asessment."), 'error');
+        //this should not happen, unknown action
+        Yii::app()->setFlashMessage(gT("Unknown action for asessment."), 'error');
         $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
     }
 
