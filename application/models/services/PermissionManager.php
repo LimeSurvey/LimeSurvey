@@ -46,7 +46,7 @@ class PermissionManager
 
     /**
      * get the permission data
-     * @param integer $userId for this user id
+     * @param int|null $userId for this user id
      * @return array[]
      */
     public function getPermissionData($userId = null)
@@ -98,8 +98,9 @@ class PermissionManager
 
     /**
      * @todo : Save Permission by POST value according to current user permssion
+     *
      * @see Permission::setPermissions
-     * @param mixed $iUserID
+     * @param int $userId
      * @return boolean
      */
     public function setPermissions($userId)
@@ -165,26 +166,32 @@ class PermissionManager
                 App()->setFlashMessage(CHtml::errorSummary($oCurrentPermission), 'warning');
             }
         }
-        Permission::setMinimalEntityPermission($userId, $this->model->getPrimaryKey(), get_class($this->model));
+        Permission::setMinimalEntityPermission((int) $userId, $this->model->getPrimaryKey(), get_class($this->model));
         return $success;
     }
 
     /**
      * get the current permission
      * To be mocked for test
+     *
+     * @param string $sPermission
+     * @param string $crud
+     * @param int $userId
      * @return boolean
      */
     public function getCurrentPermission($sPermission, $crud, $userId)
     {
-        if (empty($this->model)) {
-            return false;
-        }
         return $this->model->hasPermission($sPermission, $crud, $userId);
     }
 
     /**
      * Set a new DB permission
      * To be mocked for test
+     *
+     * @param string $entityName
+     * @param int $entityId
+     * @param int $userId
+     * @param string $sPermission
      * @return \Permission
      */
     public function setDbPermission($entityName, $entityId, $userId, $sPermission)
@@ -200,7 +207,12 @@ class PermissionManager
     /**
      * Get DB permission
      * To be mocked for test
-     * @return \Permission
+     *
+     * @param string $entityName
+     * @param int $entityId
+     * @param string|int $userId
+     * @param string $sPermission
+     * @return \Permission|null
      */
     public function getDbPermission($entityName, $entityId, $userId, $sPermission)
     {
