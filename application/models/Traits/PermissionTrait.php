@@ -41,10 +41,10 @@ trait PermissionTrait
      */
     public function hasPermission(/** @scrutinizer ignore-unused */ $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        if(empty($iUserID)) {
+        if (empty($iUserID)) {
             $iUserID = \Permission::model()->getUserId();
         }
-        if(\Permission::model()->hasGlobalPermission('superadmin', $sCRUD, $iUserID)) {
+        if (\Permission::model()->hasGlobalPermission('superadmin', $sCRUD, $iUserID)) {
             return true;
         }
         /* No default global : adding it ? */
