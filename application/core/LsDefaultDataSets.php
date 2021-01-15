@@ -1725,13 +1725,13 @@ class LsDefaultDataSets
          * @param int $active
          * @return array
          */
-        $addRow = function ($name, $active = 0) {
+        $addRow = function ($name, $active = 0, $version = '1.0.0') {
             return [
                 'id' => null,
                 'name'               => $name,
                 'plugin_type'        => 'core',
                 'active'             => $active,
-                'version'            => '1.0.0',
+                'version'            => $version,
                 'load_error'         => 0,
                 'load_error_message' => null
             ];
@@ -1752,7 +1752,7 @@ class LsDefaultDataSets
             $addRow('expressionQuestionHelp'),
             $addRow('expressionQuestionForAll'),
             $addRow('expressionFixedDbVar'),
-            $addRow('customToken'),
+            $addRow('customToken', 0, '1.0.1'),
             $addRow('mailSenderToFrom'),
         ];
     }
