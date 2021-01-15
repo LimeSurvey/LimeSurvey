@@ -1,6 +1,5 @@
 <?php
 
-/* Temporary disable each test : need a way to return findByPk or hasPermission (but hasPermission is the function tested …) ? */
 namespace ls\tests;
 
 use Permission;
