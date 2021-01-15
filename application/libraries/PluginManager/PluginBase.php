@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\PluginManager;
 
+use Permission;
+
 /**
  * Base class for plugins.
  */
