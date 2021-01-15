@@ -15,6 +15,7 @@ use Permission;
 use PermissionInterface;
 use App;
 use CHtml;
+use LimeSurvey\PluginManager\PluginEvent;
 
 /**
  * Service class for managing permission
@@ -134,7 +135,7 @@ class PermissionManager
         /* remove uneeded Permission (user don't have any rights) */
         $aSetPermissions = array_filter($aSetPermissions);
         // Event
-        $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
+        $oEvent = $this->getNewEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions', $aSetPermissions);
         if (get_class($this->model) == 'Survey') {
             $oEvent->set('iSurveyID', $this->model->getPrimaryKey());
@@ -168,7 +169,7 @@ class PermissionManager
                 $this->app->setFlashMessage(CHtml::errorSummary($oCurrentPermission), 'warning');
             }
         }
-        Permission::setMinimalEntityPermission((int) $userId, $this->model->getPrimaryKey(), get_class($this->model));
+        $this->setMinimalEntityPermission($userId);
         return $success;
     }
 
@@ -198,7 +199,7 @@ class PermissionManager
      */
     public function setDbPermission($entityName, $entityId, $userId, $sPermission)
     {
-        $oPermission = new Permission();
+        $oPermission = $this->getNewPermission();
         $oPermission->entity = $entityName;
         $oPermission->entity_id = $entityId;
         $oPermission->uid = $userId;
@@ -228,5 +229,32 @@ class PermissionManager
             )
         );
         return $oPermission;
+    }
+
+    /**
+     * @param string $eventName
+     * @return PluginEvent
+     */
+    public function getNewEvent($eventName)
+    {
+        return PluginEvent($eventName);
+    }
+
+    /**
+     * @param int $userId
+     * @return void
+     */
+    public function setMinimalEntityPermission($userId)
+    {
+        // TODO: Static methods cannot be mocked.
+        Permission::setMinimalEntityPermission((int) $userId, $this->model->getPrimaryKey(), get_class($this->model));
+    }
+
+    /**
+     * @return Permission
+     */
+    public function getNewPermission()
+    {
+        return new Permission();
     }
 }
