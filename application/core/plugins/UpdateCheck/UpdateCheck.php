@@ -69,7 +69,7 @@ class UpdateCheck extends PluginBase
     public function beforeControllerAction()
     {
         $controller = $this->getEvent()->get('controller');
-        $doUpdateCheckFlag = true; //Yii::app()->session['do_extensions_update_check'];
+        $doUpdateCheckFlag = Yii::app()->session['do_extensions_update_check'];
 
         if ($controller == 'admin' && $doUpdateCheckFlag) {
 
