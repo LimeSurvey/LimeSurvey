@@ -70,6 +70,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             self::$webDriver->get($url);
 
             $this->ignorePasswordWarning();
+            $this->ignorePasswordWarning();
 
             // Edit group name in main language (English)
             $groupNameEnglish = self::$webDriver->wait(10)->until(WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::id('group_name_en')));
@@ -139,6 +140,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $url = $urlMan->createUrl('questionGroupsAdministration/edit', array('surveyid'=>self::$testSurvey->sid, 'gid'=>$gid));
             self::$webDriver->get($url);
 
+            $this->ignorePasswordWarning();
             $this->ignorePasswordWarning();
 
             // Edit group name in main language (English)
