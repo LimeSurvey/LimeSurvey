@@ -3243,6 +3243,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'load_error'         => 0,
                 'load_error_message' => null
             ]);            
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Re-add question organizer menu entry
+         */
+        if($iOldDBVersion < 431) {
+            $oTransaction = $oDB->beginTransaction();
+
             $oDB->createCommand()->update(
                 '{{boxes}}',
                 array(
@@ -3356,15 +3366,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "name='plugins'"
             );
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
 
-        /**
-         * Re-add question organizer menu entry
-         */
-        if($iOldDBVersion < 431) {
-            $oTransaction = $oDB->beginTransaction();
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
                 if ($aSurveymenuentry['name']=='reorder') {
