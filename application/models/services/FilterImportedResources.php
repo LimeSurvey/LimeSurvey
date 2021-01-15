@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Models\Services;
 
 class FilterImportedResources
@@ -36,12 +35,12 @@ class FilterImportedResources
         }
         while ($direntry = readdir($dh)) {
             if ($direntry != "." && $direntry != "..") {
-                if (is_file($extractdir."/".$direntry)) {
+                if (is_file($extractdir . "/" . $direntry)) {
                     // is  a file
                     $extfile = (string) substr(strrchr($direntry, '.'), 1);
-                    if (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',', ','.$extfile.',') === false)) {
+                    if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)) {
                         // Extension allowed
-                        if (!copy($extractdir."/".$direntry, $destdir."/".$direntry)) {
+                        if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry)) {
                             $aErrorFilesInfo[] = array(
                                 "filename" => $direntry,
                                 "status" => gT("Copy failed")
@@ -59,12 +58,11 @@ class FilterImportedResources
                             "status" => gT("Forbidden Extension")
                         );
                     }
-                    unlink($extractdir."/".$direntry);
+                    unlink($extractdir . "/" . $direntry);
                 }
             }
         }
 
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
-
 }

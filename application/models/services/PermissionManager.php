@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Management of Permission
  * @version 0.1.0
@@ -12,7 +13,6 @@ use LSHttpRequest;
 use LSWebUser;
 use Permission;
 use PermissionInterface;
-
 use App;
 use CHtml;
 
@@ -47,20 +47,20 @@ class PermissionManager
     /**
      * get the permission data
      * @param integer $userId for this user id
-     * @return array[] 
+     * @return array[]
      */
     public function getPermissionData($userId = null)
     {
         $aObjectPermissions = $this->model::getPermissionData(); // Usage of static, db not needed
-        if(empty($aObjectPermissions)) {
+        if (empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
         /* string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach (array_keys($aObjectPermissions) as $sPermission) {
             $aObjectPermissions[$sPermission]['current'] = array();
-            foreach($aCruds as $crud) {
-                if(!isset($aObjectPermissions[$sPermission][$crud])) {
+            foreach ($aCruds as $crud) {
+                if (!isset($aObjectPermissions[$sPermission][$crud])) {
                     /* Not set mean true (in Survey on 3.X) */
                     $aObjectPermissions[$sPermission][$crud] = true;
                 }
@@ -72,7 +72,7 @@ class PermissionManager
                 );
             }
             /* If user id is set : update the data with permission of this user */
-            if(!is_null($userId)) {
+            if (!is_null($userId)) {
                 $oCurrentPermission = $this->getDbPermission(
                     get_class($this->model),
                     $this->model->getPrimaryKey(),
@@ -85,7 +85,7 @@ class PermissionManager
                         /* The user have the permission set */
                         $aObjectPermissions[$sPermission]['current'][$crud]['checked'] = $havePermissionSet;
                         /* The user didn't have the permission set, but have permission by other way (inherited, plugin …) */
-                        if(!$havePermissionSet) {
+                        if (!$havePermissionSet) {
                             $aObjectPermissions[$sPermission]['current'][$crud]['indeterminate'] = $this->getCurrentPermission($sPermission, $crud, $userId);
                         }
                     }
@@ -123,7 +123,7 @@ class PermissionManager
             $aSetPermissions[$sPermission] = array();
             foreach ($aCruds as $crud) {
                 /* Only set value if current user have the permission to set */
-                if($this->getCurrentPermission($sPermission, $crud, $this->user->id)) {
+                if ($this->getCurrentPermission($sPermission, $crud, $this->user->id)) {
                     $aSetPermissions[$sPermission][$crud] = !empty($aPermission[$crud]) && !empty($entityPermissionsToSet[$sPermission][$crud]);
                 }
             }
@@ -133,7 +133,7 @@ class PermissionManager
         // Event
         $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions', $aSetPermissions);
-        if(get_class($this->model) == 'Survey') {
+        if (get_class($this->model) == 'Survey') {
             $oEvent->set('iSurveyID', $this->model->getPrimaryKey());
         }
         $oEvent->set('entity', get_class($this->model)); /* New in 4.4.X */
@@ -141,7 +141,7 @@ class PermissionManager
         $oEvent->set('iUserID', $userId);
         App()->getPluginManager()->dispatchEvent($oEvent);
 
-        foreach($aSetPermissions as $sPermission => $aSetPermission) {
+        foreach ($aSetPermissions as $sPermission => $aSetPermission) {
             $oCurrentPermission = $this->getDbPermission(
                 get_class($this->model),
                 $this->model->getPrimaryKey(),
@@ -157,12 +157,12 @@ class PermissionManager
                 );
             }
             /* Set only the permission set in $aSetPermission : user have the rights */
-            foreach($aSetPermission as $crud => $permission) {
-                $oCurrentPermission->setAttribute("{$crud}_p",intval($permission));
+            foreach ($aSetPermission as $crud => $permission) {
+                $oCurrentPermission->setAttribute("{$crud}_p", intval($permission));
             }
-            if(!$oCurrentPermission->save()) {
+            if (!$oCurrentPermission->save()) {
                 $success = false;
-                App()->setFlashMessage(CHtml::errorSummary($oCurrentPermission),'warning');
+                App()->setFlashMessage(CHtml::errorSummary($oCurrentPermission), 'warning');
             }
         }
         Permission::setMinimalEntityPermission($userId, $this->model->getPrimaryKey(), get_class($this->model));
@@ -176,7 +176,7 @@ class PermissionManager
      */
     public function getCurrentPermission($sPermission, $crud, $userId)
     {
-        if(empty($this->model)) {
+        if (empty($this->model)) {
             return false;
         }
         return $this->model->hasPermission($sPermission, $crud, $userId);
@@ -189,7 +189,7 @@ class PermissionManager
      */
     public function setDbPermission($entityName, $entityId, $userId, $sPermission)
     {
-        $oPermission = new Permission;
+        $oPermission = new Permission();
         $oPermission->entity = $entityName;
         $oPermission->entity_id = $entityId;
         $oPermission->uid = $userId;
@@ -215,5 +215,4 @@ class PermissionManager
         );
         return $oPermission;
     }
-
 }
