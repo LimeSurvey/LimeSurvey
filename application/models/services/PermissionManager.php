@@ -47,7 +47,7 @@ class PermissionManager
     /**
      * get the permission data
      * @param int|null $userId for this user id
-     * @return array[]
+     * @return array
      */
     public function getPermissionData($userId = null)
     {
@@ -55,7 +55,7 @@ class PermissionManager
         if (empty($aObjectPermissions)) {
             return $aObjectPermissions;
         }
-        /* string[] Crud type array */
+        /** @var string[] Crud type array */
         $aCruds = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach (array_keys($aObjectPermissions) as $sPermission) {
             $aObjectPermissions[$sPermission]['current'] = array();
@@ -118,7 +118,7 @@ class PermissionManager
         $entityPermissionsToSet = $permissionsToSet[get_class($this->model)];
         $aBasePermissions = $this->getPermissionData();
 
-        /* string[] The array to set (or not) */
+        /** @var array<string, array<string, string>> The array to set (or not) */
         $aSetPermissions = array();
         foreach ($aBasePermissions as $sPermission => $aPermission) {
             $aSetPermissions[$sPermission] = array();

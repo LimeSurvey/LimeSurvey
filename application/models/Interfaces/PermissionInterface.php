@@ -3,6 +3,9 @@
 interface PermissionInterface
 {
     public function getOwnerId();
+    /**
+     * @return array
+     */
     public static function getPermissionData();
     public static function getMinimalPermissionRead();
     /**
