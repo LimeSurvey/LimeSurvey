@@ -699,16 +699,20 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function getButtons()
     {
-        
-        $gsid = App()->request->getQuery('id', null);
+        /* What ? We can get but $this->getAttribute ??? */
+        $gsid = App()->request->getQuery('id', null); // $this->gsid;
         // don't show any buttons if user doesn't have update permission
         if(!Permission::model()->hasGlobalPermission('templates', 'update')) {
             /* Global settings */
             if (empty($gsid) || App()->getController()->action->id != "surveysgroups") {
                 return '';
             }
-            /* SureysGroups settings */
-            if (!Permission::model()->hasSurveysInGroupPermission($gsid, 'surveys', 'update')) {
+            /* SurveysGroups settings */
+            $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
+            if(empty($oSurveysGroups)) {
+                return '';
+            }
+            if (!$oSurveysGroups->hasPermission('surveys', 'update')) {
                 return '';
             }
         }

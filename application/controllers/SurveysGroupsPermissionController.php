@@ -1,8 +1,7 @@
 <?php
-
 /*
  * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2020 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -11,8 +10,10 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * Surveys Groups Controller
+ * Surveys Groups Permission Controller
  */
+
+use LimeSurvey\Models\Services\PermissionManager;
 
 class SurveysGroupsPermissionController extends LSBaseController
 {
@@ -92,7 +93,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 foreach ($aSurveysGroupsPermissions as $sPermission => $aPermissions) {
                     $aCurrentsUserRights[$oUser->uid][$sPermission] = array();
                     foreach (array_intersect_key($aPermissions, array_flip($aCruds)) as $sCrud => $available) {
-                        if ($available && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $oUser->uid)) {
+                        if ($available && $model->hasPermission($sPermission, $sCrud, $oUser->uid)) {
                             $aCurrentsUserRights[$oUser->uid][$sPermission][] = $sCrud;
                         }
                     }
@@ -100,7 +101,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 foreach ($aSurveysInGroupPermissions as $sPermission => $aPermissions) {
                     $aCurrentsUserRights[$oUser->uid][$sPermission] = array();
                     foreach (array_intersect_key($aPermissions, array_flip($aCruds)) as $sCrud => $available) {
-                        if ($available && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $oUser->uid)) {
+                        if ($available && $model->hasPermission($sPermission, $sCrud, $oUser->uid)) {
                             $aCurrentsUserRights[$oUser->uid][$sPermission][] = $sCrud;
                         }
                     }
@@ -110,7 +111,8 @@ class SurveysGroupsPermissionController extends LSBaseController
 
         $oAddUserList  = array();
         $oAddGroupList  = array();
-        if (Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+
+        if ($model->hasPermission('permission', 'create')) {
             /* Search user withouth rights on SurveyGroup */
             /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
             $oCriteria = new CDbCriteria();
@@ -157,7 +159,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionAddUser($id)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+        if (!$model->hasPermission('permission', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $uid = App()->getRequest()->getPost('uid');
@@ -209,7 +211,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionAddUserGroup($id)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'create')) {
+        if (!$model->hasPermission('permission', 'create')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $ugid = App()->getRequest()->getPost('ugid');
@@ -309,7 +311,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     {
         $model = $this->loadModel($id);
         $uid = null;
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'update')) {
+        if (!$model->hasPermission('permission', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $type = App()->getRequest()->getPost('type', 'user');
@@ -337,19 +339,28 @@ class SurveysGroupsPermissionController extends LSBaseController
             }
             $uids = array($uid);
         }
-        $set = App()->getRequest()->getPost('set');
-        foreach ($set as $entity => $aPermissionSet) {
+        $set = App()->getRequest()->getPost('set', array());
+        $user = App()->user;
+        $request = App()->request;
+        $success = true;
+        foreach ($set as $entityName => $aPermissionSet) {
+            /* Must get SurveysIngroup for SurveysIngroup entity */
+            $entity = $entityName::model()->findByPk($id);
+            $PermissionManagerService = new PermissionManager(
+                $request,
+                $user,
+                $entity
+            );
             foreach ($uids as $uid) {
                 /* Permission::model()->setPermissions return true or break */
-                Permission::model()->setPermissions(
-                    $uid,
-                    $id,
-                    $entity,
-                    $aPermissionSet
-                );
+                $success = $success && $PermissionManagerService->setPermissions($uid);
             }
         }
-        App()->setFlashMessage("Surveys groups permissions were successfully updated");
+        if($success) {
+            App()->setFlashMessage("Surveys groups permissions were successfully updated");
+        } else {
+            App()->setFlashMessage("An error happen when update surveys groups permissions", 'danger');
+        }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));
         }
@@ -368,7 +379,7 @@ class SurveysGroupsPermissionController extends LSBaseController
     public function actionDeleteUser($id, $uid)
     {
         $model = $this->loadModel($id);
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'delete')) {
+        if (!$model->hasPermission('permission', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $oUser = User::model()->findByPk($uid);
@@ -426,124 +437,31 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oUserGroup = UserGroup::model()->findByPk($to);
             $oUser = null;
         }
-        $aSurveysGroupsPermissions = Permission::model()->getEntityBasePermissions('SurveysGroups');
-        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
-        foreach (array_keys($aSurveysGroupsPermissions) as $sPermission) {
-            $aSurveysGroupsPermissions[$sPermission]['current'] = array(
-                'create' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'create'),
-                    'indeterminate' => false
-                ),
-                'read' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'read'),
-                    'indeterminate' => false
-                ),
-                'update' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'update'),
-                    'indeterminate' => false
-                ),
-                'delete' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'delete'),
-                    'indeterminate' => false
-                ),
-                'import' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'import'),
-                    'indeterminate' => false
-                ),
-                'export' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'export'),
-                    'indeterminate' => false
-                ),
-            );
-            $aSurveysGroupsPermissions[$sPermission]['entity'] = 'SurveysGroups';
-            if ($type == 'user') {
-                $oCurrentPermissions = Permission::model()->find(
-                    "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
-                    array(
-                        ":entity" => 'SurveysGroups',
-                        ":entity_id" => $id,
-                        ":uid" => $userId,
-                        ":permission" => $sPermission
-                    )
-                );
-                foreach (array_keys($aSurveysGroupsPermissions[$sPermission]['current']) as $sCrud) {
-                    if ($aSurveysGroupsPermissions[$sPermission][$sCrud]) {
-                        $havePermissionSet = !empty($oCurrentPermissions) && $oCurrentPermissions->getAttribute("{$sCrud}_p");
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
-                        $aSurveysGroupsPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
-                    }
-                }
-            }
-        }
-        $aSurveysInGroupPermissions = Permission::model()->getEntityBasePermissions('SurveysInGroup');
-        /* Set the current : @todo move to Permission::model ? Or an helper ?*/
-        foreach (array_keys($aSurveysInGroupPermissions) as $sPermission) {
-            $aSurveysInGroupPermissions[$sPermission]['current'] = array(
-                'create' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'create'),
-                    'indeterminate' => false
-                ),
-                'read' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'read'),
-                    'indeterminate' => false
-                ),
-                'update' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'update'),
-                    'indeterminate' => false
-                ),
-                'delete' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'delete'),
-                    'indeterminate' => false
-                ),
-                'import' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveysInGroupPermission($id, $sPermission, 'import'),
-                    'indeterminate' => false
-                ),
-                'export' => array(
-                    'checked' => false,
-                    'disabled' => !Permission::model()->hasSurveyGroupPermission($id, $sPermission, 'export'),
-                    'indeterminate' => false
-                )
-            );
-            $aSurveysInGroupPermissions[$sPermission]['entity'] = 'SurveysInGroup';
-            if ($type == 'user') {
-                $oCurrentPermissions = Permission::model()->find(
-                    "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
-                    array(
-                        ":entity" => 'SurveysInGroup',
-                        ":entity_id" => $id,
-                        ":uid" => $userId,
-                        ":permission" => $sPermission
-                    )
-                );
-                foreach (array_keys($aSurveysInGroupPermissions[$sPermission]['current']) as $sCrud) {
-                    if ($aSurveysInGroupPermissions[$sPermission][$sCrud]) {
-                        $havePermissionSet = !empty($oCurrentPermissions) && $oCurrentPermissions->getAttribute("{$sCrud}_p");
-                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['checked'] = $havePermissionSet;
-                        $aSurveysInGroupPermissions[$sPermission]['current'][$sCrud]['indeterminate'] = !$havePermissionSet && Permission::model()->hasSurveyGroupPermission($id, $sPermission, $sCrud, $userId); // Set by global or owner
-                    }
-                }
-            }
-        }
+        $user = App()->user;
+        $request = App()->request;
+        $PermissionManagerService = new PermissionManager(
+            $request,
+            $user,
+            $model
+        );
+        $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData($userId);
+        $PermissionManagerService = new PermissionManager(
+            $request,
+            $user,
+            /** @scrutinizer ignore-type : we alreadty check SurveysGroup then we have it*/ SurveysInGroup::model()->findByPk($id)
+        );
+        $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData($userId);
         $aPermissions = array_merge(
             $aSurveysGroupsPermissions,
             $aSurveysInGroupPermissions
         );
-        $aData = array(
-            'model' => $model,
-            'subview' => 'setPermissionForm',
-            'buttons' => array(
+        $buttons = array(
+            'closebutton' => array(
+                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+            )
+        );
+        if($model->hasPermission('permission', 'update')) {
+            $buttons = array(
                 'savebutton' => array(
                     'form' => 'permissionsSave'
                 ),
@@ -552,8 +470,13 @@ class SurveysGroupsPermissionController extends LSBaseController
                 ),
                 'closebutton' => array(
                     'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-                ),
-            ),
+                )
+            );
+        }
+        $aData = array(
+            'model' => $model,
+            'subview' => 'setPermissionForm',
+            'buttons' => $buttons
         );
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,
@@ -581,7 +504,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
-        if (!Permission::model()->hasSurveyGroupPermission($id, 'permission', 'read')) {
+        if (!$model->hasPermission('permission', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         return $model;

@@ -33,7 +33,7 @@ Yii::app()->getClientScript()->registerScript(
                 <global-sidemenu />
             </div>
             <div id="pjax-content" class="tab-content col-md-10">
-                <?php if(Permission::model()->hasSurveyGroupPermission($model->gsid, 'surveysettings', 'update')) : ?>
+                <?php if($model->hasPermission('surveysettings', 'update')) : ?>
                 <div class="row">
                     <div class="alert alert-info controls col-sm-12" role="alert">
                         <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This is the model class for table "{{surveys_groups}}".
  *
@@ -18,8 +17,9 @@
  * @property object $parentgroup
  * @property boolean $hasSurveys
  */
-class SurveysGroups extends LSActiveRecord
+class SurveysGroups extends LSActiveRecord implements PermissionInterface
 {
+    use PermissionTrait;
 
     /* @var boolean|integer alwaysavailable : set default, and set for old DB , usage of integer for DB compatibility */
     public $alwaysavailable = 0;
@@ -198,7 +198,7 @@ class SurveysGroups extends LSActiveRecord
      */
     public function getHasViewSurveyGroupRight()
     {
-        return Permission::model()->hasSurveyGroupPermission($this->gsid, 'group', 'read');
+        return $this->hasPermission('group', 'read');
     }
 
     /**
@@ -300,17 +300,17 @@ class SurveysGroups extends LSActiveRecord
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id"=>$this->gsid));
         $button = '';
-        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'group','read')) {
+        if($this->hasPermission('group','read')) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
-        if(Permission::model()->hasSurveyGroupPermission($this->gsid,'surveysettings','read')) {
+        if($this->hasPermission('surveysettings','read')) {
             $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
         }
-        if (Permission::model()->hasSurveyGroupPermission($this->gsid,'permission','read')) {
+        if ($this->hasPermission('permission','read')) {
             $button .= '<a class="btn btn-default" href="'.$sPermissionUrl.'" role="button" data-toggle="tooltip" title="'.gT('Permission').'"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">'.gT('Permission').'</span></a>';
         }
-        /* Can not delete group #1 + with survey */
-        if ($this->gsid!=1 && !$this->hasSurveys && Permission::model()->hasSurveyGroupPermission($this->gsid,'group','delete')) {
+        /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
+        if ($this->gsid!=1 && !$this->hasSurveys && $this->hasPermission('group','delete')) {
             $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
@@ -418,11 +418,10 @@ class SurveysGroups extends LSActiveRecord
     }
 
     /**
-     * Get Permission data for Permission object
-     * @param string $key
+     * Get Permission data for SurveysGroup
      * @return array
      */
-    public static function getPermissionData($key = null)
+    public static function getPermissionData()
     {
         $aPermission = array(
             'group' => array(
@@ -448,7 +447,7 @@ class SurveysGroups extends LSActiveRecord
                 'img' => ' fa fa-edit',
             ),
             'permission' => array(
-                'create' => false, /* since need update to set permission */
+                'create' => true, /* allowed to add new users or group */
                 'read' => true,
                 'update' => true,
                 'delete' => true, /* update ? */
@@ -459,12 +458,6 @@ class SurveysGroups extends LSActiveRecord
                 'img' => ' fa fa-shield',
             ),
         );
-        if ($key) {
-            if(isset($aPermission[$key])) {
-                return $aPermission[$key];
-            }
-            return null;
-        }
         return $aPermission;
     }
 
@@ -485,4 +478,22 @@ class SurveysGroups extends LSActiveRecord
     {
         return $this->owner_id;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* If have global : return true */
+        if (Permission::model()->hasPermission(0, 'global', 'surveysgroups', $sCRUD, $iUserID)) {
+            return true;
+        }
+        /* Specific need gsid */
+        if(!$this->gsid) {
+            return false;
+        }
+        /* Finally : return specific one */
+        return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
+    }
+
 }

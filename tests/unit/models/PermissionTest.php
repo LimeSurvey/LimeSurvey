@@ -1,5 +1,6 @@
 <?php
 
+/* Temporary disable each test : need a way to return findByPk or hasPermission (but hasPermission is the function tested …) ? */
 namespace ls\tests;
 
 use Permission;
@@ -19,22 +20,29 @@ class PermissionTest extends TestCase
      */
     public function testSuperAdmin()
     {
+        $userId = 1;
+        $surveysGroupGid = 999;
+
         $surveysGroup = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
             ->getMock();
         $surveysGroup->method('save')->willReturn(true);
-        $surveysGroup->method('attributes')->willReturn([]);
+        $surveysGroup->method('attributes')->willReturn([
+            'gsid',
+            'owner_id'
+        ]);
+        $surveysGroup->gsid = $surveysGroupGid;
+        $surveysGroup->owner_id = $userId + 1;
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup'])
+            ->setMethods(['getUserId', 'getEntity'])
             ->getMock();
-        $perm->method('getUserId')->willReturn(1);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
+        $perm->method('getUserId')->willReturn($userId);
+        $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $surveysGroupsId = 999;
-        $this->assertTrue($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertTrue($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
     }
 
     /**
@@ -44,26 +52,28 @@ class PermissionTest extends TestCase
     {
         // NB: Not 1 (superadmin).
         $userId = 2;
+        $surveysGroupGid = 999;
+
         $surveysGroup = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
             ->getMock();
         $surveysGroup->method('save')->willReturn(true);
         $surveysGroup->method('attributes')->willReturn([
+            'gsid',
             'owner_id'
         ]);
+        $surveysGroup->gsid = $surveysGroupGid;
         $surveysGroup->owner_id = $userId;
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup', 'getEntity'])
+            ->setMethods(['getUserId', 'getEntity'])
             ->getMock();
         $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $surveysGroupsId = 999;
-        $this->assertTrue($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertTrue($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
     }
 
     /**
@@ -73,25 +83,27 @@ class PermissionTest extends TestCase
     {
         // NB: Not 1 (superadmin).
         $userId = 2;
+        $surveysGroupGid = 999;
+
         $surveysGroup = $this
             ->getMockBuilder(SurveysGroups::class)
             ->setMethods(['save', 'attributes'])
             ->getMock();
         $surveysGroup->method('save')->willReturn(true);
         $surveysGroup->method('attributes')->willReturn([
+            'gsid',
             'owner_id'
         ]);
+        $surveysGroup->gsid = $surveysGroupGid;
         $surveysGroup->owner_id = $userId + 1;
 
         $perm = $this
             ->getMockBuilder(Permission::class)
-            ->setMethods(['getUserId', 'getSurveysGroup', 'getEntity'])
+            ->setMethods(['getUserId', 'getEntity'])
             ->getMock();
         $perm->method('getUserId')->willReturn($userId);
-        $perm->method('getSurveysGroup')->willReturn($surveysGroup);
         $perm->method('getEntity')->willReturn($surveysGroup);
 
-        $surveysGroupsId = 999;
-        $this->assertFalse($perm->hasSurveyGroupPermission($surveysGroupsId, 'permission', 'create'));
+        $this->assertFalse($perm->hasPermission($surveysGroupGid, 'SurveysGroups', 'permission', 'create'));
     }
 }

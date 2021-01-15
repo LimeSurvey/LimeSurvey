@@ -5,8 +5,9 @@
  * Used for Permission on survey inside group : 
  *
  */
-class SurveysInGroup extends SurveysGroups
+class SurveysInGroup extends SurveysGroups implements PermissionInterface
 {
+    use PermissionTrait;
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -25,7 +26,7 @@ class SurveysInGroup extends SurveysGroups
      * @param string $key
      * @return array
      */
-    public static function getPermissionData($key = null)
+    public static function getPermissionData()
     {
         $aPermission = array(
             'surveys' => array(
@@ -40,12 +41,6 @@ class SurveysInGroup extends SurveysGroups
                 'img' => ' fa fa-edit',
             ),
         );
-        if ($key) {
-            if(isset($aPermission[$key])) {
-                return $aPermission[$key];
-            }
-            return null;
-        }
         return $aPermission;
     }
 
@@ -70,4 +65,30 @@ class SurveysInGroup extends SurveysGroups
     {
         return null;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasPermission($sPermission, $sCRUD = 'read', $iUserID = null)
+    {
+        /* If have global for surveys : return true */
+        $sGlobalCRUD = $sCRUD;
+        if (($sCRUD == 'create' || $sCRUD == 'import')) { // Create and import (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if (($sCRUD == 'delete' && $sPermission != 'survey')) { // Delete (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        /* Have surveys permission */
+        if (Permission::model()->hasPermission(0, 'global', 'surveys', $sGlobalCRUD, $iUserID)) {
+            return true;
+        }
+        /* Specific need gsid */
+        if(!$this->gsid) {
+            return false;
+        }
+        /* Finally : return specific one */
+        return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
+    }
+
 }
