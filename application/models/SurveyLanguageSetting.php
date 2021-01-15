@@ -135,6 +135,8 @@ class SurveyLanguageSetting extends LSActiveRecord
 
             array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+
+            array('attachments', 'attachmentsInfo'),
         );
     }
 
@@ -183,6 +185,30 @@ class SurveyLanguageSetting extends LSActiveRecord
         }
     }
 
+    /**
+     * Defines the customs validation rule attachmentsInfo
+     *
+     * @param mixed $attribute
+     */
+    public function attachmentsInfo($attribute)
+    {
+        if (empty($this->$attribute)) return;
+
+        $value = [];
+        $attachmentsByType = unserialize($this->$attribute);
+        if (is_array($attachmentsByType)) {
+            foreach ($attachmentsByType as $type => $attachments) {
+                if (is_array($attachments)) {
+                    foreach ($attachments as $key => $attachment) {
+                        if (isset($attachment['url']) && isset($attachment['size']) && isset($attachment['relevance'])) {
+                            $value[$type][$key] = $attachment;
+                        }
+                    }
+                }
+            }
+        }
+        return serialize($value);
+    }
 
     /**
      * Returns the token's captions

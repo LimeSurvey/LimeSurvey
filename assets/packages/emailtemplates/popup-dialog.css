@@ -1,0 +1,13 @@
+iframe#dialog{
+    border: 0 none;
+    display: block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.filename {
+    text-decoration: underline;
+    cursor:pointer;
+}
