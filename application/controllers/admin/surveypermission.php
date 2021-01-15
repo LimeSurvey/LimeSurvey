@@ -466,7 +466,8 @@ class surveypermission extends Survey_Common_Action
         $PermissionManagerService = new PermissionManager(
             App()->request,
             App()->user,
-            $oSurvey
+            $oSurvey,
+            App()
         );
         $aPermissions = $PermissionManagerService->getPermissionData($postuserid);
         $usersummary .= App()->getController()->widget(
@@ -615,7 +616,8 @@ class surveypermission extends Survey_Common_Action
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
-            $oSurvey
+            $oSurvey,
+            App()
         );
         foreach ($uids as $uid) {
             $success = $success && $PermissionManagerService->setPermissions($uid);

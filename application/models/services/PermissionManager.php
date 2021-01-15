@@ -37,11 +37,13 @@ class PermissionManager
     public function __construct(
         LSHttpRequest $request,
         LSWebUser $user,
-        PermissionInterface $model
+        PermissionInterface $model,
+        LSYii_Application $app
     ) {
         $this->request = $request;
         $this->user = $user;
         $this->model = $model;
+        $this->app = $app;
     }
 
     /**
@@ -140,7 +142,7 @@ class PermissionManager
         $oEvent->set('entity', get_class($this->model)); /* New in 4.4.X */
         $oEvent->set('entityId', $this->model->getPrimaryKey()); /* New in 4.4.X */
         $oEvent->set('iUserID', $userId);
-        App()->getPluginManager()->dispatchEvent($oEvent);
+        $this->app->getPluginManager()->dispatchEvent($oEvent);
 
         foreach ($aSetPermissions as $sPermission => $aSetPermission) {
             $oCurrentPermission = $this->getDbPermission(
@@ -163,7 +165,7 @@ class PermissionManager
             }
             if (!$oCurrentPermission->save()) {
                 $success = false;
-                App()->setFlashMessage(CHtml::errorSummary($oCurrentPermission), 'warning');
+                $this->app->setFlashMessage(CHtml::errorSummary($oCurrentPermission), 'warning');
             }
         }
         Permission::setMinimalEntityPermission((int) $userId, $this->model->getPrimaryKey(), get_class($this->model));

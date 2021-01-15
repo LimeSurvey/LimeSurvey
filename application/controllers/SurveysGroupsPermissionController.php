@@ -349,7 +349,8 @@ class SurveysGroupsPermissionController extends LSBaseController
             $PermissionManagerService = new PermissionManager(
                 $request,
                 $user,
-                $entity
+                $entity,
+                App()
             );
             foreach ($uids as $uid) {
                 /* Permission::model()->setPermissions return true or break */
@@ -442,13 +443,15 @@ class SurveysGroupsPermissionController extends LSBaseController
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
-            $model
+            $model,
+            App()
         );
         $aSurveysGroupsPermissions = $PermissionManagerService->getPermissionData($userId);
         $PermissionManagerService = new PermissionManager(
             $request,
             $user,
-            /** @scrutinizer ignore-type : we alreadty check SurveysGroup then we have it*/ SurveysInGroup::model()->findByPk($id)
+            /** @scrutinizer ignore-type : we alreadty check SurveysGroup then we have it*/ SurveysInGroup::model()->findByPk($id),
+            App()
         );
         $aSurveysInGroupPermissions = $PermissionManagerService->getPermissionData($userId);
         $aPermissions = array_merge(
