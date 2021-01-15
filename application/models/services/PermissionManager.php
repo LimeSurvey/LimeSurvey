@@ -11,6 +11,7 @@ namespace LimeSurvey\Models\Services;
 
 use LSHttpRequest;
 use LSWebUser;
+use LSYii_Application;
 use Permission;
 use PermissionInterface;
 use App;
@@ -30,6 +31,9 @@ class PermissionManager
 
     /** @var PermissionInterface model where permission is checked*/
     private $model;
+
+    /** @var LSYii_Application */
+    private $app;
 
     /**
      * @param LSHttpRequest $request
@@ -237,7 +241,7 @@ class PermissionManager
      */
     public function getNewEvent($eventName)
     {
-        return PluginEvent($eventName);
+        return new PluginEvent($eventName);
     }
 
     /**
