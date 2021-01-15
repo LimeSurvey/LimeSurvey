@@ -3,13 +3,15 @@ class ExportR extends \LimeSurvey\PluginManager\PluginBase
 {
     
     protected $storage = 'DbStorage';
-       
+
     static protected $description = 'Core: R-export';
     static protected $name = 'Export results to R';
-    
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     public function init()
     {
-        
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */

@@ -3,9 +3,9 @@
  * expressionQuestionHelp : add QCODE.help for expression Manager
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019 LimeSurvey - Denis Chenu
  * @license GPL version 3
- * @version 1.0.0
+ * @version 1.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,9 @@ class expressionQuestionHelp extends PluginBase
     static protected $description = 'Add .help to properties of questions.';
     static protected $name = 'expressionQuestionHelp';
 
-    
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     public function init()
     {
         $this->subscribe('setVariableExpressionEnd','addQuestionHelp');

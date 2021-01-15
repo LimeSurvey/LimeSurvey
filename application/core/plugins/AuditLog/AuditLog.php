@@ -5,6 +5,9 @@
         static protected $description = 'Core: Create an audit log of changes';
         static protected $name = 'auditlog';
 
+        /** @inheritdoc, this plugin didn't have any public method */
+        public $allowedPublicMethods = array();
+
         protected $settings = array(
             'AuditLog_Log_UserSave' => array(
                 'type' => 'checkbox',

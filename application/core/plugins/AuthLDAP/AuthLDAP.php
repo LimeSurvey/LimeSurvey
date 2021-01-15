@@ -6,6 +6,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     static protected $description = 'Core: LDAP authentication';
     static protected $name = 'LDAP';
 
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     /**
      * Can we autocreate users? For the moment this is disabled, will be moved
      * to a setting when we have more robust user creation system.

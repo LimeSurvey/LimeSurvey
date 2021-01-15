@@ -30,6 +30,9 @@ class UpdateCheck extends PluginBase
      */
     protected $storage = 'DbStorage';
 
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array('checkAll');
+
     /**
      * @return void
      */
@@ -66,7 +69,7 @@ class UpdateCheck extends PluginBase
     public function beforeControllerAction()
     {
         $controller = $this->getEvent()->get('controller');
-        $doUpdateCheckFlag = Yii::app()->session['do_extensions_update_check'];
+        $doUpdateCheckFlag = true; //Yii::app()->session['do_extensions_update_check'];
 
         if ($controller == 'admin' && $doUpdateCheckFlag) {
 

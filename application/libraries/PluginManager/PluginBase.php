@@ -43,7 +43,8 @@ abstract class PluginBase implements iPlugin
     private $store = null;
 
     /**
-     * @var array
+     * Global settings of plugin
+     * @var array[]
      */
     protected $settings = [];
 
@@ -59,6 +60,12 @@ abstract class PluginBase implements iPlugin
      * @var \SimpleXMLElement|null
      */
     public $config = null;
+
+    /**
+     * List of allowed public method, null mean all metod are allowed. Else method must be in the list
+     * @var string[]|null
+     */
+    public $allowedPublicMethods = null;
 
     /**
      * Constructor for the plugin
@@ -161,7 +168,9 @@ abstract class PluginBase implements iPlugin
      */
     public function getPluginSettings($getValues = true)
     {
-
+        if(!Permission::model()->hasGlobalPermission('settings','read')) {
+            throw new CHttpException(403);
+        }
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
@@ -247,6 +256,9 @@ abstract class PluginBase implements iPlugin
      */
     public function saveSettings($settings)
     {
+        if(!Permission::model()->hasGlobalPermission('settings','update')) {
+            throw new CHttpException(403);
+        }
         foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
