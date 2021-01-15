@@ -43,7 +43,7 @@ echo '<div id="pjax-content" class="col-12">';
 echo LayoutHelper::renderTopbar($aData);
 
 echo '<div id="in_survey_common" '
-    . 'class="container-fluid ls-flex-column fill col-12"'
+    . 'class="container-fluid ls-flex-column col-12"'
     . '>';
 
 //Rendered through /admin/update/_update_notification
