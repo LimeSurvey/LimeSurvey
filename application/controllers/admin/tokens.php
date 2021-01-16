@@ -657,9 +657,8 @@ class tokens extends Survey_Common_Action
                 );
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
-
+            /* @var string : used to find if token already exist */
             $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
-
             $aData = array(
                 'firstname' => $request->getPost('firstname'),
                 'lastname' => $request->getPost('lastname'),
@@ -811,7 +810,9 @@ class tokens extends Survey_Common_Action
             $aTokenData['lastname'] = $request->getPost('lastname');
             $aTokenData['email'] = $request->getPost('email');
             $aTokenData['emailstatus'] = $request->getPost('emailstatus');
-            $aTokenData['token'] = $request->getPost('token');
+            /* @var string : used to find if token already exist */
+            $sSanitizedToken = Token::sanitizeToken($request->getPost('token'));
+            $aTokenData['token'] = $sSanitizedToken;
             $aTokenData['language'] = $request->getPost('language');
             $aTokenData['sent'] = $request->getPost('sent');
             $aTokenData['completed'] = $request->getPost('completed');
