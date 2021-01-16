@@ -546,7 +546,9 @@ class Survey extends LSActiveRecord
 
     /**
      * afterFindSurvey to fix and/or add some survey attribute
+     * - event afterFindSurvey (for all attributes)
      * - Fix template name to be sure template exist
+     * - setOptions for inherited value
      */
     public function afterFindSurvey()
     {
@@ -559,13 +561,11 @@ class Survey extends LSActiveRecord
                 $this->setAttribute($attribute,$event->get($attribute));
             }
         }
-
-        // set inherited values for existing survey
-        $this->setOptions($this->gsid);
-        
         if ($this->template != 'inherit'){
             $this->template = Template::templateNameFilter($this->template);
         }
+        /* this is fixed, setOptions for inherited after all */
+        $this->setOptions($this->gsid);
     }
 
 
