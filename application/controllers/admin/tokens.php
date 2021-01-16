@@ -526,17 +526,17 @@ class tokens extends Survey_Common_Action
         if ($sOperation == 'edit' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')) {
             echo $from.','.$until;
             $aData = array(
-                'firstname' => App()()->request->getPost('firstname'),
-                'lastname' => App()()->request->getPost('lastname'),
-                'email' => App()()->request->getPost('email'),
-                'emailstatus' => App()()->request->getPost('emailstatus'),
-                'token' => App()()->request->getPost('token'),
-                'language' => App()()->request->getPost('language'),
-                'sent' => App()()->request->getPost('sent'),
-                'remindersent' => App()()->request->getPost('remindersent'),
-                'remindercount' => App()()->request->getPost('remindercount'),
-                'completed' => App()()->request->getPost('completed'),
-                'usesleft' => App()()->request->getPost('usesleft'),
+                'firstname' => App()->request->getPost('firstname'),
+                'lastname' => App()->request->getPost('lastname'),
+                'email' => App()->request->getPost('email'),
+                'emailstatus' => App()->request->getPost('emailstatus'),
+                'token' => App()->request->getPost('token'),
+                'language' => App()->request->getPost('language'),
+                'sent' => App()->request->getPost('sent'),
+                'remindersent' => App()->request->getPost('remindersent'),
+                'remindercount' => App()->request->getPost('remindercount'),
+                'completed' => App()->request->getPost('completed'),
+                'usesleft' => App()->request->getPost('usesleft'),
                 'validfrom' => $from,
                 'validuntil' => $until
             );
@@ -564,17 +564,17 @@ class tokens extends Survey_Common_Action
         elseif ($sOperation == 'add' && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             if (App()->request->getPost('language') == '') {
                     $aData = array(
-                        'firstname' => App()()->request->getPost('firstname'),
-                        'lastname' => App()()->request->getPost('lastname'),
-                        'email' => App()()->request->getPost('email'),
-                        'emailstatus' => App()()->request->getPost('emailstatus'),
-                        'token' => App()()->request->getPost('token'),
-                        'language' => App()()->request->getPost('language'),
-                        'sent' => App()()->request->getPost('sent'),
-                        'remindersent' => App()()->request->getPost('remindersent'),
-                        'remindercount' => App()()->request->getPost('remindercount'),
-                        'completed' => App()()->request->getPost('completed'),
-                        'usesleft' => App()()->request->getPost('usesleft'),
+                        'firstname' => App()->request->getPost('firstname'),
+                        'lastname' => App()->request->getPost('lastname'),
+                        'email' => App()->request->getPost('email'),
+                        'emailstatus' => App()->request->getPost('emailstatus'),
+                        'token' => App()->request->getPost('token'),
+                        'language' => App()->request->getPost('language'),
+                        'sent' => App()->request->getPost('sent'),
+                        'remindersent' => App()->request->getPost('remindersent'),
+                        'remindercount' => App()->request->getPost('remindercount'),
+                        'completed' => App()->request->getPost('completed'),
+                        'usesleft' => App()->request->getPost('usesleft'),
                         'validfrom' => $from,
                         'validuntil' => $until
                     );
@@ -814,7 +814,8 @@ class tokens extends Survey_Common_Action
             $aTokenData['lastname'] = $request->getPost('lastname');
             $aTokenData['email'] = $request->getPost('email');
             $aTokenData['emailstatus'] = $request->getPost('emailstatus');
-            $aTokenData['token'] = $request->getPost('token');
+            $sSanitizedToken = Token::sanitizeToken($request->getPost('token'));
+            $aTokenData['token'] = $sSanitizedToken;
             $aTokenData['language'] = $request->getPost('language');
             $aTokenData['sent'] = $request->getPost('sent');
             $aTokenData['completed'] = $request->getPost('completed');
@@ -947,17 +948,17 @@ class tokens extends Survey_Common_Action
                 $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $aData['firstname'] = App()()->request->getPost('firstname');
-            $aData['lastname'] = App()()->request->getPost('lastname');
-            $aData['email'] = App()()->request->getPost('email');
+            $aData['firstname'] = App()->request->getPost('firstname');
+            $aData['lastname'] = App()->request->getPost('lastname');
+            $aData['email'] = App()->request->getPost('email');
             $aData['token'] = '';
-            $aData['language'] = sanitize_languagecode(App()()->request->getPost('language'));
+            $aData['language'] = sanitize_languagecode(App()->request->getPost('language'));
             $aData['sent'] = 'N';
             $aData['remindersent'] = 'N';
             $aData['completed'] = 'N';
-            $aData['usesleft'] = App()()->request->getPost('usesleft');
-            $aData['amount'] = App()()->request->getPost('amount');
-            $aData['tokenlength'] = App()()->request->getPost('tokenlen');
+            $aData['usesleft'] = App()->request->getPost('usesleft');
+            $aData['amount'] = App()->request->getPost('amount');
+            $aData['tokenlength'] = App()->request->getPost('tokenlen');
 
             // add attributes
             $cntAttributeErrors = 0;
