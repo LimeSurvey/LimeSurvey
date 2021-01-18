@@ -422,7 +422,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         'D'=>Array('name'=>'Date', 'size'=>20, 'SPSStype'=>'DATETIME23.2'),
         'G'=>Array('name'=>'Gender', 'size'=>1, 'SPSStype'=>'F'),
         'U'=>Array('name'=>'Huge Free Text', 'size'=>1, 'SPSStype'=>'A'),
-        'I'=>Array('name'=>'Language Switch', 'size'=>1, 'SPSStype'=>'A'),
+        'I'=>Array('name'=>'Language Switch', 'size'=>2, 'SPSStype'=>'A'),
         '!'=>Array('name'=>'List (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
         'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
         'Z'=>Array('name'=>'List (Flexible Labels) (Radio)', 'size'=>1, 'SPSStype'=>'F'),
