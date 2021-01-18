@@ -661,9 +661,8 @@ class tokens extends Survey_Common_Action
                 );
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
-             /* @var string : used to find if token already exist */
+            /** @var string : used to find if token already exist */
             $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
-
             $aData = array(
                 'firstname' => $request->getPost('firstname'),
                 'lastname' => $request->getPost('lastname'),
