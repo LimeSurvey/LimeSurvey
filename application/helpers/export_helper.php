@@ -434,7 +434,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_D_DATE=>Array('name'=>'Date', 'size'=>20, 'SPSStype'=>'DATETIME23.2'),
         Question::QT_G_GENDER_DROPDOWN=>Array('name'=>'Gender', 'size'=>1, 'SPSStype'=>'F'),
         Question::QT_U_HUGE_FREE_TEXT=>Array('name'=>'Huge Free Text', 'size'=>1, 'SPSStype'=>'A'),
-        Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch', 'size'=>1, 'SPSStype'=>'A'),
+        Question::QT_I_LANGUAGE=>Array('name'=>'Language Switch', 'size'=>2, 'SPSStype'=>'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN=>Array('name'=>'List (Dropdown)', 'size'=>1, 'SPSStype'=>'F'),
         Question::QT_Z_LIST_RADIO_FLEXIBLE=>Array('name'=>'List (Flexible Labels) (Radio)', 'size'=>1, 'SPSStype'=>'F'),
         Question::QT_L_LIST_DROPDOWN=>Array('name'=>'List (Radio)', 'size'=>1, 'SPSStype'=>'F'),
