@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.7 (build 210113) to 3.25.8 (build 210118) January 18, 2021
+-Fixed issue: Grammar Correction in LS3 for Mask Question Type Multiple Numerical Input Slider Tab. (Jessica Höck)
+-Fixed issue #16962: Sent is not recorded when validuntil is set and using MSSQL (Carsten Schmitz)
+-Fixed issue #16859: Survey list navigator in homle page broke with Multiviews (Denis Chenu)
+-Fixed issue #16853: Inconsistent filter behaviour when create token (Denis Chenu)
+-Fixed issue #15655: Cannot set SMTP/bounce password containing certain characters (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bulgarian by baximvt
+
+
 Changes from 3.25.6 (build 201229) to 3.25.7 (build 210113) January 11, 2021
 -Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
 -Fixed issue: Database error when survey title too long (Carsten Schmitz)
