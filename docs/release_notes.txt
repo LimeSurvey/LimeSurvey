@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.3.33 (build 201228) to 4.3.34 (build 210119) January 18, 2021
+-Fixed issue: wrong port and TLS description in bounce email/smtp settings (Vilius Šumskas)
+-Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
+-Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
+-Fixed issue #16982: Server error if template are invalid (Denis Chenu)
+-Fixed issue #16962: Sent is not recorded when validuntil is set and using MSSQL (Carsten Schmitz)
+-Fixed issue #16859: Survey list navigator in homle page broke with Multiviews (Denis Chenu)
+-Fixed issue #16853: Inconsistent filter behaviour when create token (Denis Chenu)
+-Fixed issue #15655: Cannot set SMTP/bounce password containing certain characters (Carsten Schmitz)
+-Fixed issue #15611: No HTML wrapper in public stats (Gabriel Jenik)
+-Fixed issue#16987: Incorrect language-switch field length for SPSS syntax export (TonisOrmisson)
+-Fixed issue: wrong port and TLS description in bounce email/smtp settings (Vilius Šumskas)
+#Updated translation: Romanian by cdorin
+#Updated translation: Romanian by c_schmitz, filipguttman, enedelcu, cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kannada by yogiks
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by AlainR
+#Updated translation: Finnish by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by valdomir, qualitatuvic
+
+
 Changes from 4.3.32 (build 201221) to 4.3.33 (build 201228) December 28, 2020
 -Fixed issue #16906: Version disclosure via limesurvey.pot (Denis Chenu)
 -Fixed issue #16894: Not possible to batch-edit owners for Central Participant database (#1688) (Gabriel Jenik)
