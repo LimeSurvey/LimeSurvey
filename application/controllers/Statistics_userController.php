@@ -294,9 +294,14 @@ class Statistics_userController extends SurveyController
             //~ $prb->hide();
         }
 
+        $data['aSurveyInfo'] = getSurveyInfo($iSurveyID);
+        $data['graphUrl'] = Yii::app()->getController()->createUrl("admin/statistics/sa/graph");
+
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'statistics_user.js');
-        $this->layout = "public";
-        $this->render('/statistics_user_view', $data);
+        //$this->layout = "public";
+        //$this->render('/statistics_user_view', $data);
+        $data['aSurveyInfo']['include_content'] = 'statistics_user';
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_statistics_user.twig', $data, false);
 
         //Delete all Session Data
         Yii::app()->session['finished'] = true;

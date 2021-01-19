@@ -256,6 +256,16 @@
                     <file type="view" role="subview">./subviews/printanswers/printanswers_foot.twig</file>
                 </printanswers>
 
+                <statistics_user>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Public statistics')}} ]]></screen_title>
+                    <file type="view" role="layout">layout_statistics_user.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/statistics_user.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_head.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_content.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_foot.twig</file>
+                </statistics_user>
+
                 <pdf>
                     <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>
                     <file type="view" role="layout">layout_print.twig</file>
