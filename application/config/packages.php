@@ -430,4 +430,19 @@ return array(
         'js'=>array(YII_DEBUG ? 'jquery.ba-bbq.js' : 'jquery.ba-bbq.min.js'),
         'depends'=>array('jquery'),
     ),
+    // Restored old emailtemplates package (pre Vue)
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'popup-dialog.css'
+        ),
+        'js' => array(
+            'emailtemplates'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
 );
