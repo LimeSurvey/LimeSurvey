@@ -228,7 +228,7 @@
 
 <!-- Responses & Statistics -->
 <?php if ($hasResponsesStatisticsReadPermission || $hasResponsesCreatePermission || $hasResponsesReadPermission): ?>
-    <?php if (!$oSurvey->isActive): ?>
+    <?php if ($oSurvey->isActive): ?>
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="icon-responses" ></span>
