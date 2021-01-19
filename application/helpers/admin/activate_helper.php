@@ -167,8 +167,8 @@ function checkQuestions($postsid, $iSurveyID)
                 }
             }
         }
-        if ((int)$questionTypesMetaData[$chkrow['type']]['settings']->aswerscales > 0) {
-            for ($i = 0; $i < (int)$questionTypesMetaData[$chkrow['type']]['settings']->aswerscales; $i++) {
+        if ((int)$questionTypesMetaData[$chkrow['type']]['settings']->answerscales > 0) {
+            for ($i = 0; $i < (int)$questionTypesMetaData[$chkrow['type']]['settings']->answerscales; $i++) {
                 $chaquery = Yii::app()->db->createCommand()
                     ->select('COUNT(aid)')
                     ->from('{{answers}}')
