@@ -34,6 +34,44 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.0-RC3 (build 210112) to 4.4.0-RC4 (build 210120) January 20, 2021
+-Fixed issue: wrong port and TLS description in bounce email/smtp settings (#1639) (Vilius Šumskas)
+-Fixed issue: Unable to update from LimeSurvey 3. (Carsten Schmitz)
+-Fixed issue: Internal Error - Found no database entry for plugin id (Jessica Höck)
+-Fixed issue: Grammar Correction in LS4 for Mask Question Type Multiple Numerical Input Slider Tab. (Jessica Höck)
+-Fixed issue: Cannot open theme editor after upgrading from version 3.x (Carsten Schmitz)
+-Fixed issue [security] #16884: LimeSurvey registration emails can be abused (thanks to  winfried) (Denis Chenu)
+-Fixed issue #16982: Server error if template are invalid (Denis Chenu)
+-Fixed issue #16973: Cannot activate browser reponses after activating survey (trischi80)
+-Fixed issue #16966: No way to edit role Permission (Denis Chenu)
+-Fixed issue #16963: Two Scroll bars on the right side (Gabriel Jenik)
+-Fixed issue #16962: Sent is not recorded when validuntil is set and using MSSQL (Carsten Schmitz)
+-Fixed issue #16922: Add new question to group button not working (Jessica Höck)
+-Fixed issue #16910: Any plugin public function can be done without any control on rights (#1706) (Denis Chenu)
+-Fixed issue #16899 & #16950: Attachments on Email Invitations (#1720) (Gabriel Jenik)
+-Fixed issue #16859: Survey list navigator in homle page broke with Multiviews (#1667) (Denis Chenu)
+-Fixed issue #16853: Inconsistent filter behaviour when create token (Denis Chenu)
+-Fixed issue #16545: Participant edition and bug when the ENTER key. (#1722) (Gabriel Jenik)
+-Fixed issue #15655: Cannot set SMTP/bounce password containing certain characters (Carsten Schmitz)
+-Fixed issue #14551: user can grant more permissions on a survey than he has himself (Denis Chenu)
+-* Fixed issue: wrong port and TLS description in bounce email/smtp settings (Vilius Šumskas)
+-* Fixed issue #16950: publicurl disable attchments (Gabriel Jenik)
+-* Fixed issue #16899: Cannot attach PDF to email invitation (email template for surveys) - develop branch (Gabriel Jenik)
+#Updated translation: Romanian by cdorin
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Kannada by yogiks
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: French (France) by AlainR
+#Updated translation: Finnish by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by valdomir, qualitatuvic
+
+
 Changes from 4.4.0-RC2 (build 210104) to 4.4.0-RC3 (build 210112) January 11, 2021
 -Fixed issue: Database error when username or user full name too long (Carsten Schmitz)
 -Fixed issue: Database error when survey title too long (Carsten Schmitz)
