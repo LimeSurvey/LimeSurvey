@@ -437,15 +437,15 @@ abstract class PluginBase implements iPlugin
             } elseif ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
-                $pluginModel = \Plugin::model()->findByPk($this->id);
-
-                // "Impossible"
-                if (empty($pluginModel)) {
-                    throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                if ($this->id !== null) {
+                    $pluginModel = \Plugin::model()->findByPk($this->id);
+                    // "Impossible"
+                    if (empty($pluginModel)) {
+                        throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                    }
+                    $this->checkActive($pluginModel);
+                    $this->saveNscewVersion($pluginModel);
                 }
-
-                $this->checkActive($pluginModel);
-                $this->saveNewVersion($pluginModel);
             }
             return true;
         } else {
@@ -548,7 +548,6 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
