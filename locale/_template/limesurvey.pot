@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-01-14 19:16:09+00:00\n"
+"POT-Creation-Date: 2021-01-20 09:12:57+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21599,6 +21599,7 @@ msgid "LimeSurvey installer"
 msgstr ""
 
 #: application/views/statistics_user_view.php:11
+#: tmp/runtime/twig_cache/20/20bfbdca52d9217b67bc1d70468e73d6171fed6ea99b5b1cb0ad8f09447424ef.php:69
 msgid "Total records in survey"
 msgstr ""
 
@@ -21835,6 +21836,10 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/27/2740fc23bdb00d1a63d9196e96f14cd5675646f16aea25018560aee7bab3da19.php:324
 msgid "Question by question mode not yet supported."
+msgstr ""
+
+#: tmp/runtime/twig_cache/27/27eb1a64f94e434124214809c495d713054aac8be4ca26369a80e1b845e64b05.php:55
+msgid "Public statistics"
 msgstr ""
 
 #: tmp/runtime/twig_cache/29/29ce4bc75a0270123929f019970be3c3ad60f85d902b342f64cbffdea44acecc.php:55
