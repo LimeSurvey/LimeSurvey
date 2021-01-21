@@ -1187,7 +1187,7 @@ class database extends Survey_Common_Action
 
         //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
-        $this->_resetEM();
+//        $this->_resetEM();
 
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);

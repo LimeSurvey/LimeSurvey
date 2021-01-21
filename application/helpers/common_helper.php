@@ -3521,6 +3521,9 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
         }
     }
 
+    if (count($aLanguages) == 0) {
+        return true; // Survey only has one language
+    }
     // Remove From Answer Table
     $sQuery = "SELECT ls.id from {{answer_l10ns}} ls 
             JOIN {{answers}} a on ls.aid=a.aid 
@@ -3575,9 +3578,13 @@ function fixLanguageConsistency($sid, $availlangs = '')
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
-    foreach ($result->readAll() as $group) {
-        foreach ($langs as $lang) {
-
+    foreach ($langs as $lang) {
+        $query_count = "SELECT count(g.gid) FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$lang}'  ";
+        $result_count = Yii::app()->db->createCommand($query_count)->queryScalar();
+        if($result_count>0){
+            continue;
+        }
+         foreach ($result->readAll() as $group) {
             $query = "SELECT count(gid) FROM {{group_l10ns}} WHERE gid='{$group['gid']}' AND language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryScalar();
             if ($gresult < 1) {
@@ -3596,8 +3603,13 @@ function fixLanguageConsistency($sid, $availlangs = '')
     $query = "SELECT * FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid='{$sid}'";
     $result = Yii::app()->db->createCommand($query)->query()->readAll();
     if (count($result) > 0) {
-        foreach ($result as $question) {
-            foreach ($langs as $lang) {
+        foreach ($langs as $lang) {
+            $query_count = "SELECT count(q.qid) FROM {{questions}} q JOIN {{question_l10ns}} ls ON ls.qid=q.qid WHERE sid='{$sid}' AND language='{$lang}'";
+            $result_count = Yii::app()->db->createCommand($query_count)->queryScalar();
+            if($result_count>0){
+                continue;
+            }
+            foreach ($result as $question) {
                 $query = "SELECT count(qid) FROM {{question_l10ns}} WHERE qid='{$question['qid']}' AND language='{$lang}'";
                 $gresult = Yii::app()->db->createCommand($query)->queryScalar();
                 if ($gresult < 1) {
@@ -3619,15 +3631,23 @@ function fixLanguageConsistency($sid, $availlangs = '')
     JOIN  {{questions}} q on a.qid=q.qid 
     WHERE language='{$baselang}' and q.sid={$sid}";
     $result = Yii::app()->db->createCommand($query)->query();
-    foreach ($result->readAll() as $answer) {
-        foreach ($langs as $lang) {
+    foreach ($langs as $lang) {
+        $query_count = "SELECT count(ls.aid) FROM {{answers}} a 
+    JOIN {{answer_l10ns}} ls ON ls.aid=a.aid 
+    JOIN  {{questions}} q on a.qid=q.qid 
+    WHERE q.sid={$sid} AND language='{$lang}'";
+        $result_count = Yii::app()->db->createCommand($query_count)->queryScalar();
+        if($result_count>0){
+            continue;
+        }
+        foreach ($result->readAll() as $answer) {
             $query = "SELECT count(aid) FROM {{answer_l10ns}} WHERE aid={$answer['aid']} AND language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryScalar();
             if ($gresult < 1) {
                 $data = array(
-                'aid' => $answer['aid'],
-                'answer' => $answer['answer'],
-                'language' => $lang
+                    'aid' => $answer['aid'],
+                    'answer' => $answer['answer'],
+                    'language' => $lang
                 );
                 Yii::app()->db->createCommand()->insert('{{answer_l10ns}}', $data);
             }
@@ -3667,18 +3687,23 @@ function fixLanguageConsistency($sid, $availlangs = '')
     switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
-    foreach ($result->readAll() as $qls) {
-        foreach ($langs as $lang) {
+    foreach ($langs as $lang) {
+        $query_lang = "SELECT  count(quotals_quota_id)  FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$lang}'";
+        $result_count = Yii::app()->db->createCommand($query_lang)->queryScalar();
+        if($result_count>0){
+            continue;
+        }
+        foreach ($result->readAll() as $qls) {
             $query = "SELECT count(quotals_id) FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
             $gresult = Yii::app()->db->createCommand($query)->queryScalar();
             if ($gresult < 1) {
                 $data = array(
-                'quotals_quota_id' => $qls['quotals_quota_id'],
-                'quotals_name' => $qls['quotals_name'],
-                'quotals_message' => $qls['quotals_message'],
-                'quotals_url' => $qls['quotals_url'],
-                'quotals_urldescrip' => $qls['quotals_urldescrip'],
-                'quotals_language' => $lang
+                    'quotals_quota_id' => $qls['quotals_quota_id'],
+                    'quotals_name' => $qls['quotals_name'],
+                    'quotals_message' => $qls['quotals_message'],
+                    'quotals_url' => $qls['quotals_url'],
+                    'quotals_urldescrip' => $qls['quotals_urldescrip'],
+                    'quotals_language' => $lang
                 );
                 Yii::app()->db->createCommand()->insert('{{quota_languagesettings}}', $data);
             }
