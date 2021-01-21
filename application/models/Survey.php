@@ -1,8 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
