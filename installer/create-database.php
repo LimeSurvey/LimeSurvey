@@ -6,7 +6,8 @@
  * @throws CHttpException
  * @throws CException
  */
-function populateDatabase($oDB){
+function populateDatabase($oDB)
+{
     /**
     * Populate the database for a limesurvey installation
     * Rules:
@@ -28,12 +29,12 @@ function populateDatabase($oDB){
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
     $options = '';
-    if(in_array($oDB->driverName,['mysql','mysqli'])) {
+    if (in_array($oDB->driverName, ['mysql','mysqli'])) {
         $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
     }
 
     $oTransaction = $oDB->beginTransaction();
-    try{
+    try {
         //answers table
         $oDB->createCommand()->createTable('{{answers}}', array(
             'aid' =>  "pk",
@@ -42,7 +43,7 @@ function populateDatabase($oDB){
             'sortorder' => 'integer NOT NULL',
             'assessment_value' => 'integer NOT NULL DEFAULT 0',
             'scale_id' => 'integer NOT NULL DEFAULT 0',
-        ),$options);
+        ), $options);
 
         $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
         $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
@@ -59,7 +60,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createTable('{{assessments}}', array(
             'id' =>         'autoincrement',
             'sid' =>        'integer NOT NULL DEFAULT 0',
-            'scope' =>      'string(5) NOT NULL'	,
+            'scope' =>      'string(5) NOT NULL'    ,
             'gid' =>        'integer NOT NULL DEFAULT 0',
             'name' =>       'text NOT NULL',
             'minimum' =>    'string(50) NOT NULL',
@@ -84,7 +85,7 @@ function populateDatabase($oDB){
             'usergroup' => "integer NOT NULL "
         ), $options);
         
-        foreach( $boxesData=LsDefaultDataSets::getBoxesData() as $box){
+        foreach ($boxesData = LsDefaultDataSets::getBoxesData() as $box) {
             $oDB->createCommand()->insert("{{boxes}}", $box);
         }
        
@@ -266,13 +267,13 @@ function populateDatabase($oDB){
         // load sodium library
         $sodium = Yii::app()->sodium;
         // check if sodium library exists
-        if ($sodium->bLibraryExists === true){
+        if ($sodium->bLibraryExists === true) {
             $sEncrypted = 'Y';
         } else {
             $sEncrypted = 'N';
         }
 
-        foreach($aCoreAttributes as $attribute){
+        foreach ($aCoreAttributes as $attribute) {
             $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
                 'attribute_type'    => 'TB',
                 'defaultname'       => $attribute,
@@ -533,12 +534,12 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
         $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-            foreach ($surveyMenuRowData as $surveyMenuRow) {
-                if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-                    unset($surveyMenuRow['id']);
-                }
-                $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+        foreach ($surveyMenuRowData as $surveyMenuRow) {
+            if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+                unset($surveyMenuRow['id']);
             }
+            $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+        }
         
         // Surveymenu entries
 
@@ -576,12 +577,11 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
         $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
         
-        foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+        foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
             if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
                 unset($surveyMenuEntryRow['id']);
             }
             $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
-            
         }
 
         // surveys
@@ -675,7 +675,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_surveys_groups}}', '{{surveys_groups}}', 'name', false);
         $oDB->createCommand()->createIndex('{{idx2_surveys_groups}}', '{{surveys_groups}}', 'title', false);
 
-        foreach($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup){
+        foreach ($surveyGroupData = LsDefaultDataSets::getSurveygroupData() as $surveyGroup) {
             $oDB->createCommand()->insert("{{surveys_groups}}", $surveyGroup);
         }
 
@@ -804,7 +804,7 @@ function populateDatabase($oDB){
                 "assessments" => "I",
                 "usecaptcha" => "E",
                 "bounce_email" => "inherit",
-                "attributedescriptions" => NULL,
+                "attributedescriptions" => null,
                 "emailresponseto" => "inherit",
                 "emailnotificationto" => "inherit",
                 "tokenlength" => -1,
@@ -818,7 +818,7 @@ function populateDatabase($oDB){
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
-        );      
+        );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
 
@@ -914,8 +914,8 @@ function populateDatabase($oDB){
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder',
         'description','last_update','owner_id','extends'];
 
-        foreach($templateData=LsDefaultDataSets::getTemplatesData() as $template){
-            $oDB->createCommand()->insert("{{templates}}", $template );
+        foreach ($templateData = LsDefaultDataSets::getTemplatesData() as $template) {
+            $oDB->createCommand()->insert("{{templates}}", $template);
         }
 
         // template_configuration
@@ -942,8 +942,8 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
         $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
-        foreach($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
-            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
+        foreach ($templateConfigurationData = LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
+            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
         }
 
         // question_themes
@@ -982,7 +982,8 @@ function populateDatabase($oDB){
 
         //tutorials
         $oDB->createCommand()->createTable(
-            '{{tutorials}}',[
+            '{{tutorials}}',
+            [
                 'tid' =>  'pk',
                 'name' =>  'string(128)',
                 'title' =>  'string(192)',
@@ -992,7 +993,8 @@ function populateDatabase($oDB){
                 'settings' => 'mediumtext',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
-            ], $options
+            ],
+            $options
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
@@ -1019,13 +1021,15 @@ function populateDatabase($oDB){
 
         //tutorial entries
         $oDB->createCommand()->createTable(
-            '{{tutorial_entries}}',[
+            '{{tutorial_entries}}',
+            [
                 'teid' =>  'pk',
                 'ordering' =>  'integer',
                 'title' =>  'text',
                 'content' =>  'mediumtext',
                 'settings' => 'mediumtext'
-            ], $options
+            ],
+            $options
         );
 
         //user_in_groups
@@ -1078,7 +1082,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
         // asset version
-        $oDB->createCommand()->createTable('{{asset_version}}',array(
+        $oDB->createCommand()->createTable('{{asset_version}}', array(
             'id' => 'pk',
             'path' => 'text NOT NULL',
             'version' => 'integer NOT NULL',
@@ -1091,9 +1095,9 @@ function populateDatabase($oDB){
         }
 
         // Set database version
-        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
+        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
         $oTransaction->commit();
-    }catch(Exception $e){
+    } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
