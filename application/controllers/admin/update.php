@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -86,9 +87,9 @@ class update extends Survey_Common_Action
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['update'] = true;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/comfortupdate.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/buildComfortButtons.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }
@@ -163,10 +164,9 @@ class update extends Survey_Common_Action
                             break;
                     }
 
-                    App()->setFlashMessage('<strong>'.gT($title).'</strong> '.gT($message), 'error');
+                    App()->setFlashMessage('<strong>' . gT($title) . '</strong> ' . gT($message), 'error');
                     App()->getController()->redirect(Yii::app()->getController()->createUrl('admin/update/sa/managekey'));
                 }
-
             }
         }
     }
@@ -252,7 +252,6 @@ class update extends Survey_Common_Action
     public function changeLog()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
             if (isset($_REQUEST['destinationBuild'])) {
                 $destinationBuild = $_REQUEST['destinationBuild'];
@@ -285,7 +284,6 @@ class update extends Survey_Common_Action
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
@@ -339,7 +337,6 @@ class update extends Survey_Common_Action
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
-
                     } else {
                         $error = $backup->error;
                     }
@@ -388,7 +385,7 @@ class update extends Survey_Common_Action
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
                                 // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
+                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
                             } else {
                                 $error = $remove->error;
                             }
@@ -436,7 +433,7 @@ class update extends Survey_Common_Action
                             SettingGlobal::setSetting('updaterversions', '');
                             Yii::app()->session['update_result'] = null;
                             Yii::app()->session['next_update_check'] = null;
-                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
+                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }
@@ -444,9 +441,8 @@ class update extends Survey_Common_Action
                         $error = $file->error;
                     }
                 } else {
-                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, false);
+                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks' => $localChecks), false, false);
                 }
-
             }
             return $this->_renderErrorString($error);
         }
@@ -528,7 +524,7 @@ class update extends Survey_Common_Action
                 die();
             }
             $aData = Yii::app()->session['installlstep4b'];
-            unset (Yii::app()->session['installlstep4b']);
+            unset(Yii::app()->session['installlstep4b']);
             $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
         }
     }
@@ -577,14 +573,13 @@ class update extends Survey_Common_Action
                 if (isset($serverAnswer->key_infos->validuntil)) {
                     $sValidityDate = convertToGlobalSettingFormat($serverAnswer->key_infos->validuntil);
                 }
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate), false, false);
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_' . $serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate' => $sValidityDate), false, false);
             } else {
                 $serverAnswer->result = false;
                 $serverAnswer->error = "unknown_view";
             }
         }
         echo $this->_renderError($serverAnswer);
-
     }
 
 
@@ -622,5 +617,4 @@ class update extends Survey_Common_Action
         $data = json_encode($updateinfos);
         return base64_encode($data);
     }
-
 }

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -58,20 +60,20 @@ class QuestionGroupL10n extends LSActiveRecord
 
     public function defaultScope()
     {
-        return array('index'=>'language');
-    }   
+        return array('index' => 'language');
+    }
 
     /** @inheritdoc */
     public function rules()
     {
         return array(
             array('group_name,description', 'LSYii_Validators'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
-            array('gid', 'unique', 'criteria'=>array(
-                'condition'=>'language=:language',
-                'params'=>array(':language'=>$this->language)
+            array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
+            array('gid', 'unique', 'criteria' => array(
+                'condition' => 'language=:language',
+                'params' => array(':language' => $this->language)
                 ),
-                'message'=>sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."),$this->gid,$this->language),
+                'message' => sprintf(gT("Group ID (gid): “%s” already set with language ”%s”."), $this->gid, $this->language),
             ),
         );
     }
@@ -84,5 +86,4 @@ class QuestionGroupL10n extends LSActiveRecord
             'group_name' => gt('Group name'),
         );
     }
-    
 }

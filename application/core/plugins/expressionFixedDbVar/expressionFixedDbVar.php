@@ -1,6 +1,7 @@
 <?php
+
 /**
- * expressionFixedDbVar : add some fixed DB var : SEED, STARTDATE … 
+ * expressionFixedDbVar : add some fixed DB var : SEED, STARTDATE …
  *
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 LimeSurvey - Denis Chenu
@@ -23,8 +24,8 @@
 class expressionFixedDbVar extends PluginBase
 {
     protected $storage = 'DbStorage';
-    static protected $description = 'Add SEED and other DB var in ExpressionScript Engine.';
-    static protected $name = 'expressionFixedDbVar';
+    protected static $description = 'Add SEED and other DB var in ExpressionScript Engine.';
+    protected static $name = 'expressionFixedDbVar';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
@@ -86,9 +87,9 @@ class expressionFixedDbVar extends PluginBase
     public function init()
     {
         /* Core plugin : add variables */
-        $this->subscribe('setVariableExpressionEnd','addFixedDbVar');
+        $this->subscribe('setVariableExpressionEnd', 'addFixedDbVar');
         /* Core plugin : update variables just before public views */
-        $this->subscribe('getPluginTwigPath','beforeTwigViews');
+        $this->subscribe('getPluginTwigPath', 'beforeTwigViews');
 
         /* Option by survey */
         $this->subscribe('beforeSurveySettings');
@@ -102,16 +103,16 @@ class expressionFixedDbVar extends PluginBase
     public function addFixedDbVar()
     {
         $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
-        if(empty($knownVarsToCreate)) {
+        if (empty($knownVarsToCreate)) {
             return;
         }
         $newKnowVars = array();
-        foreach($knownVarsToCreate as $var) {
+        foreach ($knownVarsToCreate as $var) {
             $newKnowVars[$var] = array(
-                'code'=>"", // We don't have it if we don't have Response
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
+                'code' => "", // We don't have it if we don't have Response
+                'jsName_on' => '',
+                'jsName' => '',
+                'readWrite' => 'N',
             );
         }
         $this->getEvent()->append('knownVars', $newKnowVars);
@@ -123,26 +124,26 @@ class expressionFixedDbVar extends PluginBase
     public function beforeTwigViews()
     {
         static $updated = false;
-        if($updated) {
+        if ($updated) {
             return;
         }
         $updated = true;
         $surveyId = LimeExpressionManager::getLEMsurveyId();
-        if(empty($surveyId)) {
+        if (empty($surveyId)) {
             return;
         }
         $knownVarsToCreate = $this->_getAddedVars($surveyId);
-        if(empty($knownVarsToCreate)) {
+        if (empty($knownVarsToCreate)) {
             return;
         }
         $oResponse = $this->api->getCurrentResponses();
-        if(empty($oResponse)) {
+        if (empty($oResponse)) {
             return;
         }
-        foreach($knownVarsToCreate as $var) {
+        foreach ($knownVarsToCreate as $var) {
             $column = $this->settings[$var]['column'];
-            if(isset($oResponse->$column)) {
-                LimeExpressionManager::setValueToKnowVar($var,$oResponse->$column);
+            if (isset($oResponse->$column)) {
+                LimeExpressionManager::setValueToKnowVar($var, $oResponse->$column);
             }
         }
     }
@@ -153,22 +154,21 @@ class expressionFixedDbVar extends PluginBase
      */
     public function beforeSurveySettings()
     {
-        $newSettings=array();
-        foreach($this->settings as $var => $params)
-        {
-            if(isset($this->settings[$var]['column'])) {
-                $inherited = $this->get($var,null,null,$params['default']) ? gt("Yes") : gT("No");
+        $newSettings = array();
+        foreach ($this->settings as $var => $params) {
+            if (isset($this->settings[$var]['column'])) {
+                $inherited = $this->get($var, null, null, $params['default']) ? gt("Yes") : gT("No");
                 $newSettings[$var] = array(
                     'type' => 'select',
                     'options' => array(
                         '1' => gT("Yes"),
                         '0' => gT("No"),
                     ),
-                    'htmlOptions'=>array(
-                        'empty'=>gT("Inherit")." [{$inherited}]",
+                    'htmlOptions' => array(
+                        'empty' => gT("Inherit") . " [{$inherited}]",
                     ),
                     'label' => $this->gT($params['label']),
-                    'current' => $this->get($var,'Survey',$this->getEvent()->get('survey'),''),
+                    'current' => $this->get($var, 'Survey', $this->getEvent()->get('survey'), ''),
                 );
             }
         }
@@ -185,8 +185,7 @@ class expressionFixedDbVar extends PluginBase
     public function newSurveySettings()
     {
         $event = $this->event;
-        foreach ($event->get('settings') as $name => $value)
-        {
+        foreach ($event->get('settings') as $name => $value) {
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
     }
@@ -195,7 +194,7 @@ class expressionFixedDbVar extends PluginBase
      * @inheritdoc
      * Add translation for label
      */
-    public function getPluginSettings($getValues=true)
+    public function getPluginSettings($getValues = true)
     {
         /* Translation inside plugin ? */
         $this->settings['SEED']['label'] = $this->gT('Add SEED variable');
@@ -217,15 +216,14 @@ class expressionFixedDbVar extends PluginBase
     private function _getAddedVars($surveyId)
     {
         $addedvars = array();
-        foreach($this->settings as $var => $params)
-        {
-            if(isset($this->settings[$var]['column'])) {
-                $current = $this->get($var,'Survey',$surveyId,"");
-                if( $current === "" ) {
+        foreach ($this->settings as $var => $params) {
+            if (isset($this->settings[$var]['column'])) {
+                $current = $this->get($var, 'Survey', $surveyId, "");
+                if ($current === "") {
                     // INHERIT
-                    $current = $this->get($var,null,null,$this->settings[$var]['default']);
+                    $current = $this->get($var, null, null, $this->settings[$var]['default']);
                 }
-                if(boolval($current)) {
+                if (boolval($current)) {
                     $addedvars[] = $var;
                 }
             }

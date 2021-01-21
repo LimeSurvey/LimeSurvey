@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -30,8 +31,7 @@ require_once 'Zend/Validate/Barcode/AdapterInterface.php';
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Validate_Barcode_AdapterAbstract
-    implements Zend_Validate_Barcode_AdapterInterface
+abstract class Zend_Validate_Barcode_AdapterAbstract implements Zend_Validate_Barcode_AdapterInterface
 {
     /**
      * Allowed barcode lengths
@@ -193,7 +193,7 @@ abstract class Zend_Validate_Barcode_AdapterAbstract
      */
     public function setCheck($check)
     {
-        $this->_hasChecksum = (boolean) $check;
+        $this->_hasChecksum = (bool) $check;
         return $this;
     }
 
@@ -300,7 +300,7 @@ abstract class Zend_Validate_Barcode_AdapterAbstract
         $values   = str_split(substr($value, 0, -1));
 
         $check = 0;
-        foreach($values as $row) {
+        foreach ($values as $row) {
             $check += $row;
         }
 

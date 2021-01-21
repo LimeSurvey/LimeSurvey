@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -27,7 +28,7 @@ class SurveysGroupsController extends Survey_Common_Action
     public function view($id)
     {
         $this->render('view', array(
-            'model'=>$this->loadModel($id),
+            'model' => $this->loadModel($id),
         ));
     }
 
@@ -110,12 +111,13 @@ class SurveysGroupsController extends Survey_Common_Action
             $postSurveysGroups = App()->getRequest()->getPost('SurveysGroups');
             /* Mimic survey system : only owner and superadmin can update owner … */
             /* After update : potential loose of rights on SurveysGroups */
-            if($model->owner_id != Yii::app()->user->id
+            if (
+                $model->owner_id != Yii::app()->user->id
                 && !Permission::model()->hasGlobalPermission('superadmin', 'read')
             ) {
                 $postSurveysGroups['owner_id'] = $model->owner_id;
             }
-            if($model->gsid == 1) {
+            if ($model->gsid == 1) {
                 /* Move this to model */
                 $postSurveysGroups['alwaysavailable'] = 1;
             }
@@ -125,21 +127,21 @@ class SurveysGroupsController extends Survey_Common_Action
                 /* Check permission */
                 $aAvailableParents = $model->getParentGroupOptions($model->gsid);
                 if (!array_key_exists($parentId, $aAvailableParents)) {
-                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"),CHtml::encode($parentId)), 'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You don't have rights on Survey group"), CHtml::encode($parentId)), 'error');
                     $postSurveysGroups['parent_id'] = $model->parent_id;
                 }
                 /* avoid loop */
                 $ParentSurveyGroup = $this->loadModel($parentId);
                 $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
-                if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                if (in_array($model->gsid, $aParentsGsid)) {
                     Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
-                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')));
                 }
             }
             $model->attributes = $postSurveysGroups;
             if ($model->save()) {
-                if (App()->request->getPost('saveandclose') !== null){
-                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
+                if (App()->request->getPost('saveandclose') !== null) {
+                    $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')));
                 }
             }
         }
@@ -159,13 +161,13 @@ class SurveysGroupsController extends Survey_Common_Action
 
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
-        if(!in_array($model->owner_id,$aUserIds)) {
-            $aUserIds[] =$model->owner_id;
+        if (!in_array($model->owner_id, $aUserIds)) {
+            $aUserIds[] = $model->owner_id;
         }
-        $userCriteria = new CDbCriteria;
+        $userCriteria = new CDbCriteria();
         $userCriteria->select = array("uid", "users_name", "full_name");
         $userCriteria->order = "full_name";
-        $userCriteria->addInCondition('uid',$aUserIds);
+        $userCriteria->addInCondition('uid', $aUserIds);
         $aData['oUsers'] = User::model()->findAll($userCriteria);
 
         $oTemplateOptions           = new TemplateConfiguration();
@@ -186,7 +188,8 @@ class SurveysGroupsController extends Survey_Common_Action
      * @todo camelCase here and globalsettings->surveysettingmenues
      * @return void
      */
-    public function surveysettingmenues($id) {
+    public function surveysettingmenues($id)
+    {
         if (!$this->loadModel($id)->hasPermission('surveysettings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
@@ -231,11 +234,13 @@ class SurveysGroupsController extends Survey_Common_Action
         // "Pariticipant setting" => 'anonymized'
         // "Notification & data"  => 'datestamp'
         // "Publication & access" => 'listpublic'
-        if(isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
-            || isset($_POST['datestamp']) || isset($_POST['listpublic'])){
+        if (
+            isset($_POST['template']) || isset($_POST['showxquestions']) || isset($_POST['anonymized'])
+            || isset($_POST['datestamp']) || isset($_POST['listpublic'])
+        ) {
             $oSurvey->attributes = $_POST;
 
-            if(isset($_POST['listpublic'])){
+            if (isset($_POST['listpublic'])) {
                 //what is usecaptcha used for? see saveTranscribeCaptchaOptions method description ...
                 // in default group this is set to 'N' ... (this means 'none' no captcha for survey access, regigstration
                 // and 'save&load'
@@ -249,17 +254,17 @@ class SurveysGroupsController extends Survey_Common_Action
         $users = getUserList();
         $aData['users'] = array();
         $inheritOwner = empty($oSurvey['ownerLabel']) ? $oSurvey['owner_id'] : $oSurvey['ownerLabel'];
-        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        $aData['users']['-1'] = gT('Inherit') . ' [' . $inheritOwner . ']';
         foreach ($users as $user) {
-            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+            $aData['users'][$user['uid']] = $user['user'] . ($user['full_name'] ? ' - ' . $user['full_name'] : '');
         }
         // Sort users by name
         asort($aData['users']);
 
         $aData['oSurvey'] = $oSurvey;
 
-        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
-            $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#"=>'surveygroups')));
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
+            $this->getController()->redirect($this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')));
         }
 
         // Page size
@@ -274,7 +279,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
         $aData['jsData'] = [
             'sgid' => $id,
-            'baseLinkUrl' => 'admin/surveysgroups/sa/surveysettings/id/'.$id,
+            'baseLinkUrl' => 'admin/surveysgroups/sa/surveysettings/id/' . $id,
             'getUrl' => Yii::app()->createUrl(
                 'admin/surveysgroups/sa/surveysettingmenues',
                 array('id' => $id)
@@ -284,7 +289,7 @@ class SurveysGroupsController extends Survey_Common_Action
             ]
         ];
         $aData['buttons'] = array(
-            'closebutton'=>array(
+            'closebutton' => array(
                 'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             ),
         );
@@ -360,7 +365,7 @@ class SurveysGroupsController extends Survey_Common_Action
         }
         /* Throw : SurveysGroupsController and its behaviors do not have a method or closure named "render". */
         $this->render('admin', array(
-            'model'=>$model,
+            'model' => $model,
         ));
     }
 

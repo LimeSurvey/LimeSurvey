@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin to redirect old url system (index.php?sid=surveyid) to the new url
  *
@@ -19,15 +20,15 @@
  */
 class oldUrlCompat extends PluginBase
 {
-    static protected $name = 'oldUrlCompat';
-    static protected $description = 'Old url (pre-2.0) compatible system';
+    protected static $name = 'oldUrlCompat';
+    protected static $description = 'Old url (pre-2.0) compatible system';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
     {
-        $this->subscribe('afterPluginLoad','oldUrlCompat');
+        $this->subscribe('afterPluginLoad', 'oldUrlCompat');
     }
 
     /**

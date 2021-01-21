@@ -1,4 +1,5 @@
 <?php
+
 /**
  * expressionQuestionHelp : add QCODE.help for expression Manager
  *
@@ -22,15 +23,15 @@
  */
 class expressionQuestionHelp extends PluginBase
 {
-    static protected $description = 'Add .help to properties of questions.';
-    static protected $name = 'expressionQuestionHelp';
+    protected static $description = 'Add .help to properties of questions.';
+    protected static $name = 'expressionQuestionHelp';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
     {
-        $this->subscribe('setVariableExpressionEnd','addQuestionHelp');
+        $this->subscribe('setVariableExpressionEnd', 'addQuestionHelp');
     }
 
     /**
@@ -41,15 +42,15 @@ class expressionQuestionHelp extends PluginBase
     {
         $knownVars = $this->event->get('knownVars');
         $language = $this->event->get('language');
-        foreach($knownVars as $var => $values) {
-            if(isset($values['question']) && isset($values['qid'])) {
-                $oQuestionL10n = QuestionL10n::model()->find('qid = :qid and language = :language',array(":qid"=>$values['qid'],":language"=>$language));
-                if($oQuestionL10n) {
+        foreach ($knownVars as $var => $values) {
+            if (isset($values['question']) && isset($values['qid'])) {
+                $oQuestionL10n = QuestionL10n::model()->find('qid = :qid and language = :language', array(":qid" => $values['qid'],":language" => $language));
+                if ($oQuestionL10n) {
                     $knownVars[$var]['help'] = $oQuestionL10n->help;
                 }
             }
         }
-        $this->event->set('knownVars',$knownVars);
-        $this->event->append('newExpressionSuffixes',['help']);
+        $this->event->set('knownVars', $knownVars);
+        $this->event->append('newExpressionSuffixes', ['help']);
     }
 }

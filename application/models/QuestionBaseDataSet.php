@@ -33,13 +33,13 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @return array
      * @throws CException
      */
-    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template=null)
+    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template = null)
     {
         Yii::import('ext.GeneralOptionWidget.settings.*');
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
         } else {
-            $iSurveyId = Yii::app()->request->getParam('sid')??
+            $iSurveyId = Yii::app()->request->getParam('sid') ??
                 Yii::app()->request->getParam('surveyid') ??
                 Yii::app()->request->getParam('surveyId');
             $this->oQuestion = $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
@@ -85,20 +85,20 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         // load visible general settings from config.xml
         $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
-        $sXmlFilePath = App()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sFolderName.'/config.xml';
-        if(file_exists($sXmlFilePath)){
+        $sXmlFilePath = App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sFolderName . '/config.xml';
+        if (file_exists($sXmlFilePath)) {
             // load xml file
             libxml_disable_entity_loader(false);
             $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), TRUE);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             libxml_disable_entity_loader(true);
         }
 
-        foreach ($generalOptions as $key => $generalOption){
+        foreach ($generalOptions as $key => $generalOption) {
             if (
                 (isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute']))
                 || !isset($aXmlAttributes['attribute'])
-            ){
+            ) {
                 $generalOptionsFiltered[$key] = $generalOption;
             };
         }
@@ -119,7 +119,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @return array
      * @throws CException
      */
-    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null,  $sQuestionTemplate = null)
+    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $sQuestionTemplate = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -134,7 +134,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $aAdvancedOptionsArray = [];
         if ($iQuestionID == null) { //this is only the case if question is new and has not been saved
             $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
-            if ($userSetting !== null){
+            if ($userSetting !== null) {
                 $aAdvancedOptionsArray = (array) json_decode($userSetting);
             }
         }
@@ -142,7 +142,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         if (empty($aAdvancedOptionsArray)) {
             //this function call must be here, because $this->aQuestionAttributes is used in function below (parseFromAttributeHelper)
             $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $sLanguage);
-            if( $sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
+            if ($sQuestionTemplate === null && $this->aQuestionAttributes['question_template'] !== 'core') {
                 $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
             }
             $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
@@ -247,7 +247,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      */
     protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray, $formElementValue)
     {
-        $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(),$aAttributeArray);
+        $aAttributeArray = array_merge(QuestionAttribute::getDefaultSettings(), $aAttributeArray);
         $aAdvancedAttributeArray = [
             'name' => empty($aAttributeArray['name']) ? $sAttributeKey : $aAttributeArray['name'],
             'title' => CHtml::decode($aAttributeArray['caption']),
@@ -264,7 +264,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $aFormElementOptions = $aAttributeArray;
         $aFormElementOptions['classes'] = isset($aFormElementOptions['classes']) ? array_merge($aFormElementOptions['classes'], ['form-control']) : ['form-control'];
 
-        if(!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
+        if (!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
             $aFormElementOptions['inputGroup'] = [
                 'prefix' => '{',
                 'suffix' => '}',

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -12,7 +14,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+     *  Files Purpose: lots of common functions
 */
 
 /**
@@ -71,9 +73,9 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_message', 'required'),
             array('quotals_name', 'LSYii_Validators'), // No access in quota editor, set to quota.name
             array('quotals_message', 'LSYii_Validators'),
-            array('quotals_url', 'LSYii_Validators', 'isUrl'=>true),
+            array('quotals_url', 'LSYii_Validators', 'isUrl' => true),
             array('quotals_urldescrip', 'LSYii_Validators'),
-            array('quotals_url', 'filter', 'filter'=>'trim'),
+            array('quotals_url', 'filter', 'filter' => 'trim'),
             array('quotals_url', 'urlValidator'),
         );
     }
@@ -88,9 +90,9 @@ class QuotaLanguageSetting extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'quotals_message'=> gT("Quota message:"),
-            'quotals_url'=> gT("URL:"),
-            'quotals_urldescrip'=> gT("URL Description:"),
+            'quotals_message' => gT("Quota message:"),
+            'quotals_url' => gT("URL:"),
+            'quotals_urldescrip' => gT("URL Description:"),
         );
     }
 
@@ -101,9 +103,9 @@ class QuotaLanguageSetting extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $settings = new self;
+        $settings = new self();
         foreach ($data as $k => $v) {
-            if ($k === 'autoload_url'){
+            if ($k === 'autoload_url') {
                 $settings->quota->autoload_url = $v;
             } else {
                 $settings->$k = $v;

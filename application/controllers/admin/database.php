@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -14,7 +16,7 @@
 *
 */
 
-use \LimeSurvey\Helpers\questionHelper;
+use LimeSurvey\Helpers\questionHelper;
 
 /**
 * Database
@@ -43,55 +45,55 @@ class database extends Survey_Common_Action
 
 
     private $updateableFields = [
-                'owner_id' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'admin' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'faxto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'format' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'expires' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'startdate' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'template' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'assessments' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'anonymized' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'savetimings' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'datestamp' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'ipaddr' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'ipanonymize'=> ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'refurl' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'publicgraphs' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'usecookie' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'allowregister' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'allowsave' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'navigationdelay' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'printanswers' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'publicstatistics' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'autoredirect' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showxquestions' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showgroupinfo' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showqnumcode' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'shownoanswer' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showwelcome' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showsurveypolicynotice' => ['type'=> '', 'default' => 0, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'allowprev' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'questionindex' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'nokeyboard' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'showprogress' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'listpublic' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'htmlemail' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'sendconfirmation' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'tokenanswerspersistence' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'alloweditaftercompletion' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'googleanalyticsapikeysetting' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'googleanalyticsapikey' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'gsid' => ['type'=> '', 'default' => 1, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'usecaptcha_surveyaccess' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'usecaptcha_registration' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'usecaptcha_saveandload' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'owner_id' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'admin' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'faxto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'format' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'expires' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'startdate' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'template' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'assessments' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'anonymized' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'savetimings' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'datestamp' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'ipaddr' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'ipanonymize' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'refurl' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'publicgraphs' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'usecookie' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'allowregister' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'allowsave' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'navigationdelay' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'printanswers' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'publicstatistics' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'autoredirect' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showxquestions' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showgroupinfo' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showqnumcode' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'shownoanswer' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showwelcome' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showsurveypolicynotice' => ['type' => '', 'default' => 0, 'dbname' => false, 'active' => true, 'required' => []],
+                'allowprev' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'questionindex' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'nokeyboard' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'showprogress' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'listpublic' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'htmlemail' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'sendconfirmation' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'tokenanswerspersistence' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'alloweditaftercompletion' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'emailresponseto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'emailnotificationto' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'googleanalyticsapikeysetting' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'googleanalyticsapikey' => ['type' => 'default', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'googleanalyticsstyle' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'tokenlength' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'adminemail' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'bounce_email' => ['type' => '', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'gsid' => ['type' => '', 'default' => 1, 'dbname' => false, 'active' => true, 'required' => []],
+                'usecaptcha_surveyaccess' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'usecaptcha_registration' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
+                'usecaptcha_saveandload' => ['type' => 'yesno', 'default' => false, 'dbname' => false, 'active' => true, 'required' => []],
             ];
         private $updatedFields = [];
 
@@ -114,7 +116,7 @@ class database extends Survey_Common_Action
         $this->iQuestionGroupID = (int) returnGlobal('gid');
         $this->iQuestionID = (int) returnGlobal('qid');
 
-        $this->oFixCKeditor = new LSYii_Validators;
+        $this->oFixCKeditor = new LSYii_Validators();
         $this->oFixCKeditor->fixCKeditor = true;
         $this->oFixCKeditor->xssfilter = false;
 
@@ -124,9 +126,11 @@ class database extends Survey_Common_Action
         if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
             $this->actionUpdateSurveyLocaleSettings($this->iSurveyID);
         }
-        if (($sAction == "updatesurveylocalesettings_generalsettings") &&
+        if (
+            ($sAction == "updatesurveylocalesettings_generalsettings") &&
             (Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveylocale', 'update') ||
-                Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveysettings', 'update'))) {
+                Permission::model()->hasSurveyPermission($this->iSurveyID, 'surveysettings', 'update'))
+        ) {
             $this->actionUpdateSurveyLocaleSettingsGeneralSettings($this->iSurveyID);
         }
 
@@ -155,39 +159,39 @@ class database extends Survey_Common_Action
                 ':sqid' => $sqid,
                 ':scale_id' => $scale_id,
                 )
-        );
+            );
         $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
 
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
-            if ($dvid !== null){
-                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid'=>$dvid, 'language' => $language ));
+            if ($dvid !== null) {
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language ));
                 $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
-                if ($iRowCount == 0){
+                if ($iRowCount == 0) {
                     DefaultValue::model()->deleteByPk($dvid);
                 }
             }
         } else {
             if (is_null($dvid)) {
-                $data = array('qid'=>$qid, 'sqid'=>$sqid, 'scale_id'=>$scale_id, 'specialtype'=>$specialtype);
+                $data = array('qid' => $qid, 'sqid' => $sqid, 'scale_id' => $scale_id, 'specialtype' => $specialtype);
                 $oDefaultvalue = new DefaultValue();
                 $oDefaultvalue->attributes = $data;
                 $oDefaultvalue->specialtype = $specialtype;
                 $oDefaultvalue->save();
-                if (!empty($oDefaultvalue->dvid)){
-                    $dataL10n = array('dvid'=>$oDefaultvalue->dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                if (!empty($oDefaultvalue->dvid)) {
+                    $dataL10n = array('dvid' => $oDefaultvalue->dvid, 'language' => $language, 'defaultvalue' => $defaultvalue);
                     $oDefaultvalueL10n = new DefaultValueL10n();
                     $oDefaultvalueL10n->attributes = $dataL10n;
                     $oDefaultvalueL10n->save();
-                }   
+                }
             } else {
-                if ($dvid !== null){
+                if ($dvid !== null) {
                     $arDefaultValue->with('defaultvaluel10ns');
                     $idL10n = !empty($arDefaultValue->defaultvaluel10ns) && array_key_exists($language, $arDefaultValue->defaultvaluel10ns) ? $arDefaultValue->defaultvaluel10ns[$language]->id : null;
-                    if ($idL10n !== null){
-                        DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
+                    if ($idL10n !== null) {
+                        DefaultValueL10n::model()->updateAll(array('defaultvalue' => $defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
                     } else {
-                        $dataL10n = array('dvid'=>$dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                        $dataL10n = array('dvid' => $dvid, 'language' => $language, 'defaultvalue' => $defaultvalue);
                         $oDefaultvalueL10n = new DefaultValueL10n();
                         $oDefaultvalueL10n->attributes = $dataL10n;
                         $oDefaultvalueL10n->save();
@@ -210,32 +214,32 @@ class database extends Survey_Common_Action
         $aSurveyLanguages = $oSurvey->allLanguages;
         $sBaseLanguage = $oSurvey->language;
 
-        Question::model()->updateAll(array('same_default'=> Yii::app()->request->getPost('samedefault') ? 1 : 0), 'sid=:sid ANd qid=:qid', array(':sid'=>$iSurveyID, ':qid'=>$this->iQuestionID));
+        Question::model()->updateAll(array('same_default' => Yii::app()->request->getPost('samedefault') ? 1 : 0), 'sid=:sid ANd qid=:qid', array(':sid' => $iSurveyID, ':qid' => $this->iQuestionID));
 
-        $arQuestion = Question::model()->findByAttributes(array('qid'=>$this->iQuestionID));
+        $arQuestion = Question::model()->findByAttributes(array('qid' => $this->iQuestionID));
         $sQuestionType = $arQuestion['type'];
 
         $questionThemeMetaData = QuestionTheme::findQuestionMetaData($sQuestionType);
         if ((int)$questionThemeMetaData['settings']->answerscales > 0 && $questionThemeMetaData['settings']->subquestions == 0) {
             for ($iScaleID = 0; $iScaleID < (int)$questionThemeMetaData['settings']->answerscales; $iScaleID++) {
                 foreach ($aSurveyLanguages as $sLanguage) {
-                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage))) {
-                        $this->_updateDefaultValues($this->iQuestionID, 0, $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage));
+                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_' . $iScaleID . '_' . $sLanguage))) {
+                        $this->_updateDefaultValues($this->iQuestionID, 0, $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_' . $iScaleID . '_' . $sLanguage));
                     }
-                    if (!is_null(Yii::app()->request->getPost('other_'.$iScaleID.'_'.$sLanguage))) {
-                        $this->_updateDefaultValues($this->iQuestionID, 0, $iScaleID, 'other', $sLanguage, Yii::app()->request->getPost('other_'.$iScaleID.'_'.$sLanguage));
+                    if (!is_null(Yii::app()->request->getPost('other_' . $iScaleID . '_' . $sLanguage))) {
+                        $this->_updateDefaultValues($this->iQuestionID, 0, $iScaleID, 'other', $sLanguage, Yii::app()->request->getPost('other_' . $iScaleID . '_' . $sLanguage));
                     }
                 }
             }
         }
         if ((int)$questionThemeMetaData['settings']->subquestions > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                $arQuestions = Question::model()->with('questionl10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
+                $arQuestions = Question::model()->with('questionl10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'parent_qid' => $this->iQuestionID, 'scale_id' => 0));
 
                 for ($iScaleID = 0; $iScaleID < (int)$questionThemeMetaData['settings']->subquestions; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
-                        if (!is_null(Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage.'_'.$aSubquestionrow['qid']))) {
-                            $this->_updateDefaultValues($this->iQuestionID, $aSubquestionrow['qid'], $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_'.$iScaleID.'_'.$sLanguage.'_'.$aSubquestionrow['qid']));
+                        if (!is_null(Yii::app()->request->getPost('defaultanswerscale_' . $iScaleID . '_' . $sLanguage . '_' . $aSubquestionrow['qid']))) {
+                            $this->_updateDefaultValues($this->iQuestionID, $aSubquestionrow['qid'], $iScaleID, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_' . $iScaleID . '_' . $sLanguage . '_' . $aSubquestionrow['qid']));
                         }
                     }
                 }
@@ -251,17 +255,17 @@ class database extends Survey_Common_Action
                         $sLanguage = $aSurveyLanguages[0]; // turn
                     }
 
-                    if (Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage) == 'EM') {
+                    if (Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage) == 'EM') {
 // Case EM, write expression to database
-                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_EM'));
+                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage . '_EM'));
                     } else {
                         // Case "other", write list value to database
-                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage));
+                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage));
                     }
                     ///// end yes/no
                 } else {
-                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0'))) {
-                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_'.$sLanguage.'_0'));
+                    if (!is_null(Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage . '_0'))) {
+                        $this->_updateDefaultValues($this->iQuestionID, 0, 0, '', $sLanguage, Yii::app()->request->getPost('defaultanswerscale_0_' . $sLanguage . '_0'));
                     }
                 }
             }
@@ -271,9 +275,9 @@ class database extends Survey_Common_Action
         LimeExpressionManager::SetDirtyFlag();
 
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
-            $this->getController()->redirect(array('questionAdministration/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            $this->getController()->redirect(array('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $this->iQuestionGroupID . '/qid/' . $this->iQuestionID));
         }
-        $this->getController()->redirect(['questionAdministration/editdefaultvalues/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID]);
+        $this->getController()->redirect(['questionAdministration/editdefaultvalues/surveyid/' . $iSurveyID . '/gid/' . $this->iQuestionGroupID . '/qid/' . $this->iQuestionID]);
     }
 
     /**
@@ -581,17 +585,17 @@ class database extends Survey_Common_Action
             foreach ($languagelist as $langname) {
                 if ($langname) {
                     $data = array();
-                    $sURLDescription = Yii::app()->request->getPost('urldescrip_'.$langname, null);
-                    $sURL = Yii::app()->request->getPost('url_'.$langname, null);
-                    $short_title = Yii::app()->request->getPost('short_title_'.$langname, null);
-                    $description = Yii::app()->request->getPost('description_'.$langname, null);
-                    $welcome = Yii::app()->request->getPost('welcome_'.$langname, null);
-                    $endtext = Yii::app()->request->getPost('endtext_'.$langname, null);
-                    $datasec = Yii::app()->request->getPost('datasec_'.$langname, null);
-                    $datasecerror = Yii::app()->request->getPost('datasecerror_'.$langname, null);
-                    $dataseclabel = Yii::app()->request->getPost('dataseclabel_'.$langname, null);
-                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
-                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
+                    $sURLDescription = Yii::app()->request->getPost('urldescrip_' . $langname, null);
+                    $sURL = Yii::app()->request->getPost('url_' . $langname, null);
+                    $short_title = Yii::app()->request->getPost('short_title_' . $langname, null);
+                    $description = Yii::app()->request->getPost('description_' . $langname, null);
+                    $welcome = Yii::app()->request->getPost('welcome_' . $langname, null);
+                    $endtext = Yii::app()->request->getPost('endtext_' . $langname, null);
+                    $datasec = Yii::app()->request->getPost('datasec_' . $langname, null);
+                    $datasecerror = Yii::app()->request->getPost('datasecerror_' . $langname, null);
+                    $dataseclabel = Yii::app()->request->getPost('dataseclabel_' . $langname, null);
+                    $dateformat = Yii::app()->request->getPost('dateformat_' . $langname, null);
+                    $numberformat = Yii::app()->request->getPost('numberformat_' . $langname, null);
 
                     if ($short_title !== null) {
                         // Fix bug with FCKEditor saving strange BR types
@@ -640,7 +644,7 @@ class database extends Survey_Common_Action
                     }
 
                     if (count($data) > 0) {
-                        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
+                        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $langname));
                         $oSurveyLanguageSetting->setAttributes($data);
                         $oSurveyLanguageSetting->save(); // save the change to database
                     }
@@ -676,7 +680,7 @@ class database extends Survey_Common_Action
                 $oSurvey->startdate = "";
             } else {
                 Yii::app()->loadLibrary('Date_Time_Converter');
-                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($startdate, $formatdata['phpdate'] . ' H:i');
                 $startdate = $datetimeobj->convert("Y-m-d H:i:s");
                 $oSurvey->startdate = $startdate;
             }
@@ -689,7 +693,7 @@ class database extends Survey_Common_Action
                 // Must not convert if empty.
                 $oSurvey->expires = "";
             } else {
-                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i');
+                $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'] . ' H:i');
                 $expires = $datetimeobj->convert("Y-m-d H:i:s");
                 $oSurvey->expires = $expires;
             }
@@ -767,15 +771,15 @@ class database extends Survey_Common_Action
             if ($oSurvey->save()) {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
             } else {
-                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+                Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
             }
         }
         $oSurvey->refresh();
 
         // Url params in json
-        if (Yii::app()->request->getPost('allurlparams',false)!==false) {
+        if (Yii::app()->request->getPost('allurlparams', false) !== false) {
             $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
-            SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
             foreach ($aURLParams as $aURLParam) {
                 $aURLParam['parameter'] = trim($aURLParam['parameter']);
                 if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
@@ -797,7 +801,7 @@ class database extends Survey_Common_Action
                 }
                 $aURLParam['sid'] = $iSurveyID;
 
-                $param = new SurveyURLParameter;
+                $param = new SurveyURLParameter();
                 foreach ($aURLParam as $k => $v) {
                                     $param->$k = $v;
                 }
@@ -809,7 +813,6 @@ class database extends Survey_Common_Action
         $this->_resetEM();
 
         if (Yii::app()->request->getPost('responsejson', 0) == 1) {
-
             $updatedFields = $this->updatedFields;
             $this->updatedFields = [];
             return Yii::app()->getController()->renderPartial(
@@ -817,12 +820,12 @@ class database extends Survey_Common_Action
                 array(
                     'data' => [
                         'success' => true,
-                        'updated'=> $updatedFields,
-                        'DEBUG' => ['POST'=>$_POST,
-                                    'reloaded'=>$oSurvey->attributes,
+                        'updated' => $updatedFields,
+                        'DEBUG' => ['POST' => $_POST,
+                                    'reloaded' => $oSurvey->attributes,
                                     'aURLParams' => isset($aURLParams) ? $aURLParams : '',
-                                    'initial'=>isset($aOldAttributes) ? $aOldAttributes : '',
-                                    'afterApply'=>isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
+                                    'initial' => isset($aOldAttributes) ? $aOldAttributes : '',
+                                    'afterApply' => isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
                     ],
                 ),
                 false,
@@ -831,17 +834,16 @@ class database extends Survey_Common_Action
         } else {
             ////////////////////////////////////////
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
-                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
             }
 
             $referrer = Yii::app()->request->urlReferrer;
             if ($referrer) {
                 $this->getController()->redirect(array($referrer));
             } else {
-                $this->getController()->redirect(array('/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/'.$iSurveyID));
+                $this->getController()->redirect(array('/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/' . $iSurveyID));
             }
         }
-
     }
 
     /**
@@ -870,19 +872,20 @@ class database extends Survey_Common_Action
                 $oSurvey->gsid,
                 $oSurvey->sid
             );
-
         }
         $oSurvey->template = $new_template;
 
         // Only owner and superadmins may change the survey owner
-        if ($oSurvey->owner_id == Yii::app()->session['loginID']
-            || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (
+            $oSurvey->owner_id == Yii::app()->session['loginID']
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')
+        ) {
             $oSurvey->owner_id = $request->getPost('owner_id');
         }
 
         /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
         $aAvailableLanguage = $oSurvey->getAllLanguages();
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->compare('surveyls_survey_id', $iSurveyID);
         $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
         SurveyLanguageSetting::model()->deleteAll($oCriteria);
@@ -892,10 +895,10 @@ class database extends Survey_Common_Action
             if ($sLang) {
                 $oLanguageSettings = SurveyLanguageSetting::model()->find(
                     'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
-                    array(':surveyid'=>$iSurveyID, ':langname'=>$sLang)
+                    array(':surveyid' => $iSurveyID, ':langname' => $sLang)
                 );
                 if (!$oLanguageSettings) {
-                    $oLanguageSettings = new SurveyLanguageSetting;
+                    $oLanguageSettings = new SurveyLanguageSetting();
                     $languagedetails = getLanguageDetails($sLang);
                     $oLanguageSettings->surveyls_survey_id = $iSurveyID;
                     $oLanguageSettings->surveyls_language = $sLang;
@@ -922,7 +925,7 @@ class database extends Survey_Common_Action
         if ($oSurvey->save()) {
             Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
         } else {
-            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey,Chtml::tag("p",array('class'=>'strong'),gT("Survey could not be updated, please fix the following error:"))), "error");
+            Yii::app()->setFlashMessage(Chtml::errorSummary($oSurvey, Chtml::tag("p", array('class' => 'strong'), gT("Survey could not be updated, please fix the following error:"))), "error");
         }
         Yii::app()->end();
     }
@@ -953,14 +956,14 @@ class database extends Survey_Common_Action
 
         switch ($options['type']) {
             case 'yesno':
-            if ($newValue != 'Y' && $newValue != 'N' && $newValue != 'I') {
-                $newValue = (int) $newValue;
-                $newValue = ($newValue === 1) ? 'Y' : 'N';
-            }
-            break;
+                if ($newValue != 'Y' && $newValue != 'N' && $newValue != 'I') {
+                    $newValue = (int) $newValue;
+                    $newValue = ($newValue === 1) ? 'Y' : 'N';
+                }
+                break;
             case 'Int':
                 $newValue = (int) $newValue;
-            break;
+                break;
         }
 
         return $newValue;
@@ -973,8 +976,8 @@ class database extends Survey_Common_Action
         LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
         LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
-        LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        LimeExpressionManager::StartProcessingPage(true,true);
+        LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+        LimeExpressionManager::StartProcessingPage(true, true);
         $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);

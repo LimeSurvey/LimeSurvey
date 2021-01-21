@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -205,5 +206,4 @@ class Zend_Registry extends ArrayObject
     {
         return array_key_exists($index, $this);
     }
-
 }

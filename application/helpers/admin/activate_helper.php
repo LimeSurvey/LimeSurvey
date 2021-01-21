@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -55,13 +56,13 @@ function fixNumbering($iQuestionID, $iSurveyID)
     $sQuery = "SELECT cqid, cfieldname FROM {{conditions}} WHERE cqid=$iQuestionID";
     $sResult = Yii::app()->db->createCommand($sQuery)->query();
     foreach ($sResult->readAll() as $row) {
-        $aSwitcher[] = array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
+        $aSwitcher[] = array("cqid" => $row['cqid'], "cfieldname" => $row['cfieldname']);
     }
     if (isset($aSwitcher)) {
         foreach ($aSwitcher as $aSwitch) {
             $sQuery = "UPDATE {{conditions}}
             SET cqid=$iNewQID,
-            cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
+            cfieldname='" . str_replace("X" . $iQuestionID, "X" . $iNewQID, $aSwitch['cfieldname']) . "'
             WHERE cqid=$iQuestionID";
             // FIXME undefined function db_execute_assosc()
             db_execute_assosc($sQuery);
@@ -110,7 +111,7 @@ function checkGroup($postsid)
     foreach ($groupresult as $row) {
         //TIBO
         if ($row['count'] == 0) {
-            $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
+            $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": " . gT("This group does not contain any question(s)."));
         }
     }
     if (isset($failedgroupcheck)) {
@@ -160,10 +161,10 @@ function checkQuestions($postsid, $iSurveyID)
                 $chaquery = Yii::app()->db->createCommand()
                     ->select('COUNT(qid)')
                     ->from('{{questions}}')
-                    ->where('parent_qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                    ->where('parent_qid = :qid and scale_id=:scaleid', [':qid' => $chkrow['qid'], ':scaleid' => $i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": " . gT("This question has missing subquestions."), $chkrow['gid']);
                 }
             }
         }
@@ -172,10 +173,10 @@ function checkQuestions($postsid, $iSurveyID)
                 $chaquery = Yii::app()->db->createCommand()
                     ->select('COUNT(aid)')
                     ->from('{{answers}}')
-                    ->where('qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
+                    ->where('qid = :qid and scale_id=:scaleid', [':qid' => $chkrow['qid'], ':scaleid' => $i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": " . gT("This question has missing answer options."), $chkrow['gid']);
                 }
             }
         }
@@ -187,10 +188,10 @@ function checkQuestions($postsid, $iSurveyID)
         ->select(['q.qid', 'ls.question', 'gid'])
         ->from('{{questions}} q')
         ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
-        ->where("sid=:sid AND type = ''", [':sid'=>$iSurveyID]);
+        ->where("sid=:sid AND type = ''", [':sid' => $iSurveyID]);
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": " . gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
 
@@ -200,12 +201,12 @@ function checkQuestions($postsid, $iSurveyID)
         ->from('{{questions}} q')
         ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
         ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
-        ->andWhere("sid=:sid", [':sid'=>$iSurveyID])
-        ->andWhere("type IN ('".Question::QT_F_ARRAY_FLEXIBLE_ROW."', '".Question::QT_H_ARRAY_FLEXIBLE_COLUMN."', '".Question::QT_Z_LIST_RADIO_FLEXIBLE."', '".Question::QT_1_ARRAY_MULTISCALE."')")
+        ->andWhere("sid=:sid", [':sid' => $iSurveyID])
+        ->andWhere("type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "')")
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": " . gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
@@ -214,16 +215,16 @@ function checkQuestions($postsid, $iSurveyID)
     ->from('{{questions}} q')
     ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
     ->andWhere("(Select count(*) from {{answers}} a where a.qid=q.qid and scale_id=1)=0")
-    ->andWhere("sid=:sid", [':sid'=>$iSurveyID])
-    ->andWhere("type='".Question::QT_1_ARRAY_MULTISCALE."'")
+    ->andWhere("sid=:sid", [':sid' => $iSurveyID])
+    ->andWhere("type='" . Question::QT_1_ARRAY_MULTISCALE . "'")
     ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": " . gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
-    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('".Question::QT_S_SHORT_FREE_TEXT."', '".Question::QT_D_DATE."', '".Question::QT_T_LONG_FREE_TEXT."', '".Question::QT_Q_MULTIPLE_SHORT_TEXT."')";
+    $qorderquery = "SELECT * FROM {{questions}} WHERE sid=$iSurveyID AND type not in ('" . Question::QT_S_SHORT_FREE_TEXT . "', '" . Question::QT_D_DATE . "', '" . Question::QT_T_LONG_FREE_TEXT . "', '" . Question::QT_Q_MULTIPLE_SHORT_TEXT . "')";
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {
@@ -243,8 +244,8 @@ function checkQuestions($postsid, $iSurveyID)
     ->from('{{conditions}} cndn')
     ->join('{{questions}} q', 'cndn.qid=q.qid')
     ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
-    ->andWhere('q.sid=:sid', [':sid'=>$iSurveyID])
-    ->andWhere('ls.language=:lngn', [':lngn'=>$survey->language])
+    ->andWhere('q.sid=:sid', [':sid' => $iSurveyID])
+    ->andWhere('ls.language=:lngn', [':lngn' => $survey->language])
     ->order('cndn.qid');
 
     $conresult = $conquery->queryAll();
@@ -263,7 +264,7 @@ function checkQuestions($postsid, $iSurveyID)
                 $b = $qordercount;
             }
             if ($qidfound == 1) {
-                $failedcheck[] = array($conrow['qid'], $conrow['question'], ": ".gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
+                $failedcheck[] = array($conrow['qid'], $conrow['question'], ": " . gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
             }
             $b++;
         }
@@ -273,8 +274,8 @@ function checkQuestions($postsid, $iSurveyID)
     $aDuplicateQIDs = array();
     $fieldmap = createFieldMap($survey, 'full', true, false, $survey->language, $aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
-        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
-            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
+        foreach ($aDuplicateQIDs as $iQID => $aDuplicate) {
+            $sFixLink = "[<a class='selector__fixConsistencyProblem' href='" . Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}") . "'>Click here to fix</a>]";
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
@@ -322,8 +323,8 @@ function mssql_drop_primary_index($tablename)
 
     // find out the constraint name of the old primary key
     $pkquery = "SELECT CONSTRAINT_NAME "
-    ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
-    ."WHERE     (TABLE_NAME = '{{{$tablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+    . "FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+    . "WHERE     (TABLE_NAME = '{{{$tablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
     $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
     if ($primarykey !== false) {
@@ -333,7 +334,7 @@ function mssql_drop_primary_index($tablename)
 
 /**
  * Deletes a column and removes all constraints from it
- * 
+ *
  * @param string $tablename The table the column should be deleted
  * @param string $columnname The column that should be deleted
  */
@@ -344,12 +345,12 @@ function mssql_drop_coulmn_with_constraints($tablename, $columnname)
     // find out the constraint name of the old primary key
     $pkquery = "SELECT constraint_name
     FROM information_schema.constraint_column_usage
-    WHERE table_name = '".$tablename."' AND column_name = '".$columnname."'";
+    WHERE table_name = '" . $tablename . "' AND column_name = '" . $columnname . "'";
 
     $result = Yii::app()->db->createCommand($pkquery)->queryAll();
-    foreach($result as $constraintName) {
-        Yii::app()->db->createCommand('alter table ['.$tablename.'] drop constraint "'.$constraintName['constraint_name'].'"')->execute();
+    foreach ($result as $constraintName) {
+        Yii::app()->db->createCommand('alter table [' . $tablename . '] drop constraint "' . $constraintName['constraint_name'] . '"')->execute();
     }
-    $success = Yii::app()->db->createCommand('ALTER TABLE ['.$tablename.'] DROP COLUMN "'.$columnname.'"')->execute();
+    $success = Yii::app()->db->createCommand('ALTER TABLE [' . $tablename . '] DROP COLUMN "' . $columnname . '"')->execute();
     return $success;
 }

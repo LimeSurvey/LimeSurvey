@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -37,17 +39,17 @@ function updateset($lid)
     // If new languages are added, create labels' codes and sortorder for the new languages
     $result = Label::model()->findAllByAttributes(array('lid' => $lid), array('order' => 'code, sortorder, assessment_value'));
     if ($result) {
-            foreach ($result as $row) {
-                        $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
-            }
+        foreach ($result as $row) {
+                    $oldcodesarray[$row['code']] = array('sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']);
+        }
     }
 
     if (isset($oldcodesarray) && count($oldcodesarray) > 0) {
-            foreach ($addlangidsarray as $addedlangid) {
-                        foreach ($oldcodesarray as $oldcode => $olddata) {
-                                        $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
-                        }
+        foreach ($addlangidsarray as $addedlangid) {
+            foreach ($oldcodesarray as $oldcode => $olddata) {
+                        $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
             }
+        }
     }
 
     if (isset($sqlvalues)) {
@@ -62,7 +64,7 @@ function updateset($lid)
 
     // If languages are removed, delete labels for these languages
     if (!empty($dellangidsarray)) {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->addColumnCondition(array('lid' => $lid));
         $langcriteria = new CDbCriteria();
         foreach ($dellangidsarray as $sDeleteLanguage) {
@@ -76,7 +78,7 @@ function updateset($lid)
             foreach ($aLabel->labell10ns as $aLabelL10ns) {
                 $aLabelL10ns->delete();
             }
-        } 
+        }
     }
     
 
@@ -131,13 +133,11 @@ function modlabelsetanswers($lid)
     }
     $aErrors = array();
     if (count(array_unique($data['codelist'])) == count($data['codelist'])) {
-
         // First delete all labels without corresponding code
         $oLabelSetObject = LabelSet::model()->findByPk($lid);
         $oLabelSetObject->deleteLabelsForLabelSet();
 
-        foreach ($data['codelist'] as $index=>$codeid) {
-
+        foreach ($data['codelist'] as $index => $codeid) {
             $oLabelData = $data[$codeid];
 
             $actualcode = $oLabelData['code'];
@@ -156,11 +156,10 @@ function modlabelsetanswers($lid)
             } else {
                 $oLabel->save();
                 foreach ($data['langs'] as $lang) {
-
-                    $strTemp = 'text_'.$lang;
+                    $strTemp = 'text_' . $lang;
                     if (!isset($oLabelData[$strTemp])) {
                         // If title is missing for a language, use the first one
-                        $strTemp = 'text_'.$data['langs'][0];
+                        $strTemp = 'text_' . $data['langs'][0];
                     }
                     $title = $oLabelData[$strTemp];
                     
@@ -186,7 +185,9 @@ function modlabelsetanswers($lid)
         Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"), 'error');
     }
 
-    if ($ajax) { die(); }
+    if ($ajax) {
+        die();
+    }
 }
 
 /**
@@ -209,7 +210,7 @@ function fixorder($lid)
         $position = 0;
         foreach ($result->readAll() as $row) {
             $position = sprintf("%05d", $position);
-            $query2 = "UPDATE {{labels}} SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
+            $query2 = "UPDATE {{labels}} SET sortorder='$position' WHERE lid=" . $row['lid'] . " AND code=" . $row['code'] . " AND title=" . $row['title'] . " AND language='$lslanguage' ";
             Yii::app()->db->createCommand($query2)->execute();
             $position++;
         }

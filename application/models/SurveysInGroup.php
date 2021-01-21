@@ -1,13 +1,15 @@
-<?php 
+<?php
+
 /**
  * Class SurveysGroups
  * @inheritdoc
- * Used for Permission on survey inside group : 
+ * Used for Permission on survey inside group :
  *
  */
 class SurveysInGroup extends SurveysGroups implements PermissionInterface
 {
     use PermissionTrait;
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -51,7 +53,7 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
      */
     public function getOwnerId()
     {
-        if(!App()->getConfig('ownerManageAllSurveysInGroup')) {
+        if (!App()->getConfig('ownerManageAllSurveysInGroup')) {
             return null;
         }
         return $this->owner_id;
@@ -84,11 +86,10 @@ class SurveysInGroup extends SurveysGroups implements PermissionInterface
             return true;
         }
         /* Specific need gsid */
-        if(!$this->gsid) {
+        if (!$this->gsid) {
             return false;
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysingroup', $sPermission, $sCRUD, $iUserID);
     }
-
 }

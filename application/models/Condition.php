@@ -88,11 +88,11 @@ class Condition extends LSActiveRecord
      */
     public function deleteRecords($condition = false)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         if ($condition != false) {
             if (is_array($condition)) {
-                foreach ($condition as $column=>$value) {
+                foreach ($condition as $column => $value) {
                     $criteria->addCondition("$column='$value'");
                 }
             } else {
@@ -114,14 +114,18 @@ class Condition extends LSActiveRecord
      */
     public function updateCFieldName($iSurveyID, $iQuestionID, $iOldGroupID, $iNewGroupID)
     {
-        $oResults = $this->findAllByAttributes(array('cqid'=>$iQuestionID));
+        $oResults = $this->findAllByAttributes(array('cqid' => $iQuestionID));
         foreach ($oResults as $oRow) {
             $cfnregs = [];
-            if (preg_match('/(\S*?)'.$iSurveyID."X".$iOldGroupID."X".$iQuestionID."(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
-                $sNewCfn = $cfnregs[1].$iSurveyID."X".$iNewGroupID."X".$iQuestionID.$cfnregs[2];
+            if (preg_match('/(\S*?)' . $iSurveyID . "X" . $iOldGroupID . "X" . $iQuestionID . "(.*)/", $oRow->cfieldname, $cfnregs) > 0) {
+                $sNewCfn = $cfnregs[1] . $iSurveyID . "X" . $iNewGroupID . "X" . $iQuestionID . $cfnregs[2];
                 Yii::app()->db->createCommand()
-                    ->update($this->tableName(), array('cfieldname' => $sNewCfn),
-                    'cid=:cid', array(':cid'=>$oRow->cid));
+                    ->update(
+                        $this->tableName(),
+                        array('cfieldname' => $sNewCfn),
+                        'cid=:cid',
+                        array(':cid' => $oRow->cid)
+                    );
                 LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID, $oRow->qid);
             }
         }
@@ -131,16 +135,16 @@ class Condition extends LSActiveRecord
 
     public function insertRecords($data, $update = false, $condition = false)
     {
-        $record = new self;
+        $record = new self();
         foreach ($data as $k => $v) {
             $v = str_replace(array("'", '"'), '', $v);
             $record->$k = $v;
         }
 
         if ($update) {
-            $criteria = new CdbCriteria;
+            $criteria = new CdbCriteria();
             if (is_array($condition)) {
-                foreach ($condition as $column=>$value) {
+                foreach ($condition as $column => $value) {
                     $criteria->addCondition("$column='$value'");
                 }
             } else {
@@ -159,9 +163,9 @@ class Condition extends LSActiveRecord
      */
     public function getScenarios($qid)
     {
-        $query = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=:qid ORDER BY scenario";
+        $query = "SELECT DISTINCT scenario FROM " . $this->tableName() . " WHERE qid=:qid ORDER BY scenario";
         $command = Yii::app()->db->createCommand($query);
-        $command->params = [':qid'=>$qid];
+        $command->params = [':qid' => $qid];
         return $command->query();
     }
 
@@ -192,13 +196,13 @@ class Condition extends LSActiveRecord
     public function getConditionsQuestions($distinctrow, $deqrow, $scenariorow, $surveyprintlang)
     {
         $conquery = "SELECT cid, cqid, q.title, question, value, q.type, cfieldname "
-        ."FROM {{conditions}} c " 
-        ."JOIN {{questions}} q on c.cqid=q.qid "
-        ."JOIN {{question_l10ns}} l on l.qid=q.qid "
-        ."WHERE c.cqid=:distinctrow "
-        ."AND c.qid=:deqrow "
-        ."AND c.scenario=:scenariorow "
-        ."AND language=:surveyprintlang ";
+        . "FROM {{conditions}} c "
+        . "JOIN {{questions}} q on c.cqid=q.qid "
+        . "JOIN {{question_l10ns}} l on l.qid=q.qid "
+        . "WHERE c.cqid=:distinctrow "
+        . "AND c.qid=:deqrow "
+        . "AND c.scenario=:scenariorow "
+        . "AND language=:surveyprintlang ";
         return Yii::app()->db->createCommand($conquery)
             ->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
             ->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)
@@ -217,7 +221,7 @@ class Condition extends LSActiveRecord
                 ->select('cfieldname')
                 ->from('{{questions}} questions')
                 ->join('{{conditions}} conditions', 'questions.qid=conditions.cqid')
-                ->where('sid=:sid', array(':sid'=>$sid))
+                ->where('sid=:sid', array(':sid' => $sid))
                 ->queryRow();
 
         return $Qids;
@@ -291,11 +295,11 @@ class Condition extends LSActiveRecord
                     'select' => 't.cid, t.scenario, t.cqid, t.cfieldname, t.method, t.value',
                     'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
                 )
-        );     
+            );
 
         $aResults = array();
         $i = 0;
-        foreach($results as $result){
+        foreach ($results as $result) {
             $aResults[$i] = $result->attributes;
             $aResults[$i]['type'] = $result->questions->type;
             $i += 1;
@@ -313,11 +317,11 @@ class Condition extends LSActiveRecord
     public function getConditionCountToken($qid, Condition $scenarionr)
     {
         $querytoken = "SELECT count(*) as recordcount "
-            ."FROM {{conditions}} "
-            ."WHERE "
-            ." {{conditions}}.qid=:qid "
-            ."AND {{conditions}}.scenario=:scenario "
-            ."AND {{conditions}}.cfieldname LIKE '{%' "; // only catching SRCtokenAttr conditions
+            . "FROM {{conditions}} "
+            . "WHERE "
+            . " {{conditions}}.qid=:qid "
+            . "AND {{conditions}}.scenario=:scenario "
+            . "AND {{conditions}}.cfieldname LIKE '{%' "; // only catching SRCtokenAttr conditions
         $resulttoken = Yii::app()->db->createCommand($querytoken)
             ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
             ->bindValue(":qid", $qid, PDO::PARAM_INT)
@@ -338,18 +342,18 @@ class Condition extends LSActiveRecord
     public function getConditionsToken($qid, Condition $scenarionr)
     {
         $querytoken = "SELECT {{conditions}}.cid, "
-            ."{{conditions}}.scenario, "
-            ."{{conditions}}.cqid, "
-            ."{{conditions}}.cfieldname, "
-            ."{{conditions}}.method, "
-            ."{{conditions}}.value, "
-            ."'' AS type "
-            ."FROM {{conditions}} "
-            ."WHERE "
-            ." {{conditions}}.qid=:qid "
-            ."AND {{conditions}}.scenario=:scenario "
-            ."AND {{conditions}}.cfieldname LIKE '{%' " // only catching SRCtokenAttr conditions
-            ."ORDER BY {{conditions}}.cfieldname";
+            . "{{conditions}}.scenario, "
+            . "{{conditions}}.cqid, "
+            . "{{conditions}}.cfieldname, "
+            . "{{conditions}}.method, "
+            . "{{conditions}}.value, "
+            . "'' AS type "
+            . "FROM {{conditions}} "
+            . "WHERE "
+            . " {{conditions}}.qid=:qid "
+            . "AND {{conditions}}.scenario=:scenario "
+            . "AND {{conditions}}.cfieldname LIKE '{%' " // only catching SRCtokenAttr conditions
+            . "ORDER BY {{conditions}}.cfieldname";
         $result = Yii::app()->db->createCommand($querytoken)
             ->bindValue(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)
             ->bindValue(":qid", $qid, PDO::PARAM_INT)

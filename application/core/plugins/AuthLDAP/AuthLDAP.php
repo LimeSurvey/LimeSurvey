@@ -1,10 +1,11 @@
 <?php
+
 class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Core: LDAP authentication';
-    static protected $name = 'LDAP';
+    protected static $description = 'Core: LDAP authentication';
+    protected static $name = 'LDAP';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
@@ -33,7 +34,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'label' => 'LDAP version',
             'options' => array('2' => 'LDAPv2', '3'  => 'LDAPv3'),
             'default' => '2',
-            'submitonchange'=> true
+            'submitonchange' => true
         ),
         'ldapoptreferrals' => array(
             'type' => 'boolean',
@@ -51,7 +52,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'label' => 'Select how to perform authentication.',
             'options' => array("simplebind" => "Simple bind", "searchandbind" => "Search and bind"),
             'default' => "simplebind",
-            'submitonchange'=> true
+            'submitonchange' => true
             ),
         'userprefix' => array(
             'type' => 'string',
@@ -365,8 +366,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
     public function newLoginForm()
     {
         $this->getEvent()->getContent($this)
-        ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', '', array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))))
-        ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', '', array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))));
+        ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', '', array('size' => 40, 'maxlength' => 40, 'class' => "form-control"))))
+        ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', '', array('size' => 40, 'maxlength' => 40, 'class' => "form-control"))));
     }
 
     /**
@@ -400,7 +401,6 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 // Hide simple settings
                 unset($aPluginSettings['userprefix']);
                 unset($aPluginSettings['domainsuffix']);
-
             } else {
                 // Hide searchandbind settings
                 unset($aPluginSettings['searchuserattribute']);
@@ -448,7 +448,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         if ($user !== null) {
             //If user cannot login via LDAP: setAuthFailure
-            if (($user->uid == 1 && !$this->get('allowInitialUser'))
+            if (
+                ($user->uid == 1 && !$this->get('allowInitialUser'))
                 || !Permission::model()->hasGlobalPermission('auth_ldap', 'read', $user->uid)
             ) {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID);  // Error shown : user or password invalid - swe how a generic message to prevent disclosure if user exists or not
@@ -464,8 +465,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         // Get configuration settings:
-        $suffix     		= $this->get('domainsuffix');
-        $prefix     		= $this->get('userprefix');
+        $suffix             = $this->get('domainsuffix');
+        $prefix             = $this->get('userprefix');
         $searchuserattribute = $this->get('searchuserattribute');
         $extrauserfilter = $this->get('extrauserfilter');
         $usersearchbase = $this->get('usersearchbase');
@@ -483,7 +484,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = @ldap_bind($ldapconn, $prefix.$username.$suffix, $password);
+            $ldapbind = @ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
         } else {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
@@ -516,7 +517,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                     $userdn = $userentry[0]["dn"];
                 }
             }
-            if(!$userentry) {
+            if (!$userentry) {
                 // if no entry or more than one entry returned
                 // then deny authentication
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
@@ -532,8 +533,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
                 $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
                 if ($grouprescount < 1) {
-                    $this->setAuthFailure(self::ERROR_USERNAME_INVALID,
-                    gT('Valid username but not authorized by group restriction'));
+                    $this->setAuthFailure(
+                        self::ERROR_USERNAME_INVALID,
+                        gT('Valid username but not authorized by group restriction')
+                    );
                     ldap_close($ldapconn); // all done? close connection
                     return;
                 }

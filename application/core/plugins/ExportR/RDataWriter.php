@@ -1,4 +1,5 @@
 <?php
+
 Yii::import('application.helpers.admin.export.*');
 class RDataWriter extends CsvWriter
 {
@@ -17,7 +18,7 @@ class RDataWriter extends CsvWriter
         parent::init($survey, $sLanguageCode, $oOptions);
 
         // Change filename
-        $this->csvFilename = 'survey_'.$survey->id.'_R_data_file.csv';
+        $this->csvFilename = 'survey_' . $survey->id . '_R_data_file.csv';
         // Skip the first line with headers
         $this->doHeaders = true;
 

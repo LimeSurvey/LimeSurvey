@@ -31,7 +31,7 @@ class QuestionAdministrationController extends LSBaseController
      * This part comes from _renderWrappedTemplate
      *
      * @param string $view View
-     * 
+     *
      * @return bool
      */
     protected function beforeRender($view)
@@ -170,7 +170,7 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-       $questionTemplate = 'core';
+        $questionTemplate = 'core';
         if ($question->qid !== 0) {
             $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
         }
@@ -288,8 +288,8 @@ class QuestionAdministrationController extends LSBaseController
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
-        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title.
-            " (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title .
+            " (" . gT("ID") . ":" . $iSurveyID . ")";
 
         // The DataProvider will be build from the Question model, search method
         $model = new Question('search');
@@ -404,14 +404,18 @@ class QuestionAdministrationController extends LSBaseController
             );
 
             // save advanced attributes default values for given question type
-            if (array_key_exists('save_as_default', $questionData['question'])
-                && $questionData['question']['save_as_default'] == 'Y') {
+            if (
+                array_key_exists('save_as_default', $questionData['question'])
+                && $questionData['question']['save_as_default'] == 'Y'
+            ) {
                 SettingsUser::setUserSetting(
                     'question_default_values_' . $questionData['question']['type'],
                     ls_json_encode($questionData['advancedSettings'])
                 );
-            } elseif (array_key_exists('clear_default', $questionData['question'])
-                && $questionData['question']['clear_default'] == 'Y') {
+            } elseif (
+                array_key_exists('clear_default', $questionData['question'])
+                && $questionData['question']['clear_default'] == 'Y'
+            ) {
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
@@ -444,7 +448,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->refresh();
             $tabOverviewEditorValue = $request->getPost('tabOverviewEditor');
             //only those two values are valid
-            if(!($tabOverviewEditorValue==='overview' || $tabOverviewEditorValue==='editor')){
+            if (!($tabOverviewEditorValue === 'overview' || $tabOverviewEditorValue === 'editor')) {
                 $tabOverviewEditorValue = 'overview';
             }
 
@@ -1049,14 +1053,14 @@ class QuestionAdministrationController extends LSBaseController
 
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             $fatalerror = sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                ) . '<br>';
+                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
+                getMaximumFileUploadSize() / 1024 / 1024
+            ) . '<br>';
         } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
             $fatalerror = gT(
-                    "An error occurred uploading your file."
+                "An error occurred uploading your file."
                     . " This may be caused by incorrect permissions for the application /tmp folder."
-                ) . '<br>';
+            ) . '<br>';
         }
 
         // validate that we have a SID and GID
@@ -1179,10 +1183,14 @@ class QuestionAdministrationController extends LSBaseController
         ];
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $this->createUrl("questionAdministration/view",
-            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]);
-        $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl("questionAdministration/view",
-            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]);
+        $this->createUrl(
+            "questionAdministration/view",
+            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]
+        );
+        $aData['questiongroupbar']['closebutton']['url'] = $this->createUrl(
+            "questionAdministration/view",
+            ["surveyid" => $iSurveyID , "gid" => $gid , "qid" => $qid]
+        );
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
@@ -1281,27 +1289,27 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(405, gT("Invalid action"));
         }
 
-		if (empty($redirectTo)) {
-			$redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
-		}
-		if ($redirectTo == 'groupoverview') {
-			$redirect = Yii::app()->createUrl(
-				'questionGroupsAdministration/view/',
-				[
-					'surveyid' => $surveyid,
-					'gid' => $oQuestion->gid,
-					'landOnSideMenuTab' => 'structure'
-				]
-			);
-		} else {
-			$redirect = Yii::app()->createUrl(
-				'questionAdministration/listQuestions/',
-				[
-					'surveyid' => $surveyid,
-					'landOnSideMenuTab' => 'settings'
-				]
-			);
-		}
+        if (empty($redirectTo)) {
+            $redirectTo = Yii::app()->getRequest()->getPost('redirectTo', 'questionlist');
+        }
+        if ($redirectTo == 'groupoverview') {
+            $redirect = Yii::app()->createUrl(
+                'questionGroupsAdministration/view/',
+                [
+                    'surveyid' => $surveyid,
+                    'gid' => $oQuestion->gid,
+                    'landOnSideMenuTab' => 'structure'
+                ]
+            );
+        } else {
+            $redirect = Yii::app()->createUrl(
+                'questionAdministration/listQuestions/',
+                [
+                    'surveyid' => $surveyid,
+                    'landOnSideMenuTab' => 'settings'
+                ]
+            );
+        }
 
 
         LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
@@ -1423,9 +1431,11 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionAjaxLoadPositionWidget($gid, $classes = '')
     {
-        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' =>$gid]);
-        if (is_a($oQuestionGroup, 'QuestionGroup') &&
-            Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')) {
+        $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', [':gid' => $gid]);
+        if (
+            is_a($oQuestionGroup, 'QuestionGroup') &&
+            Permission::model()->hasSurveyPermission($oQuestionGroup->sid, 'surveycontent', 'read')
+        ) {
             $aOptions = [
                 'display'           => 'form_group',
                 'oQuestionGroup'    => $oQuestionGroup,
@@ -1592,7 +1602,8 @@ class QuestionAdministrationController extends LSBaseController
             if (!empty($oldQuestion)) {
                 Yii::app()->user->setFlash('error', gT("Duplicate question code"));
                 $this->redirect(
-                    $this->createUrl('surveyAdministration/view/',
+                    $this->createUrl(
+                        'surveyAdministration/view/',
                         [
                             'surveyid' => $surveyId,
                         ]
@@ -1606,14 +1617,14 @@ class QuestionAdministrationController extends LSBaseController
             $copyQuestionValues->setQuestionGroupId((int)Yii::app()->request->getParam('gid'));
             $copyQuestionValues->setQuestiontoCopy($oQuestion);
             $questionPosition = Yii::app()->request->getParam('questionposition');
-            if ($questionPosition==='') { //this means "at the end"
+            if ($questionPosition === '') { //this means "at the end"
                 $questionPosition = -1; //integer indicator for "end"
             }
             //first ensure that all questions for the group have a question_order>0 and possibly set to this state
             Question::setQuestionOrderForGroup($questionGroupId);
             switch ((int)$questionPosition) {
                 case -1: //at the end
-                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) +1;
+                    $newQuestionPosition = Question::getHighestQuestionOrderNumberInGroup($questionGroupId) + 1;
                     break;
                 case 0: //at beginning
                     //set all existing order numbers to +1, and the copied question to order number 1
@@ -1634,7 +1645,8 @@ class QuestionAdministrationController extends LSBaseController
                 App()->user->setFlash('success', gT("Saved copied question"));
                 $newQuestion = $copyQuestionService->getNewCopiedQuestion();
                 $this->redirect(
-                    $this->createUrl('questionAdministration/view/',
+                    $this->createUrl(
+                        'questionAdministration/view/',
                         array(
                             'surveyid' => $surveyId,
                             'gid' => $newQuestion->gid,
@@ -1707,18 +1719,20 @@ class QuestionAdministrationController extends LSBaseController
         $result = [];
         $languages = [];
 
-        if($labelSet !== null) {
+        if ($labelSet !== null) {
             $usedLanguages = explode(' ', $labelSet->languages);
 
             foreach ($usedLanguages as $sLanguage) {
                 $result[$sLanguage] = array_map(
-                    function($attribute) { return \viewHelper::flatten($attribute); },
+                    function ($attribute) {
+                        return \viewHelper::flatten($attribute);
+                    },
                     $labelSet->attributes
                 );
                 foreach ($labelSet->labels as $oLabel) {
                     $result[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
                 };
-                $languages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+                $languages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
             };
         }
 
@@ -1747,12 +1761,12 @@ class QuestionAdministrationController extends LSBaseController
      */
     public function actionGetLabelsetPicker($sid, $match = 0)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         // TODO: Always null
         $language = null;
         if ($match === 1) {
             $criteria->addCondition('languages LIKE :language');
-            $criteria->params = [':language' => '%'.$language.'%'];
+            $criteria->params = [':language' => '%' . $language . '%'];
         }
 
         $labelSets = LabelSet::model()->findAll($criteria);
@@ -1760,7 +1774,9 @@ class QuestionAdministrationController extends LSBaseController
         $result = [];
         foreach ($labelSets as $labelSet) {
             $result[] = array_map(
-                function($attribute) { return \viewHelper::flatten($attribute); },
+                function ($attribute) {
+                    return \viewHelper::flatten($attribute);
+                },
                 $labelSet->attributes
             );
         }
@@ -1793,14 +1809,14 @@ class QuestionAdministrationController extends LSBaseController
         $labelSetLangauges = explode(' ', $labelSet->languages);
         $errorMessages = [];
         if ($checkAssessments && $label) {
-            $errorMessages[] = gT('The existing label set has assessment values assigned.').'<strong>'.gT('If you replace the label set the existing asssessment values will be lost.').'</strong>';
+            $errorMessages[] = gT('The existing label set has assessment values assigned.') . '<strong>' . gT('If you replace the label set the existing asssessment values will be lost.') . '</strong>';
         }
         if (count(array_diff($labelSetLangauges, $languages))) {
-            $errorMessages[] = gT('The existing label set has different/more languages.').'<strong>'.gT('If you replace the label set these translations will be lost.').'</strong>';
+            $errorMessages[] = gT('The existing label set has different/more languages.') . '<strong>' . gT('If you replace the label set these translations will be lost.') . '</strong>';
         }
         if (count($errorMessages)) {
             foreach ($errorMessages as $errorMessage) {
-                echo  $errorMessage.'<br>';
+                echo  $errorMessage . '<br>';
             }
             eT('Do you really want to continue?');
         } else {
@@ -1825,12 +1841,13 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
      */
-    private function getSurveyIdFromGetRequest(){
+    private function getSurveyIdFromGetRequest()
+    {
         $surveyId = Yii::app()->request->getParam('sid');
-        if($surveyId === null){
+        if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('surveyid');
         }
-        if($surveyId === null){
+        if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('iSurveyID');
         }
 
@@ -1862,10 +1879,12 @@ class QuestionAdministrationController extends LSBaseController
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
             // Only set the other state for question types that have this attribute
-            if (($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
+            if (
+                ($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
                 || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN)
                 || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
-                || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)) {
+                || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)
+            ) {
                 $oQuestion->other = $sOther;
                 $oQuestion->save();
             }
@@ -2024,8 +2043,10 @@ class QuestionAdministrationController extends LSBaseController
             }
 
             // If there are subquestions and no answerscales
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] > 0) {
+            if (
+                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
+                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] > 0
+            ) {
                 for ($scale_id = 0; $scale_id < $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions']; $scale_id++) {
                     $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id] = [];
 
@@ -2077,8 +2098,10 @@ class QuestionAdministrationController extends LSBaseController
                     }
                 }
             }
-            if ($aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
-                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] == 0) {
+            if (
+                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['answerscales'] == 0 &&
+                $aQuestionTypeMetadata[$aQuestionAttributes['type']]['subquestions'] == 0
+            ) {
                 $defaultvalue = DefaultValue::model()
                     ->with('defaultvaluel10ns')
                     ->find(
@@ -2349,7 +2372,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($highestOrderNumber === null) { //this means there is no question inside this group ...
             $oQuestion->question_order = Question::START_SORTING_VALUE;
         } else {
-            $oQuestion->question_order = $highestOrderNumber +1;
+            $oQuestion->question_order = $highestOrderNumber + 1;
         }
 
 
@@ -2488,11 +2511,13 @@ class QuestionAdministrationController extends LSBaseController
             }
             if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                 $oQuestion->$sAttributeKey = $attributeValue;
-            } elseif (!QuestionAttribute::model()->setQuestionAttribute(
-                $oQuestion->qid,
-                $sAttributeKey,
-                $attributeValue
-            )) {
+            } elseif (
+                !QuestionAttribute::model()->setQuestionAttribute(
+                    $oQuestion->qid,
+                    $sAttributeKey,
+                    $attributeValue
+                )
+            ) {
                 throw new CHttpException(500, gT("Could not store general options"));
             }
         }
@@ -2529,8 +2554,10 @@ class QuestionAdministrationController extends LSBaseController
 
                 // Set default value if empty.
                 // TODO: Default value
-                if ($newValue === ""
-                    && isset($attributeValue['aFormElementOptions']['default'])) {
+                if (
+                    $newValue === ""
+                    && isset($attributeValue['aFormElementOptions']['default'])
+                ) {
                     $newValue = $attributeValue['aFormElementOptions']['default'];
                 }
 
@@ -2539,22 +2566,26 @@ class QuestionAdministrationController extends LSBaseController
                         if ($lngKey === 'expression') {
                             continue;
                         }
-                        if (!QuestionAttribute::model()->setQuestionAttributeWithLanguage(
-                            $oQuestion->qid,
-                            $sAttributeKey,
-                            $content,
-                            $lngKey
-                        )) {
+                        if (
+                            !QuestionAttribute::model()->setQuestionAttributeWithLanguage(
+                                $oQuestion->qid,
+                                $sAttributeKey,
+                                $content,
+                                $lngKey
+                            )
+                        ) {
                             throw new CHttpException(500, gT("Could not store advanced options"));
                         }
                     }
                 } elseif (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                     $oQuestion->$sAttributeKey = $newValue;
-                } elseif (!QuestionAttribute::model()->setQuestionAttribute(
-                    $oQuestion->qid,
-                    $sAttributeKey,
-                    $newValue
-                )) {
+                } elseif (
+                    !QuestionAttribute::model()->setQuestionAttribute(
+                        $oQuestion->qid,
+                        $sAttributeKey,
+                        $newValue
+                    )
+                ) {
                     throw new CHttpException(500, gT("Could not store advanced options"));
                 }
             }
@@ -2824,7 +2855,8 @@ class QuestionAdministrationController extends LSBaseController
                 $exists = false;
                 foreach ($dataSet as $scaleId => $aAnsweroptions) {
                     foreach ($aAnsweroptions as $i => $aAnsweroptionDataSet) {
-                        if (((is_numeric($aAnsweroptionDataSet['aid'])
+                        if (
+                            ((is_numeric($aAnsweroptionDataSet['aid'])
                                     && $oAnsweroption->aid == $aAnsweroptionDataSet['aid'])
                                 || $oAnsweroption->code == $aAnsweroptionDataSet['code'])
                             && ($oAnsweroption->scale_id == $scaleId)

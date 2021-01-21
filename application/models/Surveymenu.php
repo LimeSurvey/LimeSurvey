@@ -41,14 +41,14 @@ class Surveymenu extends LSActiveRecord
         return array(
             array('changed_at, name', 'required'),
             array('name', 'unique'),
-            array('ordering, level, changed_by, created_by', 'numerical', 'integerOnly'=>true),
+            array('ordering, level, changed_by, created_by', 'numerical', 'integerOnly' => true),
             array('parent_id, survey_id, user_id', 'default', 'value' => null),
-            array('title, position', 'length', 'max'=>255),
-            array('name', 'length', 'max'=>128),
+            array('title, position', 'length', 'max' => 255),
+            array('name', 'length', 'max' => 128),
             array('description, created_at', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, parent_id, survey_id, user_id, ordering, level, position, name, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
+            array('id, parent_id, survey_id, user_id, ordering, level, position, name, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on' => 'search'),
         );
     }
 
@@ -83,12 +83,12 @@ class Surveymenu extends LSActiveRecord
         $oSurveymenu->created_by = Yii::app()->user->getId();
 
         $oSurveymenu->save();
-        return Surveymenu::model()->find('name=:name', [':name'=> $menuArray['name']])->id;
+        return Surveymenu::model()->find('name=:name', [':name' => $menuArray['name']])->id;
     }
 
     public static function staticRemoveMenu($menuName, $recursive = false)
     {
-        $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
+        $oSurveymenu = Surveymenu::model()->find('name=:name', [':name' => $menuName]);
 
         if ($recursive !== true && count($oSurveymenu->surveymenuEntries) > 0) {
             return false;
@@ -102,15 +102,15 @@ class Surveymenu extends LSActiveRecord
     }
 
     public function getMenuesForGlobalSettings()
-    { 
+    {
         $oSettingsMenu = Surveymenu::model()->findByPk(1);
         $aResultCollected = $this->createSurveymenuArray([$oSettingsMenu], false);
         $resultMenu = $aResultCollected[1];
         $resultMenu['entries'] = array_filter(
-            $resultMenu['entries'], 
+            $resultMenu['entries'],
             function ($entry) {
                 //@TODO add a database hook to make this more abstract
-                return in_array($entry['name'],  ['generalsettings','presentation','tokens','notification','publication']);
+                return in_array($entry['name'], ['generalsettings','presentation','tokens','notification','publication']);
             }
         );
 
@@ -130,7 +130,7 @@ class Surveymenu extends LSActiveRecord
      * @param null $oSurvey
      * @return array
      */
-    public function createSurveymenuArray($oSurveyMenuObjects, $collapsed=false, $oSurvey=null)
+    public function createSurveymenuArray($oSurveyMenuObjects, $collapsed = false, $oSurvey = null)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
@@ -142,22 +142,22 @@ class Surveymenu extends LSActiveRecord
             foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
                 //Skip menuentry if not activated in collapsed mode
-                if ($collapsed && $aEntry['showincollapse'] == 0 ) {
+                if ($collapsed && $aEntry['showincollapse'] == 0) {
                     continue;
                 }
 
                 //Skip menuentry if no permission
-                 if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
-                     $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
-                    if($inArray) {
+                if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])) {
+                    $inArray = array_search($aEntry['permission'], array_keys(Permission::getGlobalBasePermissions()));
+                    if ($inArray) {
                         $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
-                    } else if($oSurvey !== null){
+                    } elseif ($oSurvey !== null) {
                         $hasPermission = Permission::model()->hasSurveyPermission($oSurvey->sid, $aEntry['permission'], $aEntry['permission_grade']);
                     } else {
                         $hasPermission = true;
                     }
 
-                    if(!$hasPermission) {
+                    if (!$hasPermission) {
                         continue;
                     }
                 }
@@ -202,9 +202,9 @@ class Surveymenu extends LSActiveRecord
         return $aResultCollected;
     }
 
-    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
+    public function getSurveymenuSubmenus($oParentSurveymenu, $collapsed = false)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
         $criteria->addCondition('parent_id=:parentid');
         $criteria->addCondition('level=:level');
@@ -216,7 +216,7 @@ class Surveymenu extends LSActiveRecord
         $criteria->params = [
             ':surveyid' => $oParentSurveymenu->survey_id,
             ':parentid' =>  $oParentSurveymenu->id,
-            ':level'=> ($oParentSurveymenu->level + 1)
+            ':level' => ($oParentSurveymenu->level + 1)
         ];
 
         $oMenus = Surveymenu::model()->findAll($criteria);
@@ -225,20 +225,20 @@ class Surveymenu extends LSActiveRecord
         return $aResultCollected;
     }
 
-    public function getDefaultSurveyMenus($position = '', $oSurvey=null)
+    public function getDefaultSurveyMenus($position = '', $oSurvey = null)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->condition = 'survey_id IS NULL AND (parent_id IS NULL OR parent_id=0)';
-        $collapsed = $position==='collapsed';
+        $collapsed = $position === 'collapsed';
 
         if ($position != '' && !$collapsed) {
             $criteria->condition .= ' AND position=:position';
-            $criteria->params = array(':position'=>$position);
+            $criteria->params = array(':position' => $position);
         }
 
         if ($collapsed) {
             $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
-            $criteria->params = array(':position'=>$position);
+            $criteria->params = array(':position' => $position);
             $collapsed = true;
         }
 
@@ -256,7 +256,7 @@ class Surveymenu extends LSActiveRecord
         ];
         foreach ($oSurveymenus as $oSurveymenu) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-            $options[''.($oSurveymenu->id).''] = '('.$oSurveymenu->id.') '.$oSurveymenu->title;
+            $options['' . ($oSurveymenu->id) . ''] = '(' . $oSurveymenu->id . ') ' . $oSurveymenu->title;
         }
         //return join('\n',$options);
         return $options;
@@ -294,7 +294,7 @@ class Surveymenu extends LSActiveRecord
 
     public function getNextOrderPosition()
     {
-        $oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id', array('parent_id'=>0));
+        $oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id', array('parent_id' => 0));
         return count($oSurveymenus);
     }
 
@@ -328,19 +328,19 @@ class Surveymenu extends LSActiveRecord
     {
         return array(
             'id' => 'ID',
-            'parent_id'		=> gT('Parent'),
-            'survey_id'		=> gT('Survey'),
-            'user_id' 		=> gT('User'),
-            'ordering' 		=> gT('Order'),
-            'level' 		=> gT('Level'),
-            'name' 		    => gT('Name'),
-            'title' 		=> gT('Title'),
-            'position' 		=> gT('Position'),
-            'description'	=> gT('Description'),
-            'changed_at'	=> gT('Changed on'),
-            'changed_by'	=> gT('Changed by'),
-            'created_at'	=> gT('Created on'),
-            'created_by'	=> gT('Created by'),
+            'parent_id'     => gT('Parent'),
+            'survey_id'     => gT('Survey'),
+            'user_id'       => gT('User'),
+            'ordering'      => gT('Order'),
+            'level'         => gT('Level'),
+            'name'          => gT('Name'),
+            'title'         => gT('Title'),
+            'position'      => gT('Position'),
+            'description'   => gT('Description'),
+            'changed_at'    => gT('Changed on'),
+            'changed_by'    => gT('Changed by'),
+            'created_at'    => gT('Created on'),
+            'created_by'    => gT('Created by'),
         );
     }
 
@@ -426,16 +426,16 @@ class Surveymenu extends LSActiveRecord
                 'type' => 'raw'
             ),
             // array(
-            // 	'name' => 'changed_at',
+            //  'name' => 'changed_at',
             // ),
             // array(
-            // 	'name' => 'changed_by',
+            //  'name' => 'changed_by',
             // ),
             // array(
-            // 	'name' => 'created_at',
+            //  'name' => 'created_at',
             // ),
             // array(
-            // 	'name' => 'created_by',
+            //  'name' => 'created_by',
             // ),
         );
 
@@ -458,7 +458,7 @@ class Surveymenu extends LSActiveRecord
         $criteria->addCondition(['position=:position']);
         $criteria->addCondition(['ordering=:ordering']);
         $criteria->addCondition(['id!=:id']);
-        $criteria->params = ['position' => $this->position, 'ordering' => (int) $this->ordering, 'id'=> (int) $this->id];
+        $criteria->params = ['position' => $this->position, 'ordering' => (int) $this->ordering, 'id' => (int) $this->id];
         $criteria->limit = 1;
 
         $collidingMenu = Surveymenu::model()->find($criteria);
@@ -549,7 +549,7 @@ class Surveymenu extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         //Don't show main menu when not superadmin
         if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -575,7 +575,7 @@ class Surveymenu extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
             'pagination' => array(
                 'pageSize' => $pageSize
             )

@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -34,15 +32,15 @@ class RenderEquation extends QuestionBaseRenderer
         $inputnames = [];
 
         $sEquation  = $this->setDefaultIfEmpty($this->getQuestionAttribute('equation'), $this->aFieldArray[3]);
-        $sValue     = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
+        $sValue     = htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
 
         $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, /* is this needed ? */
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA, /* is this needed ? */
             'sValue'    =>  $sValue,
             'sEquation' => LimeExpressionManager::ProcessString($sEquation, $this->oQuestion->qid),
-            'coreClass'=> 'ls-answers answer-item hidden-item  '.$sCoreClasses,
+            'coreClass' => 'ls-answers answer-item hidden-item  ' . $sCoreClasses,
             'insideClass' => 'em_equation',
             ), true);
             

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -19,8 +21,8 @@
  *
  * This controller performs quota actions
  *
- * @package		LimeSurvey
- * @subpackage	Backend
+ * @package     LimeSurvey
+ * @subpackage  Backend
  */
 class quotas extends Survey_Common_Action
 {
@@ -110,11 +112,13 @@ class quotas extends Survey_Common_Action
                     }
                     // render form again to display errorSummary
                     if (!empty($errors)) {
-                        $this->getController()->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
+                        $this->getController()->renderPartial(
+                            '/admin/quotas/viewquotas_massive_langsettings_form',
                             array(
-                                'oQuota'=>$oQuota,
-                                'aQuotaLanguageSettings'=>$oQuotaLanguageSettings,
-                            ));
+                                'oQuota' => $oQuota,
+                                'aQuotaLanguageSettings' => $oQuotaLanguageSettings,
+                            )
+                        );
                         return;
                     }
                 }
@@ -143,14 +147,14 @@ class quotas extends Survey_Common_Action
 
         /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['subaction'] = gT("Survey quotas");
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
-        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$iSurveyID; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $iSurveyID; // Close button
         $aData['surveybar']['closebutton']['forbidden'][] = 'quotas';
 
         $totalquotas = 0;
@@ -182,14 +186,14 @@ class quotas extends Survey_Common_Action
                 $completed = 0;
                 $completed = $oQuota->completeCount;
                 $totalcompleted = $totalcompleted + $completed;
-                $csvoutput[] = $oQuota->name.",".$oQuota->qlimit.",".$completed.",".($oQuota->qlimit - $completed)."\r\n";
+                $csvoutput[] = $oQuota->name . "," . $oQuota->qlimit . "," . $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
 
                 if ($quickreport != false) {
                     continue;
                 }
 
                 // Edit URL
-                $aData['aEditUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/editquota/surveyid/".$iSurveyId, array(
+                $aData['aEditUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/editquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
                     'quota_id' => $oQuota->primaryKey,
@@ -198,7 +202,7 @@ class quotas extends Survey_Common_Action
                 ));
 
                 // Delete URL
-                $aData['aDeleteUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/delquota/surveyid/".$iSurveyId, array(
+                $aData['aDeleteUrls'][$oQuota->primaryKey] = App()->createUrl("admin/quotas/sa/delquota/surveyid/" . $iSurveyId, array(
                     'sid' => $iSurveyId,
                     'action' => 'quotas',
                     'quota_id' => $oQuota->primaryKey,
@@ -219,11 +223,10 @@ class quotas extends Survey_Common_Action
                             ->with('questionl10ns', array('language' => $oSurvey->language))
                             ->findByPk(array('qid' => $oQuotaMember['qid'])),
                         'answer_title' => $answerText,
-                        'oQuotaMember'=>$oQuotaMember,
-                        'valid'=>isset($answerText),
+                        'oQuotaMember' => $oQuotaMember,
+                        'valid' => isset($answerText),
                     );
                 }
-
             }
             $aData['totalquotas'] = $totalquotas;
             $aData['totalcompleted'] = $totalcompleted;
@@ -248,9 +251,9 @@ class quotas extends Survey_Common_Action
             $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
         } else {
             /* Export a quickly done csv file */
-            header("Content-Disposition: attachment; filename=quotas-survey".$iSurveyId.".csv");
+            header("Content-Disposition: attachment; filename=quotas-survey" . $iSurveyId . ".csv");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
-            echo gT("Quota name").",".gT("Limit").",".gT("Completed").",".gT("Remaining")."\r\n";
+            echo gT("Quota name") . "," . gT("Limit") . "," . gT("Completed") . "," . gT("Remaining") . "\r\n";
             foreach ($csvoutput as $line) {
                 echo $line;
             }
@@ -362,10 +365,10 @@ class quotas extends Survey_Common_Action
         $aViewUrls[] = 'editquota_view';
 
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
-        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $iSurveyId; // Close button
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['topBar']['showSaveButton'] = true;
 
@@ -392,7 +395,6 @@ class quotas extends Survey_Common_Action
         $aData['oQuota'] = $quota;
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
-
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
                 $aViewUrls[] = 'newanswererror_view';
@@ -423,8 +425,8 @@ class quotas extends Survey_Common_Action
         }
 
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
+        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $iSurveyId; // Close button
         $aData['surveybar']['closebutton']['forbidden'][] = 'new_answer';
 
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
@@ -443,9 +445,9 @@ class quotas extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['topBar']['showSaveButton'] = true;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId; // Close button
+        $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $iSurveyId; // Close button
 
         $oQuota = new Quota();
         $oQuota->sid = $oSurvey->primaryKey;
@@ -539,7 +541,6 @@ class quotas extends Survey_Common_Action
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
         } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
-
             $aAnsResults = Answer::model()
                 ->with('answerl10ns', array('language' => $sBaseLang))
                 ->findAllByAttributes(array('qid' => $iQuestionId));
@@ -549,7 +550,6 @@ class quotas extends Survey_Common_Action
             foreach ($aAnsResults as $aDbAnsList) {
                 $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList->answerl10ns[$sBaseLang]->answer, 'code' => $aDbAnsList['code']);
             }
-
         } elseif ($aQuestionType == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
             $aAnsResults = Question::model()
                 ->with('questionl10ns', array('language' => $sBaseLang))
@@ -559,8 +559,8 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 6; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
-                    $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
+                    $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == Question::QT_B_ARRAY_10_CHOICE_QUESTIONS) {
@@ -572,8 +572,8 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList) {
                 for ($x = 1; $x < 11; $x++) {
-                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40).' ['.$x.']', 'code' => $aDbAnsList['title']);
-                    $aAnswerList[$aDbAnsList['title']."-".$x] = $tmparrayans;
+                    $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList->questionl10ns[$sBaseLang]->question, 0, 40) . ' [' . $x . ']', 'code' => $aDbAnsList['title']);
+                    $aAnswerList[$aDbAnsList['title'] . "-" . $x] = $tmparrayans;
                 }
             }
         } elseif ($aQuestionType == Question::QT_Y_YES_NO_RADIO) {
@@ -583,7 +583,7 @@ class quotas extends Survey_Common_Action
         } elseif ($aQuestionType == Question::QT_I_LANGUAGE) {
             $slangs = $oSurvey->allLanguages;
 
-            foreach($slangs as $key => $value) {
+            foreach ($slangs as $key => $value) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
                 $aAnswerList[$value] = $tmparrayans;
             }
@@ -612,8 +612,7 @@ class quotas extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'quotas.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'quotas.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
 }

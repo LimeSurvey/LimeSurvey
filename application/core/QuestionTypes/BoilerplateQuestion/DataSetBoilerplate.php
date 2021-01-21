@@ -1,5 +1,6 @@
 <?php
 
+class DataSetBoilerplate extends QuestionBaseDataSet
+{
 
-
-class DataSetBoilerplate extends QuestionBaseDataSet {}
+}

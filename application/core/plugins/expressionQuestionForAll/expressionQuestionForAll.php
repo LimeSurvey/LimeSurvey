@@ -1,8 +1,9 @@
 <?php
+
 /**
  * expressionQuestionForAll : Add QCODE.question for question with subquestion for expression Manager.
  * This don't manage subquestion Scale Y or Scale X
- * 
+ *
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 LimeSurvey - Denis Chenu
  * @license GPL version 3
@@ -23,15 +24,15 @@
  */
 class expressionQuestionForAll extends PluginBase
 {
-    static protected $description = 'Add QCODE.question for question with subquestion for expression Manager.';
-    static protected $name = 'expressionQuestionForAll';
+    protected static $description = 'Add QCODE.question for question with subquestion for expression Manager.';
+    protected static $name = 'expressionQuestionForAll';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
     {
-        $this->subscribe('setVariableExpressionEnd','addQuestionAll');
+        $this->subscribe('setVariableExpressionEnd', 'addQuestionAll');
     }
 
     /**
@@ -57,16 +58,16 @@ class expressionQuestionForAll extends PluginBase
             \QuestionType::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             \QuestionType::QT_Q_MULTIPLE_SHORT_TEXT,
         );
-        $criteria = New CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->select = array('qid','gid','title');
-        $criteria->compare('sid',$surveyId);
-        $criteria->compare('parent_qid',0);
-        $criteria->addInCondition('type',$aQuestionManaged);
+        $criteria->compare('sid', $surveyId);
+        $criteria->compare('parent_qid', 0);
+        $criteria->addInCondition('type', $aQuestionManaged);
         $aoQuestions = \Question::model()->findAll($criteria);
         
         $newKnownVars = array();
-        foreach($aoQuestions as $oQuestion) {
-            $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid"=>$oQuestion->qid,":language" => $language));
+        foreach ($aoQuestions as $oQuestion) {
+            $oQuestionL10n = \QuestionL10n::model()->find("qid = :qid and language = :language", array(":qid" => $oQuestion->qid,":language" => $language));
             $newKnownVars[$oQuestion->title] = array(
                 'code' => '',
                 'jsName_on' => '',

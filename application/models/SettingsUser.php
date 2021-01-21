@@ -34,14 +34,14 @@ class SettingsUser extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('uid, stg_name', 'required'),
-            array('uid', 'numerical', 'integerOnly'=>true),
-            array('entity', 'length', 'max'=>15),
-            array('entity_id', 'length', 'max'=>31),
-            array('stg_name', 'length', 'max'=>63),
+            array('uid', 'numerical', 'integerOnly' => true),
+            array('entity', 'length', 'max' => 15),
+            array('entity_id', 'length', 'max' => 31),
+            array('stg_name', 'length', 'max' => 63),
             array('stg_value', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('uid, entity, entity_id, stg_name, stg_value', 'safe', 'on'=>'search'),
+            array('uid, entity, entity_id, stg_name, stg_value', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,7 +84,9 @@ class SettingsUser extends LSActiveRecord
 
     public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
     {
-        if ($uid === null) { $uid = Yii::app()->user->getId(); }
+        if ($uid === null) {
+            $uid = Yii::app()->user->getId();
+        }
 
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
 
@@ -115,7 +117,9 @@ class SettingsUser extends LSActiveRecord
 
     public static function deleteUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
     {
-        if ($uid === null) { $uid = Yii::app()->user->getId(); }
+        if ($uid === null) {
+            $uid = Yii::app()->user->getId();
+        }
 
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
 
@@ -124,7 +128,6 @@ class SettingsUser extends LSActiveRecord
         }
 
         return false;
-
     }
 
     /**
@@ -138,8 +141,10 @@ class SettingsUser extends LSActiveRecord
      */
     public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
     {
-        if ($uid === null) { $uid = Yii::app()->user->getId(); }
-        $searchCriteria = new CDbCriteria;
+        if ($uid === null) {
+            $uid = Yii::app()->user->getId();
+        }
+        $searchCriteria = new CDbCriteria();
         $searchParams = [];
 
         $searchCriteria->addCondition('uid=:uid');
@@ -176,16 +181,16 @@ class SettingsUser extends LSActiveRecord
      * @param integer|null $entity_id | optional defaults to 'null'
      * @return mixed|null  The current settings value or null id there is no setting
      */
-    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default=null)
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null, $default = null)
     {
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
         return $setting != null ? $setting->getAttribute('stg_value') : $default;
     }
 
-    public static function applyBaseSettings($iUid) 
+    public static function applyBaseSettings($iUid)
     {
         $defaults = LsDefaultDataSets::getDefaultUserSettings();
-        foreach($defaults as $default) {
+        foreach ($defaults as $default) {
             self::setUserSetting($default['stg_name'], $default['stg_value'], $iUid);
         }
     }
@@ -206,7 +211,7 @@ class SettingsUser extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('uid', $this->uid);
         $criteria->compare('entity', $this->entity, true);
@@ -215,7 +220,7 @@ class SettingsUser extends LSActiveRecord
         $criteria->compare('stg_value', $this->stg_value, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -121,13 +122,13 @@ class TemplateConfiguration extends TemplateConfig
         // will receive user inputs.
         return array(
             array('template_name', 'required'),
-            array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
-            array('template_name', 'length', 'max'=>150),
-            array('cssframework_name', 'length', 'max'=>45),
+            array('id, sid, gsid', 'numerical', 'integerOnly' => true),
+            array('template_name', 'length', 'max' => 150),
+            array('cssframework_name', 'length', 'max' => 45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load',
                 'safe'),
             // The following rule is used by search().
-            array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
+            array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on' => 'search'),
         );
     }
 
@@ -145,7 +146,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @inheritdoc */
     public function defaultScope()
     {
-        return array('order'=> App()->db->quoteColumnName($this->getTableAlias(false, false).'.template_name'));
+        return array('order' => App()->db->quoteColumnName($this->getTableAlias(false, false) . '.template_name'));
     }
 
     /**
@@ -186,7 +187,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oInstance = self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
-            array(':template_name'=>$sTemplateName)
+            array(':template_name' => $sTemplateName)
         );
 
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted),
@@ -328,8 +329,8 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
                 $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])
-                    ?(array)json_decode($oAttributes['options'])
-                    :$oAttributes['options'];
+                    ? (array)json_decode($oAttributes['options'])
+                    : $oAttributes['options'];
             }
         }
 
@@ -446,10 +447,10 @@ class TemplateConfiguration extends TemplateConfig
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON '.
-            App()->db->quoteColumnName("t.template_name").
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
+            App()->db->quoteColumnName("t.template_name") .
             ' = template.name';
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
@@ -468,7 +469,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('packages_to_load', $this->packages_to_load, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -483,10 +484,10 @@ class TemplateConfiguration extends TemplateConfig
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->join = 'INNER JOIN {{templates}} AS template ON '.
-            App()->db->quoteColumnName("t.template_name").
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON ' .
+            App()->db->quoteColumnName("t.template_name") .
             ' = template.name';
         $criteria->together = true;
         //Don't show surveyspecifi settings on the overview
@@ -522,9 +523,9 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-            'pagination'=>array(
-                'pageSize'=>$pageSizeTemplateView,
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSizeTemplateView,
             ),
         ));
     }
@@ -544,9 +545,9 @@ class TemplateConfiguration extends TemplateConfig
           // It should never happen, but let's avoid to anoy final user in production mode :)
             if (YII_DEBUG) {
                 App()->setFlashMessage(
-                    "Twig error in template ".
-                    $this->template->name.
-                    " description <br> Please fix it and reset the theme <br>".
+                    "Twig error in template " .
+                    $this->template->name .
+                    " description <br> Please fix it and reset the theme <br>" .
                     $e,
                     'error'
                 );
@@ -625,7 +626,8 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (empty($this->bTemplateCheckResult)) {
             $this->bTemplateCheckResult = true;
-            if (!is_object($this->template) ||
+            if (
+                !is_object($this->template) ||
                 (is_object($this->template) && !Template::checkTemplateXML($this->template->folder))
             ) {
                 $this->bTemplateCheckResult = false;
@@ -647,8 +649,8 @@ class TemplateConfiguration extends TemplateConfig
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard(); // Check if  it is a CORE template
         $this->path = ($this->isStandard)
-            ? App()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder.DIRECTORY_SEPARATOR
-            : App()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->template->folder.DIRECTORY_SEPARATOR;
+            ? App()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->template->folder . DIRECTORY_SEPARATOR
+            : App()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $this->template->folder . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -663,7 +665,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function addFileReplacement($sFile, $sType)
     {
-        $sField = 'files_'.$sType;
+        $sField = 'files_' . $sType;
         $oFiles = (array) json_decode($this->$sField);
 
         $oFiles['replace'][] = $sFile;
@@ -673,7 +675,7 @@ class TemplateConfiguration extends TemplateConfig
         if ($this->save()) {
             return true;
         } else {
-            throw new Exception("could not add $sFile to  $sField replacements! ".$this->getErrors());
+            throw new Exception("could not add $sFile to  $sField replacements! " . $this->getErrors());
         }
     }
 
@@ -702,14 +704,14 @@ class TemplateConfiguration extends TemplateConfig
         /* What ? We can get but $this->getAttribute ??? */
         $gsid = App()->request->getQuery('id', null); // $this->gsid;
         // don't show any buttons if user doesn't have update permission
-        if(!Permission::model()->hasGlobalPermission('templates', 'update')) {
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             /* Global settings */
             if (empty($gsid) || App()->getController()->action->id != "surveysgroups") {
                 return '';
             }
             /* SurveysGroups settings */
             $oSurveysGroups = SurveysGroups::model()->findByPk($gsid);
-            if(empty($oSurveysGroups)) {
+            if (empty($oSurveysGroups)) {
                 return '';
             }
             if (!$oSurveysGroups->hasPermission('surveys', 'update')) {
@@ -732,7 +734,7 @@ class TemplateConfiguration extends TemplateConfig
             );
 
         $sUninstallUrl = Yii::app()->getController()->createUrl('themeOptions/uninstall/');
-        $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid"=> (int) $gsid));
+        $sResetUrl     = Yii::app()->getController()->createUrl('themeOptions/reset/', array("gsid" => (int) $gsid));
 
         $sEditorLink = "<a
             id='template_editor_link_" . $this->template_name . "'
@@ -775,25 +777,25 @@ class TemplateConfiguration extends TemplateConfig
             </a>';
 
         $sUninstallLink = '<a
-            id="remove_fromdb_link_'.$this->template_name.'"
-            href="'.$sUninstallUrl.'"
-            data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-            data-text="'.gT('This will reset all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
-            title="'.gT('Uninstall this theme').'"
+            id="remove_fromdb_link_' . $this->template_name . '"
+            href="' . $sUninstallUrl . '"
+            data-post=\'{ "templatename": "' . $this->template_name . '" }\'
+            data-text="' . gT('This will reset all the specific configurations of this theme.') . '<br>' . gT('Do you want to continue?') . '"
+            title="' . gT('Uninstall this theme') . '"
             class="btn btn-danger btn-block selector--ConfirmModal">
                 <span class="icon-trash"></span>
-                '.gT('Uninstall').'
+                ' . gT('Uninstall') . '
             </a>';
 
         $sResetLink = '<a
-                id="remove_fromdb_link_'.$this->template_name.'"
-                href="'.$sResetUrl.'"
-                data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-                data-text="'.gT('This will reload the configuration file of this theme.').'<br>'.gT('Do you want to continue?').'"
-                title="'.gT('Reset this theme').'"
+                id="remove_fromdb_link_' . $this->template_name . '"
+                href="' . $sResetUrl . '"
+                data-post=\'{ "templatename": "' . $this->template_name . '" }\'
+                data-text="' . gT('This will reload the configuration file of this theme.') . '<br>' . gT('Do you want to continue?') . '"
+                title="' . gT('Reset this theme') . '"
                 class="btn btn-warning btn-block selector--ConfirmModal">
                     <span class="icon-trash"></span>
-                    '.gT('Reset').'
+                    ' . gT('Reset') . '
             </a>';
 
         if (App()->getController()->action->id == "surveysgroups") {
@@ -809,10 +811,10 @@ class TemplateConfiguration extends TemplateConfig
                         class="btn btn-danger btn-block"
                         disabled
                         data-toggle="tooltip"
-                        title="' . gT('You cannot uninstall the default template.').'"
+                        title="' . gT('You cannot uninstall the default template.') . '"
                     >
                         <span class="icon-trash"></span>
-                        '.gT('Uninstall').'
+                        ' . gT('Uninstall') . '
                     </a>
                 ';
             }
@@ -834,8 +836,8 @@ class TemplateConfiguration extends TemplateConfig
         $filteredName = Template::templateNameFilter($this->template->name);
         $oRTemplate = $this->prepareTemplateRendering($filteredName);
 
-        $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
-        while (!file_exists($oRTemplate->path.$sOptionFile)) {
+        $sOptionFile = 'options' . DIRECTORY_SEPARATOR . 'options.twig';
+        while (!file_exists($oRTemplate->path . $sOptionFile)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
@@ -877,7 +879,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if ($this->options != 'inherit') {
             $oOptions = get_object_vars(json_decode($this->options));
-            $oTemplateConfigurationModel = new TemplateManifest;
+            $oTemplateConfigurationModel = new TemplateManifest();
             $oTemplateConfigurationModel->setBasics();
             $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options);
 
@@ -943,7 +945,7 @@ class TemplateConfiguration extends TemplateConfig
             array_shift($dir);
             array_shift($file);
         }
-        return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
+        return str_repeat('..' . DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
     }
 
     /**
@@ -969,7 +971,7 @@ class TemplateConfiguration extends TemplateConfig
             'preview' => $previewFilePath,
             'filepath' => $filePath,
             'filepathOptions' => $filePath ,
-            'filename'=>basename($file)
+            'filename' => basename($file)
         ];
     }
 
@@ -993,13 +995,13 @@ class TemplateConfiguration extends TemplateConfig
         if ($this->sid) {
             $categoryList[] = [
                 'group' => gT("Survey"),
-                'path' => App()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'
+                'path' => App()->getConfig('uploaddir') . '/surveys/' . $this->sid . '/images/'
             ];
         }
         foreach ($categoryList as $category) {
             $fileList = Template::getOtherFiles($category['path']);
             foreach ($fileList as $file) {
-                $imageInfo = $this->getImageInfo($category['path'].$file['name']);
+                $imageInfo = $this->getImageInfo($category['path'] . $file['name']);
                 if ($imageInfo) {
                     $aData['imageFileList'][] = array_merge($category, $imageInfo);
                 }
@@ -1074,7 +1076,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
         }
 
-        $sField = 'files_'.$sType;
+        $sField = 'files_' . $sType;
         $oFiles = $this->getOfiles($oTemplate, $sField);
 
         $aFiles = array();
@@ -1214,12 +1216,12 @@ class TemplateConfiguration extends TemplateConfig
     {
         $this->apiVersion       = (!empty($this->template->api_version)) ?
             $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path.$this->getTemplateForPath($this, 'view_folder')
-                ->template->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path.$this->getTemplateForPath($this, 'files_folder')
-                ->template->files_folder.DIRECTORY_SEPARATOR;
+        $this->viewPath         = $this->path . $this->getTemplateForPath($this, 'view_folder')
+                ->template->view_folder . DIRECTORY_SEPARATOR;
+        $this->filesPath        = $this->path . $this->getTemplateForPath($this, 'files_folder')
+                ->template->files_folder . DIRECTORY_SEPARATOR;
         $this->generalFilesPath = App()->getConfig("userthemerootdir")
-            .DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
+            . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();
 
@@ -1250,7 +1252,6 @@ class TemplateConfiguration extends TemplateConfig
             $this->cssFramework->name = $this->cssframework_name;
             $this->cssFramework->css  = json_decode($this->cssframework_css);
             $this->cssFramework->js   = json_decode($this->cssframework_js);
-
         } else {
             $this->cssFramework = '';
         }
@@ -1303,7 +1304,6 @@ class TemplateConfiguration extends TemplateConfig
                 } else {
                     $this->uninstallIncorectTheme($this->template_name);
                 }
-
             }
             return  $value;
         } else {
@@ -1321,7 +1321,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         if (!empty($this->template->extends)) {
             $sMotherTemplateName = (string) $this->template->extends;
-            $packages[]          = 'survey-template-'.$sMotherTemplateName;
+            $packages[]          = 'survey-template-' . $sMotherTemplateName;
         }
         return $packages;
     }
@@ -1340,7 +1340,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $this->aFrameworkAssetsToReplace[$sType] = array();
 
-        $sFieldName  = 'cssframework_'.$sType;
+        $sFieldName  = 'cssframework_' . $sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
         if (!empty($aFieldValue) && !empty($aFieldValue['replace'])) {
@@ -1427,7 +1427,6 @@ class TemplateConfiguration extends TemplateConfig
                         $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
                         return $this->oParentTemplate;
                     }
-
                 }
             }
 
@@ -1452,7 +1451,7 @@ class TemplateConfiguration extends TemplateConfig
         self::model()->updateAll(
             array('template_name' => $sNewName),
             "template_name = :oldname",
-            array(':oldname'=>$sOldName)
+            array(':oldname' => $sOldName)
         );
     }
 
@@ -1522,7 +1521,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         return self::model()->find(
             'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
-            [':template_name'=>$this->template_name]
+            [':template_name' => $this->template_name]
         );
     }
 

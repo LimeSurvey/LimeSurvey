@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Datavalueobjects;
 
 /**
@@ -106,5 +105,4 @@ class CopyQuestionValues
     {
         $this->questiontoCopy = $questiontoCopy;
     }
-
 }

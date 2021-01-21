@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -50,9 +52,8 @@ class UserInGroup extends LSActiveRecord
     {
         return array(
             array('uid, ugid', 'required'),
-            array('uid, ugid', 'numerical', 'integerOnly'=>true),
+            array('uid, ugid', 'numerical', 'integerOnly' => true),
         );
-
     }
 
     /** @inheritdoc */
@@ -106,5 +107,4 @@ class UserInGroup extends LSActiveRecord
         $data = $user->queryRow();
         return $data;
     }
-
 }

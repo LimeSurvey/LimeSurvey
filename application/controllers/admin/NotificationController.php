@@ -29,7 +29,6 @@ class NotificationController extends Survey_Common_Action
     {
         $this->checkPermission();
         if ((string) (int) $notId !== (string) $notId) {
-            
         }
         $not = Notification::model()->findByPk($notId);
         if (!$not) {
@@ -57,7 +56,7 @@ class NotificationController extends Survey_Common_Action
             throw new CHttpException(404, sprintf(gT("Notification %s not found"), $notId));
         }
         // Check if user is allowed to mark this notification as read
-        if ($not->entity=='user' && $not->entity_id<>Yii::app()->user->id) {
+        if ($not->entity == 'user' && $not->entity_id <> Yii::app()->user->id) {
             throw new CHttpException(404, sprintf(gT("Invalid notification id"), $notId));
         }
         
@@ -87,13 +86,13 @@ class NotificationController extends Survey_Common_Action
     {
         Notification::model()->deleteAll(
             'entity = :entity AND entity_id = :entity_id',
-            array(":entity"=>'user', ":entity_id"=>Yii::app()->user->id)
+            array(":entity" => 'user', ":entity_id" => Yii::app()->user->id)
         );
 
         if (is_int($surveyId)) {
             Notification::model()->deleteAll(
                 'entity = :entity AND entity_id = :entity_id',
-                array(":entity"=>'survey', ":entity_id"=>$surveyId)
+                array(":entity" => 'survey', ":entity_id" => $surveyId)
             );
         }
     }

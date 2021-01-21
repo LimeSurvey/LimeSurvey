@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -113,19 +115,19 @@ class statistics extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
 
-        $oSurvey=Survey::model()->findByPk($surveyid); 
-        if (!$oSurvey){
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if (!$oSurvey) {
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
             $this->getController()->redirect($this->getController()->createUrl("admin/index"));
-        } 
+        }
 
-        if (!$oSurvey->isActive){
+        if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$surveyid}"));
-        }        
+        }
 
         // Set language for questions and answers to base language of this survey
-        $aData['language']= $oSurvey->language;
+        $aData['language'] = $oSurvey->language;
         $language = $oSurvey->language;
 
         //Call the javascript file
@@ -327,8 +329,7 @@ class statistics extends Survey_Common_Action
 
 
 
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
-
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                     //get subqestions
                     $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1] = $result;
@@ -336,8 +337,7 @@ class statistics extends Survey_Common_Action
 
                     //----------------------- ARRAYS --------------------------
 
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-
+                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1] = $result;
@@ -413,14 +413,12 @@ class statistics extends Survey_Common_Action
                     $aData['result'][$key1] = $result;
                     break;
 
-                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
-
+                case Question::QT_1_ARRAY_MULTISCALE:
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1] = $result;
                     //loop through answers
                     foreach ($result as $key => $row) {
-
                         //check if there is a dualscale_headerA/B
                         $dshresult = QuestionAttribute::model()->getQuestionsForStatistics('value', "qid=$flt[0] AND attribute = 'dualscale_headerA'", '');
                         $aData['dshresults'][$key1][$key] = $dshresult;
@@ -437,8 +435,7 @@ class statistics extends Survey_Common_Action
                     break;
 
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
-                case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
-
+                case Question::QT_M_MULTIPLE_CHOICE:
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid = $flt[0]", 'question_order');
                     $aData['result'][$key1] = $result;
@@ -453,7 +450,6 @@ class statistics extends Survey_Common_Action
                      ! - List (Dropdown)
                      */
                 default:
-
                     //get answers
                     $result = Answer::model()->findAll("qid=" . $flt[0]);
                     $aData['result'][$key1] = $result;
@@ -506,7 +502,7 @@ class statistics extends Survey_Common_Action
         if (!function_exists("gd_info")) {
             $error .= '<br />' . gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
             $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
-        } else if (!function_exists("imageftbbox")) {
+        } elseif (!function_exists("imageftbbox")) {
             $error .= '<br />' . gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
             $error .= '<br />' . gT('visit http://us2.php.net/manual/en/ref.image.php for more information') . '<br />';
         }
@@ -585,7 +581,6 @@ class statistics extends Survey_Common_Action
             switch ($_POST['cmd']) {
                 case 'showmap':
                     if (isset($aattr['location_mapservice'])) {
-
                         $aData['mapdata'] = array(
                             "coord" => getQuestionMapData($field, $qsid),
                             "zoom" => $aattr['location_mapzoom'],
@@ -639,7 +634,6 @@ class statistics extends Survey_Common_Action
 
                     break;
                 case 'showpie':
-
                     if ($qtype == Question::QT_M_MULTIPLE_CHOICE || $qtype == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                         $aData['success'] = 0;
                         break;
@@ -678,20 +672,19 @@ class statistics extends Survey_Common_Action
         $cr_statisticsoutput = '';
 
         if (!Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')) {
-          throw new CHttpException(403, gT("You do not have permission to access this page."));
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
 
-        if (!$oSurvey){
+        if (!$oSurvey) {
             Yii::app()->setFlashMessage(gT("Invalid survey ID"), 'error');
             $this->getController()->redirect($this->getController()->createUrl("admin/index"));
+        }
 
-        } 
-
-        if (!$oSurvey->isActive){
+        if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$oSurveyid}"));
-        }        
+        }
 
 
         
@@ -717,7 +710,6 @@ class statistics extends Survey_Common_Action
                 $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
             }
             switch ($type) {
-
                     // Double scale cases
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
@@ -785,7 +777,6 @@ class statistics extends Survey_Common_Action
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
-
                     break;
 
 

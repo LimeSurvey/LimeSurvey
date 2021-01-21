@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2020 The LimeSurvey Project Team / Carsten Schmitz
@@ -357,7 +358,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 $success = $success && $PermissionManagerService->setPermissions($uid);
             }
         }
-        if($success) {
+        if ($success) {
             App()->setFlashMessage("Surveys groups permissions were successfully updated");
         } else {
             App()->setFlashMessage("An error happen when update surveys groups permissions", 'danger');
@@ -463,7 +464,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             )
         );
-        if($model->hasPermission('permission', 'update')) {
+        if ($model->hasPermission('permission', 'update')) {
             $buttons = array(
                 'savebutton' => array(
                     'form' => 'permissionsSave'

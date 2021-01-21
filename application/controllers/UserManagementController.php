@@ -1,6 +1,5 @@
 <?php
 
-
 //LSYii_Controller
 class UserManagementController extends LSBaseController
 {
@@ -82,7 +81,8 @@ class UserManagementController extends LSBaseController
      */
     public function actionAddEditUser($userid = null)
     {
-        if (($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
+        if (
+            ($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
             || ($userid !== null && !Permission::model()->hasGlobalPermission('users', 'update'))
         ) {
             return $this->renderPartial(
@@ -158,7 +158,6 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
-            
             //generate random password when password is empty
             if (empty($aUser['password'])) {
                 $newPassword = $this->getRandomPassword(8);
@@ -207,7 +206,7 @@ class UserManagementController extends LSBaseController
         for (; $times > 0; $times--) {
             $name = $this->getRandomUsername($prefix);
             $password = $this->getRandomPassword($passwordSize);
-            $oUser = new User;
+            $oUser = new User();
             $oUser->users_name = $name;
             $oUser->full_name = $name;
             $oUser->email = $email;
@@ -254,7 +253,7 @@ class UserManagementController extends LSBaseController
         $transferTo = Yii::app()->request->getPost('transfer_surveys_to');
 
         if (empty($transferTo)) {
-            // If $transferTo is empty, check if user owns a survey. 
+            // If $transferTo is empty, check if user owns a survey.
             // If so, render the "transfer to" selection screen
             $aOwnedSurveys = Survey::model()->findAllByAttributes(array('owner_id' => $userId));
             if (count($aOwnedSurveys)) {
@@ -474,8 +473,10 @@ class UserManagementController extends LSBaseController
      */
     public function actionSaveThemePermissions()
     {
-        if (!(Permission::model()->hasGlobalPermission('users', 'update') &&
-            Permission::model()->hasGlobalPermission('templates', 'update'))) {
+        if (
+            !(Permission::model()->hasGlobalPermission('users', 'update') &&
+            Permission::model()->hasGlobalPermission('templates', 'update'))
+        ) {
             return $this->renderPartial(
                 'partial/error',
                 ['errors' => [gT("You do not have permission to access this page.")], 'noButton' => true]
@@ -1160,7 +1161,6 @@ class UserManagementController extends LSBaseController
     private function createAdminUser($aUser)
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
-
             $newUser = $this->createNewUser($aUser);
             $sReturnMessage = gT('User successfully created');
             $success = true;
@@ -1276,7 +1276,7 @@ class UserManagementController extends LSBaseController
     public function sendAdminMail($aUser, $type = 'registration')
     {
         //Get email template from globalSettings
-        $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'],  $aUser['uid']);
+        $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'], $aUser['uid']);
 
         $body = "";
         switch ($type) {
@@ -1309,7 +1309,7 @@ class UserManagementController extends LSBaseController
 
         $oCurrentlyLoggedInUser = User::model()->findByPk(Yii::app()->user->id);
 
-        $mailer = new LimeMailer;
+        $mailer = new LimeMailer();
         $mailer->addAddress($aUser['email'], $aUser['full_name']);
         $mailer->Subject = $subject;
         $mailer->setFrom($oCurrentlyLoggedInUser->email, $oCurrentlyLoggedInUser->users_name);
@@ -1401,11 +1401,11 @@ class UserManagementController extends LSBaseController
 
 
     /**
-     * 
+     *
      * This function prepare the email template to send to the new created user
-     * @param string $fullname 
-     * @param string $username 
-     * @param string $password 
+     * @param string $fullname
+     * @param string $username
+     * @param string $password
      * @return mixed $aAdminEmail array with subject and email nody
      */
     public function generateAdminCreationEmail($fullname, $username, $password, $iNewUID)

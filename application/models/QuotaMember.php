@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -12,7 +14,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+     *  Files Purpose: lots of common functions
 */
 
 /**
@@ -46,7 +48,7 @@ class QuotaMember extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('code', 'required', 'on'=>array('create'))
+            array('code', 'required', 'on' => array('create'))
         );
     }
     /**
@@ -96,17 +98,17 @@ class QuotaMember extends LSActiveRecord
                 case "G":
                 case "Y":
                 case "*":
-                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid;
                     $sValue = $this->code;
                     break;
                 case "M":
-                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid . $this->code;
                     $sValue = "Y";
                     break;
                 case "A":
                 case "B":
                     $temp = explode('-', $this->code);
-                    $sFieldName = $this->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                    $sFieldName = $this->sid . 'X' . $this->question->gid . 'X' . $this->qid . $temp[0];
                     $sValue = $temp[1];
                     break;
                 default:
@@ -132,8 +134,6 @@ class QuotaMember extends LSActiveRecord
             );
         }
         return [];
-
-
     }
 
     /**
@@ -143,7 +143,7 @@ class QuotaMember extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $members = new self;
+        $members = new self();
         foreach ($data as $k => $v) {
                     $members->$k = $v;
         }

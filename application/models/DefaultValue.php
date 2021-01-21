@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -23,7 +25,7 @@
  * @property string $specialtype of column “other” currently (no GUI for comments)
  *
  * @property Question $question
- * 
+ *
  * @property DefaultValueL10n[] $defaultvalueL10ns
  */
 class DefaultValue extends LSActiveRecord
@@ -71,7 +73,7 @@ class DefaultValue extends LSActiveRecord
     {
         return array(
             array('qid', 'required'),
-            array('qid,sqid,scale_id', 'numerical', 'integerOnly'=>true),
+            array('qid,sqid,scale_id', 'numerical', 'integerOnly' => true),
         );
     }
 
@@ -82,7 +84,7 @@ class DefaultValue extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $oRecord = new self;
+        $oRecord = new self();
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;
         }

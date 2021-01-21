@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 LimeSurvey - Denis Chenu

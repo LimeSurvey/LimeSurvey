@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -182,8 +183,10 @@ class Headers implements Countable, Iterator
     public function addHeaderLine($headerFieldNameOrLine, $fieldValue = null)
     {
         $matches = null;
-        if (preg_match('/^(?P<name>[^()><@,;:\"\\/\[\]?=}{ \t]+):.*$/', $headerFieldNameOrLine, $matches)
-            && $fieldValue === null) {
+        if (
+            preg_match('/^(?P<name>[^()><@,;:\"\\/\[\]?=}{ \t]+):.*$/', $headerFieldNameOrLine, $matches)
+            && $fieldValue === null
+        ) {
             // is a header
             $headerName = $matches['name'];
             $headerKey  = static::createKey($matches['name']);

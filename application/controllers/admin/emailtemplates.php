@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -34,7 +35,7 @@ class emailtemplates extends Survey_Common_Action
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'read')) {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
-            $this->getController()->redirect(array('admin/survey', 'sa'=>'view', 'surveyid'=>$iSurveyId));
+            $this->getController()->redirect(array('admin/survey', 'sa' => 'view', 'surveyid' => $iSurveyId));
         }
 
         Yii::app()->loadHelper('admin.htmleditor');
@@ -70,7 +71,7 @@ class emailtemplates extends Survey_Common_Action
         }
 
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
 
         $aData['surveyid'] = $iSurveyId;
         $aData['subaction'] = gT("Edit email templates");
@@ -102,7 +103,7 @@ class emailtemplates extends Survey_Common_Action
         if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
             $sBaseAbsoluteUrl = $sPublicUrl;
         }
-        $uploadUrl = trim($sBaseAbsoluteUrl, "/").$uploadUrl;
+        $uploadUrl = trim($sBaseAbsoluteUrl, "/") . $uploadUrl;
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
@@ -113,7 +114,7 @@ class emailtemplates extends Survey_Common_Action
             foreach ($languagelist as $langname) {
                 if (isset($_POST['attachments'][$langname])) {
                     foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
-                        foreach ($attachments as  $index => &$attachment) {
+                        foreach ($attachments as $index => &$attachment) {
                             // We again take the real path.
                             $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
                             if ($localName !== false) {
@@ -134,43 +135,44 @@ class emailtemplates extends Survey_Common_Action
                 }
 
                 $attributes = array(
-                    'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
-                    'surveyls_email_invite' => $_POST['email_invitation_'.$langname],
-                    'surveyls_email_remind_subj' => $_POST['email_reminder_subj_'.$langname],
-                    'surveyls_email_remind' => $_POST['email_reminder_'.$langname],
-                    'surveyls_email_register_subj' => $_POST['email_registration_subj_'.$langname],
-                    'surveyls_email_register' => $_POST['email_registration_'.$langname],
-                    'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_'.$langname],
-                    'surveyls_email_confirm' => $_POST['email_confirmation_'.$langname],
-                    'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
-                    'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
-                    'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_'.$langname],
-                    'email_admin_responses' => $_POST['email_admin_detailed_notification_'.$langname],
+                    'surveyls_email_invite_subj' => $_POST['email_invitation_subj_' . $langname],
+                    'surveyls_email_invite' => $_POST['email_invitation_' . $langname],
+                    'surveyls_email_remind_subj' => $_POST['email_reminder_subj_' . $langname],
+                    'surveyls_email_remind' => $_POST['email_reminder_' . $langname],
+                    'surveyls_email_register_subj' => $_POST['email_registration_subj_' . $langname],
+                    'surveyls_email_register' => $_POST['email_registration_' . $langname],
+                    'surveyls_email_confirm_subj' => $_POST['email_confirmation_subj_' . $langname],
+                    'surveyls_email_confirm' => $_POST['email_confirmation_' . $langname],
+                    'email_admin_notification_subj' => $_POST['email_admin_notification_subj_' . $langname],
+                    'email_admin_notification' => $_POST['email_admin_notification_' . $langname],
+                    'email_admin_responses_subj' => $_POST['email_admin_detailed_notification_subj_' . $langname],
+                    'email_admin_responses' => $_POST['email_admin_detailed_notification_' . $langname],
                     'attachments' => serialize($_POST['attachments'][$langname])
                 );
 
                 $aLanguageSetting = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
                 $aLanguageSetting->setAttributes($attributes);
-                if (!$aLanguageSetting->save()){
+                if (!$aLanguageSetting->save()) {
                     $sErrors = '<br/>';
                     foreach ($aLanguageSetting->getErrors() as $sError) {
-                        $sErrors .= $sError[0].'<br/>';
-                    }                    
-                    Yii::app()->setFlashMessage(sprintf(gT("Failed to update email templates. Message: %s"),$sErrors),'error');
-                    $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
+                        $sErrors .= $sError[0] . '<br/>';
+                    }
+                    Yii::app()->setFlashMessage(sprintf(gT("Failed to update email templates. Message: %s"), $sErrors), 'error');
+                    $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/' . $iSurveyId));
                 }
             }
             Yii::app()->session['flashmessage'] = gT("Email templates successfully saved.");
             if (Yii::app()->request->getPost('close-after-save') == 'true') {
-                $this->getController()->redirect(array('surveyAdministration/view/surveyid/'.$iSurveyId));
+                $this->getController()->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyId));
             }
 
-            $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/'.$iSurveyId));
+            $this->getController()->redirect(array('admin/emailtemplates/sa/index/surveyid/' . $iSurveyId));
         }
         self::index($iSurveyId);
     }
 
-    public static function getTemplateTypes(){
+    public static function getTemplateTypes()
+    {
         return [
         'invitation',
         'reminder',
@@ -181,10 +183,11 @@ class emailtemplates extends Survey_Common_Action
         ];
     }
 
-    public static function getTabTypeArray($iSurveyId, $language=null){
+    public static function getTabTypeArray($iSurveyId, $language = null)
+    {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-        $language = $language==null ? $oSurvey->language : $language; 
+        $language = $language == null ? $oSurvey->language : $language;
 
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('html', $language);
 
@@ -277,18 +280,18 @@ class emailtemplates extends Survey_Common_Action
         return $array;
     }
 
-    public function getTemplateOfType($type, $language=null, $survey=0){
-        $language = $language===null ? App()->getLanguage() : $language;
+    public function getTemplateOfType($type, $language = null, $survey = 0)
+    {
+        $language = $language === null ? App()->getLanguage() : $language;
         $oSurvey = Survey::model()->findByPk($survey);
         $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts('unescaped', $language);
 
         $out = $aDefaultTexts[$type];
-        if($oSurvey->htmlemail=='Y') {
+        if ($oSurvey->htmlemail == 'Y') {
             $out = nl2br($out);
         }
         echo $out;
         App()->end();
-
     }
 
     /**

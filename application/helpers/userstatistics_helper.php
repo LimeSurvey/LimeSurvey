@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -30,7 +31,9 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
     the "T" gets passed to this function from the statistics.js file in the first place! */
-    if (substr($iSurveyID, 0, 1) == "T") {$iSurveyID = substr($iSurveyID, 1); }
+    if (substr($iSurveyID, 0, 1) == "T") {
+        $iSurveyID = substr($iSurveyID, 1);
+    }
     static $bErrorGenerate = false;
 
     if ($bErrorGenerate) {
@@ -51,7 +54,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         $chartfontfile = 'DejaVuSans.ttf';
         if (array_key_exists($sLanguageCode, $alternatechartfontfile)) {
             $neededfontfile = $alternatechartfontfile[$sLanguageCode];
-            if (is_file($rootdir."/assets/fonts/".$neededfontfile)) {
+            if (is_file($rootdir . "/assets/fonts/" . $neededfontfile)) {
                 $chartfontfile = $neededfontfile;
             } else {
                 Yii::app()->setFlashMessage(sprintf(gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'), $neededfontfile), 'error');
@@ -61,33 +64,33 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         }
     }
     if (count($lbl) > 72) {
-        $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
+        $DataSet = array(1 => array(1 => 1));
+        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
+            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
-            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
+            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
     }
     if (array_sum($gdata) == 0) {
-        $DataSet = array(1=>array(1=>1));
-        if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
-            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
+        $DataSet = array(1 => array(1 => 1));
+        if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet) && Yii::app()->getConfig('debug') < 2) {
+            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
+            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
-            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
+            $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -113,12 +116,12 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
         if (!$type) {
 // Bar chart
-            $DataSet = new pData;
+            $DataSet = new pData();
             $counter = 0;
             $maxyvalue = 0;
             foreach ($grawdata as $datapoint) {
-                $DataSet->AddPoint(array($datapoint), "Serie".$counter);
-                $DataSet->AddSerie("Serie".$counter);
+                $DataSet->AddPoint(array($datapoint), "Serie" . $counter);
+                $DataSet->AddSerie("Serie" . $counter);
 
                 $counter++;
                 if ($datapoint > $maxyvalue) {
@@ -138,32 +141,32 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
 //auto detect if english
-                        $lblout[] = $kkey.' ('.$kval.')';
+                        $lblout[] = $kkey . ' (' . $kval . ')';
                     } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
+                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
                     }
                 }
             } elseif (getLanguageRTL($sLanguageCode)) {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev($kkey.' )'.$kval.'(');
+                    $lblout[] = UTF8Strrev($kkey . ' )' . $kval . '(');
                 }
             } else {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = $kkey.' ('.$kval.')';
+                    $lblout[] = $kkey . ' (' . $kval . ')';
                 }
             }
 
             $counter = 0;
             foreach ($lblout as $sLabelName) {
-                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie".$counter);
+                $DataSet->SetSerieName(html_entity_decode($sLabelName, null, 'UTF-8'), "Serie" . $counter);
                 $counter++;
             }
 
-            if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
+            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
+                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
             } else {
                 $graph = new pChart(1, 1);
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1] < 320) {
@@ -173,9 +176,9 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+                $graph->loadColorPalette(Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . $admintheme . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
 
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
@@ -183,18 +186,18 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, true, 90, 0, true, 5, false);
                 $graph->drawGrid(4, true, 230, 230, 230, 50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawTreshold(0, 143, 55, 72, true, true);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), false);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
 
-                $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
+                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
+                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end if (bar chart)
@@ -206,7 +209,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $i = 0;
             $j = 0;
             $labelTmp = array();
-            while (isset ($gdata[$i])) {
+            while (isset($gdata[$i])) {
                 $aHelperArray = array_keys($lbl);
                 if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen($sLanguageCode->gT("Comments"))) == $sLanguageCode->gT("Comments"))) {
                     array_splice($gdata, $i, 1);
@@ -228,47 +231,46 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
 //auto detect if english
-                        $lblout[] = $kkey.' ('.$kval.')';
+                        $lblout[] = $kkey . ' (' . $kval . ')';
                     } else {
-                        $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
+                        $lblout[] = $Arabic->utf8Glyphs($kkey . ' )' . $kval . '(');
                     }
                 }
             } elseif (getLanguageRTL($sLanguageCode)) {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, null, 'UTF-8').' )'.$kval.'(');
+                    $lblout[] = UTF8Strrev(html_entity_decode($kkey, null, 'UTF-8') . ' )' . $kval . '(');
                 }
             } else {
                 foreach ($lbl as $kkey => $kval) {
-                    $lblout[] = html_entity_decode($kkey, null, 'UTF-8').' ('.$kval.')';
+                    $lblout[] = html_entity_decode($kkey, null, 'UTF-8') . ' (' . $kval . ')';
                 }
             }
 
 
             //create new 3D pie chart
-            $DataSet = new pData;
+            $DataSet = new pData();
             $DataSet->AddPoint($gdata, "Serie1");
             $DataSet->AddPoint($lblout, "Serie2");
             $DataSet->AddAllSeries();
             $DataSet->SetAbsciseLabelSerie("Serie2");
 
-            if ($cache->IsInCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
-                $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
+            if ($cache->IsInCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()) && Yii::app()->getConfig('debug') < 2) {
+                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
             } else {
-
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($homedir.'/assets/styles/'.$admintheme.'/images/limesurvey.pal');
+                $graph->loadColorPalette($homedir . '/assets/styles/' . $admintheme . '/images/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 
                 // Draw the pie chart
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 225, round($gheight / 2), 170, PIE_PERCENTAGE, true, 50, 20, 5);
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . $chartfontfile, $chartfontsize);
                 $graph->drawPieLegend(430, 12, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
-                $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData(), $graph);
-                $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
+                $cache->WriteToCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData(), $graph);
+                $cachefilename = basename($cache->GetFileFromCache("graph" . $iSurveyID . $sLanguageCode . $iQuestionID, $DataSet->GetData()));
                 unset($graph);
             }
         }    //end else -> pie charts
@@ -324,12 +326,14 @@ function buildSelects($allfields, $surveyid, $language)
     $fieldmap = createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field) {
         if (isset($field['qid']) && $field['qid'] != '') {
-                    $aQuestionMap[] = $field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+                    $aQuestionMap[] = $field['sid'] . 'X' . $field['gid'] . 'X' . $field['qid'];
         }
     }
 
     // creates array of post variable names
-    for (reset($_POST); $key = key($_POST); next($_POST)) { $postvars[] = $key; }
+    for (reset($_POST); $key = key($_POST); next($_POST)) {
+        $postvars[] = $key;
+    }
 
     /*
     * Iterate through postvars to create "nice" data for SQL later.
@@ -344,167 +348,169 @@ function buildSelects($allfields, $surveyid, $language)
     *
     */
     if (isset($postvars)) {
-            foreach ($postvars as $pv) {
+        foreach ($postvars as $pv) {
             //Only do this if there is actually a value for the $pv
 
             if (
                 in_array($pv, $allfields) || in_array(substr($pv, 1), $aQuestionMap) || in_array($pv, $aQuestionMap)
                 || (
-                    (
-                        $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K'
-                    )
-                    && (in_array(substr($pv, 1, strlen($pv) - 2), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 3), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 5), $aQuestionMap))
+                (
+                    $pv[0] == 'D' || $pv[0] == 'N' || $pv[0] == 'K'
                 )
-                ) {
+                && (in_array(substr($pv, 1, strlen($pv) - 2), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 3), $aQuestionMap) || in_array(substr($pv, 1, strlen($pv) - 5), $aQuestionMap))
+                )
+            ) {
                     $firstletter = substr($pv, 0, 1);
-    }
-                    /*
-                    * these question types WON'T be handled here:
-                    * M = Multiple choice
-                    * T - Long free text
-                    * Q - Multiple Short Text
-                    * D - Date
-                    * N - Numerical Input
-                    * | - File Upload
-                    * K - Multiple Numerical Input
-                    */
-                    if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
-                    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
-                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") {
-//pull out just the fieldnames
-                        //put together some SQL here
-                        $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
-
-                        foreach ($_POST[$pv] as $condition) {
-                            $thisquestion .= "'$condition', ";
-                        }
-
-                        $thisquestion = substr($thisquestion, 0, -2)
-                        . ")";
-
-                        //we collect all the to be selected data in this array
-                        $selects[] = $thisquestion;
-                    }
-
-                    //M - Multiple choice
-                    //P - Multiple choice with comments
-                    elseif ($firstletter == "M" || $firstletter == "P") {
-                        $mselects = array();
-                        //create a list out of the $pv array
-                        list($lsid, $lgid, $lqid) = explode("X", $pv);
-
-                        $aresult = Question::model()->findAll(array('order'=>'question_order', 'condition'=>'parent_qid=:parent_qid AND scale_id=0', 'params'=>array(":parent_qid"=>$lqid)));
-                        foreach ($aresult as $arow) {
-                            // only add condition if answer has been chosen
-                            if (in_array($arow['title'], $_POST[$pv])) {
-                                $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)).$arow['title'])." = 'Y'";
-                            }
-                        }
-                        /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
-                        if ($mselects) {
-                            $thismulti = implode(" OR ", $mselects);
-                            $selects[] = "($thismulti)";
-                            unset($mselects);
-                        }
-                    }
-
-                    //N - Numerical Input
-                    //K - Multiple Numerical Input
-                    elseif ($firstletter == "N" || $firstletter == "K") {
-                        //value greater than
-                        if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
-                        }
-
-                        //value less than
-                        if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
-                        }
-                    }
-
-                    //| - File Upload Question Type
-                    else if ($firstletter == "|") {
-                        // no. of files greater than
-                        if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                                                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." > ".sanitize_int($_POST[$pv]);
-                        }
-
-                        // no. of files less than
-                        if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                                                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)."_filecount")." < ".sanitize_int($_POST[$pv]);
-                        }
-                    }
-
-                    //"id" is a built in field, the unique database id key of each response row
-                    elseif (substr($pv, 0, 2) == "id") {
-                        if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." > ".sanitize_int($_POST[$pv]);
-                        }
-                        if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1))." < ".sanitize_int($_POST[$pv]);
-                        }
-                    }
-
-                    //T - Long free text
-                    //Q - Multiple Short Text
-                    elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
-                        $selectSubs = array();
-                        //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
-                        $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
-                        if (is_array($pvParts) AND count($pvParts)) {
-                            foreach ($pvParts AS $pvPart) {
-                                $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
-                            }
-                            if (count($selectSubs)) {
-                                $selects[] = ' ('.implode(' OR ', $selectSubs).') ';
-                            }
-                        }
-                    }
-
-                    //D - Date
-                    elseif ($firstletter == "D" && $_POST[$pv] != "") {
-                        //Date equals
-                        if (substr($pv, -2) == "eq") {
-                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3))." = ".App()->db->quoteValue($_POST[$pv]);
-                        } else {
-                            //date less than
-                            if (substr($pv, -4) == "less") {
-                                $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." >= ".App()->db->quoteValue($_POST[$pv]);
-                            }
-
-                            //date greater than
-                            if (substr($pv, -4) == "more") {
-                                $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5))." <= ".App()->db->quoteValue($_POST[$pv]);
-                            }
-                        }
-                    }
-
-                    //check for datestamp of given answer
-                    elseif (substr($pv, 0, 9) == "datestamp") {
-                        //timestamp equals
-                        $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-                        if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                            $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                            $sDateValue = $datetimeobj->convert("Y-m-d");
-
-                            $selects[] = Yii::app()->db->quoteColumnName('datestamp')." >= ".App()->db->quoteValue($sDateValue." 00:00:00")." and ".Yii::app()->db->quoteColumnName('datestamp')." <= ".App()->db->quoteValue($sDateValue." 23:59:59");
-                        } else {
-                            //timestamp less than
-                            if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                                $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
-                                $selects[] = Yii::app()->db->quoteColumnName('datestamp')." < ".App()->db->quoteValue($sDateValue);
-                            }
-
-                            //timestamp greater than
-                            if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                                $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
-                                $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
-                                $selects[] = Yii::app()->db->quoteColumnName('datestamp')." > ".App()->db->quoteValue($sDateValue);
-                            }
-                        }
-                    }
             }
+                /*
+                * these question types WON'T be handled here:
+                * M = Multiple choice
+                * T - Long free text
+                * Q - Multiple Short Text
+                * D - Date
+                * N - Numerical Input
+                * | - File Upload
+                * K - Multiple Numerical Input
+                */
+            if (
+                $pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
+                    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
+                    $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp"
+            ) {
+//pull out just the fieldnames
+                //put together some SQL here
+                $thisquestion = Yii::app()->db->quoteColumnName($pv) . " IN (";
+
+                foreach ($_POST[$pv] as $condition) {
+                    $thisquestion .= "'$condition', ";
+                }
+
+                $thisquestion = substr($thisquestion, 0, -2)
+                . ")";
+
+                //we collect all the to be selected data in this array
+                $selects[] = $thisquestion;
+            }
+
+                //M - Multiple choice
+                //P - Multiple choice with comments
+            elseif ($firstletter == "M" || $firstletter == "P") {
+                $mselects = array();
+                //create a list out of the $pv array
+                list($lsid, $lgid, $lqid) = explode("X", $pv);
+
+                $aresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND scale_id=0', 'params' => array(":parent_qid" => $lqid)));
+                foreach ($aresult as $arow) {
+                    // only add condition if answer has been chosen
+                    if (in_array($arow['title'], $_POST[$pv])) {
+                        $mselects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)) . $arow['title']) . " = 'Y'";
+                    }
+                }
+                /* If there are mutliple conditions generated from this multiple choice question, join them using the boolean "OR" */
+                if ($mselects) {
+                    $thismulti = implode(" OR ", $mselects);
+                    $selects[] = "($thismulti)";
+                    unset($mselects);
+                }
+            }
+
+                //N - Numerical Input
+                //K - Multiple Numerical Input
+            elseif ($firstletter == "N" || $firstletter == "K") {
+                //value greater than
+                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " > " . sanitize_int($_POST[$pv]);
+                }
+
+                //value less than
+                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1)) . " < " . sanitize_int($_POST[$pv]);
+                }
+            }
+
+                //| - File Upload Question Type
+            elseif ($firstletter == "|") {
+                // no. of files greater than
+                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_filecount") . " > " . sanitize_int($_POST[$pv]);
+                }
+
+                // no. of files less than
+                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                                            $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, -1) . "_filecount") . " < " . sanitize_int($_POST[$pv]);
+                }
+            }
+
+                //"id" is a built in field, the unique database id key of each response row
+            elseif (substr($pv, 0, 2) == "id") {
+                if (substr($pv, strlen($pv) - 1, 1) == "G" && $_POST[$pv] != "") {
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " > " . sanitize_int($_POST[$pv]);
+                }
+                if (substr($pv, strlen($pv) - 1, 1) == "L" && $_POST[$pv] != "") {
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 0, -1)) . " < " . sanitize_int($_POST[$pv]);
+                }
+            }
+
+                //T - Long free text
+                //Q - Multiple Short Text
+            elseif (($firstletter == "T" || $firstletter == "Q") && $_POST[$pv] != "") {
+                $selectSubs = array();
+                //We intepret and * and % as wildcard matches, and use ' OR ' and , as the separators
+                $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
+                if (is_array($pvParts) and count($pvParts)) {
+                    foreach ($pvParts as $pvPart) {
+                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE '" . trim($pvPart) . "'";
+                    }
+                    if (count($selectSubs)) {
+                        $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
+                    }
+                }
+            }
+
+                //D - Date
+            elseif ($firstletter == "D" && $_POST[$pv] != "") {
+                //Date equals
+                if (substr($pv, -2) == "eq") {
+                    $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
+                } else {
+                    //date less than
+                    if (substr($pv, -4) == "less") {
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
+                    }
+
+                    //date greater than
+                    if (substr($pv, -4) == "more") {
+                        $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
+                    }
+                }
+            }
+
+                //check for datestamp of given answer
+            elseif (substr($pv, 0, 9) == "datestamp") {
+                //timestamp equals
+                $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
+                if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                    $sDateValue = $datetimeobj->convert("Y-m-d");
+
+                    $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
+                } else {
+                    //timestamp less than
+                    if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
+                    }
+
+                    //timestamp greater than
+                    if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
+                    }
+                }
+            }
+        }
     }    //end foreach -> loop through filter options to create SQL
 
     return $selects;
@@ -863,7 +869,6 @@ class userstatistics_helper
                             break;
 
                         case 'pdf':
-
                             $headPDF = array();
                             $tablePDF = array();
                             $footPDF = array();
@@ -875,7 +880,6 @@ class userstatistics_helper
 
                             break;
                         case 'html':
-
                             // Multiple numerical and numerical field summary
                             $statisticsoutput .= "\n<div class='well'><table class='table table-striped statisticstable' >\n"
                                 . "\t<thead><tr><th colspan='2' class='text-center'><strong>" . sprintf(gT("Summary for %s"), $qtitle) . ":</strong>"
@@ -889,8 +893,6 @@ class userstatistics_helper
 
                             break;
                         default:
-
-
                             break;
                     }
 
@@ -1013,7 +1015,6 @@ class userstatistics_helper
                     }
                     switch ($outputType) {
                         case 'xls':
-
                             $this->xlsRow++;
                             $this->sheet->write($this->xlsRow, 0, gT("Null values are ignored in calculations"));
                             $this->xlsRow++;
@@ -1023,7 +1024,6 @@ class userstatistics_helper
                             $footXLS[] = array(sprintf(gT("Q1 and Q3 calculated using %s"), gT("minitab method")));
                             break;
                         case 'pdf':
-
                             $footPDF[] = array(gT("Null values are ignored in calculations"));
                             $footPDF[] = array(sprintf(gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>" . gT("minitab method") . "</a>"));
                             $this->pdf->AddPage('P', 'A4');
@@ -1035,7 +1035,6 @@ class userstatistics_helper
                             $this->pdf->tablehead($footPDF);
                             break;
                         case 'html':
-
                             //footer of question type "N"
                             $statisticsoutput .= "\t<tr>\n"
                                 . "\t\t<td colspan='4' class='text-center'>\n"
@@ -1055,8 +1054,6 @@ class userstatistics_helper
                             $statisticsoutput .= "</table></div>\n";
                             break;
                         default:
-
-
                             break;
                     }
 
@@ -1081,7 +1078,6 @@ class userstatistics_helper
                                 break;
 
                             case 'html':
-
                                 //output
                                 $statisticsoutput .= "\t<tr>\n"
                                     . "\t\t<td class='text-center' colspan='4'>" . gT("Not enough values for calculation") . "</td>\n"
@@ -1092,11 +1088,8 @@ class userstatistics_helper
                         }
 
                         unset($showem);
-
                     }
-
                 }    //end else -> check last character, greater/less/equals don't need special treatment
-
             }    //end else-if -> multiple numerical types
 
             //is there some "id", "datestamp" or "D" within the type?
@@ -1338,8 +1331,7 @@ class userstatistics_helper
                         $qtitle = $qtitle . " [" . $sSubquestion . "][" . $labelno . "]";
                         $qquestion = $qastring . $labelheader;
                         break;
-                    default:    //default handling
-
+                    default:
                         //get answer code and title
                         $qresult = Answer::model()->findAllByAttributes(['qid' => $qqid, 'scale_id' => 0]);
                         //put answer code and title into array
@@ -1356,13 +1348,11 @@ class userstatistics_helper
                             //add "comment"
                             $alist[] = array(gT("Comments"), gT("Comments"), $fielddata['fieldname'] . 'comment', 'is_comment');
                         }
-
                 }    //end switch question type
 
                 //moved because it's better to have "no answer" at the end of the list instead of the beginning
                 //put data into array
                 $alist[] = array("", gT("No answer"));
-
             }
         }
 
@@ -1395,15 +1385,14 @@ class userstatistics_helper
         $sColumnName = null;
         if ($usegraph == 1) {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH.'/third_party/pchart/pChart.class.php');
-            require_once(APPPATH.'/third_party/pchart/pData.class.php');
-            require_once(APPPATH.'/third_party/pchart/pCache.class.php');
-            $MyCache = new pCache($tempdir.'/');
+            require_once(APPPATH . '/third_party/pchart/pChart.class.php');
+            require_once(APPPATH . '/third_party/pchart/pData.class.php');
+            require_once(APPPATH . '/third_party/pchart/pCache.class.php');
+            $MyCache = new pCache($tempdir . '/');
         }
 
         switch ($outputType) {
             case 'xls':
-
                 $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
@@ -1418,7 +1407,6 @@ class userstatistics_helper
 
                 break;
             case 'pdf':
-
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
                 $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
@@ -1433,27 +1421,25 @@ class userstatistics_helper
             case 'html':
                 //output
                 $statisticsoutput .= "<div class='well'><table class='table table-striped statisticstable'>\n"
-                ."\t<thead><tr><th colspan='4' class='text-center'><strong>"
+                . "\t<thead><tr><th colspan='4' class='text-center'><strong>"
 
                 //headline
-                .sprintf(gT("Summary for %s"), $outputs['qtitle'])."</strong>"
-                ."</th></tr>\n"
-                ."\t<tr><th colspan='4' class='text-center'><strong>"
+                . sprintf(gT("Summary for %s"), $outputs['qtitle']) . "</strong>"
+                . "</th></tr>\n"
+                . "\t<tr><th colspan='4' class='text-center'><strong>"
 
                 //question title
-                .$outputs['qquestion']."</strong></th></tr>\n"
-                ."\t<tr>\n\t\t<th width='50%' class='text-left'>";
+                . $outputs['qquestion'] . "</strong></th></tr>\n"
+                . "\t<tr>\n\t\t<th width='50%' class='text-left'>";
                 break;
             default:
-
-
                 break;
         }
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
 
         //check filter option
-        $criteria = new CDbCriteria();        
+        $criteria = new CDbCriteria();
         if (incompleteAnsFilterState() == "incomplete") {
             $criteria->addCondition("submitdate is null");
         } elseif (incompleteAnsFilterState() == "complete") {
@@ -1461,33 +1447,32 @@ class userstatistics_helper
         }
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
-        foreach($oResponses as $key => $oResponse){
-            $oResponses[$key] = $oResponse->decrypt(); 
+        foreach ($oResponses as $key => $oResponse) {
+            $oResponses[$key] = $oResponse->decrypt();
         }
 
         foreach ($outputs['alist'] as $al) {
             $row = 0;
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
-
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
                     if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
                             $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
-                            if ($column =='-oth-' && !empty($oResponse->$sResponseColumn)){
+                            if ($column == '-oth-' && !empty($oResponse->$sResponseColumn)) {
                                 $row += 1;
                             }
                         }
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
@@ -1507,58 +1492,57 @@ class userstatistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn != ''){
+                            if ($oResponse->$sResponseColumn != '') {
                                 $row += 1;
                             }
                         }
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        foreach ($oResponses as $oResponse){
+                        foreach ($oResponses as $oResponse) {
                             $sResponseColumn = $al[2];
-                            if ($oResponse->$sResponseColumn == ''){
+                            if ($oResponse->$sResponseColumn == '') {
                                 $row += 1;
                             }
                         }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
-                        if ($oResponse->$sResponseColumn != ''){
+                        if ($oResponse->$sResponseColumn != '') {
                             $row += 1;
                         }
                     }
                 // all other question types
                 } else {
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $al[2];
                         if (substr($rt, 0, 1) == "R") {
                             $sSubquestionCode = $al[0];
-                            if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                            if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                                 $row += 1;
                             }
                         } else {
-                            if ($oResponse->$sResponseColumn == 'Y'){
+                            if ($oResponse->$sResponseColumn == 'Y') {
                                 $row += 1;
                             }
                         }
                     }
                 }
-
             }    //end if -> alist set
 
             else {
                 if ($al[0] != "") {
                     //get more data
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
                         $sSubquestionCode = $al[0];
-                        if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                        if ($oResponse->$sResponseColumn == $sSubquestionCode) {
                             $row += 1;
                         }
-                    }                   
+                    }
                 } else {
                     // This is for the 'NoAnswer' case
                     // We need to take into account several possibilities
@@ -1568,21 +1552,26 @@ class userstatistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    foreach ($oResponses as $oResponse){
+                    foreach ($oResponses as $oResponse) {
                         $sResponseColumn = $rt;
-                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' ') {
                             $row += 1;
                         }
                     }
                 }
-
             }
 
             //check filter option
-            if (incompleteAnsFilterState() == "incomplete") {$query .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$query .= " AND submitdate is not null"; }
+            if (incompleteAnsFilterState() == "incomplete") {
+                $query .= " AND submitdate is null";
+            } elseif (incompleteAnsFilterState() == "complete") {
+                $query .= " AND submitdate is not null";
+            }
 
             //check for any "sql" that has been passed from another script
-            if (!empty($sql)) {$query .= " AND $sql"; }
+            if (!empty($sql)) {
+                $query .= " AND $sql";
+            }
 
 
             // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
@@ -1594,14 +1583,15 @@ class userstatistics_helper
             $TotalCompleted += $row;
 
             //"no answer" handling
-            if ($al[0] === "")
-                {$fname = gT("No answer"); }
+            if ($al[0] === "") {
+                $fname = gT("No answer");
+            }
 
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
             elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === Question::QT_O_LIST_WITH_COMMENT && $al[0] === gT("Comments")) || $outputs['qtype'] === Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) && count($al) > 2) {
                 if ($outputs['qtype'] == "P") {
-                    $sColumnName = $al[2]."comment";
+                    $sColumnName = $al[2] . "comment";
                 } else {
                     $sColumnName = $al[2];
                 }
@@ -1612,7 +1602,7 @@ class userstatistics_helper
                 $fname = "$al[1]";
                 if ($browse === true) {
                     $fname .= " <input type='button' class='btn btn-default statisticsbrowsebutton' value='"
-                    .gT("Browse")."' id='$sColumnName' />";
+                    . gT("Browse") . "' id='$sColumnName' />";
                 }
 
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
@@ -1636,10 +1626,7 @@ class userstatistics_helper
                     foreach ($result2 as $row2) {
                         $tableXLS[] = array($row2['id'], $row2['value']);
                     }
-
                 }
-
-
             }
 
             /*
@@ -1659,18 +1646,18 @@ class userstatistics_helper
                     $fname = "$al[1]";
                     if ($browse === true) {
                         $fname .= " <input type='button'  class='btn btn-default statisticsbrowsebutton' value='"
-                        . gT("Browse")."' id='$sColumnName' />";
+                        . gT("Browse") . "' id='$sColumnName' />";
                     }
                 } elseif ($al[0] == "NoAnswer") {
                     $fname = "$al[1]";
                 }
 
                 $statisticsoutput .= "</th>\n"
-                ."\t\t<th width='25%' class='text-right'>"
-                ."<strong>".gT("Count")."</strong></th>\n"
-                ."\t\t<th width='25%'class='text-right'>"
-                ."<strong>".gT("Percentage")."</strong></th>\n"
-                ."\t</tr></thead>\n";
+                . "\t\t<th width='25%' class='text-right'>"
+                . "<strong>" . gT("Count") . "</strong></th>\n"
+                . "\t\t<th width='25%'class='text-right'>"
+                . "<strong>" . gT("Percentage") . "</strong></th>\n"
+                . "\t</tr></thead>\n";
 
                 if ($browse === true && isset($_POST['showtextinline']) && $outputType == 'pdf') {
                     $headPDF2 = array();
@@ -1699,25 +1686,22 @@ class userstatistics_helper
                                 break;
 
                             case 'pdf':
-
                                 $headPDF = array();
                                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"), gT("Sum"));
 
                                 break;
                             case 'html':
                                 //four columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
-                                ."\t\t<th width='15%' class='text-right'>"
-                                ."<strong>".gT("Count")."</strong></th>\n"
-                                ."\t\t<th width='20%'class='text-right'>"
-                                ."<strong>".gT("Percentage")."</strong></th>\n"
-                                ."\t\t<th width='15%'class='text-right'>"
-                                ."<strong>".gT("Sum")."</strong></th>\n"
-                                ."\t</tr></thead>\n";
+                                $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
+                                . "\t\t<th width='15%' class='text-right'>"
+                                . "<strong>" . gT("Count") . "</strong></th>\n"
+                                . "\t\t<th width='20%'class='text-right'>"
+                                . "<strong>" . gT("Percentage") . "</strong></th>\n"
+                                . "\t\t<th width='15%'class='text-right'>"
+                                . "<strong>" . gT("Sum") . "</strong></th>\n"
+                                . "\t</tr></thead>\n";
                                 break;
                             default:
-
-
                                 break;
                         }
 
@@ -1732,33 +1716,29 @@ class userstatistics_helper
                                 break;
 
                             case 'pdf':
-
                                 $headPDF = array();
                                 $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
                                 break;
                             case 'html':
                                 //three columns
-                                $statisticsoutput .= "<strong>".gT("Answer")."</strong></td>\n"
-                                ."\t\t<th width='25%'class='text-right'>"
-                                ."<strong>".gT("Count")."</strong></th>\n"
-                                ."\t\t<th width='25%'class='text-right'>"
-                                ."<strong>".gT("Percentage")."</strong></th>\n"
-                                ."\t</tr></thead>\n";
+                                $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></td>\n"
+                                . "\t\t<th width='25%'class='text-right'>"
+                                . "<strong>" . gT("Count") . "</strong></th>\n"
+                                . "\t\t<th width='25%'class='text-right'>"
+                                . "<strong>" . gT("Percentage") . "</strong></th>\n"
+                                . "\t</tr></thead>\n";
                                 break;
                             default:
-
                                 break;
                         }
 
                         $showheadline = false;
                     }
-
                 }
 
                 //text for answer column is always needed
                 $fname = "$al[1] ($al[0])";
-
             }    //end if -> show aggregated data
 
             //handling what's left
@@ -1773,28 +1753,24 @@ class userstatistics_helper
                             break;
 
                         case 'pdf':
-
                             $headPDF = array();
                             $headPDF[] = array(gT("Answer"), gT("Count"), gT("Percentage"));
 
                             break;
                         case 'html':
                             //three columns
-                            $statisticsoutput .= "<strong>".gT("Answer")."</strong></th>\n"
-                            ."\t\t<th width='25%'class='text-right'>"
-                            ."<strong>".gT("Count")."</strong></th>\n"
-                            ."\t\t<th width='25%'class='text-right'>"
-                            ."<strong>".gT("Percentage")."</strong></th>\n"
-                            ."\t</tr></thead>\n";
+                            $statisticsoutput .= "<strong>" . gT("Answer") . "</strong></th>\n"
+                            . "\t\t<th width='25%'class='text-right'>"
+                            . "<strong>" . gT("Count") . "</strong></th>\n"
+                            . "\t\t<th width='25%'class='text-right'>"
+                            . "<strong>" . gT("Percentage") . "</strong></th>\n"
+                            . "\t</tr></thead>\n";
                             break;
                         default:
-
-
                             break;
                     }
 
                     $showheadline = false;
-
                 }
                 //answer text
                 $fname = "$al[1] ($al[0])";
@@ -1830,14 +1806,11 @@ class userstatistics_helper
                 // TODO: Support three or more duplicates.
                 $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
                 if (isset($lbl[$flatLabel])) {
-                    $lbl[$flatLabel.' (2)'] = $row;
+                    $lbl[$flatLabel . ' (2)'] = $row;
                 } else {
                     $lbl[$flatLabel] = $row;
                 }
-
             }
-
-
         }    //end foreach -> loop through answer data
 
         //no filtering of incomplete answers and NO multiple option questions
@@ -1866,9 +1839,7 @@ class userstatistics_helper
 
                     //increase counter
                     $i++;
-
                 }    //end while (data available)
-
             }    //end if -> noncompleted checked
 
             //noncompleted is NOT checked
@@ -1914,11 +1885,15 @@ class userstatistics_helper
 
         // For multiple choice question type, we have to check non completed with ALL sub question set to NULL
         if (($outputs['qtype'] == Question::QT_M_MULTIPLE_CHOICE) or ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)) {
-            $criteria = new CDbCriteria;
+            $criteria = new CDbCriteria();
             foreach ($outputs['alist'] as $al) {
-                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2]) . " IS NULL");
             }
-            if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL"); } elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL"); }
+            if (incompleteAnsFilterState() == "incomplete") {
+                $criteria->addCondition("submitdate IS NULL");
+            } elseif (incompleteAnsFilterState() == "complete") {
+                $criteria->addCondition("submitdate IS NOT NULL");
+            }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
             if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == "on")) {
                 //counter
@@ -1980,8 +1955,8 @@ class userstatistics_helper
             * 2 (25%) = count (absolute)
             * 3 (25%) = percentage
             */
-            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-left'>".$label[$i]."\n"
-            ."\t\t</td>\n";
+            $statisticsoutput .= "\t<tr>\n\t\t<td class='text-left'>" . $label[$i] . "\n"
+            . "\t\t</td>\n";
             /*
             * If there is a "browse" button in this label, let's make sure there's an extra row afterwards
             * to store the columnlist
@@ -1997,7 +1972,7 @@ class userstatistics_helper
             }
 
             //output absolute number of records
-            $statisticsoutput .= "\t\t<td class='text-right'>".$grawdata[$i]."\n</td>";
+            $statisticsoutput .= "\t\t<td class='text-right'>" . $grawdata[$i] . "\n</td>";
 
 
             //no data
@@ -2012,8 +1987,7 @@ class userstatistics_helper
                         break;
 
                     case 'pdf':
-
-                        $tablePDF[] = array(flattenText($label[$i]), $grawdata[$i], sprintf("%01.2f", $gdata[$i])."%", "");
+                        $tablePDF[] = array(flattenText($label[$i]), $grawdata[$i], sprintf("%01.2f", $gdata[$i]) . "%", "");
 
                         break;
                     case 'html':
@@ -2021,7 +1995,7 @@ class userstatistics_helper
                         $statisticsoutput .= "\t\t<td  class='text-right'>";
 
                         //percentage = 0
-                        $statisticsoutput .= sprintf("%01.2f", $gdata[$i])."%";
+                        $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                         $gdata[$i] = 0;
 
                         //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
@@ -2031,14 +2005,13 @@ class userstatistics_helper
                             $statisticsoutput .= "</td>\n\t";
                         }
                         $statisticsoutput .= "</tr>\n"; //Close the row
-                        if (isset($extraline)) {$statisticsoutput .= $extraline; }
+                        if (isset($extraline)) {
+                            $statisticsoutput .= $extraline;
+                        }
                         break;
                     default:
-
-
                         break;
                 }
-
             }
 
             //data available
@@ -2105,20 +2078,20 @@ class userstatistics_helper
                         case 'pdf':
                             $label[$i] = flattenText($label[$i]);
                             if ($aggregatedPercentage !== 'na') {
-                                $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $percentage)."%", sprintf("%01.2f", $aggregatedPercentage)."%");
+                                $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $percentage) . "%", sprintf("%01.2f", $aggregatedPercentage) . "%");
                             } else {
-                                $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $percentage)."%", "");
+                                $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $percentage) . "%", "");
                             }
                             break;
 
                         case 'html':
                             //output percentage
                             $statisticsoutput .= "\t\t<td class='text-right'>";
-                            $statisticsoutput .= sprintf("%01.2f", $percentage)."%</td>";
+                            $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 
                             $statisticsoutput .= "\t\t<td class='text-right'>";
                             if ($aggregatedPercentage !== 'na') {
-                                $statisticsoutput .= sprintf("%01.2f", $aggregatedPercentage)."%";
+                                $statisticsoutput .= sprintf("%01.2f", $aggregatedPercentage) . "%";
                             } else {
                                 $statisticsoutput .= '&nbsp;';
                             }
@@ -2152,13 +2125,11 @@ class userstatistics_helper
                         }
                         switch ($outputType) {
                             case 'xls':
-
-
-                                $footXLS[] = array(gT("Sum")." (".gT("Answers").")", $sumitems, $sumpercentage."%", $sumpercentage."%");
-                                $footXLS[] = array(gT("Number of cases"), $TotalCompleted, $casepercentage."%", "");
+                                $footXLS[] = array(gT("Sum") . " (" . gT("Answers") . ")", $sumitems, $sumpercentage . "%", $sumpercentage . "%");
+                                $footXLS[] = array(gT("Number of cases"), $TotalCompleted, $casepercentage . "%", "");
 
                                 $this->xlsRow++;
-                                $this->sheet->write($this->xlsRow, 0, gT("Sum")." (".gT("Answers").")");
+                                $this->sheet->write($this->xlsRow, 0, gT("Sum") . " (" . gT("Answers") . ")");
                                 $this->sheet->writeNumber($this->xlsRow, 1, $sumitems);
                                 $this->sheet->writeNumber($this->xlsRow, 2, $sumpercentage / 100, $this->xlsPercents);
                                 $this->sheet->writeNumber($this->xlsRow, 3, $sumpercentage / 100, $this->xlsPercents);
@@ -2169,33 +2140,28 @@ class userstatistics_helper
 
                                 break;
                             case 'pdf':
-
-                                $footPDF[] = array(gT("Sum")." (".gT("Answers").")", $sumitems, $sumpercentage."%", $sumpercentage."%");
-                                $footPDF[] = array(gT("Number of cases"), $TotalCompleted, $casepercentage."%", "");
+                                $footPDF[] = array(gT("Sum") . " (" . gT("Answers") . ")", $sumitems, $sumpercentage . "%", $sumpercentage . "%");
+                                $footPDF[] = array(gT("Number of cases"), $TotalCompleted, $casepercentage . "%", "");
 
                                 break;
                             case 'html':
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
-                                $statisticsoutput .= "<tr><td class='text-right'><strong>".gT("Sum")." (".gT("Answers").")</strong></td>";
-                                $statisticsoutput .= "<td class='text-right'><strong>".$sumitems."</strong></td>";
+                                $statisticsoutput .= "<tr><td class='text-right'><strong>" . gT("Sum") . " (" . gT("Answers") . ")</strong></td>";
+                                $statisticsoutput .= "<td class='text-right'><strong>" . $sumitems . "</strong></td>";
                                 $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "<td class='text-right'><strong>$sumpercentage%</strong></td>";
                                 $statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 
-                                $statisticsoutput .= "<tr><td class='text-right'>".gT("Number of cases")."</td>"; //German: "Fallzahl"
-                                $statisticsoutput .= "<td class='text-right'>".$TotalCompleted."</td>";
+                                $statisticsoutput .= "<tr><td class='text-right'>" . gT("Number of cases") . "</td>"; //German: "Fallzahl"
+                                $statisticsoutput .= "<td class='text-right'>" . $TotalCompleted . "</td>";
                                 $statisticsoutput .= "<td class='text-right'>$casepercentage%</td>";
                                 //there has to be a whitespace within the table cell to display correctly
                                 $statisticsoutput .= "<td class='text-right'>&nbsp;</td></tr>";
                                 break;
                             default:
-
-
                                 break;
                         }
-
                     }
-
                 }    //end if -> show aggregated data
 
                 //don't show aggregated data
@@ -2211,26 +2177,24 @@ class userstatistics_helper
 
                         case 'pdf':
                             $label[$i] = flattenText($label[$i]);
-                            $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $gdata[$i])."%", "");
+                            $tablePDF[] = array($label[$i], $grawdata[$i], sprintf("%01.2f", $gdata[$i]) . "%", "");
 
                             break;
                         case 'html':
                             //output percentage
                             $statisticsoutput .= "\t\t<td class='text-right'>";
-                            $statisticsoutput .= sprintf("%01.2f", $gdata[$i])."%";
+                            $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                             $statisticsoutput .= "\t\t";
                             //end output per line. there has to be a whitespace within the table cell to display correctly
                             $statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
-                            if (isset($extraline)) {$statisticsoutput .= $extraline; }
+                            if (isset($extraline)) {
+                                $statisticsoutput .= $extraline;
+                            }
                             break;
                         default:
-
-
                             break;
                     }
-
                 }
-
             }    //end else -> $gdata[$i] != "N/A"
 
 
@@ -2242,7 +2206,6 @@ class userstatistics_helper
 
             //Clear extraline
             unset($extraline);
-
         }    //end while
 
         //only show additional values when this setting is enabled
@@ -2257,8 +2220,6 @@ class userstatistics_helper
 
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
-
-
                     //calculate and round results
                     //there are always 5 items
                     for ($x = 0; $x < 5; $x++) {
@@ -2297,7 +2258,6 @@ class userstatistics_helper
                         if ($squarevalue != 0 && $stddevarray[$j] != 0) {
                             $stddev += $squarevalue * $stddevarray[$j];
                         }
-
                     }
 
                     //4 = multiply result with 1 / (number of items (=5))
@@ -2326,22 +2286,19 @@ class userstatistics_helper
                         break;
 
                     case 'pdf':
-
                         $tablePDF[] = array(gT("Arithmetic mean"), $am, '', '');
                         $tablePDF[] = array(gT("Standard deviation"), $stddev, '', '');
 
                         break;
                     case 'html':
                         //calculate standard deviation
-                        $statisticsoutput .= "<tr><td class='text-right'>".gT("Arithmetic mean")."</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Arithmetic mean") . "</td>"; //German: "Fallzahl"
                         $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'> $am</td><td>&nbsp;</td></tr>";
-                        $statisticsoutput .= "<tr><td class='text-right'>".gT("Standard deviation")."</td>"; //German: "Fallzahl"
+                        $statisticsoutput .= "<tr><td class='text-right'>" . gT("Standard deviation") . "</td>"; //German: "Fallzahl"
                         $statisticsoutput .= "<td>&nbsp;</td><td class='text-right'>$stddev</td><td>&nbsp;</td></tr>";
 
                         break;
                     default:
-
-
                         break;
                 }
             }
@@ -2377,7 +2334,6 @@ class userstatistics_helper
                         $iColumn++;
                     }
                 }
-
             }
         }
 
@@ -2422,26 +2378,26 @@ class userstatistics_helper
                 if ($cachefilename) {
                     // Add the image only if constructed
                     //introduce new counter
-                    if (!isset($ci)) {$ci = 0; }
+                    if (!isset($ci)) {
+                        $ci = 0;
+                    }
 
                     switch ($outputType) {
                         case 'xls':
-
                             /**
                              * No Image for Excel...
                              */
 
                             break;
                         case 'pdf':
-
                             $this->pdf->AddPage('P', 'A4');
 
                             $this->pdf->titleintopdf($pdfTitle, $titleDesc);
-                            $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/".$surveyid), 'B', true, 150, 'C', false, false, 0, true);
+                            $this->pdf->Image($tempdir . "/" . $cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $surveyid), 'B', true, 150, 'C', false, false, 0, true);
 
                             break;
                         case 'html':
-                            $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
+                            $statisticsoutput .= "<img src=\"$tempurl/" . $cachefilename . "\" border='1' />";
 
                             $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
                             if ($bShowMap) {
@@ -2470,20 +2426,18 @@ class userstatistics_helper
                 $sImgUrl = Yii::app()->getConfig('adminimageurl');
 
                 $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
-                ."<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='".gT("Disable chart")."' />"
-                ."<img class='stats-showgraph' src='$sImgUrl/chart.png' title='".gT("Enable chart")."' />"
-                ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='".gT("Display as bar chart")."' />"
-                ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='".gT("Display as pie chart")."' />"
-                ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='".gT("Disable map display")."' />"
-                ."<img class='stats-hidemap' src='$sImgUrl/map.png' title='".gT("Enable map display")."' />"
-                ."</div></td></tr>";
-
+                . "<img class='stats-hidegraph' src='$sImgUrl/chart_disabled.png' title='" . gT("Disable chart") . "' />"
+                . "<img class='stats-showgraph' src='$sImgUrl/chart.png' title='" . gT("Enable chart") . "' />"
+                . "<img class='stats-showbar' src='$sImgUrl/chart_bar.png' title='" . gT("Display as bar chart") . "' />"
+                . "<img class='stats-showpie' src='$sImgUrl/chart_pie.png' title='" . gT("Display as pie chart") . "' />"
+                . "<img class='stats-showmap' src='$sImgUrl/map_disabled.png' title='" . gT("Disable map display") . "' />"
+                . "<img class='stats-hidemap' src='$sImgUrl/map.png' title='" . gT("Enable map display") . "' />"
+                . "</div></td></tr>";
             }
             $statisticsoutput .= "</td></tr></table></div><br /> \n";
         }
 
-        return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
-
+        return array("statisticsoutput" => $statisticsoutput, "pdf" => $this->pdf, "astatdata" => $astatdata);
     }
 
     /**
@@ -2582,8 +2536,6 @@ class userstatistics_helper
                         $myField = "$myField{$row[0]}";
                     }
                     //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
-
-
                 }
                 if ($q2show == 'all') {
                     $summary[] = $myField;
@@ -2630,8 +2582,8 @@ class userstatistics_helper
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
             // set header and footer fonts
-            $this->pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
-            $this->pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
+            $this->pdf->setHeaderFont(array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
+            $this->pdf->setFooterFont(array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
 
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
@@ -2746,7 +2698,6 @@ class userstatistics_helper
                 break;
 
             case 'html':
-
                 $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
                     . "\t<thead><tr><th class='text-center' colspan='2'>" . gT("Results") . "</th></tr></thead>\n"
                     . "\t<tr><th style='text-align:left'>" . gT("Number of records in this query:") . '</th>'
@@ -2767,7 +2718,6 @@ class userstatistics_helper
                     $sOutputHTML .= CHtml::link(gT("Browse"), array("admin/responses", "sa" => 'browse', 'surveyid' => $surveyid, 'statfilter' => 1), array('class' => 'button btn-link'));
                     $sOutputHTML .= CHtml::link(gT("Export"), array("admin/export", "sa" => 'exportresults', 'surveyid' => $surveyid, 'statfilter' => 1), array('class' => 'button btn-link'));
                     $sOutputHTML .= "</td></tr>";
-
                 }
                 $sOutputHTML .= "</table></div>\n";
 
@@ -2779,7 +2729,7 @@ class userstatistics_helper
         //put everything from $selects array into a string connected by AND
         //This string ($sql) can then be passed on to other functions so you can
         //browse these results
-        if (isset ($selects) && $selects) {
+        if (isset($selects) && $selects) {
             $sql = implode(" AND ", $selects);
         } elseif (!empty($newsql)) {
             $sql = $newsql;
@@ -2802,7 +2752,6 @@ class userstatistics_helper
 
             //loop through all selected questions
             foreach ($runthrough as $rt) {
-
                 //Step 1: Get information about this response field (SGQA) for the summary
                 $outputs = $this->buildOutputList($rt, $language, $surveyid, $outputType, $sql, $sLanguageCode);
                 $sOutputHTML .= $outputs['statisticsoutput'];
@@ -2823,7 +2772,6 @@ class userstatistics_helper
             if ($outputType == 'html') {
                 $sOutputHTML .= "<br />&nbsp;\n";
             }
-
         }    //end if -> show summary results
 
         switch ($outputType) {
@@ -2905,10 +2853,10 @@ class userstatistics_helper
 
         if ($surveyid !== $sid || $fieldname !== $field) {
             //get data
-            $query = " FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($fieldname)." IS NOT null";
+            $query = " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT null";
             //NO ZEROES
             if (!$excludezeros) {
-                $query .= " AND ".Yii::app()->db->quoteColumnName($fieldname)." != 0";
+                $query .= " AND " . Yii::app()->db->quoteColumnName($fieldname) . " != 0";
             }
 
             //filtering enabled?
@@ -2919,7 +2867,9 @@ class userstatistics_helper
             }
 
             //if $sql values have been passed to the statistics script from another script, incorporate them
-            if (!empty($sql)) {$query .= " AND $sql"; }
+            if (!empty($sql)) {
+                $query .= " AND $sql";
+            }
         }
 
         if ($surveyid !== $sid) {
@@ -2930,8 +2880,8 @@ class userstatistics_helper
 
         if ($fieldname !== $field) {
             $field = $fieldname;
-            $allRows = Yii::app()->db->createCommand("SELECT ".Yii::app()->db->quoteColumnName($fieldname).$query.' ORDER BY '.Yii::app()->db->quoteColumnName($fieldname))->queryAll();
-            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(".Yii::app()->db->quoteColumnName($fieldname).")".$query)->queryScalar(); // Record count for THIS $fieldname
+            $allRows = Yii::app()->db->createCommand("SELECT " . Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
+            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(" . Yii::app()->db->quoteColumnName($fieldname) . ")" . $query)->queryScalar(); // Record count for THIS $fieldname
         }
 
         // Qx = (x/4) * (n+1) if not integer, interpolate
@@ -2973,36 +2923,42 @@ class userstatistics_helper
      */
     function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
-        $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
+        $search['condition'] = Yii::app()->db->quoteColumnName($column) . " != ''";
         $sDBDriverName = Yii::app()->db->getDriverName();
         if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
-            $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+            $search['condition'] = "CAST(" . Yii::app()->db->quoteColumnName($column) . " as varchar) != ''";
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; } elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
+        if (incompleteAnsFilterState() == "incomplete") {
+            $search['condition'] .= " AND submitdate is null";
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $search['condition'] .= " AND submitdate is not null";
+        }
 
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
-        if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid])) {
-            foreach (Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+        if (isset(Yii::app()->session['statistics_selects_' . $surveyid]) && is_array(Yii::app()->session['statistics_selects_' . $surveyid])) {
+            foreach (Yii::app()->session['statistics_selects_' . $surveyid] as $sql) {
                 $search['condition'] .= " AND $sql";
             }
         }
 
         if ($sortby != '') {
             if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') {
-                $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+                $sortby = "CAST(" . Yii::app()->db->quoteColumnName($sortby) . " as varchar)";
             } else {
                 $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
 
-            if ($sorttype == 'N') {$sortby = "($sortby * 1)"; } //Converts text sorting into numerical sorting
-            $search['order'] = $sortby.' '.$sortmethod;
+            if ($sorttype == 'N') {
+                $sortby = "($sortby * 1)";
+            } //Converts text sorting into numerical sorting
+            $search['order'] = $sortby . ' ' . $sortmethod;
         }
         $results = SurveyDynamic::model($surveyid)->findAll($search);
         $output = array();
         foreach ($results as $row) {
-            $output[] = array("id"=>$row['id'], "value"=>$row[$column]);
+            $output[] = array("id" => $row['id'], "value" => $row[$column]);
         }
         return $output;
     }
@@ -3022,11 +2978,10 @@ class userstatistics_helper
                 $linefeed = "<br />\n";
                 break;
             default:
-                throw new \Exception('Unknown output type: '.$outputType);
+                throw new \Exception('Unknown output type: ' . $outputType);
                 break;
         }
 
         return $linefeed;
     }
-
 }

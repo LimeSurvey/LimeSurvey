@@ -1,5 +1,6 @@
 <?php
 
+class DataSetDate extends QuestionBaseDataSet
+{
 
-
-class DataSetDate extends QuestionBaseDataSet {}
+}

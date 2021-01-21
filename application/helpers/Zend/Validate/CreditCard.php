@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -142,7 +143,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             $options = func_get_args();
             $temp['type'] = array_shift($options);
             if (!empty($options)) {
@@ -196,7 +197,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
             $type = array($type);
         }
 
-        foreach($type as $typ) {
+        foreach ($type as $typ) {
             if (defined('self::' . strtoupper($typ)) && !in_array($typ, $this->_type)) {
                 $this->_type[] = $typ;
             }
@@ -275,7 +276,7 @@ class Zend_Validate_CreditCard extends Zend_Validate_Abstract
             }
         }
 
-        if ($foundp == false){
+        if ($foundp == false) {
             $this->_error(self::PREFIX, $value);
             return false;
         }

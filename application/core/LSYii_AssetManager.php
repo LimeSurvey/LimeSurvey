@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LimeSurvey
  * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,19 +22,19 @@ class LSYii_AssetManager extends CAssetManager
     /* @inheritdoc */
     protected function hash($path)
     {
-        return sprintf('%x', crc32($path.Yii::app()->getConfig('globalAssetsVersion')));
+        return sprintf('%x', crc32($path . Yii::app()->getConfig('globalAssetsVersion')));
     }
 
     /**
      * @inheritdoc
      * With db asset version used
      */
-    protected function generatePath($file, $hashByName=false)
+    protected function generatePath($file, $hashByName = false)
     {
         if (is_file($file)) {
-            $pathForHashing=$hashByName ? dirname($file) : dirname($file).".".filemtime($file).".".AssetVersion::getAssetVersion($file);
+            $pathForHashing = $hashByName ? dirname($file) : dirname($file) . "." . filemtime($file) . "." . AssetVersion::getAssetVersion($file);
         } else {
-            $pathForHashing=$hashByName ? $file : $file.".".filemtime($file).".".AssetVersion::getAssetVersion($file);
+            $pathForHashing = $hashByName ? $file : $file . "." . filemtime($file) . "." . AssetVersion::getAssetVersion($file);
         }
         return $this->hash($pathForHashing);
     }

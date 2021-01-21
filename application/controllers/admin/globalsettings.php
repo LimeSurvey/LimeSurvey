@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -79,7 +80,7 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $datetimeobj = new date_time_converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate']." H:i:s");
+        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
         $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
@@ -103,7 +104,7 @@ class GlobalSettings extends Survey_Common_Action
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
 
-        // Get user administration settings 
+        // Get user administration settings
         $data['sGlobalSendAdminCreationEmail'] = getGlobalSetting('sendadmincreationemail');
         $data['sGlobalAdminCreationEmailTemplate'] = getGlobalSetting('admincreationemailtemplate');
         $data['sGlobalAdminCreationEmailSubject'] = getGlobalSetting('admincreationemailsubject');
@@ -133,9 +134,9 @@ class GlobalSettings extends Survey_Common_Action
         $decimals = 1;
 
         $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
-        $data['templateSize'] = humanFilesize(folderSize($uploaddir.'/themes'), $decimals);
-        $data['surveySize']   = humanFilesize(folderSize($uploaddir.'/surveys'), $decimals);
-        $data['labelSize']    = humanFilesize(folderSize($uploaddir.'/labels'), $decimals);
+        $data['templateSize'] = humanFilesize(folderSize($uploaddir . '/themes'), $decimals);
+        $data['surveySize']   = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
+        $data['labelSize']    = humanFilesize(folderSize($uploaddir . '/labels'), $decimals);
 
         $data['surveys']   = $this->getSurveyFolderStorage($uploaddir, $decimals);
         $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
@@ -157,7 +158,7 @@ class GlobalSettings extends Survey_Common_Action
      */
     protected function getSurveyFolderStorage($uploaddir, $decimals)
     {
-        $surveyFolders = array_filter(glob($uploaddir.'/surveys/*'), 'is_dir');
+        $surveyFolders = array_filter(glob($uploaddir . '/surveys/*'), 'is_dir');
         $surveys = array();
         foreach ($surveyFolders as $folder) {
             $parts = explode('/', $folder);
@@ -168,7 +169,7 @@ class GlobalSettings extends Survey_Common_Action
                 $surveys[] = array(
                     'sizeInBytes' => $size,
                     'size'        => humanFilesize($size, $decimals),
-                    'name'        => $surveyinfo === false ? '('.gT('deleted').')' : $surveyinfo['name'],
+                    'name'        => $surveyinfo === false ? '(' . gT('deleted') . ')' : $surveyinfo['name'],
                     'deleted'     => $surveyinfo === false,
                     'showPurgeButton' => Permission::model()->hasGlobalPermission('superadmin', 'delete')
                                          && $surveyinfo === false,
@@ -187,7 +188,7 @@ class GlobalSettings extends Survey_Common_Action
      */
     protected function getTemplateFolderStorage($uploaddir, $decimals)
     {
-        $templateFolders = array_filter(glob($uploaddir.'/templates/*'), 'is_dir');
+        $templateFolders = array_filter(glob($uploaddir . '/templates/*'), 'is_dir');
         $templates = array();
         foreach ($templateFolders as $folder) {
             $parts = explode('/', $folder);
@@ -297,17 +298,21 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss')));
         $warning = '';
         // make sure emails are valid before saving them
-        if (Yii::app()->request->getPost('siteadminbounce', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))) {
+        if (
+            Yii::app()->request->getPost('siteadminbounce', '') == ''
+            || validateEmailAddress(Yii::app()->request->getPost('siteadminbounce'))
+        ) {
             SettingGlobal::setSetting('siteadminbounce', strip_tags(Yii::app()->request->getPost('siteadminbounce')));
         } else {
-            $warning .= gT("Warning! Admin bounce email was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Admin bounce email was not saved because it was not valid.") . '<br/>';
         }
-        if (Yii::app()->request->getPost('siteadminemail', '') == ''
-            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
+        if (
+            Yii::app()->request->getPost('siteadminemail', '') == ''
+            || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))
+        ) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
-            $warning .= gT("Warning! Administrator email address was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Administrator email address was not saved because it was not valid.") . '<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
@@ -318,7 +323,7 @@ class GlobalSettings extends Survey_Common_Action
 
         SettingGlobal::setSetting('maxemails', sanitize_int($maxemails));
         SettingGlobal::setSetting('sendingrate', sanitize_int($sendingrate));
-        $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime',7200));
+        $iSessionExpirationTime = (int) (Yii::app()->getRequest()->getPost('iSessionExpirationTime', 7200));
         if ($iSessionExpirationTime == 0) {
             $iSessionExpirationTime = 7200;
         }
@@ -343,20 +348,20 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('add_access_control_header', (bool) Yii::app()->getRequest()->getPost('add_access_control_header'));
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
-        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles')== '1' ? 'Y' : 'N');
+        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles') == '1' ? 'Y' : 'N');
         //Save user administration settings
         SettingGlobal::setSetting('sendadmincreationemail', App()->getRequest()->getPost('sendadmincreationemail'));
         SettingGlobal::setSetting('admincreationemailsubject', App()->getRequest()->getPost('admincreationemailsubject'));
         SettingGlobal::setSetting('admincreationemailtemplate', App()->getRequest()->getPost('admincreationemailtemplate'));
 
-        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60).' minutes'; //makes sure it is a number, at least 0
+        $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60) . ' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
-            $savetime = '+'.$savetime;
+            $savetime = '+' . $savetime;
         }
         SettingGlobal::setSetting('timeadjust', $savetime);
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
 
-        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
+        Yii::app()->session['flashmessage'] = $warning . gT("Global settings were saved.");
 
         // Redirect if user clicked save-and-close-button
         if (Yii::app()->getRequest()->getPost('saveandclose')) {
@@ -384,11 +389,11 @@ class GlobalSettings extends Survey_Common_Action
         $oldtokenlist = [];
         $tablelist = Yii::app()->db->schema->getTableNames();
         foreach ($tablelist as $table) {
-            if (strpos($table, Yii::app()->db->tablePrefix."old_tokens_") !== false) {
+            if (strpos($table, Yii::app()->db->tablePrefix . "old_tokens_") !== false) {
                 $oldtokenlist[] = $table;
-            } elseif (strpos($table, Yii::app()->db->tablePrefix."tokens_") !== false) {
+            } elseif (strpos($table, Yii::app()->db->tablePrefix . "tokens_") !== false) {
                 $tokenlist[] = $table;
-            } elseif (strpos($table, Yii::app()->db->tablePrefix."old_survey_") !== false) {
+            } elseif (strpos($table, Yii::app()->db->tablePrefix . "old_survey_") !== false) {
                 $oldresultslist[] = $table;
             }
         }
@@ -443,14 +448,14 @@ class GlobalSettings extends Survey_Common_Action
         $users = getUserList();
         $aData['users'] = array();
         foreach ($users as $user) {
-            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+            $aData['users'][$user['uid']] = $user['user'] . ($user['full_name'] ? ' - ' . $user['full_name'] : '');
         }
         // Sort users by name
         asort($aData['users']);
 
         $aData['oSurvey'] = $oSurvey;
 
-        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/index'));
         }
 
@@ -469,7 +474,8 @@ class GlobalSettings extends Survey_Common_Action
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
-    public function surveysettingmenues() {
+    public function surveysettingmenues()
+    {
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
@@ -483,7 +489,7 @@ class GlobalSettings extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'globalsettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'globalsettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

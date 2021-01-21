@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -50,11 +52,13 @@ class participantsaction extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (!(Permission::model()->hasGlobalPermission('participantpanel', 'read')
+        if (
+            !(Permission::model()->hasGlobalPermission('participantpanel', 'read')
             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
-            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))) {
+            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
+        ) {
             App()->setFlashMessage(gT('No permission'), 'error');
             App()->getController()->redirect(App()->request->urlReferrer);
         }
@@ -250,7 +254,7 @@ class participantsaction extends Survey_Common_Action
         $count = (int) Participant::model()->getParticipantsCount($attid, $search, $iUserID);
         if ($count > 1) {
             return sprintf(gT("Export %s participants to CSV"), $count);
-        } else if ($count == 1) {
+        } elseif ($count == 1) {
             return gT("Export participant to CSV");
         } else {
             return $count;
@@ -428,11 +432,11 @@ class participantsaction extends Survey_Common_Action
             $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         }
         // Deletes from central and survey participants table
-        else if ($selectoption == 'ptt') {
+        elseif ($selectoption == 'ptt') {
             $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
         }
         // Deletes from central , token and assosiated responses as well
-        else if ($selectoption == 'ptta') {
+        elseif ($selectoption == 'ptta') {
             $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
         } else {
             // Internal error
@@ -458,7 +462,7 @@ class participantsaction extends Survey_Common_Action
             $model = Participant::model()->findByPk($participant_id)->decrypt();
             $operationType = "edit";
         } else {
-            $model = new Participant;
+            $model = new Participant();
             $operationType = "add";
         }
 
@@ -746,7 +750,7 @@ class participantsaction extends Survey_Common_Action
                 }
 
                 $this->ajaxHelper::outputSuccess(gT("Participant successfully added"));
-            } else if (is_string($result)) {
+            } elseif (is_string($result)) {
                 $this->ajaxHelper::outputError('Could not add new participant: ' . $result);
             } else {
                 // "Impossible"
@@ -1183,7 +1187,7 @@ class participantsaction extends Survey_Common_Action
 
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
         $chosenParticipantsArray = explode(',', $chosenParticipants);
-        $searchSelected = new CDbCriteria;
+        $searchSelected = new CDbCriteria();
         if (!empty($chosenParticipants)) {
             $searchSelected->addInCondition("p.participant_id", $chosenParticipantsArray);
         } else {
@@ -1212,7 +1216,7 @@ class participantsaction extends Survey_Common_Action
         $searchcondition = Yii::app()->request->getPost('searchcondition');
         $searchconditionurl = basename($searchconditionurl);
 
-        $search = new CDbCriteria;
+        $search = new CDbCriteria();
         if ($searchconditionurl != 'getParticipants_json') {
             // if there is a search condition then only the participants that match the search criteria are counted
             $condition = explode("||", $searchcondition);
@@ -1224,7 +1228,7 @@ class participantsaction extends Survey_Common_Action
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
         $chosenParticipantsArray = explode(',', $chosenParticipants);
 
-        $searchSelected = new CDbCriteria;
+        $searchSelected = new CDbCriteria();
         if (!empty($chosenParticipants)) {
             $searchSelected->addInCondition("{{participant_id}}", $chosenParticipantsArray);
         } else {
@@ -1248,7 +1252,7 @@ class participantsaction extends Survey_Common_Action
     {
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
         if (!empty($chosenParticipants)) {
-            $search = new CDbCriteria;
+            $search = new CDbCriteria();
             $search->addInCondition("p.participant_id", $chosenParticipants);
         } else {
             $search = null;
@@ -1263,7 +1267,7 @@ class participantsaction extends Survey_Common_Action
     {
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
         if (!empty($chosenParticipants)) {
-            $search = new CDbCriteria;
+            $search = new CDbCriteria();
             $search->addInCondition("p.participant_id", $chosenParticipants);
         } else {
             $search = null;
@@ -1308,7 +1312,7 @@ class participantsaction extends Survey_Common_Action
                     )
                 );
             } else {
-                $stg = new SettingGlobal;
+                $stg = new SettingGlobal();
                 $stg->stg_name = $value;
                 $stg->stg_value = Yii::app()->request->getPost($value) ? 'Y' : 'N';
                 $stg->save();
@@ -1566,7 +1570,6 @@ class participantsaction extends Survey_Common_Action
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-
             // save attribute
             if ($operation === 'edit') {
                 $iAttributeId = $AttributeNameAttributes['attribute_id'];
@@ -1574,7 +1577,7 @@ class participantsaction extends Survey_Common_Action
                 $sEncryptedBeforeChange = $ParticipantAttributeNames->encrypted;
                 $ParticipantAttributeNames->saveAttribute($AttributeNameAttributes);
             } else {
-                $ParticipantAttributeNames = new ParticipantAttributeName;
+                $ParticipantAttributeNames = new ParticipantAttributeName();
                 $sEncryptedBeforeChange = 'N';
                 $ParticipantAttributeNames->setAttributes($AttributeNameAttributes);
                 $ParticipantAttributeNames->save();
@@ -2180,7 +2183,7 @@ class participantsaction extends Survey_Common_Action
         $order = $sidx . " " . $sord;
 
 
-        $aData = new stdClass;
+        $aData = new stdClass();
 
         //If super admin all the participants will be visible
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -2632,7 +2635,7 @@ class participantsaction extends Survey_Common_Action
 
         //string of participant IDs which should be added to CPDB, if not set to sessionvar those will not be added!!
         $participants = Yii::app()->request->getPost('itemsid');
-        if(isset($participants) && $participants!==null && $participants!==''){
+        if (isset($participants) && $participants !== null && $participants !== '') {
             unset(Yii::app()->session['participantid']);
             Yii::app()->session['participantid'] = $participants;
         }

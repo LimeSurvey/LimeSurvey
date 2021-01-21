@@ -1,4 +1,5 @@
 <?php
+
 /**
  * mailSenderToFrom : Set the smtp user to sender and from
  * Needed for some smtp server, see mantis issue #10529 <https://bugs.limesurvey.org/view.php?id=10529>
@@ -15,17 +16,17 @@
  */
 class mailSenderToFrom extends PluginBase
 {
-    static protected $description = 'Set sender to the SMTP user.';
-    static protected $name = 'mailSenderToFrom';
+    protected static $description = 'Set sender to the SMTP user.';
+    protected static $name = 'mailSenderToFrom';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
     public function init()
     {
-        $this->subscribe('beforeEmail','beforeEmail');
-        $this->subscribe('beforeSurveyEmail','beforeEmail');
-        $this->subscribe('beforeTokenEmail','beforeEmail');
+        $this->subscribe('beforeEmail', 'beforeEmail');
+        $this->subscribe('beforeSurveyEmail', 'beforeEmail');
+        $this->subscribe('beforeTokenEmail', 'beforeEmail');
     }
 
     /**
@@ -35,7 +36,7 @@ class mailSenderToFrom extends PluginBase
     public function beforeEmail()
     {
         $emailsmtpuser = Yii::app()->getConfig('emailsmtpuser');
-        if(empty($emailsmtpuser)) {
+        if (empty($emailsmtpuser)) {
             return;
         }
         $limeMailer = $this->getEvent()->get('mailer');
@@ -45,6 +46,6 @@ class mailSenderToFrom extends PluginBase
         $updateDisable = $this->getEvent()->get('updateDisable');
         $updateDisable['from'] = true;
         $updateDisable['bounce'] = true;
-        $this->getEvent()->set('updateDisable',$updateDisable);
+        $this->getEvent()->set('updateDisable', $updateDisable);
     }
 }

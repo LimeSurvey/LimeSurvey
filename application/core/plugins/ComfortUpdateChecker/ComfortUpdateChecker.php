@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Update Checker for Comfort Update users
  * Copyright (C) LimeSurvey GmbH
@@ -14,9 +15,9 @@ class ComfortUpdateChecker extends PluginBase
 
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Update Checker for Comfort Update users';
+    protected static $description = 'Update Checker for Comfort Update users';
 
-    static protected $name = 'ComfortUpdateChecker';
+    protected static $name = 'ComfortUpdateChecker';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
@@ -45,20 +46,19 @@ class ComfortUpdateChecker extends PluginBase
 
     /**
      * Append new menu item to the admin topbar
-     * 
+     *
      * @return void
      */
     public function beforeAdminMenuRender()
     {
         $oEvent = $this->getEvent();
 
-        //Register css and js script 
+        //Register css and js script
         $this->registerAssets();
 
         $update = (array)$this->getUpdate();
 
         if ($update['result']) {
-
             //Default icon class
             $iconClass = "";
             $NotificationText = gT("Update available");
@@ -71,7 +71,7 @@ class ComfortUpdateChecker extends PluginBase
                 $iconClass = "cu-checker";
             }
 
-            //Display update notification only for superadmin user 
+            //Display update notification only for superadmin user
             if (Permission::model()->hasGlobalPermission('superadmin')) {
                 $aMenuItemAdminOptions = [
                     'isDivider' => false,
@@ -85,7 +85,7 @@ class ComfortUpdateChecker extends PluginBase
 
                 $oNewMenu = new \ComfortUpdateChecker\helpers\CUCMenuClass($aMenuItemAdminOptions);
 
-                //Check if display only for security update is true in plugin settings and display it otherwhise display all 
+                //Check if display only for security update is true in plugin settings and display it otherwhise display all
                 if ($this->get('only_security_update', null, null, false) && $update[key($update)]->security_update) {
                     $oEvent->append('extraMenus', [$oNewMenu]);
                 } elseif (!$this->get('only_security_update', null, null, false)) {
@@ -96,7 +96,7 @@ class ComfortUpdateChecker extends PluginBase
     }
 
     /**
-     * This function check if update is available from the comfort update server 
+     * This function check if update is available from the comfort update server
      *
      * @return void
      */

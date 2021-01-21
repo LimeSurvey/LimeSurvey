@@ -1,4 +1,8 @@
-<?php if (!defined('BASEPATH')) {exit('No direct script access allowed');}
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2018 The LimeSurvey Project Team / Carsten Schmitz
@@ -50,7 +54,7 @@ class AssetVersion extends LSActiveRecord
             array('path', 'required'),
             array('path', 'unique'),
             array('version', 'required'),
-            array('version', 'numerical', 'integerOnly'=>true),
+            array('version', 'numerical', 'integerOnly' => true),
         );
     }
 
@@ -61,11 +65,11 @@ class AssetVersion extends LSActiveRecord
      */
     public static function getAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 400) {
+        if (Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
-        $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
-        if(!$oAssetVersion) {
+        $oAssetVersion = self::model()->find('path = :path', array(":path" => $path));
+        if (!$oAssetVersion) {
             return 0;
         }
         return $oAssetVersion->version;
@@ -78,13 +82,13 @@ class AssetVersion extends LSActiveRecord
      */
     public static function incrementAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 400) {
+        if (Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
         /* This increment case insensitivity , (extend_vanilla at same time than Extend_Vanilla) no real issue (update 2 assets in one) , but â€¦ */
-        $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
-        if(!$oAssetVersion) {
-            $oAssetVersion = new self;
+        $oAssetVersion = self::model()->find('path = :path', array(":path" => $path));
+        if (!$oAssetVersion) {
+            $oAssetVersion = new self();
             $oAssetVersion->path = $path;
             $oAssetVersion->version = 0;
         }
@@ -100,9 +104,9 @@ class AssetVersion extends LSActiveRecord
      */
     public static function deleteAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 400) {
+        if (Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
-        return self::model()->deleteAll('path = :path',array(":path"=>$path));
+        return self::model()->deleteAll('path = :path', array(":path" => $path));
     }
 }

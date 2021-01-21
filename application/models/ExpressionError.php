@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -64,5 +66,4 @@ class ExpressionError extends LSActiveRecord
     {
         return $this->db->insert('expression_errors', $data);
     }
-
 }

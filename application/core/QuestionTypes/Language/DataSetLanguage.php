@@ -1,5 +1,6 @@
 <?php
 
+class DataSetLanguage extends QuestionBaseDataSet
+{
 
-
-class DataSetLanguage extends QuestionBaseDataSet {}
+}

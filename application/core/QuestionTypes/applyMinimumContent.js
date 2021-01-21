@@ -2,17 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const cwd = process.cwd();
 
-const minimalContent = `<?php
+const minimalContent = ` < ? php
 
 class {filename} extends QuestionBaseDataSet {}`;
 
-const applyDataSetFile = function(folderDirent) {
+const applyDataSetFile = function (folderDirent) {
     const filesList = fs.readdirSync(path.join(cwd, folderDirent));
     let sQuestionTypes = '';
     filesList.forEach((file, idn) => {
-        if(/^NameSpace.*$/.test(file)) {
+        if (/^NameSpace.*$/.test(file)) {
             fs.unlinkSync(path.join(cwd, folderDirent, file));
-        } else if(/^LoadQuestionTypes.*$/.test(file)) {
+        } else if (/^LoadQuestionTypes.*$/.test(file)) {
             fs.unlinkSync(path.join(cwd, folderDirent, file));
         } else {
             console.log(`${file}`)
@@ -26,16 +26,18 @@ const applyDataSetFile = function(folderDirent) {
 
 
 fs.readdir(path.normalize(cwd) ,(err, files) => {
-    if(err) throw err;
+    if (err) {
+        throw err;
+    }
     let toWrite = '';
     files.forEach((file, i) => {
         //console.log(file);
-        if(fs.statSync(path.join(cwd,file)).isDirectory()) {
+        if (fs.statSync(path.join(cwd,file)).isDirectory()) {
             //toWrite += applyDataSetFile(file);
             toWrite += `Yii::import('questiontypes.${file.toLowerCase()}.*');
-`
+            `
         }
     });
     let filecontent = fs.readFileSync(path.join(cwd, 'LoadQuestionTypes.php'), {encoding: 'utf8'});
-    fs.writeFileSync(path.join(cwd, 'LoadQuestionTypes.php'), filecontent+"\n"+toWrite);
+    fs.writeFileSync(path.join(cwd, 'LoadQuestionTypes.php'), filecontent + "\n" + toWrite);
 });

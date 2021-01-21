@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -86,21 +88,21 @@ class Quota extends LSActiveRecord
         return array(
             array('name,qlimit,action', 'required'),
             array('name', 'LSYii_Validators'), // Maybe more restrictive
-            array('qlimit', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'allowEmpty'=>true),
-            array('action', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'2', 'allowEmpty'=>true), // Default is null ?
-            array('active', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
-            array('autoload_url', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+            array('qlimit', 'numerical', 'integerOnly' => true, 'min' => '0', 'allowEmpty' => true),
+            array('action', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '2', 'allowEmpty' => true), // Default is null ?
+            array('active', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
+            array('autoload_url', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
         );
     }
 
     public function attributeLabels()
     {
         return array(
-            'name'=> gT("Quota name"),
-            'active'=> gT("Active"),
-            'qlimit'=> gT("Limit"),
-            'autoload_url'=> gT("Autoload URL"),
-            'action'=> gT("Quota action"),
+            'name' => gT("Quota name"),
+            'active' => gT("Active"),
+            'qlimit' => gT("Limit"),
+            'autoload_url' => gT("Autoload URL"),
+            'action' => gT("Quota action"),
         );
     }
 
@@ -111,7 +113,7 @@ class Quota extends LSActiveRecord
      */
     function insertRecords($data)
     {
-        $quota = new self;
+        $quota = new self();
         foreach ($data as $k => $v) {
             $quota->$k = $v;
         }
@@ -146,7 +148,6 @@ class Quota extends LSActiveRecord
     public function getMainLanguagesetting()
     {
         return $this->languagesettings[$this->survey->language];
-
     }
 
     public function getCompleteCount()
@@ -174,9 +175,9 @@ class Quota extends LSActiveRecord
                 $aQuotaColumns[$member->memberInfo['fieldname']][] = $member->memberInfo['value'];
             }
 
-            $oCriteria = new CDbCriteria;
+            $oCriteria = new CDbCriteria();
             $oCriteria->condition = new CDbExpression("submitdate IS NOT NULL");
-            foreach ($aQuotaColumns as $sColumn=>$aValue) {
+            foreach ($aQuotaColumns as $sColumn => $aValue) {
                 if (count($aValue) == 1) {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn), $aValue); // NO need params : compare bind
                 } else {
@@ -195,7 +196,7 @@ class Quota extends LSActiveRecord
         $languageSettings = $this->currentLanguageSetting;
         $members = array();
         foreach ($this->quotaMembers as $quotaMember) {
-        $members[] = $quotaMember->memberInfo;
+            $members[] = $quotaMember->memberInfo;
         }
         $attributes = $this->attributes;
 
@@ -211,7 +212,7 @@ class Quota extends LSActiveRecord
         $oQuotaLanguageSettings = QuotaLanguageSetting::model()
             ->findByAttributes(array(
                 'quotals_quota_id' => $this->id,
-                'quotals_language'=>Yii::app()->getLanguage(),
+                'quotals_language' => Yii::app()->getLanguage(),
             ));
         if ($oQuotaLanguageSettings) {
             return $oQuotaLanguageSettings;
@@ -219,6 +220,4 @@ class Quota extends LSActiveRecord
         /* If not exist or found, return the one from survey base languague */
         return $this->getMainLanguagesetting();
     }
-
-
 }

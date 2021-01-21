@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -92,8 +94,8 @@ class SavedControl extends LSActiveRecord
      */
     public function deleteSomeRecords($condition)
     {
-        $record = new self;
-        $criteria = new CDbCriteria;
+        $record = new self();
+        $criteria = new CDbCriteria();
 
         if ($condition != false) {
             foreach ($condition as $column => $value) {
@@ -192,7 +194,7 @@ class SavedControl extends LSActiveRecord
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->compare('sid', $this->sid, false); //will not be searchable
         $criteria->compare('srid', $this->srid, true);
         $criteria->compare('access_code', $this->access_code, true);

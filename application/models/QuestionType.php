@@ -97,10 +97,11 @@ class QuestionType extends StaticModel
         ];
     }
 
-    public function applyToQuestion($oQuestion) {
+    public function applyToQuestion($oQuestion)
+    {
         $this->question = $oQuestion;
         $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
-        foreach($aSettingsArray as $settingKey => $setting) {
+        foreach ($aSettingsArray as $settingKey => $setting) {
             $this->$settingKey = $setting;
         }
     }
@@ -457,7 +458,6 @@ class QuestionType extends StaticModel
         return [
             self::QT_VERTICAL_FILE_UPLOAD
         ];
-
     }
 
     /**
@@ -467,7 +467,6 @@ class QuestionType extends StaticModel
     public static function doubleCodes()
     {
         return [];
-
     }
 
     /**
@@ -533,7 +532,6 @@ class QuestionType extends StaticModel
             }
         }
         return $this->getFieldDataType();
-
     }
 
     /**

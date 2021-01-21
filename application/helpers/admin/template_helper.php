@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -75,12 +76,12 @@ function mkdir_p($target)
 function themeoptions($optionarray, $selectedvalue)
 {
     $return = '';
-    foreach ($optionarray as $arkey=>$arvalue) {
-        $return .= "<option value='".HTMLEscape($arkey)."'";
+    foreach ($optionarray as $arkey => $arvalue) {
+        $return .= "<option value='" . HTMLEscape($arkey) . "'";
         if ($arkey == $selectedvalue) {
             $return .= " selected='selected'";
         }
-        $return .= '>'.HTMLEscape($arkey)."</option>\n";
+        $return .= '>' . HTMLEscape($arkey) . "</option>\n";
     }
     return $return;
 }
@@ -129,7 +130,7 @@ function is_template_editable($templatename)
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads').','.Yii::app()->getConfig('allowedthemeimageformats'));
+    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
 
@@ -139,4 +140,3 @@ function templateExtractFilter($p_event, &$p_header)
         return 0;
     }
 }
-

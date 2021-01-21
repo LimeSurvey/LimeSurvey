@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -74,7 +76,7 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function defaultScope()
     {
-        return array('index'=>'attribute');
+        return array('index' => 'attribute');
     }
     
     /** @inheritdoc */
@@ -96,12 +98,12 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
     {
-        $oModel = new self;
-        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        $oModel = new self();
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName' => $sAttributeName, ':language' => $sLanguage, ':questionID' => $iQuestionID));
         if (!empty($aResult)) {
-            $oModel->updateAll(array('value'=>$sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+            $oModel->updateAll(array('value' => $sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName' => $sAttributeName, ':language' => $sLanguage, ':questionID' => $iQuestionID));
         } else {
-            $oModel = new self;
+            $oModel = new self();
             $oModel->attribute = $sAttributeName;
             $oModel->value = $sValue;
             $oModel->qid = $iQuestionID;
@@ -124,12 +126,12 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
-        $oModel = new self;
-        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID', array(':attributeName'=>$sAttributeName, ':questionID'=>$iQuestionID));
+        $oModel = new self();
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID', array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
         if (!empty($aResult)) {
-            $oModel->updateAll(array('value'=>$sValue), 'attribute=:attributeName and qid=:questionID', array(':attributeName'=>$sAttributeName, ':questionID'=>$iQuestionID));
+            $oModel->updateAll(array('value' => $sValue), 'attribute=:attributeName and qid=:questionID', array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
         } else {
-            $oModel = new self;
+            $oModel = new self();
             $oModel->attribute = $sAttributeName;
             $oModel->value = $sValue;
             $oModel->qid = $iQuestionID;
@@ -179,7 +181,7 @@ class QuestionAttribute extends LSActiveRecord
                             QuestionAttribute::model()->updateAll(['value' => $sValue], 'attribute=:attribute AND qid=:qid', [':attribute' => $sAttribute, ':qid' => $iQid]);
                         } else {
                             // Create
-                            $oAttribute = new QuestionAttribute;
+                            $oAttribute = new QuestionAttribute();
                             $oAttribute->qid = $iQid;
                             $oAttribute->value = $sValue;
                             $oAttribute->attribute = $sAttribute;
@@ -219,7 +221,7 @@ class QuestionAttribute extends LSActiveRecord
                 return $value;
             }
         }
-        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid'=>$iQuestionID));
+        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid' => $iQuestionID));
         if ($oQuestion) {
             if ($sLanguage) {
                 $aLanguages = array($sLanguage);
@@ -228,7 +230,7 @@ class QuestionAttribute extends LSActiveRecord
             }
             // For some reason this happened in bug #10684
             if ($oQuestion->type == null) {
-                throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
+                throw new \CException("Question is corrupt: no type defined for question " . $iQuestionID);
             }
             $aAttributeValues = self::getAttributesAsArrayFromDB($iQuestionID);
             $aAttributeFromXmlOrDefault = self::getQuestionAttributesSettings($oQuestion->type); //from xml files
@@ -257,13 +259,14 @@ class QuestionAttribute extends LSActiveRecord
      * @param array $aLanguages  like $aLanguages[0] = 'en'
      * @return array
      */
-    private static function rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages){
+    private static function rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages)
+    {
         $aQuestionAttributes = array();
         foreach ($aAttributeNames as $aAttribute) {
             $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
             // convert empty array to empty string
-            if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+            if (empty($aAttribute['default']) && is_array($aAttribute['default'])) {
                 $aAttribute['default'] = '';
             }
 
@@ -301,7 +304,8 @@ class QuestionAttribute extends LSActiveRecord
      *               $aAttributeValues[$oAttributeValue->attribute][$oAttributeValue->language]
      *               $aAttributeValues[$oAttributeValue->attribute]['']
      */
-    public static function getAttributesAsArrayFromDB($iQuestionID){
+    public static function getAttributesAsArrayFromDB($iQuestionID)
+    {
         /* Get whole existing attribute for this question in an array */
         $oAttributeValues = self::model()->resetScope()->findAll("qid=:qid", ['qid' => $iQuestionID]);
         $aAttributeValues = array();
@@ -324,12 +328,15 @@ class QuestionAttribute extends LSActiveRecord
      * @param Question $oQuestion
      * @return array|mixed returns $aAttributeNames with appended additional attributes
      */
-    public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion){
+    public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion)
+    {
         $retAttributeNamesExtended = $aAttributeNames;
         /* @var $oAttributeValue QuestionAttribute*/
-        $oAttributeValue = self::model()->resetScope()->find("qid=:qid and attribute=:attribute",
-            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']);
-        if($oAttributeValue !== null){
+        $oAttributeValue = self::model()->resetScope()->find(
+            "qid=:qid and attribute=:attribute",
+            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
+        );
+        if ($oAttributeValue !== null) {
             $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
             $retAttributeNamesExtended = Question::getQuestionTemplateAttributes($retAttributeNamesExtended, $aAttributeValueQuestionTemplate, $oQuestion);
         }
@@ -344,7 +351,7 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function insertRecords($data)
     {
-        $attrib = new self;
+        $attrib = new self();
         foreach ($data as $k => $v) {
             $attrib->$k = $v;
         }
@@ -376,10 +383,10 @@ class QuestionAttribute extends LSActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
-        $criteria->params = [':qid'=>$this->qid];
+        $criteria->params = [':qid' => $this->qid];
         if ($this->language) {
             $criteria->addCondition('language=:language');
-            $criteria->params = [':qid'=>$this->qid, ':language'=>$this->language];
+            $criteria->params = [':qid' => $this->qid, ':language' => $this->language];
         }
         /** @var Question $model */
         $model = Question::model()->find($criteria);
@@ -410,10 +417,10 @@ class QuestionAttribute extends LSActiveRecord
             "help" => '',
             "value" => '',
             "sortorder" => 1000,
-            "i18n"=> false,
+            "i18n" => false,
             "readonly" => false,
             "readonly_when_active" => false,
-            "expression"=> null,
+            "expression" => null,
         );
     }
 
@@ -442,15 +449,15 @@ class QuestionAttribute extends LSActiveRecord
             self::$questionAttributesSettings[$sType] = array();
             $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter($attributes, function($attribute) use ($sType) {
+            $aQuestionTypeAttributes = array_filter($attributes, function ($attribute) use ($sType) {
                 return stripos($attribute['types'], $sType) !== false;
             });
-            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
+            foreach ($aQuestionTypeAttributes as $attribute => $settings) {
                   self::$questionAttributesSettings[$sType][$attribute] = array_merge(
                       QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
+                      array("category" => gT("Plugins")),
                       $settings,
-                      array("name"=>$attribute)
+                      array("name" => $attribute)
                   );
             }
         }
@@ -460,14 +467,15 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * Returns the value for attribute 'question_template'.
      * Fetches the question_template from a question model.
-     * 
+     *
      * Be carefull this attribute is not present in all questions.
      * Even more, standard question types where question theme are not used (or custom question theme are not used),
      * the attribute is missing. In those cases, the deault "core" is used.
      *
      * @return string question_template or 'core' if it not exists
      */
-    public static function getQuestionTemplateValue($questionID){
+    public static function getQuestionTemplateValue($questionID)
+    {
         $question_template = QuestionAttribute::model()->findByAttributes([
             'qid' => $questionID,
             'attribute' => 'question_template'
@@ -483,21 +491,21 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array The advanced attribute settings for this question type
      */
-    protected static function getAdvancedAttributesFromXml($sXmlFilePath){
+    protected static function getAdvancedAttributesFromXml($sXmlFilePath)
+    {
         $aXmlAttributes = array();
         $aAttributes = array();
 
-        if(file_exists($sXmlFilePath)){
+        if (file_exists($sXmlFilePath)) {
             // load xml file
             libxml_disable_entity_loader(false);
             $xml_config = simplexml_load_file($sXmlFilePath);
-            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), TRUE);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))){
+            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-
             }
             libxml_disable_entity_loader(true);
         } else {
@@ -505,20 +513,20 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // set $aAttributes array with attribute data
-        if (!empty($aXmlAttributes['attribute'])){
+        if (!empty($aXmlAttributes['attribute'])) {
             foreach ($aXmlAttributes['attribute'] as $key => $value) {
-                if(empty($value['name'])) {
+                if (empty($value['name'])) {
                     /* Allow comments in attributes */
                     continue;
                 }
                 /* settings the default value */
-                $aAttributes[$value['name']] =self::getDefaultSettings();
+                $aAttributes[$value['name']] = self::getDefaultSettings();
                 /* settings the xml value */
                 foreach ($value as $key2 => $value2) {
-                    if ($key2 === 'options' && !empty($value2)){
+                    if ($key2 === 'options' && !empty($value2)) {
                         foreach ($value2['option'] as $key3 => $value3) {
-                            if (isset($value3['value'])){
-                                $value4 = is_array($value3['value'])?'':$value3['value'];
+                            if (isset($value3['value'])) {
+                                $value4 = is_array($value3['value']) ? '' : $value3['value'];
                                 $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
                             }
                         }
@@ -531,11 +539,11 @@ class QuestionAttribute extends LSActiveRecord
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
         foreach ($aAttributes as $attributeName => $attribute) {
-          foreach ($attribute as $fieldName => $value) {
-            if ($value === []) {
-              $aAttributes[$attributeName][$fieldName] = null;
+            foreach ($attribute as $fieldName => $value) {
+                if ($value === []) {
+                    $aAttributes[$attributeName][$fieldName] = null;
+                }
             }
-          }
         }
 
         return $aAttributes;
@@ -562,7 +570,6 @@ class QuestionAttribute extends LSActiveRecord
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
-
             }
             libxml_disable_entity_loader(true);
         } else {
@@ -601,7 +608,8 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @return array the event attributes as array or an empty array
      */
-    public static function getOwnQuestionAttributesViaPlugin(){
+    public static function getOwnQuestionAttributesViaPlugin()
+    {
         $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
 

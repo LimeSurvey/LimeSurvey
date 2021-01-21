@@ -1,5 +1,6 @@
 <?php
 
+class DataSetLongFreeText extends QuestionBaseDataSet
+{
 
-
-class DataSetLongFreeText extends QuestionBaseDataSet {}
+}

@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -42,7 +40,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         $placeholder = "";
 
         $drows = $this->setDefaultIfEmpty(
-            $this->getQuestionAttribute('display_rows'), 
+            $this->getQuestionAttribute('display_rows'),
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
 
@@ -50,7 +48,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             $this->includeKeypad();
             $kpclass     = "text-keypad";
             $extraclass .= " inputkeypad";
-        } 
+        }
 
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
         if (intval(trim($this->getQuestionAttribute('maximum_chars'))) > 0) {
@@ -61,7 +59,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
         if (trim($this->getQuestionAttribute('text_input_width')) != '') {
             $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
-            $extraclass .= " col-sm-".trim($col);
+            $extraclass .= " col-sm-" . trim($col);
             $withColumn = true;
         }
         
@@ -70,13 +68,13 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             $extraclass .= " ls-input-sized";
         }
 
-        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+            $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 
         $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'extraclass'             => $extraclass,
-            'coreClass'              => "ls-answers answer-item text-item ".$sCoreClasses,
+            'coreClass'              => "ls-answers answer-item text-item " . $sCoreClasses,
             'withColumn'             => $withColumn,
             'kpclass'                => $kpclass,
             'name'                   => $this->sSGQA,

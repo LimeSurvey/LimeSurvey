@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the model class for table "{{surveys_groups}}".
  *
@@ -45,7 +46,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     protected function afterFind()
     {
         parent::afterFind();
-        if($this->gsid == 1) {
+        if ($this->gsid == 1) {
             $this->alwaysavailable = 1;
         }
     }
@@ -59,15 +60,15 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         // will receive user inputs.
         return array(
             array('name, sortorder, created_by, title', 'required'),
-            array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly'=>true),
-            array('name', 'length', 'max'=>45),
-            array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u','message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
-            array('title', 'length', 'max'=>100),
+            array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 45),
+            array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group name can contain only alphanumeric character, underscore or dot.')),
+            array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on'=>'search'),
+            array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on' => 'search'),
         );
     }
 
@@ -109,72 +110,72 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         return array(
 
                 array(
-                    'id'=>'gsid',
-                    'class'=>'CCheckBoxColumn',
+                    'id' => 'gsid',
+                    'class' => 'CCheckBoxColumn',
                     'selectableRows' => '100',
                 ),
 
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
-                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
-                    'type'=>'raw',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
+                    'type' => 'raw',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Name'),
                     'name' => 'name',
-                    'value'=>'$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
-                    'type'=>'raw',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
+                    'type' => 'raw',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'value'=>'$data->title',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->title',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'value'=>'$data->description',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->description',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
-                    'value'=>'$data->parentTitle',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->parentTitle',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Available'),
                     'name' => 'alwaysavailable',
-                    'value'=>'$data->alwaysavailable',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->alwaysavailable',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value'=>'!empty($data->owner) ? $data->owner->users_name : ""',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '!empty($data->owner) ? $data->owner->users_name : ""',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
-                    'value'=>'$data->sortorder',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->sortorder',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
@@ -183,8 +184,8 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'header' => gT('Actions'),
                     'name' => 'sortorder',
                     'type' => 'raw',
-                    'value'=> '$data->buttons',
-                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'value' => '$data->buttons',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
@@ -217,7 +218,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->select = array('DISTINCT t.*');
 
@@ -237,7 +238,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $criteria->mergeWith($criteriaPerm, 'AND');
 
         $dataProvider = new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
 
         $dataProvider->setTotalItemCount(count($dataProvider->getData()));
@@ -261,7 +262,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      */
     public function getHasSurveys()
     {
-        $nbSurvey = Survey::model()->countByAttributes(array("gsid"=>$this->gsid));
+        $nbSurvey = Survey::model()->countByAttributes(array("gsid" => $this->gsid));
         return $nbSurvey > 0;
     }
 
@@ -271,18 +272,18 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      */
     public function getHasChildGroups()
     {
-        $nbSurvey = SurveysGroups::model()->countByAttributes(array("parent_id"=>$this->gsid));
+        $nbSurvey = SurveysGroups::model()->countByAttributes(array("parent_id" => $this->gsid));
         return $nbSurvey > 0;
     }
 
 
-    public function getAllParents($bOnlyGsid=false)
+    public function getAllParents($bOnlyGsid = false)
     {
         $aParents = array();
         $oRSurveyGroup = $this;
-        while (!empty($oRSurveyGroup->parent_id)){
+        while (!empty($oRSurveyGroup->parent_id)) {
             $oRSurveyGroup =  SurveysGroups::model()->findByPk($oRSurveyGroup->parent_id);
-            $aParents[] = ($bOnlyGsid)?$oRSurveyGroup->gsid:$oRSurveyGroup;
+            $aParents[] = ($bOnlyGsid) ? $oRSurveyGroup->gsid : $oRSurveyGroup;
         }
 
         return $aParents;
@@ -295,23 +296,23 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      */
     public function getButtons()
     {
-        $sDeleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
-        $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
-        $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
-        $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id"=>$this->gsid));
+        $sDeleteUrl = App()->createUrl("admin/surveysgroups/sa/delete", array("id" => $this->gsid));
+        $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id" => $this->gsid));
+        $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id" => $this->gsid));
+        $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = '';
-        if($this->hasPermission('group','read')) {
-            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
+        if ($this->hasPermission('group', 'read')) {
+            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
         }
-        if($this->hasPermission('surveysettings','read')) {
-            $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
+        if ($this->hasPermission('surveysettings', 'read')) {
+            $button .= '<a class="btn btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
         }
-        if ($this->hasPermission('permission','read')) {
-            $button .= '<a class="btn btn-default" href="'.$sPermissionUrl.'" role="button" data-toggle="tooltip" title="'.gT('Permission').'"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">'.gT('Permission').'</span></a>';
+        if ($this->hasPermission('permission', 'read')) {
+            $button .= '<a class="btn btn-default" href="' . $sPermissionUrl . '" role="button" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
-        if ($this->gsid!=1 && !$this->hasSurveys && $this->hasPermission('group','delete')) {
-            $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+        if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
+            $button .= '<a class="btn btn-default" href="#" data-href="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '" data-tooltip="true" title="' . gT('Delete survey group') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">' . gT('Delete survey group') . '</span></a>';
         }
 
         return $button;
@@ -324,7 +325,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
 
@@ -345,14 +346,14 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
     public function getParentGroupOptions($gsid = null)
     {
-        $criteria = new CDbCriteria;
-        if (!empty($gsid)){
-            $criteria->compare("t.gsid", '<>'. $gsid);
+        $criteria = new CDbCriteria();
+        if (!empty($gsid)) {
+            $criteria->compare("t.gsid", '<>' . $gsid);
         }
         // Permission
         $criteriaPerm = self::getPermissionCriteria();
         $criteria->mergeWith($criteriaPerm, 'AND');
-        if($gsid && $this->parent_id) {
+        if ($gsid && $this->parent_id) {
             /* If gsid is set : be sure to add current parent */
             $criteria->compare("t.gsid", $this->parent_id, false, 'OR');
         }
@@ -366,8 +367,8 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
             $aParentsGsid = $oSurveysGroup->getAllParents(true);
 
-            if ( ! in_array( $this->gsid, $aParentsGsid  ) ) {
-                $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+            if (! in_array($this->gsid, $aParentsGsid)) {
+                $options['' . ($oSurveysGroup->gsid) . ''] = '(' . $oSurveysGroup->name . ') ' . $oSurveysGroup->title;
             }
         }
         //return join('\n',$options);
@@ -393,19 +394,19 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
      */
     protected static function getPermissionCriteria()
     {
-        $criteriaPerm = new CDbCriteria;
+        $criteriaPerm = new CDbCriteria();
         if (!Permission::model()->hasGlobalPermission("surveys", 'read') || !Permission::model()->hasGlobalPermission("surveysgroups", 'read')) {
             /* owner of surveygroup */
             $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
             /* Simple permission on SurveysGroup inside a group */
             $criteriaPerm->mergeWith(array(
-                'join'=>"LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='".Yii::app()->user->id."') ",
+                'join' => "LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = t.gsid AND permissions.permission='group' AND permissions.entity='surveysgroups' AND permissions.uid='" . Yii::app()->user->id . "') ",
             ));
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             /* Permission on Survey inside a group */
             $criteriaPerm->mergeWith(array(
-                'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
-                        LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='".Yii::app()->user->id."') ",
+                'join' => "LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
+                        LEFT JOIN {{permissions}} AS surveypermissions ON (surveypermissions.entity_id = surveys.sid AND surveypermissions.permission='survey' AND surveypermissions.entity='survey' AND surveypermissions.uid='" . Yii::app()->user->id . "') ",
             ));
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('surveypermissions.read_p', '1', false, 'OR');
@@ -489,11 +490,10 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             return true;
         }
         /* Specific need gsid */
-        if(!$this->gsid) {
+        if (!$this->gsid) {
             return false;
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
     }
-
 }

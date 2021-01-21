@@ -63,8 +63,8 @@ class labels extends Survey_Common_Action
             Yii::import('application.helpers.common_helper', true);
             $extractdir = createRandomTempDir();
             $zipfilename = $_FILES['the_file']['tmp_name'];
-            $basedestdir = Yii::app()->getConfig('uploaddir')."/labels";
-            $destdir = $basedestdir."/$lid/";
+            $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
+            $destdir = $basedestdir . "/$lid/";
 
             Yii::app()->loadLibrary('admin.pclzip');
             $zip = new PclZip($zipfilename);
@@ -82,13 +82,13 @@ class labels extends Survey_Common_Action
 
             if (is_file($zipfilename)) {
                 if ($zip->extract($extractdir) <= 0) {
-                                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. ".$zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
                 }
 
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
                 foreach ($folders as $folder) {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir."/".$folder, $destdir.$folder);
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
                 }
@@ -134,7 +134,7 @@ class labels extends Survey_Common_Action
         if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');
 
-            $sFullFilepath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(20);
+            $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
@@ -147,7 +147,7 @@ class labels extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
                 $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
             }
-            $options = $aImportResults = []; 
+            $options = $aImportResults = [];
             $options['checkforduplicates'] = 'off';
             if ($_POST['checkforduplicates'] == 1) {
                 $options['checkforduplicates'] = 'on';
@@ -217,13 +217,12 @@ class labels extends Survey_Common_Action
         }
 
 
-        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ?true:false;
+        $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
         $aData['labelbar']['buttons']['edition'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
         $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view')); // Close button, UrlReferrer
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
-
     }
 
     /**
@@ -271,7 +270,7 @@ class labels extends Survey_Common_Action
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
             $maxSortOrder = array_reduce(
-                $model->labels, 
+                $model->labels,
                 function ($mixed, $item) {
                     if (((int) $item->sortorder) > $mixed) {
                         $mixed = (int) $item->sortorder;
@@ -359,13 +358,14 @@ class labels extends Survey_Common_Action
         }
 
         if ($lid) {
-                    $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
+                    $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
         } else {
                     $this->getController()->redirect(array("admin/labels/sa/view"));
         }
     }
 
-    public function saveNewLabelSet() {
+    public function saveNewLabelSet()
+    {
         $label_name   = Yii::app()->request->getPost('label_name');
         $languageids  = Yii::app()->request->getPost('languageids');
         $oLabelSet = new LabelSet();
@@ -373,8 +373,8 @@ class labels extends Survey_Common_Action
         $oLabelSet->languages = implode(' ', $languageids);
         if ($oLabelSet->save()) {
             Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
-            $this->getController()->redirect(array("admin/labels/sa/view/lid/".$oLabelSet->lid));
-        } else { 
+            $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $oLabelSet->lid));
+        } else {
             Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');
             $this->getController()->redirect(array("admin/labels/sa/view"));
         }
@@ -388,21 +388,21 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        if(!Yii::app()->getRequest()->isPostRequest) {
+        if (!Yii::app()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            throw new CHttpException(403, gT("You are not authorized to delete label sets.",'unescaped'));
+            throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }
         $lid = Yii::app()->getRequest()->getParam('lid');
-        $oLabelsSet = LabelSet::model()->findByPk($lid );
-        if(empty($oLabelsSet)) {
+        $oLabelsSet = LabelSet::model()->findByPk($lid);
+        if (empty($oLabelsSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
-        if($oLabelsSet->deleteLabelSet($lid)) {
-            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."),CHtml::encode($oLabelsSet->label_name)));
+        if ($oLabelsSet->deleteLabelSet($lid)) {
+            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."), CHtml::encode($oLabelsSet->label_name)));
         } else {
-            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."),$lid));
+            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."), $lid));
         }
         $this->getController()->redirect(array("admin/labels/sa/view"));
     }
@@ -593,12 +593,14 @@ class labels extends Survey_Common_Action
         }
         
         Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson', ['data' => $returnArray]
+            '/admin/super/_renderJson',
+            ['data' => $returnArray]
         );
         die();
     }
 
-    public function newLabelSetFromQuestionEditor() {
+    public function newLabelSetFromQuestionEditor()
+    {
         $aLabelSet = Yii::app()->request->getPost('labelSet', []);
         $oLabelSet = new LabelSet();
         $aLabels = $aLabelSet['labels'];
@@ -610,39 +612,40 @@ class labels extends Survey_Common_Action
         foreach ($aLabelSet['labels'] as $i => $aLabel) {
             $oLabel = new Label();
             $oLabel->lid = $oLabelSet->lid;
-            $oLabel->code = isset($aLabel['code']) 
-                ? $aLabel['code'] 
+            $oLabel->code = isset($aLabel['code'])
+                ? $aLabel['code']
                 : $aLabel['title'];
             $oLabel->sortorder = $i;
             $oLabel->assessment_value = isset($aLabel['assessment_value']) ? $aLabel['assessment_value'] : 0;
             $partResult = $oLabel->save();
-            $aDebug['saveLabel_'.$i] = $partResult;
+            $aDebug['saveLabel_' . $i] = $partResult;
             $result = $result && $partResult;
             foreach ($oLabelSet->languageArray as $language) {
                 $oLabelL10n = new LabelL10n();
                 $oLabelL10n->label_id = $oLabel->id;
                 $oLabelL10n->language = $language;
-                $oLabelL10n->title = isset($aLabel[$language]['question']) 
-                    ? $aLabel[$language]['question'] 
+                $oLabelL10n->title = isset($aLabel[$language]['question'])
+                    ? $aLabel[$language]['question']
                     : $aLabel[$language]['answer'];
                 
                 $lngResult = $oLabelL10n->save();
-                $aDebug['saveLabel_'.$i.'_'.$language] = $lngResult;
+                $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
                 $result = $result && $lngResult;
             }
         }
 
         Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson', ['data' => [
+            '/admin/super/_renderJson',
+            ['data' => [
                 'success' => $result,
                 'message' => gT('Label set successfully saved')
             ]]
         );
         die();
-
     }
 
-    private function _getLabelI10NObject($labelId, $language) {
+    private function _getLabelI10NObject($labelId, $language)
+    {
         $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
         if ($oLabelL10n == null) {
             $oLabelL10n = new LabelL10n();
@@ -652,7 +655,8 @@ class labels extends Survey_Common_Action
         return $oLabelL10n;
     }
 
-    private function _getLabelObject($labelId) {
+    private function _getLabelObject($labelId)
+    {
         $oLabel = Label::model()->findByPk($labelId);
         return $oLabel == null ? (new Label()) : $oLabel;
     }
@@ -667,7 +671,7 @@ class labels extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'labels.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'labels.js');
 
         if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false) {
             if (empty($aData['labelsets'])) {

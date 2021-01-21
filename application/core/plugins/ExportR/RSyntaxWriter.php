@@ -1,4 +1,5 @@
 <?php
+
 class RSyntaxWriter extends Writer
 {
     private $output;
@@ -24,7 +25,7 @@ class RSyntaxWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
-            header("Content-Disposition: attachment; filename=survey_".$survey->id."_R_syntax_file.R");
+            header("Content-Disposition: attachment; filename=survey_" . $survey->id . "_R_syntax_file.R");
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
@@ -32,7 +33,7 @@ class RSyntaxWriter extends Writer
             $this->handle = fopen($this->filename, 'w');
         }
 
-        $this->out('data <- read.csv("survey_'.$survey->id.'_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8-BOM")');
+        $this->out('data <- read.csv("survey_' . $survey->id . '_R_data_file.csv", quote = "\'\"", na.strings=c("", "\"\""), stringsAsFactors=FALSE, fileEncoding="UTF-8-BOM")');
         $this->out("");
         $this->out("");
 
@@ -53,7 +54,7 @@ class RSyntaxWriter extends Writer
 
     protected function out($content)
     {
-        fwrite($this->handle, $content."\n");
+        fwrite($this->handle, $content . "\n");
     }
 
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -87,7 +88,7 @@ class RSyntaxWriter extends Writer
     {
         $errors = '';
         foreach ($this->headers as $id => $title) {
-            if (!isset($this->customFieldmap[$title])){
+            if (!isset($this->customFieldmap[$title])) {
                 continue;
             }
             $field = $this->customFieldmap[$title];
@@ -97,7 +98,7 @@ class RSyntaxWriter extends Writer
             }
 
             if ($field['LStype'] == 'N' || $field['LStype'] == 'K') {
-                $field['size'] .= '.'.($field['size'] - 1);
+                $field['size'] .= '.' . ($field['size'] - 1);
             }
 
             $type = '';
@@ -119,15 +120,17 @@ class RSyntaxWriter extends Writer
             }
 
             $this->out("# LimeSurvey Field type: {$field['SPSStype']}");
-            $this->out("data[, ".$i."] <- "
-                . "as.$type(data[, ".$i."])");
-            $this->out('attributes(data)$variable.labels['.$i.'] <- "'
+            $this->out("data[, " . $i . "] <- "
+                . "as.$type(data[, " . $i . "])");
+            $this->out('attributes(data)$variable.labels[' . $i . '] <- "'
                 . addslashes(
                     htmlspecialchars_decode(
                         mb_substr(
                             stripTagsFull(
                                 $field['VariableLabel']
-                            ), 0, $this->maxLength
+                            ),
+                            0,
+                            $this->maxLength
                         )
                     )
                 )
@@ -138,7 +141,7 @@ class RSyntaxWriter extends Writer
                 $answers = $field['answers'];
 
                 //print out the value labels!
-                $str = 'data[, '.$i.'] <- factor(data[, '.$i.'], levels=c(';
+                $str = 'data[, ' . $i . '] <- factor(data[, ' . $i . '], levels=c(';
                 foreach ($answers as $answer) {
                     if ($field['SPSStype'] == "F" && isNumericExtended($answer['code'])) {
                         $str .= "{$answer['code']},";
@@ -151,7 +154,7 @@ class RSyntaxWriter extends Writer
                 $str .= '),labels=c(';
 
                 foreach ($answers as $answer) {
-                    $str .= '"'.addslashes(!empty($answer['value'])?$answer['value']:$answer['code']).'", ';
+                    $str .= '"' . addslashes(!empty($answer['value']) ? $answer['value'] : $answer['code']) . '", ';
                 }
 
                 $str = mb_substr($str, 0, -2);
@@ -169,7 +172,7 @@ class RSyntaxWriter extends Writer
             if (isset($field['sql_name'])) {
                 $ftitle = $field['title'];
                 if (!preg_match("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
-                    $ftitle = "q_".$ftitle;
+                    $ftitle = "q_" . $ftitle;
                 }
 
                 $ftitle = str_replace(array("-", ":", ";", "!"), array("_hyph_", "_dd_", "_dc_", "_excl_"), $ftitle);
@@ -178,8 +181,8 @@ class RSyntaxWriter extends Writer
                     $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
                 }
 
-                $this->out("names(data)[".$i."] <- "
-                    . "\"".$ftitle."\""); // <AdV> added \n
+                $this->out("names(data)[" . $i . "] <- "
+                    . "\"" . $ftitle . "\""); // <AdV> added \n
             } else {
                 $this->out("#sql_name not set");
             }

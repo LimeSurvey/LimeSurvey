@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LimeSurvey
  * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
@@ -23,10 +24,11 @@ class LSYii_SecurityManager extends CSecurityManager
      * @return string|boolean random string or false in case it cannot be generated.
      * @since 1.1.14
      */
-    public function generateRandomString($length,$cryptographicallyStrong=true)
+    public function generateRandomString($length, $cryptographicallyStrong = true)
     {
-        if(($randomBytes=$this->generateRandomBytes($length+2,$cryptographicallyStrong))!==false)
-            return strtr($this->substr(base64_encode($randomBytes),0,$length),array('+'=>'_','/'=>'~'));
+        if (($randomBytes = $this->generateRandomBytes($length + 2, $cryptographicallyStrong)) !== false) {
+            return strtr($this->substr(base64_encode($randomBytes), 0, $length), array('+' => '_','/' => '~'));
+        }
         return false;
     }
 
@@ -41,10 +43,10 @@ class LSYii_SecurityManager extends CSecurityManager
     * @param  int    $mode     wanted  file mode for this directory
     * @return string           the path of the created directory
     */
-    public function createRandomTempDir($dir=null, $prefix = '', $mode = 0700)
+    public function createRandomTempDir($dir = null, $prefix = '', $mode = 0700)
     {
 
-        $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path ($dir);
+        $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path($dir);
 
         if (substr($sDir, -1) != DIRECTORY_SEPARATOR) {
             $sDir .= DIRECTORY_SEPARATOR;
@@ -52,9 +54,8 @@ class LSYii_SecurityManager extends CSecurityManager
 
         do {
             $sRandomString = getRandomString();
-            $path = $sDir.$prefix.$sRandomString;
-        }
-        while (!mkdir($path, $mode));
+            $path = $sDir . $prefix . $sRandomString;
+        } while (!mkdir($path, $mode));
 
         return $path;
     }
@@ -64,18 +65,18 @@ class LSYii_SecurityManager extends CSecurityManager
      * @param  int    $length wanted lenght of the random string (only for openssl mode)
      * @return string
      */
-    public function getRandomString($length=32)
+    public function getRandomString($length = 32)
     {
 
-        if ( function_exists('openssl_random_pseudo_bytes') ) {
+        if (function_exists('openssl_random_pseudo_bytes')) {
             $token = "";
             $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-            $codeAlphabet.= "0123456789";
-            for($i=0;$i<$length;$i++){
-                $token .= $codeAlphabet[crypto_rand_secure(0,strlen($codeAlphabet))];
+            $codeAlphabet .= "abcdefghijklmnopqrstuvwxyz";
+            $codeAlphabet .= "0123456789";
+            for ($i = 0; $i < $length; $i++) {
+                $token .= $codeAlphabet[crypto_rand_secure(0, strlen($codeAlphabet))];
             }
-        }else{
+        } else {
             $token = md5(uniqid(rand(), true));
         }
         return $token;
@@ -90,15 +91,17 @@ class LSYii_SecurityManager extends CSecurityManager
     public function crypto_rand_secure($min, $max)
     {
             $range = $max - $min;
-            if ($range < 0) return $min; // not so random...
+        if ($range < 0) {
+            return $min; // not so random...
+        }
             $log = log($range, 2);
             $bytes = (int) ($log / 8) + 1; // length in bytes
             $bits = (int) $log + 1; // length in bits
             $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-            do {
-                $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-                $rnd = $rnd & $filter; // discard irrelevant bits
-            } while ($rnd >= $range);
+        do {
+            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
+            $rnd = $rnd & $filter; // discard irrelevant bits
+        } while ($rnd >= $range);
             return $min + $rnd;
     }
 
@@ -122,11 +125,11 @@ class LSYii_SecurityManager extends CSecurityManager
     public function get_zip_originalsize($filename)
     {
 
-        if ( function_exists ('zip_entry_filesize') ){
+        if (function_exists('zip_entry_filesize')) {
             $size = 0;
             $resource = zip_open($filename);
 
-            if ( ! is_int($resource) ) {
+            if (! is_int($resource)) {
                 while ($dir_resource = zip_read($resource)) {
                     $size += zip_entry_filesize($dir_resource);
                 }
@@ -134,14 +137,12 @@ class LSYii_SecurityManager extends CSecurityManager
             }
 
             return $size;
-        }else{
-            if ( YII_DEBUG ){
+        } else {
+            if (YII_DEBUG) {
                 Yii::app()->setFlashMessage("Warning! The PHP Zip extension is not installed on this server. You're not protected from ZIP bomb attacks.", 'error');
             }
         }
 
         return -1;
     }
-    
-
 }

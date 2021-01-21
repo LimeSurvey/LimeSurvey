@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -40,10 +41,10 @@ class AdminTheme extends CFormModel
      * Get the list of admin theme, as an array containing each configuration object for each template
      * @return array the array of configuration object
      */
-    static public function getAdminThemeList()
+    public static function getAdminThemeList()
     {
         $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir"); // The directory containing the default admin themes
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme'; // The directory containing the user themes
+        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // The directory containing the user themes
 
         $aStandardThemeObjects     = self::getThemeList($sStandardTemplateRootDir); // array containing the configuration files of standard admin themes (styles/...)
         $aUserThemeObjects         = self::getThemeList($sUserTemplateDir); // array containing the configuration files of user admin themes (upload/admintheme/...)
@@ -65,34 +66,34 @@ class AdminTheme extends CFormModel
     {
         $sAdminThemeName           = getGlobalSetting('admintheme'); // We retrieve the admin theme in config ( {{settings_global}} or config-defaults.php )
         $sStandardTemplateRootDir  = Yii::app()->getConfig("styledir"); // Path for the standard Admin Themes
-        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'admintheme'; // Path for the user Admin Themes
+        $sUserTemplateDir          = Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . 'admintheme'; // Path for the user Admin Themes
 
         // Check if the required theme is a standard one
         if ($this->isStandardAdminTheme($sAdminThemeName)) {
             $sTemplateDir = $sStandardTemplateRootDir; // It's standard, so it will be in standard path
-            $sTemplateUrl = Yii::app()->getConfig('styleurl').$sAdminThemeName; // Available via a standard URL
+            $sTemplateUrl = Yii::app()->getConfig('styleurl') . $sAdminThemeName; // Available via a standard URL
         } else {
             // If it's not a standard theme, we bet it's a user one.
             // In fact, it could also be a old 2.06 admin theme just aftet an update (it will then be caught as "non existent" in the next if statement")
             $sTemplateDir = $sUserTemplateDir;
-            $sTemplateUrl = Yii::app()->getConfig('uploadurl').DIRECTORY_SEPARATOR.'admintheme'.DIRECTORY_SEPARATOR.$sAdminThemeName;
+            $sTemplateUrl = Yii::app()->getConfig('uploadurl') . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . $sAdminThemeName;
         }
 
         // If the theme directory doesn't exist, it can be that:
         // - user updated from 2.06 and still have old theme configurated in database
         // - user deleted a custom theme
         // In any case, we just set Sea Green as the template to use
-        if (!is_dir($sTemplateDir.DIRECTORY_SEPARATOR.$sAdminThemeName)) {
+        if (!is_dir($sTemplateDir . DIRECTORY_SEPARATOR . $sAdminThemeName)) {
             $sAdminThemeName   = 'Sea_Green';
             $sTemplateDir      = $sStandardTemplateRootDir;
-            $sTemplateUrl      = Yii::app()->getConfig('styleurl').DIRECTORY_SEPARATOR.$sAdminThemeName;
+            $sTemplateUrl      = Yii::app()->getConfig('styleurl') . DIRECTORY_SEPARATOR . $sAdminThemeName;
             SettingGlobal::setSetting('admintheme', 'Sea_Green');
         }
 
         // Now that we are sure we have an existing template, we can set the variables of the AdminTheme
         $this->sTemplateUrl = $sTemplateUrl;
         $this->name         = $sAdminThemeName;
-        $this->path         = $sTemplateDir.DIRECTORY_SEPARATOR.$this->name;
+        $this->path         = $sTemplateDir . DIRECTORY_SEPARATOR . $this->name;
 
         // This is necessary because a lot of files still use "adminstyleurl".
         // TODO: replace everywhere the call to Yii::app()->getConfig('adminstyleurl) by $oAdminTheme->sTemplateUrl;
@@ -103,7 +104,7 @@ class AdminTheme extends CFormModel
         // Config file loading
 
         $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents(realpath($this->path.'/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $sXMLConfigFile        = file_get_contents(realpath($this->path . '/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
         // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
@@ -141,7 +142,7 @@ class AdminTheme extends CFormModel
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
             App()->bootstrap->registerTooltipAndPopover(); // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
             App()->getClientScript()->registerScript('coreuser', '
-           window.LS = window.LS || {}; window.LS.globalUserId = "'.Yii::app()->user->id.'";', CClientScript::POS_HEAD);
+           window.LS = window.LS || {}; window.LS.globalUserId = "' . Yii::app()->user->id . '";', CClientScript::POS_HEAD);
             App()->getClientScript()->registerPackage('jquery'); // jquery
             App()->getClientScript()->registerPackage('jqueryui'); // Added for nestedSortable to work (question organizer)
             App()->getClientScript()->registerPackage('js-cookie'); // js-cookie
@@ -172,44 +173,44 @@ class AdminTheme extends CFormModel
 
         // We check if RTL is needed
         if (getLanguageRTL(Yii::app()->language)) {
-            if (!isset($files->rtl)
-                || !isset($files->rtl->css)) {
+            if (
+                !isset($files->rtl)
+                || !isset($files->rtl->css)
+            ) {
                 throw new CException("Invalid template configuration: No CSS files found for right-to-left languages");
             }
 
             if (is_array($files->rtl->css->filename)) {
                 foreach ($files->rtl->css->filename as $cssfile) {
-                    $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the RTL css files
+                    $aCssFiles[] = 'css/' . $cssfile; // add the 'css/' prefix to the RTL css files
                 }
             } elseif (is_string($files->rtl->css->filename)) {
-                $aCssFiles[] = 'css/'.$files->rtl->css->filename;
+                $aCssFiles[] = 'css/' . $files->rtl->css->filename;
             }
 
             App()->getClientScript()->registerPackage('font-roboto');
             App()->getClientScript()->registerPackage('adminbasicsrtl');
             App()->getClientScript()->registerPackage('adminsidepanelrtl');
-
         } else {
-            
             App()->getClientScript()->registerPackage('adminbasicsltr');
             App()->getClientScript()->registerPackage('adminsidepanelltr');
             // Non-RTL style
             if (is_array($files->css->filename)) {
                 foreach ($files->css->filename as $cssfile) {
-                    $aCssFiles[] = 'css/'.$cssfile; // add the 'css/' prefix to the css files
+                    $aCssFiles[] = 'css/' . $cssfile; // add the 'css/' prefix to the css files
                 }
             } elseif (is_string($files->css->filename)) {
-                $aCssFiles[] = 'css/'.$files->css->filename;
+                $aCssFiles[] = 'css/' . $files->css->filename;
             }
         }
 
         if (!empty($files->js->filename)) {
             if (is_array($files->js->filename)) {
                 foreach ($files->js->filename as $jsfile) {
-                    $aJsFiles[] = 'scripts/'.$jsfile; // add the 'js/' prefix to the js files
+                    $aJsFiles[] = 'scripts/' . $jsfile; // add the 'js/' prefix to the js files
                 }
             } elseif (is_string($files->js->filename)) {
-                    $aJsFiles[] = 'scripts/'.$files->js->filename;
+                    $aJsFiles[] = 'scripts/' . $files->js->filename;
             }
         }
 
@@ -234,7 +235,6 @@ class AdminTheme extends CFormModel
         Yii::app()->clientScript->addPackage('admin-theme', $package); // add the package
         Yii::app()->clientScript->registerPackage('admin-theme'); // register the package
         Yii::app()->clientScript->registerPackage('moment'); // register moment for correct dateTime calculation
-
     }
 
     /**
@@ -305,26 +305,26 @@ class AdminTheme extends CFormModel
      * @param string $sDir          the directory to scan
      * @return array                the array of object
      */
-    static private function getThemeList($sDir)
+    private static function getThemeList($sDir)
     {
         $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $aListOfFiles = array();
-        $oAdminTheme = new AdminTheme;
+        $oAdminTheme = new AdminTheme();
         if ($sDir && $pHandle = opendir($sDir)) {
             while (false !== ($file = readdir($pHandle))) {
-                if (is_dir($sDir.DIRECTORY_SEPARATOR.$file) && is_file($sDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml')) {
-                    $sXMLConfigFile = file_get_contents(realpath($sDir.DIRECTORY_SEPARATOR.$file.'/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+                if (is_dir($sDir . DIRECTORY_SEPARATOR . $file) && is_file($sDir . DIRECTORY_SEPARATOR . $file . DIRECTORY_SEPARATOR . 'config.xml')) {
+                    $sXMLConfigFile = file_get_contents(realpath($sDir . DIRECTORY_SEPARATOR . $file . '/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
                     // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
                     // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
                     $oTemplateConfig = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
                     if ($oAdminTheme->isStandardAdminTheme($file)) {
-                        $previewUrl = Yii::app()->getConfig('styleurl').$file;
+                        $previewUrl = Yii::app()->getConfig('styleurl') . $file;
                     } else {
-                        $previewUrl = Yii::app()->getConfig('uploadurl').DIRECTORY_SEPARATOR.'admintheme'.DIRECTORY_SEPARATOR.$file;
+                        $previewUrl = Yii::app()->getConfig('uploadurl') . DIRECTORY_SEPARATOR . 'admintheme' . DIRECTORY_SEPARATOR . $file;
                     }
                     $oTemplateConfig->path    = $file;
-                    $oTemplateConfig->preview = '<img src="'.$previewUrl.'/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
+                    $oTemplateConfig->preview = '<img src="' . $previewUrl . '/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }
             }
@@ -342,11 +342,11 @@ class AdminTheme extends CFormModel
     {
         // Define images url
         if (!YII_DEBUG || self::$use_asset_manager || Yii::app()->getConfig('use_asset_manager')) {
-            define('LOGO_URL', App()->getAssetManager()->publish($this->path.'/images/logo.png'));
-            define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path.'/images/logo_icon.png'));
+            define('LOGO_URL', App()->getAssetManager()->publish($this->path . '/images/logo.png'));
+            define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
         } else {
-            define('LOGO_URL', $this->sTemplateUrl.'/images/logo.png');
-            define('LOGO_ICON_URL', $this->sTemplateUrl.'/images/logo_icon.png');
+            define('LOGO_URL', $this->sTemplateUrl . '/images/logo.png');
+            define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
         }
 
         // Define presentation text on welcome page
@@ -365,7 +365,8 @@ class AdminTheme extends CFormModel
      */
     private function isStandardAdminTheme($sAdminThemeName)
     {
-        return in_array($sAdminThemeName,
+        return in_array(
+            $sAdminThemeName,
             array(
                 'Apple_Blossom',
                 'Bay_of_Many',

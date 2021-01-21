@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -65,10 +67,10 @@ class Permission extends LSActiveRecord
     {
         return array(
             array('entity, entity_id, uid, permission', 'required'),
-            array('entity', 'length', 'max'=>50),
-            array('permission', 'length', 'max'=>100),
-            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value'=>0),
-            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly'=>true),
+            array('entity', 'length', 'max' => 50),
+            array('permission', 'length', 'max' => 100),
+            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value' => 0),
+            array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly' => true),
         );
     }
 
@@ -122,7 +124,7 @@ class Permission extends LSActiveRecord
     /**
      * Returns the global permissions including description and title
      *
-     * @return array of array of permission 
+     * @return array of array of permission
      */
     public static function getGlobalBasePermissions()
     {
@@ -208,7 +210,7 @@ class Permission extends LSActiveRecord
             }
             return $aBasePermissions;
         }
-        if($sEntityName == 'global') {
+        if ($sEntityName == 'global') {
             $aBasePermissions = Permission::model()->getGlobalBasePermissions();
         } else {
             $aBasePermissions = Permission::model()->getEntityBasePermissions($sEntityName);
@@ -222,22 +224,22 @@ class Permission extends LSActiveRecord
                 'permission' => $sPermission
             ));
             if ($aPermissionDetail['create']) {
-                $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->create_p : false);
+                $aPermissionDetail['create'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->create_p : false);
             }
             if ($aPermissionDetail['read']) {
-                $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->read_p : false);
+                $aPermissionDetail['read'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->read_p : false);
             }
             if ($aPermissionDetail['update']) {
-                $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->update_p : false);
+                $aPermissionDetail['update'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->update_p : false);
             }
             if ($aPermissionDetail['delete']) {
-                $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->delete_p : false);
+                $aPermissionDetail['delete'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->delete_p : false);
             }
             if ($aPermissionDetail['import']) {
-                $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->import_p : false);
+                $aPermissionDetail['import'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->import_p : false);
             }
             if ($aPermissionDetail['export']) {
-                $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->export_p : false);
+                $aPermissionDetail['export'] = ($oCurrentPermissions ? (bool) $oCurrentPermissions->export_p : false);
             }
         }
         return $aBasePermissions;
@@ -340,15 +342,14 @@ class Permission extends LSActiveRecord
                     'import_p' => (int) $aPermission['import'],
                     'export_p' => (int) $aPermission['export'],
                 );
-                $permission = new self;
+                $permission = new self();
                 foreach ($data as $k => $v) {
                     $permission->$k = $v;
                 }
                 $permission->save();
             }
-            
         }
-        if($sEntityName != 'global') {
+        if ($sEntityName != 'global') {
             self::setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName);
         }
         return true;
@@ -365,7 +366,7 @@ class Permission extends LSActiveRecord
     public static function setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName)
     {
         $sPermission = self::getEntityMinimalPermissionRead($sEntityName);
-        if(!$sPermission) {
+        if (!$sPermission) {
             return null;
         }
         $oPermission = Permission::model()->find(
@@ -377,8 +378,8 @@ class Permission extends LSActiveRecord
                 'permission' => $sPermission,
             )
         );
-        if(empty($oPermission)) {
-            $oPermission = new Permission;
+        if (empty($oPermission)) {
+            $oPermission = new Permission();
             $oPermission->uid = $iUserID;
             $oPermission->entity = $sEntityName;
             $oPermission->entity_id = $iEntityID;
@@ -441,15 +442,15 @@ class Permission extends LSActiveRecord
                 'permission' => $sPermissionName
             ));
             if (empty($oPermission)) {
-                $oPermission = new Permission;
+                $oPermission = new Permission();
                 $oPermission->entity = 'survey';
                 $oPermission->entity_id = $iSurveyID;
                 $oPermission->uid = $iUserID;
                 $oPermission->permission = $sPermissionName;
             }
-            foreach($aCrud as $crud) {
-                if(!isset($aPermissionDetails[$crud]) || $aPermissionDetails[$crud]) {
-                    $oPermission->setAttribute($crud."_p", 1);
+            foreach ($aCrud as $crud) {
+                if (!isset($aPermissionDetails[$crud]) || $aPermissionDetails[$crud]) {
+                    $oPermission->setAttribute($crud . "_p", 1);
                 }
             }
             $oPermission->save();
@@ -473,7 +474,7 @@ class Permission extends LSActiveRecord
      */
     public function insertSomeRecords($data)
     {
-        $permission = new self;
+        $permission = new self();
         foreach ($data as $k => $v) {
             $permission->$k = $v;
         }
@@ -607,9 +608,9 @@ class Permission extends LSActiveRecord
         /* Find the roles the user is part of and return those permissions */
         /* roles are only for global permission */
         // @TODO add surveypermission to roles
-        if($sEntityName == 'global') {
+        if ($sEntityName == 'global') {
             $aRoles = self::getUserRole($iUserID);
-            if (safecount($aRoles) > 0 ) {
+            if (safecount($aRoles) > 0) {
                 $allowed = false;
                 foreach ($aRoles as $role) {
                     $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
@@ -674,7 +675,7 @@ class Permission extends LSActiveRecord
         if (!$oSurvey) {
             return false;
         }
-        return $oSurvey->hasPermission($sPermission, $sCRUD , $iUserID);
+        return $oSurvey->hasPermission($sPermission, $sCRUD, $iUserID);
     }
 
     /**
@@ -758,7 +759,7 @@ class Permission extends LSActiveRecord
         if (empty($oEntity)) {
             return null;
         }
-        if(!method_exists($oEntity,'getOwnerId')) {
+        if (!method_exists($oEntity, 'getOwnerId')) {
             return null;
         }
         return $oEntity->getOwnerId();
@@ -864,12 +865,13 @@ class Permission extends LSActiveRecord
      * @param $aTemplatePermissions array -- permissions to be set
      * @return array
      */
-    public static function editThemePermissionsUser($userId, $aTemplatePermissions){
+    public static function editThemePermissionsUser($userId, $aTemplatePermissions)
+    {
         $results = [];
         foreach ($aTemplatePermissions as $key => $value) {
             $oPermission = Permission::model()->findByAttributes(array('permission' => $key, 'uid' => $userId, 'entity' => 'template'));
             if (empty($oPermission)) {
-                $oPermission = new Permission;
+                $oPermission = new Permission();
                 $oPermission->uid = $userId;
                 $oPermission->permission = $key;
                 $oPermission->entity = 'template';

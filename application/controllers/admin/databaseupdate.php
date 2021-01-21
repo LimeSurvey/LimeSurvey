@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -20,7 +21,7 @@ if (!defined('BASEPATH')) {
 /**
 * Update Database Controller
 * This controller must be accessible by unlogged user (in case of modifications of {{permissions}} blocking the login )
-* 
+*
 * @package       LimeSurvey
 * @subpackage    Backend
 *

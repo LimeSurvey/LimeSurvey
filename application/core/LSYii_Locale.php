@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -36,5 +38,4 @@ class LSYii_Locale extends CLocale
                     return $locales[$id] = new CLocale($id);
         }
     }
-
 }

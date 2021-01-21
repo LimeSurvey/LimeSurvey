@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -109,7 +110,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
             $options = array('max' => $options);
         } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
         if (1 < func_num_args()) {
@@ -183,10 +184,10 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     {
         if (!is_string($min) and !is_numeric($min)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
-        $min = (integer) $this->_fromByteString($min);
+        $min = (int) $this->_fromByteString($min);
         $max = $this->getMax(true);
         if (($max !== null) && ($min > $max)) {
             require_once 'Zend/Validate/Exception.php';
@@ -225,10 +226,10 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     {
         if (!is_string($max) && !is_numeric($max)) {
             require_once 'Zend/Validate/Exception.php';
-            throw new Zend_Validate_Exception ('Invalid options to validator provided');
+            throw new Zend_Validate_Exception('Invalid options to validator provided');
         }
 
-        $max = (integer) $this->_fromByteString($max);
+        $max = (int) $this->_fromByteString($max);
         $min = $this->getMin(true);
         if (($min !== null) && ($max < $min)) {
             require_once 'Zend/Validate/Exception.php';
@@ -328,7 +329,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     protected function _toByteString($size)
     {
         $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-        for ($i=0; $size >= 1024 && $i < 9; $i++) {
+        for ($i = 0; $size >= 1024 && $i < 9; $i++) {
             $size /= 1024;
         }
 
@@ -344,7 +345,7 @@ class Zend_Validate_File_Size extends Zend_Validate_Abstract
     protected function _fromByteString($size)
     {
         if (is_numeric($size)) {
-            return (integer) $size;
+            return (int) $size;
         }
 
         $type  = trim(substr($size, -2, 1));

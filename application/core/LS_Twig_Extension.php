@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This extension is needed to add complex functions to twig, needing specific process (like accessing config datas).
  * Most of the calls to internal functions don't need to be set here, but can be directly added to the internal config file.
@@ -50,7 +51,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerPublicCssFile($sPublicCssFileName)
     {
         Yii::app()->clientScript->registerCssFile(
-            Yii::app()->getConfig('publicstyleurl').
+            Yii::app()->getConfig('publicstyleurl') .
             $sPublicCssFileName
         );
     }
@@ -86,7 +87,7 @@ class LS_Twig_Extension extends Twig_Extension
     {
         $position = self::getPosition($position);
         Yii::app()->clientScript->registerScriptFile(
-            App()->getConfig('generalscripts').
+            App()->getConfig('generalscripts') .
             $sGeneralScriptFileName,
             $position,
             $htmlOptions
@@ -131,9 +132,9 @@ class LS_Twig_Extension extends Twig_Extension
      * @param boolean $assoc return sub object as array too
      * @return array
      */
-    public static function json_decode($json,$assoc = true)
+    public static function json_decode($json, $assoc = true)
     {
-        return (array) json_decode($json,$assoc);
+        return (array) json_decode($json, $assoc);
     }
 
     /**
@@ -177,7 +178,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function safecount($element)
     {
         $isCountable = is_array($element) || $element instanceof Countable;
-        if($isCountable) {
+        if ($isCountable) {
             return count($element);
         }
         return 0;
@@ -220,7 +221,7 @@ class LS_Twig_Extension extends Twig_Extension
             /* Got to use static expression */
             $emCssClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true)); /* static var is the lmast one ...*/
             if ($emCssClass != "") {
-                $aQuestionClass .= " ".CHtml::encode($emCssClass);
+                $aQuestionClass .= " " . CHtml::encode($emCssClass);
             }
         }
 
@@ -228,7 +229,7 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' mandatory';
         }
 
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_'.$iSurveyId]['maxstep'] != $_SESSION['survey_'.$iSurveyId]['step']) {
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION['survey_' . $iSurveyId]['maxstep'] != $_SESSION['survey_' . $iSurveyId]['step']) {
             $aQuestionClass .= ' missing';
         }
 
@@ -238,8 +239,8 @@ class LS_Twig_Extension extends Twig_Extension
     public static function renderCaptcha()
     {
         return App()->getController()->createWidget('LSCaptcha', array(
-            'captchaAction'=>'captcha',
-            'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+            'captchaAction' => 'captcha',
+            'buttonOptions' => array('class' => 'btn btn-xs btn-info'),
             'buttonType' => 'button',
             'buttonLabel' => gt('Reload image', 'unescaped')
         ));
@@ -272,8 +273,8 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function image($sImagePath, $alt = '', $htmlOptions = array( ))
     {
-        $sUrlImgAsset = self::imageSrc($sImagePath,'');
-        if(!$sUrlImgAsset) {
+        $sUrlImgAsset = self::imageSrc($sImagePath, '');
+        if (!$sUrlImgAsset) {
             return '';
         }
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
@@ -291,15 +292,15 @@ class LS_Twig_Extension extends Twig_Extension
         $sUrlImgAsset =  $sImagePath;
 
         if ($oTemplate) {
-            $sFullPath = $oTemplate->path.$sImagePath;
+            $sFullPath = $oTemplate->path . $sImagePath;
         } else {
-            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$sImagePath)) {
-                if($default) {
+            if (!is_file(Yii::app()->getConfig('rootdir') . '/' . $sImagePath)) {
+                if ($default) {
                     return self::imageSrc($default);
                 }
                 return false;
             }
-            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
+            $sFullPath = Yii::app()->getConfig('rootdir') . '/' . $sImagePath;
         }
 
         // check if this is a true image
@@ -323,19 +324,19 @@ class LS_Twig_Extension extends Twig_Extension
         /* get extension of file in allowedthemeuploads */
         $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
         $info = pathinfo($resourcePath);
-        if(!isset($info['extension']) || !in_array(strtolower($info['extension']),$aAllowExtensions) ) {
-            if($default) {
+        if (!isset($info['extension']) || !in_array(strtolower($info['extension']), $aAllowExtensions)) {
+            if ($default) {
                 return self::templateResourceUrl($default);
             }
             return false;
         }
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($resourcePath);
-        if(empty($oTemplate)) {
+        if (empty($oTemplate)) {
             /* Didn't allow file out of template (diff with image) */
             return false;
         }
-        $sFullPath = $oTemplate->path.$resourcePath;
+        $sFullPath = $oTemplate->path . $resourcePath;
         $resourceAsset = self::assetPublish($sFullPath);
         return $resourceAsset;
     }
@@ -347,7 +348,8 @@ class LS_Twig_Extension extends Twig_Extension
      * @param String $sInString
      * @return String
      */
-    public static function getExpressionManagerOutput($sInString) {
+    public static function getExpressionManagerOutput($sInString)
+    {
         templatereplace(flattenText($sInString));
         return LimeExpressionManager::GetLastPrettyPrintExpression();
     }
@@ -358,7 +360,8 @@ class LS_Twig_Extension extends Twig_Extension
      * @param String $sInString
      * @return String
      */
-    public static function getTextDisplayWidget($sInString, $name) {
+    public static function getTextDisplayWidget($sInString, $name)
+    {
         templatereplace(flattenText($sInString));
         $fullInString = LimeExpressionManager::GetLastPrettyPrintExpression();
 
@@ -381,13 +384,13 @@ class LS_Twig_Extension extends Twig_Extension
      *
      * @return Boolean
      */
-    public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
+    public static function checkPermission($permission, $permissionGrade, $iSurveyId = null)
+    {
 
         if ($iSurveyId === null) {
             return Permission::model()->hasGlobalPermission($permission, $permissionGrade);
         }
         return Permission::model()->hasSurveyPermission($iSurveyId, $permission, $permissionGrade);
-
     }
 
     /**
@@ -397,7 +400,7 @@ class LS_Twig_Extension extends Twig_Extension
     {
         $oRTemplate =  Template::getLastInstance();
 
-        while (!file_exists($oRTemplate->path.$sRessource)) {
+        while (!file_exists($oRTemplate->path . $sRessource)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
@@ -405,9 +408,9 @@ class LS_Twig_Extension extends Twig_Extension
             }
             $oRTemplate = $oMotherTemplate;
         }
-        $sRessourcePath = realpath($oRTemplate->path.$sRessource);
+        $sRessourcePath = realpath($oRTemplate->path . $sRessource);
         $sTemplatePath = realpath($oRTemplate->path);
-        if(substr($sTemplatePath, 0, strlen($sTemplatePath)) !== $sTemplatePath) {
+        if (substr($sTemplatePath, 0, strlen($sTemplatePath)) !== $sTemplatePath) {
             return false;
         }
         return $oRTemplate;
@@ -466,7 +469,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function unregisterScriptForAjax()
     {
         $oTemplate            = Template::getLastInstance();
-        $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
+        $sTemplatePackageName = 'limesurvey-' . $oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
         self::unregisterPackage('template-core');
         self::unregisterPackage('bootstrap');
@@ -475,7 +478,7 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
         self::unregisterPackage('decimal');
-        self::unregisterPackage('expressions');        
+        self::unregisterPackage('expressions');
         self::unregisterPackage('expressionscript');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/nojs.js');
@@ -484,22 +487,18 @@ class LS_Twig_Extension extends Twig_Extension
     public static function listCoreScripts()
     {
         foreach (Yii::app()->clientScript->coreScripts as $key => $package) {
-
             echo "<hr>";
             echo "$key: <br>";
             var_dump($package);
-
         }
     }
 
     public static function listScriptFiles()
     {
         foreach (Yii::app()->clientScript->getScriptFiles() as $key => $file) {
-
             echo "<hr>";
             echo "$key: <br>";
             var_dump($file);
-
         }
     }
 
@@ -511,16 +510,16 @@ class LS_Twig_Extension extends Twig_Extension
      * @param array $aReplacement replacement out of EM
      * @return string
      */
-    public static function processString($string,$static=false,$numRecursionLevels=3,$aReplacement = array())
+    public static function processString($string, $static = false, $numRecursionLevels = 3, $aReplacement = array())
     {
-        if(!is_string($string)) {
+        if (!is_string($string)) {
             /* Add some errors in template editor , see #13532 too */
-            if(Yii::app()->getController()->getId() == 'admin' && Yii::app()->getController()->getAction()->getId() == 'themes') {
-                Yii::app()->setFlashMessage(gT("Usage of processString without a string in your template"),'error');
+            if (Yii::app()->getController()->getId() == 'admin' && Yii::app()->getController()->getAction()->getId() == 'themes') {
+                Yii::app()->setFlashMessage(gT("Usage of processString without a string in your template"), 'error');
             }
             return;
         }
-        return LimeExpressionManager::ProcessStepString($string, $aReplacement,$numRecursionLevels, $static);
+        return LimeExpressionManager::ProcessStepString($string, $aReplacement, $numRecursionLevels, $static);
     }
 
     /**
@@ -529,7 +528,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param boolean $encode html entities
      * @return string
      */
-    public static function flatString($string,$encode=false)
+    public static function flatString($string, $encode = false)
     {
         // Remove script before removing tag, no tag : no other script (onload, on error etc …
         $string = strip_tags(stripJavaScript($string));
@@ -542,7 +541,7 @@ class LS_Twig_Extension extends Twig_Extension
         // White space to real space
         $string = preg_replace('/\s+/', ' ', $string);
 
-        if($encode) {
+        if ($encode) {
             return \CHtml::encode($string);
         }
         return $string;
@@ -558,7 +557,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function ellipsizeString($string, $maxlength, $position = 1, $ellipsis = '…')
     {
-        $string = self::flatString($string,false);
+        $string = self::flatString($string, false);
         $string = ellipsize($string, $maxlength, $position, $ellipsis);// Use common_helper function
         return $string;
     }
@@ -585,21 +584,24 @@ class LS_Twig_Extension extends Twig_Extension
         return $sString;
     }
 
-    public static function darkencss($cssColor, $grade=10, $alpha=1){
+    public static function darkencss($cssColor, $grade = 10, $alpha = 1)
+    {
 
-        $aColors = str_split(substr($cssColor,1), 2);
+        $aColors = str_split(substr($cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
-            $decColor = $decColor-$grade;
-            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $decColor = $decColor - $grade;
+            $decColor = $decColor < 0 ? 0 : ($decColor > 255 ? 255 : $decColor);
             $return[] = $decColor;
         }
-        if($alpha === 1) {
-            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        if ($alpha === 1) {
+            return '#' . join('', array_map(function ($val) {
+                return dechex($val);
+            }, $return));
         }
 
-        return 'rgba('.join(', ', $return).','.$alpha.')';
+        return 'rgba(' . join(', ', $return) . ',' . $alpha . ')';
     }
 
     /**
@@ -608,7 +610,8 @@ class LS_Twig_Extension extends Twig_Extension
      * @param array $haystack The array.
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
      */
-    function in_multiarray($needle, $haystack, $strict = false) {
+    function in_multiarray($needle, $haystack, $strict = false)
+    {
 
         foreach ($haystack as $item) {
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
@@ -620,21 +623,23 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
 
-    public static function lightencss($cssColor, $grade=10, $alpha=1)
+    public static function lightencss($cssColor, $grade = 10, $alpha = 1)
     {
-        $aColors = str_split(substr($cssColor,1), 2);
+        $aColors = str_split(substr($cssColor, 1), 2);
         $return = [];
         foreach ($aColors as $color) {
             $decColor = hexdec($color);
-            $decColor = $decColor+$grade;
-            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $decColor = $decColor + $grade;
+            $decColor = $decColor < 0 ? 0 : ($decColor > 255 ? 255 : $decColor);
             $return[] = $decColor;
         }
-        if($alpha === 1) {
-            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        if ($alpha === 1) {
+            return '#' . join('', array_map(function ($val) {
+                return dechex($val);
+            }, $return));
         }
 
-        return 'rgba('.join(', ', $return).','.$alpha.')';
+        return 'rgba(' . join(', ', $return) . ',' . $alpha . ')';
     }
 
     public static function getConfig($item)
@@ -651,22 +656,22 @@ class LS_Twig_Extension extends Twig_Extension
      *
      *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
      */
-    public static function getAllTokenAnswers( $iSurveyID )
+    public static function getAllTokenAnswers($iSurveyID)
     {
 
         $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
-                            array(
+            array(
                                 'condition' => 'token = :token',
-                                'params'    => array( ':token'=>$_SESSION['survey_'.$iSurveyID]['token']),
+                                'params'    => array( ':token' => $_SESSION['survey_' . $iSurveyID]['token']),
                             )
-
-                        );
+        );
 
         $aResponses = array();
 
-        if( count($oResponses) > 0 ){
-            foreach($oResponses as $oResponse)
-                array_push($aResponses,$oResponse->attributes);
+        if (count($oResponses) > 0) {
+            foreach ($oResponses as $oResponse) {
+                array_push($aResponses, $oResponse->attributes);
+            }
         }
 
         return $aResponses;

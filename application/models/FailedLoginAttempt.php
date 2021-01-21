@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -68,7 +70,7 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         $isLockedOut = false;
         $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
         $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
 
@@ -114,7 +116,7 @@ class FailedLoginAttempt extends LSActiveRecord
                 $row->last_attempt = $timestamp;
                 $row->save();
             } else {
-                $record = new FailedLoginAttempt;
+                $record = new FailedLoginAttempt();
                 $record->ip = $ip;
                 $record->number_attempts = 1;
                 $record->last_attempt = $timestamp;

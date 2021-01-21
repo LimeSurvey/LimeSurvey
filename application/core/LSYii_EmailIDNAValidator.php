@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -39,9 +41,7 @@ class LSYii_EmailIDNAValidator extends CValidator
                 $this->addError($object, $attribute, gT('Invalid email address.'));
                 return;
             }
-
         }
         return;
     }
-
 }

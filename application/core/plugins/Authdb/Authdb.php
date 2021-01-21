@@ -1,11 +1,12 @@
 <?php
+
 class Authdb extends AuthPluginBase
 {
     protected $storage = 'DbStorage';
     protected $_onepass = null;
 
-    static protected $description = 'Core: Database authentication + exports';
-    static protected $name = 'LimeSurvey internal database';
+    protected static $description = 'Core: Database authentication + exports';
+    protected static $name = 'LimeSurvey internal database';
 
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
@@ -43,7 +44,7 @@ class Authdb extends AuthPluginBase
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
 
-        if(empty($preCollectedUserArray)) {
+        if (empty($preCollectedUserArray)) {
             // Do nothing if the user to be added is not DB type
             if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
                 return;
@@ -124,8 +125,8 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', $sUserName, array('size'=>240, 'maxlength'=>240, 'class'=>"form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', $sPassword, array('size'=>240, 'maxlength'=>240, 'class'=>"form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', $sUserName, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', $sPassword, array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
     }
 
     public function newUserSession()
@@ -165,7 +166,7 @@ class Authdb extends AuthPluginBase
         }
 
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256',$onepass) == $user->one_time_pw) {
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256', $onepass) == $user->one_time_pw) {
             $user->one_time_pw = '';
             $user->save();
             $this->setAuthSuccess($user);
@@ -207,7 +208,7 @@ class Authdb extends AuthPluginBase
             case 'xls':
                 $label = gT("Microsoft Excel");
                 if (!function_exists('iconv')) {
-                    $label .= '<font class="warningtitle">'.gT("(Iconv Library not installed)").'</font>';
+                    $label .= '<font class="warningtitle">' . gT("(Iconv Library not installed)") . '</font>';
                 }
                 $event->set('label', $label);
                 break;

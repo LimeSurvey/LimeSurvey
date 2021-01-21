@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
 }
 /*
@@ -19,7 +21,7 @@
  * Class DefaultValue
  *
  * @property integer $id Primary Key
- * @property integer $dvid 
+ * @property integer $dvid
  * @property string $defaultvalue default value
  * @property string $language connected language
  */
@@ -57,9 +59,9 @@ class DefaultValueL10n extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('dvid', 'numerical', 'integerOnly'=>true),
+            array('dvid', 'numerical', 'integerOnly' => true),
             array('defaultvalue', 'LSYii_Validators'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
+            array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
         );
     }
 
@@ -76,7 +78,6 @@ class DefaultValueL10n extends LSActiveRecord
     
     public function defaultScope()
     {
-        return array('index'=>'language');
-    }    
-
+        return array('index' => 'language');
+    }
 }

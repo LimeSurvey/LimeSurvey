@@ -36,7 +36,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return bool
      */
-    protected function beforeRender($view) : bool
+    protected function beforeRender($view): bool
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
@@ -115,7 +115,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionResetMultiple() : void
+    public function actionResetMultiple(): void
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
         $gridid = App()->request->getPost('gridvalue');
@@ -162,7 +162,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws Exception
      */
-    public function actionUninstallMultiple() : void
+    public function actionUninstallMultiple(): void
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
         $gridid = App()->request->getPost('grididvalue');
@@ -179,7 +179,6 @@ class ThemeOptionsController extends LSBaseController
                     $aUninstallResult = QuestionTheme::uninstall($model);
                     $aResults[$template]['result'] = isset($aUninstallResult['result']) ? $aUninstallResult['result'] : false;
                     $aResults[$template]['error'] = isset($aUninstallResult['error']) ? $aUninstallResult['error'] : null;
-
                 } elseif ($gridid === 'themeoptions-grid') {
                     $aResults[$template]['title'] = $model->template_name;
                     $templatename = $model->template_name;
@@ -191,7 +190,6 @@ class ThemeOptionsController extends LSBaseController
                             $aResults[$template]['result'] = false;
                             $aResults[$template]['error'] = gT('Error! You cannot uninstall the default template.');
                         }
-
                     } else {
                         $aResults[$template]['result'] = false;
                         $aResults[$template]['error'] = gT('Error! Some theme(s) inherit from this theme');
@@ -199,7 +197,7 @@ class ThemeOptionsController extends LSBaseController
                 }
             }
             //set Modal table labels
-            $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -210,7 +208,6 @@ class ThemeOptionsController extends LSBaseController
                     'tableLabels'  => $tableLabels
                 )
             );
-
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
@@ -223,7 +220,7 @@ class ThemeOptionsController extends LSBaseController
      * @throws CException
      * @throws CHttpException
      */
-    public function actionSelectedItems() : void
+    public function actionSelectedItems(): void
     {
         $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
         $aResults = [];
@@ -242,7 +239,7 @@ class ThemeOptionsController extends LSBaseController
             $aResults[$template]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels= array(gT('Template id'),gT('Template name') ,gT('Status'));
+        $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
 
         $this->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
@@ -264,7 +261,7 @@ class ThemeOptionsController extends LSBaseController
      * @throws CException
      * @throws CHttpException
      */
-    public function actionUpdate(int $id) : void
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -276,7 +273,7 @@ class ThemeOptionsController extends LSBaseController
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
                     App()->user->setFlash('success', gT('Theme options saved.'));
-                    $this->redirect(array('themeOptions/update/id/'.$model->id));
+                    $this->redirect(array('themeOptions/update/id/' . $model->id));
                 }
             }
             $this->updateCommon($model);
@@ -293,7 +290,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return TemplateConfiguration
      */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration) : TemplateConfiguration
+    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration): TemplateConfiguration
     {
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
@@ -319,10 +316,11 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUpdateSurvey() : void
+    public function actionUpdateSurvey(): void
     {
         $sid = $this->getSurveyIdFromGetRequest();
-        if (!Permission::model()->hasGlobalPermission('templates', 'update')
+        if (
+            !Permission::model()->hasGlobalPermission('templates', 'update')
             && !Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
         ) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -354,15 +352,14 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null) : void
+    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null): void
     {
-        if (!Permission::model()->hasGlobalPermission('templates', 'update'))
-        {
-            if(empty($gsid)) {
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
             $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if(empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
@@ -370,7 +367,7 @@ class ThemeOptionsController extends LSBaseController
         $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
         if ($model->bJustCreated === true && $l === null) {
-            $this->redirect(array("themeOptions/updateSurveyGroup/", 'id'=>$id, 'gsid'=>$gsid, 'l'=>1));
+            $this->redirect(array("themeOptions/updateSurveyGroup/", 'id' => $id, 'gsid' => $gsid, 'l' => 1));
         }
 
         if (isset($_POST['TemplateConfiguration'])) {
@@ -391,7 +388,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionSetAdminTheme(string $sAdminThemeName) : void
+    public function actionSetAdminTheme(string $sAdminThemeName): void
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -407,7 +404,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionIndex() : void
+    public function actionIndex(): void
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -415,17 +412,17 @@ class ThemeOptionsController extends LSBaseController
         $aData = array();
         $oSurveyTheme = new TemplateConfiguration();
         $aData['oAdminTheme']  = new AdminTheme();
-        $aData['oQuestionTheme'] = new QuestionTheme;
+        $aData['oQuestionTheme'] = new QuestionTheme();
         $canImport = true;
         $importErrorMessage = null;
 
         if (!is_writable(App()->getConfig('tempdir'))) {
             $canImport = false;
             $importErrorMessage = gT("The template upload directory doesn't exist or is not writable.");
-        } else if (!is_writable(App()->getConfig('userthemerootdir'))) {
+        } elseif (!is_writable(App()->getConfig('userthemerootdir'))) {
             $canImport = false;
             $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-        } else if (!function_exists("zip_open")) {
+        } elseif (!function_exists("zip_open")) {
             $canImport = false;
             $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
         }
@@ -477,7 +474,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionAdmin() : void
+    public function actionAdmin(): void
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $model = new TemplateOptions('search');
@@ -489,7 +486,7 @@ class ThemeOptionsController extends LSBaseController
             $this->render(
                 'admin',
                 array(
-                    'model'=>$model,
+                    'model' => $model,
                 )
             );
         } else {
@@ -558,7 +555,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUninstall() : void
+    public function actionUninstall(): void
     {
         $templatename = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
@@ -589,29 +586,29 @@ class ThemeOptionsController extends LSBaseController
      *
      * @throws Exception
      */
-    public function actionReset(int $gsid) : void
+    public function actionReset(int $gsid): void
     {
-        if (!Permission::model()->hasGlobalPermission('templates', 'update'))
-        {
-            if(empty($gsid)) {
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            if (empty($gsid)) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
             $oSurveysInGroup = SurveysInGroup::model()->findByPk($gsid);
-            if(empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
+            if (empty($oSurveysInGroup) && !$oSurveysInGroup->hasPermission('surveys', 'update')) {
                 throw new CHttpException(403, gT("You do not have permission to access this page."));
             }
         }
         $templatename = App()->request->getPost('templatename');
 
-        if($gsid) {
-            $oTemplateConfiguration = TemplateConfiguration::model()->find("gsid = :gsid AND template_name = :templatename",
+        if ($gsid) {
+            $oTemplateConfiguration = TemplateConfiguration::model()->find(
+                "gsid = :gsid AND template_name = :templatename",
                 array(":gsid" => $gsid, ":templatename" => $templatename)
             );
-            if(empty($oTemplateConfiguration)) {
+            if (empty($oTemplateConfiguration)) {
                 throw new CHttpException(401, gT("Invalid template configuration for this group."));
             }
             $oTemplateConfiguration->setToInherit();
-            if($oTemplateConfiguration->save()) {
+            if ($oTemplateConfiguration->save()) {
                 App()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
             }
             $this->redirect(array("admin/surveysgroups/sa/update", 'id' => $gsid, "#" => "templateSettingsFortThisGroup"));
@@ -629,7 +626,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionPerformAjaxValidation(TemplateOptions $model) : void
+    public function actionPerformAjaxValidation(TemplateOptions $model): void
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'template-options-form') {
             echo CActiveForm::validate($model);
@@ -665,7 +662,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null) : void
+    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null): void
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
@@ -740,12 +737,13 @@ class ThemeOptionsController extends LSBaseController
      *
      * @todo While refactoring (at some point) this function should be removed and only one unique identifier should be used
      */
-    private function getSurveyIdFromGetRequest(){
+    private function getSurveyIdFromGetRequest()
+    {
         $surveyId = Yii::app()->request->getParam('sid');
-        if($surveyId === null){
+        if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('surveyid');
         }
-        if($surveyId === null){
+        if ($surveyId === null) {
             $surveyId = Yii::app()->request->getParam('iSurveyID');
         }
 

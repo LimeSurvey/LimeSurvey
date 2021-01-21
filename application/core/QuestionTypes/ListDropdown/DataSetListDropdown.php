@@ -1,5 +1,6 @@
 <?php
 
+class DataSetListDropdown extends QuestionBaseDataSet
+{
 
-
-class DataSetListDropdown extends QuestionBaseDataSet {}
+}

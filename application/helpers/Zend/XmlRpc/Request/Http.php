@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -114,7 +115,7 @@ class Zend_XmlRpc_Request_Http extends Zend_XmlRpc_Request
     {
         $request = '';
         foreach ($this->getHeaders() as $key => $value) {
-            $request .= $key.': '.$value."\n";
+            $request .= $key . ': ' . $value . "\n";
         }
 
         $request .= $this->_xml;

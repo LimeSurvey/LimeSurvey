@@ -1,6 +1,5 @@
 <?php
 
-
 class AssessmentController extends LSBaseController
 {
 
@@ -75,14 +74,14 @@ class AssessmentController extends LSBaseController
 
         //this part is from _renderWrapptemplate in old controller
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['gid'] = null; //important for rendering the sidebar ...(why?)
         Yii::app()->getClientScript()->registerScript(
             "AssessmentsVariables",
-            "var strnogroup = '".gT("There are no groups available.", "js")."',\n ';",
+            "var strnogroup = '" . gT("There are no groups available.", "js") . "',\n ';",
             LSYii_ClientScript::POS_BEGIN
         );
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js', LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'assessments.js', LSYii_ClientScript::POS_BEGIN);
 
         $this->aData = $aData;
         $this->render('assessments_view', $this->aData);
@@ -108,7 +107,7 @@ class AssessmentController extends LSBaseController
             Yii::app()->setFlashMessage(gT("Assessment could not be activated."), 'error');
         }
 
-        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid]));
     }
 
     /**
@@ -131,7 +130,7 @@ class AssessmentController extends LSBaseController
 
         //this should not happen, unknown action
         Yii::app()->setFlashMessage(gT("Unknown action for asessment."), 'error');
-        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid]));
     }
 
     /**
@@ -147,7 +146,7 @@ class AssessmentController extends LSBaseController
             //must be deleteAll because of languages...
             $assessmentId = (int) App()->request->getPost('id');
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId, 'sid' => $iSurveyID));
-        }else{
+        } else {
             Yii::app()->setFlashMessage(gT("You have no permission to delete assessments"), 'error');
         }
     }
@@ -180,7 +179,7 @@ class AssessmentController extends LSBaseController
                 }
             }
         }
-        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid] ));
+        $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $surveyid]));
     }
 
     /**
@@ -202,7 +201,7 @@ class AssessmentController extends LSBaseController
                 $aData = $this->getAssessmentPostData($iSurveyID, $language);
                 Assessment::model()->updateAssessment($aid, $iSurveyID, $language, $aData);
             }
-            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID] ));
+            $this->redirect($this->createUrl('/assessment/index', ['surveyid' => $iSurveyID]));
         }
     }
 
@@ -223,8 +222,8 @@ class AssessmentController extends LSBaseController
             $aData['editData'] = $oAssessments[0]->attributes;
             foreach ($oAssessments as $oAssessment) {
                 $aData['models'][] = $oAssessment;
-                $aData['editData']['name_'.$oAssessment->language] = $oAssessment->name;
-                $aData['editData']['assessmentmessage_'.$oAssessment->language] = $oAssessment->message;
+                $aData['editData']['name_' . $oAssessment->language] = $oAssessment->name;
+                $aData['editData']['assessmentmessage_' . $oAssessment->language] = $oAssessment->message;
             }
             $action = 'assessmentedit';
             $aData['action'] = $action;
@@ -387,9 +386,9 @@ class AssessmentController extends LSBaseController
             'gid' => App()->request->getPost('gid'),
             'minimum' => (int) App()->request->getPost('minimum', 0),
             'maximum' => (int) App()->request->getPost('maximum', 0),
-            'name' => App()->request->getPost('name_'.$language),
+            'name' => App()->request->getPost('name_' . $language),
             'language' => $language,
-            'message' => App()->request->getPost('assessmentmessage_'.$language)
+            'message' => App()->request->getPost('assessmentmessage_' . $language)
         );
     }
 

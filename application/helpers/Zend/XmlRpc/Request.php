@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -139,7 +140,7 @@ class Zend_XmlRpc_Request
     public function setMethod($method)
     {
         if (!is_string($method) || !preg_match('/^[a-z0-9_.:\/]+$/i', $method)) {
-            $this->_fault = new Zend_XmlRpc_Fault(634, 'Invalid method name ("'.$method.'")');
+            $this->_fault = new Zend_XmlRpc_Fault(634, 'Invalid method name ("' . $method . '")');
             $this->_fault->setEncoding($this->getEncoding());
             return false;
         }

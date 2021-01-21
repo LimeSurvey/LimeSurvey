@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -63,7 +65,7 @@ class QuestionGroup extends LSActiveRecord
     public function rules()
     {
         return [
-            ['group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true],
+            ['group_order', 'numerical', 'integerOnly' => true, 'allowEmpty' => true],
             ['grelevance', 'safe'],
             ['randomization_group', 'safe']
         ];
@@ -74,7 +76,7 @@ class QuestionGroup extends LSActiveRecord
     {
         return array(
             'survey'    => array(self::BELONGS_TO, 'Survey', 'sid'),
-            'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition'=>'parent_qid=0', 'order'=>'question_order ASC'),
+            'questions' => array(self::HAS_MANY, 'Question', 'gid', 'condition' => 'parent_qid=0', 'order' => 'question_order ASC'),
             'questiongroupl10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }
@@ -100,31 +102,32 @@ class QuestionGroup extends LSActiveRecord
 
         $position = intval($position);
         foreach ($data->readAll() as $row) {
-            Yii::app()->db->createCommand()->update($this->tableName(), array('group_order' => $position), 'gid='.$row['gid']);
+            Yii::app()->db->createCommand()->update($this->tableName(), array('group_order' => $position), 'gid=' . $row['gid']);
             $position++;
         }
     }
 
-    public function cleanOrder($surveyid){
+    public function cleanOrder($surveyid)
+    {
         $iSurveyId = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
 
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
-            $oCriteria=new CDbCriteria;
-            $oCriteria->compare('sid',$iSurveyId);
+            $oCriteria = new CDbCriteria();
+            $oCriteria->compare('sid', $iSurveyId);
             $oCriteria->order = 'group_order ASC';
 
             $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);
-            foreach($aQuestiongroups as $itrt => $oQuestiongroup) {
-                $iQuestionGroupOrder = $itrt+1;
+            foreach ($aQuestiongroups as $itrt => $oQuestiongroup) {
+                $iQuestionGroupOrder = $itrt + 1;
                 $oQuestiongroup->group_order = $iQuestionGroupOrder;
                 $oQuestiongroup->save();
 
                 $aQuestions = $oQuestiongroup->questions;
                 foreach ($aQuestions as $qitrt => $oQuestion) {
-                    $iQuestionOrder = $qitrt+1;
+                    $iQuestionOrder = $qitrt + 1;
                     $oQuestion->question_order = $iQuestionOrder;
                     $oQuestion->save(true);
                 }
@@ -141,7 +144,7 @@ class QuestionGroup extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $group = new self;
+        $group = new self();
         foreach ($data as $k => $v) {
             $group->$k = $v;
         }
@@ -169,7 +172,7 @@ class QuestionGroup extends LSActiveRecord
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$groupId));
+        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $groupId));
         return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
     }
 
@@ -191,7 +194,8 @@ class QuestionGroup extends LSActiveRecord
      * @param string $sLanguage
      * @return string
      */
-    public function getGroupNameI10N($sLanguage) {
+    public function getGroupNameI10N($sLanguage)
+    {
         if (isset($this->questiongroupl10ns[$sLanguage])) {
             return $this->questiongroupl10ns[$sLanguage]->group_name;
         }
@@ -204,7 +208,8 @@ class QuestionGroup extends LSActiveRecord
      * @param string $sLanguage
      * @return string
      */
-    public function getGroupDescriptionI10N($sLanguage) {
+    public function getGroupDescriptionI10N($sLanguage)
+    {
         if (isset($this->questiongroupl10ns[$sLanguage])) {
             return $this->questiongroupl10ns[$sLanguage]->description;
         }
@@ -263,52 +268,51 @@ class QuestionGroup extends LSActiveRecord
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionAdministration/create/surveyid/$this->sid/gid/$this->gid");
-            $button .= '<a class="btn btn-default list-btn '.($surveyIsActive ? 'disabled' : '').' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><i class="fa fa-plus " ></i></a>';
+            $button .= '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="' . gT('Add new question to group') . '" href="' . $url . '" role="button"><i class="fa fa-plus " ></i></a>';
         }
 
         // Group edition
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("questionGroupsAdministration/view/surveyid/$this->sid/gid/$this->gid");
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><i class="fa fa-pencil " ></i></a>';
+            $button .= '  <a class="btn btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Edit group') . '"><i class="fa fa-pencil " ></i></a>';
         }
 
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/questionGroupsAdministration/view/surveyid/");
-            $url .= '/'.$this->sid.'/gid/'.$this->gid;
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><i class="fa fa-list-alt " ></i></a>';
+            $url .= '/' . $this->sid . '/gid/' . $this->gid;
+            $button .= '  <a class="btn btn-default  list-btn" href="' . $url . '" role="button" data-toggle="tooltip" title="' . gT('Group summary') . '"><i class="fa fa-list-alt " ></i></a>';
         }
 
         // Delete
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
-                $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
-                    .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid"=>$this->gid]))).' })" '
-                    .' data-target="#confirmation-modal"'
-                    .' role="button"'
-                    .' data-toggle="modal"'
-                    .' data-message="'.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js").'"'
-                    .'>'
-                        .'<i class="fa fa-trash text-danger "></i>'
-                        .'<span class="sr-only">'.gT('Delete survey group').'</span>'
-                    .'</button>'
-                    .'</span>';
-
+                $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '">'
+                    . '<button class="btn btn-default" '
+                    . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
+                    . ' data-target="#confirmation-modal"'
+                    . ' role="button"'
+                    . ' data-toggle="modal"'
+                    . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
+                    . '>'
+                        . '<i class="fa fa-trash text-danger "></i>'
+                        . '<span class="sr-only">' . gT('Delete survey group') . '</span>'
+                    . '</button>'
+                    . '</span>';
             } else {
-                $button .= '<span data-toggle="tooltip" title="'.gT('Group cant be deleted, because of depending conditions').'">'
-                    .'<button class="btn btn-default" '
-                    .' disabled '
-                    .' role="button"'
-                    .' data-toggle="popover"'
-                    .' data-tooltip="true"'
-                    .' title="'.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'">'
-                        .'<i class="fa fa-trash text-muted "></i>'
-                        .'<span class="sr-only">'.gT('Delete survey group not possible').'</span>'
-                    .'</button>'
-                    .'</span>';
+                $button .= '<span data-toggle="tooltip" title="' . gT('Group cant be deleted, because of depending conditions') . '">'
+                    . '<button class="btn btn-default" '
+                    . ' disabled '
+                    . ' role="button"'
+                    . ' data-toggle="popover"'
+                    . ' data-tooltip="true"'
+                    . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
+                        . '<i class="fa fa-trash text-muted "></i>'
+                        . '<span class="sr-only">' . gT('Delete survey group not possible') . '</span>'
+                    . '</button>'
+                    . '</span>';
             }
         }
 
@@ -324,36 +328,36 @@ class QuestionGroup extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         $sort = new CSort();
-        $sort->defaultOrder = array('group_order'=> false);
+        $sort->defaultOrder = array('group_order' => false);
         $sort->attributes = array(
-            'group_id'=>array(
-                'asc'=>'gid',
-                'desc'=>'gid desc',
+            'group_id' => array(
+                'asc' => 'gid',
+                'desc' => 'gid desc',
             ),
-            'group_order'=>array(
-                'asc'=>'group_order',
-                'desc'=>'group_order desc',
+            'group_order' => array(
+                'asc' => 'group_order',
+                'desc' => 'group_order desc',
             ),
-            'group_name'=>array(
-                'asc'=>'group_name',
-                'desc'=>'group_name desc',
+            'group_name' => array(
+                'asc' => 'group_name',
+                'desc' => 'group_name desc',
             ),
         );
 
-        $criteria = new CDbCriteria;
-        $criteria->with = array('questiongroupl10ns'=>array("select"=>"group_name, description"));
+        $criteria = new CDbCriteria();
+        $criteria->with = array('questiongroupl10ns' => array("select" => "group_name, description"));
         $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';
-        $criteria->params = (array(':surveyid'=>$this->sid, ':language'=>$this->language));
+        $criteria->params = (array(':surveyid' => $this->sid, ':language' => $this->language));
         $criteria->compare('group_name', $this->group_name, true);
 
         $dataProvider = new CActiveDataProvider(get_class($this), array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
 
-            'sort'=>$sort,
+            'sort' => $sort,
 
-            'pagination'=>array(
-                'pageSize'=>$pageSize,
+            'pagination' => array(
+                'pageSize' => $pageSize,
             ),
         ));
         return $dataProvider;
@@ -410,7 +414,7 @@ class QuestionGroup extends LSActiveRecord
     public static function getFirstGroup($surveyId)
     {
         $criteria = new CDbCriteria();
-        $criteria->addCondition('sid = '.$surveyId);
+        $criteria->addCondition('sid = ' . $surveyId);
         $criteria->mergeWith(array(
             'order' => 'gid DESC'
         ));

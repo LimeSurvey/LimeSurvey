@@ -37,13 +37,13 @@ class TopbarConfiguration
     ];
 
     /**
-     * Creates and instance of TopbarConfiguration based on the received $config array, 
+     * Creates and instance of TopbarConfiguration based on the received $config array,
      * which is expected to have the following keys (all keys are optional):
      *  'name' => The name of the main view to use.
      *  'topbarId' => The topbar ID. Will normally be used as ID for container html element of the topbar.
      *  'leftSideView' => The name of the view to use for the left side of the topbar.
      *  'rightSideView' => The name of the view to use for the right side of the topbar.
-     * 
+     *
      * @param array $config
      */
     public function __construct(array $config = [])
@@ -52,10 +52,12 @@ class TopbarConfiguration
         $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
         $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
 
-        if (isset($config['leftSideView'])) $this->leftSideView = $config['leftSideView'];
+        if (isset($config['leftSideView'])) {
+            $this->leftSideView = $config['leftSideView'];
+        }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton'])||!empty($config['showCloseButton'])||!empty($config['showImportButton'])||!empty($config['showExportButton'])) {
+        } elseif (!empty($config['showSaveButton']) || !empty($config['showCloseButton']) || !empty($config['showImportButton']) || !empty($config['showExportButton'])) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -65,7 +67,7 @@ class TopbarConfiguration
 
     /**
      * Creates and instance of TopbarConfiguration based on the data array used for the views
-     * 
+     *
      * @param array $aData
      * @return TopbarConfiguration
      */
@@ -75,8 +77,12 @@ class TopbarConfiguration
 
         // If 'sid' is not specified in the topbar config, but is present in the $aData array, assign it to the config
         $sid = self::getSid($config);
-        if (empty($sid)) $sid = self::getSid($aData);
-        if (!empty($sid)) $config['sid'] = $sid;
+        if (empty($sid)) {
+            $sid = self::getSid($aData);
+        }
+        if (!empty($sid)) {
+            $config['sid'] = $sid;
+        }
      
         return new self($config);
     }
@@ -86,7 +92,9 @@ class TopbarConfiguration
      */
     public function getViewData($view)
     {
-        if (empty($view)||empty($this->extraDataMapping[$view])) return [];
+        if (empty($view) || empty($this->extraDataMapping[$view])) {
+            return [];
+        }
         $extraData = call_user_func($this->extraDataMapping[$view], !empty($this->data['sid']) ? $this->data['sid'] : null);
         if (!empty($extraData)) {
             return array_merge($extraData, $this->data);
@@ -122,7 +130,9 @@ class TopbarConfiguration
      */
     protected static function getSurveyTopbarData($sid)
     {
-        if (empty($sid)) return [];
+        if (empty($sid)) {
+            return [];
+        }
 
         $oSurvey = Survey::model()->findByPk($sid);
         $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
@@ -141,10 +151,16 @@ class TopbarConfiguration
         $sumcount = Question::model()->countByAttributes($condition);
         $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
         $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"),
-                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"),
-                    "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+        $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(
+            date("Y-m-d H:i:s"),
+            "Y-m-d H:i",
+            Yii::app()->getConfig('timeadjust')
+        ));
+        $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(
+            date("Y-m-d H:i:s"),
+            "Y-m-d H:i",
+            Yii::app()->getConfig('timeadjust')
+        ));
 
         if (!$isActive) {
             $context = gT("Preview survey");
@@ -210,7 +226,9 @@ class TopbarConfiguration
      */
     public static function getResponsesTopbarData($sid)
     {
-        if (empty($sid)) return [];
+        if (empty($sid)) {
+            return [];
+        }
 
         $survey = Survey::model()->findByPk($sid);
 
@@ -245,9 +263,11 @@ class TopbarConfiguration
      */
     public static function getRightSurveyTopbarData($sid)
     {
-        if (empty($sid)) return [];
+        if (empty($sid)) {
+            return [];
+        }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$sid));
+        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/" . $sid));
 
         return array(
             'closeUrl' => $closeUrl,
@@ -263,7 +283,9 @@ class TopbarConfiguration
      */
     public static function getTokensTopbarData($sid)
     {
-        if (empty($sid)) return [];
+        if (empty($sid)) {
+            return [];
+        }
 
         $survey = Survey::model()->findByPk($sid);
 
@@ -296,7 +318,9 @@ class TopbarConfiguration
      */
     public static function getQuestionTopbarData($sid)
     {
-        if (empty($sid)) return [];
+        if (empty($sid)) {
+            return [];
+        }
 
         $survey = Survey::model()->findByPk($sid);
 
@@ -379,5 +403,4 @@ class TopbarConfiguration
     {
         return $this->surveyData;
     }
-
 }

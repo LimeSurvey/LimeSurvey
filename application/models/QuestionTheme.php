@@ -129,7 +129,7 @@ class QuestionTheme extends LSActiveRecord
     {
         $pageSizeTemplateView = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']);
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->compare('id', $this->id);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('visible', $this->visible, true);
@@ -474,7 +474,6 @@ class QuestionTheme extends LSActiveRecord
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
             $questionMetaData['coreTheme'] = 1;
-
         }
         if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
             $questionMetaData['coreTheme'] = 0;
@@ -614,12 +613,13 @@ class QuestionTheme extends LSActiveRecord
      *
      * @return array
      */
-    public static function findQuestionMetaDataForAllTypes(){
+    public static function findQuestionMetaDataForAllTypes()
+    {
         //getting all question_types which are NOT extended
         $baseQuestions = self::model()->findAllByAttributes(['extends' => '']);
-        $aQuestionsIndexedByType =[];
+        $aQuestionsIndexedByType = [];
 
-        foreach ($baseQuestions as $baseQuestion){
+        foreach ($baseQuestions as $baseQuestion) {
             /**@var QuestionTheme $baseQuestion */
             $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
             $aQuestionsIndexedByType[$baseQuestion->question_type] = $baseQuestion;
@@ -640,11 +640,11 @@ class QuestionTheme extends LSActiveRecord
     {
         $criteria = new CDbCriteria();
 
-        if($question_template === 'core') {
+        if ($question_template === 'core') {
             $criteria->condition = 'extends = :extends';
             $criteria->addCondition('question_type = :question_type', 'AND');
             $criteria->params = [':extends' => '', ':question_type' => $question_type];
-        }else{
+        } else {
             $criteria->addCondition('question_type = :question_type AND name = :name');
             $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
         }
@@ -831,7 +831,7 @@ class QuestionTheme extends LSActiveRecord
      * @return string Path to config XML
      * @throws CException
      */
-    static public function getQuestionXMLPathForBaseType($type)
+    public static function getQuestionXMLPathForBaseType($type)
     {
         $aQuestionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
         if (empty($aQuestionTheme)) {
@@ -961,13 +961,15 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $additionalAttributes = array();
-        if($sQuestionThemeName !== null) {
+        if ($sQuestionThemeName !== null) {
             $additionalAttributes = self::getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type);
         }
 
-        return array_merge($aQuestionAttributes,
+        return array_merge(
+            $aQuestionAttributes,
             $additionalAttributes,
-            QuestionAttribute::getOwnQuestionAttributesViaPlugin());
+            QuestionAttribute::getOwnQuestionAttributesViaPlugin()
+        );
     }
 
     /**
@@ -978,14 +980,15 @@ class QuestionTheme extends LSActiveRecord
      * @param string $type   the extended typ (see table question_themes "extends")
      * @return array additional attributes for an extended theme or empty array
      */
-    public static function getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type){
+    public static function getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type)
+    {
         $additionalAttributes = array();
         libxml_disable_entity_loader(false);
             $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
-            if ($questionTheme !== null) {
-                $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
-                $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
-            }
+        if ($questionTheme !== null) {
+            $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+            $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
+        }
         libxml_disable_entity_loader(true);
 
         if (!empty($attributes)) {

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -39,18 +40,18 @@ function getDateFormatData($iDateFormat = 0, $sLanguageCode = 'en')
     // Bootstrap DateTimePicker uses capital letters, but
     // we still need small jsdate letters for dropdown client side.
     $aDateFormats = array(
-        1=> array('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'jsdate_original' => 'dd.mm.yyyy', 'dateformat' => gT('dd.mm.yyyy')),
-        2=> array('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'jsdate_original' => 'dd-mm-yyyy', 'dateformat' => gT('dd-mm-yyyy')),
-        3=> array('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'jsdate_original' => 'yyyy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
-        4=> array('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY', 'jsdate_original' => 'd.m.yyyy', 'dateformat' => gT('d.m.yyyy')),
-        5=> array('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'jsdate_original' => 'dd/mm/yyyy', 'dateformat' => gT('dd/mm/yyyy')),
-        6=> array('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'jsdate_original' => 'yyyy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
-        7=> array('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'jsdate_original' => 'yyyy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
-        8=> array('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY', 'jsdate_original' => 'd/m/yyyy', 'dateformat' => gT('d/m/yyyy')),
-        9=> array('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'jsdate_original' => 'mm-dd-yyyy', 'dateformat' => gT('mm-dd-yyyy')),
-        10=>array('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'jsdate_original' => 'mm.dd.yyyy', 'dateformat' => gT('mm.dd.yyyy')),
-        11=>array('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'jsdate_original' => 'mm/dd/yyyy', 'dateformat' => gT('mm/dd/yyyy')),
-        12=>array('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY', 'jsdate_original' => 'd-m-yyyy', 'dateformat' => gT('d-m-yyyy'))
+        1 => array('phpdate' => 'd.m.Y', 'jsdate' => 'DD.MM.YYYY', 'jsdate_original' => 'dd.mm.yyyy', 'dateformat' => gT('dd.mm.yyyy')),
+        2 => array('phpdate' => 'd-m-Y', 'jsdate' => 'DD-MM-YYYY', 'jsdate_original' => 'dd-mm-yyyy', 'dateformat' => gT('dd-mm-yyyy')),
+        3 => array('phpdate' => 'Y.m.d', 'jsdate' => 'YYYY.MM.DD', 'jsdate_original' => 'yyyy.mm.dd', 'dateformat' => gT('yyyy.mm.dd')),
+        4 => array('phpdate' => 'j.n.Y', 'jsdate' => 'D.M.YYYY', 'jsdate_original' => 'd.m.yyyy', 'dateformat' => gT('d.m.yyyy')),
+        5 => array('phpdate' => 'd/m/Y', 'jsdate' => 'DD/MM/YYYY', 'jsdate_original' => 'dd/mm/yyyy', 'dateformat' => gT('dd/mm/yyyy')),
+        6 => array('phpdate' => 'Y-m-d', 'jsdate' => 'YYYY-MM-DD', 'jsdate_original' => 'yyyy-mm-dd', 'dateformat' => gT('yyyy-mm-dd')),
+        7 => array('phpdate' => 'Y/m/d', 'jsdate' => 'YYYY/MM/DD', 'jsdate_original' => 'yyyy/mm/dd', 'dateformat' => gT('yyyy/mm/dd')),
+        8 => array('phpdate' => 'j/n/Y', 'jsdate' => 'D/M/YYYY', 'jsdate_original' => 'd/m/yyyy', 'dateformat' => gT('d/m/yyyy')),
+        9 => array('phpdate' => 'm-d-Y', 'jsdate' => 'MM-DD-YYYY', 'jsdate_original' => 'mm-dd-yyyy', 'dateformat' => gT('mm-dd-yyyy')),
+        10 => array('phpdate' => 'm.d.Y', 'jsdate' => 'MM.DD.YYYY', 'jsdate_original' => 'mm.dd.yyyy', 'dateformat' => gT('mm.dd.yyyy')),
+        11 => array('phpdate' => 'm/d/Y', 'jsdate' => 'MM/DD/YYYY', 'jsdate_original' => 'mm/dd/yyyy', 'dateformat' => gT('mm/dd/yyyy')),
+        12 => array('phpdate' => 'j-n-Y', 'jsdate' => 'D-M-YYYY', 'jsdate_original' => 'd-m-yyyy', 'dateformat' => gT('d-m-yyyy'))
     );
 
     if ($iDateFormat > 12 || $iDateFormat < 0) {
@@ -492,7 +493,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['kmr']['dateformat'] = 1;
     $supportedLanguages['kmr']['radixpoint'] = 1;
     $supportedLanguages['kmr']['cldr'] = 'ku';
-    $supportedLanguages['kmr']['momentjs'] = 'ku';  
+    $supportedLanguages['kmr']['momentjs'] = 'ku';
 
     // Kyrgyz
     $supportedLanguages['ky']['description'] = gT('Kyrgyz');
@@ -500,7 +501,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ky']['rtl'] = false;
     $supportedLanguages['ky']['dateformat'] = 1;
     $supportedLanguages['ky']['radixpoint'] = 1;
-    $supportedLanguages['ky']['momentjs'] = 'ky';  
+    $supportedLanguages['ky']['momentjs'] = 'ky';
 
     // Latvian
     $supportedLanguages['lv']['description'] = gT('Latvian');
@@ -580,7 +581,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cnr']['rtl'] = false;
     $supportedLanguages['cnr']['dateformat'] = 4;
     $supportedLanguages['cnr']['radixpoint'] = 1;
-    $supportedLanguages['cnr']['cldr'] ='sr_Latn_ME';
+    $supportedLanguages['cnr']['cldr'] = 'sr_Latn_ME';
     $supportedLanguages['cnr']['momentjs'] = 'me';
     
     // Myanmar / Burmese
@@ -627,7 +628,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fa']['description'] = gT('Persian');
     $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
     $supportedLanguages['fa']['rtl'] = true;
-    $supportedLanguages['fa']['dateformat'] = 6;                                                                        
+    $supportedLanguages['fa']['dateformat'] = 6;
     $supportedLanguages['fa']['radixpoint'] = 0;
     $supportedLanguages['fa']['momentjs'] = 'fa';
 
@@ -696,7 +697,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['roh']['rtl'] = false;
     $supportedLanguages['roh']['dateformat'] = 1;
     $supportedLanguages['roh']['radixpoint'] = 1;
-    $supportedLanguages['roh']['momentjs'] = null; 
+    $supportedLanguages['roh']['momentjs'] = null;
     */
     
     // Russian
@@ -872,7 +873,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['th']['radixpoint'] = 0;
     $supportedLanguages['th']['momentjs'] = 'th';
 
-    // Thai - Tigrinya 
+    // Thai - Tigrinya
     $supportedLanguages['ti']['description'] = gT('Tigrinya');
     $supportedLanguages['ti']['nativedescription'] = '&#x1275;&#x130d;&#x122d;&#x129b;';
     $supportedLanguages['ti']['rtl'] = false;
@@ -911,7 +912,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ug']['rtl'] = true;
     $supportedLanguages['ug']['dateformat'] = 6;
     $supportedLanguages['ug']['radixpoint'] = 0;
-    $supportedLanguages['ug']['momentjs'] = 'ug-cn';  
+    $supportedLanguages['ug']['momentjs'] = 'ug-cn';
 
     // Vietnamese
     $supportedLanguages['vi']['description'] = gT('Vietnamese');
@@ -919,7 +920,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['vi']['rtl'] = false;
     $supportedLanguages['vi']['dateformat'] = 5;
     $supportedLanguages['vi']['radixpoint'] = 1;
-    $supportedLanguages['vi']['momentjs'] = 'vi';  
+    $supportedLanguages['vi']['momentjs'] = 'vi';
 
     // Welsh
     $supportedLanguages['cy']['description'] = gT('Welsh');
@@ -960,8 +961,8 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
 function getRadixPointData($format = -1)
 {
     $aRadixFormats = array(
-    0=>array('separator'=> '.', 'desc'=> gT('Dot (.)')),
-    1=>array('separator'=> ',', 'desc'=> gT('Comma (,)'))
+    0 => array('separator' => '.', 'desc' => gT('Dot (.)')),
+    1 => array('separator' => ',', 'desc' => gT('Comma (,)'))
     );
 
     // hack for fact that null sometimes sent to this function
@@ -1146,7 +1147,7 @@ function getLanguageCodefromLanguage($languagetosearch)
 
 /**
 * Returns a language name from the code
-* 
+*
 * @param string  $codetosearch
 * @param boolean $withnative
 * @param string  $sTranslationLanguage
