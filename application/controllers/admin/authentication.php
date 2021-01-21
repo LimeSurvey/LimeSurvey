@@ -3,9 +3,6 @@
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
 // use LimeSurvey\PluginManager\PluginEvent;
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz

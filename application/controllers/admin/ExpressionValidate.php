@@ -1,8 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
 * Offer some way to validate Expression in survey
 *
