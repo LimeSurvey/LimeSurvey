@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\PluginManager;
 
+use Permission;
+
 /**
  * Base class for plugins.
  */
@@ -43,7 +45,8 @@ abstract class PluginBase implements iPlugin
     private $store = null;
 
     /**
-     * @var array
+     * Global settings of plugin
+     * @var array[]
      */
     protected $settings = [];
 
@@ -59,6 +62,12 @@ abstract class PluginBase implements iPlugin
      * @var \SimpleXMLElement|null
      */
     public $config = null;
+
+    /**
+     * List of allowed public method, null mean all metod are allowed. Else method must be in the list
+     * @var string[]|null
+     */
+    public $allowedPublicMethods = null;
 
     /**
      * Constructor for the plugin
@@ -161,7 +170,9 @@ abstract class PluginBase implements iPlugin
      */
     public function getPluginSettings($getValues = true)
     {
-
+        if(!Permission::model()->hasGlobalPermission('settings','read')) {
+            throw new CHttpException(403);
+        }
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
@@ -247,6 +258,9 @@ abstract class PluginBase implements iPlugin
      */
     public function saveSettings($settings)
     {
+        if(!Permission::model()->hasGlobalPermission('settings','update')) {
+            throw new CHttpException(403);
+        }
         foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
@@ -423,15 +437,15 @@ abstract class PluginBase implements iPlugin
             } elseif ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
-                $pluginModel = \Plugin::model()->findByPk($this->id);
-
-                // "Impossible"
-                if (empty($pluginModel)) {
-                    throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                if ($this->id !== null) {
+                    $pluginModel = \Plugin::model()->findByPk($this->id);
+                    // "Impossible"
+                    if (empty($pluginModel)) {
+                        throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                    }
+                    $this->checkActive($pluginModel);
+                    $this->saveNscewVersion($pluginModel);
                 }
-
-                $this->checkActive($pluginModel);
-                $this->saveNewVersion($pluginModel);
             }
             return true;
         } else {
@@ -534,7 +548,6 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;

@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -80,7 +79,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_'.intval(self::$sid).'_timings}}';
+        return '{{survey_' . intval(self::$sid) . '_timings}}';
     }
 
     /**
@@ -95,7 +94,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         if (Yii::app()->db->schema->getTable($this->tableName())) {
             $queryAvg = Yii::app()->db->createCommand()
                 ->select("AVG(interviewtime) AS avg, COUNT(*) as count")
-                ->from($this->tableName()." t")
+                ->from($this->tableName() . " t")
                 ->join("{{survey_{$sid}}} s", "t.id = s.id")
                 ->where("s.submitdate IS NOT NULL")
                 ->queryRow();
@@ -105,7 +104,7 @@ class SurveyTimingDynamic extends LSActiveRecord
                 $statistics['count'] = $queryAvg['count'];
                 $queryAll = Yii::app()->db->createCommand()
                     ->select("interviewtime")
-                    ->from($this->tableName()." t")
+                    ->from($this->tableName() . " t")
                     ->join("{{survey_{$sid}}} s", "t.id = s.id")
                     ->where("s.submitdate IS NOT NULL")
                     ->order("t.interviewtime")
@@ -135,8 +134,8 @@ class SurveyTimingDynamic extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $record = new self;
-        foreach ($data as $k=>$v) {
+        $record = new self();
+        foreach ($data as $k => $v) {
             $record->$k = $v;
         }
 
@@ -163,7 +162,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         $oCriteria = new CdbCriteria();
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
-        $oCriteria->order = "s.id ".(Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
+        $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         //$oCriteria->offset = $start;
         //$oCriteria->limit = $limit;
 
@@ -186,19 +185,19 @@ class SurveyTimingDynamic extends LSActiveRecord
     public function getButtons()
     {
         // View details
-        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
-        $buttons = '<a class="btn btn-xs btn-default" href="'.$viewUrl.'" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="fa fa-list-alt" ></span></a>';
+        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
+        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="'.$editUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="fa fa-pencil" ></span></a>';
+            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="'.$deleteUrl.'" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger fa fa-trash" ></span></a>';
+            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="' . gT('Delete this response') . '"><span class="text-danger fa fa-trash" ></span></a>';
         }
 
         return $buttons;
@@ -208,8 +207,8 @@ class SurveyTimingDynamic extends LSActiveRecord
      * Get current surveyId for other model/function
      * @return int
      */
-    public function getSurveyId() {
+    public function getSurveyId()
+    {
         return self::$sid;
     }
-
 }

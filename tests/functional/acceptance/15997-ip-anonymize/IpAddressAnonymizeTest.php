@@ -40,7 +40,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
-            'admin/survey/sa/view/surveyid/'.self::$surveyId
+            'surveyAdministration/view/surveyid/'.self::$surveyId
         );
         self::$webDriver->get($url);
         sleep(1);
@@ -95,7 +95,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
-            'admin/survey/sa/view/surveyid/'.self::$surveyId
+            'surveyAdministration/view/surveyid/'.self::$surveyId
         );
         self::$webDriver->get($url);
         sleep(1);

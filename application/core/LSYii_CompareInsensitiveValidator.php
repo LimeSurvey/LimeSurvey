@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LSYii_CompareInsensitiveValidator class file.
  * LimeSurvey
@@ -70,10 +71,10 @@ class LSYii_CompareInsensitiveValidator extends CValidator
                 }
                 break;
             default:
-                throw new CException(Yii::t('yii', 'Invalid operator "{operator}".', array('{operator}'=>$this->operator)));
+                throw new CException(Yii::t('yii', 'Invalid operator "{operator}".', array('{operator}' => $this->operator)));
         }
         if (!empty($message)) {
-            $this->addError($object, $attribute, $message, array('{compareAttribute}'=>$compareTo, '{compareValue}'=>$compareValue));
+            $this->addError($object, $attribute, $message, array('{compareAttribute}' => $compareTo, '{compareValue}' => $compareValue));
         }
     }
 }

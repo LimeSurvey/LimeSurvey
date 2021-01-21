@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -120,5 +121,4 @@ class Zend_Validate_GreaterThan extends Zend_Validate_Abstract
         }
         return true;
     }
-
 }

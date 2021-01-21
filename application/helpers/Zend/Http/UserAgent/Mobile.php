@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -366,7 +367,8 @@ class Zend_Http_UserAgent_Mobile extends Zend_Http_UserAgent_AbstractDevice
         }
 
         // markup
-        if ($this->getFeature('device_os') == 'iPhone OS'
+        if (
+            $this->getFeature('device_os') == 'iPhone OS'
             || $this->getFeature('device_os_token') == 'iPhone OS'
         ) {
             $this->setFeature('markup', 'iphone');

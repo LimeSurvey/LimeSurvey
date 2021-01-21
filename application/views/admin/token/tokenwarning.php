@@ -32,7 +32,7 @@
 
                         <?php echo CHtml::form(array("admin/tokens/sa/index/surveyid/{$oSurvey->sid}"), 'post'); ?>
                             <button type="submit" class="btn btn-default  btn-lg"  name="createtable" value="Y"><?php eT("Initialise participant table"); ?></button>
-                            <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$oSurvey->sid"); ?>" class="btn btn-default  btn-lg"><?php eT("No, thanks."); ?></a>
+                            <a href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>" class="btn btn-default  btn-lg"><?php eT("No, thanks."); ?></a>
                     <?php echo CHtml::endForm() ?>
 
 
@@ -40,7 +40,7 @@
                     }else{
                         eT("You don't have the permission to activate participants.");
                     ?>
-                    <input type='submit' value='<?php eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$oSurvey->sid"); ?>', '_top')" /></div>
+                    <input type='submit' value='<?php eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("surveyAdministration/view/surveyid/$oSurvey->sid"); ?>', '_top')" /></div>
 
                     <?php
                     }

@@ -63,6 +63,4 @@ class Field extends CModel
             throw new \Exception('unfinished method');
         }
     }
-
-
 }

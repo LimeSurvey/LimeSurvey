@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -140,7 +141,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
             $this->_files = array();
         }
 
-        foreach($this->_files as $file => $content) {
+        foreach ($this->_files as $file => $content) {
             if (!isset($content['error'])) {
                 unset($this->_files[$file]);
             }
@@ -182,7 +183,7 @@ class Zend_Validate_File_Upload extends Zend_Validate_Abstract
 
         foreach ($files as $file => $content) {
             $this->_value = $file;
-            switch($content['error']) {
+            switch ($content['error']) {
                 case 0:
                     if (!is_uploaded_file($content['tmp_name'])) {
                         $this->_throw($content, self::ATTACK);

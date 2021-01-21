@@ -32,7 +32,7 @@ class HomepageSettingsController extends LSBaseController
      */
     public function beforeRender($view)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'homepagesettings.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'homepagesettings.js');
         return parent::beforeRender($view);
     }
 
@@ -55,12 +55,12 @@ class HomepageSettingsController extends LSBaseController
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox,
             'bShowLogo' => App()->getConfig('show_logo') == "show",
-            'bShowLastSurveyAndQuestion'=> App()->getConfig('show_last_survey_and_question') == "show",
-            'bShowSurveyList'=> App()->getConfig('show_survey_list') == "show",
-            'bShowSurveyListSearch'=>App()->getConfig('show_survey_list_search') == "show",
-            'bBoxesInContainer'=>App()->getConfig('boxes_in_container') == "yes",
-            'iBoxesByRow'=>(int) App()->getConfig('boxes_by_row'),
-            'iBoxesOffset'=> (int) App()->getConfig('boxes_offset'),
+            'bShowLastSurveyAndQuestion' => App()->getConfig('show_last_survey_and_question') == "show",
+            'bShowSurveyList' => App()->getConfig('show_survey_list') == "show",
+            'bShowSurveyListSearch' => App()->getConfig('show_survey_list_search') == "show",
+            'bBoxesInContainer' => App()->getConfig('boxes_in_container') == "yes",
+            'iBoxesByRow' => (int) App()->getConfig('boxes_by_row'),
+            'iBoxesOffset' => (int) App()->getConfig('boxes_offset'),
         ]);
     }
 
@@ -76,7 +76,7 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect($this->createUrl("/homepageSettings/index"));
         }
 
-        $model = new Box;
+        $model = new Box();
         if (isset($_POST['Box'])) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'), 'error');
@@ -88,7 +88,7 @@ class HomepageSettingsController extends LSBaseController
                 if (isset($_POST['saveandclose'])) {
                     $this->redirect(array('/homepageSettings/index'));
                 } else {
-                    $this->redirect(array('/homepageSettings/updateBox/id/'.$model->id));
+                    $this->redirect(array('/homepageSettings/updateBox/id/' . $model->id));
                 }
             } else {
                 Yii::app()->user->setFlash('error', gT('Could not create new box'));

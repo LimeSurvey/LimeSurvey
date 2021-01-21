@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,29 +20,32 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
 {
 
     /**
-	 * Get the config object for the HTML Purifier instance.
-	 * @return mixed the HTML Purifier instance config
-	 */
-	public function getConfig()
-	{
+     * Get the config object for the HTML Purifier instance.
+     * @return mixed the HTML Purifier instance config
+     */
+    public function getConfig()
+    {
         $purifier = $this->getPurifier();
-		if($purifier!==null) return $purifier->config;
-	}
+        if ($purifier !== null) {
+            return $purifier->config;
+        }
+    }
 
-	/**
-	 * Get an instance of LSYii_HtmlPurifier configured for XSS filtering
-	 */
-	public static function getXssPurifier() {
-		$instance = new self();
-		$instance->options = array(
-            'AutoFormat.RemoveEmpty'=>false,
-            'Core.NormalizeNewlines'=>false,
-            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
-            'HTML.SafeObject'=>true, // To allow including youtube
-            'Output.FlashCompat'=>true,
-            'Attr.EnableID'=>true, // Allow to set id
-            'Attr.AllowedFrameTargets'=>array('_blank', '_self'),
-            'URI.AllowedSchemes'=>array(
+    /**
+     * Get an instance of LSYii_HtmlPurifier configured for XSS filtering
+     */
+    public static function getXssPurifier()
+    {
+        $instance = new self();
+        $instance->options = array(
+            'AutoFormat.RemoveEmpty' => false,
+            'Core.NormalizeNewlines' => false,
+            'CSS.AllowTricky' => true, // Allow display:none; (and other)
+            'HTML.SafeObject' => true, // To allow including youtube
+            'Output.FlashCompat' => true,
+            'Attr.EnableID' => true, // Allow to set id
+            'Attr.AllowedFrameTargets' => array('_blank', '_self'),
+            'URI.AllowedSchemes' => array(
                 'http' => true,
                 'https' => true,
                 'mailto' => true,
@@ -52,14 +57,14 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
         // Enable video
-		$config = $instance->getConfig();
+        $config = $instance->getConfig();
 
         if (!empty($config)) {
             $config->set('HTML.DefinitionID', 'html5-definitions');
             $def = $config->maybeGetRawHTMLDefinition();
             $max = $config->get('HTML.MaxImgLength');
             if ($def) {
-            $def->addElement(
+                $def->addElement(
                     'video',   // name
                     'Inline',  // content set
                     'Flow', // allowed children
@@ -88,8 +93,8 @@ class LSYii_HtmlPurifier extends CHtmlPurifier
                     )
                 );
             }
-		}
-		
-		return $instance;
-	}
+        }
+        
+        return $instance;
+    }
 }

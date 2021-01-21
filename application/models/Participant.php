@@ -18,7 +18,9 @@
  * Used to spit out error messages if mapping attributes doesn't work.
  */
 class CPDBException extends Exception
-{ }
+{
+ 
+}
 
 /**
  * This is the model class for table "{{participants}}".
@@ -237,15 +239,15 @@ class Participant extends LSActiveRecord
     public function attributeLabels()
     {
         $returnArray = array(
-            'participant_id' => gT('Participant'). $this->setEncryptedAttributeLabel(0 ,'Participant','participant_id'),
-            'firstname' => gT('First name'). $this->setEncryptedAttributeLabel(0 ,'Participant','firstname'),
-            'lastname' => gT('Last name').$this->setEncryptedAttributeLabel(0 ,'Participant','lastname'),
-            'email' => gT('Email address').$this->setEncryptedAttributeLabel(0 ,'Participant','email'),
-            'language' => gT('Language').$this->setEncryptedAttributeLabel(0 ,'Participant','language'),
-            'blacklisted' => gT('Blacklisted').$this->setEncryptedAttributeLabel(0 ,'Participant','blacklisted'),
-            'owner_uid' => gT('Owner ID').$this->setEncryptedAttributeLabel(0 ,'Participant','owner_uid'),
-            'surveyid' => gT('Active survey ID').$this->setEncryptedAttributeLabel(0 ,'Participant','surveyid'),
-            'created' => gT('Created on').$this->setEncryptedAttributeLabel(0 ,'Participant', 'created')
+            'participant_id' => gT('Participant') . $this->setEncryptedAttributeLabel(0, 'Participant', 'participant_id'),
+            'firstname' => gT('First name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'firstname'),
+            'lastname' => gT('Last name') . $this->setEncryptedAttributeLabel(0, 'Participant', 'lastname'),
+            'email' => gT('Email address') . $this->setEncryptedAttributeLabel(0, 'Participant', 'email'),
+            'language' => gT('Language') . $this->setEncryptedAttributeLabel(0, 'Participant', 'language'),
+            'blacklisted' => gT('Blacklisted') . $this->setEncryptedAttributeLabel(0, 'Participant', 'blacklisted'),
+            'owner_uid' => gT('Owner ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'owner_uid'),
+            'surveyid' => gT('Active survey ID') . $this->setEncryptedAttributeLabel(0, 'Participant', 'surveyid'),
+            'created' => gT('Created on') . $this->setEncryptedAttributeLabel(0, 'Participant', 'created')
         );
         foreach ($this->allExtraAttributes as $name => $attribute) {
             $returnArray[$name] = $attribute['defaultname'];
@@ -260,7 +262,7 @@ class Participant extends LSActiveRecord
     {
         $allAttributes = ParticipantAttributeName::model()->getAllAttributes();
         $extraAttributes = array();
-        foreach ($allAttributes  as $attribute) {
+        foreach ($allAttributes as $attribute) {
             $extraAttributes["ea_" . $attribute['attribute_id']] = $attribute;
         }
         return $extraAttributes;
@@ -421,7 +423,7 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             //dropdown
-            else if ($attribute['attribute_type'] == "DD") {
+            elseif ($attribute['attribute_type'] == "DD") {
                 $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
                 $options_array = array(
                     '' => ''
@@ -433,7 +435,7 @@ class Participant extends LSActiveRecord
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
             }
             //date -> still a text field, too many errors with the gridview
-            else if ($attribute['attribute_type'] == "DP") {
+            elseif ($attribute['attribute_type'] == "DP") {
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
@@ -446,7 +448,7 @@ class Participant extends LSActiveRecord
      */
     public function search()
     {
-        $sort = new CSort;
+        $sort = new CSort();
         $sort->defaultOrder = 'lastname';
         $sortAttributes = array(
             'lastname' => array(
@@ -483,8 +485,8 @@ class Participant extends LSActiveRecord
             )
         );
 
-        $criteria = new CDbCriteria;
-        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = '.Yii::app()->user->id.' OR shares.share_uid = -1)';
+        $criteria = new CDbCriteria();
+        $criteria->join = 'LEFT JOIN {{users}} as owner on uid=owner_uid LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
         $criteria->compare('t.participant_id', $this->participant_id, true, 'AND', true);
         $criteria->compare('t.firstname', $this->firstname, true, 'AND', true);
         $criteria->compare('t.lastname', $this->lastname, true, 'AND', true);
@@ -526,7 +528,7 @@ class Participant extends LSActiveRecord
             } else {
                 /** @var string Param name to bind in prepared statement */
                 $bindKey = ':value' . $attributeId;
-                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = " . $bindKey , array($bindKey => $value));
+                $callParticipantAttributes->where("attribute_id = '" . $attributeId . "' AND value = " . $bindKey, array($bindKey => $value));
                 // NB: Binding in andWhere() is not enough since the subquery is converted to string.
                 $criteria->params[$bindKey] = $value;
             }
@@ -624,7 +626,7 @@ class Participant extends LSActiveRecord
      */
     public function insertParticipant($aData)
     {
-        $oParticipant = new self;
+        $oParticipant = new self();
         foreach ($aData as $sField => $sValue) {
             $oParticipant->$sField = $sValue;
         }
@@ -1122,7 +1124,7 @@ class Participant extends LSActiveRecord
         //
         $i = 0;
         $start = $limit * $page - $limit;
-        $command = new CDbCriteria;
+        $command = new CDbCriteria();
         $command->condition = '';
 
         //The following code performs an IN-SQL order, but this only works for standard participant fields
@@ -1211,7 +1213,7 @@ class Participant extends LSActiveRecord
                 $i += 3;
             }
             //This section deals with subsequent filter conditions that have boolean joiner
-            else if ($condition[$i] != '') {
+            elseif ($condition[$i] != '') {
                 if (is_numeric($condition[$i + 3])) {
                     $condition[$i + 3] = intval($condition[$i + 3]);
                 }
@@ -1318,7 +1320,7 @@ class Participant extends LSActiveRecord
         //As we iterate through the conditions we build up the $command query by adding conditions to it
         //
         $i = 0;
-        $command = new CDbCriteria;
+        $command = new CDbCriteria();
         $command->condition = '';
         $aParams = array();
 
@@ -1757,7 +1759,7 @@ class Participant extends LSActiveRecord
                 $insertedtokenid = $oToken->tid;
 
                 //Create a survey link for the new token entry
-                $oSurveyLink = new SurveyLink;
+                $oSurveyLink = new SurveyLink();
                 $oSurveyLink->participant_id = $oParticipant->participant_id;
                 $oSurveyLink->token_id = $insertedtokenid;
                 $oSurveyLink->survey_id = $surveyId;
@@ -2175,13 +2177,13 @@ class Participant extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
             // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
-        } else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
+        } elseif ($shared && $shared->share_uid == -1 && $shared->can_edit) {
             // -1 = shared with everyone
             return true;
-        } else if ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
+        } elseif ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
             // Shared with this particular user
             return true;
-        } else if ($owner) {
+        } elseif ($owner) {
             // User owns this participant
             return true;
         } else {
@@ -2237,8 +2239,7 @@ class Participant extends LSActiveRecord
     }
     public function getOwnerOptions()
     {
-
-        return [];
+        return CHtml::listData(User::model()->findAll(), 'uid', 'full_name');
     }
 
     /**

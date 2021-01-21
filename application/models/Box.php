@@ -28,13 +28,13 @@ class Box extends CActiveRecord
         // will receive user inputs.
         return array(
             array('url, title, ico, desc, page', 'required'),
-            array('url', 'match', 'pattern'=>'/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
-            array('position', 'numerical', 'integerOnly'=>true),
-            array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
-            array('ico', 'match', 'pattern'=> '/^[A-Za-z0-9_ \-]+$/u','message'=> gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
+            array('url', 'match', 'pattern' => '/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
+            array('position', 'numerical', 'integerOnly' => true),
+            array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
+            array('ico', 'match', 'pattern' => '/^[A-Za-z0-9_ \-]+$/u','message' => gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
+            array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on' => 'search'),
         );
     }
 
@@ -58,7 +58,7 @@ class Box extends CActiveRecord
             'ico' => gT('Icon:'),
             'desc' => gT('Description:'),
             'page' => gT('Name of the page where the box should be shown'),
-            'usergroup'=> gT('Display this box to:')
+            'usergroup' => gT('Display this box to:')
         );
     }
 
@@ -79,7 +79,7 @@ class Box extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('position', $this->position);
@@ -90,7 +90,7 @@ class Box extends CActiveRecord
         $criteria->compare('page', $this->page, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -99,7 +99,7 @@ class Box extends CActiveRecord
      */
     public function getSpanIcon()
     {
-        $spanicon = '<span class="'.CHtml::encode($this->ico).' text-success"></span>';
+        $spanicon = '<span class="' . CHtml::encode($this->ico) . ' text-success"></span>';
         return $spanicon;
     }
 
@@ -136,19 +136,19 @@ class Box extends CActiveRecord
     {
 
         $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
-        $url .= '/'.$this->id;
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
+        $url .= '/' . $this->id;
+        $button = '<a class="btn btn-default" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
         //$url .= '/'.$this->id;
         $button .= '<a class="btn btn-default selector--ConfirmModal"'
-        .' data-button-no="'.gT('No, cancel').'"'
-        .' data-button-yes="'.gT('Yes, delete').'"'
-        .' href="'.$url.'"'
-        .' title="'.gT("Delete box").'"'
-        .' role="button" data-post=\''.json_encode(['id' => $this->id]).'\''
-        .' data-text="'.gT('Are you sure you want to delete this box ?').'"'
-        .'><span class="text-danger fa fa-trash" ></span></a>';
+        . ' data-button-no="' . gT('No, cancel') . '"'
+        . ' data-button-yes="' . gT('Yes, delete') . '"'
+        . ' href="' . $url . '"'
+        . ' title="' . gT("Delete box") . '"'
+        . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
+        . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
+        . '><span class="text-danger fa fa-trash" ></span></a>';
         return $button;
     }
 

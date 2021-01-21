@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -40,7 +39,6 @@ class printablesurvey extends Survey_Common_Action
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
         } else {
-
             /* Remove admin css and js */
             Yii::app()->clientScript->reset();
             $aSurveyInfo = getSurveyInfo($surveyid, $lang);
@@ -108,11 +106,8 @@ class printablesurvey extends Survey_Common_Action
             // foreach ($aCssFiles as $cssFile) {
             //     Yii::app()->getClientScript()->registerCssFile("{$sFullTemplateUrl}{$cssFile}");
             // }
-            $oGroupsCriteria = new CDbCriteria();
-            $oGroupsCriteria->condition = "sid = :sid";
-            $oGroupsCriteria->params = array(':sid' => $surveyid);
-            $oGroupsCriteria->order = "group_order";
-            $arGroups = QuestionGroup::model()->findAll($oGroupsCriteria); //xiao,
+
+            $arGroups = $oSurvey->groups;
             if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) {
                 $surveyfaxto = $surveyfaxnumber; //Use system fax number if none is set in survey.
             }
@@ -158,7 +153,7 @@ class printablesurvey extends Survey_Common_Action
             foreach ($arGroups as $arQuestionGroup) {
                 // ---------------------------------------------------
                 // START doing groups
-                $arQuestions = Question::model()->findAllByAttributes(['sid' => $surveyid, 'gid' => $arQuestionGroup['gid']]);
+                $arQuestions = $arQuestionGroup->questions;
 
                 if (!empty($arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description)) {
                     $group_desc = $arQuestionGroup->questiongroupl10ns[$sLanguageCode]->description;
@@ -427,7 +422,6 @@ class printablesurvey extends Survey_Common_Action
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll($condition);
                                         foreach ($ansresult as $ansrow) {
-
                                             $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}'";
                                             $fresult = Answer::model()->findAll($condition);
                                             foreach ($fresult as $frow) {
@@ -455,7 +449,6 @@ class printablesurvey extends Survey_Common_Action
                             // Following line commented out because answer_section  was lost, but is required for some question types
                             //$explanation .= " ".gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                             if ($distinctrow['cqid']) {
-                              
                                 $sExplanation .= " <span class='scenario-at-separator'>" . gT("at question") . "</span> '" . " [" . $subresult['title'] . "]' (" . strip_tags($subresult->questionl10ns[$sLanguageCode]->question) . "$answer_section)";
                             } else {
                                 $sExplanation .= " " . $distinctrow['value'];
@@ -516,7 +509,7 @@ class printablesurvey extends Survey_Common_Action
                         // classes to be added to wrapping question div
                         'class' => Question::getQuestionClass($arQuestion['type']),
                         'type_help' => $qinfo['validTip'],
-                        // instructions on how to complete the question 
+                        // instructions on how to complete the question
                         // prettyValidTip is too verbose; assuming printable surveys will use static values
                         //  mandatory error
                         'man_message' => '',
@@ -596,8 +589,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
-
+                        case Question::QT_L_LIST_DROPDOWN:
                             // ==================================================================
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
@@ -695,8 +687,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_M_MULTIPLE_CHOICE:  //Multiple choice (Quite tricky really!)
-
+                        case Question::QT_M_MULTIPLE_CHOICE:
                             $dcols = $qidattributes['display_columns'];
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *all* that apply:"));
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
@@ -890,8 +881,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:  //ARRAY (10 POINT CHOICE)
-
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
                             $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
@@ -918,8 +908,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:  //ARRAY (YES/UNCERTAIN/NO)
-
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
                             $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
@@ -1019,7 +1008,6 @@ class printablesurvey extends Survey_Common_Action
                                 $question['answer'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
                                 //$printablesurveyoutput .="\t\t\t\t\t<td>";
                                 for ($i = 1; $i <= $fcount; $i++) {
-
                                     $question['answer'] .= "\t\t\t<td>\n";
                                     if ($checkboxlayout === false) {
                                         $question['answer'] .= "\t\t\t\t" . self::_input_type_image('text', '', $width) . self::_addsgqacode(" (" . $fieldname . $frow['title'] . "_" . $xaxisarray[$i] . ") ") . "\n";
@@ -1155,8 +1143,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_1_ARRAY_MULTISCALE: //ARRAY (Flexible Labels) multi scale
-
+                        case Question::QT_1_ARRAY_MULTISCALE:
                             $leftheader = $qidattributes['dualscale_headerA'][$sLanguageCode];
                             $rightheader = $qidattributes['dualscale_headerB'][$sLanguageCode];
 
@@ -1250,8 +1237,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible Labels) by Column
-
+                        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
                             $condition = "parent_qid={$arQuestion['qid']}";
                             $fresult = Question::model()->FindAll($condition);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
@@ -1312,7 +1298,6 @@ class printablesurvey extends Survey_Common_Action
             // die(print_r(['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], true));
             // echo self::_populate_template($oTemplate, 'survey', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray]);
         } // End print
-
     }
 
     /**

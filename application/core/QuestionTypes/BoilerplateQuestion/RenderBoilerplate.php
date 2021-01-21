@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -40,10 +38,10 @@ class RenderBoilerplate extends QuestionBaseRenderer
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, /* is this needed ? */
-            'coreClass'=> 'ls-answers hidden '.$sCoreClasses,
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA, /* is this needed ? */
+            'coreClass' => 'ls-answers hidden ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = $this->sSGQA;

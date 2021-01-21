@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -38,32 +39,53 @@ class AdminController extends LSYii_Controller
         $this->user_id = Yii::app()->user->getId();
         // Check if the user really exists
         // This scenario happens if the user was deleted while still being logged in
-        if ( !empty( $this->user_id ) && User::model()->findByPk( $this->user_id ) == null ){
+        if (!empty($this->user_id) && User::model()->findByPk($this->user_id) == null) {
             $this->user_id = null;
             Yii::app()->session->destroy();
         }
-        
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
+
+        if (!Yii::app()->getConfig("surveyid")) {
+            Yii::app()->setConfig("surveyid", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("surveyID")) {
+            Yii::app()->setConfig("surveyID", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {
+            Yii::app()->setConfig("ugid", returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {
+            Yii::app()->setConfig("gid", returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {
+            Yii::app()->setConfig("qid", returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {
+            Yii::app()->setConfig("lid", returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {
+            Yii::app()->setConfig("code", returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig("action")) {
+            Yii::app()->setConfig("action", returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {
+            Yii::app()->setConfig("subaction", returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {
+            Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
+        } // for html editor integration
 
         // This line is needed for template editor to work
         $oAdminTheme = AdminTheme::getInstance();
 
-        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
     }
 
     /**
      * Shows a nice error message to the world
      *
      * todo REFACTORING is this still in use? can't find any call in an action or a view ...
+     * todo its used multiple times getController->error, all calls should be replaceable by setFlashMessage
      *
      * @access public
      * @param string $message The error message
@@ -73,8 +95,8 @@ class AdminController extends LSYii_Controller
     {
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
-        $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
-        $sOutput .= $message.'<br /><br />'."\n";
+        $sOutput .= '<div class="warningheader">' . gT('Error') . '</div><br />' . "\n";
+        $sOutput .= $message . '<br /><br />' . "\n";
         if (!empty($sURL) && !is_array($sURL)) {
             $sTitle = gT('Back');
         } elseif (!empty($sURL['url'])) {
@@ -88,9 +110,9 @@ class AdminController extends LSYii_Controller
             $sTitle = gT('Main Admin Screen');
             $sURL = $this->createUrl('/admin');
         }
-        $sOutput .= '<input type="submit" value="'.$sTitle.'" onclick=\'window.open("'.$sURL.'", "_top")\' /><br /><br />'."\n";
-        $sOutput .= '</div>'."\n";
-        $sOutput .= '</div>'."\n";
+        $sOutput .= '<input type="submit" value="' . $sTitle . '" onclick=\'window.open("' . $sURL . '", "_top")\' /><br /><br />' . "\n";
+        $sOutput .= '</div>' . "\n";
+        $sOutput .= '</div>' . "\n";
         echo $sOutput;
 
         $this->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
@@ -148,7 +170,6 @@ class AdminController extends LSYii_Controller
 
 
         if ($action != "databaseupdate" && $action != "db") {
-            
             if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol") {
                 if (!empty($action) && $action != 'index') {
                                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
@@ -157,8 +178,9 @@ class AdminController extends LSYii_Controller
                 App()->user->setReturnUrl(App()->request->requestUri);
 
                 // If this is an ajax call, don't redirect, but echo login modal instead
-                $isAjax = isset($_GET['ajax']) && $_GET['ajax'];
+                $isAjax = Yii::app()->request->isAjaxRequest;
                 if ($isAjax && Yii::app()->user->getIsGuest()) {
+                    http_response_code(401);
                     Yii::import('application.helpers.admin.ajax_helper', true);
                     ls\ajax\AjaxHelper::outputNotLoggedIn();
                     return;
@@ -166,7 +188,7 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             } elseif (!empty($this->user_id) && $action != "remotecontrol") {
-                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId())) {
+                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName') . Yii::app()->user->getName() . Yii::app()->user->getId())) {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
                     $this->redirect(array('/admin/authentication/sa/login'));
@@ -189,16 +211,16 @@ class AdminController extends LSYii_Controller
     protected function runModuleController($action)
     {
         $aOverridenCoreActions = $this->getOverridenCoreAction();
-        if (!empty($aOverridenCoreActions)){
-          if (!empty($aOverridenCoreActions[$action])){
-              $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
+        if (!empty($aOverridenCoreActions)) {
+            if (!empty($aOverridenCoreActions[$action])) {
+                $this->currentModuleAction = $action; // For subviews rendering, see: AdminController::renderPartial()
 
-              // Since module's class has the same name has core class, we need to load the core and module classes with namespace
-              Yii::import('application\\controllers\\admin\\'.$action, true);
-              $sActionModuleClass = 'lsadminmodules\\'.$action.'\controller\\'.$action;
-              Yii::import($sActionModuleClass, true);
-          }
-       }
+                // Since module's class has the same name has core class, we need to load the core and module classes with namespace
+                Yii::import('application\\controllers\\admin\\' . $action, true);
+                $sActionModuleClass = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+                Yii::import($sActionModuleClass, true);
+            }
+        }
     }
 
 
@@ -217,28 +239,27 @@ class AdminController extends LSYii_Controller
      * @see processOutput
      * @see render
      */
-     public function renderPartial($view,$data=null,$return=false,$processOutput=false)
-     {
-        if (!empty($this->currentModuleAction) ){
+    public function renderPartial($view, $data = null, $return = false, $processOutput = false)
+    {
+        if (!empty($this->currentModuleAction)) {
           // Standard: the views are stored in a folder that has the same name as the controler file.
           // TODO: check if it is the case for all controllers, if not normalize it, so 3rd party coder can easely extend any LS Core controller/action/view.
-          $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
-          $sAction = (empty($sParsedView[1]))?'':$sParsedView[1];
+            $sParsedView = explode(DIRECTORY_SEPARATOR, $view);
+            $sAction = (empty($sParsedView[1])) ? '' : $sParsedView[1];
 
           // We allow a module to override only the controller views.
-          if ( $sAction == $this->currentModuleAction ){
-            // Convert the view path to module view alias .
-            $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim ( str_replace(DIRECTORY_SEPARATOR, '.',$view), '.'), strlen($sAction)) ;
+            if ($sAction == $this->currentModuleAction) {
+              // Convert the view path to module view alias .
+                $sModulePath = 'lsadminmodules.' . $sAction . '.views' . substr(ltrim(str_replace(DIRECTORY_SEPARATOR, '.', $view), '.'), strlen($sAction)) ;
 
-            if ( file_exists ( \Yii::getPathOfAlias($sModulePath) . '.php' )  ){
-              $view = $sModulePath;
+                if (file_exists(\Yii::getPathOfAlias($sModulePath) . '.php')) {
+                    $view = $sModulePath;
+                }
             }
-
-          }
         }
 
-        return parent::renderPartial($view,$data,$return,$processOutput);
-     }
+        return parent::renderPartial($view, $data, $return, $processOutput);
+    }
 
     /**
      * Routes all the actions to their respective places
@@ -263,13 +284,13 @@ class AdminController extends LSYii_Controller
         // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (Survey_Common_Action, renderPartial, etc)
         foreach ($aModuleActions as $sAction => $sActionClass) {
           // Module override existing action
-          if (!empty($aActions[$sAction])){
-            $this->aOverridenCoreActions[ $sAction ]['core']   =   $aActions[$sAction];
-            $this->aOverridenCoreActions[ $sAction ]['module'] =   $aModuleActions[$sAction];
-          }
+            if (!empty($aActions[$sAction])) {
+                $this->aOverridenCoreActions[ $sAction ]['core']   =   $aActions[$sAction];
+                $this->aOverridenCoreActions[ $sAction ]['module'] =   $aModuleActions[$sAction];
+            }
         }
 
-        $aActions = array_merge( $aActions, $aModuleActions);
+        $aActions = array_merge($aActions, $aModuleActions);
         return $aActions;
     }
 
@@ -284,16 +305,16 @@ class AdminController extends LSYii_Controller
      */
     public function getModulesActions()
     {
-      $aActions = $this->getAdminModulesActionClasses();
-      $aAdminModulesClasses = array();
+        $aActions = $this->getAdminModulesActionClasses();
+        $aAdminModulesClasses = array();
 
       // lsadminmodules alias is defined in AdminController::init()
       // Notice that the file and the directory name must be the same.
-      foreach ($aActions as $action => $class) {
-          $aActions[$action] = 'lsadminmodules\\'.$action.'\controller\\'.$action;
-      }
+        foreach ($aActions as $action => $class) {
+            $aActions[$action] = 'lsadminmodules\\' . $action . '\controller\\' . $action;
+        }
 
-      return $aActions;
+        return $aActions;
     }
 
     /**
@@ -305,7 +326,7 @@ class AdminController extends LSYii_Controller
      */
     protected function getOverridenCoreAction()
     {
-        if (empty($this->aOverridenCoreActions)){
+        if (empty($this->aOverridenCoreActions)) {
             $this->actions();
         }
 
@@ -315,7 +336,7 @@ class AdminController extends LSYii_Controller
     public function getActionClasses()
     {
         return array(
-        'assessments'      => 'assessments',
+     //   'assessments'      => 'assessments',  REFACTORED
         'authentication'   => 'authentication',
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
@@ -330,7 +351,7 @@ class AdminController extends LSYii_Controller
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
         'homepagesettings' => 'homepagesettings',
-        'themeoptions'     => 'themeoptions',
+        //'themeoptions'     => 'themeoptions',
         'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
@@ -339,20 +360,20 @@ class AdminController extends LSYii_Controller
         'pluginmanager'    => 'PluginManagerController',
         'printablesurvey'  => 'printablesurvey',
         'roles'            => 'PermissiontemplatesController',
-        'questiongroups'   => 'questiongroups',
-        'questions'        => 'questions',
-        'questioneditor'   => 'questionedit',
+//        'questiongroups'   => 'questiongroups',  refactored to QuestionGroupsAdministration
+//        'questions'        => 'questions',
+//        'questioneditor'   => 'questionedit',
         'questionthemes'   => 'questionthemes',
         'quotas'           => 'quotas',
         'remotecontrol'    => 'remotecontrol',
         'responses'        => 'responses',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
-        'survey'           => 'surveyadmin',
+      //  'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
-        'usermanagement'   => 'UserManagement',
-        'usergroups'       => 'usergroups',
+//        'usermanagement'   => 'UserManagement',  refactored to UserManagementController
+//        'usergroups'       => 'usergroups',      refactored to UserGroupController
         'themes'           => 'themes',
         'tokens'           => 'tokens',
         'translate'        => 'translate',
@@ -364,7 +385,6 @@ class AdminController extends LSYii_Controller
         'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
         'extensionupdater' => 'ExtensionUpdaterController',
-        'filemanager'      => 'LimeSurveyFileManager'
         );
     }
 
@@ -379,21 +399,21 @@ class AdminController extends LSYii_Controller
     {
 
       // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
-      if (empty($this->aAdminModulesClasses)){
-        $aAdminModulesClasses = array();
-        $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
-        Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir') );
+        if (empty($this->aAdminModulesClasses)) {
+            $aAdminModulesClasses = array();
+            $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));
+            Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
 
-        foreach ($slsadminmodules as $fileinfo) {
-            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                $sModuleName =  $fileinfo->getFilename();
-                $aAdminModulesClasses[$sModuleName] = $sModuleName;
+            foreach ($slsadminmodules as $fileinfo) {
+                if ($fileinfo->isDir() && !$fileinfo->isDot()) {
+                    $sModuleName =  $fileinfo->getFilename();
+                    $aAdminModulesClasses[$sModuleName] = $sModuleName;
+                }
             }
+            $this->aAdminModulesClasses = $aAdminModulesClasses;
         }
-        $this->aAdminModulesClasses = $aAdminModulesClasses;
-      }
 
-      return $this->aAdminModulesClasses;
+        return $this->aAdminModulesClasses;
     }
 
     /**
@@ -431,7 +451,7 @@ class AdminController extends LSYii_Controller
             $aData['meta'] = $meta;
         }
 
-        $aData['baseurl'] = Yii::app()->baseUrl.'/';
+        $aData['baseurl'] = Yii::app()->baseUrl . '/';
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
@@ -478,7 +498,7 @@ class AdminController extends LSYii_Controller
 
         $aData['buildtext'] = "";
         if (Yii::app()->getConfig("buildnumber") != "") {
-            $aData['buildtext'] = "+".Yii::app()->getConfig("buildnumber");
+            $aData['buildtext'] = "+" . Yii::app()->getConfig("buildnumber");
         }
 
         //If user is not logged in, don't print the version number information in the footer.
@@ -493,7 +513,6 @@ class AdminController extends LSYii_Controller
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;
         return $this->renderPartial("/admin/super/footer", $aData, $return);
-
     }
 
     /**
@@ -539,5 +558,4 @@ class AdminController extends LSYii_Controller
 
         return $this->renderPartial('/admin/endScripts_view', array());
     }
-
 }

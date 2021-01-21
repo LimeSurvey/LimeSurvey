@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -62,7 +60,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-            $myfname = $this->sSGQA.$oQuestion->title;
+            $myfname = $this->sSGQA . $oQuestion->title;
             $this->inputnames[] = $myfname;
             ////
             // Insert row
@@ -73,9 +71,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'title'                   => $oQuestion->title,
                 'question'                => $oQuestion->questionl10ns[$this->sLanguage]->question,
                 'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionl10ns[$this->sLanguage]->attributes),
-                'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'') == 'Y' ? CHECKED : ''),
-                'sCheckconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],''),
+                'checkedState'            => ($this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '') == 'Y' ? CHECKED : ''),
+                'sCheckconditionFunction' => $checkconditionFunction . '(this.value, this.name, this.type)',
+                'sValue'                  => $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], ''),
                 'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
             );
         }
@@ -92,8 +90,8 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
-        $myfname = $this->sSGQA.'other';
-        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname], '');
+        $myfname = $this->sSGQA . 'other';
+        $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$myfname], '');
         $this->inputnames[] = $myfname;
 
         $sValue = '';
@@ -136,9 +134,9 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         $answer = '';
         $inputnames = [];
-        $this->sCoreClasses .= " ".$sCoreClasses;
+        $this->sCoreClasses .= " " . $sCoreClasses;
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'aRows'            => $this->getRows(),
             'name'             => $this->sSGQA,
             'basename'         => $this->sSGQA,
@@ -154,7 +152,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return array($answer, $this->inputnames);
     }
 
-    protected function getQuestionCount($iScaleId=0)
+    protected function getQuestionCount($iScaleId = 0)
     {
         if (!empty($this->aSubQuestions)) {
             $counter = count($this->aSubQuestions[$iScaleId]);

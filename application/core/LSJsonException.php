@@ -1,6 +1,7 @@
 <?php
 
-class LSJsonException extends CHttpException {
+class LSJsonException extends CHttpException
+{
 
     private $redirectUrl = null;
     private $noReload = false;
@@ -14,26 +15,30 @@ class LSJsonException extends CHttpException {
      * @param string $redirectUrl
      * @param boolean $noReload
      */
-    public function __construct($status, $message = null, $code = 0, $redirectUrl = null, $noReload = false) {
+    public function __construct($status, $message = null, $code = 0, $redirectUrl = null, $noReload = false)
+    {
         parent::__construct($status, $message, $code);
         $this->redirectUrl = $redirectUrl;
         $this->noReload = $noReload;
     }
 
-    public function setRedirectUrl($redirectUrl) {
+    public function setRedirectUrl($redirectUrl)
+    {
         $this->redirectUrl = $redirectUrl;
     }
 
-    public function getRedirectUrl() {
+    public function getRedirectUrl()
+    {
         return $this->redirectUrl;
     }
 
-    public function setNoReload($noReload) {
+    public function setNoReload($noReload)
+    {
         $this->noReload = $noReload;
     }
 
-    public function getNoReload() {
+    public function getNoReload()
+    {
         return $this->noReload;
     }
-
 }

@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -43,11 +41,11 @@ class RenderYesNoRadio extends QuestionBaseRenderer
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, 
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA,
             'content' => $this->oQuestion,
-            'coreClass'=> 'ls-answers '.$sCoreClasses,
+            'coreClass' => 'ls-answers ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = [];

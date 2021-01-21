@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -31,4 +32,6 @@ require_once 'Zend/Exception.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Exception extends Zend_Exception
-{}
+{
+
+}

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -27,11 +29,13 @@ class LSYii_ImageValidator
     {
         if (is_array($file)) {
             $path = $file['tmp_name'];
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $type = $file['type'];
         } elseif (is_string($file)) {
             $parts = explode('.', $file);
             $path = $file;
-            $type = 'image/' . $parts[count($parts) - 1];
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $type = 'image/' . $extension;
         } else {
             return [
                 // No translation ? send $file ?
@@ -41,7 +45,7 @@ class LSYii_ImageValidator
         }
 
         /** @var array<string, mixed> */
-        $result =[];
+        $result = [];
 
         /** @var ?? */
         $checkImage = CFileHelper::getMimeType($path);
@@ -60,14 +64,16 @@ class LSYii_ImageValidator
             "image/vnd.microsoft.icon"
         );
 
-        if (!empty($checkImage)
+        if (
+            !empty($checkImage)
+            && in_array($extension, explode(",", Yii::app()->getConfig('allowedthemeimageformats')))
             && in_array($checkImage, $allowedImageFormats)
-            && in_array(strtolower($type), $allowedImageFormats)) {
+            && in_array(strtolower($type), $allowedImageFormats)
+        ) {
             $result['uploadresult'] = '';
             $result['check'] = true;
         } else {
-            $result['uploadresult'] =
-                gT("This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images.");
+            $result['uploadresult'] = gT("This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images.");
             $result['check'] = false;
         }
         return $result;

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -87,7 +89,11 @@ define("UTF8", 128);
 
 // get magic_quotes_gpc ini setting - jp
 $magic_quotes = (bool) @ini_get('magic_quotes_gpc');
-if ($magic_quotes == true) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_QUOTES", 0); }
+if ($magic_quotes == true) {
+    define("MAGIC_QUOTES", 1);
+} else {
+    define("MAGIC_QUOTES", 0);
+}
 
 // addslashes wrapper to check for gpc_magic_quotes - gz
 function nice_addslashes($string)
@@ -98,7 +104,7 @@ function nice_addslashes($string)
     } else {
         return addslashes($string);
     }
-    }
+}
 
 
 /**
@@ -121,7 +127,9 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         [#\[\]@!$&\'()+,;=]|
         [{}^\~`]
         ~x',
-        '-', $filename);
+        '-',
+        $filename
+    );
     // Removes smart quotes
     $filename = str_replace(array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6"), array('','', '', '', '-', '--','...'), $filename);
     // avoids ".", ".." or ".hiddenFiles"
@@ -132,11 +140,11 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)).($ext ? '.'.$ext : '');
+    $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)) . ($ext ? '.' . $ext : '');
     $filename = ($alphanumeric) ? preg_replace("/[^a-zA-Z0-9]/", "", $filename) : $filename;
     
     if ($force_lowercase) {
-        $filename=mb_strtolower($filename, 'UTF-8');
+        $filename = mb_strtolower($filename, 'UTF-8');
     }
     // At the end of the process there are sometimes question marks left from non-UTF-8 characters
     $filename = str_replace('?', '', $filename);
@@ -218,12 +226,12 @@ function sanitize_cquestions($string, $min = '', $max = '')
 function sanitize_system_string($string, $min = '', $max = '')
 {
     if (isset($string)) {
-        $pattern = '/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
+        $pattern = '/(;|\||`|>|<|&|^|"|' . "\n|\r|'" . '|{|}|[|]|\)|\()/i'; // no piping, passing possible environment variables ($),
         // separate commands, nested execution, file redirection,
         // background processing, special commands (backspace, etc.), quotes
         // newlines, or some other special characters
         $string = preg_replace($pattern, '', $string);
-        $string = '"'.preg_replace('/\$/', '\\\$', $string).'"'; //make sure this is only interpretted as ONE argument
+        $string = '"' . preg_replace('/\$/', '\\\$', $string) . '"'; //make sure this is only interpretted as ONE argument
         $len = strlen($string);
         if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
             return false;

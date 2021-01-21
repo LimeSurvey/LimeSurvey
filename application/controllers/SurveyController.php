@@ -1,7 +1,5 @@
-<?php 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -53,15 +51,33 @@ class SurveyController extends LSYii_Controller
 
         unset(Yii::app()->session['FileManagerContext']);
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
+        if (!Yii::app()->getConfig("surveyid")) {
+            Yii::app()->setConfig("surveyid", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {
+            Yii::app()->setConfig("ugid", returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {
+            Yii::app()->setConfig("gid", returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {
+            Yii::app()->setConfig("qid", returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {
+            Yii::app()->setConfig("lid", returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {
+            Yii::app()->setConfig("code", returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig("action")) {
+            Yii::app()->setConfig("action", returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {
+            Yii::app()->setConfig("subaction", returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {
+            Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
+        } // for html editor integration
         Yii::app()->clientScript->registerPackage('decimal'); // decimal
         Yii::app()->clientScript->registerPackage('decimalcustom'); // decimal-customisations
     }
@@ -99,9 +115,9 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class'=>'CaptchaExtendedAction',
+                'class' => 'CaptchaExtendedAction',
                 // if needed, modify settings
-                'mode'=>CaptchaExtendedAction::MODE_MATH,
+                'mode' => CaptchaExtendedAction::MODE_MATH,
             )
         );
     }
@@ -130,7 +146,7 @@ class SurveyController extends LSYii_Controller
         $message = $this->renderPartial(
             "/survey/system/message",
             array(
-                'aMessage'=>$aMessages
+                'aMessage' => $aMessages
             ),
             true
         );
@@ -143,7 +159,7 @@ class SurveyController extends LSYii_Controller
             $error = $this->renderPartial(
                 "/survey/system/errorWarning",
                 array(
-                    'aErrors'=>$aErrors
+                    'aErrors' => $aErrors
                 ),
                 true
             );
@@ -173,7 +189,7 @@ class SurveyController extends LSYii_Controller
 
         Yii::app()->twigRenderer->renderTemplateFromFile(
             "layout_errors.twig",
-            array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo),
+            array('aError' => $aReplacementData, 'aSurveyInfo' => $aSurveyInfo),
             false
         );
         App()->end();

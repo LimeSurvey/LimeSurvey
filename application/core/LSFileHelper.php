@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2019 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,7 +16,7 @@
  * - magic file (return PHP array of extension by mime-type)
  * @author Denis Chenu
  * @version 1.0.0
- * 
+ *
  */
 
 class LSFileHelper extends CFileHelper
@@ -28,24 +29,23 @@ class LSFileHelper extends CFileHelper
      * @see https://www.yiiframework.com/doc/api/1.1/CFileHelper#getExtensionByMimeType-detail
      * @return string|null extension name. Null is returned if the extension cannot be determined.
      */
-    public static function getExtensionByMimeType($file,$magicFile=null)
+    public static function getExtensionByMimeType($file, $magicFile = null)
     {
-        static $mimeTypes,$customMimeTypes=array();
-        if(empty($magicFile) && Yii::app()->getConfig('magic_file')) {
+        static $mimeTypes,$customMimeTypes = array();
+        if (empty($magicFile) && Yii::app()->getConfig('magic_file')) {
             $magicFile = Yii::app()->getConfig('magic_file');
         }
-        if(empty($magicFile) && $mimeTypes===null) {
-            $mimeTypes=require(Yii::getPathOfAlias('system.utils.fileExtensions').'.php');
-        }
-        elseif($magicFile!==null && !isset($customMimeTypes[$magicFile])) {
-            $customMimeTypes[$magicFile]=require($magicFile);
+        if (empty($magicFile) && $mimeTypes === null) {
+            $mimeTypes = require(Yii::getPathOfAlias('system.utils.fileExtensions') . '.php');
+        } elseif ($magicFile !== null && !isset($customMimeTypes[$magicFile])) {
+            $customMimeTypes[$magicFile] = require($magicFile);
         }
         $mime = self::getMimeType($file);
-        if($mime !== null) {
-            $mime=strtolower($mime);
-            if($magicFile===null && isset($mimeTypes[$mime])) {
+        if ($mime !== null) {
+            $mime = strtolower($mime);
+            if ($magicFile === null && isset($mimeTypes[$mime])) {
                 return $mimeTypes[$mime];
-            } elseif($magicFile!==null && isset($customMimeTypes[$magicFile][$mime])) {
+            } elseif ($magicFile !== null && isset($customMimeTypes[$magicFile][$mime])) {
                 return $customMimeTypes[$magicFile][$mime];
             }
         }
@@ -59,15 +59,15 @@ class LSFileHelper extends CFileHelper
      * @see https://www.php.net/manual/en/function.finfo-open.php
      * @return string|null string if the MIME type. Null is returned if the MIME type cannot be determined.
      */
-    public static function getMimeType($file,$magicFile=null,$checkExtension=true)
+    public static function getMimeType($file, $magicFile = null, $checkExtension = true)
     {
-        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
+        $mimeType = parent::getMimeType($file, $magicFile, $checkExtension);
         /* Parent already return something valid : return */
-        if((!empty($magicFile) && $mimeType != "application/octet-stream")) {
+        if ((!empty($magicFile) && $mimeType != "application/octet-stream")) {
             return $mimeType;
         }
         /* magic_database not set : return */
-        if(is_null(App()->getConfig('magic_database'))) {
+        if (is_null(App()->getConfig('magic_database'))) {
             return $mimeType;
         }
         /* Use parent with magic_database from config */
@@ -75,7 +75,7 @@ class LSFileHelper extends CFileHelper
         // Some PHP version can throw Notice with some files, disable this notice issue #15565
         $iErrorReportingState = error_reporting();
         error_reporting(0);
-        $mimeType = parent::getMimeType($file,$magicFile,$checkExtension);
+        $mimeType = parent::getMimeType($file, $magicFile, $checkExtension);
         error_reporting($iErrorReportingState);
         return $mimeType;
     }

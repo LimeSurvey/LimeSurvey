@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -57,9 +56,9 @@ class LabelL10n extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('label_id', 'numerical', 'integerOnly'=>true),
+            array('label_id', 'numerical', 'integerOnly' => true),
             array('title', 'LSYii_Validators'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
+            array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
         );
     }
 
@@ -75,7 +74,6 @@ class LabelL10n extends LSActiveRecord
     
     public function defaultScope()
     {
-        return array('index'=>'language');
-    }    
-
+        return array('index' => 'language');
+    }
 }

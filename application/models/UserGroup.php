@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -60,7 +59,7 @@ class UserGroup extends LSActiveRecord
     {
         return array(
             array('name', 'required'),
-            array('ugid, owner_id', 'numerical', 'integerOnly'=>true),
+            array('ugid, owner_id', 'numerical', 'integerOnly' => true),
             array('name', 'unique', 'message' => gT("Failed to add group! Group already exists.")),
             array(
                 'name',
@@ -157,8 +156,7 @@ class UserGroup extends LSActiveRecord
         } else {
                     return -1;
         }
-
-        }
+    }
 
     /**
      * TODO should be in controller
@@ -187,7 +185,7 @@ class UserGroup extends LSActiveRecord
      */
     public function requestEditGroup($ugId, $ownerId)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->select = '*';
         $criteria->condition = "ugid=:ugid";
         $aParams = array();
@@ -254,7 +252,7 @@ class UserGroup extends LSActiveRecord
     public function delete()
     {
         if (parent::delete()) {
-            UserInGroup::model()->deleteAllByAttributes(['ugid'=>$this->primaryKey]);
+            UserInGroup::model()->deleteAllByAttributes(['ugid' => $this->primaryKey]);
             return true;
         }
         return false;
@@ -265,7 +263,7 @@ class UserGroup extends LSActiveRecord
      */
     public function getCountUsers()
     {
-        return (int) UserInGroup::model()->countByAttributes(['ugid'=>$this->ugid]);
+        return (int) UserInGroup::model()->countByAttributes(['ugid' => $this->ugid]);
     }
 
 
@@ -275,43 +273,43 @@ class UserGroup extends LSActiveRecord
             array(
                 'header' => gT('User group ID'),
                 'name' => 'usergroup_id',
-                'value'=>'$data->ugid',
+                'value' => '$data->ugid',
                 'htmlOptions' => array('class' => 'col-md-1'),
             ),
 
             array(
                 'header' => gT('Name'),
                 'name' => 'name',
-                'value'=>'$data->name',
+                'value' => '$data->name',
                 'htmlOptions' => array('class' => 'col-md-2'),
             ),
 
             array(
                 'header' => gT('Description'),
                 'name' => 'description',
-                'value'=> '$data->description',
+                'value' => '$data->description',
                 'htmlOptions' => array('class' => 'col-md-5'),
             ),
 
             array(
                 'header' => gT('Owner'),
                 'name' => 'owner',
-                'value'=> '$data->owner->users_name',
+                'value' => '$data->owner->users_name',
                 'htmlOptions' => array('class' => 'col-md-1'),
             ),
 
             array(
                 'header' => gT('Members'),
                 'name' => 'members',
-                'value'=> '$data->countUsers',
+                'value' => '$data->countUsers',
                 'htmlOptions' => array('class' => 'col-md-1'),
             ),
 
             array(
-                'header'=>'',
-                'name'=>'actions',
-                'type'=>'raw',
-                'value'=>'',
+                'header' => '',
+                'name' => 'actions',
+                'type' => 'raw',
+                'value' => '',
                 'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
             ),
 
@@ -326,22 +324,22 @@ class UserGroup extends LSActiveRecord
 
         // View users
         $url = Yii::app()->createUrl("userGroup/viewGroup/ugid/$this->ugid");
-        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="' . gT('View users') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Mail to user group
         // Which permission should be checked for this button to be available?
         $url = Yii::app()->createUrl("userGroup/mailToAllUsersInGroup/ugid/$this->ugid");
-        $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Email user group').'" href="'.$url.'" role="button"><span class="icon-invite" ></span></a>';
+        $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="' . gT('Email user group') . '" href="' . $url . '" role="button"><span class="icon-invite" ></span></a>';
 
         // Delete user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= ' <span data-toggle="tooltip" title="'.gT('Delete user group').'"><button class="btn btn-default list-btn action__delete-group" data-placement="left" href="#delete-modal" data-toggle="modal" data-ugid="'.$this->ugid.'" role="button"><i class="fa fa-trash text-warning"></i></button></span>';
+            $button .= ' <span data-toggle="tooltip" title="' . gT('Delete user group') . '"><button class="btn btn-default list-btn action__delete-group" data-placement="left" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><i class="fa fa-trash text-warning"></i></button></span>';
         }
 
         return $button;
@@ -364,55 +362,55 @@ class UserGroup extends LSActiveRecord
 
         $sort = new CSort();
         $sort->attributes = array(
-            'usergroup_id'=>array(
-            'asc'=>'ugid',
-            'desc'=>'ugid desc',
+            'usergroup_id' => array(
+            'asc' => 'ugid',
+            'desc' => 'ugid desc',
             ),
-            'name'=>array(
-            'asc'=>'name',
-            'desc'=>'name desc',
+            'name' => array(
+            'asc' => 'name',
+            'desc' => 'name desc',
             ),
-            'description'=>array(
-            'asc'=>'description',
-            'desc'=>'description desc',
+            'description' => array(
+            'asc' => 'description',
+            'desc' => 'description desc',
             ),
-            'owner'=>array(
-            'asc'=>'users.users_name',
-            'desc'=>'users.users_name desc',
+            'owner' => array(
+            'asc' => 'users.users_name',
+            'desc' => 'users.users_name desc',
             ),
-            'members'=>array(
-            'asc'=>'member_count',
-            'desc'=>'member_count desc',
+            'members' => array(
+            'asc' => 'member_count',
+            'desc' => 'member_count desc',
             ),
         );
 
         $user_in_groups_table = UserInGroup::model()->tableName();
         $member_count_sql = "(SELECT count(*) FROM $user_in_groups_table AS users_in_groups WHERE users_in_groups.ugid = t.ugid)";
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         // select
         $criteria->select = array(
             '*',
-            $member_count_sql." as member_count",
+            $member_count_sql . " as member_count",
         );
 
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             if ($isMine) {
-                $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
+                $criteria->addCondition("t.owner_id=" . App()->user->getId(), "AND");
             } else {
-                $criteria->addCondition("t.owner_id<>".App()->user->getId(), "AND");
-                $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
+                $criteria->addCondition("t.owner_id<>" . App()->user->getId(), "AND");
+                $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE " . $user_in_groups_table . ".uid = " . App()->user->getId() . ")", "AND");
             }
         }
 
         $dataProvider = new CActiveDataProvider('UserGroup', array(
-            'sort'=>$sort,
-            'criteria'=>$criteria,
-            'pagination'=>array(
-                'pageSize'=>$pageSize,
+            'sort' => $sort,
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSize,
             ),
         ));
 
@@ -428,7 +426,7 @@ class UserGroup extends LSActiveRecord
      */
     public function hasUser($uid)
     {
-        $userInGroup = UserInGroup::model()->findByAttributes(['ugid'=>$this->ugid], 'uid=:uid', [':uid'=>$uid]);
+        $userInGroup = UserInGroup::model()->findByAttributes(['ugid' => $this->ugid], 'uid=:uid', [':uid' => $uid]);
         if ($userInGroup) {
             return true;
         }
@@ -463,10 +461,11 @@ class UserGroup extends LSActiveRecord
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function sendUserEmails($ugid, $subject, $body, $copy){
+    public function sendUserEmails($ugid, $subject, $body, $copy)
+    {
         $sendEmailSuccessErrors = [];
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->compare('ugid', $ugid)->addNotInCondition('users.uid', array(Yii::app()->session['loginID']));
         /**@var $eruresult UserInGroup[] */
         $usersInGroup = UserInGroup::model()->with('users')->findAll($criteria);
@@ -497,24 +496,26 @@ class UserGroup extends LSActiveRecord
                 $sendEmailSuccessErrors[$cnt]['success'] = true;
             } else {
                 $sendEmailSuccessErrors[$cnt]['success'] = false;
-                $sendEmailSuccessErrors[$cnt]['msg'] = sprintf(gT("Email to %s failed. Error Message : %s"),
-                    \CHtml::encode("{$userInGroup->users->users_name} <{$userInGroup->users->email}>"), $mailer->getError());
+                $sendEmailSuccessErrors[$cnt]['msg'] = sprintf(
+                    gT("Email to %s failed. Error Message : %s"),
+                    \CHtml::encode("{$userInGroup->users->users_name} <{$userInGroup->users->email}>"),
+                    $mailer->getError()
+                );
             }
             $mailer->ErrorInfo = '';
             $cnt++;
         }
 
-        $msgToUser = gt('Sending emails to users(sucess/errors):') ."<br>";
-        foreach ($sendEmailSuccessErrors as $emaiLResult){
+        $msgToUser = gt('Sending emails to users(sucess/errors):') . "<br>";
+        foreach ($sendEmailSuccessErrors as $emaiLResult) {
             $msgToUser .= $emaiLResult['username'] . ': ';
-            if($emaiLResult['success']){
-                $msgToUser .= gt('Sending successful') ."<br>";
-            }else{
-                $msgToUser .= gt('Error: ') . $emaiLResult['msg'] ."<br>";
+            if ($emaiLResult['success']) {
+                $msgToUser .= gt('Sending successful') . "<br>";
+            } else {
+                $msgToUser .= gt('Error: ') . $emaiLResult['msg'] . "<br>";
             }
         }
 
         return $msgToUser;
     }
-
 }

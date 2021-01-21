@@ -5,6 +5,7 @@
     */
 ?>
 <?php
+    // todo $showSideMenu is not used by vue sidebar.vue? normally set by $aData['sidemenu']['state']
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
     if (
         $sideMenuBehaviour == 'alwaysClosed'
@@ -16,20 +17,19 @@
         $showSideMenu = true;
     }
     //todo: change urls after refactoring the controllers
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
-    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
-    $createQuestionLink = "questionEditor/view/surveyid/".$surveyid;
+    $getQuestionsUrl = $this->createUrl("/surveyAdministration/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/surveyAdministration/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+    $createQuestionGroupLink = $this->createUrl('/questionGroupsAdministration/add/' , ["surveyid" => $surveyid]);
+    $createQuestionLink = "questionAdministration/create/surveyid/".$surveyid;
     $unlockLockOrganizerUrl = $this->createUrl("admin/user/sa/togglesetting/", ['surveyid' => $surveyid]);
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
+    $updateOrderLink =  $this->createUrl("questionGroupsAdministration/updateOrder/", ["surveyid" =>  $surveyid]);
 
     $createPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create');
     if ($activated || !$createPermission) {
         $createQuestionGroupLink = "";
         $createQuestionLink = "";
     }
-    
     $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
     
     $menuObjectArray =  [

@@ -65,5 +65,4 @@ class PluginsController extends LSYii_Controller
         // Or shortcut for actionDirect ?
         $this->redirect($this->createUrl("admin/pluginmanager/sa/index"));
     }
-
 }

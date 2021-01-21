@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -39,12 +40,13 @@
 *
 * - elameno
 */
+
 Yii::import('application.helpers.admin.export.*');
 class ExportSurveyResultsService
 {
     /**
      * Hold the available export types
-     * 
+     *
      * @var array
      */
     protected $_exports;
@@ -120,7 +122,7 @@ class ExportSurveyResultsService
     
     /**
      * Get an array of available export types
-     * 
+     *
      * @return array
      */
     public function getExports()

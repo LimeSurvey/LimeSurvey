@@ -57,7 +57,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
-            'questionEditor/view',
+            'questionAdministration/view',
             [
                 //'sa'       => 'view',
                 'surveyid' => self::$surveyId,
@@ -86,17 +86,17 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $oElementAnswerOptionsButton = $web->findElement(WebDriverBy::linkText('Answer options'));
         $oElementAnswerOptionsButton->click();
 
-        $name1 = sprintf('input[name=answer_en_%d_0]', $answers[0]->aid);
+        $name1 = sprintf('input[name="answeroptions[%d][0][answeroptionl10n][en]"]', $answers[0]->aid);
         $answer1 = $web->findElement(WebDriverBy::cssSelector($name1));
         $answer1->sendKeys('123');
 
-        $name2 = sprintf('input[name=answer_en_%d_1]', $answers[1]->aid);
+        $name2 = sprintf('input[name="answeroptions[%d][1][answeroptionl10n][en]"]', $answers[1]->aid);
         $answer2 = $web->findElement(WebDriverBy::cssSelector($name2));
         $answer2->sendKeys('abc');
 
         sleep(1);
         
-        $savebutton = $web->findElement(WebDriverBy::id('save-button'));
+        $savebutton = $web->findElement(WebDriverBy::id('save-button-create-question'));
         $savebutton->click();
         
         sleep(1);
@@ -107,9 +107,5 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
         $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
         $this->assertEquals('123', $answers[0]->answerl10ns['en']->answer);
         $this->assertEquals('abc', $answers[1]->answerl10ns['en']->answer);
-
-        $notif = $web->findElement(WebDriverBy::id('notif-container_1'));
-        $notifText = $notif->getText();
-        $this->assertContains('Question successfully stored', $notifText);
     }
 }

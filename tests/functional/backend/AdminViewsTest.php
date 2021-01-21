@@ -29,8 +29,7 @@ class AdminViewsTest extends TestBaseClassView
     {
         return require __DIR__."/../../data/views/adminBaseViews.php";
     }
-
-    // TODO: Routes are wrong. Please fix it.
+    
     public function addSurveyViews()
     {
         return require __DIR__."/../../data/views/adminSurveyViews.php";
@@ -75,19 +74,18 @@ class AdminViewsTest extends TestBaseClassView
      * @param string $name
      * @param array $view
      * @dataProvider addSurveyViews
-     * TODO: Skipped cause failing at travis.
      */
     public function testAdminSurveyViews($name, $view)
     {
         if (isset($view['import_id'])) {
             // we'll change the survey in the middle of test
-            if(self::$testSurvey){
+            if (self::$testSurvey) {
                 self::$testSurvey->delete();
             }
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
 
-            if(isset($view['activate']) && $view['activate'] ){
+            if (isset($view['activate']) && $view['activate']) {
                 $activator = new \SurveyActivator(self::$testSurvey);
                 $activator->activate();
                 \Token::createTable(self::$surveyId);
@@ -102,13 +100,16 @@ class AdminViewsTest extends TestBaseClassView
         }
         if (isset($view['questionType'])) {
             $question = self::$testSurvey->findQuestionByType($view['questionType']);
-            if(empty($question)){
+            if (empty($question)) {
                 throw new \Exception('Question not found');
             }
-            $view['route'] = ReplaceFields($view['route'], ['{QID}'=> $question->qid,'{GID}'=> $question->gid,'{SID}'=> self::$testSurvey->primaryKey]);
+            $view['route'] = ReplaceFields(
+                $view['route'],
+                ['{QID}'=> $question->qid,'{GID}'=> $question->gid,'{SID}'=> self::$testSurvey->primaryKey]
+            );
 
         }
-        $view['route'] = ReplaceFields($view['route'], ['{QID}'=> 0,'{GID}'=> 0,'{SID}'=> self::$testSurvey->primaryKey]);
+        $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }
 

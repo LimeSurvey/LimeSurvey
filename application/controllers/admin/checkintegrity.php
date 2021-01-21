@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -78,10 +79,10 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixintegrity()
     {
-        if(!Permission::model()->hasGlobalPermission('settings', 'update')) {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
-        if(Yii::app()->request->getPost('ok') != 'Y') {
+        if (Yii::app()->request->getPost('ok') != 'Y') {
             throw new CHttpException(403);
         }
         $aDelete = $this->_checkintegrity();
@@ -152,14 +153,13 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
-
     }
 
     private function _deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = sprintf(gT('Deleting orphan survey participants table: %s'),$aTokenTable);
+            $aData['messages'][] = sprintf(gT('Deleting orphan survey participants table: %s'), $aTokenTable);
         }
         return $aData;
     }
@@ -168,7 +168,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
-            $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'),$aSurveyTable);
+            $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'), $aSurveyTable);
         }
         return $aData;
     }
@@ -181,11 +181,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteGroups(array $groups, array $aData)
     {
-        $gids = array_unique(array_column($groups,'gid'));
+        $gids = array_unique(array_column($groups, 'gid'));
         $count = 0;
         foreach ($gids as $gid) {
-            $deleted = QuestionGroup::model()->deleteAll("gid = :gid",array(":gid"=> $gid));
-            if($deleted) {
+            $deleted = QuestionGroup::model()->deleteAll("gid = :gid", array(":gid" => $gid));
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question group %s'), $gid);
@@ -208,7 +208,7 @@ class CheckIntegrity extends Survey_Common_Action
             $ugids[] = $group['ugid'];
         }
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->addInCondition('ugid', $ugids);
         $deletedRows = UserInGroup::model()->deleteAll($criteria);
         if ($deletedRows === count($userInGroups)) {
@@ -225,11 +225,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuestions(array $questions, array $aData)
     {
-        $qids = array_unique(array_column($questions,'qid'));
+        $qids = array_unique(array_column($questions, 'qid'));
         $count = 0;
         foreach ($qids as $qid) {
-            $deleted = Question::model()->deleteAll("qid = :qid",array(":qid"=> $qid));
-            if($deleted) {
+            $deleted = Question::model()->deleteAll("qid = :qid", array(":qid" => $qid));
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question %s'), $qid);
@@ -247,11 +247,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
-        $slids = array_unique(array_column($surveyLanguageSettings,'slid'));
+        $slids = array_unique(array_column($surveyLanguageSettings, 'slid'));
         $count = 0;
         foreach ($slids as $slid) {
-            $deleted = SurveyLanguageSetting::model()->deleteAll("surveyls_survey_id = :slid",array(":slid"=> $slid));
-            if($deleted) {
+            $deleted = SurveyLanguageSetting::model()->deleteAll("surveyls_survey_id = :slid", array(":slid" => $slid));
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete survey languagesettings %s'), $slid);
@@ -272,7 +272,7 @@ class CheckIntegrity extends Survey_Common_Action
         $count = 0;
         foreach ($surveys as $survey) {
             $deleted = Survey::model()->deleteByPk($survey['sid']);
-            if($deleted) {
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete survey %s'), $survey['sid']);
@@ -293,17 +293,17 @@ class CheckIntegrity extends Survey_Common_Action
         $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
         $count = 0;
         foreach ($answers as $answer) {
-            if(!in_array(array($answer['qid'],$answer['code']),$answersDeleted)) {
-                $deleted = Answer::model()->deleteAll('qid=:qid AND code=:code', array(':qid'=>$answer['qid'], ':code'=>$answer['code']));
-                if($deleted) {
+            if (!in_array(array($answer['qid'],$answer['code']), $answersDeleted)) {
+                $deleted = Answer::model()->deleteAll('qid=:qid AND code=:code', array(':qid' => $answer['qid'], ':code' => $answer['code']));
+                if ($deleted) {
                     $count += $deleted;
                     $answersDeleted[] = array($answer['qid'],$answer['code']);
                 } else {
-                    $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['qid'],$answer['code']);
+                    $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['qid'], $answer['code']);
                 }
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'),$count);
+        $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'), $count);
         return $aData;
     }
 
@@ -315,11 +315,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteAssessments(array $assessments, array $aData)
     {
-        $assessmentids = array_unique(array_column($assessments,'id'));
+        $assessmentids = array_unique(array_column($assessments, 'id'));
         $count = 0;
         foreach ($assessmentids as $assessmentid) {
-            $deleted = Assessment::model()->deleteAll("id = :id",array(":id" => $assessmentid));
-            if($deleted) {
+            $deleted = Assessment::model()->deleteAll("id = :id", array(":id" => $assessmentid));
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete assessment %s'), $assessmentid);
@@ -336,7 +336,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuotaMembers(array $aData)
     {
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
         $count = 0;
@@ -356,7 +356,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuotaLanguageSettings(array $aData)
     {
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
         $oCriteria->condition = '(q.id IS NULL)';
         $count = QuotaLanguageSetting::model()->deleteAll($oCriteria);
@@ -371,7 +371,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuotas(array $aData)
     {
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
         $oCriteria->condition = '(q.sid IS NULL)';
         $count = Quota::model()->deleteAll($oCriteria);
@@ -386,7 +386,7 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteDefaultValues(array $aData)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $criteria->condition = 'q.qid IS NULL';
 
@@ -397,7 +397,7 @@ class CheckIntegrity extends Survey_Common_Action
             $deleted = DefaultValue::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
             $count += $deleted ;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned default values: %u default values deleted.'),$count);
+        $aData['messages'][] = sprintf(gT('Deleting orphaned default values: %u default values deleted.'), $count);
         return $aData;
     }
 
@@ -409,11 +409,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
-        $qids = array_unique(array_column($questionAttributes,'qid'));
+        $qids = array_unique(array_column($questionAttributes, 'qid'));
         $count = 0;
         foreach ($qids as $qid) {
-            $deleted = QuestionAttribute::model()->deleteAll("qid = :qid",array(":qid"=> $qid));
-            if($deleted) {
+            $deleted = QuestionAttribute::model()->deleteAll("qid = :qid", array(":qid" => $qid));
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete question attributes for question %s'), $qid);
@@ -431,11 +431,11 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteConditions(array $conditions, array $aData)
     {
-        $cids = array_unique(array_column($conditions,'cid'));
+        $cids = array_unique(array_column($conditions, 'cid'));
         $count = 0;
         foreach ($cids as $cid) {
             $deleted = Condition::model()->deleteByPk($cid);
-            if($deleted) {
+            if ($deleted) {
                 $count += $deleted;
             } else {
                 $aData['warnings'][] = sprintf(gT('Unable to delete condition %s'), $cid);
@@ -457,7 +457,7 @@ class CheckIntegrity extends Survey_Common_Action
         $bDirectlyFixed = false;
         $aFullOldSIDs = array();
         // Delete survey permissions if the user does not exist
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{users}} u ON {{permissions}}.uid=u.uid';
         $oCriteria->condition = '(u.uid IS NULL)';
         if (App()->db->driverName == 'pgsql') {
@@ -469,7 +469,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         // Delete survey permissions if the survey does not exist
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON {{permissions}}.entity_id=s.sid';
         $oCriteria->condition = "(s.sid IS NULL AND entity='survey')";
         if (App()->db->driverName == 'pgsql') {
@@ -487,35 +487,29 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->setConfig('Updating', true);
 
         foreach ($oSurveys as $oSurvey) {
-
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
-                Survey::model()->updateByPk($oSurvey->sid, array('active'=>'N'));
+                Survey::model()->updateByPk($oSurvey->sid, array('active' => 'N'));
                 $bDirectlyFixed = true;
             }
         }
 
         /** Check for active surveys if questions are in the correct group **/
         foreach ($oSurveys as $oSurvey) {
-
             // We get the active surveys
             if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
-
                 $model    = SurveyDynamic::model($oSurvey->sid);
                 $aColumns = $model->getMetaData()->columns;
                 $aQids    = array();
 
                 // We get the columns of the reponses table
                 foreach ($aColumns as $oColumn) {
-
                     // Question columns start with the SID
                     if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
-
                         // Fileds are separated by X
                         $aFields   = explode('X', $oColumn->name);
 
 
-                        if ( isset($aFields[1]) ){
-
+                        if (isset($aFields[1])) {
                             $sGid      = $aFields[1];
 
                             // QID field can be more than just QID, like: 886other or 886A1
@@ -523,38 +517,33 @@ class CheckIntegrity extends Survey_Common_Action
                             $sDirtyQid = $aFields[2];
                             preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
-                            if (isset($match[0][1])){
-                                $sQID      =  substr ($sDirtyQid, 0, $match[0][1]);
-                            }else{
+                            if (isset($match[0][1])) {
+                                $sQID      =  substr($sDirtyQid, 0, $match[0][1]);
+                            } else {
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
                             }
 
                             // Here, we get the question as defined in backend
                             $oQuestion = Question::model()->findByPk([ 'qid' => $sQID , 'language' => $oSurvey->language]);
-                            if (is_a($oQuestion, 'Question')){
-
+                            if (is_a($oQuestion, 'Question')) {
                                 // We check if its GID is the same as the one defined in the column name
-                                if ($oQuestion->gid != $sGid){
-
+                                if ($oQuestion->gid != $sGid) {
                                     // If not, we change the column name
-                                    $sNvColName = $oSurvey->sid . 'X'. $oQuestion->group->gid . 'X' . $sDirtyQid;
+                                    $sNvColName = $oSurvey->sid . 'X' . $oQuestion->group->gid . 'X' . $sDirtyQid;
 
-                                    if ( array_key_exists( $sNvColName, $aColumns ) ){
+                                    if (array_key_exists($sNvColName, $aColumns)) {
                                         // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
                                         // So we'll change the group of the question question group table (so in admin interface, not in frontend)
                                         $oQuestion->gid = $sGid;
                                         $oQuestion->save();
-
-                                    }else{
+                                    } else {
                                         $oTransaction = $oDB->beginTransaction();
-                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
+                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name, $sNvColName);
                                         $oTransaction->commit();
                                     }
-
-
                                 }
-                            }else{
+                            } else {
                                 // QID not found: we should do something...
                                 // $aUnfoundQIDs[] = $sQID;
                             }
@@ -603,21 +592,20 @@ class CheckIntegrity extends Survey_Common_Action
             if (isset($aTableName[1]) && ctype_digit($aTableName[1])) {
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string) date('YmdHis').rand(1, 1000);
-                    // Check if it's really a survey_XXX table mantis #14938 
-                    if(empty($aTableName[2])) {
+                    $sDate = (string) date('YmdHis') . rand(1, 1000);
+                    // Check if it's really a survey_XXX table mantis #14938
+                    if (empty($aTableName[2])) {
                         $sOldTable = "survey_{$iSurveyID}";
                         $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }
-                    if(!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
+                    if (!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "survey_{$iSurveyID}_timings";
                         $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }
-                    
                 }
             }
         }
@@ -627,10 +615,10 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr($aRow, strlen($sDBPrefix));
             $aTableName = explode('_', $sTableName);
-            $iSurveyID = (integer) substr($sTableName, strpos($sTableName, '_') + 1);
-            if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938 
+            $iSurveyID = (int) substr($sTableName, strpos($sTableName, '_') + 1);
+            if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
-                    $sDate = (string) date('YmdHis').rand(1, 1000);
+                    $sDate = (string) date('YmdHis') . rand(1, 1000);
                     $sOldTable = "tokens_{$iSurveyID}";
                     $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
                     Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
@@ -662,16 +650,15 @@ class CheckIntegrity extends Survey_Common_Action
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
                 if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
 
-                    $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid'=>$gid)));
+                    $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
                     if (!$iRowCount) {
-                        $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching CFIELDNAME group!')." ($gid) ({$condition['cfieldname']})");
+                        $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})");
                     }
                 }
             } elseif (!$condition['cfieldname']) {
-                $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No CFIELDNAME field set!')." ({$condition['cfieldname']})");
+                $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No CFIELDNAME field set!') . " ({$condition['cfieldname']})");
             }
         }
         unset($okQuestion);
@@ -688,7 +675,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check default values                                           */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = 'q.qid IS NULL';
         $aRecords = DefaultValue::model()->findAll($oCriteria);
@@ -698,7 +685,7 @@ class CheckIntegrity extends Survey_Common_Action
         /*     Check quotas                                                   */
         /**********************************************************************/
 
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(s.sid IS NULL)';
         $aDelete['quotas'] = count(Quota::model()->findAll($oCriteria));
@@ -706,7 +693,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check quota languagesettings                                   */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} s ON t.quotals_quota_id=s.id';
         $oCriteria->condition = '(s.id IS NULL)';
         $aDelete['quotals'] = count(QuotaLanguageSetting::model()->findAll($oCriteria));
@@ -714,7 +701,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check quota members                                   */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(q.qid IS NULL) OR (s.sid IS NULL)';
 
@@ -723,7 +710,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check assessments                                              */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'T');
         $assessments = Assessment::model()->findAll($oCriteria);
 
@@ -734,11 +721,11 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->compare('scope', 'G');
         $assessments = Assessment::model()->findAll($oCriteria);
         foreach ($assessments as $assessment) {
-            $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid'=>$assessment['gid'], 'language'=>$assessment['language'])));
+            $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid' => $assessment['gid'], 'language' => $assessment['language'])));
             if (!$iAssessmentCount) {
                 $aDelete['assessments'][] = array('id' => $assessment['id'], 'assessment' => $assessment['name'], 'reason' => gT('No matching group'));
             }
@@ -747,7 +734,7 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check answers                                                  */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
         $oCriteria->condition = '(q.qid IS NULL)';
 
@@ -765,9 +752,9 @@ class CheckIntegrity extends Survey_Common_Action
             $aLanguages[] = $survey->language;
             foreach ($aLanguages as $langname) {
                 if ($langname) {
-                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$survey->sid, ':langname'=>$langname));
+                    $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid' => $survey->sid, ':langname' => $langname));
                     if (!$oLanguageSettings) {
-                        $oLanguageSettings = new SurveyLanguageSetting;
+                        $oLanguageSettings = new SurveyLanguageSetting();
                         $languagedetails = getLanguageDetails($langname);
                         $insertdata = array(
                             'surveyls_survey_id' => $survey->sid,
@@ -799,37 +786,37 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check questions                                                */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
         $oCriteria->join = "LEFT JOIN {{surveys}} s ON t.sid=s.sid LEFT JOIN $quotedGroups g ON t.gid=g.gid";
         $oCriteria->condition = '(g.gid IS NULL) OR (s.sid IS NULL)';
         $questions = Question::model()->findAll($oCriteria);
         foreach ($questions as $question) {
-            $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group')." ({$question['gid']})");
+            $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group') . " ({$question['gid']})");
         }
 
         /**********************************************************************/
         /*     Check groups                                                   */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.sid=s.sid';
         $oCriteria->condition = '(s.sid IS NULL)';
         $groups = QuestionGroup::model()->findAll($oCriteria);
         /** @var QuestionGroup $group */
         foreach ($groups as $group) {
-            $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.').' SID:'.$group['sid']);
+            $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.') . ' SID:' . $group['sid']);
         }
 
         /**********************************************************************/
         /*     Check orphan user_in_groups                                    */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
+        $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{user_groups}} ug ON t.ugid=ug.ugid';
         $oCriteria->condition = '(ug.ugid IS NULL)';
         $userInGroups = UserInGroup::model()->findAll($oCriteria);
         /** @var UserInGroup[] $userInGroups */
         foreach ($userInGroups as $userInGroup) {
-            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid,'uid' => $userInGroup->uid, 'reason' => sprintf(gT('There is no matching user %s in group %s.'),$userInGroup->uid,$userInGroup->ugid));
+            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid,'uid' => $userInGroup->uid, 'reason' => sprintf(gT('There is no matching user %s in group %s.'), $userInGroup->uid, $userInGroup->ugid));
         }
 
         /**********************************************************************/
@@ -862,13 +849,11 @@ class CheckIntegrity extends Survey_Common_Action
                 }
             } else {
                 foreach ($aFullOldSIDs[$iOldSID] as $sTableName) {
-
                     $aTableParts = explode('_', substr($sTableName, strlen($sDBPrefix)));
                     $sDateTime = $sType = '';
                     $iSurveyID = $aTableParts[2];
 
                     if (count($aTableParts) == 4) {
-
                         $sDateTime = $aTableParts[3];
                         $sType = gT('responses');
                     } elseif (count($aTableParts) == 5) {
@@ -888,9 +873,9 @@ class CheckIntegrity extends Survey_Common_Action
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
                     Yii::app()->loadLibrary('Date_Time_Converter');
                     $datetimeobj = new date_time_converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate']." H:i");
+                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
 
-                    $sQuery = 'SELECT count(*) as recordcount FROM '.$sTableName;
+                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
                     if ($aFirstRow['recordcount'] == 0) {
                     // empty table - so add it to immediate deletion
@@ -941,8 +926,8 @@ class CheckIntegrity extends Survey_Common_Action
                     $iDay = (int) substr($sDateTime, 6, 2);
                     $iHour = (int) substr($sDateTime, 8, 2);
                     $iMinute = (int) substr($sDateTime, 10, 2);
-                    $sDate = date('D, d M Y  h:i a', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
-                    $sQuery = 'SELECT count(*) as recordcount FROM '.$sTableName;
+                    $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
 
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
                     if ($aFirstRow['recordcount'] == 0) {
@@ -955,7 +940,8 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-        if ($aDelete['defaultvalues'] == 0 && $aDelete['quotamembers'] == 0 &&
+        if (
+            $aDelete['defaultvalues'] == 0 && $aDelete['quotamembers'] == 0 &&
             $aDelete['quotas'] == 0 && $aDelete['quotals'] == 0 && count($aDelete) == 4
         ) {
             $aDelete['integrityok'] = true;
@@ -1029,9 +1015,8 @@ class CheckIntegrity extends Survey_Common_Action
         if (!empty($result)) {
             foreach ($result as &$survey) {
                 $survey['organizerLink'] = Yii::app()->getController()->createUrl(
-                    'admin/survey',
+                    'admin/survey/sa/organize',
                     [
-                        'sa' => 'organize',
                         'surveyid' => $survey['sid'],
                     ]
                 );
@@ -1079,15 +1064,13 @@ class CheckIntegrity extends Survey_Common_Action
                 );
                 if ($info['parent_qid'] != 0) {
                     $info['questionSummaryLink'] = Yii::app()->getController()->createUrl(
-                        'admin/questions',
+                        'questionAdministration/view',
                         [
-                            'sa' => 'subquestions',
                             'surveyid' => $info['sid'],
                             'gid' => $info['gid'],
                             'qid' => $info['parent_qid']
                         ]
                     );
-
                 }
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -96,28 +97,28 @@ class Zend_Validate_File_IsCompressed extends Zend_Validate_File_MimeType
             'application/x-zip',
             'application/zoo',
             'multipart/x-gzip',
-        );
+            );
 
-        if (is_array($mimetype)) {
-            $temp = $mimetype;
-            if (array_key_exists('magicfile', $temp)) {
-                unset($temp['magicfile']);
+            if (is_array($mimetype)) {
+                $temp = $mimetype;
+                if (array_key_exists('magicfile', $temp)) {
+                    unset($temp['magicfile']);
+                }
+
+                if (array_key_exists('headerCheck', $temp)) {
+                    unset($temp['headerCheck']);
+                }
+
+                if (empty($temp)) {
+                    $mimetype += $default;
+                }
             }
 
-            if (array_key_exists('headerCheck', $temp)) {
-                unset($temp['headerCheck']);
+            if (empty($mimetype)) {
+                $mimetype = $default;
             }
 
-            if (empty($temp)) {
-                $mimetype += $default;
-            }
-        }
-
-        if (empty($mimetype)) {
-            $mimetype = $default;
-        }
-
-        parent::__construct($mimetype);
+            parent::__construct($mimetype);
     }
 
     /**
@@ -131,14 +132,14 @@ class Zend_Validate_File_IsCompressed extends Zend_Validate_File_MimeType
     protected function _throw($file, $errorType)
     {
         $this->_value = $file['name'];
-        switch($errorType) {
-            case Zend_Validate_File_MimeType::FALSE_TYPE :
+        switch ($errorType) {
+            case Zend_Validate_File_MimeType::FALSE_TYPE:
                 $errorType = self::FALSE_TYPE;
                 break;
-            case Zend_Validate_File_MimeType::NOT_DETECTED :
+            case Zend_Validate_File_MimeType::NOT_DETECTED:
                 $errorType = self::NOT_DETECTED;
                 break;
-            case Zend_Validate_File_MimeType::NOT_READABLE :
+            case Zend_Validate_File_MimeType::NOT_READABLE:
                 $errorType = self::NOT_READABLE;
                 break;
         }

@@ -156,8 +156,8 @@ class Plugin extends LSActiveRecord
      */
     public function getActionButtons()
     {
-        $output='';
-        if (Permission::model()->hasGlobalPermission('settings','update')) {
+        $output = '';
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             if ($this->load_error == 1) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
@@ -166,7 +166,7 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
                 $output = $this->getActivateButton();
             } else {

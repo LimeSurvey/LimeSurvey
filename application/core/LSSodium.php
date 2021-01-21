@@ -1,4 +1,5 @@
 <?php
+
 class LSSodium
 {
     public $bLibraryExists = false;
@@ -8,9 +9,9 @@ class LSSodium
 
     public function init()
     {
-        require_once APPPATH.'/third_party/sodium_compat/src/Compat.php';
-        require_once APPPATH.'/third_party/sodium_compat/src/Core/Util.php';
-        require_once APPPATH.'/third_party/sodium_compat/autoload.php';
+        require_once APPPATH . '/third_party/sodium_compat/src/Compat.php';
+        require_once APPPATH . '/third_party/sodium_compat/src/Core/Util.php';
+        require_once APPPATH . '/third_party/sodium_compat/autoload.php';
 
         $this->checkIfLibraryExists();
 
@@ -132,7 +133,7 @@ class LSSodium
      */
     protected function generateEncryptionKeys()
     {
-        if (is_file(APPPATH.'config/security.php')) {
+        if (is_file(APPPATH . 'config/security.php')) {
             // Never replace an existing file
             throw new CException(500, gT("Configuration file already exist"));
         }
@@ -145,36 +146,36 @@ class LSSodium
             return false;
         }
         
-        $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"
-            ."/*"."\n"
-            ." * LimeSurvey"."\n"
-            ." * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz"."\n"
-            ." * All rights reserved."."\n"
-            ." * License: GNU/GPL License v3 or later, see LICENSE.php"."\n"
-            ." * LimeSurvey is free software. This version may have been modified pursuant"."\n"
-            ." * to the GNU General Public License, and as distributed it includes or"."\n"
-            ." * is derivative of works licensed under the GNU General Public License or"."\n"
-            ." * other free or open source software licenses."."\n"
-            ." * See COPYRIGHT.php for copyright notices and details."."\n"
-            ." */"."\n"
-            ."\n"
-            ."/* "."\n"
-            ."WARNING!!!"."\n"
-            ."ONCE SET, ENCRYPTION KEYS SHOULD NEVER BE CHANGED, OTHERWISE ALL ENCRYPTED DATA COULD BE LOST !!!"."\n"
-            ."\n"
-            ."*/"."\n"
-            ."\n"
-            ."\$config = array();"."\n"
-            ."\$config['encryptionkeypair'] = '".$sEncryptionKeypair."';"."\n"
-            ."\$config['encryptionpublickey'] = '".$sEncryptionPublicKey."';"."\n"
-            ."\$config['encryptionsecretkey'] = '".$sEncryptionSecretKey."';"."\n"
-            ."return \$config;";
+        $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
+            . "/*" . "\n"
+            . " * LimeSurvey" . "\n"
+            . " * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz" . "\n"
+            . " * All rights reserved." . "\n"
+            . " * License: GNU/GPL License v3 or later, see LICENSE.php" . "\n"
+            . " * LimeSurvey is free software. This version may have been modified pursuant" . "\n"
+            . " * to the GNU General Public License, and as distributed it includes or" . "\n"
+            . " * is derivative of works licensed under the GNU General Public License or" . "\n"
+            . " * other free or open source software licenses." . "\n"
+            . " * See COPYRIGHT.php for copyright notices and details." . "\n"
+            . " */" . "\n"
+            . "\n"
+            . "/* " . "\n"
+            . "WARNING!!!" . "\n"
+            . "ONCE SET, ENCRYPTION KEYS SHOULD NEVER BE CHANGED, OTHERWISE ALL ENCRYPTED DATA COULD BE LOST !!!" . "\n"
+            . "\n"
+            . "*/" . "\n"
+            . "\n"
+            . "\$config = array();" . "\n"
+            . "\$config['encryptionkeypair'] = '" . $sEncryptionKeypair . "';" . "\n"
+            . "\$config['encryptionpublickey'] = '" . $sEncryptionPublicKey . "';" . "\n"
+            . "\$config['encryptionsecretkey'] = '" . $sEncryptionSecretKey . "';" . "\n"
+            . "return \$config;";
 
         Yii::app()->setConfig("encryptionkeypair", $sEncryptionKeypair);
         Yii::app()->setConfig("encryptionpublickey", $sEncryptionPublicKey);
         Yii::app()->setConfig("encryptionsecretkey", $sEncryptionSecretKey);
-        if (is_writable(APPPATH.'config')) {
-            file_put_contents(APPPATH.'config/security.php', $sConfig);
+        if (is_writable(APPPATH . 'config')) {
+            file_put_contents(APPPATH . 'config/security.php', $sConfig);
         } else {
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }

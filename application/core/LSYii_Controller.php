@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -52,7 +54,7 @@ abstract class LSYii_Controller extends CController
      */
     protected function _checkInstallation()
     {
-        $file_name = Yii::app()->getConfig('rootdir').'/application/config/config.php';
+        $file_name = Yii::app()->getConfig('rootdir') . '/application/config/config.php';
         if (!file_exists($file_name)) {
             $this->redirect(array('/installer'));
         }
@@ -90,7 +92,7 @@ abstract class LSYii_Controller extends CController
 
         $dieoutput = '';
         if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-                    $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />';
+                    $dieoutput .= 'This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />';
         }
 
         if (!function_exists('mb_convert_encoding')) {
@@ -103,13 +105,15 @@ abstract class LSYii_Controller extends CController
 
         if (ini_get("max_execution_time") < Yii::app()->getConfig('max_execution_time')) {
             try {
-                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off 
-            } catch (Exception $e) {};
+                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off
+            } catch (Exception $e) {
+            };
         }
-        if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M')) {
+        if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit') . 'M')) {
             try {
-                ini_set("memory_limit", Yii::app()->getConfig('memory_limit').'M'); // Set Memory Limit for big surveys
-            } catch (Exception $e) {};
+                ini_set("memory_limit", Yii::app()->getConfig('memory_limit') . 'M'); // Set Memory Limit for big surveys
+            } catch (Exception $e) {
+            };
         }
 
         // The following function (when called) includes FireBug Lite if true
@@ -141,13 +145,14 @@ abstract class LSYii_Controller extends CController
 
         //SET LOCAL TIME
         $timeadjust = Yii::app()->getConfig("timeadjust");
-        if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {$timeadjust = '+'.$timeadjust; }
+        if (substr($timeadjust, 0, 1) != '-' && substr($timeadjust, 0, 1) != '+') {
+            $timeadjust = '+' . $timeadjust;
+        }
         if (strpos($timeadjust, 'hours') === false && strpos($timeadjust, 'minutes') === false && strpos($timeadjust, 'days') === false) {
-            Yii::app()->setConfig("timeadjust", $timeadjust.' hours');
+            Yii::app()->setConfig("timeadjust", $timeadjust . ' hours');
         }
         /* Set the default language, other controller can update if wanted */
         Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
-
     }
 
     /**
@@ -170,7 +175,7 @@ abstract class LSYii_Controller extends CController
             if (substr($url, 0, strlen($sActualBaseUrl)) == $sActualBaseUrl) {
                 $url = substr($url, strlen($sActualBaseUrl));
             }
-            return trim($sPublicUrl, "/").$url;
+            return trim($sPublicUrl, "/") . $url;
         } else {
                     return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
         }
@@ -184,6 +189,4 @@ abstract class LSYii_Controller extends CController
     {
         return array();
     }
-
-
 }

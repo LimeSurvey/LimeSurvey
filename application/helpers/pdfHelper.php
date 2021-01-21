@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -58,7 +60,6 @@ class pdfHelper
         $lg['a_meta_language'] = $language;
         $lg['w_page'] = gT("page");
 
-        return array('pdffont'=>$pdffont, 'pdffontsize'=>$pdffontsize, 'lg'=>$lg);
+        return array('pdffont' => $pdffont, 'pdffontsize' => $pdffontsize, 'lg' => $lg);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  ADOdb Date Library, part of the ADOdb abstraction library
  Download: http://phplens.com/phpeverywhere/
@@ -366,7 +367,6 @@
  First implementation.
  */
 
-
 /* Initialization */
 
 /*
@@ -389,7 +389,9 @@ $ADODB_DATETIME_CLASS = (PHP_VERSION >= 5.2);
  http://lists.debian.org/debian-glibc/2002/debian-glibc-200205/msg00010.html
  */
 
-if (!defined('ADODB_ALLOW_NEGATIVE_TS')) define('ADODB_NO_NEGATIVE_TS', 1);
+if (!defined('ADODB_ALLOW_NEGATIVE_TS')) {
+    define('ADODB_NO_NEGATIVE_TS', 1);
+}
 
 /**
  * @param integer $y1
@@ -400,8 +402,11 @@ function adodb_date_test_date($y1, $m, $d = 13)
     $h = round(rand() % 24);
     $t = adodb_mktime($h, 0, 0, $m, $d, $y1);
     $rez = adodb_date('Y-n-j H:i:s', $t);
-    if ($h == 0) $h = '00';
-    else if ($h < 10) $h = '0'.$h;
+    if ($h == 0) {
+        $h = '00';
+    } elseif ($h < 10) {
+        $h = '0' . $h;
+    }
     if ("$y1-$m-$d $h:00:00" != $rez) {
         print "<b>$y1 error, expected=$y1-$m-$d $h:00:00, adodb=$rez</b><br>";
         return false;
@@ -417,7 +422,9 @@ function adodb_date_test_strftime($fmt)
     $s1 = strftime($fmt);
     $s2 = adodb_strftime($fmt);
 
-    if ($s1 == $s2) return true;
+    if ($s1 == $s2) {
+        return true;
+    }
 
     echo "error for $fmt,  strftime=$s1, adodb=$s2<br>";
     return false;
@@ -429,16 +436,19 @@ function adodb_date_test_strftime($fmt)
 function adodb_date_test()
 {
 
-    for ($m = -24; $m <= 24; $m++)
-    echo "$m :", adodb_date('d-m-Y', adodb_mktime(0, 0, 0, 1 + $m, 20, 2040)), "<br>";
+    for ($m = -24; $m <= 24; $m++) {
+        echo "$m :", adodb_date('d-m-Y', adodb_mktime(0, 0, 0, 1 + $m, 20, 2040)), "<br>";
+    }
 
     error_reporting(E_ALL);
-    print "<h4>Testing adodb_date and adodb_mktime. version=".ADODB_DATE_VERSION.' PHP='.PHP_VERSION."</h4>";
+    print "<h4>Testing adodb_date and adodb_mktime. version=" . ADODB_DATE_VERSION . ' PHP=' . PHP_VERSION . "</h4>";
     @set_time_limit(0);
     $fail = false;
 
     // This flag disables calling of PHP native functions, so we can properly test the code
-    if (!defined('ADODB_TEST_DATES')) define('ADODB_TEST_DATES', 1);
+    if (!defined('ADODB_TEST_DATES')) {
+        define('ADODB_TEST_DATES', 1);
+    }
 
     $t = time();
 
@@ -453,57 +463,97 @@ function adodb_date_test()
     adodb_date_test_strftime("%A %d %B %Y");
     adodb_date_test_strftime("%H %M S");
 
-    if (!(adodb_date('Y-m-d') == date('Y-m-d'))) print 'Error in '.adodb_mktime(0, 0, 0).'<br>';
+    if (!(adodb_date('Y-m-d') == date('Y-m-d'))) {
+        print 'Error in ' . adodb_mktime(0, 0, 0) . '<br>';
+    }
 
     $t = adodb_mktime(0, 0, 0, 6, 1, 2102);
-    if (!(adodb_date('Y-m-d', $t) == '2102-06-01')) print 'Error in '.adodb_date('Y-m-d', $t).'<br>';
+    if (!(adodb_date('Y-m-d', $t) == '2102-06-01')) {
+        print 'Error in ' . adodb_date('Y-m-d', $t) . '<br>';
+    }
 
     $t = adodb_mktime(0, 0, 0, 2, 1, 2102);
-    if (!(adodb_date('Y-m-d', $t) == '2102-02-01')) print 'Error in '.adodb_date('Y-m-d', $t).'<br>';
+    if (!(adodb_date('Y-m-d', $t) == '2102-02-01')) {
+        print 'Error in ' . adodb_date('Y-m-d', $t) . '<br>';
+    }
 
 
     print "<p>Testing gregorian <=> julian conversion<p>";
     $t = adodb_mktime(0, 0, 0, 10, 11, 1492);
     //http://www.holidayorigins.com/html/columbus_day.html - Friday check
-    if (!(adodb_date('D Y-m-d', $t) == 'Fri 1492-10-11')) print 'Error in Columbus landing<br>';
+    if (!(adodb_date('D Y-m-d', $t) == 'Fri 1492-10-11')) {
+        print 'Error in Columbus landing<br>';
+    }
 
     $t = adodb_mktime(0, 0, 0, 2, 29, 1500);
-    if (!(adodb_date('Y-m-d', $t) == '1500-02-29')) print 'Error in julian leap years<br>';
+    if (!(adodb_date('Y-m-d', $t) == '1500-02-29')) {
+        print 'Error in julian leap years<br>';
+    }
 
     $t = adodb_mktime(0, 0, 0, 2, 29, 1700);
-    if (!(adodb_date('Y-m-d', $t) == '1700-03-01')) print 'Error in gregorian leap years<br>';
+    if (!(adodb_date('Y-m-d', $t) == '1700-03-01')) {
+        print 'Error in gregorian leap years<br>';
+    }
 
-    print  adodb_mktime(0, 0, 0, 10, 4, 1582).' ';
+    print  adodb_mktime(0, 0, 0, 10, 4, 1582) . ' ';
     print adodb_mktime(0, 0, 0, 10, 15, 1582);
     $diff = (adodb_mktime(0, 0, 0, 10, 15, 1582) - adodb_mktime(0, 0, 0, 10, 4, 1582));
-    if ($diff != 3600 * 24) print " <b>Error in gregorian correction = ".($diff / 3600 / 24)." days </b><br>";
+    if ($diff != 3600 * 24) {
+        print " <b>Error in gregorian correction = " . ($diff / 3600 / 24) . " days </b><br>";
+    }
 
-    print " 15 Oct 1582, Fri=".(adodb_dow(1582, 10, 15) == 5 ? 'Fri' : '<b>Error</b>')."<br>";
-    print " 4 Oct 1582, Thu=".(adodb_dow(1582, 10, 4) == 4 ? 'Thu' : '<b>Error</b>')."<br>";
+    print " 15 Oct 1582, Fri=" . (adodb_dow(1582, 10, 15) == 5 ? 'Fri' : '<b>Error</b>') . "<br>";
+    print " 4 Oct 1582, Thu=" . (adodb_dow(1582, 10, 4) == 4 ? 'Thu' : '<b>Error</b>') . "<br>";
 
     print "<p>Testing overflow<p>";
 
     $t = adodb_mktime(0, 0, 0, 3, 33, 1965);
-    if (!(adodb_date('Y-m-d', $t) == '1965-04-02')) print 'Error in day overflow 1 <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1965-04-02')) {
+        print 'Error in day overflow 1 <br>';
+    }
     $t = adodb_mktime(0, 0, 0, 4, 33, 1971);
-    if (!(adodb_date('Y-m-d', $t) == '1971-05-03')) print 'Error in day overflow 2 <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1971-05-03')) {
+        print 'Error in day overflow 2 <br>';
+    }
     $t = adodb_mktime(0, 0, 0, 1, 60, 1965);
-    if (!(adodb_date('Y-m-d', $t) == '1965-03-01')) print 'Error in day overflow 3 '.adodb_date('Y-m-d', $t).' <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1965-03-01')) {
+        print 'Error in day overflow 3 ' . adodb_date('Y-m-d', $t) . ' <br>';
+    }
     $t = adodb_mktime(0, 0, 0, 12, 32, 1965);
-    if (!(adodb_date('Y-m-d', $t) == '1966-01-01')) print 'Error in day overflow 4 '.adodb_date('Y-m-d', $t).' <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1966-01-01')) {
+        print 'Error in day overflow 4 ' . adodb_date('Y-m-d', $t) . ' <br>';
+    }
     $t = adodb_mktime(0, 0, 0, 12, 63, 1965);
-    if (!(adodb_date('Y-m-d', $t) == '1966-02-01')) print 'Error in day overflow 5 '.adodb_date('Y-m-d', $t).' <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1966-02-01')) {
+        print 'Error in day overflow 5 ' . adodb_date('Y-m-d', $t) . ' <br>';
+    }
     $t = adodb_mktime(0, 0, 0, 13, 3, 1965);
-    if (!(adodb_date('Y-m-d', $t) == '1966-01-03')) print 'Error in mth overflow 1 <br>';
+    if (!(adodb_date('Y-m-d', $t) == '1966-01-03')) {
+        print 'Error in mth overflow 1 <br>';
+    }
 
     print "Testing 2-digit => 4-digit year conversion<p>";
-    if (adodb_year_digit_check(00) != 2000) print "Err 2-digit 2000<br>";
-    if (adodb_year_digit_check(10) != 2010) print "Err 2-digit 2010<br>";
-    if (adodb_year_digit_check(20) != 2020) print "Err 2-digit 2020<br>";
-    if (adodb_year_digit_check(30) != 2030) print "Err 2-digit 2030<br>";
-    if (adodb_year_digit_check(40) != 1940) print "Err 2-digit 1940<br>";
-    if (adodb_year_digit_check(50) != 1950) print "Err 2-digit 1950<br>";
-    if (adodb_year_digit_check(90) != 1990) print "Err 2-digit 1990<br>";
+    if (adodb_year_digit_check(00) != 2000) {
+        print "Err 2-digit 2000<br>";
+    }
+    if (adodb_year_digit_check(10) != 2010) {
+        print "Err 2-digit 2010<br>";
+    }
+    if (adodb_year_digit_check(20) != 2020) {
+        print "Err 2-digit 2020<br>";
+    }
+    if (adodb_year_digit_check(30) != 2030) {
+        print "Err 2-digit 2030<br>";
+    }
+    if (adodb_year_digit_check(40) != 1940) {
+        print "Err 2-digit 1940<br>";
+    }
+    if (adodb_year_digit_check(50) != 1950) {
+        print "Err 2-digit 1950<br>";
+    }
+    if (adodb_year_digit_check(90) != 1990) {
+        print "Err 2-digit 1990<br>";
+    }
 
     // Test string formating
     print "<p>Testing date formating</p>";
@@ -516,7 +566,6 @@ function adodb_date_test()
     }
     flush();
     for ($i = 100; --$i > 0;) {
-
         $ts = 3600.0 * ((rand() % 60000) + (rand() % 60000)) + (rand() % 60000);
         $s1 = date($fmt, $ts);
         $s2 = adodb_date($fmt, $ts);
@@ -524,13 +573,13 @@ function adodb_date_test()
         if (($s1) != ($s2)) {
             for ($j = 0, $k = strlen($s1); $j < $k; $j++) {
                 if ($s1[$j] != $s2[$j]) {
-                    print substr($s1, $j).' ';
+                    print substr($s1, $j) . ' ';
                     break;
                 }
             }
             print "<b>Error date(): $ts<br><pre>
-&nbsp; \"$s1\" (date len=".strlen($s1).")
-&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</b></pre><br>";
+&nbsp; \"$s1\" (date len=" . strlen($s1) . ")
+&nbsp; \"$s2\" (adodb_date len=" . strlen($s2) . ")</b></pre><br>";
             $fail = true;
         }
 
@@ -568,7 +617,7 @@ function adodb_date_test()
 
     // we generate a timestamp, convert it to a date, and convert it back to a timestamp
     // and check if the roundtrip broke the original timestamp value.
-    print "Testing $start to ".($start + $yrs).", or $max seconds, offset=$offset: ";
+    print "Testing $start to " . ($start + $yrs) . ", or $max seconds, offset=$offset: ";
     $cnt = 0;
     for ($max += $i; $i < $max; $i += $offset) {
         $ret = adodb_date('m,d,Y,H,i,s', $i);
@@ -587,8 +636,11 @@ function adodb_date_test()
         $cnt += 1;
     }
     echo "Tested $cnt dates<br>";
-    if (!$fail) print "<p>Passed !</p>";
-    else print "<p><b>Failed</b> :-(</p>";
+    if (!$fail) {
+        print "<p>Passed !</p>";
+    } else {
+        print "<p><b>Failed</b> :-(</p>";
+    }
 }
 
 /**
@@ -605,16 +657,21 @@ function adodb_dow($year, $month, $day)
      Thursday, October 4, 1582 (Julian) was followed immediately by Friday, October 15, 1582 (Gregorian).
      */
     if ($year <= 1582) {
-        if ($year < 1582 ||
-        ($year == 1582 && ($month < 10 || ($month == 10 && $day < 15)))) $greg_correction = 3;
-        else
+        if (
+            $year < 1582 ||
+            ($year == 1582 && ($month < 10 || ($month == 10 && $day < 15)))
+        ) {
+            $greg_correction = 3;
+        } else {
+            $greg_correction = 0;
+        }
+    } else {
         $greg_correction = 0;
-    } else
-    $greg_correction = 0;
+    }
 
-    if ($month > 2)
-    $month -= 2;
-    else {
+    if ($month > 2) {
+        $month -= 2;
+    } else {
         $month += 10;
         $year--;
     }
@@ -635,12 +692,14 @@ function adodb_dow($year, $month, $day)
  */
 function _adodb_is_leap_year($year)
 {
-    if ($year % 4 != 0) return false;
+    if ($year % 4 != 0) {
+        return false;
+    }
 
     if ($year % 400 == 0) {
         return true;
         // if gregorian calendar (>1582), century not-divisible by 400 is not leap
-    } else if ($year > 1582 && $year % 100 == 0) {
+    } elseif ($year > 1582 && $year % 100 == 0) {
         return false;
     }
 
@@ -663,9 +722,8 @@ function adodb_is_leap_year($year)
 function adodb_year_digit_check($y)
 {
     if ($y < 100) {
-
-        $yr = (integer) date("Y");
-        $century = (integer) ($yr / 100);
+        $yr = (int) date("Y");
+        $century = (int) ($yr / 100);
 
         if ($yr % 100 > 50) {
             $c1 = $century + 1;
@@ -677,8 +735,11 @@ function adodb_year_digit_check($y)
         $c1 *= 100;
         // if 2-digit year is less than 30 years in future, set it to this century
         // otherwise if more than 30 years in future, then we set 2-digit year to the prev century.
-        if (($y + $c1) < $yr + 30) $y = $y + $c1;
-        else $y = $y + $c0 * 100;
+        if (($y + $c1) < $yr + 30) {
+            $y = $y + $c1;
+        } else {
+            $y = $y + $c0 * 100;
+        }
     }
     return $y;
 }
@@ -697,7 +758,6 @@ function adodb_get_gmt_diff_ts($ts)
     } else {
         return adodb_get_gmt_diff(false, false, false);
     }
-
 }
 
 /**
@@ -708,19 +768,24 @@ function adodb_get_gmt_diff($y, $m, $d)
     static $TZ, $tzo;
     global $ADODB_DATETIME_CLASS;
 
-    if (!defined('ADODB_TEST_DATES')) $y = false;
-    else if ($y < 1970 || $y >= 2038) $y = false;
+    if (!defined('ADODB_TEST_DATES')) {
+        $y = false;
+    } elseif ($y < 1970 || $y >= 2038) {
+        $y = false;
+    }
 
     if ($ADODB_DATETIME_CLASS && $y !== false) {
         $dt = new DateTime();
         $dt->setISODate($y, $m, $d);
         if (empty($tzo)) {
             $tzo = new DateTimeZone(date_default_timezone_get());
-            #	$tzt = timezone_transitions_get( $tzo );
+            #   $tzt = timezone_transitions_get( $tzo );
         }
         return -$tzo->getOffset($dt);
     } else {
-        if (isset($TZ)) return $TZ;
+        if (isset($TZ)) {
+            return $TZ;
+        }
         $y = date('Y');
         $TZ = @mktime(0, 0, 0, 12, 2, $y, 0) - @gmmktime(0, 0, 0, 12, 2, $y, 0);
     }
@@ -733,11 +798,14 @@ function adodb_get_gmt_diff($y, $m, $d)
  */
 function adodb_getdate($d = false, $fast = false)
 {
-    if ($d === false) return getdate();
+    if ($d === false) {
+        return getdate();
+    }
     if (!defined('ADODB_TEST_DATES')) {
         if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-            if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
-            return @getdate($d);
+            if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) { // if windows, must be +ve integer
+                return @getdate($d);
+            }
         }
     }
     return _adodb_getdate($d);
@@ -771,16 +839,27 @@ function adodb_validdate($y, $m, $d)
 {
     global $_month_table_normal, $_month_table_leaf;
 
-    if (_adodb_is_leap_year($y)) $marr = $_month_table_leaf;
-    else $marr = $_month_table_normal;
+    if (_adodb_is_leap_year($y)) {
+        $marr = $_month_table_leaf;
+    } else {
+        $marr = $_month_table_normal;
+    }
 
-    if ($m > 12 || $m < 1) return false;
+    if ($m > 12 || $m < 1) {
+        return false;
+    }
 
-    if ($d > 31 || $d < 1) return false;
+    if ($d > 31 || $d < 1) {
+        return false;
+    }
 
-    if ($marr[$m] < $d) return false;
+    if ($marr[$m] < $d) {
+        return false;
+    }
 
-    if ($y < 1000 && $y > 3000) return false;
+    if ($y < 1000 && $y > 3000) {
+        return false;
+    }
 
     return true;
 }
@@ -800,7 +879,9 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
     $_hour_power = 3600;
     $_min_power = 60;
 
-    if ($d < -12219321600) $d -= 86400 * 10; // if 15 Oct 1582 or earlier, gregorian correction
+    if ($d < -12219321600) {
+        $d -= 86400 * 10; // if 15 Oct 1582 or earlier, gregorian correction
+    }
 
     $_month_table_normal = array("", 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
     $_month_table_leaf = array("", 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
@@ -809,48 +890,51 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
     $d365 = $_day_power * 365;
 
     if ($d < 0) {
+        if (empty($YRS)) {
+            $YRS = array(
+            1970 => 0,
+            1960 => -315619200,
+            1950 => -631152000,
+            1940 => -946771200,
+            1930 => -1262304000,
+            1920 => -1577923200,
+            1910 => -1893456000,
+            1900 => -2208988800,
+            1890 => -2524521600,
+            1880 => -2840140800,
+            1870 => -3155673600,
+            1860 => -3471292800,
+            1850 => -3786825600,
+            1840 => -4102444800,
+            1830 => -4417977600,
+            1820 => -4733596800,
+            1810 => -5049129600,
+            1800 => -5364662400,
+            1790 => -5680195200,
+            1780 => -5995814400,
+            1770 => -6311347200,
+            1760 => -6626966400,
+            1750 => -6942499200,
+            1740 => -7258118400,
+            1730 => -7573651200,
+            1720 => -7889270400,
+            1710 => -8204803200,
+            1700 => -8520336000,
+            1690 => -8835868800,
+            1680 => -9151488000,
+            1670 => -9467020800,
+            1660 => -9782640000,
+            1650 => -10098172800,
+            1640 => -10413792000,
+            1630 => -10729324800,
+            1620 => -11044944000,
+            1610 => -11360476800,
+            1600 => -11676096000);
+        }
 
-        if (empty($YRS)) $YRS = array(
-        1970 => 0,
-        1960 => -315619200,
-        1950 => -631152000,
-        1940 => -946771200,
-        1930 => -1262304000,
-        1920 => -1577923200,
-        1910 => -1893456000,
-        1900 => -2208988800,
-        1890 => -2524521600,
-        1880 => -2840140800,
-        1870 => -3155673600,
-        1860 => -3471292800,
-        1850 => -3786825600,
-        1840 => -4102444800,
-        1830 => -4417977600,
-        1820 => -4733596800,
-        1810 => -5049129600,
-        1800 => -5364662400,
-        1790 => -5680195200,
-        1780 => -5995814400,
-        1770 => -6311347200,
-        1760 => -6626966400,
-        1750 => -6942499200,
-        1740 => -7258118400,
-        1730 => -7573651200,
-        1720 => -7889270400,
-        1710 => -8204803200,
-        1700 => -8520336000,
-        1690 => -8835868800,
-        1680 => -9151488000,
-        1670 => -9467020800,
-        1660 => -9782640000,
-        1650 => -10098172800,
-        1640 => -10413792000,
-        1630 => -10729324800,
-        1620 => -11044944000,
-        1610 => -11360476800,
-        1600 => -11676096000);
-
-        if ($is_gmt) $origd = $d;
+        if ($is_gmt) {
+            $origd = $d;
+        }
         // The valid range of a 32bit signed timestamp is typically from
         // Fri, 13 Dec 1901 20:45:54 GMT to Tue, 19 Jan 2038 03:14:07 GMT
         //
@@ -885,15 +969,20 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
         }
 
         $d -= $lastsecs;
-        if (!isset($a)) $a = $lastyear;
+        if (!isset($a)) {
+            $a = $lastyear;
+        }
 
         //echo ' yr=',$a,' ', $d,'.';
 
         for (; --$a >= 0;) {
             $lastd = $d;
 
-            if ($leaf = _adodb_is_leap_year($a)) $d += $d366;
-            else $d += $d365;
+            if ($leaf = _adodb_is_leap_year($a)) {
+                $d += $d366;
+            } else {
+                $d += $d365;
+            }
 
             if ($d >= 0) {
                 $year = $a;
@@ -921,13 +1010,15 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
 
         $d += ($ndays - $day + 1) * $_day_power;
         $hour = floor($d / $_hour_power);
-
     } else {
-        for ($a = 1970; ; $a++) {
+        for ($a = 1970;; $a++) {
             $lastd = $d;
 
-            if ($leaf = _adodb_is_leap_year($a)) $d -= $d366;
-            else $d -= $d365;
+            if ($leaf = _adodb_is_leap_year($a)) {
+                $d -= $d366;
+            } else {
+                $d -= $d365;
+            }
             if ($d < 0) {
                 $year = $a;
                 break;
@@ -998,10 +1089,11 @@ function adodb_tz_offset($gmt, $isphp5)
 {
     $zhrs = abs($gmt) / 3600;
     $hrs = floor($zhrs);
-    if ($isphp5)
-    return sprintf('%s%02d%02d', ($gmt <= 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
-    else
-    return sprintf('%s%02d%02d', ($gmt < 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
+    if ($isphp5) {
+        return sprintf('%s%02d%02d', ($gmt <= 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
+    } else {
+        return sprintf('%s%02d%02d', ($gmt < 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
+    }
 }
 
 
@@ -1014,15 +1106,26 @@ function adodb_gmdate($fmt, $d = false)
 function adodb_date2($fmt, $d = false, $is_gmt = false)
 {
     if ($d !== false) {
-        if (!preg_match(
-            "|^([0-9]{4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
-        ($d), $rr)) return adodb_date($fmt, false, $is_gmt);
+        if (
+            !preg_match(
+                "|^([0-9]{4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
+                ($d),
+                $rr
+            )
+        ) {
+            return adodb_date($fmt, false, $is_gmt);
+        }
 
-        if ($rr[1] <= 100 && $rr[2] <= 1) return adodb_date($fmt, false, $is_gmt);
+        if ($rr[1] <= 100 && $rr[2] <= 1) {
+            return adodb_date($fmt, false, $is_gmt);
+        }
 
         // h-m-s-MM-DD-YY
-        if (!isset($rr[5])) $d = adodb_mktime(0, 0, 0, $rr[2], $rr[3], $rr[1], false, $is_gmt);
-        else $d = @adodb_mktime($rr[5], $rr[6], $rr[7], $rr[2], $rr[3], $rr[1], false, $is_gmt);
+        if (!isset($rr[5])) {
+            $d = adodb_mktime(0, 0, 0, $rr[2], $rr[3], $rr[1], false, $is_gmt);
+        } else {
+            $d = @adodb_mktime($rr[5], $rr[6], $rr[7], $rr[2], $rr[3], $rr[1], false, $is_gmt);
+        }
     }
 
     return adodb_date($fmt, $d, $is_gmt);
@@ -1038,20 +1141,26 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
     static $daylight;
     global $ADODB_DATETIME_CLASS;
 
-    if ($d === false) return ($is_gmt) ? @gmdate($fmt) : @date($fmt);
+    if ($d === false) {
+        return ($is_gmt) ? @gmdate($fmt) : @date($fmt);
+    }
     if (!defined('ADODB_TEST_DATES')) {
         if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-            if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
-            return ($is_gmt) ? @gmdate($fmt, $d) : @date($fmt, $d);
-
+            if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) { // if windows, must be +ve integer
+                return ($is_gmt) ? @gmdate($fmt, $d) : @date($fmt, $d);
+            }
         }
     }
     $_day_power = 86400;
 
     $arr = _adodb_getdate($d, true, $is_gmt);
 
-    if (!isset($daylight)) $daylight = function_exists('adodb_daylight_sv');
-    if ($daylight) adodb_daylight_sv($arr, $is_gmt);
+    if (!isset($daylight)) {
+        $daylight = function_exists('adodb_daylight_sv');
+    }
+    if ($daylight) {
+        adodb_daylight_sv($arr, $is_gmt);
+    }
 
     $year = $arr['year'];
     $month = $arr['mon'];
@@ -1076,56 +1185,112 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                     $dt = new DateTime();
                     $dt->SetDate($year, $month, $day);
                     $dates .= $dt->Format('T');
-                } else
-                $dates .= date('T');
+                } else {
+                    $dates .= date('T');
+                }
                 break;
                 // YEAR
-            case 'L': $dates .= $arr['leap'] ? '1' : '0'; break;
-            case 'r': // Thu, 21 Dec 2000 16:01:07 +0200
-
+            case 'L':
+                $dates .= $arr['leap'] ? '1' : '0';
+                break;
+            case 'r':
                 // 4.3.11 uses '04 Jun 2004'
                 // 4.3.8 uses  ' 4 Jun 2004'
-                $dates .= gmdate('D', $_day_power * (3 + adodb_dow($year, $month, $day))).', '
-                . ($day < 10 ? '0'.$day : $day).' '.date('M', mktime(0, 0, 0, $month, 2, 1971)).' '.$year.' ';
+                $dates .= gmdate('D', $_day_power * (3 + adodb_dow($year, $month, $day))) . ', '
+                . ($day < 10 ? '0' . $day : $day) . ' ' . date('M', mktime(0, 0, 0, $month, 2, 1971)) . ' ' . $year . ' ';
                  
-                if ($hour < 10) $dates .= '0'.$hour; else $dates .= $hour;
+                if ($hour < 10) {
+                    $dates .= '0' . $hour;
+                } else {
+                    $dates .= $hour;
+                }
                  
-                if ($min < 10) $dates .= ':0'.$min; else $dates .= ':'.$min;
+                if ($min < 10) {
+                    $dates .= ':0' . $min;
+                } else {
+                    $dates .= ':' . $min;
+                }
                  
-                if ($secs < 10) $dates .= ':0'.$secs; else $dates .= ':'.$secs;
+                if ($secs < 10) {
+                    $dates .= ':0' . $secs;
+                } else {
+                    $dates .= ':' . $secs;
+                }
                  
                 $gmt = adodb_get_gmt_diff($year, $month, $day);
                  
-                $dates .= ' '.adodb_tz_offset($gmt, $isphp5);
+                $dates .= ' ' . adodb_tz_offset($gmt, $isphp5);
                 break;
                  
-            case 'Y': $dates .= $year; break;
-            case 'y': $dates .= substr($year, strlen($year) - 2, 2); break;
+            case 'Y':
+                $dates .= $year;
+                break;
+            case 'y':
+                $dates .= substr($year, strlen($year) - 2, 2);
+                break;
             // MONTH
-            case 'm': if ($month < 10) $dates .= '0'.$month; else $dates .= $month; break;
-            case 'Q': $dates .= ($month + 3) >> 2; break;
-            case 'n': $dates .= $month; break;
-            case 'M': $dates .= date('M', mktime(0, 0, 0, $month, 2, 1971)); break;
-            case 'F': $dates .= date('F', mktime(0, 0, 0, $month, 2, 1971)); break;
+            case 'm':
+                if ($month < 10) {
+                    $dates .= '0' . $month;
+                } else {
+                    $dates .= $month;
+                }
+                break;
+            case 'Q':
+                $dates .= ($month + 3) >> 2;
+                break;
+            case 'n':
+                $dates .= $month;
+                break;
+            case 'M':
+                $dates .= date('M', mktime(0, 0, 0, $month, 2, 1971));
+                break;
+            case 'F':
+                $dates .= date('F', mktime(0, 0, 0, $month, 2, 1971));
+                break;
             // DAY
-            case 't': $dates .= $arr['ndays']; break;
-            case 'z': $dates .= $arr['yday']; break;
-            case 'w': $dates .= adodb_dow($year, $month, $day); break;
-            case 'l': $dates .= gmdate('l', $_day_power * (3 + adodb_dow($year, $month, $day))); break;
-            case 'D': $dates .= gmdate('D', $_day_power * (3 + adodb_dow($year, $month, $day))); break;
-            case 'j': $dates .= $day; break;
-            case 'd': if ($day < 10) $dates .= '0'.$day; else $dates .= $day; break;
+            case 't':
+                $dates .= $arr['ndays'];
+                break;
+            case 'z':
+                $dates .= $arr['yday'];
+                break;
+            case 'w':
+                $dates .= adodb_dow($year, $month, $day);
+                break;
+            case 'l':
+                $dates .= gmdate('l', $_day_power * (3 + adodb_dow($year, $month, $day)));
+                break;
+            case 'D':
+                $dates .= gmdate('D', $_day_power * (3 + adodb_dow($year, $month, $day)));
+                break;
+            case 'j':
+                $dates .= $day;
+                break;
+            case 'd':
+                if ($day < 10) {
+                    $dates .= '0' . $day;
+                } else {
+                    $dates .= $day;
+                }
+                break;
             case 'S':
                 $d10 = $day % 10;
-                if ($d10 == 1) $dates .= 'st';
-                else if ($d10 == 2 && $day != 12) $dates .= 'nd';
-                else if ($d10 == 3) $dates .= 'rd';
-                else $dates .= 'th';
+                if ($d10 == 1) {
+                    $dates .= 'st';
+                } elseif ($d10 == 2 && $day != 12) {
+                    $dates .= 'nd';
+                } elseif ($d10 == 3) {
+                    $dates .= 'rd';
+                } else {
+                    $dates .= 'th';
+                }
                 break;
                  
                 // HOUR
             case 'Z':
-                $dates .= ($is_gmt) ? 0 : -adodb_get_gmt_diff($year, $month, $day); break;
+                $dates .= ($is_gmt) ? 0 : -adodb_get_gmt_diff($year, $month, $day);
+                break;
             case 'O':
                 $gmt = ($is_gmt) ? 0 : adodb_get_gmt_diff($year, $month, $day);
                  
@@ -1133,18 +1298,28 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                 break;
                  
             case 'H':
-                if ($hour < 10) $dates .= '0'.$hour;
-                else $dates .= $hour;
+                if ($hour < 10) {
+                    $dates .= '0' . $hour;
+                } else {
+                    $dates .= $hour;
+                }
                 break;
             case 'h':
-                if ($hour > 12) $hh = $hour - 12;
-                else {
-                    if ($hour == 0) $hh = '12';
-                    else $hh = $hour;
+                if ($hour > 12) {
+                    $hh = $hour - 12;
+                } else {
+                    if ($hour == 0) {
+                        $hh = '12';
+                    } else {
+                        $hh = $hour;
+                    }
                 }
                  
-                if ($hh < 10) $dates .= '0'.$hh;
-                else $dates .= $hh;
+                if ($hh < 10) {
+                    $dates .= '0' . $hh;
+                } else {
+                    $dates .= $hh;
+                }
                 break;
                  
             case 'G':
@@ -1152,34 +1327,61 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                 break;
                  
             case 'g':
-                if ($hour > 12) $hh = $hour - 12;
-                else {
-                    if ($hour == 0) $hh = '12';
-                    else $hh = $hour;
+                if ($hour > 12) {
+                    $hh = $hour - 12;
+                } else {
+                    if ($hour == 0) {
+                        $hh = '12';
+                    } else {
+                        $hh = $hour;
+                    }
                 }
                 $dates .= $hh;
                 break;
                 // MINUTES
-            case 'i': if ($min < 10) $dates .= '0'.$min; else $dates .= $min; break;
+            case 'i':
+                if ($min < 10) {
+                    $dates .= '0' . $min;
+                } else {
+                    $dates .= $min;
+                }
+                break;
             // SECONDS
-            case 'U': $dates .= $d; break;
-            case 's': if ($secs < 10) $dates .= '0'.$secs; else $dates .= $secs; break;
+            case 'U':
+                $dates .= $d;
+                break;
+            case 's':
+                if ($secs < 10) {
+                    $dates .= '0' . $secs;
+                } else {
+                    $dates .= $secs;
+                }
+                break;
             // AM/PM
             // Note 00:00 to 11:59 is AM, while 12:00 to 23:59 is PM
             case 'a':
-                if ($hour >= 12) $dates .= 'pm';
-                else $dates .= 'am';
+                if ($hour >= 12) {
+                    $dates .= 'pm';
+                } else {
+                    $dates .= 'am';
+                }
                 break;
             case 'A':
-                if ($hour >= 12) $dates .= 'PM';
-                else $dates .= 'AM';
+                if ($hour >= 12) {
+                    $dates .= 'PM';
+                } else {
+                    $dates .= 'AM';
+                }
                 break;
             default:
-                $dates .= $fmt[$i]; break;
+                $dates .= $fmt[$i];
+                break;
                 // ESCAPE
             case "\\":
                 $i++;
-                if ($i < $max) $dates .= $fmt[$i];
+                if ($i < $max) {
+                    $dates .= $fmt[$i];
+                }
                 break;
         }
     }
@@ -1204,7 +1406,6 @@ function adodb_gmmktime($hr, $min, $sec, $mon = false, $day = false, $year = fal
 function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false, $is_dst = false, $is_gmt = false)
 {
     if (!defined('ADODB_TEST_DATES')) {
-
         if ($mon === false) {
             return $is_gmt ? @gmmktime($hr, $min, $sec) : @mktime($hr, $min, $sec);
         }
@@ -1216,7 +1417,9 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
         );
          
 
-        if ($usephpfns && ($year + $mon / 12 + $day / 365.25 + $hr / (24 * 365.25) >= 2038)) $usephpfns = false;
+        if ($usephpfns && ($year + $mon / 12 + $day / 365.25 + $hr / (24 * 365.25) >= 2038)) {
+            $usephpfns = false;
+        }
          
         if ($usephpfns) {
             return $is_gmt ?
@@ -1244,7 +1447,7 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
         $y = floor(($mon - 1) / 12);
         $year += $y;
         $mon -= $y * 12;
-    } else if ($mon < 1) {
+    } elseif ($mon < 1) {
         $y = ceil((1 - $mon) / 12);
         $year -= $y;
         $mon += $y * 12;
@@ -1278,7 +1481,6 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
         }
         $_total_date += $day - 1;
         $ret = $_total_date * $_day_power + $hr * $_hour_power + $min * $_min_power + $sec + $gmt_different;
-
     } else {
         for ($a = 1969; $a >= $year; $a--) {
             $leaf = _adodb_is_leap_year($a);
@@ -1289,7 +1491,8 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
                 $loop_table = $_month_table_normal;
                 $_add_date = 365;
             }
-            if ($a > $year) { $_total_date += $_add_date;
+            if ($a > $year) {
+                $_total_date += $_add_date;
             } else {
                 for ($b = 12; $b > $mon; $b--) {
                     $_total_date += $loop_table[$b];
@@ -1301,8 +1504,11 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
         $_day_time = $hr * $_hour_power + $min * $_min_power + $sec;
         $_day_time = $_day_power - $_day_time;
         $ret = -($_total_date * $_day_power + $_day_time - $gmt_different);
-        if ($ret < -12220185600) $ret += 10 * 86400; // if earlier than 5 Oct 1582 - gregorian correction
-        else if ($ret < -12219321600) $ret = -12219321600; // if in limbo, reset to 15 Oct 1582.
+        if ($ret < -12220185600) {
+            $ret += 10 * 86400; // if earlier than 5 Oct 1582 - gregorian correction
+        } elseif ($ret < -12219321600) {
+            $ret = -12219321600; // if in limbo, reset to 15 Oct 1582.
+        }
     }
     //print " dmy=$day/$mon/$year $hr:$min:$sec => " .$ret;
     return $ret;
@@ -1320,9 +1526,9 @@ function adodb_strftime($fmt, $ts = false, $is_gmt = false)
 
     if (!defined('ADODB_TEST_DATES')) {
         if ((abs($ts) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-            if (!defined('ADODB_NO_NEGATIVE_TS') || $ts >= 0) // if windows, must be +ve integer
-            return ($is_gmt) ? @gmstrftime($fmt, $ts) : @strftime($fmt, $ts);
-
+            if (!defined('ADODB_NO_NEGATIVE_TS') || $ts >= 0) { // if windows, must be +ve integer
+                return ($is_gmt) ? @gmstrftime($fmt, $ts) : @strftime($fmt, $ts);
+            }
         }
     }
 
@@ -1339,9 +1545,8 @@ function adodb_strftime($fmt, $ts = false, $is_gmt = false)
         $hasAM = strrpos($tstr, 'M') !== false;
 
         $ADODB_DATE_LOCALE = array();
-        $ADODB_DATE_LOCALE[] = strncmp($tstr, '30', 2) == 0 ? 'd'.$sep.'m'.$sep.'y' : 'm'.$sep.'d'.$sep.'y';
+        $ADODB_DATE_LOCALE[] = strncmp($tstr, '30', 2) == 0 ? 'd' . $sep . 'm' . $sep . 'y' : 'm' . $sep . 'd' . $sep . 'y';
         $ADODB_DATE_LOCALE[] = ($hasAM) ? 'h:i:s a' : 'H:i:s';
-         
     }
     $inpct = false;
     $fmtdate = '';
@@ -1351,10 +1556,10 @@ function adodb_strftime($fmt, $ts = false, $is_gmt = false)
             if ($inpct) {
                 $fmtdate .= '%';
                 $inpct = false;
-            } else
-            $inpct = true;
-        } else if ($inpct) {
-
+            } else {
+                $inpct = true;
+            }
+        } elseif ($inpct) {
             $inpct = false;
             switch ($ch) {
                 case '0':
@@ -1373,47 +1578,114 @@ function adodb_strftime($fmt, $ts = false, $is_gmt = false)
                     $inpct = true;
                     break;
 
-                case 'a': $fmtdate .= 'D'; break;
-                case 'A': $fmtdate .= 'l'; break;
+                case 'a':
+                    $fmtdate .= 'D';
+                    break;
+                case 'A':
+                    $fmtdate .= 'l';
+                    break;
                 case 'h':
-                case 'b': $fmtdate .= 'M'; break;
-                case 'B': $fmtdate .= 'F'; break;
-                case 'c': $fmtdate .= $ADODB_DATE_LOCALE[0].$ADODB_DATE_LOCALE[1]; break;
-                case 'C': $fmtdate .= '\C?'; break; // century
-                case 'd': $fmtdate .= 'd'; break;
-                case 'D': $fmtdate .= 'm/d/y'; break;
-                case 'e': $fmtdate .= 'j'; break;
-                case 'g': $fmtdate .= '\g?'; break; //?
-                case 'G': $fmtdate .= '\G?'; break; //?
-                case 'H': $fmtdate .= 'H'; break;
-                case 'I': $fmtdate .= 'h'; break;
-                case 'j': $fmtdate .= '?z'; break; // wrong as j=1-based, z=0-basd
-                case 'm': $fmtdate .= 'm'; break;
-                case 'M': $fmtdate .= 'i'; break;
-                case 'n': $fmtdate .= "\n"; break;
-                case 'p': $fmtdate .= 'a'; break;
-                case 'r': $fmtdate .= 'h:i:s a'; break;
-                case 'R': $fmtdate .= 'H:i:s'; break;
-                case 'S': $fmtdate .= 's'; break;
-                case 't': $fmtdate .= "\t"; break;
-                case 'T': $fmtdate .= 'H:i:s'; break;
-                case 'u': $fmtdate .= '?u'; break; // wrong strftime=1-based, date=0-based
-                case 'U': $fmtdate .= '?U'; break; // wrong strftime=1-based, date=0-based
-                case 'x': $fmtdate .= $ADODB_DATE_LOCALE[0]; break;
-                case 'X': $fmtdate .= $ADODB_DATE_LOCALE[1]; break;
-                case 'w': $fmtdate .= '?w'; break; // wrong strftime=1-based, date=0-based
-                case 'W': $fmtdate .= '?W'; break; // wrong strftime=1-based, date=0-based
-                case 'y': $fmtdate .= 'y'; break;
-                case 'Y': $fmtdate .= 'Y'; break;
-                case 'Z': $fmtdate .= 'T'; break;
+                case 'b':
+                    $fmtdate .= 'M';
+                    break;
+                case 'B':
+                    $fmtdate .= 'F';
+                    break;
+                case 'c':
+                    $fmtdate .= $ADODB_DATE_LOCALE[0] . $ADODB_DATE_LOCALE[1];
+                    break;
+                case 'C':
+                    $fmtdate .= '\C?';
+                    break; // century
+                case 'd':
+                    $fmtdate .= 'd';
+                    break;
+                case 'D':
+                    $fmtdate .= 'm/d/y';
+                    break;
+                case 'e':
+                    $fmtdate .= 'j';
+                    break;
+                case 'g':
+                    $fmtdate .= '\g?';
+                    break; //?
+                case 'G':
+                    $fmtdate .= '\G?';
+                    break; //?
+                case 'H':
+                    $fmtdate .= 'H';
+                    break;
+                case 'I':
+                    $fmtdate .= 'h';
+                    break;
+                case 'j':
+                    $fmtdate .= '?z';
+                    break; // wrong as j=1-based, z=0-basd
+                case 'm':
+                    $fmtdate .= 'm';
+                    break;
+                case 'M':
+                    $fmtdate .= 'i';
+                    break;
+                case 'n':
+                    $fmtdate .= "\n";
+                    break;
+                case 'p':
+                    $fmtdate .= 'a';
+                    break;
+                case 'r':
+                    $fmtdate .= 'h:i:s a';
+                    break;
+                case 'R':
+                    $fmtdate .= 'H:i:s';
+                    break;
+                case 'S':
+                    $fmtdate .= 's';
+                    break;
+                case 't':
+                    $fmtdate .= "\t";
+                    break;
+                case 'T':
+                    $fmtdate .= 'H:i:s';
+                    break;
+                case 'u':
+                    $fmtdate .= '?u';
+                    break; // wrong strftime=1-based, date=0-based
+                case 'U':
+                    $fmtdate .= '?U';
+                    break; // wrong strftime=1-based, date=0-based
+                case 'x':
+                    $fmtdate .= $ADODB_DATE_LOCALE[0];
+                    break;
+                case 'X':
+                    $fmtdate .= $ADODB_DATE_LOCALE[1];
+                    break;
+                case 'w':
+                    $fmtdate .= '?w';
+                    break; // wrong strftime=1-based, date=0-based
+                case 'W':
+                    $fmtdate .= '?W';
+                    break; // wrong strftime=1-based, date=0-based
+                case 'y':
+                    $fmtdate .= 'y';
+                    break;
+                case 'Y':
+                    $fmtdate .= 'Y';
+                    break;
+                case 'Z':
+                    $fmtdate .= 'T';
+                    break;
             }
-        } else if (('A' <= ($ch) && ($ch) <= 'Z') || ('a' <= ($ch) && ($ch) <= 'z'))
-        $fmtdate .= "\\".$ch;
-        else
-        $fmtdate .= $ch;
+        } elseif (('A' <= ($ch) && ($ch) <= 'Z') || ('a' <= ($ch) && ($ch) <= 'z')) {
+            $fmtdate .= "\\" . $ch;
+        } else {
+            $fmtdate .= $ch;
+        }
     }
     //echo "fmt=",$fmtdate,"<br>";
-    if ($ts === false) $ts = time();
+    if ($ts === false) {
+        $ts = time();
+    }
     $ret = adodb_date($fmtdate, $ts, $is_gmt);
     return $ret;
 }

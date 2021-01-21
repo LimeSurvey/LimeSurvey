@@ -13,41 +13,41 @@
  */
 class Permissiontemplates extends CActiveRecord
 {
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{permissiontemplates}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{permissiontemplates}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('name, description, renewed_last, created_at, created_by', 'required'),
-			array('created_by', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>192),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('ptid, name, description, renewed_last, created_at, created_by', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name, description, renewed_last, created_at, created_by', 'required'),
+            array('created_by', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 192),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('ptid, name, description, renewed_last, created_at, created_by', 'safe', 'on' => 'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
             'connectedusers' => array(self::HAS_MANY, 'UserInPermissionrole', ['ptid']),
-		);
+        );
     }
     
     /**
@@ -55,19 +55,20 @@ class Permissiontemplates extends CActiveRecord
      *
      * @return array filled with usermodels
      */
-    public function getConnectedUserobjects() 
+    public function getConnectedUserobjects()
     {
         return array_map(
             function ($oMappingInstance) {
                 return User::model()->findByPk($oMappingInstance->uid);
-            }, 
+            },
             $this->connectedusers
         );
     }
 
-    public function applyToUser($iUserId, $ptid = null) {
+    public function applyToUser($iUserId, $ptid = null)
+    {
 
-        if($ptid == null) {
+        if ($ptid == null) {
             $ptid = $this->ptid;
         }
 
@@ -82,7 +83,8 @@ class Permissiontemplates extends CActiveRecord
         return $oModel->save();
     }
 
-    public function clearUser($iUserId) {
+    public function clearUser($iUserId)
+    {
         $aModels = UserInPermissionrole::model()->findAllByAttributes(['uid' => $iUserId]);
 
         if (safecount($aModels) == 0) {
@@ -90,9 +92,9 @@ class Permissiontemplates extends CActiveRecord
         }
 
         return array_reduce(
-            $aModels, 
-            function ($cur,  $oModel) { 
-                return $cur && $oModel->delete(); 
+            $aModels,
+            function ($cur, $oModel) {
+                return $cur && $oModel->delete();
             },
             true
         );
@@ -134,42 +136,42 @@ class Permissiontemplates extends CActiveRecord
         
 
         $roleDetail = ""
-            ."<button 
+            . "<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
-                data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
+                data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
 
         $editPermissionButton = ""
-            ."<button 
+            . "<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions' 
-                data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
+                data-href='" . $setPermissionsUrl . "'><i class='fa fa-lock'></i></button>";
         $editRoleButton = ""
-            ."<button 
+            . "<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--edituser' 
-                data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
+                data-href='" . $editUrl . "'><i class='fa fa-edit'></i></button>";
                 
         $exportRoleButton = ""
-            ."<a class='btn btn-sm btn-default RoleControl--action--link'
-                href='".$exportRoleUrl."'><i class='fa fa-download'></i></a>";
+            . "<a class='btn btn-sm btn-default RoleControl--action--link'
+                href='" . $exportRoleUrl . "'><i class='fa fa-download'></i></a>";
                 
         $deleteRoleButton = ""
-            ."<button 
-                id='RoleControl--delete-".$this->ptid."' 
+            . "<button 
+                id='RoleControl--delete-" . $this->ptid . "' 
                 class='btn btn-sm btn-danger' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
-                data-url='".$deleteUrl."' 
-                data-ptid='".$this->ptid."'
+                data-url='" . $deleteUrl . "' 
+                data-ptid='" . $this->ptid . "'
                 data-action='delrole' 
-                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-".$this->ptid."\")' 
-                data-message='".gt('Do you want to delete this role?')."'>
+                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
+                data-message='" . gt('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>
               </button>";
 
-        return join("\n",[
-            $roleDetail, 
-            $editPermissionButton, 
-            $editRoleButton, 
-            $exportRoleButton, 
+        return join("\n", [
+            $roleDetail,
+            $editPermissionButton,
+            $editRoleButton,
+            $exportRoleButton,
             $deleteRoleButton
         ]);
     }
@@ -210,7 +212,7 @@ class Permissiontemplates extends CActiveRecord
                 "value" => '$data->formattedDateModified'
             ),
             array(
-                "name" =>"created_at",
+                "name" => "created_at",
                 "header" => gT("Created on"),
                 "value" => '$data->formattedDateCreated',
     
@@ -220,13 +222,14 @@ class Permissiontemplates extends CActiveRecord
         return $cols;
     }
 
-    public function compileExportXML () {
+    public function compileExportXML()
+    {
         $xml = new SimpleXMLElement('<limepermissionrole/>');
 
         //Meta section
         $meta = $xml->addChild('meta');
-        $meta->addChild('name', '<![CDATA['.$this->name.']]>');
-        $meta->addChild('description', '<![CDATA['.$this->description.']]>');
+        $meta->addChild('name', '<![CDATA[' . $this->name . ']]>');
+        $meta->addChild('description', '<![CDATA[' . $this->description . ']]>');
         $meta->addChild('date', date('Y-m-d H:i:s'));
         $meta->addChild('createdOn', Yii::app()->getConfig('sitename'));
         $meta->addChild('createdBy', Yii::app()->user->id);
@@ -237,12 +240,12 @@ class Permissiontemplates extends CActiveRecord
 
         //Permission section
         $permission = $xml->addChild('permissions');
-        foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions) {
+        foreach ($aBasePermissions as $sPermissionKey => $aCRUDPermissions) {
             $curKeyRow = $permission->addChild($sPermissionKey);
-            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue) {
+            foreach ($aCRUDPermissions as $sCRUDKey => $CRUDValue) {
                 $curKeyRow->addChild(
-                    $sCRUDKey, 
-                    ($this->getHasPermission($sPermissionKey, $sCRUDKey) ? 1 : 0)  
+                    $sCRUDKey,
+                    ($this->getHasPermission($sPermissionKey, $sCRUDKey) ? 1 : 0)
                 );
             }
         }
@@ -250,7 +253,8 @@ class Permissiontemplates extends CActiveRecord
         return $xml;
     }
 
-    public function createFromXML ($xmlEntitiy, $includeRootData = false) {
+    public function createFromXML($xmlEntitiy, $includeRootData = false)
+    {
         $name = $this->removeCdataFormat($xmlEntitiy->meta->name);
         $iExisiting = self::model()->countByAttributes(['name' => $name]);
         if ($iExisiting > 0) {
@@ -283,29 +287,30 @@ class Permissiontemplates extends CActiveRecord
         $regex_patterns = array(
             '/<!\[CDATA\[/',
             '/\]\]>/'
-       );
-       return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
+        );
+        return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
     }
 
-    public function getHasPermission($sPermission, $sCRUD) {
+    public function getHasPermission($sPermission, $sCRUD)
+    {
         return Permission::model()->hasRolePermission($this->ptid, $sPermission, $sCRUD);
     }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
     public function search()
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('ptid', $this->ptid);
         $criteria->compare('name', $this->name, true);
@@ -322,14 +327,14 @@ class Permissiontemplates extends CActiveRecord
         ));
     }
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Permissiontemplates the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Permissiontemplates the static model class
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 }

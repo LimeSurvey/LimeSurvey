@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -97,7 +98,7 @@ class Zend_Validate_Barcode_Issn extends Zend_Validate_Barcode_AdapterAbstract
         $values   = str_split(substr($value, 0, -1));
         $check    = 0;
         $multi    = 8;
-        foreach($values as $token) {
+        foreach ($values as $token) {
             if ($token == 'X') {
                 $token = 10;
             }
@@ -110,7 +111,7 @@ class Zend_Validate_Barcode_Issn extends Zend_Validate_Barcode_AdapterAbstract
         $check  = 11 - $check;
         if ($check == $checksum) {
             return true;
-        } else if (($check == 10) && ($checksum == 'X')) {
+        } elseif (($check == 10) && ($checksum == 'X')) {
             return true;
         }
 

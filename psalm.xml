@@ -1,39 +1,25 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="third_party/vimeo/psalm/src/config.xsd"
-    autoloader="tests/phpstan/phpstan_bootstrap.php"
     errorLevel="2"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="tests/phpstan/phpstan_bootstrap.php"
 >
     <projectFiles>
+        <directory name="application/datavalueobjects" />
+        <directory name="application/helpers" />
+        <directory name="application/libraries/ExtensionInstaller" />
+        <directory name="application/libraries/MenuObjects" />
+        <directory name="application/libraries/PluginManager" />
+        <directory name="application/libraries/PluginManager/Storage" />
+        <directory name="application/models/services" />
+        <directory name="application/models" />
         <directory name="application/controllers" />
+        <ignoreFiles>
+            <directory name="third_party" />
+            <directory name="framework" />
+        </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
-
-        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
-        <DeprecatedMethod errorLevel="info" />
-        <DeprecatedProperty errorLevel="info" />
-        <DeprecatedClass errorLevel="info" />
-
-        <MissingClosureReturnType errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="info" />
-        <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
-
-        <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingConstructor errorLevel="info" />
-        <MissingClosureParamType errorLevel="info" />
-        <MissingParamType errorLevel="info" />
-
-        <DocblockTypeContradiction errorLevel="info" />
-        <RedundantConditionGivenDocblockType errorLevel="info" />
-
-        <UnresolvableInclude errorLevel="info" />
-
-        <RawObjectIteration errorLevel="info" />
-    </issueHandlers>
 </psalm>

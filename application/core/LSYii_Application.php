@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,7 +16,8 @@
  * Load the globals helper as early as possible. Only earlier solution is to use
  * index.php
  */
-require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
+
+require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
 
 /**
 * Implements global config
@@ -64,11 +66,11 @@ class LSYii_Application extends CWebApplication
     public function __construct($aApplicationConfig = null)
     {
         /* Using some config part for app config, then load it before*/
-        $baseConfig = require(__DIR__.'/../config/config-defaults.php');
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
         $configdir = $baseConfig['configdir'];
 
-        if (file_exists( $configdir .  '/config.php')) {
-            $userConfigs = require(  $configdir .'/config.php');
+        if (file_exists($configdir .  '/config.php')) {
+            $userConfigs = require($configdir . '/config.php');
             if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
@@ -76,13 +78,13 @@ class LSYii_Application extends CWebApplication
 
         /* Set the runtime path according to tempdir if needed */
         if (!isset($aApplicationConfig['runtimePath'])) {
-            $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'].DIRECTORY_SEPARATOR.'runtime';
+            $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
 
         /* If LimeSurvey is configured to load custom Twig exstensions, add them to Twig Component */
-        if (array_key_exists('use_custom_twig_extensions',$baseConfig ) && $baseConfig ['use_custom_twig_extensions'] ){
-          $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
+        if (array_key_exists('use_custom_twig_extensions', $baseConfig) && $baseConfig ['use_custom_twig_extensions']) {
+            $aApplicationConfig = $this->getTwigCustomExtensionsConfig($baseConfig['usertwigextensionrootdir'], $aApplicationConfig);
         }
 
         /* Construct CWebApplication */
@@ -95,14 +97,11 @@ class LSYii_Application extends CWebApplication
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
         if (!isset($aApplicationConfig['components']['assetManager']['baseUrl'])) {
-            App()->getAssetManager()->setBaseUrl($this->config['tempurl'].'/assets');
+            App()->getAssetManager()->setBaseUrl($this->config['tempurl'] . '/assets');
         }
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
-            App()->getAssetManager()->setBasePath($this->config['tempdir'].'/assets');
+            App()->getAssetManager()->setBasePath($this->config['tempdir'] . '/assets');
         }
-
-
-
     }
 
     /* @inheritdoc */
@@ -132,38 +131,39 @@ class LSYii_Application extends CWebApplication
      * Set the LimeSUrvey config array according to files and DB
      * @return void
      */
-    public function setConfigs() {
+    public function setConfigs()
+    {
 
         // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
 
         /* Default config */
-        $coreConfig = require(__DIR__.'/../config/config-defaults.php');
-        $emailConfig = require(__DIR__.'/../config/email.php');
-        $versionConfig = require(__DIR__.'/../config/version.php');
-        $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+        $this->config = array_merge($this->config, $coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
-        if (file_exists( $configdir .  '/security.php')) {
-            $securityConfig = require(  $configdir .'/security.php');
+        if (file_exists($configdir .  '/security.php')) {
+            $securityConfig = require($configdir . '/security.php');
             if (is_array($securityConfig)) {
                 $this->config = array_merge($this->config, $securityConfig);
             }
         }
-        if (file_exists( $configdir .  '/config.php')) {
-            $userConfigs = require(  $configdir .'/config.php');
+        if (file_exists($configdir .  '/config.php')) {
+            $userConfigs = require($configdir . '/config.php');
             if (is_array($userConfigs['config'])) {
                 $this->config = array_merge($this->config, $userConfigs['config']);
             }
         }
 
-        if(!file_exists(__DIR__.'/../config/config.php')) {
+        if (!file_exists(__DIR__ . '/../config/config.php')) {
             /* Set up not done : then no other part to update */
             return;
         }
         /* User file config */
-        $userConfigs = require(__DIR__.'/../config/config.php');
+        $userConfigs = require(__DIR__ . '/../config/config.php');
         if (is_array($userConfigs['config'])) {
             $this->config = array_merge($this->config, $userConfigs['config']);
         }
@@ -175,27 +175,27 @@ class LSYii_Application extends CWebApplication
         /* Check DB : let throw error if DB is broken issue #14875 */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
         /* No table settings_global : not installable or updatable */
-        if(empty($settingsTableExist)) {
+        if (empty($settingsTableExist)) {
             /* settings_global was created before 1.80 : not updatable version or not installed (but table exist) */
-            Yii::log("LimeSurvey table settings_global not found in database",'error');
+            Yii::log("LimeSurvey table settings_global not found in database", 'error');
             throw new CDbException("LimeSurvey table settings_global not found in database");
         }
         $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
         $this->config = array_merge($this->config, $dbConfig);
         /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
-        if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
+        if (!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
             $this->dbVersion = $dbConfig['DBVersion'];
         }
         /* Add some specific config using exiting other configs */
-        $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
-            Yii::getVersion().
-            $this->getConfig('assetsversionnumber',0).
-            $this->getConfig('versionnumber',0).
-            $this->getConfig('dbversionnumber',0).
-            $this->getConfig('customassetversionnumber',1)
+        $this->setConfig(
+            'globalAssetsVersion', /* Or create a new var ? */
+            Yii::getVersion() .
+            $this->getConfig('assetsversionnumber', 0) .
+            $this->getConfig('versionnumber', 0) .
+            $this->getConfig('dbversionnumber', 0) .
+            $this->getConfig('customassetversionnumber', 1)
         );
-
-}
+    }
     /**
      * Loads a helper
      *
@@ -205,7 +205,7 @@ class LSYii_Application extends CWebApplication
      */
     public function loadHelper($helper)
     {
-        Yii::import('application.helpers.'.$helper.'_helper', true);
+        Yii::import('application.helpers.' . $helper . '_helper', true);
     }
 
     /**
@@ -217,7 +217,7 @@ class LSYii_Application extends CWebApplication
      */
     public function loadLibrary($library)
     {
-        Yii::import('application.libraries.'.$library, true);
+        Yii::import('application.libraries.' . $library, true);
     }
 
     /**
@@ -250,7 +250,7 @@ class LSYii_Application extends CWebApplication
     public function setFlashMessage($message, $type = 'success')
     {
         $aFlashMessage = $this->session['aFlashMessage'];
-        $aFlashMessage[] = array('message'=>$message, 'type'=>$type);
+        $aFlashMessage[] = array('message' => $message, 'type' => $type);
         $this->session['aFlashMessage'] = $aFlashMessage;
         return $this;
     }
@@ -264,7 +264,7 @@ class LSYii_Application extends CWebApplication
      */
     public function loadConfig($file)
     {
-        $config = require_once(APPPATH.'/config/'.$file.'.php');
+        $config = require_once(APPPATH . '/config/' . $file . '.php');
         if (is_array($config)) {
             foreach ($config as $k => $v) {
                             $this->setConfig($k, $v);
@@ -383,21 +383,29 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        if(!Yii::app() instanceof CWebApplication) {
+        if (!Yii::app() instanceof CWebApplication) {
             /* Don't update for CLI */
             return;
         }
-        if(defined('PHP_ENV') && PHP_ENV == 'test') {
+        if (defined('PHP_ENV') && PHP_ENV == 'test') {
             // If run from phpunit, die with exception message.
             die($event->exception->getMessage());
         }
-        if(!$this->dbVersion) {
+        if (!$this->dbVersion) {
             /* Not installed or DB broken or to old */
             return;
         }
-        if($this->dbVersion < 200) {
+        if ($this->dbVersion < 200) {
             /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
             return;
+        }
+        if (
+            Yii::app()->request->isAjaxRequest &&
+            $event->exception instanceof CHttpException
+        ) {
+            header('Content-Type: application/json');
+            http_response_code($event->exception->statusCode);
+            die(json_encode(['message' => $event->exception->getMessage()]));
         }
         $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
         if (Yii::app()->getConfig('debug') > 1) {
@@ -410,7 +418,7 @@ class LSYii_Application extends CWebApplication
             return;
         }
         Yii::app()->setComponent('errorHandler', array(
-            'errorAction'=>'surveys/error',
+            'errorAction' => 'surveys/error',
         ));
     }
 
@@ -422,27 +430,27 @@ class LSYii_Application extends CWebApplication
      * Throw Exception
      * @return boolean
      */
-    public function is_file($filePath,$baseDir = null,$throwException = null)
+    public function is_file($filePath, $baseDir = null, $throwException = null)
     {
-        if(is_null($baseDir)) {
+        if (is_null($baseDir)) {
             $baseDir = $this->getConfig('uploaddir');
         }
-        if(is_null($throwException)) {
+        if (is_null($throwException)) {
             $throwException = boolval($this->getConfig('debug'));
         }
         $realFilePath = realpath($filePath);
         $baseDir = realpath($baseDir);
         
-        if(!is_file($realFilePath)) {
+        if (!is_file($realFilePath)) {
             /* Not existing file */
-            Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
+            Yii::log("Try to read invalid file " . $filePath, 'warning', 'application.security.files.is_file');
             return false;
         }
-        if(substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
+        if (substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
             /* Security issue */
-            Yii::log("Disable access to ".$realFilePath." directory", 'error', 'application.security.files.is_file');
-            if($throwException) {
-                throw new CHttpException(403,"Disable for security reasons.");
+            Yii::log("Disable access to " . $realFilePath . " directory", 'error', 'application.security.files.is_file');
+            if ($throwException) {
+                throw new CHttpException(403, "Disable for security reasons.");
             }
             return false;
         }
@@ -456,7 +464,7 @@ class LSYii_Application extends CWebApplication
      * @var string $sUsertwigextensionrootdir $baseConfig['usertwigextensionrootdir']
      * @var array $aApplicationConfig the application configuration
      */
-    public function getTwigCustomExtensionsConfig( $sUsertwigextensionrootdir, $aApplicationConfig )
+    public function getTwigCustomExtensionsConfig($sUsertwigextensionrootdir, $aApplicationConfig)
     {
 
         // First we look for each custom extension manifest.
@@ -484,7 +492,6 @@ class LSYii_Application extends CWebApplication
             $extensionClass = (string)$oXMLConfig->metadata->name;
 
             if (!empty($aFunctions) && !empty($extensionClass)) {
-
                 // We add the extension to twig user extensions to load
                 // See: https://github.com/LimeSurvey/LimeSurvey/blob/cec66adb1a74a518525e6a4fc4fe208c50595067/third_party/Twig/ETwigViewRenderer.php#L125-L133
                 $aApplicationConfig['components']['twigRenderer']['user_extensions'][] = $extensionClass;

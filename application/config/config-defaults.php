@@ -85,7 +85,8 @@ $config['defaulttheme']              = 'fruity'; // This setting specifys the de
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
+$config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
@@ -112,6 +113,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 // -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -249,6 +251,10 @@ $config['disablescriptwithxss'] = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
 
+// ownerManageAllSurveysInGroup
+// If this option is set to true, then oner of a group
+// have all rights on surveys in is group
+$config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.

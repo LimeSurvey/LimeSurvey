@@ -49,29 +49,29 @@ class SurveyActivator
         $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
 
         if (!$this->showEventMessages($event)) {
-            return ['error'=>'plugin'];
+            return ['error' => 'plugin'];
         }
 
         $this->prepareResponsesTable();
 
         if ($this->isSimulation) {
             return array(
-                'dbengine'=>Yii::app()->db->getDriverName(),
-                'dbtype'=>Yii::app()->db->driverName,
-                'fields'=>$this->tableDefinition
+                'dbengine' => Yii::app()->db->getDriverName(),
+                'dbtype' => Yii::app()->db->driverName,
+                'fields' => $this->tableDefinition
             );
         }
 
         if (!$this->createResponseTable()) {
-            return ['error'=>$this->error];
+            return ['error' => $this->error];
         }
 
         if (!$this->createTimingsTable()) {
-            return ['error'=>'timingstablecreation'];
+            return ['error' => 'timingstablecreation'];
         }
 
         if (!empty($this->error)) {
-            return ['error'=>$this->error];
+            return ['error' => $this->error];
         }
 
         Yii::app()->db->createCommand()->update(
@@ -184,7 +184,7 @@ class SurveyActivator
                     }
                     break;
                 case "token":
-                    $aTableDefinition[$aRow['fieldname']] = 'string(' . Token::MAX_LENGTH . ')'.$collation;
+                    $aTableDefinition[$aRow['fieldname']] = 'string(' . Token::MAX_LENGTH . ')' . $collation;
                     break;
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
@@ -218,7 +218,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(5)");
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
-                $aTableDefinition['token'] = 'string('.Token::MAX_LENGTH.')'.$collation;
+                $aTableDefinition['token'] = 'string(' . Token::MAX_LENGTH . ')' . $collation;
             }
         }
         $this->tableDefinition = $aTableDefinition;
@@ -254,9 +254,11 @@ class SurveyActivator
         if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
             $collation = " COLLATE 'utf8mb4_bin'";
         }
-        if (Yii::app()->db->driverName == 'sqlsrv'
+        if (
+            Yii::app()->db->driverName == 'sqlsrv'
             || Yii::app()->db->driverName == 'dblib'
-            || Yii::app()->db->driverName == 'mssql') {
+            || Yii::app()->db->driverName == 'mssql'
+        ) {
             $collation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
         }
         return $collation;
@@ -319,7 +321,7 @@ class SurveyActivator
         try {
             if (isset($this->tableDefinition['token'])) {
                 Yii::app()->db->createCommand()->createIndex(
-                    "idx_survey_token_{$this->survey->primaryKey}_".rand(1, 50000),
+                    "idx_survey_token_{$this->survey->primaryKey}_" . rand(1, 50000),
                     $sTableName,
                     'token'
                 );
@@ -359,7 +361,7 @@ class SurveyActivator
         $iAutoNumberStart = Yii::app()->db->createCommand()
             ->select('autonumber_start')
             ->from(Survey::model()->tableName())
-            ->where('sid=:sid', [':sid'=>$this->survey->primaryKey])
+            ->where('sid=:sid', [':sid' => $this->survey->primaryKey])
             ->queryScalar();
 
         //if there is an autonumber_start field, start auto numbering here
@@ -370,7 +372,7 @@ class SurveyActivator
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey
 
-                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $this->survey->responsesTableName, 'id');
+                Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_' . rand(1, 50000), $this->survey->responsesTableName, 'id');
             } elseif (Yii::app()->db->driverName == 'pgsql') {
                 $sQuery = "SELECT setval(pg_get_serial_sequence('{$this->survey->responsesTableName}', 'id'),{$iAutoNumberStart},false);";
                 // FIXME @ not good
@@ -410,11 +412,11 @@ class SurveyActivator
         $iSurveyID = $this->survey->primaryKey;
         // create the survey directory where the uploaded files can be saved
         if ($this->createSurveyDir) {
-            if (!file_exists(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files")) {
-                if (!(mkdir(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files", 0777, true))) {
+            if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files")) {
+                if (!(mkdir(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files", 0777, true))) {
                     return false;
                 } else {
-                    file_put_contents(Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/index.html", '<html><head></head><body></body></html>');
+                    file_put_contents(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/index.html", '<html><head></head><body></body></html>');
                 }
             }
         }

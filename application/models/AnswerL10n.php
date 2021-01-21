@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -40,8 +39,8 @@ class AnswerL10n extends LSActiveRecord
 
     public function defaultScope()
     {
-        return array('index'=>'language');
-    }    
+        return array('index' => 'language');
+    }
 
     /**
      * @inheritdoc
@@ -69,10 +68,9 @@ class AnswerL10n extends LSActiveRecord
     {
         return [
             ['aid,language','required'],
-            ['aid','numerical','integerOnly'=>true],
+            ['aid','numerical','integerOnly' => true],
             ['answer', 'LSYii_Validators'],
-            ['language', 'length', 'min' => 2, 'max'=>20], // in array languages ?
+            ['language', 'length', 'min' => 2, 'max' => 20], // in array languages ?
         ];
     }
-
 }
