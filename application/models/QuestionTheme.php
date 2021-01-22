@@ -876,7 +876,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
         libxml_disable_entity_loader($bOldEntityLoaderState);
 
-        $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1));
+        $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1)); //todo: this does not work for all themes in array/... like arrays/10point
         $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
 
         // get type from core theme

@@ -165,12 +165,13 @@ class ThemeOptionsController extends LSBaseController
     public function actionUninstallMultiple(): void
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
-        $gridid = App()->request->getPost('grididvalue');
+        $gridid = App()->request->getPost('grididvalue'); //what is gridid ???
         $aResults = array();
 
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             foreach ($aTemplates as $template) {
-                $model = $this->loadModel($template, $gridid);
+                $templateID = (int) $template;
+                $model = $this->loadModel($templateID, $gridid);
 
                 if ($gridid === 'questionthemes-grid') {
                     $aResults[$template]['title'] = $model->name;
@@ -500,12 +501,12 @@ class ThemeOptionsController extends LSBaseController
      * If the data model is not found, and HTTP exception will be raised.
      *
      * @param int $id ID
-     * @param int $gridid Grid ID
+     * @param int|string $gridid Grid ID
      *
      * @return QuestionTheme | TemplateConfiguration | null
      * @throws CHttpException
      */
-    public function loadModel(int $id, int $gridid = null)
+    public function loadModel(int $id, $gridid = null)
     {
         if ($gridid === 'questionthemes-grid') {
             $model = QuestionTheme::model()->findByPk($id);
@@ -539,7 +540,7 @@ class ThemeOptionsController extends LSBaseController
                 } else {
                     App()->setFlashMessage(sprintf(gT('The Question theme "%s" could not be installed'), $themeName), 'error');
                 }
-                $this->redirect(array("themeOptions#questionthemes"));
+                $this->redirect(array("themeOptions/index#questionthemes"));
             } else {
                 TemplateManifest::importManifest($templatename);
                 $this->redirect(array('themeOptions/index#surveythemes'));
