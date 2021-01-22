@@ -485,77 +485,122 @@ class LimesurveyApi
     }
 
     /**
+     * Returns a UserGroup object by ugid
+     * Returns null if the object does not exist
+     *
+     * @param int $ugid The user group ID
+     * @return \UserGroup|null
+     */
+    public function getUserGroup($ugid)
+    {   
+        return \UserGroup::model()->findByAttributes(array('ugid' => $ugid));
+    }
+
+    /**
+     * Returns a UserInGroup object
+     * Returns null if the object does not exist
+     *
+     * @param integer $ugid The user group ID
+     * @param integer $uid The user ID
+     * @return \UserInGroup|null
+     */
+    public function getUserInGroup($ugid, $uid)
+    {   
+        return \UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+    }
+
+    /**
      * Adds a new user group
      *
      * @param string $groupName Name of user group to be created
      * @param string $groupDescription Description of user group to be created
      * @return boolean True or false if user group was added or not
+     * @throws InvalidArgumentException if user group name was not supplied
      */
     public function addUserGroup($groupName, $groupDescription)
     {
         $db_group_name = flattenText($groupName, false, true, 'UTF-8', true);
-        $db_group_description = $groupDescription;
+        $db_group_description = flattenText($groupDescription);
 
         if (isset($db_group_name) && strlen($db_group_name) > 0) {
-            if (strlen($db_group_name) > 21) {
+            $newUserGroup = new \UserGroup();
+            $newUserGroup->owner_id = 1;
+            $newUserGroup->name = $db_group_name;
+            $newUserGroup->description = $db_group_description;
+            if ($newUserGroup->save()) {
+                \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
+                return true;
+            }
+            else {
                 return false;
-            } elseif (\UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
-                return false;
-            } else {
-                $newUserGroup = new \UserGroup();
-                $newUserGroup->owner_id = 1;
-                $newUserGroup->name = $groupName;
-                $newUserGroup->description = $groupDescription;
-                $result = $newUserGroup->save();
-                if ($result) {
-                    \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
-                }
-                return $result;
             }
         } else {
-            return false;
+            throw new InvalidArgumentException('must provide a user group name');
         }
     }
 
     /**
-     * Adds or removes a user from a user group
+     * Adds a user to a user group
      *
      * @param integer $ugid The user group ID
      * @param integer $uid The user ID
-     * @param string $action The desired action 'add' or 'remove'
-     * @return boolean True or false if user was added/removed to/from group or not
+     * @return boolean True if user was added to group or false if not
+     * @throws InvalidArgumentException if user or group does not exist or group owner was supplied
      */
-    public function userInGroupAction($ugid, $uid, $action)
+    public function addUserInGroup($ugid, $uid)
     {
-        $group = \UserGroup::model()->findByAttributes(array('ugid' => $ugid));
+        $group = $this->getUserGroup($ugid);
 
         if (empty($group)) {
-            return false;
+            throw new InvalidArgumentException('group does not exist');
         } else {
-            if ($uid > 0 && \User::model()->findByPk($uid)) {
+            $user = $this->getUser($uid);
+            if ($uid > 0 && $user) {
                 if ($group->owner_id == $uid) {
-                    return false;
+                    throw new InvalidArgumentException('user must not be group owner');
                 } else {
-                    $user_in_group = \UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
-                    switch ($action) {
-                        case 'add' :
-                            if (empty($user_in_group) && \UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                            break;
-                        case 'remove' :
-                            if (!empty($user_in_group) && \UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid))) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                            break;
+                    $user_in_group = $this->getUserInGroup($ugid, $uid);
+                    if (empty($user_in_group) && \UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid))) {
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
             } else {
-                return false;
+                throw new InvalidArgumentException('user does not exist');
+            }
+        }
+    }
+
+    /**
+     * Removes a user from a user group
+     *
+     * @param integer $ugid The user group ID
+     * @param integer $uid The user ID
+     * @return boolean True if user was removed to group or false if not
+     * @throws InvalidArgumentException if user or group does not exist or group owner was supplied
+     */
+    public function removeUserInGroup($ugid, $uid)
+    {
+        $group = $this->getUserGroup($ugid);
+
+        if (empty($group)) {
+            throw new InvalidArgumentException('group does not exist');
+        } else {
+            $user = $this->getUser($uid);
+            if ($uid > 0 && $user) {
+                if ($group->owner_id == $uid) {
+                    throw new InvalidArgumentException('user must no be group owner');
+                } else {
+                    $user_in_group = $this->getUserInGroup($ugid, $uid);
+                    if (!empty($user_in_group) && \UserInGroup::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid))) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                throw new InvalidArgumentException('user does not exist');
             }
         }
     }
