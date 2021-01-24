@@ -5017,6 +5017,7 @@ class LimeExpressionManager
                 }
             }
 
+            // Save seed data.
             if (isset($_SESSION[$this->sessid]['startingValues']['seed'])) {
                 $sdata['seed'] = $_SESSION[$this->sessid]['startingValues']['seed'];
             }
@@ -9757,15 +9758,25 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
      */
     public static function SaveStartingValues()
     {
+        // Init
         $LEM =& LimeExpressionManager::singleton();
 
+        // If not starting values, retun
+        if (!isset($_SESSION[$LEM->sessid]['startingValues'])) return false;
+        if (!is_array($_SESSION[$LEM->sessid]['startingValues'])) return false;
+        if (!array_key_exists('startingValues', $_SESSION[$LEM->sessid])) return false;
+
         // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF
-        if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])) {
+        // GJ: I think this is to assure that starting values always have a seed entry and then be able to check more easily
+        // If there are other starting values, besides the seed.
+        // I think this piece of code may never be reached by the execution thread. There is always a seed.
+        if (!array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){        
             $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';
         }
 
+        // Check if there are other starting values, besides the seed
         // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
-        if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1) {
+        if (count($_SESSION[$LEM->sessid]['startingValues']) > 1) {
             foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k => $value) {
                 if (isset($LEM->knownVars[$k])) {
                     $knownVar = $LEM->knownVars[$k];
