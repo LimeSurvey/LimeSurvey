@@ -4619,56 +4619,7 @@ class LimeExpressionManager
         $LEM->indexGseq = array();
         $LEM->indexQseq = array();
         $LEM->qrootVarName2arrayFilter = array();
-        // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF
-        if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])) {
-            $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';
-        }
-            
-        // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
-        if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1) {
-            foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k => $value) {
-                if (isset($LEM->knownVars[$k])) {
-                    $knownVar = $LEM->knownVars[$k];
-                } elseif (isset($LEM->qcode2sgqa[$k])) {
-                    $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
-                } else {
-                    continue;
-                }
-                if (!isset($knownVar['jsName'])) {
-                    continue;
-                }
-                switch ($knownVar['type']) {
-                    case Question::QT_D_DATE: //DATE
-                        if (trim($value) == "") {
-                            $value = null;
-                        } else {
-                            // We don't really validate date here, anyone can send anything : forced too
-                            $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                            $value = $datetimeobj->convert("Y-m-d H:i");
-                        }
-                        break;
-                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-                        if (trim($value) == "") {
-                            $value = null;
-                        } else {
-                            $value = sanitize_float($value);
-                        }
-                        break;
-                    case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-                        $value = null;  // can't upload a file via GET
-                        break;
-                }
-                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                $LEM->updatedValues[$knownVar['sgqa']] = array(
-                    'type' => $knownVar['type'],
-                    'value' => $value,
-                );
-            }
-            $LEM->_UpdateValuesInDatabase();
-        }
-            
+
         return array(
             'hasNext' => true,
             'hasPrevious' => false,
@@ -9799,6 +9750,65 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         // { and } (after &)
         $string = str_replace(["{","}"], ["&#123;","&#125;"], $string);
         return $string;
+    }
+
+    /**
+     * Save the starting values to the database
+     */
+    public static function SaveStartingValues()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+
+        // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF
+        if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])) {
+            $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';
+        }
+
+        // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
+        if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1) {
+            foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k => $value) {
+                if (isset($LEM->knownVars[$k])) {
+                    $knownVar = $LEM->knownVars[$k];
+                } elseif (isset($LEM->qcode2sgqa[$k])) {
+                    $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
+                } else {
+                    continue;
+                }
+                if (!isset($knownVar['jsName'])) {
+                    continue;
+                }
+                switch ($knownVar['type']) {
+                    case Question::QT_D_DATE: //DATE
+                        if (trim($value) == "") {
+                            $value = null;
+                        } else {
+                            // We don't really validate date here, anyone can send anything : forced too
+                            $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                            $value = $datetimeobj->convert("Y-m-d H:i");
+                        }
+                        break;
+                    case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
+                    case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
+                        if (trim($value) == "") {
+                            $value = null;
+                        } else {
+                            $value = sanitize_float($value);
+                        }
+                        break;
+                    case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+                        $value = null;  // can't upload a file via GET
+                        break;
+                }
+                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                $LEM->updatedValues[$knownVar['sgqa']] = array(
+                    'type' => $knownVar['type'],
+                    'value' => $value,
+                );
+                unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
+            }
+            $LEM->_UpdateValuesInDatabase();
+        }
     }
 }
 

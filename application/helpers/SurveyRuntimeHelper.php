@@ -642,6 +642,7 @@ class SurveyRuntimeHelper
             $this->setPrevStep();
             $this->checkIfFinished();
             $this->setStep();
+            $this->saveStartingValues();
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
@@ -1866,5 +1867,16 @@ class SurveyRuntimeHelper
         }
 
         return $aQuestionClass;
+    }
+
+    /**
+     * Saves the starting values, if any is set
+     */
+    private function saveStartingValues()
+    {
+        // Don't save the starting values if on Welcome screen
+        if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) return;
+
+        LimeExpressionManager::SaveStartingValues();
     }
 }
