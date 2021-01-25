@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.8 (build 210118) to 3.25.9 (build 210125) January 25, 2021
+-Fixed issue #16481: Easy way to launch CDBException (#1480) (Denis Chenu)
+-Fixed issue #15612: Public stats didn't have any theme part, graphic is broken (#1717) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Bulgarian by llamaloverbg
+
+
 Changes from 3.25.7 (build 210113) to 3.25.8 (build 210118) January 18, 2021
 -Fixed issue: Grammar Correction in LS3 for Mask Question Type Multiple Numerical Input Slider Tab. (Jessica Höck)
 -Fixed issue #16962: Sent is not recorded when validuntil is set and using MSSQL (Carsten Schmitz)
