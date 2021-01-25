@@ -851,6 +851,7 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function convertLS3toLS4($sXMLDirectoryPath)
     {
+
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);
@@ -876,9 +877,6 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
         libxml_disable_entity_loader($bOldEntityLoaderState);
 
-        $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1)); //todo: this does not work for all themes in array/... like arrays/10point
-        $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
-
         // get type from core theme
         if (isset($oThemeConfig->metadata->type)) {
             $oThemeConfig->metadata->type = 'question_theme';
@@ -895,6 +893,8 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->compatibility->version = '4.0';
         }
 
+        $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1)); //todo: this does not work for all themes in array/... like arrays/10point
+        $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
         // check if core question theme can be found to fill in missing information
         if (!is_file($sPathToCoreConfigFile)) {
             return $aSuccess = [
