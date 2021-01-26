@@ -4,12 +4,13 @@
         <name>expressionFixedDbVar</name>
         <type>plugin</type>
         <creationDate>2019-07-14</creationDate>
-        <last_update>2019-07-14</last_update>
+        <lastUpdate>2021-01-26</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>1.0.0</version>
+        <supportUrl>https://manual.limesurvey.org/ExpressionFixedDbVar</supportUrl>
+        <version>1.0.2</version>
         <license>GPL</license>
-        <description><![CDATA[Add SEED and other DB var in ExpressionScript Engine.]]></description>
+        <description><![CDATA[Add SEED and other database variable in ExpressionScript Engine. <a href="https://manual.limesurvey.org/ExpressionFixedDbVar">More information on LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <compatibility>

@@ -4,9 +4,9 @@
  * expressionFixedDbVar : add some fixed DB var : SEED, STARTDATE …
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 LimeSurvey - Denis Chenu
+ * @copyright 2019-2021 LimeSurvey - Denis Chenu
  * @license GPL version 3
- * @version 1.0.1
+ * @version 1.0.2
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ class expressionFixedDbVar extends PluginBase
      */
     public function addFixedDbVar()
     {
-        $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
+        $knownVarsToCreate = $this->getAddedVars($this->event->get('surveyId'));
         if (empty($knownVarsToCreate)) {
             return;
         }
@@ -132,7 +132,7 @@ class expressionFixedDbVar extends PluginBase
         if (empty($surveyId)) {
             return;
         }
-        $knownVarsToCreate = $this->_getAddedVars($surveyId);
+        $knownVarsToCreate = $this->getAddedVars($surveyId);
         if (empty($knownVarsToCreate)) {
             return;
         }
@@ -213,7 +213,7 @@ class expressionFixedDbVar extends PluginBase
      * @param integer $surveyId
      * @return string[]
      */
-    private function _getAddedVars($surveyId)
+    private function getAddedVars($surveyId)
     {
         $addedvars = array();
         foreach ($this->settings as $var => $params) {
