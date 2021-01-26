@@ -692,14 +692,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ro']['momentjs'] = 'ro';
 
     // Romansh
-    /*
+    
     $supportedLanguages['roh']['description'] = gT('Romansh');
     $supportedLanguages['roh']['nativedescription'] = 'Rumantsch';
     $supportedLanguages['roh']['rtl'] = false;
     $supportedLanguages['roh']['dateformat'] = 1;
     $supportedLanguages['roh']['radixpoint'] = 1;
     $supportedLanguages['roh']['momentjs'] = null; 
-    */
+    
     
     // Russian
     $supportedLanguages['ru']['description'] = gT('Russian');
