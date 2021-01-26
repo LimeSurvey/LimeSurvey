@@ -6,7 +6,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2016-2020 LimeSurvey team <https://www.limesurvey.org>
  * @license GPL v3
- * @version 0.1.0
+ * @version 1.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,14 +28,14 @@ class oldUrlCompat extends PluginBase
 
     public function init()
     {
-        $this->subscribe('afterPluginLoad', 'oldUrlCompat');
+        $this->subscribe('afterPluginLoad', 'setUrlCompat');
     }
 
     /**
      * Forward survey controller if we are in default controller and a sid GET parameters is set
      * @return void
      */
-    public function oldUrlCompat()
+    public function setUrlCompat()
     {
         if (App()->getController() && App()->getController()->getId() === "surveys" && App()->request->getQuery('sid')) {
             Yii::app()->getController()->forward('survey/index');
