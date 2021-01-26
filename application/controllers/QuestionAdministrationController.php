@@ -98,7 +98,8 @@ class QuestionAdministrationController extends LSBaseController
             [
                 'surveyid' => $oQuestion->sid,
                 'gid' => $oQuestion->gid,
-                'landOnSideMenuTab' => 'structure'
+                'landOnSideMenuTab' => 'structure',
+                'mode' => 'overview',
             ]
         );
 
@@ -128,6 +129,9 @@ class QuestionAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
+
+        // "Directly show edit mode" personal setting
+        $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : $tabOverviewEditor;
 
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
@@ -492,7 +496,8 @@ class QuestionAdministrationController extends LSBaseController
                             [
                                 'surveyid' => $iSurveyId,
                                 'gid' => $question->gid,
-                                'landOnSideMenuTab' => $landOnSideMenuTab
+                                'landOnSideMenuTab' => $landOnSideMenuTab,
+                                'mode' => 'overview',
                             ]
                         );
                         break;
