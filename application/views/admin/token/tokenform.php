@@ -136,7 +136,7 @@ foreach ($tokendata as $Key => $Value) {
                         </div>
                         <?php endif; ?>
                     </div>
-                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo " N "; }?>" />
+                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo "N"; }?>" />
                 </div>
 
             </div>
@@ -293,7 +293,7 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent) && $sent!='N') {echo convertToGlobalSettingFormat($sent,true); } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent) && $sent!='N') {echo convertToGlobalSettingFormat($sent,true); } else {echo "N"; }?>" />
             </div>
             </div>
             <div class="form-group">
@@ -339,7 +339,7 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo convertToGlobalSettingFormat($remindersent,true); } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent) && $remindersent!='N') {echo convertToGlobalSettingFormat($remindersent,true); } else {echo "N"; }?>" />
             </div>
                 
             <!-- Reminder count, Uses left -->
