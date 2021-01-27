@@ -6,10 +6,10 @@
         <div class="lang-hide lang-<?= $lang; ?>">
 
             <div class="panel-body">
-                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                <div class="form-group scope-contains-ckeditor">
                     <div class="ls-flex-row">
                         <div class="ls-flex-item grow-2 text-left">
-                            <label class="col-sm-12"><?= gT('Question'); ?></label>
+                            <label for="<?= "question_{$lang}" ?>" class="col-sm-12"><?= gT('Question'); ?></label>
                         </div>
                     </div>
                     <div class="htmleditor input-group">
@@ -29,10 +29,10 @@
                         ?>
                     </div>
                 </div>
-                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor">
+                <div class="form-group scope-contains-ckeditor">
                     <div class="ls-flex-row">
                         <div class="ls-flex-item grow-2 text-left">
-                            <label class="col-sm-12"><?= gT('Help:'); ?></label>
+                            <label for="<?= "help_{$lang}" ?>" class="col-sm-12"><?= gT('Help:'); ?></label>
                         </div>
                     </div>
                     <div class="htmleditor input-group">
@@ -53,27 +53,29 @@
                     </div>
                 </div>
                 <?php if ($showScriptField): ?>
-                    <div style="height: 300px;">
-                        <label class="col-sm-6">
-                            <?= gT('Script'); ?>
-                        </label>
-                        <div class="col-sm-6 text-right">
-                            <input 
-                                type="checkbox" 
-                                name="scriptForAllLanguages"
-                                id="selector--scriptForAllLanguages"
-                                v-model="scriptForAllLanugages"
-                            />&nbsp;
-                            <label for="selector--scriptForAllLanguages">
-                                <?= gT('Set for all languages'); ?>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="<?= CHtml::getIdByName("questionI10N[{$lang}][script]") ?>" class="col-sm-6">
+                                <?= gT('Script'); ?>
                             </label>
-                        </div>
+                            <div class="col-sm-6 text-right">
+                                <input 
+                                    type="checkbox" 
+                                    name="scriptForAllLanguages"
+                                    id="selector--scriptForAllLanguages"
+                                    v-model="scriptForAllLanugages"
+                                />&nbsp;
+                                <label for="selector--scriptForAllLanguages">
+                                    <?= gT('Set for all languages'); ?>
+                                </label>
+                            </div>
+                        </div> 
 
                         <?= CHtml::textArea(
                             "questionI10N[$lang][script]",
                             !empty($editfile) ? file_get_contents($editfile) : '',
                             [
-                                'id' => "questionI10N[{$lang}][script]",
+                                'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
                                 'rows' => '10',
                                 'cols' => '40',
                                 'data-filetype' => 'javascript',
