@@ -3364,8 +3364,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 429), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
-        //todo change number when ready ...
+
         if ($iOldDBVersion < 430) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
