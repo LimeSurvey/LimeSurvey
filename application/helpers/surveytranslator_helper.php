@@ -111,6 +111,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hy']['radixpoint'] = 1;
     $supportedLanguages['hy']['momentjs'] = 'hy-am';
 
+    // Azerbaijani
+    $supportedLanguages['az']['description'] = gT('Azerbaijani');
+    $supportedLanguages['az']['nativedescription'] = 'Azerbaycanca';
+    $supportedLanguages['az']['rtl'] = false;
+    $supportedLanguages['az']['dateformat'] = 5;
+    $supportedLanguages['az']['radixpoint'] = 1;
+    $supportedLanguages['az']['momentjs'] = 'az';
+
     // Basque
     $supportedLanguages['eu']['description'] = gT('Basque');
     $supportedLanguages['eu']['nativedescription'] = 'Euskara';
@@ -878,7 +886,6 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['tr']['dateformat'] = 5;
     $supportedLanguages['tr']['radixpoint'] = 1;
     $supportedLanguages['tr']['momentjs'] = 'tr';
-    $supportedLanguages['tr']['momentjs'] = 'tr';
 
     //Ukrainian
     $supportedLanguages['uk']['description'] = gT('Ukrainian');
@@ -919,6 +926,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cy']['dateformat'] = 5;
     $supportedLanguages['cy']['radixpoint'] = 0;
     $supportedLanguages['cy']['momentjs'] = 'cy';
+
+    // Azerbaijani
+    $supportedLanguages['sah']['description'] = gT('Yakut');
+    $supportedLanguages['sah']['nativedescription'] = '&#x421;&#x430;&#x445;&#x430; &#x442;&#x44B;&#x43B;&#x430;';
+    $supportedLanguages['sah']['rtl'] = false;
+    $supportedLanguages['sah']['dateformat'] = 5;
+    $supportedLanguages['sah']['radixpoint'] = 1;
+    $supportedLanguages['sah']['momentjs'] = 'null';
+    
 
     // Zulu
     $supportedLanguages['zu']['description'] = gT('Zulu');
