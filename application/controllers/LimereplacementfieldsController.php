@@ -72,7 +72,9 @@ class LimeReplacementFieldsController extends LSBaseController
             $data['replacements'][gT('Survey format')] = $surveyformat;
         }
 
-        $this->renderPartial('/admin/super/_renderJson', ['data' => $data]);
+        $data['replFields'] = $replacementFields;
+        //$this->renderPartial('/admin/super/_renderJson', ['data' => $data]);
+        $this->render('limeReplacementFields_view', $data);
     }
 
     /**
