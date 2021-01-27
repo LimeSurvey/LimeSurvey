@@ -34,8 +34,8 @@
                         <li role="presentation">
                     <?php endif; ?>
                         <a
-                            href="#<?= $category; ?>"
-                            aria-controls="<?= $category; ?>"
+                            href="#<?= CHtml::getIdByName($category); ?>"
+                            aria-controls="<?= CHtml::getIdByName($category); ?>"
                             role="tab"
                             data-toggle="tab"
                             >
@@ -89,9 +89,9 @@
                 <?php endif; ?>
                 <?php foreach ($advancedSettings as $category => $settings): ?>
                     <?php if ($category === 'Display'): ?>
-                        <div role="tabpanel" class="tab-pane active" id="<?= $category; ?>">
+                        <div role="tabpanel" class="tab-pane active" id="<?= CHtml::getIdByName($category); ?>">
                     <?php else: ?>
-                        <div role="tabpanel" class="tab-pane" id="<?= $category; ?>">
+                        <div role="tabpanel" class="tab-pane" id="<?= CHtml::getIdByName($category); ?>">
                     <?php endif; ?>
                         <?php foreach ($settings as $setting): ?>
                             <?php $this->widget('ext.AdvancedSettingWidget.AdvancedSettingWidget', ['setting' => $setting, 'survey' => $oSurvey]); ?>
