@@ -675,7 +675,7 @@
             </optgroup>
             </dropdownoptions>
         </font>
-        <cssframework type="dropdown" category="Fonts" width="12" title="Variations" parent="cssframework">noto
+        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
             <dropdownoptions>
                 <option value="css/variations/sea_green.css">Sea Green</option>
                 <option value="css/variations/apple_blossom.css">Apple Blossom</option>
@@ -684,7 +684,7 @@
                 <option value="css/variations/free_magenta.css">Free Magenta</option>
                 <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
                 <option value="css/variations/sunset_orange.css">Sunset Orange</option>
-                <option value="css/variations/skyline_blue.css">Skyline Blue</option>';
+                <option value="css/variations/skyline_blue.css">Skyline Blue</option>
             </dropdownoptions>
         </cssframework>
     </options>
