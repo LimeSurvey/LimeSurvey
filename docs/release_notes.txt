@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.9 (build 210125) to 3.25.10 (build 210128) January 28, 2021
+-Fixed issue #17007: bug on invitation+reminder dates when creating a new token using GUI (Gabriel Jenik)
+#Updated translation: Tamil by yoavgross
+#Updated translation: Romansh by cdorin
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
 Changes from 3.25.8 (build 210118) to 3.25.9 (build 210125) January 25, 2021
 -Fixed issue #16481: Easy way to launch CDBException (#1480) (Denis Chenu)
 -Fixed issue #15612: Public stats didn't have any theme part, graphic is broken (#1717) (Gabriel Jenik)
