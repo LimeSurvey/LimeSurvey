@@ -15,7 +15,7 @@
                     class="form-control"
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
                     id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>][<?= $lang; ?>]"
-                    value="<?= $this->setting[$lang]['value']; ?>"
+                    value="<?= CHtml::encode($this->setting[$lang]['value']); ?>"
                 />
             </div>
         <?php endforeach; ?>
@@ -25,7 +25,7 @@
           class="form-control"
           name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
           id="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-          value="<?= $this->setting['value']; ?>"
+          value="<?= CHtml::encode($this->setting['value']); ?>"
       />
     <?php endif; ?>
 

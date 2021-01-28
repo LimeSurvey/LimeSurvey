@@ -5,9 +5,9 @@
 >
     <?php foreach ($this->setting['options'] as $value => $text) : ?>
         <?php if ($this->setting['value'] == $value): ?>
-            <option selected="selected" value="<?= $value; ?>">
+            <option selected="selected" value="<?= CHtml::encode($value); ?>">
         <?php else: ?>
-            <option value="<?= $value; ?>">
+            <option value="<?= CHtml::encode($value); ?>">
         <?php endif; ?>
         <?= $text; ?>
         </option>

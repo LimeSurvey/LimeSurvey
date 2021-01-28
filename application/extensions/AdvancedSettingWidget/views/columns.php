@@ -8,7 +8,7 @@
         type="number"
         class="form-control" 
         name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-        value="<?= $this->setting['value']; ?>"
+        value="<?= CHtml::encode($this->setting['value']); ?>"
         max="12"
         min="1"
     />
