@@ -5,7 +5,7 @@
                 <input 
                     type="radio" 
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="<?= $value; ?>"
+                    value="<?= CHtml::encode($value); ?>"
                     checked
                 />
                 <?= $text; ?>
@@ -15,7 +15,7 @@
                 <input 
                     type="radio" 
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="<?= $value; ?>"
+                    value="<?= CHtml::encode($value); ?>"
                 />
                 <?= $text; ?>
             </label>

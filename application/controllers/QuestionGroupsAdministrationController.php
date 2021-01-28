@@ -77,11 +77,25 @@ class QuestionGroupsAdministrationController extends LSBaseController
      * @param int $surveyid    survey id is important here for new questiongroups without groupid
      * @param int $gid
      * @param string $landOnSideMenuTab
+     * @param string $mode  either 'overview' or 'auto'. The 'overview' mode ignores the 'noViewMode' user setting
      *
      * * @return void
      */
-    public function actionView($surveyid, $gid, $landOnSideMenuTab = 'structure')
+    public function actionView($surveyid, $gid, $landOnSideMenuTab = 'structure', $mode = 'auto')
     {
+        if ($mode != 'overview' && SettingsUser::getUserSettingValue('noViewMode', App()->user->id)) {
+            $this->redirect(
+                Yii::app()->createUrl(
+                    'questionGroupsAdministration/edit/',
+                    [
+                        'surveyid' => $surveyid,
+                        'gid' => $gid,
+                        'landOnSideMenuTab' => 'structure'
+                    ]
+                )
+            );
+        }
+
         //check permissions for view and create groups ...
         if ($gid === null) { //this is the case when new questiongroup should be created
             if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
@@ -213,7 +227,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
             [
                 'surveyid' => $surveyid,
                 'gid' => $oQuestionGroup->gid,
-                'landOnSideMenuTab' => $landOnSideMenuTab
+                'landOnSideMenuTab' => $landOnSideMenuTab,
+                'mode' => 'overview',
             ]
         );
 
@@ -753,7 +768,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
                     [
                         'surveyid' => $iSurveyId,
                         'gid' => $oQuestionGroup->gid,
-                        'landOnSideMenuTab' => $landOnSideMenuTab
+                        'landOnSideMenuTab' => $landOnSideMenuTab,
+                        'mode' => 'overview',
                     ]
                 );
                 break;

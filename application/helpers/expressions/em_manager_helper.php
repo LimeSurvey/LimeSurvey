@@ -6990,7 +6990,7 @@ class LimeExpressionManager
                 /**
                  * $afHide - if true, then use jQuery.relevanceOn().  If false, then disable/enable the row
                  */
-                $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
+                $afHide = empty($LEM->qattr[$arg['qid']]['array_filter_style']); // 0, null, empty string, not set => hidden, else disabled
                 $updateColors = false;
                 $updateHeadings = false;
                 $repeatheadings = Yii::app()->getConfig("repeatheadings");
