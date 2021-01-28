@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -43,7 +45,7 @@ class LSYii_ImageValidator
         }
 
         /** @var array<string, mixed> */
-        $result =[];
+        $result = [];
 
         /** @var ?? */
         $checkImage = CFileHelper::getMimeType($path);
@@ -62,10 +64,12 @@ class LSYii_ImageValidator
             "image/vnd.microsoft.icon"
         );
 
-        if (!empty($checkImage)
-            && in_array($extension,explode(",",Yii::app()->getConfig('allowedthemeimageformats')))
+        if (
+            !empty($checkImage)
+            && in_array($extension, explode(",", Yii::app()->getConfig('allowedthemeimageformats')))
             && in_array($checkImage, $allowedImageFormats)
-            && in_array(strtolower($type), $allowedImageFormats)) {
+            && in_array(strtolower($type), $allowedImageFormats)
+        ) {
             $result['uploadresult'] = '';
             $result['check'] = true;
         } else {

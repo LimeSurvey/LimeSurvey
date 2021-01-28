@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -62,13 +60,13 @@ class RenderListRadio extends QuestionBaseRenderer
     public function renderRowsArray()
     {
         $aRows = [];
-        foreach ($this->aAnswerOptions[0] as $iterator=>$oAnswer) {
-            $aRows[] = Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row', array(
+        foreach ($this->aAnswerOptions[0] as $iterator => $oAnswer) {
+            $aRows[] = Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row', array(
                 'name'          => $this->sSGQA,
                 'code'          => $oAnswer->code,
                 'answer'        => $oAnswer->answerl10ns[$this->sLanguage]->answer,
                 'checkedState'  => ($this->mSessionValue == $oAnswer->code ? 'CHECKED' : ''),
-                'myfname'       => $this->sSGQA.$oAnswer->code,
+                'myfname'       => $this->sSGQA . $oAnswer->code,
                 ), true);
         }
 
@@ -97,10 +95,10 @@ class RenderListRadio extends QuestionBaseRenderer
             // and if this is the first answer row, or if the column has been closed and the row count reset before.
             if ($this->iRowCount == 1) {
                 $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                        $this->getMainView().'/columns/column_header',
-                        array('iColumnWidth' => $this->iColumnWidth),
-                        true
-                    );
+                    $this->getMainView() . '/columns/column_header',
+                    array('iColumnWidth' => $this->iColumnWidth),
+                    true
+                );
                 $this->bColumnIsOpen  = true; // If a column is not closed, it will be closed at the end of the process
             }
         
@@ -118,10 +116,10 @@ class RenderListRadio extends QuestionBaseRenderer
             if ($this->iRowCount == $this->iMaxRowsByColumn) {
                 $last      = ($iterator == $this->getAnswerCount()) ? true : false; // If this loop count equal to the number of answers, then this answer is the last one.
                 $sRows  .= Yii::app()->twigRenderer->renderQuestion(
-                        $this->getMainView().'/columns/column_footer',
-                        array('last'=>$last),
-                        true
-                    );
+                    $this->getMainView() . '/columns/column_footer',
+                    array('last' => $last),
+                    true
+                );
                 $this->iRowCount = 0;
                 $this->bColumnIsOpen    = false;
             }
@@ -138,10 +136,10 @@ class RenderListRadio extends QuestionBaseRenderer
             $check_ans = '';
         }
 
-        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row_noanswer', array(
-            'name'=>$this->sSGQA,
-            'check_ans'=>$check_ans,
-            'checkconditionFunction'=>$this->checkconditionFunction,
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_noanswer', array(
+            'name' => $this->sSGQA,
+            'check_ans' => $check_ans,
+            'checkconditionFunction' => $this->checkconditionFunction,
             ), true);
     }
 
@@ -153,28 +151,28 @@ class RenderListRadio extends QuestionBaseRenderer
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
-        $myfname = $thisfieldname = $this->sSGQA.'other';
+        $myfname = $thisfieldname = $this->sSGQA . 'other';
 
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) {
-            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
+        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname])) {
+            $dispVal = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$thisfieldname];
             if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
-            $answer_other = ' value="'.htmlspecialchars($dispVal, ENT_QUOTES).'"';
+            $answer_other = ' value="' . htmlspecialchars($dispVal, ENT_QUOTES) . '"';
         } else {
             $answer_other = ' value=""';
         }
 
         $this->inputnames[] = $thisfieldname;
         
-        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row_other', array(
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/answer_row_other', array(
             'name' => $this->sSGQA,
-            'answer_other'=>$answer_other,
-            'myfname'=>$myfname,
-            'othertext'=>$this->sOthertext,
-            'checkedState'=>$checkedState,
-            'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
-            'checkconditionFunction'=>$this->checkconditionFunction,
+            'answer_other' => $answer_other,
+            'myfname' => $myfname,
+            'othertext' => $this->sOthertext,
+            'checkedState' => $checkedState,
+            'oth_checkconditionFunction' => $oth_checkconditionFunction . '(this.value, this.name, this.type)',
+            'checkconditionFunction' => $this->checkconditionFunction,
             ), true);
     }
 
@@ -183,13 +181,13 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         $answer = '';
         $this->inputnames[] = $this->sSGQA;
-        $this->sCoreClass .= " ".$sCoreClasses;
+        $this->sCoreClass .= " " . $sCoreClasses;
 
         if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sRows'     => $this->getRows(),
             'name'      => $this->sSGQA,
             'basename'  => $this->sSGQA,
@@ -202,7 +200,7 @@ class RenderListRadio extends QuestionBaseRenderer
     }
 
 
-    protected function getAnswerCount($iScaleId=0)
+    protected function getAnswerCount($iScaleId = 0)
     {
         // Getting answerrcount
         $anscount  = count($this->aAnswerOptions[0]);

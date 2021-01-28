@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -67,7 +66,7 @@ class QuestionL10n extends LSActiveRecord
      */
     public function defaultScope()
     {
-        return array('index'=>'language');
+        return array('index' => 'language');
     }
 
     /** @inheritdoc */
@@ -75,11 +74,11 @@ class QuestionL10n extends LSActiveRecord
     {
         $rules = array(
             ['qid,language', 'required'],
-            ['qid', 'numerical', 'integerOnly'=>true],
+            ['qid', 'numerical', 'integerOnly' => true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
             array('script', 'LSYii_Validators'),
-            array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
+            array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
         );
         if (!Yii::app()->user->isScriptUpdateAllowed()) {
             $rules[] = array('script', 'LSYii_NoUpdateValidator');

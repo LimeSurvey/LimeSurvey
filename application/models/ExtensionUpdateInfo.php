@@ -49,7 +49,7 @@ class ExtensionUpdateInfo
     }
 
     /**
-     * 
+     *
      */
     public function versionIsSecurityUpdate()
     {

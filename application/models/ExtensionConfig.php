@@ -23,7 +23,7 @@ class ExtensionConfig
     public $xml;
 
     /**
-     * 
+     *
      */
     public function __construct(SimpleXMLElement $xml)
     {

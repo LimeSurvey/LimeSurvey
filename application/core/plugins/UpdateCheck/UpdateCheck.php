@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-use \LimeSurvey\Menu\Menu;
+use LimeSurvey\Menu\Menu;
 
 /**
  * Plugin to check for extension updates after a super admin logs in.
@@ -29,6 +29,9 @@ class UpdateCheck extends PluginBase
      * @var string
      */
     protected $storage = 'DbStorage';
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array('checkAll');
 
     /**
      * @return void
@@ -69,7 +72,6 @@ class UpdateCheck extends PluginBase
         $doUpdateCheckFlag = Yii::app()->session['do_extensions_update_check'];
 
         if ($controller == 'admin' && $doUpdateCheckFlag) {
-
             // Render some JavaScript that will Ajax call update check.
             $this->spitOutUrl();
             $this->registerMyScript();

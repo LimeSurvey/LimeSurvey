@@ -19,16 +19,16 @@ class SurveysController extends LSYii_Controller
 
     public function actionPublicList($lang = null)
     {
-            if ( !empty($lang) ) {
-                // Validate if languages exists and fall back to default lang if needed
-                $aLanguages = getLanguageDataRestricted( false,'short' );
-                if ( !isset($aLanguages[ $lang ]) ) {
-                    $lang=App()->getConfig( 'defaultlang' );
-                }
-            } else {
-                $lang=App()->getConfig( 'defaultlang' );
+        if (!empty($lang)) {
+            // Validate if languages exists and fall back to default lang if needed
+            $aLanguages = getLanguageDataRestricted(false, 'short');
+            if (!isset($aLanguages[ $lang ])) {
+                $lang = App()->getConfig('defaultlang');
             }
-            App()->setLanguage( $lang );
+        } else {
+            $lang = App()->getConfig('defaultlang');
+        }
+            App()->setLanguage($lang);
 
 
         $oTemplate       = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
@@ -53,14 +53,14 @@ class SurveysController extends LSYii_Controller
             $aData['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
 
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
 
         // maintenance mode
         $sMaintenanceMode = getGlobalSetting('maintenancemode');
         if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft') {
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo'=>$aData), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo' => $aData), false);
         } else {
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo' => $aData), false);
         }
     }
 
@@ -137,7 +137,7 @@ class SurveysController extends LSYii_Controller
                 break;
             case '404':
                 $title = gT('404: Not Found');
-                $message = gT('The requested URL was not found on this server.')." \n"
+                $message = gT('The requested URL was not found on this server.') . " \n"
                     . gT('If you entered the URL manually please check your spelling and try again.');
                 break;
             case '500':

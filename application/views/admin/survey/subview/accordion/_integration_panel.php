@@ -13,8 +13,17 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
 ?>
   <!-- Datatable translation-data -->
   <!-- Container -->
-<div class="simpleContainer" id="vue-parameter-table-container">
-  <lspanelparametertable />
+  <div id='panelintegration' class=" tab-pane fade in text-center" >
+    <div class="container-center">
+        <div class="row">
+            <table id="urlparams" class='table dataTable table-striped table-borders' >
+            <thead><tr>
+                <th></th><th><?php eT('Action');?></th><th><?php eT('Parameter');?></th><th><?php eT('Target question');?></th><th></th><th></th><th></th>
+            </tr></thead>
+            </table>
+            <input type='hidden' id='allurlparams' name='allurlparams' value='' />
+        </div>
+    </div>
 </div>
 
 <?php  
@@ -22,3 +31,7 @@ echo viewHelper::getViewTestTag('surveyPanelIntegration');
     window.PanelIntegrationData = ".json_encode($jsData).";
     ", LSYii_ClientScript::POS_BEGIN ); 
 ?> 
+
+<!-- Modal box to add a parameter -->
+<!--div data-copy="submitsurveybutton"></div-->
+<?php $this->renderPartial('addPanelIntegrationParameter_view', array('questions' => $questions)); ?>

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -40,19 +42,19 @@ class viewHelper
         } else {
             $linkUrl = "#";
         }
-        $output = '<a href="'.$linkUrl;
+        $output = '<a href="' . $linkUrl;
         if (!empty($linkClass)) {
-            $output .= '" class="'.$linkClass.'"';
+            $output .= '" class="' . $linkClass . '"';
         }
         if (!empty($linkTarget)) {
-            $output .= ' target="'.$linkTarget.'"';
+            $output .= ' target="' . $linkTarget . '"';
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' '.$attrib.'="'.str_replace('"', '&quot;', $value).'"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
             }
         }
-        $output .= '><img src="'.Yii::app()->getConfig('adminimageurl').$imgName.'" alt="'.$linkTxt.'" title="'.$linkTxt.'"></a>';
+        $output .= '><img src="' . Yii::app()->getConfig('adminimageurl') . $imgName . '" alt="' . $linkTxt . '" title="' . $linkTxt . '"></a>';
 
         return $output;
     }
@@ -77,19 +79,19 @@ class viewHelper
         } else {
             $linkUrl = "#";
         }
-        $output = '<a href="'.$linkUrl;
+        $output = '<a href="' . $linkUrl;
         if (!empty($linkClass)) {
-            $output .= '" class="'.$linkClass.'"';
+            $output .= '" class="' . $linkClass . '"';
         }
         if (!empty($linkTarget)) {
-            $output .= ' target="'.$linkTarget.'"';
+            $output .= ' target="' . $linkTarget . '"';
         }
         if (!empty($attribs)) {
             foreach ($attribs as $attrib => $value) {
-                $output .= ' '.$attrib.'="'.str_replace('"', '&quot;', $value).'"';
+                $output .= ' ' . $attrib . '="' . str_replace('"', '&quot;', $value) . '"';
             }
         }
-        $output .= '><span class="'.$icoClasses.'"></span></a>';
+        $output .= '><span class="' . $icoClasses . '"></span></a>';
 
         return $output;
     }
@@ -108,11 +110,11 @@ class viewHelper
     {
         // Default options
         $aDefaultOption = array(
-            'flat'=>true,
-            'separator'=>array('(', ')'),
-            'abbreviated'=>false,
-            'afterquestion'=>" ",
-            'ellipsis'=>'...', // more for export or option, less for HTML display
+            'flat' => true,
+            'separator' => array('(', ')'),
+            'abbreviated' => false,
+            'afterquestion' => " ",
+            'ellipsis' => '...', // more for export or option, less for HTML display
             );
         $aOption = array_merge($aDefaultOption, $aOption);
 
@@ -121,7 +123,7 @@ class viewHelper
             $sQuestionText = self::flatEllipsizeText(isset($aField['answertabledefinition']) ? $aField['answertabledefinition'] : $aField['question'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']);
             // Did this question have sub question, maybe not needed, think only isset is OK
             $bHaveSubQuestion = isset($aField['aid']) && $aField['aid'] != "";
-            if($bHaveSubQuestion) {
+            if ($bHaveSubQuestion) {
                 $sQuestionText .= $aOption['afterquestion'];
             }
             if (isset($aField['subquestion']) && $bHaveSubQuestion) {
@@ -134,7 +136,8 @@ class viewHelper
                 $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['subquestion2'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
             }
             if (isset($aField['scale']) && $aField['scale']) {
-                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['scale'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']); ;
+                $sQuestionText .= self::putSeparator(self::flatEllipsizeText($aField['scale'], $aOption['flat'], $aOption['abbreviated'], $aOption['ellipsis']), $aOption['separator']);
+                ;
             }
         }
 
@@ -154,11 +157,13 @@ class viewHelper
     {
         // Default options
         $aDefaultOption = array(
-            'LEMcompat'=>false,
-            'separator'=>array('[', ']'),
+            'LEMcompat' => false,
+            'separator' => array('[', ']'),
             );
         $aOption = array_merge($aDefaultOption, $aOption);
-        if ($aOption['LEMcompat']) {$aOption['separator'] = "_"; }
+        if ($aOption['LEMcompat']) {
+            $aOption['separator'] = "_";
+        }
 
         $sQuestionCode = "";
         if (isset($aField['fieldname'])) {
@@ -193,9 +198,9 @@ class viewHelper
     public static function putSeparator($sString, $separator)
     {
         if (is_array($separator)) {
-            return $separator[0].$sString.$separator[1];
+            return $separator[0] . $sString . $separator[1];
         } else {
-            return $separator.$sString;
+            return $separator . $sString;
         }
     }
 
@@ -233,7 +238,7 @@ class viewHelper
     public static function disableHtmlLogging()
     {
         foreach (App()->log->routes as $route) {
-            $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+            $route->enabled = $route->enabled && !($route instanceof CWebLogRoute);
         }
     }
 
@@ -272,8 +277,8 @@ class viewHelper
     {
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
-            'HTML.Allowed'=>'',
-            'Output.Newline'=> ' '
+            'HTML.Allowed' => '',
+            'Output.Newline' => ' '
         );
         return $oPurifier->purify($sHtml);
     }
@@ -287,8 +292,8 @@ class viewHelper
     {
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
-            'HTML.Allowed'=>'span[title|class],a[class|title|href]',
-            'Attr.AllowedClasses'=>array(
+            'HTML.Allowed' => 'span[title|class],a[class|title|href]',
+            'Attr.AllowedClasses' => array(
                 'em-expression',
                 'em-haveerror',
                 'em-var-string',
@@ -302,7 +307,7 @@ class viewHelper
                 'em-error',
                 'em-warning',
             ),
-            'URI.AllowedSchemes'=>array( // Maybe only local ?
+            'URI.AllowedSchemes' => array( // Maybe only local ?
                 'http' => true,
                 'https' => true,
                 )
@@ -330,5 +335,4 @@ class viewHelper
     {
         return sprintf('<x-test id="action::%s"></x-test>', $name);
     }
-
 }

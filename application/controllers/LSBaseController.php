@@ -9,7 +9,7 @@
  */
 class LSBaseController extends LSYii_Controller
 {
-    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here ...
+    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here
     /** @var null  this is needed for the preview rendering inside the questioneditor */
     public $sTemplate = null;
 
@@ -38,81 +38,41 @@ class LSBaseController extends LSYii_Controller
 
         $this->userId = Yii::app()->user->getId();
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
+        if (!Yii::app()->getConfig("surveyid")) {
+            Yii::app()->setConfig("surveyid", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("surveyID")) {
+            Yii::app()->setConfig("surveyID", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {
+            Yii::app()->setConfig("ugid", returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {
+            Yii::app()->setConfig("gid", returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {
+            Yii::app()->setConfig("qid", returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {
+            Yii::app()->setConfig("lid", returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {
+            Yii::app()->setConfig("code", returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig("action")) {
+            Yii::app()->setConfig("action", returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {
+            Yii::app()->setConfig("subaction", returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {
+            Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
+        } // for html editor integration
 
         // This line is needed for template editor to work
         AdminTheme::getInstance();
 
         Yii::setPathOfAlias('lsadminmodules', Yii::app()->getConfig('lsadminmodulesrootdir'));
-    }
-
-    /**
-     * Validate params used for sid, gid and qid. Validate if qid is included in gid is included in sid.
-     * Validate if final survey exist
-     * Currently : used by QuestionEditorController
-     * @param integer|mixed $sid : sid param to be controlled. If invalid (not an integer) : throw a 404
-     * @param integer|mixed $gid : gid param to be controlled. If invalid (not an integer) : throw a 404
-     * @param integer|mixed $qid : qid param to be controlled. If invalid (not an integer) : throw a 404
-     * @Throw CHttpException
-     * @return false|integer the existing sid related to current params.
-     */
-    protected function getValidatedSurveyId($sid = null, $gid = null, $qid = null)
-    {
-        $oQuestion = null;
-        if ($qid) {
-            $oQuestion = Question::model()->findByPk($qid);
-            if(!$oQuestion) {
-                throw new CHttpException(404);
-            }
-        }
-        $oGroup = null;
-        if ($gid) {
-            $oGroup = QuestionGroup::model()->findByPk($gid);
-            if(!$oGroup) {
-                throw new CHttpException(404);
-            }
-            if ($oQuestion && $gid != $oQuestion->gid) {
-                // Try to hack : 400
-                throw new CHttpException(400);
-            }
-        }
-
-        $surveyId = false;
-        if(is_null($sid)) {
-            /* @todo : rempove this to move to params of function */
-            $sid = App()->request->getParam('sid', App()->request->getParam('surveyid'));
-        }
-        if ($sid) {
-            $oSurvey = Survey::model()->findByPk($sid);
-            if (!$oSurvey) {
-                throw new CHttpException(404);
-            }
-            if ($oQuestion && $sid != $oQuestion->sid) {
-                // Try to hack : 400
-                throw new CHttpException(400);
-            }
-            if ($oGroup && $sid != $oGroup->sid) {
-                // Try to hack : 400
-                throw new CHttpException(400);
-            }
-            $surveyId = $sid;
-        } else {
-            if (!empty($oQuestion)) {
-                $surveyId = $oQuestion->sid;
-            } elseif (!empty($oGroup)) {
-                $surveyId = $oGroup->sid;
-            }
-        }
-        return $surveyId;
     }
 
     /**
@@ -196,6 +156,7 @@ class LSBaseController extends LSYii_Controller
                 }
             }
         }
+
         parent::run($action);
     }
 
@@ -237,7 +198,7 @@ class LSBaseController extends LSYii_Controller
      * @param array $aData
      * @return void
      */
-    protected function renderJSON($aData, $success=true)
+    protected function renderJSON($aData, $success = true)
     {
         $aData['success'] = $aData['success'] ?? $success;
 

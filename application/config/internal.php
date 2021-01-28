@@ -98,6 +98,8 @@ $internalConfig = array(
         'application.core.*',
         'application.core.db.*',
         'application.models.*',
+        'application.models.Interfaces.*',
+        'application.models.Traits.*',
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',

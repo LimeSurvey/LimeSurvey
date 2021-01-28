@@ -160,7 +160,6 @@ const runBuild = function() {
     const ckEditorUsersArray = [
         ['datasecuritysettings', 'assets/packages/datasecuritysettings/'],
         ['emailtemplates', 'assets/packages/emailtemplates/'],
-        ['labelsets', 'assets/packages/labelsets/'],
         ['questioneditor', 'assets/packages/questioneditor/'],
         ['questiongroup', 'assets/packages/questiongroup/'],
         ['panelintegration', 'assets/packages/questiongroup/'],
@@ -174,7 +173,6 @@ const runBuild = function() {
         ['emailtemplates', 'assets/packages/emailtemplates/'],
         ['embeddables', 'assets/packages/embeddables/'],
         ['filemanager', 'assets/packages/filemanager/'],
-        ['labelsets', 'assets/packages/labelsets/'],
         ['lstutorial', 'assets/packages/lstutorial/'],
         ['panelintegration', 'assets/packages/panelintegration/'],
         ['questioneditor', 'assets/packages/questioneditor/'],
@@ -219,7 +217,6 @@ if(!single) {
             }
         },
         Promise.all([
-            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
             runGetDependenciesInFolder('assets/packages/meta/LSRTLPlugin')
         ])
     );
@@ -274,7 +271,6 @@ if(!single) {
             }
         },
         Promise.all([
-            runGetDependenciesInFolder('assets/packages/meta/LsCkeditor'),
             runGetDependenciesInFolder('assets/packages/meta/LSRTLPlugin')
         ])
     );

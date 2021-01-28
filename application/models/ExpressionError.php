@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -64,5 +63,4 @@ class ExpressionError extends LSActiveRecord
     {
         return $this->db->insert('expression_errors', $data);
     }
-
 }

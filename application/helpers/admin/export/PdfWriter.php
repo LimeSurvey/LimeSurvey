@@ -1,4 +1,5 @@
 <?php
+
 class PdfWriter extends Writer
 {
     private $pdf;
@@ -43,7 +44,7 @@ class PdfWriter extends Writer
         if ($oOptions->answerFormat == 'short') {
             $pdfstring = '';
             foreach ($values as $value) {
-                $pdfstring .= $value.' | ';
+                $pdfstring .= $value . ' | ';
             }
             $this->pdf->intopdf($pdfstring);
         } elseif ($oOptions->answerFormat == 'long') {
@@ -62,9 +63,8 @@ class PdfWriter extends Writer
                 }
             }
         } else {
-            safeDie('An invalid answer format was encountered: '.$oOptions->answerFormat);
+            safeDie('An invalid answer format was encountered: ' . $oOptions->answerFormat);
         }
-
     }
 
     public function close()
@@ -74,7 +74,7 @@ class PdfWriter extends Writer
             $filename = $this->filename;
         } else {
             //Presuming this else branch is a send to client via HTTP.
-            $filename = $this->translate($this->surveyName, $this->languageCode).'.pdf';
+            $filename = $this->translate($this->surveyName, $this->languageCode) . '.pdf';
         }
         $this->pdf->Output($filename, $this->pdfDestination);
     }

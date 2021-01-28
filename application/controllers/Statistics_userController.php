@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -225,18 +226,15 @@ class Statistics_userController extends SurveyController
 
             //loop through all selected questions
             foreach ($runthrough as $rt) {
-
                 //update progress bar
                 if ($process_status < 100) {
                     $process_status++;
                 }
                 //~ $prb->moveStep($process_status);
-
             }    // end foreach -> loop through all questions
 
             $helper = new userstatistics_helper();
             $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null, $sLanguage, false);
-
         }    //end if -> show summary results
 
         $data['statisticsoutput'] = $statisticsoutput;
@@ -368,7 +366,6 @@ class Statistics_userController extends SurveyController
                 default:   //Default settings
                     $allfields[] = $SGQidentifier;
                     break;
-
             }    //end switch -> check question types and create filter forms
         }
 

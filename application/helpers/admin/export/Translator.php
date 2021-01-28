@@ -1,4 +1,5 @@
 <?php
+
 class Translator
 {
     //An associative array:  key = language code, value = translation library

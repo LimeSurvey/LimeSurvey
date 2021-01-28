@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -26,20 +25,20 @@ class Index extends Survey_Common_Action
         }
 
         // We get the last survey visited by user
-        $setting_entry = 'last_survey_'.Yii::app()->user->getId();
+        $setting_entry = 'last_survey_' . Yii::app()->user->getId();
         $lastsurvey = getGlobalSetting($setting_entry);
         if ($lastsurvey) {
             try {
                 $survey = Survey::model()->findByPk($lastsurvey);
-                if ($survey){
+                if ($survey) {
                     $aData['showLastSurvey'] = true;
                     $iSurveyID = $lastsurvey;
-                    $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-                    $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
+                    $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
+                    $aData['surveyUrl'] = $this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}");
                 } else {
                     $aData['showLastSurvey'] = false;
                 }
-            } catch(Exception $e){
+            } catch (Exception $e) {
                 $aData['showLastSurvey'] = false;
             }
         } else {
@@ -47,19 +46,19 @@ class Index extends Survey_Common_Action
         }
 
         // We get the last question visited by user
-        $setting_entry = 'last_question_'.Yii::app()->user->getId();
+        $setting_entry = 'last_question_' . Yii::app()->user->getId();
         $lastquestion = getGlobalSetting($setting_entry);
 
         // the question group of this question
-        $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
+        $setting_entry = 'last_question_gid_' . Yii::app()->user->getId();
         $lastquestiongroup = getGlobalSetting($setting_entry);
 
         // the sid of this question : last_question_sid_1
-        $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
+        $setting_entry = 'last_question_sid_' . Yii::app()->user->getId();
         $lastquestionsid = getGlobalSetting($setting_entry);
         if ($lastquestion && $lastquestiongroup && $lastquestionsid) {
             $survey = Survey::model()->findByPk($lastquestionsid);
-            if ($survey){
+            if ($survey) {
                 $baselang = $survey->language;
                 $aData['showLastQuestion'] = true;
                 $qid = $lastquestion;
@@ -69,16 +68,15 @@ class Index extends Survey_Common_Action
                 if ($qrrow) {
                     $aData['last_question_name'] = $qrrow['title'];
                     if (!empty($qrrow->questionl10ns[$baselang]['question'])) {
-                        $aData['last_question_name'] .= ' : '.$qrrow->questionl10ns[$baselang]['question'];
+                        $aData['last_question_name'] .= ' : ' . $qrrow->questionl10ns[$baselang]['question'];
                     }
-                    $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
+                    $aData['last_question_link'] = $this->getController()->createUrl("questionAdministration/view/surveyid/$sid/gid/$gid/qid/$qid");
                 } else {
                     $aData['showLastQuestion'] = false;
                 }
             } else {
                 $aData['showLastQuestion'] = false;
             }
-
         } else {
             $aData['showLastQuestion'] = false;
         }
@@ -96,5 +94,4 @@ class Index extends Survey_Common_Action
         $aData['bBoxesInContainer'] = (getGlobalSetting('boxes_in_container') == 'yes');
         $this->_renderWrappedTemplate('super', 'welcome', $aData);
     }
-
 }

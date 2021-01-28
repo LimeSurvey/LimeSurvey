@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -67,7 +66,7 @@ class SurveyLink extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Particiant', 'participant_id'),
-            'survey' => array(self::HAS_ONE, 'Survey', array('sid'=>'survey_id'))
+            'survey' => array(self::HAS_ONE, 'Survey', array('sid' => 'survey_id'))
         );
     }
 
@@ -88,9 +87,9 @@ class SurveyLink extends LSActiveRecord
     public function rebuildLinksFromTokenTable($iSurveyId)
     {
         $this->deleteLinksBySurvey($iSurveyId);
-        $tableName = "{{tokens_".$iSurveyId."}}";
+        $tableName = "{{tokens_" . $iSurveyId . "}}";
         $dateCreated = date('Y-m-d H:i:s', time());
-        $query = "INSERT INTO ".SurveyLink::tableName()." (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '".$iSurveyId."', '".$dateCreated."' FROM ".$tableName." WHERE participant_id IS NOT NULL";
+        $query = "INSERT INTO " . SurveyLink::tableName() . " (participant_id, token_id, survey_id, date_created) SELECT participant_id, tid, '" . $iSurveyId . "', '" . $dateCreated . "' FROM " . $tableName . " WHERE participant_id IS NOT NULL";
         return Yii::app()->db->createCommand($query)
                     ->query();
     }
@@ -109,8 +108,8 @@ class SurveyLink extends LSActiveRecord
      */
     function deleteTokenLink($aTokenIds, $surveyId)
     {
-        $query = "DELETE FROM ".SurveyLink::tableName()
-            ." WHERE token_id IN (".implode(", ", $aTokenIds).") AND survey_id=:survey_id";
+        $query = "DELETE FROM " . SurveyLink::tableName()
+            . " WHERE token_id IN (" . implode(", ", $aTokenIds) . ") AND survey_id=:survey_id";
         return Yii::app()->db->createCommand($query)
                     ->bindParam(":survey_id", $surveyId)
                     ->query();
@@ -126,7 +125,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function deleteLinksBySurvey($surveyId)
     {
-        $query = "DELETE FROM ".SurveyLink::tableName()." WHERE survey_id = :survey_id";
+        $query = "DELETE FROM " . SurveyLink::tableName() . " WHERE survey_id = :survey_id";
         return Yii::app()->db->createCommand($query)
                     ->bindParam(":survey_id", $surveyId)
                     ->query();
@@ -224,7 +223,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getCheckbox()
     {
-        return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[".$this->token_id.",".$this->survey_id.",\"".$this->participant_id."\"]' />";
+        return "<input type='checkbox' class='selector_toggleAllParticipantSurveys' value='[" . $this->token_id . "," . $this->survey_id . ",\"" . $this->participant_id . "\"]' />";
     }
 
     /** @inheritdoc */
@@ -298,14 +297,14 @@ class SurveyLink extends LSActiveRecord
      */
     public function search()
     {
-        $criteria = new CDbCriteria;
-        $sort = new CSort;
+        $criteria = new CDbCriteria();
+        $sort = new CSort();
 
         $criteria->compare('participant_id', $this->participant_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-            'sort'=>$sort,
+            'criteria' => $criteria,
+            'sort' => $sort,
             'pagination' => false
         ));
     }
@@ -316,7 +315,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyIdLink()
     {
-        $url = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/'.$this->survey_id);
+        $url = Yii::app()->getController()->createUrl('surveyAdministration/view/surveyid/' . $this->survey_id);
         $link = CHtml::link($this->survey_id, $url);
         return $link;
     }

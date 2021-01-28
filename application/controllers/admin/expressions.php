@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -38,14 +37,12 @@ class Expressions extends Survey_Common_Action
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+            $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
         } else {
-            
-            
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
             App()->getClientScript()->registerPackage('decimal');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
+            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'survey_runtime.js');
             App()->getClientScript()->registerPackage('expression-extend');
 
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
@@ -63,7 +60,8 @@ class Expressions extends Survey_Common_Action
         }
     }
 
-    public function getReplacements($replacementClass){
+    public function getReplacements($replacementClass)
+    {
         die('TEST');
     }
 
@@ -79,7 +77,7 @@ class Expressions extends Survey_Common_Action
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
-            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+            $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
             return;
         }
         
@@ -88,7 +86,7 @@ class Expressions extends Survey_Common_Action
 
         $oSurvey = Survey::model()->findByPk($sid);
 
-        $language = Yii::app()->request->getParam('lang', null); 
+        $language = Yii::app()->request->getParam('lang', null);
         
         if ($language !== null) {
             $language = sanitize_languagecode($language);
@@ -103,34 +101,36 @@ class Expressions extends Survey_Common_Action
         $aData['subaction'] = gT("Survey logic file");
         $aData['sidemenu']['state'] = false;
         $aData['survey'] = $oSurvey;
-        $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING',(App()->getConfig('debug')>0)?LEM_DEBUG_TIMING:0);
+        $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING', (App()->getConfig('debug') > 0) ? LEM_DEBUG_TIMING : 0);
         $LEM_DEBUG_VALIDATION_SUMMARY = Yii::app()->request->getParam('LEM_DEBUG_VALIDATION_SUMMARY', LEM_DEBUG_VALIDATION_SUMMARY);
         $LEM_DEBUG_VALIDATION_DETAIL = Yii::app()->request->getParam('LEM_DEBUG_VALIDATION_DETAIL', LEM_DEBUG_VALIDATION_DETAIL);
         $LEM_PRETTY_PRINT_ALL_SYNTAX = Yii::app()->request->getParam('LEM_PRETTY_PRINT_ALL_SYNTAX', LEM_PRETTY_PRINT_ALL_SYNTAX);
 
         $LEMdebugLevel = (
-            ((int) $LEM_DEBUG_TIMING) + 
-            ((int) $LEM_DEBUG_VALIDATION_SUMMARY) + 
-            ((int) $LEM_DEBUG_VALIDATION_DETAIL) + 
+            ((int) $LEM_DEBUG_TIMING) +
+            ((int) $LEM_DEBUG_VALIDATION_SUMMARY) +
+            ((int) $LEM_DEBUG_VALIDATION_DETAIL) +
             ((int) $LEM_PRETTY_PRINT_ALL_SYNTAX)
         );
         
         $assessments = Yii::app()->request->getParam('assessments', $oSurvey->getIsAssessments()) == 'Y';
 
 
-        $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle()." (".gT("ID").":".$sid.")";
+        $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle() . " (" . gT("ID") . ":" . $sid . ")";
 
-        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
+        $aData['topBar']['name'] = 'baseTopbar_view';
+        $aData['topBar']['showCloseButton'] = true;
+        $aData['closeUrl'] = Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $sid);
 
         if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);
-            $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
+            $aData['closeUrl'] = Yii::app()->createUrl('questionGroupsAdministration/view/surveyid/' . $sid . '/gid/' . $gid);
             $aData['gid'] = $gid;
         }
         
         if ($qid !== null) {
             $qid = sanitize_int($qid);
-            $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
+            $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
             $aData['qid'] = $qid;
         }
 
@@ -138,7 +138,7 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
         App()->getClientScript()->registerPackage('expression-extend');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
 
@@ -164,14 +164,14 @@ class Expressions extends Survey_Common_Action
             }
            </style>";
             $html .= $aData['result']['html'];
-            $html .= "</body></html>"; 
+            $html .= "</body></html>";
             App()->getClientScript()->render($html);
-            echo $html; 
+            echo $html;
 
             Yii::app()->end();
         }
 
-        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);        
+        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);
     }
 
     public function survey_logic_form()
@@ -184,7 +184,7 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('expressions');
         App()->getClientScript()->registerPackage('expression-extend');
 
-        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        
+        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);
     }
 
     protected function test($which, $aData)
@@ -192,7 +192,7 @@ class Expressions extends Survey_Common_Action
         if ($which == 'survey_logic_file') {
             $which = 'survey_logic_form';
         }
-        $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
+        $this->_renderWrappedTemplate('expressions', 'test/' . $which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 

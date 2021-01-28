@@ -198,7 +198,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <?php endif;?>
 
             <?php if(isset($fullpagebar['returnbutton'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/themeoptions"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Return to theme list"); ?>
@@ -209,7 +209,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 </div>
 
 <?php if($importModal):?>
-    <?php $this->renderPartial('themeoptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
+    <?php $this->renderPartial('themeOptions/import_modal', ['importTemplate' => 'importtemplate', 'importModal' => 'importModal']); ?>
 <?php endif;?>
 
 <div class="col-lg-12 templateeditor">

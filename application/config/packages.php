@@ -51,6 +51,8 @@ return array(
             'fontawesome',
         )
     ),
+
+    // TODO: Delete this? See #15108.
     'embeddables' => array(
         'devBaseUrl'  => 'assets/packages/embeddables/',
         'basePath' => 'core.embeddables',
@@ -127,6 +129,39 @@ return array(
             'bootstrap',
         )
     ),
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+            'config.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
+    'modaleditor' => array(
+        'devBaseUrl' => 'assets/packages/modaleditor/',
+        'basePath' => 'core.modaleditor',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'js/modaleditor.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ckeditor',
+        )
+    ),
     'pjax' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
@@ -153,26 +188,6 @@ return array(
         'depends' => array(
             'lslog',
         )
-    ),
-    'panelintegration' => array(
-       'devBaseUrl' => 'assets/packages/panelintegration/',
-       'basePath' => 'core.panelintegration',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/panelintegration.js',
-            )
-            : array(
-                'build.min/js/panelintegration.js'
-            )
-        ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
-       'depends' => array(
-           'adminbasics',
-       )
     ),
     'globalsidepanel' => array(
        'devBaseUrl' => 'assets/packages/globalsidepanel/',
@@ -243,203 +258,7 @@ return array(
             'adminbasics',
         )
     ),
-    'admintoppanel' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/admintoppanel.js',
-            )
-            : array(
-                'build.min/js/admintoppanel.js'
-            )
-        ),
-       'depends' => array(
-           'adminbasics'
-       )
-    ),
     
-    'admintoppanelltr' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'css' => ( $debug > 0
-            ? array(
-                'build/css/admintoppanel.css',
-            )
-            : array(
-                'build.min/css/admintoppanel.css'
-            )
-        ),
-       'depends' => array(
-           'admintoppanel'
-       )
-    ),
-    'admintoppanelrtl' => array(
-       'devBaseUrl' => 'assets/packages/admintoppanel/',
-       'basePath' => 'core.admintoppanel',
-       'position' =>CClientScript::POS_END,
-       'css' => ( $debug > 0
-            ? array(
-                'build/css/admintoppanel.rtl.css',
-            )
-            : array(
-                'build.min/css/admintoppanel.rtl.css'
-            )
-        ),
-       'depends' => array(
-           'admintoppanel'
-       )
-    ),
-    
-    'adminbottompanel' => array(
-       'devBaseUrl' => 'assets/packages/adminbottompanel/',
-       'basePath' => 'core.adminbottompanel',
-       'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/adminbottompanel.js',
-            )
-            : array(
-                'build.min/js/adminbottompanel.js'
-            )
-        ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
-       'depends' => array(
-           'adminbasics'
-       )
-    ),
-    'filemanager' => array(
-        'devBaseUrl' => 'assets/packages/filemanager/',
-        'basePath' => 'core.filemanager',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/filemanager.js',
-            )
-            : array(
-                'build.min/js/filemanager.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
-    ),
-    'textelements' => array(
-        'devBaseUrl' => 'assets/packages/textelements/',
-        'basePath' => 'core.textelements',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/lstextelements.js',
-            )
-            : array(
-                'build.min/js/lstextelements.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
-    'datasectextelements' => array(
-        'devBaseUrl' => 'assets/packages/datasecuritysettings/',
-        'basePath' => 'core.datasecuritysettings',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/datasecuritysettings.js'
-            )
-            : array(
-                'build.min/js/datasecuritysettings.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
-    'questiongroupeditor' => array(
-        'devBaseUrl' => 'assets/packages/questiongroup/',
-        'basePath' => 'core.questiongroup',
-        'position' =>CClientScript::POS_END,
-        'js' =>  (
-            $debug > 0
-            ? array(
-                'build/js/questiongroupedit.js'
-            )
-            : array(
-                'build.min/js/questiongroupedit.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'admintoppanel',
-        )
-    ),
-    'questioneditor' => array(
-        'devBaseUrl' => 'assets/packages/questioneditor/',
-        'basePath' => 'core.questioneditor',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/questionedit.js'
-            )
-            : array(
-                'build.min/js/questionedit.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'ace',
-            'admintoppanel',
-            
-        )
-    ),
-    'labelsets' => array(
-        'devBaseUrl' => 'assets/packages/labelsets/',
-        'basePath' => 'core.labelsets',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/labelsets.js'
-            )
-            : array(
-                'build.min/js/labelsets.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-        )
-    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
@@ -461,14 +280,6 @@ return array(
         'js' => array(
             // 'build/lslog'.$minVersion.'.js',
             'build/lslog.js',
-        )
-    ),
-    'lshelp' => array(
-        'devBaseUrl' => 'assets/packages/lshelp/',
-        'basePath' => 'core.lshelp',
-        'position' =>CClientScript::POS_BEGIN,
-        'js' => array(
-            'build/lshelper'.$minVersion.'.js',
         )
     ),
     'panelboxes' => array(
@@ -522,43 +333,6 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
-        )
-    ),
-
-    'emailtemplatesold' => array(
-        'devBaseUrl' => 'assets/packages/emailtemplates/',
-        'basePath' => 'core.emailtemplates',
-        'position' =>CClientScript::POS_BEGIN,
-        'css' => array(
-            'popup-dialog.css'
-        ),
-        'js' => array(
-            'emailtemplates'.$minVersion.'.js',
-        ),
-        'depends' => array(
-            'adminbasics',
-        )
-    ),
-
-    'emailtemplates' => array(
-        'devBaseUrl' => 'assets/packages/emailtemplates/',
-        'basePath' => 'core.emailtemplates',
-        'position' =>CClientScript::POS_END,
-        'js' => (
-            $debug > 0
-            ? array(
-                'build/js/emailtemplates.js'
-            )
-            : array(
-                'build.min/js/emailtemplates.js'
-            )
-        ),
-        'css' => array(
-            'build.min/css/main.css'
-        ),
-        'depends' => array(
-            'adminbasics',
-            'ace',
         )
     ),
 
@@ -655,5 +429,20 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js'=>array(YII_DEBUG ? 'jquery.ba-bbq.js' : 'jquery.ba-bbq.min.js'),
         'depends'=>array('jquery'),
+    ),
+    // Restored old emailtemplates package (pre Vue)
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'popup-dialog.css'
+        ),
+        'js' => array(
+            'emailtemplates'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
     ),
 );

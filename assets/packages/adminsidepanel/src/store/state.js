@@ -3,7 +3,7 @@ export default  function(userid) {
         surveyid: 0,
         language: '',
         maxHeight: 0,
-        inSurveyViewHeight: 400,
+        inSurveyViewHeight: 1000,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,

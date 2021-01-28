@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -60,7 +61,7 @@ class Zend_Http_UserAgent_Features_Adapter_DeviceAtlas implements Zend_Http_User
             }
 
             // Include the Device Atlas file from the specified lib_dir
-            require_once ($config['deviceatlas_lib_dir'] . '/Mobi/Mtld/DA/Api.php');
+            require_once($config['deviceatlas_lib_dir'] . '/Mobi/Mtld/DA/Api.php');
         }
 
         if (empty($config['deviceatlas_data'])) {

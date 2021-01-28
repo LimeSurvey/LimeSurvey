@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
 * LimeSurvey (tm)
 * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -52,7 +51,6 @@ class InstallerController extends CController
         Yii::import('application.helpers.common_helper', true);
 
         switch ($action) {
-
             case 'welcome':
                 $this->stepWelcome();
                 break;
@@ -85,11 +83,10 @@ class InstallerController extends CController
                 $this->stepOptionalConfiguration();
                 break;
 
-            case 'index' :
-            default :
+            case 'index':
+            default:
                 $this->redirect(array('installer/welcome'));
                 break;
-
         }
     }
 
@@ -102,7 +99,7 @@ class InstallerController extends CController
      */
     private function _checkInstallation()
     {
-        if (file_exists(APPPATH.'config/config.php')) {
+        if (file_exists(APPPATH . 'config/config.php')) {
             throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
         }
     }
@@ -178,7 +175,7 @@ class InstallerController extends CController
     public function stepViewLicense()
     {
         header('Content-Type: text/plain; charset=UTF-8');
-        readfile(dirname((string) BASEPATH).'/LICENSE');
+        readfile(dirname((string) BASEPATH) . '/LICENSE');
         exit;
     }
 
@@ -192,7 +189,7 @@ class InstallerController extends CController
         $aData = [];
         $aData['model'] = $oModel;
         $aData['title'] = gT('Pre-installation check');
-        $aData['descp'] = gT('Pre-installation check for LimeSurvey ').Yii::app()->getConfig('versionnumber');
+        $aData['descp'] = gT('Pre-installation check for LimeSurvey ') . Yii::app()->getConfig('versionnumber');
         $aData['classesForStep'] = array('off', 'off', 'on', 'off', 'off', 'off');
         $aData['progressValue'] = 20;
         // variable storing next button link.initially null
@@ -232,12 +229,12 @@ class InstallerController extends CController
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
-        $aData['model'] = $oModel = new InstallerConfigForm;
+        $aData['model'] = $oModel = new InstallerConfigForm();
         if (!empty(Yii::app()->session['populateerror'])) {
-            if(is_string(Yii::app()->session['populateerror'])) {
+            if (is_string(Yii::app()->session['populateerror'])) {
                 $oModel->addError('dblocation', Yii::app()->session['populateerror']);
             } else {
-                foreach(Yii::app()->session['populateerror'] as $error) {
+                foreach (Yii::app()->session['populateerror'] as $error) {
                     $oModel->addError('dblocation', $error);
                 }
             }
@@ -251,7 +248,6 @@ class InstallerController extends CController
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
-
                 //saving the form data to session
                 foreach (array('dblocation', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
@@ -286,9 +282,9 @@ class InstallerController extends CController
                     //Write config file as we no longer redirect to optional view
                     $this->_writeConfigFile();
 
-                    header("refresh:5;url=".$this->createUrl("/admin"));
+                    header("refresh:5;url=" . $this->createUrl("/admin"));
                     $aData['noticeMessage'] = gT('The database exists and contains LimeSurvey tables.');
-                    $aData['text'] = sprintf(gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='".$this->createUrl("/admin")."'>", "</a>");
+                    $aData['text'] = sprintf(gT("You'll be redirected to the database update or (if your database is already up to date) to the administration login in 5 seconds. If not, please click %shere%s."), "<a href='" . $this->createUrl("/admin") . "'>", "</a>");
                     $this->render('/installer/redirectmessage_view', $aData);
                     exit();
                 }
@@ -329,8 +325,8 @@ class InstallerController extends CController
 
                     //$this->connection->database = $model->dbname;
                     //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
-                    $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
-                    .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
+                    $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname) . "<br /><br />\n"
+                    . gT("Do you want to populate that database now by creating the necessary tables?") . "<br /><br />";
 
                     $aValues['next'] = array(
                         'action' => 'installer/populatedb',
@@ -338,7 +334,7 @@ class InstallerController extends CController
                         'name' => 'createdbstep2',
                     );
                 } elseif (!$bDBExistsButEmpty) {
-                    $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
+                    $aValues['adminoutput'] .= "<br />" . sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                 }
                 $this->render('/installer/populatedb_view', $aValues);
                 return;
@@ -382,9 +378,9 @@ class InstallerController extends CController
             unset(Yii::app()->session['databaseDontExist']);
 
             $aData['adminoutputText'] = "<tr bgcolor='#efefef'><td colspan='2' align='center'>"
-            ."<div class='alert alert-success''><strong>\n"
-            .gT("Database has been created.")."</strong></div>\n"
-            .gT("Please continue with populating the database.")."<br /><br />\n";
+            . "<div class='alert alert-success''><strong>\n"
+            . gT("Database has been created.") . "</strong></div>\n"
+            . gT("Please continue with populating the database.") . "<br /><br />\n";
             $aData['next'] = array(
                 'action' => 'installer/populatedb',
                 'label' => gT("Populate database"),
@@ -475,7 +471,6 @@ class InstallerController extends CController
 
             //run validation, if it fails, load the view again else proceed to next step.
             if ($model->validate()) {
-
                 $aData['title'] = gT("Database configuration");
                 $aData['descp'] = gT("Please enter the database settings you want to use for LimeSurvey:");
                 $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
@@ -496,13 +491,12 @@ class InstallerController extends CController
                 //checking DB Connection
                 if ($model->db->getActive() == true) {
                     try {
-
                         if (User::model()->count() > 0) {
                             safeDie('Fatal error: Already an admin user in the system.');
                         }
 
                         // Save user
-                        $user = new User;
+                        $user = new User();
                         // Fix UserID to 1 for MySQL even if installed in master-master configuration scenario
                         if ($model->isMysql) {
                             $user->uid = 1;
@@ -516,7 +510,7 @@ class InstallerController extends CController
                         $user->save();
 
                         // Save permissions
-                        $permission = new Permission;
+                        $permission = new Permission();
                         $permission->entity_id = 0;
                         $permission->entity = 'global';
                         $permission->uid = $user->uid;
@@ -552,11 +546,9 @@ class InstallerController extends CController
                         $this->render('/installer/success_view', $aData);
 
                         return;
-
                     } catch (Exception $e) {
                         throw new Exception(sprintf('Could not add administrator settings: %s.', $e));
                     }
-
                 }
             } else {
                 unset($aData['confirmation']);
@@ -574,7 +566,7 @@ class InstallerController extends CController
      */
     public function loadHelper($helper)
     {
-        Yii::import('application.helpers.'.$helper.'_helper', true);
+        Yii::import('application.helpers.' . $helper . '_helper', true);
     }
 
     /**
@@ -585,7 +577,7 @@ class InstallerController extends CController
      */
     public function loadLibrary($library)
     {
-        Yii::import('application.libraries.'.$library, true);
+        Yii::import('application.libraries.' . $library, true);
     }
 
     /**
@@ -613,9 +605,11 @@ class InstallerController extends CController
             return false; // Dir does not exist
         }
         while ($sFile = readdir($sFolder)) {
-            if ($sFile != '.' && $sFile != '..' &&
-                (!is_writable($sDirectory."/".$sFile) ||
-                (is_dir($sDirectory."/".$sFile) && !$this->is_writable_recursive($sDirectory."/".$sFile)))) {
+            if (
+                $sFile != '.' && $sFile != '..' &&
+                (!is_writable($sDirectory . "/" . $sFile) ||
+                (is_dir($sDirectory . "/" . $sFile) && !$this->is_writable_recursive($sDirectory . "/" . $sFile)))
+            ) {
                 closedir($sFolder);
                 return false;
             }
@@ -651,8 +645,8 @@ class InstallerController extends CController
     public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
     {
         $bResult = false;
-        $aData[$base.'Present'] = 'Not Found';
-        $aData[$base.'Writable'] = '';
+        $aData[$base . 'Present'] = 'Not Found';
+        $aData[$base . 'Writable'] = '';
         switch ($type) {
             case 1:
                 $exists = is_file($path);
@@ -664,12 +658,12 @@ class InstallerController extends CController
                 throw new Exception('Invalid type given.');
         }
         if ($exists) {
-            $aData[$base.'Present'] = 'Found';
+            $aData[$base . 'Present'] = 'Found';
             if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->is_writable_recursive($path))) {
-                $aData[$base.'Writable'] = 'Writable';
+                $aData[$base . 'Writable'] = 'Writable';
                 $bResult = true;
             } else {
-                $aData[$base.'Writable'] = 'Unwritable';
+                $aData[$base . 'Writable'] = 'Unwritable';
             }
         }
         $bResult || $aData[$keyError] = true;
@@ -731,7 +725,7 @@ class InstallerController extends CController
                     $bProceed = false;
         }
 
-        // zlib library check    
+        // zlib library check
         if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
             $bProceed = false;
         }
@@ -744,17 +738,17 @@ class InstallerController extends CController
         // ** file and directory permissions checking **
 
         // config directory
-        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror')) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('rootdir') . '/application/config', $aData, 'config', 'derror')) {
             $bProceed = false;
         }
 
         // templates directory check
-        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $aData, 'tmpdir', 'tperror', true)) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('tempdir') . '/', $aData, 'tmpdir', 'tperror', true)) {
             $bProceed = false;
         }
 
         //upload directory check
-        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror', true)) {
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('uploaddir') . '/', $aData, 'uploaddir', 'uerror', true)) {
             $bProceed = false;
         }
 
@@ -826,7 +820,7 @@ class InstallerController extends CController
                     try {
                         $this->connection->createCommand($sCommand)->execute();
                     } catch (Exception $e) {
-                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                        $aMessages[] = "Executing: " . $sCommand . " failed! Reason: " . $e;
                     }
 
                     $sCommand = '';
@@ -874,30 +868,30 @@ class InstallerController extends CController
             }
 
             if ($model->dbtype) {
-                            $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"
-                ."/*"."\n"
-                ."| -------------------------------------------------------------------"."\n"
-                ."| DATABASE CONNECTIVITY SETTINGS"."\n"
-                ."| -------------------------------------------------------------------"."\n"
-                ."| This file will contain the settings needed to access your database."."\n"
-                ."|"."\n"
-                ."| For complete instructions please consult the 'Database Connection'"."\n"
-                ."| page of the User Guide."."\n"
-                ."|"."\n"
-                ."| -------------------------------------------------------------------"."\n"
-                ."| EXPLANATION OF VARIABLES"."\n"
-                ."| -------------------------------------------------------------------"."\n"
-                ."|"."\n"
-                ."|    'connectionString' Hostname, database, port and database type for "."\n"
-                ."|     the connection. Driver example: mysql. Currently supported:"."\n"
-                ."|                 mysql, pgsql, mssql, sqlite, oci"."\n"
-                ."|    'username' The username used to connect to the database"."\n"
-                ."|    'password' The password used to connect to the database"."\n"
-                ."|    'tablePrefix' You can add an optional prefix, which will be added"."\n"
-                ."|                 to the table name when using the Active Record class"."\n"
-                ."|"."\n"
-                ."*/"."\n"
-                . "return array("."\n"
+                            $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
+                . "/*" . "\n"
+                . "| -------------------------------------------------------------------" . "\n"
+                . "| DATABASE CONNECTIVITY SETTINGS" . "\n"
+                . "| -------------------------------------------------------------------" . "\n"
+                . "| This file will contain the settings needed to access your database." . "\n"
+                . "|" . "\n"
+                . "| For complete instructions please consult the 'Database Connection'" . "\n"
+                . "| page of the User Guide." . "\n"
+                . "|" . "\n"
+                . "| -------------------------------------------------------------------" . "\n"
+                . "| EXPLANATION OF VARIABLES" . "\n"
+                . "| -------------------------------------------------------------------" . "\n"
+                . "|" . "\n"
+                . "|    'connectionString' Hostname, database, port and database type for " . "\n"
+                . "|     the connection. Driver example: mysql. Currently supported:" . "\n"
+                . "|                 mysql, pgsql, mssql, sqlite, oci" . "\n"
+                . "|    'username' The username used to connect to the database" . "\n"
+                . "|    'password' The password used to connect to the database" . "\n"
+                . "|    'tablePrefix' You can add an optional prefix, which will be added" . "\n"
+                . "|                 to the table name when using the Active Record class" . "\n"
+                . "|" . "\n"
+                . "*/" . "\n"
+                . "return array(" . "\n"
                 /*
                 ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
                 ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
@@ -913,35 +907,34 @@ class InstallerController extends CController
                 ."\t"     . "),"                                        . "\n"
                 ."\t"     . ""                                          . "\n"
                 */
-                ."\t"."'components' => array("."\n"
-                ."\t\t"."'db' => array("."\n"
-                ."\t\t\t"."'connectionString' => '$sDsn',"."\n";
+                . "\t" . "'components' => array(" . "\n"
+                . "\t\t" . "'db' => array(" . "\n"
+                . "\t\t\t" . "'connectionString' => '$sDsn'," . "\n";
             }
             if ($model->dbtype != InstallerConfigForm::DB_TYPE_SQLSRV && $model->dbtype != InstallerConfigForm::DB_TYPE_DBLIB) {
-                $sConfig .= "\t\t\t"."'emulatePrepare' => true,"."\n";
-
+                $sConfig .= "\t\t\t" . "'emulatePrepare' => true," . "\n";
             }
-            $sConfig .= "\t\t\t"."'username' => '".addcslashes($model->dbuser, "'")."',"."\n"
-            ."\t\t\t"."'password' => '".addcslashes($model->dbpwd, "'")."',"."\n"
-            ."\t\t\t"."'charset' => '{$sCharset}',"."\n"
-            ."\t\t\t"."'tablePrefix' => '{$model->dbprefix}',"."\n";
+            $sConfig .= "\t\t\t" . "'username' => '" . addcslashes($model->dbuser, "'") . "'," . "\n"
+            . "\t\t\t" . "'password' => '" . addcslashes($model->dbpwd, "'") . "'," . "\n"
+            . "\t\t\t" . "'charset' => '{$sCharset}'," . "\n"
+            . "\t\t\t" . "'tablePrefix' => '{$model->dbprefix}'," . "\n";
 
             if ($model->isMSSql) {
-                $sConfig .= "\t\t\t"."'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),"."\n";
+                $sConfig .= "\t\t\t" . "'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;')," . "\n";
             }
 
-            $sConfig .= "\t\t"."),"."\n"
-            ."\t\t".""."\n"
+            $sConfig .= "\t\t" . ")," . "\n"
+            . "\t\t" . "" . "\n"
 
-            ."\t\t"." 'session' => array ("."\n"
-            ."\t\t\t"."'sessionName'=>'LS-".$this->_getRandomString(16)."'".",\n"
-            ."\t\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
-            ."\t\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
-            ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
-            ."\t\t\t"."// 'connectionID' => 'db',"."\n"
-            ."\t\t\t"."// 'sessionTableName' => '{{sessions}}',"."\n"
-            ."\t\t"." ),"."\n"
-            ."\t\t".""."\n"
+            . "\t\t" . " 'session' => array (" . "\n"
+            . "\t\t\t" . "'sessionName'=>'LS-" . $this->_getRandomString(16) . "'" . ",\n"
+            . "\t\t\t" . "// Uncomment the following lines if you need table-based sessions." . "\n"
+            . "\t\t\t" . "// Note: Table-based sessions are currently not supported on MSSQL server." . "\n"
+            . "\t\t\t" . "// 'class' => 'application.core.web.DbHttpSession'," . "\n"
+            . "\t\t\t" . "// 'connectionID' => 'db'," . "\n"
+            . "\t\t\t" . "// 'sessionTableName' => '{{sessions}}'," . "\n"
+            . "\t\t" . " )," . "\n"
+            . "\t\t" . "" . "\n"
 
             /** @todo Uncomment after implementing the error controller */
             /*
@@ -951,47 +944,47 @@ class InstallerController extends CController
             ."\t\t"   . ""                                          . "\n"
             */
 
-            ."\t\t"."'urlManager' => array("."\n"
-            ."\t\t\t"."'urlFormat' => '{$sURLFormat}',"."\n"
-            ."\t\t\t"."'rules' => array("."\n"
-            ."\t\t\t\t"."// You can add your own rules here"."\n"
-            ."\t\t\t"."),"."\n"
-            ."\t\t\t"."'showScriptName' => {$sShowScriptName},"."\n"
-            ."\t\t"."),"."\n"
-            ."\t".""."\n"
+            . "\t\t" . "'urlManager' => array(" . "\n"
+            . "\t\t\t" . "'urlFormat' => '{$sURLFormat}'," . "\n"
+            . "\t\t\t" . "'rules' => array(" . "\n"
+            . "\t\t\t\t" . "// You can add your own rules here" . "\n"
+            . "\t\t\t" . ")," . "\n"
+            . "\t\t\t" . "'showScriptName' => {$sShowScriptName}," . "\n"
+            . "\t\t" . ")," . "\n"
+            . "\t" . "" . "\n"
 
-            ."\t"."),"."\n"
-            ."\t"."// For security issue : it's better to set runtimePath out of web access"."\n"
-            ."\t"."// Directory must be readable and writable by the webuser"."\n"
-            ."\t"."// 'runtimePath'=>'/var/limesurvey/runtime/'"."\n"
-            ."\t"."// Use the following config variable to set modified optional settings copied from config-defaults.php"."\n"
-            ."\t"."'config'=>array("."\n"
-            ."\t"."// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this"."\n"
-            ."\t"."// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory"."\n"
-            ."\t"."// on your webspace."."\n"
-            ."\t"."// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates"."\n"
-            ."\t\t"."'debug'=>0,"."\n"
-            ."\t\t"."'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2"."\n";
+            . "\t" . ")," . "\n"
+            . "\t" . "// For security issue : it's better to set runtimePath out of web access" . "\n"
+            . "\t" . "// Directory must be readable and writable by the webuser" . "\n"
+            . "\t" . "// 'runtimePath'=>'/var/limesurvey/runtime/'" . "\n"
+            . "\t" . "// Use the following config variable to set modified optional settings copied from config-defaults.php" . "\n"
+            . "\t" . "'config'=>array(" . "\n"
+            . "\t" . "// debug: Set this to 1 if you are looking for errors. If you still get no errors after enabling this" . "\n"
+            . "\t" . "// then please check your error-logs - either in your hosting provider admin panel or in some /logs directory" . "\n"
+            . "\t" . "// on your webspace." . "\n"
+            . "\t" . "// LimeSurvey developers: Set this to 2 to additionally display STRICT PHP error messages and get full access to standard templates" . "\n"
+            . "\t\t" . "'debug'=>0," . "\n"
+            . "\t\t" . "'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2" . "\n";
 
             if ($model->isMysql) {
-                $sConfig .= "\t\t"."// Mysql database engine (INNODB|MYISAM):"."\n"
-                ."\t\t 'mysqlEngine' => '{$model->dbengine}'\n\n,";
+                $sConfig .= "\t\t" . "// Mysql database engine (INNODB|MYISAM):" . "\n"
+                . "\t\t 'mysqlEngine' => '{$model->dbengine}'\n\n,";
             }
-            $sConfig .= "\t\t"."// Update default LimeSurvey config here"."\n"
-            ."\t".")"."\n"
-            . ");"."\n"
-            . "/* End of file config.php */"."\n"
+            $sConfig .= "\t\t" . "// Update default LimeSurvey config here" . "\n"
+            . "\t" . ")" . "\n"
+            . ");" . "\n"
+            . "/* End of file config.php */" . "\n"
             . "/* Location: ./application/config/config.php */";
 
-            if (is_writable(APPPATH.'config')) {
-                file_put_contents(APPPATH.'config/config.php', $sConfig);
+            if (is_writable(APPPATH . 'config')) {
+                file_put_contents(APPPATH . 'config/config.php', $sConfig);
                 Yii::app()->session['configFileWritten'] = true;
                 $oUrlManager = Yii::app()->getComponent('urlManager');
                 /* @var $oUrlManager CUrlManager */
                 $oUrlManager->setUrlFormat($sURLFormat);
             } else {
-                header('refresh:5;url='.$this->createUrl("installer/welcome"));
-                echo "<b>".gT("Configuration directory is not writable")."</b><br/>";
+                header('refresh:5;url=' . $this->createUrl("installer/welcome"));
+                echo "<b>" . gT("Configuration directory is not writable") . "</b><br/>";
                 printf(gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.', 'unescaped'), $this->createUrl('installer/welcome'));
                 Yii::app()->end();
             }
@@ -1003,7 +996,7 @@ class InstallerController extends CController
      *
      * @return string
      */
-    private function _getRandomString($iTotalChar=64)
+    private function _getRandomString($iTotalChar = 64)
     {
         $sResult = '';
         for ($i = 0; $i < $iTotalChar; $i++) {
@@ -1037,7 +1030,8 @@ class InstallerController extends CController
     /**
      * clear the session from installation information
      */
-    private function clearSession() {
+    private function clearSession()
+    {
         unset(Yii::app()->session['dbtype']);
         unset(Yii::app()->session['dbengine']);
         unset(Yii::app()->session['dbname']);
@@ -1101,9 +1095,8 @@ class InstallerController extends CController
 
         foreach ($extensions as $extension) {
             if (!extension_loaded($extension)) {
-                safeDie('You\'re missing default PHP extension '.$extension);
+                safeDie('You\'re missing default PHP extension ' . $extension);
             }
         }
-
     }
 }

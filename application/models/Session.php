@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,13 +11,13 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+     *  Files Purpose: lots of common functions
 */
 
 /**
  * Class Session
  * Extend CActiveRecord and not LSActiveRecord to disable plugin event (session can be used a lot)
- * 
+ *
  * @property string $id Primary Key
  * @property integer $expire
  * @property string $data
@@ -81,14 +80,14 @@ class Session extends CActiveRecord
         $this->dataBackup = $this->data;
         $db = $this->getDbConnection();
         $dbType = $db->getDriverName();
-        switch($dbType) {
+        switch ($dbType) {
             case 'sqlsrv':
             case 'mssql':
             case 'dblib':
-                $this->data=new CDbExpression('CONVERT(VARBINARY(MAX), '.$db->quoteValue($this->data).')');
+                $this->data = new CDbExpression('CONVERT(VARBINARY(MAX), ' . $db->quoteValue($this->data) . ')');
                 break;
             case 'pgsql':
-                $this->data=new CDbExpression($db->quoteValueWithType($this->data, PDO::PARAM_LOB)."::bytea");
+                $this->data = new CDbExpression($db->quoteValueWithType($this->data, PDO::PARAM_LOB) . "::bytea");
                 break;
             case 'mysql':
                 // Don't seems to need something

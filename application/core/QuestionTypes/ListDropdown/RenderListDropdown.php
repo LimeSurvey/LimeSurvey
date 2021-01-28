@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -43,11 +41,11 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         // If no answer previously selected
         if (!$this->mSessionValue || $this->mSessionValue === '') {
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                'name'=> $this->sSGQA,
-                'value'=>'',
-                'opt_select'=> SELECTED,
-                'answer'=>gT('Please choose...')
+            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                'name' => $this->sSGQA,
+                'value' => '',
+                'opt_select' => SELECTED,
+                'answer' => gT('Please choose...')
                 ), true);
         }
 
@@ -58,13 +56,13 @@ class RenderListDropdown extends QuestionBaseRenderer
         foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
             $opt_select = $this->mSessionValue == $oAnsweroption->code ? SELECTED : '';
 
-            $_prefix = $this->bPrefix ? ++$this->iRowNum.') ': '';
+            $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
             
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                'name'=> $this->sSGQA,
-                'value'=>$oAnsweroption->code,
-                'opt_select'=>$opt_select,
-                'answer'=>$_prefix.$oAnsweroption->answerl10ns[$this->sLanguage]->answer,
+            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                'name' => $this->sSGQA,
+                'value' => $oAnsweroption->code,
+                'opt_select' => $opt_select,
+                'answer' => $_prefix . $oAnsweroption->answerl10ns[$this->sLanguage]->answer,
                 ), true);
         }
 
@@ -91,26 +89,26 @@ class RenderListDropdown extends QuestionBaseRenderer
             $sOptGroupOptions = '';
             foreach ($optionlistarray as $optionarray) {
                 // ==> rows
-                $sOptGroupOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                    'name'=> $this->sSGQA,
-                    'value'=>$optionarray['code'],
-                    'opt_select'=>($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
-                    'answer'=>flattenText($optionarray['answer'])
+                $sOptGroupOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                    'name' => $this->sSGQA,
+                    'value' => $optionarray['code'],
+                    'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
+                    'answer' => flattenText($optionarray['answer'])
                     ), true);
             }
 
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/optgroup', array(
+            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/optgroup', array(
                 'categoryname'      => flattenText($categoryname),
                 'sOptGroupOptions'  => $sOptGroupOptions,
                 ), true);
         }
 
         foreach ($defaultopts as $optionarray) {
-            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                'name'=> $this->sSGQA,
-                'value'=>$optionarray['code'],
-                'opt_select'=>($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
-                'answer'=>flattenText($optionarray['answer'])
+            $sOptions .= Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                'name' => $this->sSGQA,
+                'value' => $optionarray['code'],
+                'opt_select' => ($this->mSessionValue == $optionarray['code'] ? SELECTED : ''),
+                'answer' => flattenText($optionarray['answer'])
                 ), true);
         }
         return $sOptions;
@@ -118,25 +116,25 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     public function getOtherOption()
     {
-        $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
-        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                'name'=> $this->sSGQA,
-                'classes'=>'other-item',
-                'value'=>'-oth-',
-                'opt_select'=>($this->mSessionValue == '-oth-' ? SELECTED : ''),
-                'answer'=>flattenText($_prefix.$this->othertext)
+        $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                'name' => $this->sSGQA,
+                'classes' => 'other-item',
+                'value' => '-oth-',
+                'opt_select' => ($this->mSessionValue == '-oth-' ? SELECTED : ''),
+                'answer' => flattenText($_prefix . $this->othertext)
                 ), true);
     }
 
     public function getOtherInput()
     {
-        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/othertext', [
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/othertext', [
                 'name' => $this->sSGQA,
                 'checkconditionFunction' => $this->checkconditionFunction,
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
-                'value' => (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA."other"]))
-                    ? htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA."other"], ENT_QUOTES)
+                'value' => (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"]))
+                    ? htmlspecialchars($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$this->sSGQA . "other"], ENT_QUOTES)
                     : ''
             ], true);
     }
@@ -144,13 +142,13 @@ class RenderListDropdown extends QuestionBaseRenderer
     public function getNoAnswerOption()
     {
         if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
-            $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
-            return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
-                'name'=> $this->sSGQA,
-                'classes'=>'noanswer-item',
-                'value'=>'',
-                'opt_select'=> '', // Never selected
-                'answer'=>$_prefix.gT('No answer')
+            $_prefix = $this->bPrefix ? ++$this->iRowNum . ') ' : '';
+            return Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/rows/option', array(
+                'name' => $this->sSGQA,
+                'classes' => 'noanswer-item',
+                'value' => '',
+                'opt_select' => '', // Never selected
+                'answer' => $_prefix . gT('No answer')
             ), true);
         }
         return '';
@@ -191,19 +189,19 @@ class RenderListDropdown extends QuestionBaseRenderer
     {
         $inputnames = [];
         $sOther = '';
-        $this->sCoreClass = $this->sCoreClass.' '.$sCoreClasses;
+        $this->sCoreClass = $this->sCoreClass . ' ' . $sCoreClasses;
         
         $sOptions = $this->getRows();
         if ($this->oQuestion->other == 'Y') {
             $sOther = $this->getOtherInput();
             ;
             $sOptions .= $this->getOtherOption();
-            $inputnames[] = $this->sSGQA.'other';
+            $inputnames[] = $this->sSGQA . 'other';
         }
         
         $sOptions .= $this->getNoAnswerOption();
 
-        $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+        $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView() . '/answer', array(
             'sOptions'               => $sOptions,
             'sOther'                 => $sOther,
             'name'                   => $this->sSGQA,

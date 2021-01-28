@@ -6,7 +6,7 @@
  * @version 0.1
  *
  * Usage: application/commands/console.php updatedb
- * 
+ *
  * Copyright (C) 2017 LimeSurvey Team
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -37,8 +37,8 @@ class UpdateDBCommand extends CConsoleCommand
         }
 
         if ($newDbVersion > $currentDbVersion) {
-            echo "Update ".Yii::app()->db->connectionString." with prefix :";
-            echo Yii::app()->db->tablePrefix." from {$currentDbVersion} to {$newDbVersion}\n";
+            echo "Update " . Yii::app()->db->connectionString . " with prefix :";
+            echo Yii::app()->db->tablePrefix . " from {$currentDbVersion} to {$newDbVersion}\n";
             Yii::import('application.helpers.common_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
             $result = db_upgrade_all($currentDbVersion);

@@ -64,9 +64,9 @@
                     'name' => 'emailsmtpssl',
                     'value'=> getGlobalSetting('emailsmtpssl') ,
                     'selectOptions'=>array(
-                        ""=>gT("Off",'unescaped'),
-                        "ssl"=>gT("SSL",'unescaped'),
-                        "tls"=>gT("TLS",'unescaped')
+                        ""=>gT("Off (insecure)",'unescaped'),
+                        "ssl"=>gT("SSL/TLS",'unescaped'),
+                        "tls"=>gT("StartTLS",'unescaped')
                     )
                 ));?>
             </div>
@@ -91,6 +91,13 @@
             <label class="  control-label"  for='maxemails'><?php eT("Email batch size:"); ?></label>
             <div class="">
                 <input class="form-control"  type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="sendingrate"><?php eT("Email sending rate:"); ?></label>
+            <div>
+                <?php echo Chtml::numberField("sendingrate", App()->getConfig('sendingrate'), array('class' => 'form-control', 'size' => 5, 'min' => 1)); ?>
+                <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
     </div>

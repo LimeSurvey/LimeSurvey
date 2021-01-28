@@ -736,7 +736,7 @@
             </options>
             <default>0</default>
             <help>Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.</help>
-            <caption>Allow reset the slider</caption>
+            <caption>Allow slider reset</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

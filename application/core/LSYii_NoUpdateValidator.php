@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2020 The LimeSurvey Project Team / Carsten Schmitz

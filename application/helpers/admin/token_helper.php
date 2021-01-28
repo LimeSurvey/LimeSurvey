@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,7 +23,7 @@
 */
 function emailTokens($iSurveyID, $aResultTokens, $sType)
 {
-    if(!in_array($sType,['invite','remind','register','confirm'])) {
+    if (!in_array($sType, ['invite','remind','register','confirm'])) {
         throw new Exception('Invalid email type');
     }
     $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -33,27 +34,27 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
     foreach ($aResultTokens as $aTokenRow) {
         $mail = \LimeMailer::getInstance();
         $mail->setToken($aTokenRow['token']);
-        $mail->setTypeWithRaw($sType,$aTokenRow['language']);
+        $mail->setTypeWithRaw($sType, $aTokenRow['language']);
 
         if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
-                'name'=>$aTokenRow["firstname"]." ".$aTokenRow["lastname"],
-                'email'=>$aTokenRow["email"],
-                'status'=>'fail',
-                'error'=>'Token not valid yet'
+                'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
+                'email' => $aTokenRow["email"],
+                'status' => 'fail',
+                'error' => 'Token not valid yet'
             );
             break 1;
         }
         if (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1) {
             $aResult[$aTokenRow['tid']] = array(
-                'name'=>$aTokenRow["firstname"]." ".$aTokenRow["lastname"],
-                'email'=>$aTokenRow["email"],
-                'status'=>'fail',
-                'error'=>'Token not valid anymore'
+                'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
+                'email' => $aTokenRow["email"],
+                'status' => 'fail',
+                'error' => 'Token not valid anymore'
             );
             break 1;
         }
-        if($mail->sendMessage()) {
+        if ($mail->sendMessage()) {
             $oToken = Token::model($iSurveyID)->findByPk($aTokenRow['tid']);
             if ($sType == 'invite' || $sType == 'register') {
                 $oToken->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
@@ -65,16 +66,16 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                 $oToken->save();
             }
             $aResult[$aTokenRow['tid']] = array(
-                'name'=>$aTokenRow["firstname"]." ".$aTokenRow["lastname"],
-                'email'=>$aTokenRow["email"],
-                'status'=>'OK'
+                'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
+                'email' => $aTokenRow["email"],
+                'status' => 'OK'
             );
         } else {
             $aResult[$aTokenRow['tid']] = array(
-                'name'=>$aTokenRow["firstname"]." ".$aTokenRow["lastname"],
-                'email'=>$aTokenRow["email"],
-                'status'=>'fail',
-                'error'=>$mail->getError(),
+                'name' => $aTokenRow["firstname"] . " " . $aTokenRow["lastname"],
+                'email' => $aTokenRow["email"],
+                'status' => 'fail',
+                'error' => $mail->getError(),
             );
         }
     }

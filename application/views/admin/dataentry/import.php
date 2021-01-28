@@ -17,7 +17,7 @@
                 'buttons' => array(
                     gT('Import responses') => array(
                         'name' => 'ok',
-                        'class' => array('btn-primary center')
+                        'class' => array('hidden')
                     ),
                     gT('Cancel') => array(
                         'type' => 'link',

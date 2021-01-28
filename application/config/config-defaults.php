@@ -113,6 +113,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 // -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -250,6 +251,10 @@ $config['disablescriptwithxss'] = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
 
+// ownerManageAllSurveysInGroup
+// If this option is set to true, then oner of a group
+// have all rights on surveys in is group
+$config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.

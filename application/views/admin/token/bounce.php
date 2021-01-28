@@ -84,7 +84,7 @@
                                 </label>
 
                                 <div class="default controls">
-                                    <input autocomplete="off" size="50" type="password" value="<?php echo $settings['bounceaccountpass'];?>" name="bounceaccountpass" id="bounceaccountpass" />
+                                    <input autocomplete="off" size="50" type="password" value="somepassword" name="bounceaccountpass" id="bounceaccountpass" />
                                 </div>
                             </div>
 
@@ -96,11 +96,11 @@
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value'=> $settings['bounceaccountencryption'] ,
+                                        'value'=> strtolower($settings['bounceaccountencryption']),
                                         'selectOptions'=>array(
-                                            "Off"=>gT("Off",'unescaped'),
-                                            "SSL"=>gT("SSL",'unescaped'),
-                                            "TLS"=>gT("TLS",'unescaped')
+                                            "off"=>gT("Off (insecure)",'unescaped'),
+                                            "ssl"=>gT("SSL/TLS",'unescaped'),
+                                            "tls"=>gT("StartTLS",'unescaped')
                                         )
                                     ));?>
                                 </div>

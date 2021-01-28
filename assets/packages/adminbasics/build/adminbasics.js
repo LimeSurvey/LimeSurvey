@@ -28126,8 +28126,9 @@
 
 	      this.increment();
 	      customOptions = customOptions || {};
-	      styles = styles || {};
-	      classes = classes || "well well-lg";
+	      styles = styles || {}; // NB: Class "well" will overide any background set, like bg-danger. Only use well-lg.
+
+	      classes = classes || "well-lg";
 	      var options = {
 	        useHtml: customOptions.useHtml || true,
 	        timeout: customOptions.timeout || 3500,
@@ -29269,7 +29270,6 @@
 	    }
 	  },
 	      stopDisplayLoadingState = function stopDisplayLoadingState() {
-	    adminCoreLSConsole.log('StopLoadingIconAnimation');
 	    LS.EventBus.$emit('loadingFinished'); // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
 	  },
 	      //###########PRIVATE
@@ -29299,6 +29299,14 @@
 	          ev.preventDefault();
 	          var $form = getForm(this);
 	          formSubmitting = true;
+
+	          try {
+	            for (var instanceName in CKEDITOR.instances) {
+	              CKEDITOR.instances[instanceName].updateElement();
+	            }
+	          } catch (e) {
+	            console.ls.log('Seems no CKEDITOR4 is loaded');
+	          }
 
 	          if ($form.data('isvuecomponent') == true) {
 	            LS.EventBus.$emit('componentFormSubmit', button);
@@ -29454,11 +29462,9 @@
 	    forEach_1(checks(), function (checkItem) {
 	      var item = checkItem.check;
 	      $(document).off(checkItem.on + '.centralsave', item);
-	      adminCoreLSConsole.log('saveBindings', checkItem, $(item));
 
 	      if ($(item).length > 0) {
 	        $(document).on(checkItem.on + '.centralsave', item, checkItem.run);
-	        adminCoreLSConsole.log($(item), 'on', checkItem.on, 'run', checkItem.run);
 	      }
 	    });
 	    LS.EventBus.$off("saveButtonCalled");
@@ -40133,10 +40139,6 @@
 	    event = event || 'pjax:scriptcomplete ready';
 	    root = root || 'document';
 	    delay = delay || 0;
-	    adminCoreLSConsole.log('appendToLoad', {
-	      'type': _typeof(fn),
-	      'fn': fn
-	    });
 	    eventsBound[root] = eventsBound[root] || [];
 
 	    if (lodash.find(eventsBound[root], {
@@ -40186,7 +40188,6 @@
 	    });
 
 	    onExistBinding();
-	    adminCoreLSConsole.trace("Refreshed Admin core methods");
 	  },
 	      addToNamespace = function addToNamespace(object) {
 	    var name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "globalAddition";
@@ -40240,7 +40241,6 @@
 
 	  setNameSpace();
 	  onLoadRegister();
-	  adminCoreLSConsole.log("AdminCore", eventsBound);
 	};
 
 	AdminCore();

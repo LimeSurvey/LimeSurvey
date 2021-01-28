@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -114,7 +116,7 @@ class LSYii_Validators extends CValidator
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $filter->purify($value));
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
-        $oExpressionManager = new ExpressionManager;
+        $oExpressionManager = new ExpressionManager();
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues = $oExpressionManager->asSplitStringOnExpressions($value); // Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues = $oExpressionManager->asSplitStringOnExpressions($sFiltered); // Same but for the filtered string
@@ -130,9 +132,9 @@ class LSYii_Validators extends CValidator
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression) {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
-                        $sNewValue .= "\"".(string) $filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS
+                        $sNewValue .= "\"" . (string) $filter->purify($aParsedExpression[0]) . "\""; // This disallow complex HTML construction with XSS
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
-                        $sNewValue .= "'".(string) $filter->purify($aParsedExpression[0])."'";
+                        $sNewValue .= "'" . (string) $filter->purify($aParsedExpression[0]) . "'";
                     } else {
                         $sNewValue .= $aParsedExpression[0];
                     }

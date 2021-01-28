@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019 LimeSurvey - Denis Chenu
  * @license GPL version 3
  * @version 0.1.1
  *
@@ -22,6 +23,9 @@ class statFunctions extends PluginBase
 {
     protected static $description = 'Add some function in ExpressionScript Engine to get count from other responses';
     protected static $name = 'statCountFunctions';
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
 
     public function init()
     {

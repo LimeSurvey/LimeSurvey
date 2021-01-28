@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
@@ -77,17 +76,17 @@ class Answer extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('qid', 'numerical', 'integerOnly'=>true),
-            array('code', 'length', 'min' => 1, 'max'=>5),
+            array('qid', 'numerical', 'integerOnly' => true),
+            array('code', 'length', 'min' => 1, 'max' => 5),
             // Unicity of key
             array(
                 'code',
                 'checkUniqueness',
                 'message' => gT('Answer codes must be unique by question.')
             ),
-            array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-            array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-            array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('scale_id', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
     }
 
@@ -101,19 +100,19 @@ class Answer extends LSActiveRecord
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'qid='.$qid))
+            ->where(array('and', 'qid=' . $qid))
             ->order('code asc')
             ->query();
     }
 
     public function checkUniqueness($attribute, $params)
     {
-        if($this->code !== $this->oldCode || $this->qid != $this->oldQid || $this->scale_id != $this->oldScaleId)
-        {
+        if ($this->code !== $this->oldCode || $this->qid != $this->oldQid || $this->scale_id != $this->oldScaleId) {
             $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
-            if($model != null)
-                $this->addError('code','Answer codes must be unique by question');
-        }   
+            if ($model != null) {
+                $this->addError('code', 'Answer codes must be unique by question');
+            }
+        }
     }
 
     protected function afterFind()
@@ -138,14 +137,16 @@ class Answer extends LSActiveRecord
     {
         static $answerCache = array();
 
-        if (array_key_exists($qid, $answerCache)
+        if (
+            array_key_exists($qid, $answerCache)
                 && array_key_exists($code, $answerCache[$qid])
                 && array_key_exists($sLanguage, $answerCache[$qid][$code])
-                && array_key_exists($iScaleID, $answerCache[$qid][$code][$sLanguage])) {
+                && array_key_exists($iScaleID, $answerCache[$qid][$code][$sLanguage])
+        ) {
             // We have a hit :)
             return $answerCache[$qid][$code][$sLanguage][$iScaleID];
         } else {
-            $aAnswer = Answer::model()->findByAttributes(array('qid'=>$qid, 'code'=>$code, 'scale_id'=>$iScaleID));
+            $aAnswer = Answer::model()->findByAttributes(array('qid' => $qid, 'code' => $code, 'scale_id' => $iScaleID));
             if (is_null($aAnswer)) {
                 return null;
             }
@@ -161,9 +162,9 @@ class Answer extends LSActiveRecord
      */
     public function oldNewInsertansTags($newsid, $oldsid)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->compare('question.sid', $newsid);
-        $criteria->with = ['answerl10ns'=>array('condition'=>"answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
+        $criteria->with = ['answerl10ns' => array('condition' => "answer like '%{INSERTANS::{$oldsid}X%'"), 'question'];
         return $this->findAll($criteria);
     }
 
@@ -185,7 +186,7 @@ class Answer extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $oRecord = new self;
+        $oRecord = new self();
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;
         }
@@ -253,15 +254,11 @@ class Answer extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-
         $oAnswers = Answer::model()->with('answerl10ns')->findAll($condition);
         $arr = array();
-        foreach($oAnswers as $key => $answer)
-        {
+        foreach ($oAnswers as $key => $answer) {
             $arr[$key] = array_merge($answer->attributes, current($answer->answerl10ns)->attributes);
         }
         return $arr;
     }
-    
-    
 }

@@ -287,13 +287,13 @@ foreach ($tokendata as $Key => $Value) {
                     <div id="sent-date-container" data-parent="#sent-switch" class="selector__date-container_hidden date-container" <?php if (!$bSwitchValue){ echo "style='display:none;'"; }?> >
                         <!-- Sent Date -->
                         <div id="sent-date_datetimepicker" class="input-group date">
-                        <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) && $sent!='N' ? convertToGlobalSettingFormat($sent,true) : ''?>" name="sent-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
+                        <input class="YesNoDatePicker form-control" id="sent-date" type="text" value="<?php echo isset($sent) ? $sent : ''?>" name="sent-date" data-date-format="<?php echo $dateformatdetails['jsdate']; ?> HH:mm">
                         <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                         </div>
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent) && $sent!='N') {echo convertToGlobalSettingFormat($sent,true); } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo " N "; }?>" />
             </div>
             </div>
             <div class="form-group">

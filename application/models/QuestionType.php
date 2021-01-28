@@ -97,10 +97,11 @@ class QuestionType extends StaticModel
         ];
     }
 
-    public function applyToQuestion($oQuestion) {
+    public function applyToQuestion($oQuestion)
+    {
         $this->question = $oQuestion;
         $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
-        foreach($aSettingsArray as $settingKey => $setting) {
+        foreach ($aSettingsArray as $settingKey => $setting) {
             $this->$settingKey = $setting;
         }
     }
@@ -108,7 +109,12 @@ class QuestionType extends StaticModel
     /**
      * @param string $language
      * @return array
+     *
+     * @deprecated use the new xml-version implemented in function findQuestionMetaData($type) in QuestionTheme
+     *
+     * TODO QuestionTheme 1591616914305: Needs to be replaced by @link QuestionTheme::getAllQuestionMetaData() however translations inside the xml need to be inserted first
      */
+
     public static function modelsAttributes($language = '')
     {
         return [
@@ -452,7 +458,6 @@ class QuestionType extends StaticModel
         return [
             self::QT_VERTICAL_FILE_UPLOAD
         ];
-
     }
 
     /**
@@ -462,7 +467,6 @@ class QuestionType extends StaticModel
     public static function doubleCodes()
     {
         return [];
-
     }
 
     /**
@@ -528,7 +532,6 @@ class QuestionType extends StaticModel
             }
         }
         return $this->getFieldDataType();
-
     }
 
     /**

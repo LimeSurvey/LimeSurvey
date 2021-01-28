@@ -1,6 +1,6 @@
 <?php
 
-require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
+require_once(APPPATH . '/third_party/phpmailer/load_phpmailer.php');
 
 /**
  * WIP
@@ -135,8 +135,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $emailcharset = Yii::app()->getConfig("emailcharset");
 
         /* Set language for errors */
-        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH.'/third_party/phpmailer/language/')) {
-            $this->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
+        if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"), APPPATH . '/third_party/phpmailer/language/')) {
+            $this->SetLanguage('en', APPPATH . '/third_party/phpmailer/language/');
         }
         /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
@@ -216,7 +216,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->AltBody = "";
         $this->MIMEBody = "";
         $this->MIMEHeader = "";
-        $this->addCustomHeader("X-Surveymailer", Yii::app()->getConfig("sitename")." Emailer (LimeSurvey.org)");
+        $this->addCustomHeader("X-Surveymailer", Yii::app()->getConfig("sitename") . " Emailer (LimeSurvey.org)");
     }
 
     /**
@@ -227,7 +227,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public static function getInstance($reset = self::ResetBase)
     {
         if ((null === self::$instance) || ($reset == self::ResetComplete)) {
-            self::$instance = new self;
+            self::$instance = new self();
             /* no need to reset if new */
             return self::$instance;
         }
@@ -307,7 +307,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->eventName = 'beforeTokenEmail';
         $aEmailaddresses = preg_split("/(,|;)/", $this->oToken->email);
         foreach ($aEmailaddresses as $sEmailaddress) {
-            $this->addAddress($sEmailaddress, $oToken->firstname." ".$oToken->lastname);
+            $this->addAddress($sEmailaddress, $oToken->firstname . " " . $oToken->lastname);
         }
         $this->addCustomHeader("X-tokenid", $oToken->token);
     }
@@ -344,7 +344,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             'admin_notification' => 'email_admin_notification',
             'admin_responses' => 'email_admin_responses',
         );
-        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
+        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         $attributeSubject = "{$emailColumns[$emailType]}_subj";
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
         $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
@@ -358,7 +358,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public function setFrom($from, $fromname = null, $auto = true)
     {
         $fromemail = $from;
-        if (strpos($from, '<')!==false) {
+        if (strpos($from, '<') !== false) {
             if (is_null($fromname)) {
                 if (strpos($from, '<')) {
                     $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
@@ -421,7 +421,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (empty($this->FromName)) {
             return $this->From;
         }
-        return $this->FromName." <".$this->From.">";
+        return $this->FromName . " <" . $this->From . ">";
     }
 
     /**
@@ -432,7 +432,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function addDebug($str, $level = 0)
     {
-        $this->debug[] = rtrim($str)."\n";
+        $this->debug[] = rtrim($str) . "\n";
     }
 
     /**
@@ -449,7 +449,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         switch ($format) {
             case 'html':
                 $debug = array_map('CHtml::encode', $this->debug);
-                return CHtml::tag("pre", array('class'=>'maildebug'), implode("", $debug));
+                return CHtml::tag("pre", array('class' => 'maildebug'), implode("", $debug));
                 break;
             default:
                 return $this->debug;
@@ -485,18 +485,18 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $model = $this->emailType;
         }
         $eventBaseParams = array(
-            'survey'=>$this->surveyId,
-            'type'=>$this->emailType,
-            'model'=>$model,
+            'survey' => $this->surveyId,
+            'type' => $this->emailType,
+            'model' => $model,
             // This send array of array, different behaviour than in 3.X where it send array of string (Name <email>)
-            'to'=>$this->to,
-            'subject'=>$this->Subject,
-            'body'=>$this->Body,
-            'from'=>$this->getFrom(),
-            'bounce'=>$this->Sender,
+            'to' => $this->to,
+            'subject' => $this->Subject,
+            'body' => $this->Body,
+            'from' => $this->getFrom(),
+            'bounce' => $this->Sender,
             /* plugin can update itself some value, then allowing to disable update by default event */
             /* PS : plugin MUST use $this->get('mailer') for better compatibility for each plugin …*/
-            'updateDisable'=>array(),
+            'updateDisable' => array(),
         );
         if (!empty($this->oToken)) {
             $eventBaseParams['token'] = $this->oToken->getAttributes();
@@ -582,7 +582,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         /* Fix body according to HTML on/off */
         if ($this->getIsHtml()) {
             if (strpos($this->Body, "<html>") === false) {
-                $this->Body = "<html>".$this->Body."</html>";
+                $this->Body = "<html>" . $this->Body . "</html>";
             }
             $this->msgHTML($this->Body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
             if (empty($this->AltBody)) {
@@ -632,13 +632,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         /* Set the minimal url and add it to Placeholders */
         $aTokenReplacements["OPTOUTURL"] = App()->getController()
-            ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
+            ->createAbsoluteUrl("/optout/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTOUT");
         $aTokenReplacements["OPTINURL"] = App()->getController()
-            ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
+            ->createAbsoluteUrl("/optin/tokens", array("surveyid" => $this->surveyId, "token" => $token,"langcode" => $language));
         $this->addUrlsPlaceholders("OPTIN");
         $aTokenReplacements["SURVEYURL"] = App()->getController()
-            ->createAbsoluteUrl("/survey/index", array("sid"=>$this->surveyId, "token"=>$token,"lang"=>$language));
+            ->createAbsoluteUrl("/survey/index", array("sid" => $this->surveyId, "token" => $token,"lang" => $language));
         $this->addUrlsPlaceholders("SURVEY");
         return $aTokenReplacements;
     }
@@ -661,13 +661,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->mailLanguage = $oSurvey->language;
             }
             /* Get it separatly since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
-            $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
+            $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
             $aReplacements["SURVEYNAME"] = $oSurveyLanguageSettings->surveyls_title;
             $aReplacements["SURVEYDESCRIPTION"] = $oSurveyLanguageSettings->surveyls_description;
         }
         $aTokenReplacements = $this->getTokenReplacements();
         if ($this->replaceTokenAttributes && !empty($aTokenReplacements)) {
-            $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", $string);
+            $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{" . "$1" . "}", $string);
         }
         $aReplacements = array_merge($aReplacements, $aTokenReplacements);
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
@@ -678,7 +678,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url, $url);
                 }
             }
-
         }
         $aReplacements = array_merge($this->aReplacements, $aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
@@ -702,7 +701,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         
         $attachementType = $this->_aAttachementByType[$this->emailType];
-        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
+        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
             $aAttachments = json_decode($oSurveyLanguageSetting->attachments, true);
             if (!empty($aAttachments[$attachementType])) {
@@ -724,13 +723,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
         $isInSurvey = Yii::app()->is_file(
             $aAttachment['path'],
-            Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$this->surveyId,
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
             false
         );
 
         $isInGlobal = Yii::app()->is_file(
             $aAttachment['path'],
-            Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."global",
+            Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
             false
         );
 
@@ -742,7 +741,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             throw new CErrorEvent(
                 $this,
                 "FILE_NOT_FOUND",
-                gT("An attachment could not be found: ".json_encode($aAttachment))
+                gT("An attachment could not be found: " . json_encode($aAttachment))
             );
         }
 
@@ -772,7 +771,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if ($patternselect != 'php-idna') {
             return parent::validateAddress($address, $patternselect);
         }
-        require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
+        require_once(APPPATH . 'third_party/idna-convert/idna_convert.class.php');
         $oIdnConverter = new idna_convert();
         $sEmailAddress = $oIdnConverter->encode($address);
         $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);

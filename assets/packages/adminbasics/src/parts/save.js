@@ -41,7 +41,6 @@ const SaveController = () => {
         }
     },
     stopDisplayLoadingState = () => {
-        LOG.log('StopLoadingIconAnimation');
         LS.EventBus.$emit('loadingFinished');
         // $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
@@ -70,6 +69,15 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
+
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) {
+                        console.ls.log('Seems no CKEDITOR4 is loaded');
+                    }
+
                     if ($form.data('isvuecomponent') == true) {
                         LS.EventBus.$emit('componentFormSubmit', button)
                     } else {
@@ -226,11 +234,8 @@ const SaveController = () => {
             let item = checkItem.check;
             $(document).off(checkItem.on+'.centralsave', item);
 
-            LOG.log('saveBindings', checkItem, $(item));
-
             if ($(item).length > 0) {
                 $(document).on(checkItem.on+'.centralsave', item, checkItem.run);
-                LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });
 

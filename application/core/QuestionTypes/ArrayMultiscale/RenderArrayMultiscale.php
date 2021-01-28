@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -84,11 +82,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
-                $aData['labelcode'.$iScaleId][] = $oAnswerOption->code;
+                $aData['labelans' . $iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
+                $aData['labelcode' . $iScaleId][] = $oAnswerOption->code;
             }
             
-            $this->numrows = $this->numrows + count($aData['labelans'.$iScaleId]);
+            $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
         }
         return $aData;
     }
@@ -97,12 +95,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
     {
         // Find if we have rigth and center text
         /* All of this part seem broken actually : we don't send it to view and don't explode it */
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%'";
+        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%'";
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
         $rightexists = ($rigthCount > 0);
         
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%|%'";
+        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%|%'";
         $centerCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
         $centerexists  = ($centerCount > 0);
@@ -166,11 +164,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $anscount = count($this->aSubQuestions[0]);
 
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
-            $myfname = $this->sSGQA.$oQuestionRow->title;
-            $myfname0 = $this->sSGQA.$oQuestionRow->title."#0";
-            $myfid0 = $this->sSGQA.$oQuestionRow->title."_0";
-            $myfname1 = $this->sSGQA.$oQuestionRow->title."#1";
-            $myfid1 = $this->sSGQA.$oQuestionRow->title."_1";
+            $myfname = $this->sSGQA . $oQuestionRow->title;
+            $myfname0 = $this->sSGQA . $oQuestionRow->title . "#0";
+            $myfid0 = $this->sSGQA . $oQuestionRow->title . "_0";
+            $myfname1 = $this->sSGQA . $oQuestionRow->title . "#1";
+            $myfid1 = $this->sSGQA . $oQuestionRow->title . "_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
             
@@ -237,11 +235,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $answertextcenter = "";
             }
 
-            $myfname = $this->sSGQA.$oQuestionRow->title;
-            $myfname0 = $this->sSGQA.$oQuestionRow->title.'#0';
-            $myfid0 = $this->sSGQA.$oQuestionRow->title.'_0';
-            $myfname1 = $this->sSGQA.$oQuestionRow->title.'#1'; // new multi-scale-answer
-            $myfid1 = $this->sSGQA.$oQuestionRow->title.'_1';
+            $myfname = $this->sSGQA . $oQuestionRow->title;
+            $myfname0 = $this->sSGQA . $oQuestionRow->title . '#0';
+            $myfid0 = $this->sSGQA . $oQuestionRow->title . '_0';
+            $myfname1 = $this->sSGQA . $oQuestionRow->title . '#1'; // new multi-scale-answer
+            $myfid1 = $this->sSGQA . $oQuestionRow->title . '_1';
 
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
             $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
@@ -382,7 +380,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->parseSubquestionsDropdown($aData);
 
         $answer = Yii::app()->twigRenderer->renderQuestion(
-            $this->getMainView().'/answer_dropdown',
+            $this->getMainView() . '/answer_dropdown',
             $aData,
             true
         );
@@ -405,7 +403,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->parseSubquestionsNoDropdown($aData);
         
         $answer = Yii::app()->twigRenderer->renderQuestion(
-            $this->getMainView().'/answer',
+            $this->getMainView() . '/answer',
             $aData,
             true
         );

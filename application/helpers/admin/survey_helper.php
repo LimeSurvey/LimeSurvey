@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,7 +18,7 @@
 function getSurveyDefaultSettings()
 {
     return array(
-    'active'=>'N',
+    'active' => 'N',
     'questionindex'               => 0,
     'format'                   => 'G', //Group-by-group mode
     'template'                 => getGlobalSetting('defaulttheme'),
