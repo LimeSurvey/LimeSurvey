@@ -47,8 +47,7 @@ $oQuestionSelector = $this->beginWidget(
     <label for="questionCode"><?= gT('Code'); ?></label>
     <div class="scoped-keep-in-line">
         <!-- TODO: Max lenght. -->
-        <!-- TODO: Read-only when survey is active. -->
-        <?php if ($oSurvey->active !== 'Y'): ?>
+        <?php if ($oSurvey->active !== 'Y'){ ?>
           <input
               text="text"
               class="form-control"
@@ -59,9 +58,20 @@ $oQuestionSelector = $this->beginWidget(
               maxlength="20"
               onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
           />
-        <?php else: ?>
-          <span><?= $question->title; ?></span>
-        <?php endif; ?>
+        <?php
+        }else{ ?>
+            <input
+                    text="text"
+                    class="form-control"
+                    id="questionCode"
+                    name="question[title]"
+                    value="<?= $question->title; ?>"
+                    required="true"
+                    maxlength="20"
+                    readonly
+            />
+        <?php } ?>
+
         <!--
         <type-counter 
             :countable="currentQuestionCode.length"
