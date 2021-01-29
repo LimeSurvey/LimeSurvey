@@ -178,7 +178,8 @@ class themes extends Survey_Common_Action
         $action = returnGlobal('action');
         if ($action == 'templateuploadimagefile') {
             return $this->templateuploadimagefile();
-        } elseif ($action == 'templateupload') {
+        } 
+        if ($action == 'templateupload') {
             return $this->templateupload();
         }
 
