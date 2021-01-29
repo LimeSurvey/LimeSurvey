@@ -431,7 +431,6 @@ class Permission extends LSActiveRecord
         $aPermissions = Survey::getPermissionData();
         $aCrud = array('create', 'read', 'update', 'delete', 'import', 'export');
         foreach ($aPermissions as $sPermissionName => $aPermissionDetails) {
-            tracevar($aPermissionDetails);
             $oPermission = Permission::model()->findByAttributes(array(
                 'entity' => 'survey',
                 'entity_id' => $iSurveyID,
