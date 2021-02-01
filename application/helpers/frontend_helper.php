@@ -1658,7 +1658,7 @@ function checkCompletedQuota($surveyid, $return = false)
     if (!$aMatchedQuotas) {
         $aMatchedQuotas = array();
         /** @var Quota[] $aQuotas */
-        $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
+        $aQuotas = Quota::model()->with('languagesettings', 'quotaMembers.question')->findAllByAttributes(array('sid' => $surveyid));
         // if(!$aQuotasInfo || empty($aQuotaInfos)) {
         if (!$aQuotas || empty($aQuotas)) {
             return $aMatchedQuotas;
