@@ -7,23 +7,35 @@
 $(document).on('ready pjax:scriptcomplete',function () {
     $('div.array-multi-flexi-text table.show-totals input:enabled').keyup(updatetotals);
     $('div.array-multi-flexi-text table.show-totals input:enabled').each(updatetotals);
+    $('div.array-multi-flexi-text table.show-totals tr.subquestion-list').on('relevance:on relevance:off', function(){
+        sumTable(this);
+    });
+    $('div.array-multi-flexi-text table.show-totals').closest('div.array-multi-flexi-text').on('relevance:on', function(){
+        var firstRow = $(this).find('table.show-totals input:enabled:visible').first();
+        if (firstRow.length) {
+            sumTable(firstRow[0]);
+        }
+    });
 });
 
 function updatetotals(e) {
     console.ls.log(e);
     var inputValue = $(this).val();
-    var sRadix = LSvar.sLEMradix;
-    var sTableID = $(this).closest('table').attr('id');
-    var sTable = $(this).closest('table');
-    var iGrandTotal = new Decimal(0);
 
     if (!normalizeValue(inputValue)) {
         $(this).val(inputValue.substring(0, (inputValue.length - 1)));
         return;
     }
 
+    sumTable(this);
+}
+
+function sumTable(element) {
+    var table = $(element).closest('table');
+    var iGrandTotal = new Decimal(0);
+
     // Sum all rows
-    sTable.find('tr').each(function () {
+    table.find('tr').each(function () {
         //the value of sum needs to be reset for each row, so it has to be set inside the row loop
         var sum = new Decimal(0);
         //find the elements in the current row and sum it
@@ -36,11 +48,13 @@ function updatetotals(e) {
         $(this).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
         iGrandTotal = iGrandTotal.plus(sum);
     });
+    
     // Sum all columns
     // First get number of columns (only visible and enabled inputs)
-    var iColumnNum = $('#' + sTableID + ' tbody tr:first-child input:enabled:visible').length;
+    var visibleRows = table.find('tbody tr:visible');
+    var iColumnNum = visibleRows.first().find('input:enabled:visible').length;
     //Get An array of jQuery Objects
-    var $iRow = sTable.find('tr');
+    var $iRow = table.find('tr');
     //Iterate through the columns
     for (var i = 1; i <= iColumnNum; i++) {
         var sum = new Decimal(0);
@@ -53,9 +67,8 @@ function updatetotals(e) {
         $($iRow.last().find('td').get((i - 1))).find('input:disabled').val(formatValue(sum)).trigger('change').trigger('keyup').trigger('keydown');
     }
 
-    //$('#'+sTableID+' tr:last-child td.total:nth-of-type('+iColumns+') input:disabled').val(formatValue(iGrandTotal));
-    $iRow.last().find('td.grand.total').find('input:disabled').val(formatValue(iGrandTotal)).trigger('change').trigger('keyup').trigger('keydown');
     // Grand total
+    $iRow.last().find('td.grand.total').find('input:disabled').val(formatValue(iGrandTotal)).trigger('change').trigger('keyup').trigger('keydown');
 }
 
 function formatValue(sValue) {
