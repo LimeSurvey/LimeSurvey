@@ -60,21 +60,16 @@ class LimeReplacementFieldsController extends LSBaseController
 
         $data = [];
         $data['countfields'] = count($replacementFields);
-        $data['replacements'] = [];
-
         asort($replacementFields);
-        $data['replacements'][gt('General replacements')] = $replacementFields;
-
+        $data['replFields'] = $replacementFields;
         if (isset($childQuestions)) {
-            $data['replacements'][gT('Questions')] = $childQuestions;
+            $data['cquestions'] = $childQuestions;
         }
         if (isset($surveyformat)) {
-            $data['replacements'][gT('Survey format')] = $surveyformat;
+            $data['surveyformat'] = $surveyformat;
         }
 
-        $data['replFields'] = $replacementFields;
-        //$this->renderPartial('/admin/super/_renderJson', ['data' => $data]);
-        $this->render('limeReplacementFields_view', $data);
+        $this->renderPartial('limeReplacementFields_view', $data);
     }
 
     /**
