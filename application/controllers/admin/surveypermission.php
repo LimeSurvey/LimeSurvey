@@ -446,7 +446,7 @@ class surveypermission extends Survey_Common_Action
             }
             $postuserid = null;
         } else {
-            throw new CHttpException(400, gT("Unknow action."));
+            throw new CHttpException(400, gT("Unknown action."));
         }
 
         $usersummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
@@ -638,7 +638,7 @@ class surveypermission extends Survey_Common_Action
         if ($success) {
             $addsummary .= "<div class=\"successheader\">" . gT("Survey permissions for all users in this group were successfully updated.") . "</div>\n";
         } else {
-            $addsummary .= "<div class=\"errorheader\">" . gT("Failed to update permissions for all users in this group.") . "</div>\n";
+            $addsummary .= "<div class=\"errorheader\">" . gT("Failed to update sermissions for all users in this group.") . "</div>\n";
         }
         $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
         $addsummary .= "</div></div></div>\n";
