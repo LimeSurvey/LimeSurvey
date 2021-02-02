@@ -78,11 +78,12 @@ class AssessmentController extends LSBaseController
         $aData['gid'] = null; //important for rendering the sidebar ...(why?)
         Yii::app()->getClientScript()->registerScript(
             "AssessmentsVariables",
-            "var strnogroup = '" . gT("There are no groups available.", "js") . "',\n ';",
+            "var strnogroup = '" . gT("There are no groups available.", "js") . "';",
             LSYii_ClientScript::POS_BEGIN
         );
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'assessments.js', LSYii_ClientScript::POS_BEGIN);
 
+        PrepareEditorScript(true, $this);
         $this->aData = $aData;
         $this->render('assessments_view', $this->aData);
     }
@@ -269,7 +270,7 @@ class AssessmentController extends LSBaseController
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
         $aData['baselang'] = $oSurvey->language;
         $aData['subaction'] = gT("Assessments");
-        $aData['gid'] = App()->request->getPost('gid', '');
+        $aData['groupId'] = App()->request->getPost('gid', '');
         return $aData;
     }
 
