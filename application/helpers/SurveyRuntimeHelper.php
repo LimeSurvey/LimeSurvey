@@ -1748,6 +1748,9 @@ class SurveyRuntimeHelper
             $this->aMoveResult = LimeExpressionManager::JumpTo($qSec + 1, 'question', false, true);
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
         }
+        
+        // "Save" starting values to response. 
+        // In the case of preview will not be "saved"", but will be incorporated in the response handled in memory.
         LimeExpressionManager::SaveStartingValues();
     }
 
