@@ -1432,6 +1432,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $results['surveys']++;
         } else {
             $results['error'] = gT("Unable to import survey.");
+            $results['error'] .= CHtml::errorSummary($newSurvey);
             return $results;
         }
     }
