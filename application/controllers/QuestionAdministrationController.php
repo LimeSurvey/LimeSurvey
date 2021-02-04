@@ -110,7 +110,7 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * Show question edit form.
      *
-     * @param int $questionId
+     * @param int    $questionId        Question ID
      * @param string $tabOverviewEditor which tab should be used this can be 'overview' or 'editor'
      * @return void
      * @throws CHttpException
@@ -150,7 +150,7 @@ class QuestionAdministrationController extends LSBaseController
      * Helper function to render form.
      * Used by create and edit actions.
      *
-     * @param Question $question
+     * @param Question $question Question
      * @return void
      * @throws CException
      * @todo Move to service class
@@ -219,30 +219,42 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['showSaveAndCloseButton'] = true;
         $this->aData['showCloseButton'] = true;
 
-        //$this->aData['topBar']['leftSideView'] = 'questionTopbarLeft_view';
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
+        
+        $generalSettings = $this->getGeneralOptions(
+            $question->qid,
+            $question->type,
+            $question->gid,
+            // TODO: question_template
+            'core'
+        );
 
         $viewData = [
             'oSurvey'                => $question->survey,
-            'oQuestion'               => $question,
+            'oQuestion'              => $question,
             'questionTemplate'       => $questionTemplate,
             'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
             'advancedSettings'       => $advancedSettings,
-            'generalSettings'        => $this->getGeneralOptions(
-                $question->qid,
-                $question->type,
-                $question->gid,
-                // TODO: question_template
-                'core'
-            ),
+            'generalSettings'        => $generalSettings,
             'showScriptField'       => $showScriptField,
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml
         ];
+
+        $questionAttributes = $viewData['aQuestionTypeGroups']['single_choice_questions']['questionTypes'];
+        $questionAttributeFivePointChoice = $questionAttributes[0];
+
+        // TODO: Rename $questionAttributeFivePointChoice to general name.
+        if ($questionAttributeFivePointChoice['title'] === '5 Point Choice' &&
+            $questionAttributeFivePointChoice['group'] === 'Single choice questions') {
+
+            $viewData['generalSettings']  = $this->removeInputValidationFromGeneralSettings($generalSettings);
+            $viewData['advancedSettings'] = $this->removeOtherCommentMandatoryFromLogicTab($advancedSettings);
+        }
 
         $this->aData = array_merge($this->aData, $viewData);
 
@@ -250,6 +262,33 @@ class QuestionAdministrationController extends LSBaseController
             'create',
             $viewData
         );
+    }
+
+    /**
+     * Removes Input Validation from General Settings Array.
+     * @param array $generalSettings General Settings Array
+     * @return array
+     */
+    private function removeInputValidationFromGeneralSettings(array $generalSettings) : array {
+        $keyExists = array_key_exists('preg', $generalSettings);
+        if ($keyExists) {
+            unset($generalSettings['preg']);
+        }   
+        return $generalSettings;
+    }
+
+    /**
+     * Removes other comment mandatory from Advanced Settings Array.
+     * @param array $advancedSettings Advanced Settings Array
+     * @return array
+     */
+    private function removeOtherCommentMandatoryFromLogicTab(array $advancedSettings): array
+    {
+        $keyExists = array_key_exists('Logic', $advancedSettings);
+        if ($keyExists) {
+            unset($advancedSettings['Logic'][0]);
+        }
+        return $advancedSettings;
     }
 
     /**
@@ -2920,6 +2959,7 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * @param array $aQuestionTypeList Question Type List as Array
      * @return array
      */
     private function getQuestionTypeGroups($aQuestionTypeList)
