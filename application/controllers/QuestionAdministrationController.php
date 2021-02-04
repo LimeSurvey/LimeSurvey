@@ -2486,7 +2486,9 @@ class QuestionAdministrationController extends LSBaseController
                 'question' => $aI10NBlock['question'],
                 'help'     => $aI10NBlock['help'],
             ];
-            if (array_key_exists('script', $aI10NBlock)) $aAttributes['script'] = $aI10NBlock['script'];    // Script is not present when "Show script field" = "No"
+            if (array_key_exists('script', $aI10NBlock)) {
+                $aAttributes['script'] = $aI10NBlock['script'];    // Script is not present when "Show script field" = "No"
+            }
             $i10N->setAttributes($aAttributes, false);
             if (!$i10N->save()) {
                 throw new CHttpException(500, gT("Could not store translation"));
