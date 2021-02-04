@@ -172,6 +172,17 @@ class themes extends Survey_Common_Action
      */
     public function upload()
     {
+        // Code for backward compatiblity with custom themes that are expecting to upload images to upload subaction. 
+        // That happens as their options.twig are outdated.
+        // Now that the upload subaction doesn't handle all uploads, weneed to dispatch to the proper.
+        $action = returnGlobal('action');
+        if ($action == 'templateuploadimagefile') {
+            return $this->templateuploadimagefile();
+        } 
+        if ($action == 'templateupload') {
+            return $this->templateupload();
+        }
+
         $sTemplateName = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             Yii::app()->loadHelper('admin/template');
