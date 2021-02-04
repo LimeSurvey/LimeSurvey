@@ -222,17 +222,12 @@ class themes extends Survey_Common_Action
         $debug[] = $_FILES;
 
         // Redirect back at file size error.
-        $this->checkFileSizeError();
+        $this->checkFileSizeError('file');
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
-        $checkImageFilename = LSYii_ImageValidator::validateImage($_FILES["file"]['name']);
-        if ($checkImageContent['check'] === false || $checkImageFilename['check'] === false) {
-            $message = $checkImageContent['check'] === false
-                ? $checkImageContent['uploadresult']
-                : ($checkImageFilename['check'] === false ? $checkImageFilename['uploadresult'] : null);
-            $debug = $checkImageContent['check'] === false
-                ? $checkImageContent['debug']
-                : ($checkImageFilename['check'] === false ? $checkImageFilename['debug'] : null);
+        if ($checkImageContent['check'] === false) {
+            $message = $checkImageContent['check'] === false ? $checkImageContent['uploadresult'] : null;
+            $debug = $checkImageContent['check'] === false ? $checkImageContent['debug'] : null;
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array('data' => ['success' => $success, 'message' => $message, 'debug' => $debug]),
@@ -1295,9 +1290,9 @@ class themes extends Survey_Common_Action
      * Redirect if file size is too big.
      * @return void
      */
-    protected function checkFileSizeError()
+    protected function checkFileSizeError($uploadName = 'the_file')
     {
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+        if ($_FILES[$uploadName]['error'] == 1 || $_FILES[$uploadName]['error'] == 2) {
             Yii::app()->setFlashMessage(
                 sprintf(
                     gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
