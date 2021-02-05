@@ -453,7 +453,7 @@ function buildSelects($allfields, $surveyid, $language)
                         $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
                         if (is_array($pvParts) AND count($pvParts)) {
                             foreach ($pvParts AS $pvPart) {
-                                $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE '".trim($pvPart)."'";
+                                $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))" LIKE ".App()->db->quoteValue($pvPart);
                             }
                             if (count($selectSubs)) {
                                 $selects[] = ' ('.implode(' OR ', $selectSubs).') ';
