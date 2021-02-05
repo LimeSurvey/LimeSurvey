@@ -210,8 +210,9 @@ echo $oQuestionSelector->getModal();
                                         <?php
                                             echo TbHtml::dropDownList('htmleditormode',  App()->session['htmleditormode'], array(
                                                 'default' => gT("Default",'unescaped'),
-                                                'wysiwyg' => gT("Inline HTML editor",'unescaped'),
-                                                'source' => gT("Sourcecode editor",'unescaped'),
+                                                'inline' => gT("Inline HTML editor",'unescaped'),
+                                                'popup' => gT("Popup HTML editor",'unescaped'),
+                                                'none' => gT("Sourcecode editor",'unescaped'),
                                             ), array('class'=>"form-control"));
                                         ?>
                                     </div>
