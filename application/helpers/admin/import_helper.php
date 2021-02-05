@@ -913,7 +913,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iNewSID = $results['newsid'] = $newSurvey->sid;
             $results['surveys']++;
         } else {
-            $results['error'] = gT("Unable to import survey.");
+            $results['error'] = CHtml::errorSummary($newSurvey, gT("Unable to import survey."));
             return $results;
         }
     }
