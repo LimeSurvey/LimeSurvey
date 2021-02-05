@@ -289,7 +289,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup."), 'error');
+            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -593,8 +593,7 @@ class SurveyAdministrationController extends LSBaseController
                 }
             } else {
                 Yii::app()->setFlashMessage(
-                    gT("An error occurred uploading your file. 
-                This may be caused by incorrect permissions for the application /tmp folder."),
+                    gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
                     'error'
                 );
                 $this->redirect(array('surveyAdministration/view/' . $iSurveyID));

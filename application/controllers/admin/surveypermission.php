@@ -446,7 +446,7 @@ class surveypermission extends Survey_Common_Action
             }
             $postuserid = null;
         } else {
-            throw new CHttpException(400, gT("Unknow action."));
+            throw new CHttpException(400, gT("Unknown action."));
         }
 
         $usersummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
