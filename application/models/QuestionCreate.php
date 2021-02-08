@@ -8,7 +8,7 @@ class QuestionCreate extends Question
     /**
      * @todo This is a factory method, not a singleton. Rename to make() or create().
      */
-    public static function getInstance($iSurveyId, $type)
+    public static function getInstance($iSurveyId, $type = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (empty($oSurvey)) {

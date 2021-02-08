@@ -88,7 +88,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new Exception('Internal error: Found no survey with id ' . $surveyid);
         }
 
-        $oQuestion = $this->getQuestionObject(null, 'F', null);
+        $oQuestion = $this->getQuestionObject(null, null, null);
         $oQuestion->sid = $surveyid;
 
         $this->aData['showSaveAndNewGroupButton'] = true;
@@ -805,7 +805,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         $stringCodes = json_decode($codes, true);
-        [$oSubquestion->title, $newPosition] = $this->calculateNextCode($stringCodes);
+        list($oSubquestion->title, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
@@ -852,7 +852,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $oSurvey = Survey::model()->findByPk($surveyid);
         $stringCodes = json_decode($codes, true);
-        [$answerOption->code, $newPosition] = $this->calculateNextCode($stringCodes);
+        list($answerOption->code, $newPosition) = $this->calculateNextCode($stringCodes);
 
         $activated = false; // You can't add ne subquestion when survey is active
         Yii::app()->loadHelper('admin/htmleditor'); // Prepare the editor helper for the view
