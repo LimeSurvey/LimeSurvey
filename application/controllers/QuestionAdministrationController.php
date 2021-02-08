@@ -261,6 +261,13 @@ class QuestionAdministrationController extends LSBaseController
             $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
         }
         
+
+        // Remove Input Validation from General Settings Tab in List (Radio) Question Type.
+        $questionAttributeListRadio = $questionAttributes[4];
+        if ($questionAttributeListRadio['title'] === 'List (radio)') {
+            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
+        }
+        
         $this->aData = array_merge($this->aData, $viewData);
 
         $this->render(
