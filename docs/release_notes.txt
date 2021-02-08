@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.2 (build 210208) to 4.4.3 (build 210209) February 8, 2021
+Hotfix release
+-Fixed issue #17061: Themes editor cannot be opened after Comfort Update (eddylackmann)
+
+
 Changes from 4.4.1 (build 210201) to 4.4.2 (build 210208) February 8, 2021
 -Fixed issue: Question Attributes: Single Choice 5-Point. (Jessica Höck)
 -Fixed issue #17052: Permission for owner of survey (Denis Chenu)
