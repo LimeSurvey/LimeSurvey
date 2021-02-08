@@ -65,6 +65,7 @@ class Permission extends LSActiveRecord
         return array(
             array('entity, entity_id, uid, permission', 'required'),
             array('entity', 'length', 'max' => 50),
+            array('entity',  'filter', 'filter' => 'strtolower'),
             array('permission', 'length', 'max' => 100),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'default', 'value' => 0),
             array('create_p, read_p, update_p, delete_p, import_p, export_p', 'numerical', 'integerOnly' => true),
@@ -362,6 +363,7 @@ class Permission extends LSActiveRecord
      */
     public static function setMinimalEntityPermission($iUserID, $iEntityID, $sEntityName)
     {
+        $sEntityName = strtolower($sEntityName);
         $sPermission = self::getEntityMinimalPermissionRead($sEntityName);
         if (!$sPermission) {
             return null;
@@ -537,7 +539,7 @@ class Permission extends LSActiveRecord
         // TODO: plugin should not be able to override the permission system (security issue),
         //      they should read permissions via the model
         //      and they should add row in permission table  (entity = plugin, etc)
-
+        $sEntityName = strtolower($sEntityName);
         $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID', $iEntityID);
         $oEvent->set('sEntityName', $sEntityName);
