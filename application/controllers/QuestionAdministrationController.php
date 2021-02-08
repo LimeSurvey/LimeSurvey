@@ -88,7 +88,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new Exception('Internal error: Found no survey with id ' . $surveyid);
         }
 
-        $oQuestion = $this->getQuestionObject(null, 'F', null);
+        $oQuestion = $this->getQuestionObject(null, null, null);
         $oQuestion->sid = $surveyid;
 
         $this->aData['showSaveAndNewGroupButton'] = true;
