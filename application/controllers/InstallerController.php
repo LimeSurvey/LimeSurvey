@@ -319,7 +319,7 @@ class InstallerController extends CController
                     if (in_array($oModel->dbtype, array('mysql', 'mysqli'))) {
                         //for development - use mysql in the strictest mode  
                         if (Yii::app()->getConfig('debug') > 1) {
-                            $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
+                        $this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI,ONLY_FULL_GROUP_BY'")->execute();
                         }
                         $sMySQLVersion = $this->connection->getServerVersion();
                         if (version_compare($sMySQLVersion, '4.1', '<')) {
