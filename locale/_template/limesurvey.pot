@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-02-08 12:25:25+00:00\n"
+"POT-Creation-Date: 2021-02-09 09:44:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1016,7 +1016,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/responsesTopbarLeft_view.php:83
 #: application/extensions/TopbarWidget/views/includes/surveyTopbarRight_view.php:21
 #: application/extensions/UserPermissionsWidget/views/table.php:16
-#: application/models/Permission.php:852
+#: application/models/Permission.php:854
 #: application/views/admin/dataentry/vvimport.php:131
 #: application/views/admin/participants/participantsPanel_view.php:82
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:39
@@ -1463,7 +1463,7 @@ msgstr ""
 #: application/views/surveyAdministration/tabCopy_view.php:131
 #: application/views/surveyAdministration/tabCopy_view.php:143
 #: application/views/surveyAdministration/tabImport_view.php:30
-#: application/views/themeOptions/installedthemelist.php:72
+#: application/views/themeOptions/installedthemelist.php:74
 #: application/views/themeOptions/theme_buttons.php:6
 #: application/views/userManagement/partial/edittemplatepermissions.php:35
 msgid "On"
@@ -1561,7 +1561,7 @@ msgstr ""
 #: application/views/surveyAdministration/tabCopy_view.php:132
 #: application/views/surveyAdministration/tabCopy_view.php:144
 #: application/views/surveyAdministration/tabImport_view.php:31
-#: application/views/themeOptions/installedthemelist.php:72
+#: application/views/themeOptions/installedthemelist.php:74
 #: application/views/themeOptions/theme_buttons.php:7
 #: application/views/userManagement/partial/edittemplatepermissions.php:36
 msgid "Off"
@@ -2330,7 +2330,7 @@ msgstr ""
 #: application/views/themeOptions/availablethemelist.php:18
 #: application/views/themeOptions/index.php:51
 #: application/views/themeOptions/index.php:190
-#: application/views/themeOptions/installedthemelist.php:43
+#: application/views/themeOptions/installedthemelist.php:45
 #: application/views/themeOptions/surveythemelist.php:52
 #: application/views/userGroup/usergroups_view.php:55
 msgid "Description"
@@ -2882,7 +2882,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/questionTopbarLeft_view.php:77
 #: application/extensions/UserPermissionsWidget/views/table.php:15
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:25
-#: application/models/Assessment.php:110 application/models/Permission.php:851
+#: application/models/Assessment.php:110 application/models/Permission.php:853
 #: application/models/Question.php:707 application/models/SavedControl.php:143
 #: application/models/TemplateManifest.php:672
 #: application/models/TemplateManifest.php:675
@@ -4575,7 +4575,7 @@ msgstr ""
 #: application/views/admin/labels/labelsets_view.php:43
 #: application/views/themeOptions/index.php:92
 #: application/views/themeOptions/index.php:151
-#: application/views/themeOptions/installedthemelist.php:36
+#: application/views/themeOptions/installedthemelist.php:38
 #: application/views/themeOptions/surveythemelist.php:45
 #: application/views/userGroup/usergroups_view.php:48
 msgid "Name"
@@ -7097,7 +7097,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:752
 #: application/core/LsDefaultDataSets.php:753
 #: application/core/LsDefaultDataSets.php:754
-#: application/models/Permission.php:822
+#: application/models/Permission.php:824
 #: application/views/admin/participants/participantsPanel_view.php:48
 #: application/views/admin/super/_configuration_menu.php:239
 #: application/views/admin/token/massive_actions/_selector.php:123
@@ -9052,7 +9052,7 @@ msgstr ""
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:77
 #: application/extensions/UserPermissionsWidget/views/table.php:17
 #: application/helpers/userstatistics_helper.php:2719
-#: application/models/Permission.php:853
+#: application/models/Permission.php:855
 #: application/views/admin/participants/massive_actions/_selector.php:66
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:32
 #: application/views/admin/participants/participantsPanel_view.php:8
@@ -9453,7 +9453,7 @@ msgid "Permission"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:12
-#: application/models/Permission.php:848
+#: application/models/Permission.php:850
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:35
 #: application/views/admin/permissiontemplates/partials/_permissions.php:21
 #: application/views/admin/super/adminmenu.php:83
@@ -9472,7 +9472,7 @@ msgid "Create"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:13
-#: application/models/Permission.php:849
+#: application/models/Permission.php:851
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:36
 #: application/views/admin/permissiontemplates/partials/_permissions.php:22
 #: application/views/admin/user/setuserpermissions.php:27
@@ -9482,7 +9482,7 @@ msgid "View/read"
 msgstr ""
 
 #: application/extensions/UserPermissionsWidget/views/table.php:14
-#: application/models/Permission.php:850
+#: application/models/Permission.php:852
 #: application/views/admin/labels/editlabel_view.php:77
 #: application/views/admin/permissiontemplates/massiveAction/_updatepermissions.php:37
 #: application/views/admin/permissiontemplates/partials/_permissions.php:23
@@ -9534,7 +9534,7 @@ msgstr ""
 #: application/views/questionAdministration/listquestions.php:110
 #: application/views/questionGroupsAdministration/listquestiongroups.php:59
 #: application/views/surveyAdministration/listSurveys_view.php:54
-#: application/views/themeOptions/installedthemelist.php:24
+#: application/views/themeOptions/installedthemelist.php:26
 #: application/views/themeOptions/surveythemelist.php:20
 #: application/views/userGroup/usergroups_view.php:28
 #: application/views/userGroup/usergroups_view.php:109
@@ -9564,7 +9564,7 @@ msgstr ""
 #: application/views/assessment/assessments_view.php:47
 #: application/views/questionAdministration/listquestions.php:112
 #: application/views/questionGroupsAdministration/listquestiongroups.php:59
-#: application/views/themeOptions/installedthemelist.php:24
+#: application/views/themeOptions/installedthemelist.php:26
 #: application/views/themeOptions/surveythemelist.php:20
 #: application/views/userGroup/usergroups_view.php:28
 #: application/views/userGroup/usergroups_view.php:109
@@ -14303,19 +14303,19 @@ msgstr ""
 msgid "Can edit?"
 msgstr ""
 
-#: application/models/Permission.php:148
+#: application/models/Permission.php:149
 msgid "Superadministrator"
 msgstr ""
 
-#: application/models/Permission.php:149
+#: application/models/Permission.php:150
 msgid "Unlimited administration permissions"
 msgstr ""
 
-#: application/models/Permission.php:158 application/models/Permission.php:159
+#: application/models/Permission.php:159 application/models/Permission.php:160
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:775
+#: application/models/Permission.php:777
 #: application/views/admin/globalsettings/_overview.php:20
 #: application/views/admin/super/_configuration_menu.php:47
 #: application/views/admin/super/adminmenu.php:70
@@ -14326,21 +14326,21 @@ msgstr ""
 msgid "Surveys"
 msgstr ""
 
-#: application/models/Permission.php:776
+#: application/models/Permission.php:778
 msgid "Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"
 msgstr ""
 
-#: application/models/Permission.php:785
+#: application/models/Permission.php:787
 #: application/views/surveyAdministration/listSurveys_view.php:17
 #: application/views/surveyAdministration/listSurveys_view.php:47
 msgid "Survey groups"
 msgstr ""
 
-#: application/models/Permission.php:786
+#: application/models/Permission.php:788
 msgid "Permission to create survey groups (for which all permissions are automatically given) and view, update and delete survey groups from other users."
 msgstr ""
 
-#: application/models/Permission.php:792
+#: application/models/Permission.php:794
 #: application/views/admin/globalsettings/_overview.php:17
 #: application/views/admin/super/_configuration_menu.php:45
 #: application/views/admin/super/_configuration_menu.php:197
@@ -14348,28 +14348,28 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: application/models/Permission.php:793
+#: application/models/Permission.php:795
 msgid "Permission to create, view, update and delete users"
 msgstr ""
 
-#: application/models/Permission.php:799
+#: application/models/Permission.php:801
 #: application/views/userManagement/partial/showuser.php:7
 msgid "User groups"
 msgstr ""
 
-#: application/models/Permission.php:800
+#: application/models/Permission.php:802
 msgid "Permission to create, view, update and delete user groups"
 msgstr ""
 
-#: application/models/Permission.php:804
+#: application/models/Permission.php:806
 msgid "Templates"
 msgstr ""
 
-#: application/models/Permission.php:805
+#: application/models/Permission.php:807
 msgid "Permission to create, view, update, delete, export and import templates"
 msgstr ""
 
-#: application/models/Permission.php:809
+#: application/models/Permission.php:811
 #: application/views/admin/labels/import_view.php:36
 #: application/views/admin/super/welcome.php:21
 #: application/views/admin/survey/copySurvey_view.php:47
@@ -14379,19 +14379,19 @@ msgstr ""
 msgid "Label sets"
 msgstr ""
 
-#: application/models/Permission.php:810
+#: application/models/Permission.php:812
 msgid "Permission to create, view, update, delete, export and import label sets/labels"
 msgstr ""
 
-#: application/models/Permission.php:817
+#: application/models/Permission.php:819
 msgid "Settings & Plugins"
 msgstr ""
 
-#: application/models/Permission.php:818
+#: application/models/Permission.php:820
 msgid "Permission to view and update global settings & plugins and to delete and import plugins"
 msgstr ""
 
-#: application/models/Permission.php:823
+#: application/models/Permission.php:825
 msgid "Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"
 msgstr ""
 
@@ -23875,14 +23875,14 @@ msgstr ""
 #: application/views/themeOptions/availablethemelist.php:19
 #: application/views/themeOptions/index.php:51
 #: application/views/themeOptions/index.php:190
-#: application/views/themeOptions/installedthemelist.php:51
+#: application/views/themeOptions/installedthemelist.php:53
 #: application/views/themeOptions/surveythemelist.php:60
 msgid "Type"
 msgstr ""
 
 #: application/views/themeOptions/availablethemelist.php:20
 #: application/views/themeOptions/index.php:51
-#: application/views/themeOptions/installedthemelist.php:60
+#: application/views/themeOptions/installedthemelist.php:62
 #: application/views/themeOptions/surveythemelist.php:69
 msgid "Extends"
 msgstr ""
@@ -23957,19 +23957,19 @@ msgstr ""
 msgid "Question themes:"
 msgstr ""
 
-#: application/views/themeOptions/installedthemelist.php:56
+#: application/views/themeOptions/installedthemelist.php:58
 msgid "Core Theme"
 msgstr ""
 
-#: application/views/themeOptions/installedthemelist.php:56
+#: application/views/themeOptions/installedthemelist.php:58
 msgid "User Theme"
 msgstr ""
 
-#: application/views/themeOptions/installedthemelist.php:66
+#: application/views/themeOptions/installedthemelist.php:68
 msgid "Visibility"
 msgstr ""
 
-#: application/views/themeOptions/installedthemelist.php:67
+#: application/views/themeOptions/installedthemelist.php:69
 msgid "Visible inside the Question Selector"
 msgstr ""
 
