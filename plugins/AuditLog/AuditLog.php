@@ -252,14 +252,12 @@
 
             $aDiffOld = array();
             $aDiffNew = array();
-            foreach ($oldvalues->attributes as $aFieldName => $sValue) {
-                if (App()->request->getPost($aFieldName) !== null) {
-                    $oldValue = $sValue;
-                    $newValue = App()->request->getPost($aFieldName);
-                    if ($oldValue != $newValue) {
-                        $aDiffOld[$aFieldName] = $oldValue;
-                        $aDiffNew[$aFieldName] = $newValue;
-                    }
+             foreach ($oldvalues->attributes as $aFieldName => $sValue) {
+                $oldValue = $sValue;
+                $newValue = App()->request->getPost($aFieldName);
+                if ($oldValue != $newValue) {
+                    $aDiffOld[$aFieldName] = $oldValue;
+                    $aDiffNew[$aFieldName] = $newValue;
                 }
             }
 
