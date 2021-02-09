@@ -258,13 +258,11 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $aDiffOld = array();
         $aDiffNew = array();
         foreach ($oldvalues->attributes as $aFieldName => $sValue) {
-            if (App()->request->getPost($aFieldName) !== null) {
-                $oldValue = $sValue;
-                $newValue = App()->request->getPost($aFieldName);
-                if ($oldValue != $newValue) {
-                    $aDiffOld[$aFieldName] = $oldValue;
-                    $aDiffNew[$aFieldName] = $newValue;
-                }
+            $oldValue = $sValue;
+            $newValue = App()->request->getPost($aFieldName);
+            if ($oldValue != $newValue) {
+                $aDiffOld[$aFieldName] = $oldValue;
+                $aDiffNew[$aFieldName] = $newValue;
             }
         }
 
