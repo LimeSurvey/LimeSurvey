@@ -21,8 +21,6 @@
  * @version    $Id: Server.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-use Zend_XmlRpc_Server_Exception;
-
 /**
  * Extends Zend_Server_Abstract
  */
