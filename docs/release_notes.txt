@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.3 (build 210209) to 4.4.4 (build 210212) February 9, 2021
+-Fixed issue: [security] Possible SQL injection in statistics (Carsten Schmitz)
+-Fixed issue: [security] Auditlog not capturing all response modifications (Carsten Schmitz)
+-Fixed issue #17066: Cannot access survey group permissions in latest master (Denis Chenu)
+#Updated translation: Turkish by bulent
+#Updated translation: Greek by kiolalis
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 4.4.2 (build 210208) to 4.4.3 (build 210209) February 8, 2021
 Hotfix release
 -Fixed issue #17061: Themes editor cannot be opened after Comfort Update (eddylackmann)
