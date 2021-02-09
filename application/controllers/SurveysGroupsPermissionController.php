@@ -73,7 +73,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
         $oCriteria = new CDbCriteria();
         $oCriteria->select = ['uid','entity','entity_id'];
-        $oCriteria->group = 'uid';
+        $oCriteria->group = 'uid, entity, entity_id';
         $oCriteria->compare("entity", "SurveysGroups"); // on SurveyGroup
         $oCriteria->compare("entity_id", $model->primaryKey); // on this SurveyGroup
         $oCriteria->compare("uid", "<>" . App()->user->getId()); // not self user

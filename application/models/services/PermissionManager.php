@@ -226,7 +226,7 @@ class PermissionManager
         $oPermission =  Permission::model()->find(
             "entity = :entity AND entity_id = :entity_id AND uid = :uid AND permission = :permission",
             array(
-                ":entity" => $entityName,
+                ":entity" => strtolower($entityName),
                 ":entity_id" => $entityId,
                 ":uid" => $userId,
                 ":permission" => $sPermission

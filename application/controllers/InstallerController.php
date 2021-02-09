@@ -292,7 +292,7 @@ class InstallerController extends CController
                 if ($oModel->isMysql) {
                     //for development - use mysql in the strictest mode
                     if (Yii::app()->getConfig('debug') > 1) {
-                        $oModel->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
+                        $oModel->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI,ONLY_FULL_GROUP_BY'")->execute();
                     }
                 }
                 //$aData array won't work here. changing the name

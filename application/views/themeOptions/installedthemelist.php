@@ -1,8 +1,10 @@
 <?php
 /**
+ * List of all installed question themes
  * @var QuestionTheme $oQuestionTheme
  */
 ?>
+
 <div class="row">
     <div class="col-sm-12 content-right">
         <?php

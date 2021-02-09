@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.2 (build 210208) to 4.4.3 (build 210209) February 8, 2021
+Hotfix release
+-Fixed issue #17061: Themes editor cannot be opened after Comfort Update (eddylackmann)
+
+
+Changes from 4.4.1 (build 210201) to 4.4.2 (build 210208) February 8, 2021
+-Fixed issue: Question Attributes: Single Choice 5-Point. (Jessica Höck)
+-Fixed issue #17052: Permission for owner of survey (Denis Chenu)
+-Fixed issue #17041: Error with SUM on array text (Gabriel Jenik)
+-Fixed issue #17030: Can't add a question to a group (Gabriel Jenik)
+-Fixed issue #17010: Admin personal setting not implemented (Gabriel Jenik)
+-Fixed issue #17008: Bad label and id in Question editor (Denis Chenu)
+-Fixed issue #16949: Uploading an image through the theme options fails (Gabriel Jenik)
+-Fixed issue #16882: Unable to set Html editor in Personnal settings (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by ritapas, lfanfoni
+#Updated translation: German by eddylackmann
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by tammo, Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, slansky, VBraun, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by c_schmitz, valdomir, qualitatuvic
+
+
 Changes from 4.4.0 (build 210129) to 4.4.1 (build 210201) February 1, 2021
 -Fixed issue: Access group - use quick add question create button (Jessica Höck)
 -Fixed issue #16909: Slow loading when the questionnaire has a large number of quotas (500+) (#1692) (NDDDA)
