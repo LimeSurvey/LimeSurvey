@@ -71,7 +71,7 @@
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
-                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
+                        <a target="_blank" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/{$languageCode}"); ?>" >
                             <?php echo $languageName; ?>
                         </a>
                     </li>
@@ -81,7 +81,7 @@
         <?php else:?>
 
         <!-- Preview question single language -->
-        <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
+        <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
             <span class="icon-do"></span>
             <?php eT("Preview question");?>
         </a>
