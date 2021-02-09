@@ -301,6 +301,8 @@ class Statistics_userController extends SurveyController
         //$this->layout = "public";
         //$this->render('/statistics_user_view', $data);
         $data['aSurveyInfo']['include_content'] = 'statistics_user';
+        // Set template into last instance. Will be picked up later by the renderer
+        $oTemplate = Template::model()->getInstance('', $iSurveyID);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_statistics_user.twig', $data, false);
 
         //Delete all Session Data
