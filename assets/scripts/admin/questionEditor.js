@@ -32,11 +32,12 @@
 declare var $: any
 declare var _: any
 declare var LS: any
+declare var CKEDITOR: any
 */
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document */
+/* globals $, _, alert, document, CKEDITOR */
 
 // NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
@@ -1658,7 +1659,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             CKEDITOR.instances[instanceName].updateElement();
           }
         } catch(e) {
-          console.ls.log('Seems no CKEDITOR4 is loaded');
+          console.log('Seems no CKEDITOR4 is loaded');
         }
 
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {
