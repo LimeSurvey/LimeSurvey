@@ -2525,7 +2525,7 @@ class QuestionAdministrationController extends LSBaseController
                 [
                     'question' => $aI10NBlock['question'],
                     'help'     => $aI10NBlock['help'],
-                    'script'   => $aI10NBlock['script'],
+                    'script'   => isset($aI10NBlock['script']) ? $aI10NBlock['script'] : ''
                 ],
                 false
             );
