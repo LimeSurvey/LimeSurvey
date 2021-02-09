@@ -36,7 +36,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return bool
      */
-    protected function beforeRender($view): bool
+    protected function beforeRender($view)
     {
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = $this->aData['oSurvey'] ?? Survey::model()->findByPk($this->aData['surveyid']);
@@ -58,7 +58,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionViewModel(int $id): void
+    public function actionViewModel(int $id)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $this->render(
@@ -79,7 +79,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionCreate(): void
+    public function actionCreate()
     {
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
             $model = new TemplateOptions();
@@ -115,7 +115,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws CException
      */
-    public function actionResetMultiple(): void
+    public function actionResetMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
         $gridid = App()->request->getPost('gridvalue');
@@ -162,7 +162,7 @@ class ThemeOptionsController extends LSBaseController
      * @return void
      * @throws Exception
      */
-    public function actionUninstallMultiple(): void
+    public function actionUninstallMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
         $gridid = App()->request->getPost('grididvalue'); //what is gridid ???
@@ -221,7 +221,7 @@ class ThemeOptionsController extends LSBaseController
      * @throws CException
      * @throws CHttpException
      */
-    public function actionSelectedItems(): void
+    public function actionSelectedItems()
     {
         $aTemplates = json_decode(App()->request->getPost('$oCheckedItems'));
         $aResults = [];
@@ -262,7 +262,7 @@ class ThemeOptionsController extends LSBaseController
      * @throws CException
      * @throws CHttpException
      */
-    public function actionUpdate(int $id): void
+    public function actionUpdate(int $id)
     {
         $model = $this->loadModel($id);
 
@@ -291,7 +291,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return TemplateConfiguration
      */
-    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration): TemplateConfiguration
+    private function turnAjaxmodeOffAsDefault(TemplateConfiguration $templateConfiguration)
     {
         $attributes = $templateConfiguration->getAttributes();
         $hasOptions = isset($attributes['options']);
@@ -317,7 +317,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUpdateSurvey(): void
+    public function actionUpdateSurvey()
     {
         $sid = $this->getSurveyIdFromGetRequest();
         if (
@@ -353,7 +353,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null): void
+    public function actionUpdateSurveyGroup(int $id = null, int $gsid, $l = null)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {
@@ -389,7 +389,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionSetAdminTheme(string $sAdminThemeName): void
+    public function actionSetAdminTheme(string $sAdminThemeName)
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -405,7 +405,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionIndex(): void
+    public function actionIndex()
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -475,7 +475,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionAdmin(): void
+    public function actionAdmin()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $model = new TemplateOptions('search');
@@ -557,7 +557,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionUninstall(): void
+    public function actionUninstall()
     {
         $templatename = App()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
@@ -588,7 +588,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @throws Exception
      */
-    public function actionReset(int $gsid): void
+    public function actionReset(int $gsid)
     {
         if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
             if (empty($gsid)) {
@@ -628,7 +628,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    public function actionPerformAjaxValidation(TemplateOptions $model): void
+    public function actionPerformAjaxValidation(TemplateOptions $model)
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'template-options-form') {
             echo CActiveForm::validate($model);
@@ -664,7 +664,7 @@ class ThemeOptionsController extends LSBaseController
      *
      * @return void
      */
-    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null): void
+    private function updateCommon(TemplateConfiguration $model, int $sid = null, int $gsid = null)
     {
         /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
         $oTemplate = Template::model()->getInstance($model->template_name, $sid, $gsid);
