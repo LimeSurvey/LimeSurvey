@@ -32,11 +32,12 @@
 declare var $: any
 declare var _: any
 declare var LS: any
+declare var CKEDITOR: any
 */
 // flowlint unclear-type: error
 
 // Globals for jshint.
-/* globals $, _, alert, document */
+/* globals $, _, alert, document, CKEDITOR */
 
 // NB: All public functions are in LS.questionEditor.
 var LS = LS || {};
@@ -743,8 +744,12 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     /**
      * result is {lang: html} object.
+     * Why copy both from preview modal and fetch HTML from server? Because row from server is empty.
      */
     fetchLabelSetPredefined(1, source).then((result) => {
+      // Awkward solution to the problem with looping through langs.
+      const langIds = {};
+
       $.each(result, (lang, row) => {
         if (lang.length !== 2) {
           alert('Internal error: lang must have exactly two characters, but is ' + lang);
@@ -784,20 +789,24 @@ $(document).on('ready pjax:scriptcomplete', function () {
             } else if (source === 'answeroptions') {
               $tr = $row.eq(2);
             } else {
-              alert('Internal error: source is not subquestions or answeroptions: ' + source);
-              throw 'abort';
+              throw 'source is not subquestions or answeroptions: ' + source;
             }
             if ($tr.length === 0) {
               throw 'Found no $tr in transferLabels';
             }
-            const randId = `new${Math.floor(Math.random() * 10000)}`;
 
-            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', randId));
-            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-5}/', randId));
+            // Only define random ids the FIRST language we loop for.
+            // Different translations still use the same question code in the input name.
+            if (langIds[i] === undefined) {
+              langIds[i] = `new${Math.floor(Math.random() * 10000)}`;
+            }
 
-            $row.find('input').each((j, inputField) => {
-              $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, randId));
-              $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/, randId));
+            $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
+            $tr.attr('id', $tr.attr('id').replace('/new[0-9]{3-6}/', langIds[i]));
+
+            $row.find('input').each((j /*: number */, inputField) => {
+              $(inputField).attr('name', $(inputField).attr('name').replace(/new[0-9]{3,6}/, langIds[i]));
+              $(inputField).attr('id', $(inputField).attr('id').replace(/new[0-9]{3,6}/, langIds[i]));
             });
 
             if ($row.find('td.code-title').find('input[type=text]').length > 0) {
@@ -814,7 +823,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
               // ??
             }
 
-            $row.find('td.code-title').find('input[type=text]').val(label.code);
             $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
 
@@ -1658,7 +1666,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
             CKEDITOR.instances[instanceName].updateElement();
           }
         } catch(e) {
-          console.ls.log('Seems no CKEDITOR4 is loaded');
+          console.error('Seems no CKEDITOR4 is loaded');
         }
 
         $('#edit-question-form').serializeArray().forEach((x /*: {name: string, value: string} */) => {

@@ -1253,7 +1253,7 @@ class themes extends Survey_Common_Action
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
                 gT('Welcome to the theme editor of LimeSurvey. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
-                '<a target="_blank" href="https://manualv4.limesurvey.org/LimeSurvey_Manual">',
+                '<a target="_blank" href="https://manual.limesurvey.org/New_Template_System_in_LS3.x">',
                 '</a>',
                 '<a target="_blank" href="https://forums.limesurvey.org">',
                 '</a>'

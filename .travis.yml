@@ -7,8 +7,8 @@ language: php
 services:
     - mysql
 php:
+    - 7.1
     - 7.2
-    - 7.3
     - 7.4
 env:
     - DBENGINE=MYISAM
@@ -85,7 +85,8 @@ before_script:
     - sudo service apache2 restart
 
     # Check for syntax errors.
-    - ! find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors'
+    # NB: '!' doesn't work properly, see https://github.com/travis-ci/travis-ci/issues/7494
+    - "! find application/ -type f -name '*.php' -exec php -l {} \;  | grep -v 'No syntax errors'"
 
     # Test server.
     - wget localhost

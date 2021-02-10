@@ -2525,7 +2525,7 @@ class QuestionAdministrationController extends LSBaseController
                 [
                     'question' => $aI10NBlock['question'],
                     'help'     => $aI10NBlock['help'],
-                    'script'   => $aI10NBlock['script'],
+                    'script'   => isset($aI10NBlock['script']) ? $aI10NBlock['script'] : ''
                 ],
                 false
             );
@@ -2721,6 +2721,12 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion->parent_qid = $question->qid;
                 $subquestion->question_order = $questionOrder;
                 $questionOrder++;
+                if (!isset($data['code'])) {
+                    throw new CHttpException(
+                        500,
+                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
+                    );
+                }
                 $subquestion->title      = $data['code'];
                 if ($scaleId === 0) {
                     $subquestion->relevance  = $data['relevance'];
