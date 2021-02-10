@@ -575,7 +575,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
         // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
+        if ($iUserID && $iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
             return true;
         }
 
@@ -611,7 +611,7 @@ class Permission extends LSActiveRecord
             if (safecount($aRoles) > 0) {
                 $allowed = false;
                 foreach ($aRoles as $role) {
-                    $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
+                    $allowed = $allowed || $this->RoleHasPermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
                 }
                 /* Can return false ? Even if user have the specific right … */
                 return $allowed;
@@ -677,16 +677,26 @@ class Permission extends LSActiveRecord
     }
 
     /**
-     * Returns true if a role has permission to read/create/update a certain template
-     * @param string $roleId
-     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @param integer $iUserID integer User ID - if not given the one of the current user is used
-     * @return bool True if user has the permission
+     * Returns true if a role has permission for crud
+     * @param integer $roleId
+     * @param string $sPermission 
+     * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @return bool allwoedpermssion
      */
-    public function hasRolePermission($iRoleId, $sPermission, $sCRUD = 'read')
+    public function RoleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
     {
-        /* Get permission foor user id = 0 */
-        return $this->hasPermission($iRoleId, 'role', $sPermission, $sCRUD, 0);
+        if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
+            return false;
+        }
+        $rolePermssion = $this->findByAttributes(array(
+            "entity_id" => $iRoleId,
+            "entity" => "role",
+            "permission" => $sPermission
+        ));
+        if (empty($rolePermssion)) {
+            return false;
+        }
+        return $rolePermssion->getAttribute("{$sCRUD}_p");
     }
 
     /**

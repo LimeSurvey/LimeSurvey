@@ -291,9 +291,14 @@ class Permissiontemplates extends CActiveRecord
         return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
     }
 
+    /**
+     * return if this role GIVE a permission
+     * @param string $sPermission 
+     * @param string $sCRUD 
+     */
     public function getHasPermission($sPermission, $sCRUD)
     {
-        return Permission::model()->hasRolePermission($this->ptid, $sPermission, $sCRUD);
+        return Permission::model()->RoleHasPermission($this->ptid, $sPermission, $sCRUD);
     }
 
     /**
