@@ -295,11 +295,12 @@ class Permissiontemplates extends CActiveRecord
      * return if this role GIVE a permission
      * Used in only in compileExportXML
      * @param string $sPermission 
-     * @param string $sCRUD 
+     * @param string $sCRUD
+     * @return boolean
      */
     public function getHasPermission($sPermission, $sCRUD)
     {
-        return Permission::model()->RoleHasPermission($this->ptid, $sPermission, $sCRUD);
+        return Permission::model()->roleHasPermission($this->ptid, $sPermission, $sCRUD);
     }
 
     /**

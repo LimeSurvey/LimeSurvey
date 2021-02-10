@@ -524,7 +524,7 @@ class Permission extends LSActiveRecord
      * @param string $sEntityName string The entity name
      * @param $sPermission string Name of the permission
      * @param $sCRUD string The permission detail you want to check on: 'create','read','update','delete','import' or 'export'
-     * @param $iUserID integer User ID - if not given the one of the current user is used, 0 is used for role permission (not related to user)
+     * @param $iUserID integer User ID - if empty : use the current user
      * @return bool True if user has the permission
      */
     public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
@@ -555,7 +555,7 @@ class Permission extends LSActiveRecord
 
         /* Always return true for CConsoleApplication (before or after plugin ? All other seems better after plugin) */
         // TODO: see above about entry script and superadmin
-        if (is_null($iUserID) && Yii::app() instanceof CConsoleApplication) {
+        if (empty($iUserID) && Yii::app() instanceof CConsoleApplication) {
             return true;
         }
 
@@ -566,16 +566,15 @@ class Permission extends LSActiveRecord
         }
         $sCRUD = $sCRUD . '_p';
 
-        /* Always return false for guests */
-        // TODO: should not be necessary
+        /* Be sure to have an user id */
         $iUserID = $this->getUserId($iUserID);
-        if (!$iUserID && $iUserID !== 0) {
+        /* Always return false for guests */
+        if (!$iUserID) {
             return false;
         }
 
-        /* Always return true if you are the owner : this can be done in core plugin ? */
-        // TODO: give the rights to owner adding line in permissions table, so it will return true with the normal way
-        if ($iUserID && $iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
+        /* Always return true if user are the owner of entity*/
+        if ($iUserID == $this->getEntityOwnerId($iEntityID, $sEntityName)) {
             return true;
         }
 
@@ -681,22 +680,22 @@ class Permission extends LSActiveRecord
      * @param integer $roleId
      * @param string $sPermission 
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-     * @return bool allwoedpermssion
+     * @return bool allowed permssion
      */
-    public function RoleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
+    public function roleHasPermission($iRoleId, $sPermission, $sCRUD = 'read')
     {
         if (!in_array($sCRUD, array('create', 'read', 'update', 'delete', 'import', 'export'))) {
             return false;
         }
-        $rolePermssion = $this->findByAttributes(array(
+        $rolePermission = $this->findByAttributes(array(
             "entity_id" => $iRoleId,
             "entity" => "role",
             "permission" => $sPermission
         ));
-        if (empty($rolePermssion)) {
+        if (empty($rolePermission)) {
             return false;
         }
-        return $rolePermssion->getAttribute("{$sCRUD}_p");
+        return (bool) $rolePermission->getAttribute("{$sCRUD}_p");
     }
 
     /**
@@ -724,14 +723,15 @@ class Permission extends LSActiveRecord
 
     /**
      * get the default/fixed $iUserID
-     * @param integer $iUserID optional user id
+     * @param integer|null $iUserID optional user id
      * @return int user id
      * @throws Exception
      */
     public function getUserId($iUserID = null)
     {
-        if (is_null($iUserID)) {
+        if (empty($iUserID)) {
             if (Yii::app() instanceof CConsoleApplication) {
+                /* Alt : return 1st forcedAdmin ? */
                 throw new Exception('Permission must not be tested with console application.');
             }
             /* See TestBaseClass tearDownAfterClass */
