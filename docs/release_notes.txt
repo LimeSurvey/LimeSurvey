@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.4 (build 210212) to 4.4.5 (build 210213) February 10, 2021
+-Fixed issue: Syntax error in user statistics (Olle Harstedt)
+-Fixed issue: Predefined label set with multiple languages (Olle Harstedt)
+-Fixed issue: Faulty link to manual in notification (Olle Harstedt)
+-Fixed issue #17055: Public stats don't use the theme set at survey, but at global settings (#1752) (Gabriel Jenik)
+-Fixed issue #17032: Preview question wrong link (Patricia Stelling)
+-Fixed issue #17031: Wrong labels, must be group instead of page (Patricia Stelling)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: German by joooo_ah
+#Updated translation: French (France) by aschwey, AlainR
+
+
 Changes from 4.4.3 (build 210209) to 4.4.4 (build 210212) February 9, 2021
 -Fixed issue: [security] Possible SQL injection in statistics (Carsten Schmitz)
 -Fixed issue: [security] Auditlog not capturing all response modifications (Carsten Schmitz)
