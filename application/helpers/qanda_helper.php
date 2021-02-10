@@ -169,7 +169,11 @@ function retrieveAnswers($ia)
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    $_vshow = (!isset($aQuestionAttributes['hide_tip']) || $aQuestionAttributes['hide_tip'] == 0) ? true : false; // whether should initially be visible - TODO should also depend upon 'hidetip'?
+    //show or hide tip
+    $_vshow = false;
+    if(isset($aQuestionAttributes['hide_tip'])){
+        $_vshow = $aQuestionAttributes['hide_tip'] == 'N'; //hide_tip=no means: show the tip
+    }
 
     list($validation_msg, $isValid) = validation_message($ia, $_vshow);
 
