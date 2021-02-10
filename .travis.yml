@@ -85,7 +85,8 @@ before_script:
     - sudo service apache2 restart
 
     # Check for syntax errors.
-    - ! find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors'
+    # NB: '!' doesn't work properly, see https://github.com/travis-ci/travis-ci/issues/7494
+    - "! find application/ -type f -name '*.php' -exec php -l {} \;  | grep -v 'No syntax errors'"
 
     # Test server.
     - wget localhost
