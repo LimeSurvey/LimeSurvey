@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-02-09 09:44:55+00:00\n"
+"POT-Creation-Date: 2021-02-10 17:52:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -302,54 +302,54 @@ msgstr ""
 msgid "There are no groups available."
 msgstr ""
 
-#: application/controllers/AssessmentController.php:100
+#: application/controllers/AssessmentController.php:101
 msgid "You do not have permission to activate assessment."
 msgstr ""
 
-#: application/controllers/AssessmentController.php:107
+#: application/controllers/AssessmentController.php:108
 msgid "Assessment could not be activated."
 msgstr ""
 
-#: application/controllers/AssessmentController.php:132
+#: application/controllers/AssessmentController.php:133
 msgid "Unknown action for assessment."
 msgstr ""
 
-#: application/controllers/AssessmentController.php:150
+#: application/controllers/AssessmentController.php:151
 msgid "You have no permission to delete assessments"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:248
+#: application/controllers/AssessmentController.php:249
 #: application/models/Assessment.php:82
 msgid "Scope"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:248
+#: application/controllers/AssessmentController.php:249
 #: application/extensions/GeneralOptionWidget/settings/GroupSelectorGeneralOption.php:16
 #: application/views/admin/export/statistics_subviews/_response_filter_choice.php:15
 msgid "Question group"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:248
+#: application/controllers/AssessmentController.php:249
 #: application/helpers/admin/statistics_helper.php:982
 #: application/helpers/userstatistics_helper.php:964
 #: application/models/Assessment.php:84
 msgid "Minimum"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:248
+#: application/controllers/AssessmentController.php:249
 #: application/helpers/admin/statistics_helper.php:1012
 #: application/helpers/userstatistics_helper.php:993
 #: application/models/Assessment.php:85
 msgid "Maximum"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:259
+#: application/controllers/AssessmentController.php:260
 #: application/views/admin/globalsettings/_language.php:47
 #: application/views/admin/labels/_labelviewquickadd_view.php:14
 msgid "Add"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:271
+#: application/controllers/AssessmentController.php:272
 #: application/core/LsDefaultDataSets.php:473
 #: application/models/Survey.php:2147
 #: application/models/TemplateManifest.php:169
@@ -360,7 +360,7 @@ msgstr ""
 msgid "Assessments"
 msgstr ""
 
-#: application/controllers/AssessmentController.php:364
+#: application/controllers/AssessmentController.php:365
 #: application/controllers/UploaderController.php:331
 #: application/models/Assessment.php:103
 #: application/models/SavedControl.php:120
@@ -917,7 +917,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:125
 #: application/controllers/QuestionAdministrationController.php:1325
-#: application/controllers/QuestionAdministrationController.php:3067
+#: application/controllers/QuestionAdministrationController.php:3073
 #: application/core/Survey_Common_Action.php:154
 msgid "Invalid question id"
 msgstr ""
@@ -938,7 +938,7 @@ msgstr ""
 
 #: application/controllers/QuestionAdministrationController.php:683
 #: application/controllers/QuestionAdministrationController.php:755
-#: application/controllers/QuestionAdministrationController.php:3052
+#: application/controllers/QuestionAdministrationController.php:3058
 #: application/core/Survey_Common_Action.php:183
 msgid "Invalid survey id"
 msgstr ""
@@ -949,7 +949,7 @@ msgstr ""
 #: application/controllers/QuestionAdministrationController.php:1567
 #: application/controllers/QuestionAdministrationController.php:1727
 #: application/controllers/QuestionAdministrationController.php:1735
-#: application/controllers/QuestionAdministrationController.php:3047
+#: application/controllers/QuestionAdministrationController.php:3053
 #: application/controllers/SurveyAdministrationController.php:635
 #: application/controllers/SurveyAdministrationController.php:986
 #: application/controllers/SurveyAdministrationController.php:1058
@@ -1247,21 +1247,21 @@ msgstr ""
 msgid "Could not store advanced options"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2732
-#: application/controllers/QuestionAdministrationController.php:2745
+#: application/controllers/QuestionAdministrationController.php:2738
+#: application/controllers/QuestionAdministrationController.php:2751
 msgid "Could not save subquestion"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2790
+#: application/controllers/QuestionAdministrationController.php:2796
 msgid "Could not store translation for subquestion"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2830
-#: application/controllers/QuestionAdministrationController.php:2843
+#: application/controllers/QuestionAdministrationController.php:2836
+#: application/controllers/QuestionAdministrationController.php:2849
 msgid "Could not save answer option"
 msgstr ""
 
-#: application/controllers/QuestionAdministrationController.php:2954
+#: application/controllers/QuestionAdministrationController.php:2960
 msgid "Could not store translation for answer option"
 msgstr ""
 
@@ -2473,8 +2473,8 @@ msgstr ""
 #: application/views/admin/user/editusers.php:132
 #: application/views/admin/user/modifyuser.php:65
 #: application/views/admin/user/setuserpermissions.php:82
-#: application/views/assessment/assessments_edit.php:126
-#: application/views/assessment/assessments_edit.php:143
+#: application/views/assessment/assessments_edit.php:125
+#: application/views/assessment/assessments_edit.php:142
 #: application/views/layouts/fullpagebar_view.php:21
 #: application/views/questionAdministration/_copyQuestionTabsLanguages.php:69
 #: application/views/questionAdministration/editdefaultvalues.php:189
@@ -3500,7 +3500,7 @@ msgstr ""
 #: application/views/admin/themes/templatesummary_view.php:221
 #: application/views/admin/token/browse.php:97
 #: application/views/assessment/assessments_delete.php:23
-#: application/views/assessment/assessments_edit.php:142
+#: application/views/assessment/assessments_edit.php:141
 #: application/views/homepageSettings/index.php:26
 #: application/views/layouts/fullpagebar_view.php:37
 #: application/views/questionAdministration/listquestions.php:146
@@ -14564,6 +14564,7 @@ msgid "Group ID (gid): “%s” already set with language ”%s”."
 msgstr ""
 
 #: application/models/QuestionGroupL10n.php:83
+#: application/views/questionGroupsAdministration/listquestiongroups.php:86
 msgid "Group name"
 msgstr ""
 
@@ -21419,6 +21420,7 @@ msgstr ""
 
 #: application/views/admin/token/invite.php:136
 #: application/views/admin/token/remind.php:149
+#: application/views/assessment/assessments_edit.php:118
 #: application/views/userGroup/mailUserGroup_view.php:30
 msgid "Message:"
 msgstr ""
@@ -23137,11 +23139,11 @@ msgid "Go to question group"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/listquestiongroups.php:15
-msgid "Pages in this survey"
+msgid "Groups in this survey"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/listquestiongroups.php:38
-msgid "Search by page name:"
+msgid "Search by group name:"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/listquestiongroups.php:58
@@ -23149,15 +23151,11 @@ msgid "No question groups found."
 msgstr ""
 
 #: application/views/questionGroupsAdministration/listquestiongroups.php:72
-msgid "Page ID"
+msgid "Group ID"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/listquestiongroups.php:79
-msgid "Page order"
-msgstr ""
-
-#: application/views/questionGroupsAdministration/listquestiongroups.php:86
-msgid "Page name"
+msgid "Group order"
 msgstr ""
 
 #: application/views/questionGroupsAdministration/question_group_topbar.php:88
