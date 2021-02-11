@@ -30,7 +30,7 @@
                 'modalType'     => 'yes-no',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
-                'selectedUrl'   => App()->createUrl('themeOptions/renderSelectedItems/'),
+                'selectedUrl'   => App()->createUrl('themeOptions/selectedItems/'),
                 'yes'           => gT('Reset Themes'),
                 'no'            => gT('Cancel'),
                 'sModalTitle'   => gT('Reset theme'),
@@ -51,7 +51,7 @@
                 'modalType'     => 'yes-no',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
-                'selectedUrl'   => App()->createUrl('themeOptions/renderSelectedItems/'),
+                'selectedUrl'   => App()->createUrl('themeOptions/selectedItems/'),
                 'sModalTitle'   => gT('Uninstall themes'),
                 'htmlModalBody' => gT('Are you sure you want to uninstall the selected themes?'),
             )
