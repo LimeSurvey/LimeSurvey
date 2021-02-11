@@ -569,7 +569,7 @@ class Permission extends LSActiveRecord
         /* Be sure to have an user id */
         $iUserID = $this->getUserId($iUserID);
         /* Always return false for guests */
-        if (!$iUserID) {
+        if (empty($iUserID)) {
             return false;
         }
 

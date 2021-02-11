@@ -293,7 +293,7 @@ class Permissiontemplates extends CActiveRecord
 
     /**
      * return if this role GIVE a permission
-     * Used in only in compileExportXML
+     * Used in self::compileExportXML only
      * @param string $sPermission 
      * @param string $sCRUD
      * @return boolean
