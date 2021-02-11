@@ -4213,7 +4213,7 @@ function do_array_multiflexi($ia)
     $inputboxlayout = false;
     $textAlignment  = 'right';
 
-    if ($aQuestionAttributes['multiflexible_checkbox'] != 0) {
+    if ($aQuestionAttributes['multiflexible_checkbox'] === 'Y') {
         $layout = "checkbox";
         $minvalue            = 0;
         $maxvalue            = 1;
@@ -4225,7 +4225,7 @@ function do_array_multiflexi($ia)
         $textAlignment       = 'center';
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "array-number-checkbox.js", CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox", "doArrayNumberCheckbox();\n", LSYii_ClientScript::POS_POSTSCRIPT);
-    } elseif ($aQuestionAttributes['input_boxes'] != 0) {
+    } elseif ($aQuestionAttributes['input_boxes'] === 'Y') {
         $layout = "text";
         $inputboxlayout      = true;
         $answertypeclass    .= " numeric-item text-item";
