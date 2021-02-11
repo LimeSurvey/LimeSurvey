@@ -610,7 +610,7 @@ class Permission extends LSActiveRecord
             if (safecount($aRoles) > 0) {
                 $allowed = false;
                 foreach ($aRoles as $role) {
-                    $allowed = $allowed || $this->RoleHasPermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
+                    $allowed = $allowed || $this->roleHasPermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
                 }
                 /* Can return false ? Even if user have the specific right … */
                 return $allowed;
