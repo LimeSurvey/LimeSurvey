@@ -9762,9 +9762,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $LEM =& LimeExpressionManager::singleton();
 
         // If not starting values, retun
-        if (!isset($_SESSION[$LEM->sessid]['startingValues'])) return false;
-        if (!is_array($_SESSION[$LEM->sessid]['startingValues'])) return false;
-        if (!array_key_exists('startingValues', $_SESSION[$LEM->sessid])) return false;
+        if (!isset($_SESSION[$LEM->sessid]['startingValues'])) {
+            return false;
+        }
+        if (!is_array($_SESSION[$LEM->sessid]['startingValues'])) {
+            return false;
+        }
+        if (!array_key_exists('startingValues', $_SESSION[$LEM->sessid])) {
+            return false;
+        }
 
         // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF
         // GJ: I think this is to assure that starting values always have a seed entry and then be able to check more easily
