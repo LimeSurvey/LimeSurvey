@@ -8,7 +8,7 @@
         <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
-        <input type='submit' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
+        <input type='button' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
         <span>&nbsp;&nbsp;&nbsp;</span><button id="cancelAutomaticSubmission" class="btn btn-danger"><?php eT("Cancel automatic sending"); ?></button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
@@ -57,13 +57,18 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
     $('#countdown-progress').css('-moz-animation-duration', '1s');
     $('#countdown-progress').css('animation-duration', '1s');
     window.countdownTimerTokenSend = 20;
+
+    var submitInviteForm = function(){
+        $('body').append('<div class=\"overlay\"></div>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
+        $('#cancelAutomaticSubmission').remove();
+        $('#sendTokenInvitationsNow').remove();
+        $('#tokenSubmitInviteForm').trigger('submit');
+    };
+
     var intervaltoRenew = window.setInterval(function(){
         if(window.countdownTimerTokenSend === 0){
-            $('body').append('<div class=\"overlay\"></div>');
-            $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
-            $('#cancelAutomaticSubmission').remove();
-            $('#sendTokenInvitationsNow').remove();
-            $('#tokenSubmitInviteForm').trigger('submit');
+            submitInviteForm();
             clearInterval(intervaltoRenew);
             return;
         }
@@ -71,6 +76,16 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
         $('#countdown-progress').css('width', (window.countdownTimerTokenSend*5)+'%');
         $('#tokensendcounter').text(window.countdownTimerTokenSend);
     },1000);
+
+    $('#sendTokenInvitationsNow').on('click', function(evt){
+        clearInterval(intervaltoRenew);
+        $('#countdown-progress').css('-webkit-animation-duration', '500ms');
+        $('#countdown-progress').css('-moz-animation-duration', '500ms');
+        $('#countdown-progress').css('animation-duration', '500ms');
+        $('#countdown-progress').css('width', '0');
+        $('#tokensendcounter').text('0');
+        submitInviteForm();
+    });
 
     $('#cancelAutomaticSubmission').on('click', function(evt){
         evt.preventDefault();
