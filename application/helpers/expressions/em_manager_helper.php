@@ -8625,7 +8625,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             // If no surveys fetched but question given, fetch survey from question
             if (empty($aSurveyIDs) && $onlythisqid) {
-                $oQuestion = Question::model()->find("qid = :qid", array(":qid"=> $onlythisqid);
+                $oQuestion = Question::model()->find("qid = :qid", array(":qid"=> $onlythisqid));
                 if($oQuestion) {
                     $aSurveyIDs = array($oQuestion->sid);
                 }
