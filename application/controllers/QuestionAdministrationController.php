@@ -248,14 +248,33 @@ class QuestionAdministrationController extends LSBaseController
         $questionAttributes = $viewData['aQuestionTypeGroups']['single_choice_questions']['questionTypes'];
         $questionAttributeFivePointChoice = $questionAttributes[0];
 
-        // TODO: Rename $questionAttributeFivePointChoice to general name.
         if ($questionAttributeFivePointChoice['title'] === '5 Point Choice' &&
             $questionAttributeFivePointChoice['group'] === 'Single choice questions') {
 
             $viewData['generalSettings']  = $this->removeInputValidationFromGeneralSettings($generalSettings);
             $viewData['advancedSettings'] = $this->removeOtherCommentMandatoryFromLogicTab($advancedSettings);
         }
+        
+        // Remove Input Validation from general settings inside List (dropdown) question attribute.
+        $questionAttributeDropDownList = $questionAttributes[3];
+        if ($questionAttributeDropDownList['title'] === 'List (dropdown)') {
+            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
+        }
+        
 
+        // Remove Input Validation from General Settings Tab in List (Radio) Question Type.
+        $questionAttributeListRadio = $questionAttributes[4];
+        if ($questionAttributeListRadio['title'] === 'List (radio)') {
+            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
+        }
+        
+        
+        // Remove Input Validation from General Settings Tab for Bootstrap Button Question Attribute.
+        $questionAttributeListBootstrap = $questionAttributes[0];
+        if ($questionAttributeListBootstrap['title'] === 'Bootstrap buttons') {
+            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
+        }
+        
         $this->aData = array_merge($this->aData, $viewData);
 
         $this->render(

@@ -823,7 +823,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
               // ??
             }
 
-            $row.find('td.subquestion-text').find('input[type=text]').val(label.title);
+            $row.find('td.subquestion-text, td.answeroption-text').find('input[type=text]').val(label.title);
             $table.find('tbody').append($row);
 
             if (source === 'subquestions') {

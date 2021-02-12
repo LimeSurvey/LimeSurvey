@@ -73,7 +73,7 @@
 
                         <?= CHtml::textArea(
                             "questionI10N[$lang][script]",
-                            !empty($editfile) ? file_get_contents($editfile) : '',
+                            $question->questionl10ns[$lang]->script,
                             [
                                 'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
                                 'rows' => '10',

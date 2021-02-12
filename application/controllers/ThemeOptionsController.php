@@ -118,20 +118,22 @@ class ThemeOptionsController extends LSBaseController
     public function actionResetMultiple()
     {
         $aTemplates = json_decode(App()->request->getPost('sItems'));
-        $gridid = App()->request->getPost('gridvalue');
+        $gridid = App()->request->getPost('grididvalue');
         $aResults = array();
 
-        if (Permission::model()->hasGlobalPermission('templates', 'updates')) {
+        if (Permission::model()->hasGlobalPermission('template', 'update')) {
             foreach ($aTemplates as $template) {
-                $model = $this->loadModel($template, $gridid);
 
                 if ($gridid === 'questionthemes-grid') {
+                    /** @var  $model QuestionTheme */
+                    $model = QuestionTheme::model()->findByPk($template);
                     $templatename = $model->name;
                     $templatefolder = $model->xml_path;
                     $aResults[$template]['title'] = $templatename;
                     $sQuestionThemeName = $model->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
+                    $model = TemplateConfiguration::model()->findByPk($template);
                     $templatename = $model->template_name;
                     $aResults[$template]['title'] = $templatename;
                     $aResults[$template]['result'] = TemplateConfiguration::uninstall($templatename);
@@ -152,7 +154,8 @@ class ThemeOptionsController extends LSBaseController
                 )
             );
         } else {
-            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            //todo: this message gets never visible for the user ...
+           App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
     }
 

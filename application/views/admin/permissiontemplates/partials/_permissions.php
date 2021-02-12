@@ -57,7 +57,7 @@
 
                                         <!-- checkbox -->
                                         <input type="checkbox"  class="specific-permission-selector" name='Permission[<?php echo $sPermissionKey.']['.$sCRUDKey;?>]' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
-                                            <?php if(Permission::model()->hasRolePermission( $oModel->ptid, $sPermissionKey, $sCRUDKey)):?>
+                                            <?php if(Permission::model()->roleHasPermission($oModel->ptid, $sPermissionKey, $sCRUDKey)):?>
                                                 checked="checked"
                                             <?php endif; ?>
                                             <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>

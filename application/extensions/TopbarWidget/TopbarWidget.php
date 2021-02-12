@@ -15,7 +15,9 @@ class TopbarWidget extends CWidget
     {
         parent::init();
 
-        if (is_null($this->config)) return;
+        if (is_null($this->config)) {
+            return;
+        }
         
         // Render the topbar
         $this->renderTopbar();

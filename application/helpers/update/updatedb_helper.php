@@ -3241,7 +3241,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                             'plugin_type'        => 'core',
                             'version'            => '1.0.0',
                         ],
-                        "`name`='{$name}'"
+                        App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
                     );
                 }
             };

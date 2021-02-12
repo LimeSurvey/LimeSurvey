@@ -65,9 +65,13 @@ class Permissiontemplates extends CActiveRecord
         );
     }
 
+    /**
+     * @param int $iUserId
+     * @param int $ptid Permissiontemplates id
+     * @return boolean
+     */
     public function applyToUser($iUserId, $ptid = null)
     {
-
         if ($ptid == null) {
             $ptid = $this->ptid;
         }
@@ -83,6 +87,10 @@ class Permissiontemplates extends CActiveRecord
         return $oModel->save();
     }
 
+    /**
+     * @param int $iUserId
+     * @return boolean
+     */
     public function clearUser($iUserId)
     {
         $aModels = UserInPermissionrole::model()->findAllByAttributes(['uid' => $iUserId]);
@@ -109,6 +117,9 @@ class Permissiontemplates extends CActiveRecord
         return $dateFormat['phpdate'];
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created_at;
@@ -116,6 +127,9 @@ class Permissiontemplates extends CActiveRecord
         return $date->format($this->dateFormat);
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedDateModified()
     {
         $dateModified = $this->renewed_last;
@@ -222,6 +236,9 @@ class Permissiontemplates extends CActiveRecord
         return $cols;
     }
 
+    /**
+     * @return SimpleXMLElement
+     */
     public function compileExportXML()
     {
         $xml = new SimpleXMLElement('<limepermissionrole/>');
@@ -233,7 +250,6 @@ class Permissiontemplates extends CActiveRecord
         $meta->addChild('date', date('Y-m-d H:i:s'));
         $meta->addChild('createdOn', Yii::app()->getConfig('sitename'));
         $meta->addChild('createdBy', Yii::app()->user->id);
-
         
         // Get base permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
@@ -253,6 +269,11 @@ class Permissiontemplates extends CActiveRecord
         return $xml;
     }
 
+    /**
+     * @param ??? $xmlEntitiy
+     * @param boolean $includeRootData
+     * @return Permissiontemplates|boolean
+     */
     public function createFromXML($xmlEntitiy, $includeRootData = false)
     {
         $name = $this->removeCdataFormat($xmlEntitiy->meta->name);
@@ -280,6 +301,10 @@ class Permissiontemplates extends CActiveRecord
         return false;
     }
 
+    /**
+     * @param mixed $node XML node?
+     * @return string
+     */
     public function removeCdataFormat($node)
     {
         $nodeText = (string) $node;
@@ -291,9 +316,16 @@ class Permissiontemplates extends CActiveRecord
         return trim(preg_replace($regex_patterns, $regex_replace, $nodeText));
     }
 
+    /**
+     * Return true if this role GIVE a permission
+     * Used in self::compileExportXML only
+     * @param string $sPermission
+     * @param string $sCRUD
+     * @return boolean
+     */
     public function getHasPermission($sPermission, $sCRUD)
     {
-        return Permission::model()->hasRolePermission($this->ptid, $sPermission, $sCRUD);
+        return Permission::model()->roleHasPermission($this->ptid, $sPermission, $sCRUD);
     }
 
     /**

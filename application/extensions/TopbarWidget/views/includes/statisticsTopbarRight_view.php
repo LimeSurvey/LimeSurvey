@@ -19,7 +19,7 @@
     </a>
 <?php endif; ?>
 
-<a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
+<a class="btn btn-danger" href="<?php echo Yii::app()->createUrl("surveyAdministration/view", ["surveyid" => $surveyid]); ?>" role="button">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
 </a>
