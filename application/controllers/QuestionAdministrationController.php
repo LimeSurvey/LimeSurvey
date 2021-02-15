@@ -244,30 +244,6 @@ class QuestionAdministrationController extends LSBaseController
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml
         ];
-
-        $questionAttributes = $viewData['aQuestionTypeGroups']['single_choice_questions']['questionTypes'];
-        $questionAttributeFivePointChoice = $questionAttributes[0];
-
-        if ($questionAttributeFivePointChoice['title'] === '5 Point Choice' &&
-            $questionAttributeFivePointChoice['group'] === 'Single choice questions') {
-
-            $viewData['generalSettings']  = $this->removeInputValidationFromGeneralSettings($generalSettings);
-            $viewData['advancedSettings'] = $this->removeOtherCommentMandatoryFromLogicTab($advancedSettings);
-        }
-        
-        // Remove Input Validation from general settings inside List (dropdown) question attribute.
-        $questionAttributeDropDownList = $questionAttributes[3];
-        if ($questionAttributeDropDownList['title'] === 'List (dropdown)') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
-
-        // Remove Input Validation from General Settings Tab in List (Radio) Question Type.
-        $questionAttributeListRadio = $questionAttributes[4];
-        if ($questionAttributeListRadio['title'] === 'List (radio)') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
         
         // Remove Input Validation from General Settings Tab for Bootstrap Button Question Attribute.
         $questionAttributeListBootstrap = $questionAttributes[0];
@@ -281,33 +257,6 @@ class QuestionAdministrationController extends LSBaseController
             'create',
             $viewData
         );
-    }
-
-    /**
-     * Removes Input Validation from General Settings Array.
-     * @param array $generalSettings General Settings Array
-     * @return array
-     */
-    private function removeInputValidationFromGeneralSettings(array $generalSettings) : array {
-        $keyExists = array_key_exists('preg', $generalSettings);
-        if ($keyExists) {
-            unset($generalSettings['preg']);
-        }   
-        return $generalSettings;
-    }
-
-    /**
-     * Removes other comment mandatory from Advanced Settings Array.
-     * @param array $advancedSettings Advanced Settings Array
-     * @return array
-     */
-    private function removeOtherCommentMandatoryFromLogicTab(array $advancedSettings): array
-    {
-        $keyExists = array_key_exists('Logic', $advancedSettings);
-        if ($keyExists) {
-            unset($advancedSettings['Logic'][0]);
-        }
-        return $advancedSettings;
     }
 
     /**
