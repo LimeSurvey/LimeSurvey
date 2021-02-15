@@ -53,7 +53,6 @@
         <attribute>encrypted</attribute>
         <attribute>save_as_default</attribute>
         <attribute>clear_default</attribute>
-        <attribute>preg</attribute>
     </generalattributes>
 
     <!-- Question attributes -->
