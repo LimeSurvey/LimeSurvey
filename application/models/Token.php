@@ -270,7 +270,7 @@ abstract class Token extends Dynamic
      */
     public static function sanitizeAttribute($attribute)
     {
-        return filter_var($attribute, FILTER_SANITIZE_STRING);
+        return filter_var($attribute, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
     }
 
     /**
