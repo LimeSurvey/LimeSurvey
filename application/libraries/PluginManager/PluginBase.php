@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\PluginManager;
 
-use Permission;
-
 /**
  * Base class for plugins.
  */
@@ -64,7 +62,12 @@ abstract class PluginBase implements iPlugin
     public $config = null;
 
     /**
-     * List of allowed public method, null mean all metod are allowed. Else method must be in the list
+     * List of allowed public method, null mean all method are allowed.
+     * Else method must be in the list.
+     * Used in public controller :
+     * - PluginHelper::ajax (admin/pluginhelper&sa=ajax)
+     * - PluginHelper::fullpagewrapper (admin/pluginhelper&sa=fullpagewrapper)
+     * - PluginHelper::sidebody (admin/pluginhelper&sa=sidebody)
      * @var string[]|null
      */
     public $allowedPublicMethods = null;
@@ -170,9 +173,6 @@ abstract class PluginBase implements iPlugin
      */
     public function getPluginSettings($getValues = true)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','read')) {
-            throw new CHttpException(403);
-        }
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
@@ -258,9 +258,6 @@ abstract class PluginBase implements iPlugin
      */
     public function saveSettings($settings)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update')) {
-            throw new CHttpException(403);
-        }
         foreach ($settings as $name => $setting) {
             $this->set($name, $setting);
         }
@@ -557,18 +554,18 @@ abstract class PluginBase implements iPlugin
         $scriptToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         }
-        Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
+        \Yii::::app()->getClientScript()->registerScriptFile($scriptToRegister);
     }
 
     /**
@@ -583,17 +580,17 @@ abstract class PluginBase implements iPlugin
         $cssToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         }
-        Yii::app()->getClientScript()->registerCssFile($cssToRegister);
+        \Yii::::app()->getClientScript()->registerCssFile($cssToRegister);
     }
 }
