@@ -220,7 +220,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
-        $datetimeobj = DateTime::createFromFormat( "Y-m-d", $thissurvey['expiry']);
+        $datetimeobj = DateTime::createFromFormat( "Y-m-d H:i:s", $thissurvey['expiry']);
         $_dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
     } else {
         $_dateoutput = '-';
@@ -403,7 +403,7 @@ function getStandardsReplacementFields($thissurvey)
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
-        $datetimeobj = DateTime::createFromFormat( "Y-m-d", $thissurvey['expiry']);
+        $datetimeobj = DateTime::createFromFormat( "Y-m-d H:i:s", $thissurvey['expiry']);
         $_dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
     } else {
         $_dateoutput = '-';
