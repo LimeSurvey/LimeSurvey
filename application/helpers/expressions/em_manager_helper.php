@@ -8345,6 +8345,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     $aAttributes[$qid] = array();
                                 }
                                 $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid], $LEM->surveyOptions);
+                                $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                 if ($dateTime === false) {
                                     $message = sprintf(
                                         'Could not convert date %s to format %s. Please check your date format settings.',
