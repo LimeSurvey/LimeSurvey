@@ -173,10 +173,14 @@
             </tr>
         <?php endif; ?>
 
-        <!-- Relevance equation -->
+        <!-- Condition for this question -->
         <?php if (trim($question->relevance) != ''): ?>
             <tr>
-                <td><?php eT("Relevance equation:"); ?></td>
+                <td>
+                    <strong>
+                    <?php eT("Condition:"); ?>
+                    </strong>
+                </td>
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString("{" . $question->relevance . "}", $question->qid);    // tests Relevance equation so can pretty-print it
