@@ -102,7 +102,9 @@ class AdminTheme extends CFormModel
         //////////////////////
         // Config file loading
 
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        if (\PHP_VERSION_ID < 80000) {
+            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        }
         $sXMLConfigFile        = file_get_contents(realpath($this->path.'/config.xml')); // Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
@@ -115,7 +117,9 @@ class AdminTheme extends CFormModel
         $this->defineConstants(); // Define the (still) necessary constants
         $this->registerStylesAndScripts(); // Register all CSS and JS
 
-        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        }
 
         return $this;
     }
@@ -307,7 +311,9 @@ class AdminTheme extends CFormModel
      */
     static private function getThemeList($sDir)
     {
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        if (\PHP_VERSION_ID < 80000) {
+            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        }
         $aListOfFiles = array();
         $oAdminTheme = new AdminTheme;
         if ($sDir && $pHandle = opendir($sDir)) {
@@ -330,7 +336,9 @@ class AdminTheme extends CFormModel
             }
             closedir($pHandle);
         }
-        libxml_disable_entity_loader($bOldEntityLoaderState);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($bOldEntityLoaderState);
+        }
         return $aListOfFiles;
     }
 

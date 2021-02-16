@@ -92,11 +92,11 @@ class UpdateForm extends CFormModel
     /**
      * The server will do some checks and will ask for the correct view to be diplayed.
      *
-     * @param string $updateKey the update key
+     * @param string $updateKey the update key - 
      * @param string $destinationBuild
      * @return string html
      */
-    public function getWelcomeMessage($updateKey = null, $destinationBuild)
+    public function getWelcomeMessage($updateKey, $destinationBuild)
     {
         // First, we destroy any previous cookie :
         if (file_exists(realpath($this->path_cookie))) {

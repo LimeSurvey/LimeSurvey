@@ -722,7 +722,7 @@ function adodb_get_gmt_diff($y, $m, $d)
     } else {
         if (isset($TZ)) return $TZ;
         $y = date('Y');
-        $TZ = @mktime(0, 0, 0, 12, 2, $y, 0) - @gmmktime(0, 0, 0, 12, 2, $y, 0);
+        $TZ = @mktime(0, 0, 0, 12, 2, $y) - @gmmktime(0, 0, 0, 12, 2, $y);
     }
 
     return $TZ;
