@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.12 (build 210211) to 3.25.13 (build 210216) February 16, 2021
+-Fixed issue: Syntax error in user statistics (Olle Harstedt)
+-Fixed issue: Don't escape quotes in token attributes (Olle Haerstedt)
+-Fixed issue #17054: Public stats don't use the theme set at survey, but at global settings (#1747) (Gabriel Jenik)
+#Updated translation: Turkish by bulent
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: French (France) by aschwey
+#Updated translation: English by ritapas
+
+
 Changes from 3.25.11 (build 210210) to 3.25.12 (build 210211) February 9, 2021
 -Fixed issue: [security] Possible SQL injection in statistics (Carsten Schmitz)
 -Fixed issue: [security] Auditlog not capturing all response modifications (Carsten Schmitz)
