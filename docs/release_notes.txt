@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.7 (build 210215) to 4.4.8 (build 210217) February 16, 2021
+-Fixed issue: Question Attributes Array By Column (Jessica Höck)
+-Fixed issue: Question Attributes Array 5-Point Choice (Jessica Höck)
+-Fixed issue: Question Attributes Array 10-Point Choice (Jessica Höck)
+-Fixed issue: Question Attributes Array (Jessica Höck)
+-Fixed issue: Question Attribute Yes/No (Jessica Höck)
+-Fixed issue: Question Attribute Text Display (Jessica Höck)
+-Fixed issue: Question Attribute Ranking (Jessica Höck)
+-Fixed issue: Question Attribute Multiple Choice (Jessica Höck)
+-Fixed issue: Question Attribute Long Free Text (Jessica Höck)
+-Fixed issue: Question Attribute Language Switch (Jessica Höck)
+-Fixed issue: Question Attribute Huge Free Text (Jessica Höck)
+-Fixed issue: Question Attribute Gender (Jessica Höck)
+-Fixed issue: Question Attribute File Upload (Jessica Höck)
+-Fixed issue: Question Attribute Equation (Jessica Höck)
+-Fixed issue: Question Attribute Date/Time (Jessica Höck)
+-Fixed issue: Question Attribute Array Dual Scale (Jessica Höck)
+-Fixed issue: Question Attribute Array (Yes/No/Uncertain) (Jessica Höck)
+-Fixed issue: Don't escape quotes in token attributes (Olle Haerstedt)
+-Fixed issue: Array (Increase/Same/Decrease) (Jessica Höck)
+-Fixed issue #17061: Themes editor cannot be opened (Carsten Schmitz)
+-Fixed issue #17024: Missing string to translate (GabrielJenik)
+
+
 Changes from 4.4.6 (build 210214) to 4.4.7 (build 210215) February 12, 2021
 -Fixed issue: Predefined label set with multiple languages (Olle Harstedt)
 -Fixed issue: Populate script field in question editor (Olle Harstedt)

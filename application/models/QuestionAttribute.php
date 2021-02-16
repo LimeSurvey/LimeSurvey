@@ -495,7 +495,9 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -504,7 +506,9 @@ class QuestionAttribute extends LSActiveRecord
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }            
         } else {
             return null;
         }
@@ -559,7 +563,9 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }            
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -568,7 +574,9 @@ class QuestionAttribute extends LSActiveRecord
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }            
         } else {
             return null;
         }

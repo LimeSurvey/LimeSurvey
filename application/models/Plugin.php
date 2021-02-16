@@ -99,9 +99,13 @@ class Plugin extends LSActiveRecord
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            libxml_disable_entity_loader(false);
-            $config = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
+            $xml = simplexml_load_file(realpath($file));
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
             return new ExtensionConfig($config);
         } else {
             throw new \Exception('Missing configuration file for plugin ' . $this->name);

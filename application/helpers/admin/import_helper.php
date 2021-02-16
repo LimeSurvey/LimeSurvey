@@ -26,7 +26,9 @@ use LimeSurvey\Helpers\questionHelper;
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
-    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+    if (\PHP_VERSION_ID < 80000) {
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+    }
 
     $sXMLdata              = file_get_contents($sFullFilePath);
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -589,7 +591,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     $results['labelsets'] = 0;
     $results['labels'] = 0;
 
-    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    }
     return $results;
 }
 
@@ -2404,11 +2408,15 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $results = [];
     $results['responses'] = 0;
 
-    libxml_disable_entity_loader(false);
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader(false);
+    }
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    libxml_disable_entity_loader(true);
-    if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader(true);
+    }
+if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {

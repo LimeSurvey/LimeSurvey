@@ -426,9 +426,13 @@ abstract class PluginBase implements iPlugin
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            libxml_disable_entity_loader(false);
-            $this->config = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
+        $this->config = simplexml_load_file(realpath($file));
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
 
             if ($this->config === null) {
                 // Failed. Popup error message.
