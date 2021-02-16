@@ -165,10 +165,15 @@ class PermissiontemplatesController extends Survey_Common_Action
             return;
         }
 
-        libxml_disable_entity_loader(false);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
+
         $oRoleDefinition = simplexml_load_file(realpath($sFilePath));
-        libxml_disable_entity_loader(true);
-        
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
+
         $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
         if ($oNewRole == false) {
             Yii::app()->setFlashMessage(gT("Error creating role"), 'error');

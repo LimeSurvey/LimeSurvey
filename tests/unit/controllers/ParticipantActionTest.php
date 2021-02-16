@@ -30,7 +30,9 @@ class ParticipantActionTest extends TestBaseClass
      */
     public function getDataSet()
     {
-        libxml_disable_entity_loader(false);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }           
         return $this->createFlatXMLDataSet(ROOT . '/tests/data/datasets/participantattributes.xml');
     }
 
