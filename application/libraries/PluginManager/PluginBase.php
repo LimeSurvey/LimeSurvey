@@ -223,7 +223,7 @@ abstract class PluginBase implements iPlugin
                  * By using the asset manager the assets are moved to a publicly accessible path.
                  * This approach allows a locked down plugin directory that is not publicly accessible.
                  */
-                $url = App()->assetManager->publish($path);
+                $url = \Yii::app()->assetManager->publish($path);
             }
         } else {
             $url = $fileName;
@@ -468,8 +468,8 @@ abstract class PluginBase implements iPlugin
 
         if ($this->config->active == 1) {
             // Activate plugin
-            $result = App()->getPluginManager()->dispatchEvent(
-                new PluginEvent('beforeActivate', App()->getController()),
+            $result = \Yii::app()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeActivate', \Yii::app()->getController()),
                 $this->getName()
             );
 
@@ -480,7 +480,7 @@ abstract class PluginBase implements iPlugin
                 // Failed. Popup error message.
                 $not = new \Notification(
                     [
-                        'user_id' => App()->user->id,
+                        'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
                             '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
@@ -502,7 +502,7 @@ abstract class PluginBase implements iPlugin
     {
         $not = new \Notification(
             [
-            'user_id' => App()->user->id,
+            'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
                 '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
@@ -552,16 +552,16 @@ abstract class PluginBase implements iPlugin
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
-        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+        } elseif (file_exists(\Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         }
@@ -578,16 +578,16 @@ abstract class PluginBase implements iPlugin
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $cssToRegister = null;
-        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
+        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
+        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
                 \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         }
