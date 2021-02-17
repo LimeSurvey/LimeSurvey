@@ -9755,6 +9755,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
     /**
      * Save the starting values to the database
+     * @return boolean|void
      */
     public static function SaveStartingValues()
     {
@@ -9766,9 +9767,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             return false;
         }
         if (!is_array($_SESSION[$LEM->sessid]['startingValues'])) {
-            return false;
-        }
-        if (!array_key_exists('startingValues', $_SESSION[$LEM->sessid])) {
             return false;
         }
 
