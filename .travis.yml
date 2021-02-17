@@ -28,6 +28,9 @@ before_script:
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
 
+    # Check for syntax errors.
+    - find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {}
+
     # Install LimeSurvey.
     - mysql --version
     - sudo service mysql status
@@ -63,10 +66,6 @@ before_script:
     - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
-
-    # Check for syntax errors.
-    # TODO: Should be ! find ... instead of || true (when all warnings are fixed)
-    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
 
     # Test server.
     - wget localhost
