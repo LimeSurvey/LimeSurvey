@@ -554,18 +554,18 @@ abstract class PluginBase implements iPlugin
         $scriptToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
             $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         }
-        \Yii::::app()->getClientScript()->registerScriptFile($scriptToRegister);
+        \Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
     }
 
     /**
@@ -580,17 +580,17 @@ abstract class PluginBase implements iPlugin
         $cssToRegister = null;
         if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
             $cssToRegister = Yii::app()->getAssetManager()->publish(
-                \Yii::::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         }
-        \Yii::::app()->getClientScript()->registerCssFile($cssToRegister);
+        \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
 }
