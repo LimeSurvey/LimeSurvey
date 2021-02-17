@@ -102,12 +102,13 @@
     </div>
 </div>
 <?php
-$warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'. gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
+$warning_double_point = 'Warning: ';
+$warning_force_ssl = sprintf(gT('Before turning on HTTPS,%s check this link.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'. gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
 .'<br/> '
-. gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
+. gT("If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!");
 ?>
 <div class="form-group">
-    <span style='font-size:0.7em;'><?php echo $warning_force_ssl; ?></span>
+    <span style='font-size:1em;'><b><?php echo $warning_double_point; ?></b><?php echo $warning_force_ssl; ?></span>
 </div>
 
 
