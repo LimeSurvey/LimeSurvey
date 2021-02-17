@@ -9817,11 +9817,18 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $value = null;  // can't upload a file via GET
                         break;
                 }
-                $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
-                $LEM->updatedValues[$knownVar['sgqa']] = array(
-                    'type' => $knownVar['type'],
-                    'value' => $value,
+                /* Check validity # */
+                $qinfo = array(
+                    'qid' => $knownVar['qid'],
+                    'other' => "Y", // Not known currently, but don't broke if set
                 );
+                if (self::checkValidityAnswer($knownVar['type'],$value,$knownVar['sgqa'],$qinfo,false)) {
+                    $_SESSION[$LEM->sessid][$knownVar['sgqa']] = $value;
+                    $LEM->updatedValues[$knownVar['sgqa']]=array(
+                        'type'=>$knownVar['type'],
+                        'value'=>$value,
+                    );
+                }
                 unset($_SESSION[$LEM->sessid]['startingValues'][$k]);
             }
             $LEM->_UpdateValuesInDatabase();
