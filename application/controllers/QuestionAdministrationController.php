@@ -244,13 +244,7 @@ class QuestionAdministrationController extends LSBaseController
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml
         ];
-        
-        // Remove Input Validation from General Settings Tab for Bootstrap Button Question Attribute.
-        $questionAttributeListBootstrap = $questionAttributes[0];
-        if ($questionAttributeListBootstrap['title'] === 'Bootstrap buttons') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
+
         $this->aData = array_merge($this->aData, $viewData);
 
         $this->render(

@@ -76,7 +76,7 @@
             ),
             'ajaxUpdate'      => 'questionthemes-grid',
             'ajaxType'        => 'POST',
-            // todo create a new javascript file and call function from here, related: 1573120573738
+            // @todo create a new javascript file and call function from here, related: 1573120573738
             'afterAjaxUpdate' => '
                                 function(id, data){
                                     window.LS.doToolTip();

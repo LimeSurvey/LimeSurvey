@@ -217,25 +217,6 @@ class Answer extends LSActiveRecord
     }
 
     /**
-     * @param integer $surveyid
-     * @param string $lang
-     * @param bool $return_query
-     * @return array|CDbCommand
-     * @deprecated since 2018-02-05 its not working also (the language change)
-     */
-    public function getAnswerQuery($surveyid, $lang, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand();
-        $query->select("{{answers}}.*, {{questions}}.gid");
-        $query->from("{{answers}}, {{questions}}");
-        $query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
-        $query->order('qid, code, sortorder');
-        $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
-        $query->bindParams(":lang", $lang, PDO::PARAM_STR);
-        return ($return_query) ? $query->queryAll() : $query;
-    }
-
-    /**
      * @param string $fields
      * @param string $orderby
      * @param mixed $condition
