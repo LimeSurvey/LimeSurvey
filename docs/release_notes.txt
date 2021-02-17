@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.13 (build 210216) to 3.25.14 (build 210218) February 17, 2021
+-Fixed issue: [security] Possible XSS in data entry and survey logic check - found by James Mullen, Edgescan (Carsten Schmitz)
+-Fixed issue: [security] Possible SQL injection in data entry, CPDB participant sharing and condition editing - found by James Mullen, Edgescan (Carsten Schmitz)
+-Fixed issue: [security] Possible SQL injection in data entry, CPDB participant sharing and condition editing (Carsten Schmitz)
+-Fixed issue #16917: Error when navigating to global settings and using PHP8 (Carsten Schmitz)
+
+
 Changes from 3.25.12 (build 210211) to 3.25.13 (build 210216) February 16, 2021
 -Fixed issue: Syntax error in user statistics (Olle Harstedt)
 -Fixed issue: Don't escape quotes in token attributes (Olle Haerstedt)
