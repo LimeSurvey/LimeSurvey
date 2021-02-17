@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.8 (build 210217) to 4.4.9 (build 210219) February 17, 2021
+-Fixed issue: [security] Possible XSS in data entry and survey logic check - found by James Mullen, Edgescan (Carsten Schmitz)
+-Fixed issue: [security] Possible SQL injection in data entry, CPDB participant sharing and condition editing - found by James Mullen, Edgescan (Carsten Schmitz)
+-Fixed issue #17095 : Error of Class 'LimeSurvey\PluginManager\CHttpException' not found (Denis Chenu)
+-Fixed issue #17061: Themes editor cannot be opened (Carsten Schmitz)
+-Fixed issue #16917: Error when navigating to global settings and using PHP8 (Carsten Schmitz)
+
+
 Changes from 4.4.7 (build 210215) to 4.4.8 (build 210217) February 16, 2021
 -Fixed issue: Question Attributes Array By Column (Jessica Höck)
 -Fixed issue: Question Attributes Array 5-Point Choice (Jessica Höck)
