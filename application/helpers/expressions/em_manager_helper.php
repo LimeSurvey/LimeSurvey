@@ -8594,10 +8594,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         private static function getConditionsForEM($surveyid, $qid=NULL)
         {
             if (!is_null($qid)) {
-                $where = " c.qid = ".$qid." AND ";
+                $where = " c.qid = ".(int)$qid." AND ";
             }
             else if (!is_null($surveyid)) {
-                    $where = " qa.sid = {$surveyid} AND ";
+                    $where = " qa.sid = ".(int)$surveyid." AND ";
                 }
                 else {
                     $where = "";

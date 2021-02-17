@@ -1662,7 +1662,7 @@ class dataentry extends Survey_Common_Action
                 $new_response->save();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
-// submittoken
+                    // submittoken
                     // get submit date
                     if (isset($_POST['closedate'])) {
                         $submitdate = $_POST['closedate'];
@@ -1703,62 +1703,37 @@ class dataentry extends Survey_Common_Action
                     $aUserData = Yii::app()->session;
                     //CREATE ENTRY INTO "saved_control"
 
-
-                    $saved_control_table = '{{saved_control}}';
-
-                    $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
-                        "refurl", 'saved_thisstep', "status", "saved_date");
-                    $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".(string) getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
-
-                    $SQL = "INSERT INTO $saved_control_table
-                        (".implode(',', $columns).")
-                        VALUES
-                        (".implode(',', $values).")";
-
-                        /*$scdata = array("sid"=>$surveyid,
-                        "srid"=>$srid,
-                        "identifier"=>$saver['identifier'],
-                        "access_code"=>$password,
-                        "email"=>$saver['email'],
-                        "ip"=>$aUserData['ip_address'],
-                        "refurl"=>getenv("HTTP_REFERER"),
-                        'saved_thisstep' => 0,
-                        "status"=>"S",
-                        "saved_date"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
-                        $this->load->model('saved_control_model');*/
-                    if (dbExecuteAssoc($SQL)) {
-                        $scid = getLastInsertID('{{saved_control}}');
+                    $aData = [  "sid"=>$surveyid, 
+                                "srid"=>$srid, 
+                                "identifier"=>$saver['identifier'], 
+                                "access_code"=>$password, 
+                                "email"=>$saver['email'], 
+                                "ip"=>$aUserData['ip_address'],
+                                "refurl"=>(string) getenv("HTTP_REFERER"), 
+                                'saved_thisstep'=>0, 
+                                "status"=>'S', 
+                                "saved_date"=>dateShift((string) date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))
+                            ];
+                    $oSavedControl = SavedControl::create();
+                    $oSavedControl->setAttributes($aData, false);
+                    if ($oSavedControl->save) {
+                        $scid = $oSavedControl->scid;
 
                         $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
-                        //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
                         $tokens_table = "{{tokens_$surveyid}}";
                         if (tableExists($tokens_table)) {
-//If the query fails, assume no tokens table exists
-                            $tkquery = "SELECT * FROM {$tokens_table}";
-                            dbExecuteAssoc($tkquery);
-                                /*$tokendata = array (
-                                "firstname"=> $saver['identifier'],
-                                "lastname"=> $saver['identifier'],
-                                "email"=>$saver['email'],
-                                "token"=>randomChars(15),
-                                "language"=>$saver['language'],
-                                "sent"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
-                                "completed"=>"N");*/
-
-                            $columns = array("firstname", "lastname", "email", "token",
-                                "language", "sent", "completed");
-                            $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
-                                "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
-
-                            $SQL = "INSERT INTO {$tokens_table}
-                                (".implode(',', $columns).")
-                                VALUES
-                                (".implode(',', $values).")";
-                            dbExecuteAssoc($SQL);
+                            $aData = ["firstname"=>$saver['identifier'],
+                             "lastname"=>$saver['identifier'], 
+                             "email"=>$saver['email'], 
+                             "token"=>randomChars(15),
+                             "language"=>$saver['language'], 
+                             "sent"=>'N', 
+                             "completed"=>''];
+                            $token = Token::create($surveyid);
+                            $token->setAttributes($aData, false);
+                            $inresult = $token->save();
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
-                            //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
                         }
                         if ($saver['email']) {
                             //Send email

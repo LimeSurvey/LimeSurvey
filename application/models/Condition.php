@@ -140,9 +140,7 @@ class Condition extends LSActiveRecord
         if ($update) {
             $criteria = new CdbCriteria;
             if (is_array($condition)) {
-                foreach ($condition as $column=>$value) {
-                    $criteria->addCondition("$column='$value'");
-                }
+                $criteria->addColumnCondition($condition);
             } else {
                 $criteria->where = $condition;
             }

@@ -333,7 +333,7 @@ class ParticipantShare extends LSActiveRecord
         $userId = App()->user->getId();
         $ownerid = App()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
 
-        // CHeck if share already exists
+        // Check if share already exists
         $arShare = $this->findByPk(['participant_id' => $data['participant_id'], 'share_uid' => $data['share_uid']]);
         $canEditShared = $this->canEditSharedParticipant($data['participant_id']);
         $isOwner = $ownerid['owner_uid'] == $userId;
@@ -343,8 +343,11 @@ class ParticipantShare extends LSActiveRecord
             return;
         }
         if (is_null($arShare)) {
-// A check to ensure that the participant is not added to it's owner
-            Yii::app()->db->createCommand()->insert('{{participant_shares}}', $data);
+            // A check to ensure that the participant is not added to it's owner
+            $oParticipantShare = new ParticipantShare();
+            $oParticipantShare->setAttributes($data);
+            $oParticipantShare->save();
+
         } else {
             $this->updateShare($data);
         }
@@ -361,8 +364,7 @@ class ParticipantShare extends LSActiveRecord
             $data = array("participant_id"=>$participantId, "share_uid"=>$shareuid, "can_edit"=>$data['can_edit']);
         }
         $criteria = new CDbCriteria;
-        $criteria->addCondition("participant_id = '{$data['participant_id']}'");
-        $criteria->addCondition("share_uid = '{$data['share_uid']}' ");
+        $criteria->addColumnCondition(['participant_id'=>$data['participant_id'],'share_uid'=>$data['share_uid']]);
         ParticipantShare::model()->updateAll($data, $criteria);
     }
 
