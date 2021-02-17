@@ -27,7 +27,7 @@ before_script:
     - php tests/check_autoloader.php
 
     # Check for syntax errors.
-    - find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax errors'
+    - find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {}
 
     # Test
     #- sudo apt-get update
