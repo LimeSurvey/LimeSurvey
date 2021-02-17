@@ -1516,7 +1516,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0){
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)){
-            $token = TokenDynamic::model($iSurveyID)->find(array('token'=>response->token));
+            $token = TokenDynamic::model($iSurveyID)->find(array('token'=>$response->token));
             if (!empty($token)){
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
