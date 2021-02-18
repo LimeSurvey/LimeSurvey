@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-02-08 12:25:06+00:00\n"
+"POT-Creation-Date: 2021-02-18 16:01:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,24 +36,24 @@ msgstr ""
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:33
 #: application/helpers/SurveyRuntimeHelper.php:1028
-#: application/helpers/admin/import_helper.php:970
-#: application/helpers/admin/import_helper.php:1012
-#: application/helpers/admin/import_helper.php:1089
-#: application/helpers/admin/import_helper.php:1196
-#: application/helpers/admin/import_helper.php:1296
-#: application/helpers/admin/import_helper.php:1299
-#: application/helpers/admin/import_helper.php:1322
-#: application/helpers/admin/import_helper.php:1395
-#: application/helpers/admin/import_helper.php:1425
-#: application/helpers/admin/import_helper.php:1451
-#: application/helpers/admin/import_helper.php:1475
-#: application/helpers/admin/import_helper.php:1494
-#: application/helpers/admin/import_helper.php:1515
-#: application/helpers/admin/import_helper.php:1619
-#: application/helpers/admin/import_helper.php:1762
-#: application/helpers/admin/import_helper.php:2104
-#: application/models/TemplateManifest.php:173
-#: application/models/TemplateManifest.php:429
+#: application/helpers/admin/import_helper.php:977
+#: application/helpers/admin/import_helper.php:1019
+#: application/helpers/admin/import_helper.php:1096
+#: application/helpers/admin/import_helper.php:1203
+#: application/helpers/admin/import_helper.php:1303
+#: application/helpers/admin/import_helper.php:1306
+#: application/helpers/admin/import_helper.php:1329
+#: application/helpers/admin/import_helper.php:1402
+#: application/helpers/admin/import_helper.php:1432
+#: application/helpers/admin/import_helper.php:1458
+#: application/helpers/admin/import_helper.php:1482
+#: application/helpers/admin/import_helper.php:1501
+#: application/helpers/admin/import_helper.php:1522
+#: application/helpers/admin/import_helper.php:1626
+#: application/helpers/admin/import_helper.php:1769
+#: application/helpers/admin/import_helper.php:2111
+#: application/models/TemplateManifest.php:177
+#: application/models/TemplateManifest.php:433
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
 #: application/views/admin/error_view.php:3
@@ -115,7 +115,7 @@ msgid "Version"
 msgstr ""
 
 #: application/controllers/InstallerController.php:138
-#: application/models/TemplateManifest.php:166
+#: application/models/TemplateManifest.php:170
 #: application/views/admin/update/updater/_progress.php:11
 #: application/views/installer/sidebar_view.php:13
 #: tmp/runtime/twig_cache/9d/9d37a5b775e44f594540c16c895ed544c3dfced4d6521df08fc76e96199bb353.php:55
@@ -618,7 +618,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:230
 #: application/controllers/UploaderController.php:258
-#: application/helpers/remotecontrol/remotecontrol_handle.php:2826
+#: application/helpers/remotecontrol/remotecontrol_handle.php:2842
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -705,8 +705,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2307
 #: application/models/Assessment.php:100 application/models/Permission.php:759
 #: application/models/Question.php:855 application/models/SavedControl.php:131
-#: application/models/TemplateManifest.php:687
-#: application/models/TemplateManifest.php:690
+#: application/models/TemplateManifest.php:691
+#: application/models/TemplateManifest.php:694
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
 #: application/views/admin/participants/massive_actions/_selector_attribute.php:18
@@ -1283,7 +1283,7 @@ msgstr ""
 #: application/controllers/admin/assessments.php:131
 #: application/core/LsDefaultDataSets.php:30
 #: application/models/Permission.php:80
-#: application/models/TemplateManifest.php:174
+#: application/models/TemplateManifest.php:178
 #: application/views/admin/assessments/assessments_view.php:17
 #: application/views/admin/survey/copySurvey_view.php:54
 #: application/views/admin/survey/importSurvey_view.php:109
@@ -2336,8 +2336,8 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:78
 #: application/controllers/admin/dataentry.php:454
 #: application/controllers/admin/dataentry.php:1491
-#: application/controllers/admin/dataentry.php:2267
-#: application/controllers/admin/dataentry.php:2270
+#: application/controllers/admin/dataentry.php:2242
+#: application/controllers/admin/dataentry.php:2245
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
 #: application/views/admin/responses/browsemenubar_view.php:47
@@ -2448,7 +2448,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:189
 #: application/controllers/admin/responses.php:190
 #: application/controllers/admin/tokens.php:1635
-#: application/models/TemplateManifest.php:168 application/models/Token.php:88
+#: application/models/TemplateManifest.php:172 application/models/Token.php:88
 #: application/views/admin/quotas/viewquotas_view.php:77
 #: application/views/admin/token/exportdialog.php:17
 #: tmp/runtime/twig_cache/50/50a33ad2ee4cde10a752432aff9595e320e6556c6f0496a2d31cde2ee279c3cd.php:55
@@ -2532,7 +2532,7 @@ msgstr ""
 #: application/controllers/admin/surveyadmin.php:1900
 #: application/controllers/admin/usergroups.php:178
 #: application/helpers/admin/label_helper.php:130
-#: application/models/TemplateManifest.php:171
+#: application/models/TemplateManifest.php:175
 #: application/views/admin/assessments/assessments_edit.php:125
 #: application/views/admin/assessments/assessments_edit.php:142
 #: application/views/admin/conditions/conditionshead_view.php:72
@@ -2644,25 +2644,25 @@ msgstr ""
 msgid "Your passwords do not match."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1733
+#: application/controllers/admin/dataentry.php:1722
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1760
+#: application/controllers/admin/dataentry.php:1736
 msgid "A survey participant entry for the saved survey has been created too."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1766
+#: application/controllers/admin/dataentry.php:1741
 #: application/libraries/Save.php:267 application/libraries/Save.php:407
 msgid "Saved Survey Details"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1767
+#: application/controllers/admin/dataentry.php:1742
 #: application/libraries/Save.php:268 application/libraries/Save.php:408
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1769
+#: application/controllers/admin/dataentry.php:1744
 #: application/libraries/Save.php:270 application/libraries/Save.php:410
 #: application/models/Assessment.php:73
 #: application/models/ParticipantAttributeName.php:202
@@ -2679,7 +2679,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1770
+#: application/controllers/admin/dataentry.php:1745
 #: application/controllers/admin/useraction.php:139
 #: application/controllers/admin/useraction.php:141
 #: application/controllers/admin/useraction.php:392
@@ -2691,33 +2691,33 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1771
+#: application/controllers/admin/dataentry.php:1746
 #: application/libraries/Save.php:272 application/libraries/Save.php:412
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1777
+#: application/controllers/admin/dataentry.php:1752
 msgid "An email has been sent with details about your saved survey"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1886
+#: application/controllers/admin/dataentry.php:1861
 msgid "Only answer this if the following conditions are met:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1889
+#: application/controllers/admin/dataentry.php:1864
 msgid "The answer(s) must meet these validation criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:1895
+#: application/controllers/admin/dataentry.php:1870
 msgid "The answer(s) must meet these array_filter criteria:"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2232
+#: application/controllers/admin/dataentry.php:2207
 #: application/controllers/admin/printablesurvey.php:1479
 msgid "Only answer this question for the items you selected in question %s ('%s')"
 msgstr ""
 
-#: application/controllers/admin/dataentry.php:2241
+#: application/controllers/admin/dataentry.php:2216
 #: application/controllers/admin/printablesurvey.php:1492
 msgid "Only answer this question for the items you did not select in question %s ('%s')"
 msgstr ""
@@ -2794,7 +2794,7 @@ msgid "Confirmation attachments:"
 msgstr ""
 
 #: application/controllers/admin/emailtemplates.php:228
-#: application/models/TemplateManifest.php:175
+#: application/models/TemplateManifest.php:179
 #: tmp/runtime/twig_cache/cf/cfd6d1da08ed62bbeecabe9622aa1bb9b46f61150c81e91109d3b1edddb7ca01.php:55
 msgid "Registration"
 msgstr ""
@@ -3917,7 +3917,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:852
 #: application/helpers/admin/statistics_helper.php:4347
-#: application/models/TemplateManifest.php:167
+#: application/models/TemplateManifest.php:171
 #: application/views/admin/conditions/includes/form_editconditions_header.php:67
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:22
 #: application/views/admin/quotas/viewquotas_quota_members.php:33
@@ -4689,8 +4689,8 @@ msgid "How many roads must a man walk down?"
 msgstr ""
 
 #: application/controllers/admin/themes.php:1057
-#: application/models/TemplateManifest.php:403
-#: application/models/TemplateManifest.php:413
+#: application/models/TemplateManifest.php:407
+#: application/models/TemplateManifest.php:417
 msgid "This is some helpful text."
 msgstr ""
 
@@ -7056,7 +7056,7 @@ msgid "Microsoft Word"
 msgstr ""
 
 #: application/core/plugins/Authdb/Authdb.php:204
-#: application/models/TemplateManifest.php:177
+#: application/models/TemplateManifest.php:181
 #: application/views/admin/export/statistics_subviews/_outputformat.php:11
 #: tmp/runtime/twig_cache/17/17414abfc524b46f99423833f236f6a2c3a02de68aef67deb52ecd92743a4d34.php:55
 msgid "PDF"
@@ -8018,123 +8018,123 @@ msgstr ""
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:43
-#: application/helpers/admin/import_helper.php:358
-#: application/helpers/admin/import_helper.php:830
+#: application/helpers/admin/import_helper.php:45
+#: application/helpers/admin/import_helper.php:362
+#: application/helpers/admin/import_helper.php:834
 msgid "The file is not compatible with this LimeSurvey version."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:53
+#: application/helpers/admin/import_helper.php:55
 msgid "The languages of the imported group file must at least include the base language of this survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:376
+#: application/helpers/admin/import_helper.php:380
 msgid "The languages of the imported question file must at least include the base language of this survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:432
-#: application/helpers/admin/import_helper.php:443
+#: application/helpers/admin/import_helper.php:436
+#: application/helpers/admin/import_helper.php:447
 msgid "The question could not be imported for the following reasons:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:435
-#: application/helpers/admin/import_helper.php:1105
+#: application/helpers/admin/import_helper.php:439
+#: application/helpers/admin/import_helper.php:1112
 msgid "Question code %s was updated to %s."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:668
+#: application/helpers/admin/import_helper.php:672
 msgid "Label set was not imported because the same label set already exists."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:668
+#: application/helpers/admin/import_helper.php:672
 msgid "Existing LID: %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:755
+#: application/helpers/admin/import_helper.php:759
 msgid "Unable to create survey participants table"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:801
+#: application/helpers/admin/import_helper.php:805
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:909
+#: application/helpers/admin/import_helper.php:916
 msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:916
+#: application/helpers/admin/import_helper.php:923
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:993
+#: application/helpers/admin/import_helper.php:1000
 msgid "Group “%s“ was set to “%s“"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1212
+#: application/helpers/admin/import_helper.php:1219
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1537
+#: application/helpers/admin/import_helper.php:1544
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1540
+#: application/helpers/admin/import_helper.php:1547
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1633
+#: application/helpers/admin/import_helper.php:1640
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1653
+#: application/helpers/admin/import_helper.php:1660
 msgid "This is not a valid token data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1697
+#: application/helpers/admin/import_helper.php:1704
 msgid "Skipped tokens entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1731
+#: application/helpers/admin/import_helper.php:1738
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1827
+#: application/helpers/admin/import_helper.php:1834
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1877
+#: application/helpers/admin/import_helper.php:1884
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1884
+#: application/helpers/admin/import_helper.php:1891
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2042
+#: application/helpers/admin/import_helper.php:2049
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2044
+#: application/helpers/admin/import_helper.php:2051
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2047
+#: application/helpers/admin/import_helper.php:2054
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2051
+#: application/helpers/admin/import_helper.php:2058
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2054
+#: application/helpers/admin/import_helper.php:2061
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2057
+#: application/helpers/admin/import_helper.php:2064
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2075
+#: application/helpers/admin/import_helper.php:2082
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -11418,7 +11418,7 @@ msgid "There are no questions in this survey"
 msgstr ""
 
 #: application/helpers/replacements_helper.php:195
-#: application/models/TemplateManifest.php:451
+#: application/models/TemplateManifest.php:455
 msgid "There is 1 question in this survey"
 msgstr ""
 
@@ -11593,9 +11593,9 @@ msgid "Dutch (informal)"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:270
-#: application/models/TemplateManifest.php:220
-#: application/models/TemplateManifest.php:345
-#: application/models/TemplateManifest.php:384
+#: application/models/TemplateManifest.php:224
+#: application/models/TemplateManifest.php:349
+#: application/models/TemplateManifest.php:388
 msgid "English"
 msgstr ""
 
@@ -11628,9 +11628,9 @@ msgid "Georgian"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:335
-#: application/models/TemplateManifest.php:221
-#: application/models/TemplateManifest.php:346
-#: application/models/TemplateManifest.php:385
+#: application/models/TemplateManifest.php:225
+#: application/models/TemplateManifest.php:350
+#: application/models/TemplateManifest.php:389
 #: application/views/admin/token/exportdialog.php:69
 msgid "German"
 msgstr ""
@@ -12071,7 +12071,7 @@ msgstr ""
 msgid "Section"
 msgstr ""
 
-#: application/models/AdminTheme.php:356
+#: application/models/AdminTheme.php:364
 msgid "This is the LimeSurvey admin interface. Start to build your survey from here."
 msgstr ""
 
@@ -13123,7 +13123,7 @@ msgid "User theme"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:630
-#: application/models/TemplateManifest.php:664
+#: application/models/TemplateManifest.php:668
 msgid "Theme editor"
 msgstr ""
 
@@ -13181,17 +13181,17 @@ msgstr ""
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
-#: application/models/TemplateManifest.php:169
+#: application/models/TemplateManifest.php:173
 #: tmp/runtime/twig_cache/f5/f552481819343a892f5a8e3371c4eed99783ad06b8fd6778d2879f2b48b34171.php:55
 msgid "Clear all"
 msgstr ""
 
-#: application/models/TemplateManifest.php:170
+#: application/models/TemplateManifest.php:174
 #: tmp/runtime/twig_cache/81/81178e5b8f9bf8518e08e8bdfc711b53a385c3d3246d442fd954291417209739.php:55
 msgid "Load"
 msgstr ""
 
-#: application/models/TemplateManifest.php:172
+#: application/models/TemplateManifest.php:176
 #: application/views/admin/super/welcome.php:149
 #: application/views/admin/survey/breadcrumb.php:12
 #: application/views/admin/survey/listSurveys_view.php:16
@@ -13200,88 +13200,88 @@ msgstr ""
 msgid "Survey list"
 msgstr ""
 
-#: application/models/TemplateManifest.php:176
+#: application/models/TemplateManifest.php:180
 #: tmp/runtime/twig_cache/6f/6f1043fc923ac44f8b4c7d89f4313fcdfcb7db528477b685b2ab901620e271c1.php:55
 msgid "Print answers"
 msgstr ""
 
-#: application/models/TemplateManifest.php:178
+#: application/models/TemplateManifest.php:182
 #: tmp/runtime/twig_cache/51/51db3e5b51f408ac98246d3a365e2e3d7679026403af50fdea1a24f03229ba52.php:55
 msgid "Navigation"
 msgstr ""
 
-#: application/models/TemplateManifest.php:179
+#: application/models/TemplateManifest.php:183
 msgid "Miscellaneous files"
 msgstr ""
 
-#: application/models/TemplateManifest.php:354
+#: application/models/TemplateManifest.php:358
 msgid "A group without step status styling"
 msgstr ""
 
-#: application/models/TemplateManifest.php:357
+#: application/models/TemplateManifest.php:361
 msgid "This group is unanswered"
 msgstr ""
 
-#: application/models/TemplateManifest.php:363
+#: application/models/TemplateManifest.php:367
 msgid "This group has an error"
 msgstr ""
 
-#: application/models/TemplateManifest.php:369
+#: application/models/TemplateManifest.php:373
 msgid "Current group is disabled"
 msgstr ""
 
-#: application/models/TemplateManifest.php:430
+#: application/models/TemplateManifest.php:434
 msgid "This is an error message example"
 msgstr ""
 
-#: application/models/TemplateManifest.php:433
+#: application/models/TemplateManifest.php:437
 #: tmp/runtime/twig_cache/c4/c49d6b754198c6daa39ebbfe3138b4a42c47140cab89371a341450a482f80cdf.php:55
 msgid "Welcome to the Assessment"
 msgstr ""
 
-#: application/models/TemplateManifest.php:436
+#: application/models/TemplateManifest.php:440
 #: tmp/runtime/twig_cache/80/80739f4304efa20dfe62c2f1783d3ea3329de390e05fa3b752403caa9ba8ae4a.php:55
 msgid "You got {TOTAL} points out of 3 possible points."
 msgstr ""
 
-#: application/models/TemplateManifest.php:444
+#: application/models/TemplateManifest.php:448
 #: tmp/runtime/twig_cache/8e/8ea652d112c195a422e18c7161c44b34690a271ddbea012f5f2007789875d979.php:55
 msgid "Template Sample"
 msgstr ""
 
-#: application/models/TemplateManifest.php:446
+#: application/models/TemplateManifest.php:450
 #: tmp/runtime/twig_cache/11/11358ef7aeeadfdcb895afa5f72380abe322bb8eefe503b35a1b4d010f4e0d88.php:55
 msgid "This is a sample survey description. It could be quite long."
 msgstr ""
 
-#: application/models/TemplateManifest.php:447
+#: application/models/TemplateManifest.php:451
 #: tmp/runtime/twig_cache/11/11358ef7aeeadfdcb895afa5f72380abe322bb8eefe503b35a1b4d010f4e0d88.php:57
 msgid "But this one isn't."
 msgstr ""
 
-#: application/models/TemplateManifest.php:449
+#: application/models/TemplateManifest.php:453
 #: tmp/runtime/twig_cache/a6/a6623cdf14a8786643a912c6ade706cb76f8e81f42ddd9d2056652eaa6c110d6.php:55
 msgid "Welcome to this sample survey"
 msgstr ""
 
-#: application/models/TemplateManifest.php:450
+#: application/models/TemplateManifest.php:454
 #: tmp/runtime/twig_cache/a6/a6623cdf14a8786643a912c6ade706cb76f8e81f42ddd9d2056652eaa6c110d6.php:57
 msgid "You should have a great time doing this"
 msgstr ""
 
-#: application/models/TemplateManifest.php:453
+#: application/models/TemplateManifest.php:457
 msgid "Some URL description"
 msgstr ""
 
-#: application/models/TemplateManifest.php:674
+#: application/models/TemplateManifest.php:678
 msgid "Install"
 msgstr ""
 
-#: application/models/TemplateManifest.php:686
+#: application/models/TemplateManifest.php:690
 msgid "Are you sure you want to delete this theme? "
 msgstr ""
 
-#: application/models/TemplateManifest.php:710
+#: application/models/TemplateManifest.php:714
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
