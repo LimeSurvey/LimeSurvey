@@ -903,6 +903,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['allowjumps']);
         }
 
+        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength']>35) {
+            $insertdata['tokenlength']=35;
+        }
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
