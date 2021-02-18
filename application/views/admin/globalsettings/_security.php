@@ -48,7 +48,7 @@
         ?>
     </div>
     <div class="help-block">
-        <span class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allow user to add cross-site scripting javascript system."); ?></span>
+        <span class='text-warning'><?php eT("If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."); ?></span>
     </div>
 </div>
 
