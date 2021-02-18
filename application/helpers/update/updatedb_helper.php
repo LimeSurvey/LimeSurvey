@@ -3622,6 +3622,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 437), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if($iOldDBVersion < 438){
+
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'hidden' and value = 'Y'");
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'hidden' and value = 'N'");
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 438), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

@@ -2543,7 +2543,13 @@ class QuestionAdministrationController extends LSBaseController
      * @todo document me
      *
      * @param Question $oQuestion
-     * @param array $dataSet
+     * @param array $dataSet these are the advancedSettings in an array like
+     *                       [display]
+     *                         [hidden]
+     *                         ...
+     *                       [logic]
+     *                       ...
+     *
      * @return boolean
      * @throws CHttpException
      */
