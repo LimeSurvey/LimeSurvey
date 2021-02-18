@@ -26,6 +26,9 @@ before_script:
     # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
     - php tests/check_autoloader.php
 
+    # Check for syntax errors.
+    - find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {}
+
     # Test
     #- sudo apt-get update
     #- sudo apt-get upgrade
@@ -83,11 +86,6 @@ before_script:
     - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
-
-    # Check for syntax errors.
-    # NB: '!' doesn't work properly, see https://github.com/travis-ci/travis-ci/issues/7494
-    # TODO: Causes "Could not parse" errors on Travis
-    #- "! find application/ -type f -name '*.php' -exec php -l {} \;  | grep -v 'No syntax errors'"
 
     # Test server.
     - wget localhost

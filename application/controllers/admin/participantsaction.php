@@ -2261,7 +2261,7 @@ class participantsaction extends Survey_Common_Action
             'isSuperAdmin' => $isSuperAdmin
         ];
         $participantIds = Yii::app()->request->getPost('participant_id');
-        $iShareUserId = Yii::app()->request->getPost('shareuser');
+        $iShareUserId = (int) Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
 
         if (!is_array($participantIds)) {
@@ -2279,7 +2279,7 @@ class participantsaction extends Survey_Common_Action
             foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
-                    'participant_id' => $id,
+                    'participant_id' => (int) $id,
                     'share_uid' => $iShareUserId,
                     'date_added' => date('Y-m-d H:i:s', $time),
                     'can_edit' => $bCanEdit
