@@ -9475,6 +9475,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'hyperlinkSyntaxHighlighting'=>true,
             );
 
+            // Avoid randomization of the fieldmap
+            unset($_SESSION['survey_'.$sid]['fieldmap-'.$sid.'-randMaster']);
+
             $varNamesUsed = array(); // keeps track of whether variables have been declared
             /* tempVars are resetted when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
             $standardsReplacementFields = getStandardsReplacementFields(array(
