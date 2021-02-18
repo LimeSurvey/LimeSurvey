@@ -3623,6 +3623,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         if($iOldDBVersion < 438){
+            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'hidden' and value = 'Y'");
             $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'hidden' and value = 'N'");
