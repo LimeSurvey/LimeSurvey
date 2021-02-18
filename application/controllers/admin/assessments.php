@@ -220,9 +220,9 @@ class Assessments extends Survey_Common_Action
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments != 'Y') {
             $aData['asessementNotActivated'] = array(
-                'title' => gT("Assessments mode not activated"), 
+                'title' => gT("Assessment mode not activated"), 
                 'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
-                    . gt("If you want to activate it click here:").'<br/>'
+                    . gt("If you want to activate it, click here:").'<br/>'
                     . '<a type="submit" class="btn btn-primary" href="'
                     . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate', 'surveyid'=> $iSurveyID])
                     .'">'.gT('Activate assessements').'</a>', 
