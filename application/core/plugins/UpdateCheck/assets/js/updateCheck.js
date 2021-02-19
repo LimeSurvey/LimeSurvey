@@ -6,11 +6,11 @@ $(document).ready(function () {
         data: {},
         method: 'GET',
         success: function (response) {
-            console.ls.log(response);
+            console.log(response);
             LS.updateNotificationWidget(notificationUpdateUrl, false);
         },
         error : function (arguments) {
-            console.ls.log(arguments);
+            console.log(arguments);
         }
     });
 });
