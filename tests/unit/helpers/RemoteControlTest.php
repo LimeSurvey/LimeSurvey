@@ -285,4 +285,66 @@ class RemoteControlTest extends TestBaseClass
         $this->assertEquals('Das Deutsch title', $result['group_name']);
     }
 
+    /**
+     * Test the import_group API call.
+     */
+    public function testImportGroup()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+        App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
+        $dbo->createCommand($query)->execute();
+
+        // Import survey
+        $filename = self::$surveysFolder . '/limesurvey_survey_251297_import_group.lss';
+        self::importSurvey($filename);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        $groupFileName = BASEPATH . '../tests/data/file_upload/limesurvey_group_472.lsg';
+        $groupData = base64_encode(file_get_contents($groupFileName));
+
+        $result = $handler->import_group(
+            $sessionKey,
+            self::$surveyId,
+            $groupData,
+            'lsg',
+        );
+
+        $this->assertIsNumeric($result, '$result = ' . json_encode($result));
+
+        $oGroup = \QuestionGroup::model()->findByPk($result);
+
+        $this->assertNotEmpty($oGroup, "Imported group not found");
+
+        // Cleanup
+        self::$testSurvey->delete();
+        self::$testSurvey = null;
+    }
+
 }
