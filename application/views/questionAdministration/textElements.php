@@ -77,9 +77,10 @@
                             [
                                 'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
                                 'rows' => '10',
-                                'cols' => '40',
+                                'cols' => '20',
                                 'data-filetype' => 'javascript',
-                                'class' => 'form-control', // . $sTemplateEditorMode,
+                                'class' => 'ace form-control',
+                                'style' => 'width: 100%'
                             ]
                         ); ?>
                         <p class="alert well">
