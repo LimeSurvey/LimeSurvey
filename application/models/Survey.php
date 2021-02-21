@@ -1787,6 +1787,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
+     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
      * @return double
      */
@@ -1825,7 +1826,61 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Add needed language if needed in related SurveyLanguageSetting
+     * Remove uneeded language if needed in related SurveyLanguageSetting
+     * @return void
+     */
+    public function fixSurveyLanguageConsistency()
+    {
+        /* Check if SurveyLanguageSetting exist, create if not */
+        foreach ($this->additionalLanguages as $sLang) {
+            if ($sLang) {
+                $oLanguageSettings = SurveyLanguageSetting::model()->find(
+                    'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
+                    array(':surveyid'=>$this->sid, ':langname'=>$sLang)
+                );
+                if (!$oLanguageSettings) {
+                    $oLanguageSettings = new SurveyLanguageSetting;
+                    $languagedetails = getLanguageDetails($sLang);
+                    $oLanguageSettings->surveyls_survey_id = $this->sid;
+                    $oLanguageSettings->surveyls_language = $sLang;
+                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+                    if (!$oLanguageSettings->save()) {
+                        Yii::app()->setFlashMessage(sprintf(gT("Survey language %s could not be created."), $sLang), "error");
+                    }
+                }
+            }
+        }
+        /* Delete all unneeded language setting */
+        $aAvailableLanguage = $this->getAllLanguages();
+        $oCriteria = new CDbCriteria;
+        $oCriteria->compare('surveyls_survey_id', $this->sid);
+        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
+        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+    }
+
+    /**
+     * Function to find and fix potential issue inside current survey, mpore fix to be added
+     * - fixes missing groups, questions, answers, quotas & assessments for languages on a survey
+     * - Remove invalid question in this survey : exist in another la,guage but not in primary
+     * @return void
+     */
+    public function fixSurveyConsistency()
+    {
+        /* Fix current related language database */
+        $this->fixSurveyLanguageConsistency();
+        /* Common helper function : missing groups, questions, answers, quotas & assessments for languages on a survey*/
+        fixLanguageConsistency($this->sid, $this->additional_languages);
+        /* Invalid question and subquestions */
+        $this->fixInvalidQuestions();
+        /* Create an empty theme if needed */
+        TemplateConfiguration::checkAndcreateSurveyConfig($this->sid);
+    }
+
+    /**
      * Fix invalid question in this survey
+     * Delete question that don't exist in primary language
      */
     public function fixInvalidQuestions()
     {
@@ -1980,7 +2035,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
-
 
     /**
      * Returns true if this survey has any question of type $type.
