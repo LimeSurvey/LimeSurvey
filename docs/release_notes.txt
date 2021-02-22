@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.9 (build 210219) to 4.4.10 (build 210222) February 22, 2021
+-Fixed issue: queXMLExport broken (Carsten Schmitz)
+-Fixed issue: [security] Updated ckEditor to 4.16.0 (Carsten Schmitz)
+-Fixed issue: Question Attribute Multiple Choice With Comments (Jessica Höck)
+-Fixed issue: Question Attribute Array (Numbers) (Jessica Höck)
+-Fixed issue: Improve English Strings - https message (Jessica Höck)
+-Fixed issue: Improve English Strings - Repeat headings (Jessica Höck)
+-Fixed issue: Improve English Strings - New role name (Jessica Höck)
+-Fixed issue: Improve English Strings - Global settings (Jessica Höck)
+-Fixed issue: Improve English Strings - Connected users (Jessica Höck)
+-Fixed issue: Cannot import lss/lsa file that have token length set too big (Carsten Schmitz)
+-Fixed issue: Apply Ace editor to question editor script field (Olle Harstedt)
+-Fixed issue #16850: Add survey permission to group: unordered list (jmantysalo)
+-Fixed issue #16474: Remote control import_group broken (GabrielJenik)
+-Fixed issue #16220: queXML PDF-export and reset button (#1757) (Gabriel Jenik)
+#Updated translation: Turkish by bulent
+#Updated translation: Somali by Jmantysalo
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Indonesian by Rachmat04
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.4.8 (build 210217) to 4.4.9 (build 210219) February 17, 2021
 -Fixed issue: [security] Possible XSS in data entry and survey logic check - found by James Mullen, Edgescan (Carsten Schmitz)
 -Fixed issue: [security] Possible SQL injection in data entry, CPDB participant sharing and condition editing - found by James Mullen, Edgescan (Carsten Schmitz)
