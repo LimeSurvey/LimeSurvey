@@ -105,7 +105,7 @@ class Answer extends LSActiveRecord
             ->query();
     }
 
-    public function checkUniqueness($attribute, $params)
+    public function checkUniqueness()
     {
         if ($this->code !== $this->oldCode || $this->qid != $this->oldQid || $this->scale_id != $this->oldScaleId) {
             $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
