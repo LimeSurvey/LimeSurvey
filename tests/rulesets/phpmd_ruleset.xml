@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <ruleset name="LimeSurvey PHPMD Extension ruleset">
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
-    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" />
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable">
+        <properties>
+            <property name="allow-unused-foreach-variables" value="true" />
+        </properties>
+    </rule>
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
 
     <!--
