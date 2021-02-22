@@ -15,7 +15,7 @@
                 <!-- Import -->
                 <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#<?php echo $importModal;?>">
                     <span class="icon-import text-success"></span>
-                    <?php eT("Import"); ?>
+                    <?php eT("Upload & install"); ?>
                 </a>
             <?php else:?>
                 <!-- import disabled -->
