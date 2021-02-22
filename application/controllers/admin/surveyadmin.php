@@ -1071,10 +1071,13 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['buttons']['view'] = true;
-        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['surveybar']['closebutton']['url'] = $this->getController()->createUrl("'admin/survey/sa/view/", ['surveyid' => $iSurveyID]); // Close button
+
+        if ($subaction !== 'resources') {
+            $aData['surveybar']['savebutton']['form'] = 'globalsetting';
+        }
 
         $aViewUrls[] = $menuEntry->template;
 
