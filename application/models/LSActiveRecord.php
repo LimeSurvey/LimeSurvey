@@ -305,7 +305,6 @@ class LSActiveRecord extends CActiveRecord
         }
         $class = get_class($this);
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
-        $attributeCount = count($attributes);
         foreach ($attributes as $key => $attribute) {
             if (in_array($key, $encryptedAttributes)) {
                 if ($bReplaceValues) {
