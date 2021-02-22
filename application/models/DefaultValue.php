@@ -58,7 +58,6 @@ class DefaultValue extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'question' => array(self::HAS_ONE, 'Question', "qid"),
             'defaultvaluel10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
