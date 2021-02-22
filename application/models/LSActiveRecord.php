@@ -305,8 +305,7 @@ class LSActiveRecord extends CActiveRecord
         }
         $class = get_class($this);
         $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
-        $attributeCount = count($attributes);
-        foreach ($attributes as $key => $attribute) {
+        foreach (array_keys($attributes) as $key) {
             if (in_array($key, $encryptedAttributes)) {
                 if ($bReplaceValues) {
                     $attributes[$key] = $sodium->encrypt($attributes[$key]);
@@ -414,7 +413,7 @@ class LSActiveRecord extends CActiveRecord
         $class = get_class($this);
         if ($class === 'ParticipantAttribute') {
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
-            foreach ($aParticipantAttributes as $attribute => $value) {
+            foreach (array_keys($aParticipantAttributes) as $attribute) {
                 if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
                     $this->value = $sodium->$action($this->value);
                 }
