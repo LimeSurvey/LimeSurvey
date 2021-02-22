@@ -91,8 +91,10 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
-        $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
+            $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
+            $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
+        }
         $data['fullpagebar']['closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
 
         // List of available encodings
