@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.14 (build 210218) to 3.25.15 (build 210223) February 22, 2021
+-Fixed issue: queXMLExport broken (Carsten Schmitz)
+-Fixed issue: [security] Updated ckEditor to 4.16.0 (Carsten Schmitz)
+-Fixed issue: Error when creating a vvExport and trying only to export complete responses (Carsten Schmitz)
+-Fixed issue: Cannot import lss/lsa file that have token length set too big (Carsten Schmitz)
+#Updated translation: Turkish by bulent
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.25.13 (build 210216) to 3.25.14 (build 210218) February 17, 2021
 -Fixed issue: [security] Possible XSS in data entry and survey logic check - found by James Mullen, Edgescan (Carsten Schmitz)
 -Fixed issue: [security] Possible SQL injection in data entry, CPDB participant sharing and condition editing - found by James Mullen, Edgescan (Carsten Schmitz)
