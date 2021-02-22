@@ -156,7 +156,7 @@ class export extends Survey_Common_Action
         $exportoutput = "";
 
         // Avoid randomization of the fieldmap
-        unset($_SESSION['survey_'.$iSurveyID]['fieldmap-'.$iSurveyID.'-randMaster']);
+        killSurveySession($iSurveyID);
 
         // Get info about the survey
         $thissurvey = getSurveyInfo($iSurveyID);
