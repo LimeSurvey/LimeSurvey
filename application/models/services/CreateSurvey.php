@@ -39,7 +39,7 @@ class CreateSurvey
     /** @var SurveyLanguageSetting the new language settings model for the survey*/
     private $newLanguageSettings;
 
-    /** @var \LimeSurvey\Models\Services\SimpleSurveyValues has the simple values for creating a survey */
+    /** @var SimpleSurveyValues has the simple values for creating a survey */
     private $simpleSurveyValues;
 
     /**
