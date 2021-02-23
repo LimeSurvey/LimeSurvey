@@ -2,12 +2,13 @@
 
 namespace LimeSurvey\PluginManager;
 
-use \Yii;
+use Yii;
 use Plugin;
+use ExtensionConfig;
 
 /**
  * Factory for limesurvey plugin objects.
- * @method mixed dispatchEvent
+ * @method mixed dispatchEvent(): void
  */
 class PluginManager extends \CApplicationComponent
 {
@@ -37,7 +38,7 @@ class PluginManager extends \CApplicationComponent
         // Core plugins.
         'core' => 'application.core.plugins',
         // Uploaded plugins installed through ZIP file.
-        'upload' => 'webroot.upload.plugins'
+        'upload' => 'uploaddir.plugins'
     ];
 
     /**
@@ -68,6 +69,8 @@ class PluginManager extends \CApplicationComponent
         // before attempting to load plugins (and disabled after).
         $this->shutdownObject = new PluginManagerShutdownFunction();
         register_shutdown_function($this->shutdownObject);
+
+        \Yii::setPathOfAlias('uploaddir', Yii::app()->getConfig('uploaddir'));
 
         parent::init();
         if (!is_object($this->api)) {
@@ -560,7 +563,7 @@ class PluginManager extends \CApplicationComponent
      * @param string $guid
      * @param int $questionId,
      * @param int $responseId
-     * @return iQuestion
+     * @return \Question
      */
     public function constructQuestionFromGUID($guid, $questionId = null, $responseId = null)
     {
