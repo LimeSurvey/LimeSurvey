@@ -59,8 +59,8 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception(gT('Temporary folder does not exist.'));
         }
 
-        // TODO: Correct permission?
-        mkdir($destdir, 0760, true);
+        // NB: mkdir() always applies the set umask to 0777. See https://www.php.net/manual/en/function.mkdir
+        mkdir($destdir, 0777, true);
 
         if (!is_writable(dirname($destdir))) {
             throw new Exception(gT('Cannot move files due to permission problem. ' . $destdir));
