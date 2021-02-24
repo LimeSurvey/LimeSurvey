@@ -45,7 +45,7 @@ class CopyQuestion
      *                          ['copyDefaultAnswers']
      *                          ['copySettings'] --> generalSettings and advancedSettings
      *
-     * @return true if new copied question could be saved, false otherwise
+     * @return boolean True if new copied question could be saved, false otherwise
      */
     public function copyQuestion($copyOptions)
     {
@@ -228,7 +228,7 @@ class CopyQuestion
      *
      * * @before $this->newQuestion must exist and should not be null
      *
-     * @return true if settings are copied, false otherwise
+     * @return boolean True if settings are copied, false otherwise
      */
     private function copyQuestionsSettings($questionIdToCopy)
     {

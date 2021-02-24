@@ -38,7 +38,7 @@ class FilterImportedResources
                 if (is_file($extractdir . "/" . $direntry)) {
                     // is  a file
                     $extfile = (string) substr(strrchr($direntry, '.'), 1);
-                    if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)) {
+                    if (!(stripos(',' . \Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)) {
                         // Extension allowed
                         if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry)) {
                             $aErrorFilesInfo[] = array(
