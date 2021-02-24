@@ -202,6 +202,15 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
+        <attribute>
+            <name>fix_height</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>integer</inputtype>
+            <default>200</default>
+            <help>Fix height of the images to this value. Leave empty to not change them.</help>
+            <caption>Fix height</caption>
+        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
