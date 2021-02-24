@@ -503,37 +503,6 @@
             <readonly_when_active></readonly_when_active>
             <expression></expression>
         </attribute>
-        <attribute>
-            <name>scale_export</name>
-            <category>Other</category>
-            <sortorder>100</sortorder>
-            <inputtype>singleselect</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>Default</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Nominal</text>
-                </option>
-                <option>
-                    <value>2</value>
-                    <text>Ordinal</text>
-                </option>
-                <option>
-                    <value>3</value>
-                    <text>Scale</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Set a specific SPSS export scale type for this question</help>
-            <caption>SPSS export scale type</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
-        </attribute>
         <!-- Other Attributes END -->
         <!-- Statistics Attributes START -->
         <attribute>
