@@ -43,6 +43,7 @@ Yii::import('application.helpers.qanda_helper', true);
 Yii::import('application.helpers.expressions.em_core_helper', true);
 Yii::import('application.helpers.expressions.em_manager_helper', true);
 Yii::import('application.helpers.replacements_helper', true);
+Yii::import('application.helpers.admin.export.*');
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
 Yii::import('application.third_party.Twig.TemplateInterface', true);
