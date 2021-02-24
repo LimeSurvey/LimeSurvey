@@ -113,5 +113,5 @@ before_script:
 
 script:
     # Run tests.
-    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
+    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure --testdox
     - yarn --cwd ./assets/packages/adminbasics run test
