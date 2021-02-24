@@ -238,6 +238,25 @@
             <help>Crop images to fit into size. Needs JavaScript enabled.</help>
             <caption>Crop or Resize</caption>
         </attribute>
+        <attribute>
+            <name>keep_aspect</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Keep images aspect ratio. Can be achieved by not setting both width and height. Needs JavaScript enabled.</help>
+            <caption>Keep aspect-ratio</caption>
+        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
