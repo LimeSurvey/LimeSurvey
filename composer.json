@@ -47,6 +47,7 @@
     "scripts": {
         "test": [
             "! find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
+            "! find tests/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
             "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/psalm application/models/services/"
