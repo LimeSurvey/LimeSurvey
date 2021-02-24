@@ -333,7 +333,7 @@ class RemoteControlTest extends TestBaseClass
             $sessionKey,
             self::$surveyId,
             $groupData,
-            'lsg',
+            'lsg'
         );
 
         $this->assertIsNumeric($result, '$result = ' . json_encode($result));
@@ -346,5 +346,4 @@ class RemoteControlTest extends TestBaseClass
         self::$testSurvey->delete();
         self::$testSurvey = null;
     }
-
 }
