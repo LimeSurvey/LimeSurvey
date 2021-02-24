@@ -211,6 +211,14 @@
             <help>Fix height of the images to this value. Leave empty to not change them.</help>
             <caption>Fix height</caption>
         </attribute>
+        <attribute>
+            <name>fix_width</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>integer</inputtype>
+            <help>Fix width of the images to this value. Leave empty to not change them.</help>
+            <caption>Fix width</caption>
+        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
