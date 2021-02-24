@@ -985,6 +985,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
                 $attributes->save();
             }
+            checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
         }
     }
@@ -1926,7 +1927,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     safeDie(gT("Error") . ": Failed to insert data[8]<br />");
                 }
             }
-
+            checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
         }
     }
@@ -2323,6 +2324,34 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     return $results;
+}
+
+/**
+ * This function checks if there are set wrong values ('Y' or 'N') into table
+ * question_attributes. These are set to 1 and 0 if needed.
+ *
+ * @param $questionId
+ */
+function checkWrongQuestionAttributes($questionId){
+    //these attributes could be wrongly set to 'Y' or 'N' instead of 1 and 0
+    $attributesTobeChecked = ['statistics_showgraph', 'public_statistics' , 'page_break' , 'other_numbers_only',
+        'other_comment_mandatory', 'hide_tip' , 'hidden', 'exclude_all_others_auto',
+        'commented_checkbox_auto', 'num_value_int_only', 'alphasort', 'use_dropdown',
+        'slider_default_set', 'slider_layout', 'slider_middlestart', 'slider_reset',
+        'slider_reversed', 'slider_showminmax', 'value_range_allows_missing'];
+    $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['qid' => $questionId]);
+    foreach($questionAttributes as $questionAttribute){
+        if(in_array($questionAttribute->attribute, $attributesTobeChecked)){
+            //now check if value is 0 or 1 (if not then reset the wrong values ('Y' or 'N')
+            if($questionAttribute->value === 'Y'){
+                $questionAttribute->value = 1;
+                $questionAttribute->save();
+            }elseif($questionAttribute->value === 'N'){
+                $questionAttribute->value = 0;
+                $questionAttribute->save();
+            }
+        }
+    }
 }
 
 /**
