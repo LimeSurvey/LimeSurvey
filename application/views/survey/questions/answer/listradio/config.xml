@@ -219,6 +219,25 @@
             <help>Fix width of the images to this value. Leave empty to not change them.</help>
             <caption>Fix width</caption>
         </attribute>
+        <attribute>
+            <name>crop_or_resize</name>
+            <category>Display</category>
+            <sortorder>90</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Resize</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Crop</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Crop images to fit into size. Needs JavaScript enabled.</help>
+            <caption>Crop or Resize</caption>
+        </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
         <attribute>
