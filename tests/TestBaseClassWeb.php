@@ -169,6 +169,10 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
+
+        $this->ignoreAdminNotification();
+        $this->ignoreAdminNotification();
+
         /*
         try {
             sleep(1);
@@ -219,5 +223,25 @@ class TestBaseClassWeb extends TestBaseClass
         }
 
         return $element;
+    }
+
+    /**
+     * @return void
+     */
+    protected function ignoreAdminNotification()
+    {
+        // Ignore password warning.
+        try {
+            $button = self::$webDriver->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                )
+            );
+            $button->click();
+        } catch (TimeOutException $ex) {
+            // Do nothing.
+        } catch (NoSuchElementException $ex) {
+            // Do nothing.
+        }
     }
 }
