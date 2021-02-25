@@ -64,7 +64,7 @@ class CreateSurvey
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason
      */
-    public function createSimple($simpleSurveyValues, $userID, $permissionModel)
+    public function createSimple($simpleSurveyValues, $userID, $permissionModel, $overrideAdministrator = true)
     {
 
         $this->simpleSurveyValues = $simpleSurveyValues;
@@ -72,7 +72,7 @@ class CreateSurvey
         try {
             $this->createSurveyId();
             $this->setBaseLanguage();
-            $this->initialiseSurveyAttributes();
+            $this->initialiseSurveyAttributes($overrideAdministrator);
 
             if (!$this->survey->save()) {
                 // TODO: Localization?
@@ -183,12 +183,11 @@ class CreateSurvey
     /**
      * @return void
      */
-    private function initialiseSurveyAttributes()
+    private function initialiseSurveyAttributes($overrideAdministrator = true)
     {
         $this->survey->expires = null;
         $this->survey->startdate = null;
         $this->survey->template = 'inherit'; //default template from default group is set to 'fruity'
-        $this->survey->admin = 'inherit'; //admin name ...
         $this->survey->active = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->anonymized = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->faxto = null;
@@ -226,7 +225,10 @@ class CreateSurvey
         $this->survey->assessments = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->emailresponseto = 'inherit';
         $this->survey->tokenlength = self::INTEGER_VALUE_FOR_INHERIT;
-        $this->survey->adminemail = 'inherit';
         $this->survey->bounce_email = 'inherit';
+        if ($overrideAdministrator) {
+            $this->survey->admin = $this->simpleSurveyValues->getAdmin(); //admin name ...
+            $this->survey->adminemail = $this->simpleSurveyValues->getAdminEmail();
+        }
     }
 }

@@ -25,6 +25,12 @@ class SimpleSurveyValues
     /** @var  int the surveygroup from which the new survey will inherit values */
     private $surveyGroupId;
 
+    /** @var string administrator name */
+    private $admin = 'inherit';
+
+    /** @var string administrator email */
+    private $adminEmail = 'inherit';
+
     /**
      * @return string
      */
@@ -71,5 +77,37 @@ class SimpleSurveyValues
     public function setSurveyGroupId(int $surveyGroupId)
     {
         $this->surveyGroupId = $surveyGroupId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdmin(): string
+    {
+        return $this->admin;
+    }
+
+    /**
+     * @param string $admin
+     */
+    public function setAdmin(string $admin)
+    {
+        $this->admin = $admin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdminEmail(): string
+    {
+        return $this->adminEmail;
+    }
+
+    /**
+     * @param string $adminEmail
+     */
+    public function setAdminEmail(string $adminEmail)
+    {
+        $this->adminEmail = $adminEmail;
     }
 }
