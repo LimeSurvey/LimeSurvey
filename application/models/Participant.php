@@ -1494,34 +1494,6 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get column names from token attributes for a survey.
-     *
-     * A token attribute has id (auto increment), attribute field (always "attribte_" + number),
-     * and field description (e.g. "my attribute" or "gender")
-     *
-     * @param int $surveyId
-     * @return array E.g. [11 => 'attribute_36', ...]
-     */
-    private function getTokenAttributes($surveyId)
-    {
-        $tokenTableSchema = Yii::app()->db
-            ->schema
-            ->getTable("{{tokens_$surveyId}}");
-
-        $result = array();
-
-        $i = 1;
-        foreach ($tokenTableSchema->columns as $columnName => $columnObject) {
-            if (strpos($columnName, 'attribute_') !== false) {
-                $result[$i] = $columnName;
-            }
-            $i += 1;
-        }
-
-        return $result;
-    }
-
-    /**
      * Update stuff?
      * If automapping is enabled then update the token field properties with the mapped CPDB field ID
      * TODO: What is this?
@@ -1626,7 +1598,6 @@ class Participant extends LSActiveRecord
                 $newname = $attributename[0]['attribute_name']; //Choose the first item in the list
             }
 
-            $tokenAttributeFieldNames[] = $newfieldname;
             $fieldcontents[$newfieldname] = array(
                 "description" => $newname,
                 "mandatory" => "N",
@@ -1689,7 +1660,6 @@ class Participant extends LSActiveRecord
         array $addedAttributeIds,
         array $options
     ) {
-        $survey = Survey::model()->findByPk($surveyId);
         $duplicate = 0;
         $successful = 0;
         $blacklistSkipped = 0;
@@ -1829,7 +1799,7 @@ class Participant extends LSActiveRecord
         // Add existing attribute columns to mappedAttributes. TODO: Why?
         // TODO: What is id here? Could it overwrite something?
         // Existing token attribute columns, from table tokens_{surveyId}
-        //$tokenAttributeColumns = $this->getTokenAttributes($surveyId);
+        //$tokenAttributeColumns = $this->getTokenAttributes($surveyId); // (Removed in same commit as this, since unused)
         //foreach ($tokenAttributeColumns as $id => $columnName)
         //{
         //$mappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
@@ -1971,13 +1941,6 @@ class Participant extends LSActiveRecord
         $duplicate = 0;
         $sucessfull = 0;
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
-
-        /* Grab all the existing attribute field names from the tokens table */
-        // FIXME is this needed? this is currently not used here!
-        $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
-        if (is_array($arr)) {
-            $tokenfieldnames = array_keys($arr);
-        }
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
 
