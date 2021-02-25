@@ -209,7 +209,7 @@
             <inputtype>integer</inputtype>
             <default>200</default>
             <help>Fix height of the images to this value. Leave empty to not change them.</help>
-            <caption>Fix height</caption>
+            <caption>Fixed height</caption>
         </attribute>
         <attribute>
             <name>fix_width</name>
@@ -217,7 +217,7 @@
             <sortorder>90</sortorder>
             <inputtype>integer</inputtype>
             <help>Fix width of the images to this value. Leave empty to not change them.</help>
-            <caption>Fix width</caption>
+            <caption>Fixed width</caption>
         </attribute>
         <attribute>
             <name>crop_or_resize</name>
@@ -274,7 +274,7 @@
             </options>
             <default>0</default>
             <help>Show an horizontal scroll for the images instead of a vertical list. Needs JavaScript enabled.</help>
-            <caption>Horizontal scroll: </caption>
+            <caption>Horizontal scrolling</caption>
     </attribute>
         <!-- Display Attributes END -->
         <!-- Logic Attributes START -->
