@@ -7,6 +7,13 @@ use PluginSetting;
 class DbStorage implements iPluginStorage
 {
     /**
+     * NB: Needed even if empty.
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * @param iPlugin $plugin
      * @param string $key Key for the setting; passing null will return all keys.
      * @param string $model Optional model name to which the data was attached.
@@ -43,7 +50,7 @@ class DbStorage implements iPluginStorage
         if ($key != null) {
             $attributes['key'] = $key;
         }
-        
+
         $records = \PluginSetting::model()->findAllByAttributes($attributes);
         if (count($records) > 1) {
             foreach ($records as $record) {
@@ -104,7 +111,7 @@ class DbStorage implements iPluginStorage
         }
         $record->value = json_encode($data);
         $result = $record->save();
-               
+
         return $result;
     }
 }
