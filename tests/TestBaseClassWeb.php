@@ -170,8 +170,8 @@ class TestBaseClassWeb extends TestBaseClass
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
 
-        $this->ignoreAdminNotification();
-        $this->ignoreAdminNotification();
+        self::ignoreAdminNotification();
+        self::ignoreAdminNotification();
 
         /*
         try {
@@ -228,7 +228,7 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @return void
      */
-    protected function ignoreAdminNotification()
+    protected static function ignoreAdminNotification()
     {
         // Ignore password warning.
         try {
