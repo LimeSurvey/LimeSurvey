@@ -23,7 +23,6 @@
     var emailsmtpuser = $('#emailsmtpuser').val();
     var emailsmtppassword = $('#emailsmtppassword').val();
     var emailsmtpssl = $('#emailsmtpssl input:checked').val();
-    var emailsmtpdebug = $('#emailsmtpdebug input:checked').val();
 
     if (siteadminemail != '<?= $siteadminemail ?>' ||
         siteadminname != '<?= $siteadminname ?>' ||
@@ -31,8 +30,7 @@
         emailsmtphost != '<?= $emailsmtphost ?>' ||
         emailsmtpuser != '<?= $emailsmtpuser ?>' ||
         emailsmtppassword != '<?= $emailsmtppassword ?>' ||
-        emailsmtpssl != '<?= $emailsmtpssl ?>' ||
-        emailsmtpdebug != '<?= $emailsmtpdebug ?>') {
+        emailsmtpssl != '<?= $emailsmtpssl ?>') {
         $('#settingschangedwarning').show();
     }
 </script>

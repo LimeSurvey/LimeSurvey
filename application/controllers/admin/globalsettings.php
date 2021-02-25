@@ -500,24 +500,25 @@ class GlobalSettings extends Survey_Common_Action
     private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
     {
         $mailer = new \LimeMailer();
+        $mailer->emailType = 'settings_test';
         $mailer->rawBody = $body;
         $mailer->rawSubject = $sSubject;
+        $mailer->SMTPDebug = 2;
         $mailer->setTo($sTo);
         $mailer->setFrom($sFrom);
 
         $success = $mailer->sendMessage();
-        $maildebug = $mailer->getDebug('html');
 
         if ($success) {
             $content = gT('Email sent successfully');
         } else {
-            $content = gT('Email sending failure.');
+            $content = sprintf(gT("Email sending failure: %s"), $mailer->getError());
         }
 
         $data = [];
         $data['message'] = $content;
         $data['success'] = $success;
-        $data['maildebug'] = $maildebug;
+        $data['maildebug'] = $mailer->getDebug('html');
 
         $this->_renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
     }
@@ -534,7 +535,6 @@ class GlobalSettings extends Survey_Common_Action
             'emailsmtpuser' => Yii::app()->getConfig("emailsmtpuser"),
             'emailsmtppassword' => 'somepassword',
             'emailsmtpssl' => Yii::app()->getConfig("emailsmtpssl"),
-            'emailsmtpdebug' => Yii::app()->getConfig("emailsmtpdebug"),
         ];
         $this->getController()->renderPartial("globalsettings/_emailTestConfirmation", $aData);
     }
