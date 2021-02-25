@@ -3685,6 +3685,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'value_range_allows_missing' and value = 'Y'");
             $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'value_range_allows_missing' and value = 'N'");
 
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'multiflexible_checkbox' and value = 'Y'");
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'multiflexible_checkbox' and value = 'N'");
+
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'reverse' and value = 'Y'");
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'reverse' and value = 'N'");
+
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'input_boxes' and value = 'Y'");
+            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'input_boxes' and value = 'N'");
+
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 438), "stg_name='DBVersion'");
             $oTransaction->commit();
