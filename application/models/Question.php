@@ -782,7 +782,7 @@ class Question extends LSActiveRecord
     public static function getQuestionClass($sType)
     {
         switch ($sType) {
-            case "1": return 'array-flexible-duel-scale';
+            case "1": return 'array-flexible-dual-scale';
             case '5': return 'choice-5-pt-radio';
             case 'A': return 'array-5-pt';
             case 'B': return 'array-10-pt';
