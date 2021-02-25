@@ -233,6 +233,12 @@ class QuestionAdministrationController extends LSBaseController
             'core'
         );
 
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectormodeclass = App()->session['questionselectormode'];
+        } else {
+            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+        }
+
         $viewData = [
             'oSurvey'                => $question->survey,
             'oQuestion'              => $question,
@@ -242,72 +248,16 @@ class QuestionAdministrationController extends LSBaseController
             'generalSettings'        => $generalSettings,
             'showScriptField'       => $showScriptField,
             'jsVariablesHtml'       => $jsVariablesHtml,
-            'modalsHtml'            => $modalsHtml
+            'modalsHtml'            => $modalsHtml,
+            'selectormodeclass'     => $selectormodeclass,
         ];
 
-        $questionAttributes = $viewData['aQuestionTypeGroups']['single_choice_questions']['questionTypes'];
-        $questionAttributeFivePointChoice = $questionAttributes[0];
-
-        if ($questionAttributeFivePointChoice['title'] === '5 Point Choice' &&
-            $questionAttributeFivePointChoice['group'] === 'Single choice questions') {
-
-            $viewData['generalSettings']  = $this->removeInputValidationFromGeneralSettings($generalSettings);
-            $viewData['advancedSettings'] = $this->removeOtherCommentMandatoryFromLogicTab($advancedSettings);
-        }
-        
-        // Remove Input Validation from general settings inside List (dropdown) question attribute.
-        $questionAttributeDropDownList = $questionAttributes[3];
-        if ($questionAttributeDropDownList['title'] === 'List (dropdown)') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
-
-        // Remove Input Validation from General Settings Tab in List (Radio) Question Type.
-        $questionAttributeListRadio = $questionAttributes[4];
-        if ($questionAttributeListRadio['title'] === 'List (radio)') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
-        
-        // Remove Input Validation from General Settings Tab for Bootstrap Button Question Attribute.
-        $questionAttributeListBootstrap = $questionAttributes[0];
-        if ($questionAttributeListBootstrap['title'] === 'Bootstrap buttons') {
-            $viewData['generalSettings'] = $this->removeInputValidationFromGeneralSettings($generalSettings);
-        }
-        
         $this->aData = array_merge($this->aData, $viewData);
 
         $this->render(
             'create',
             $viewData
         );
-    }
-
-    /**
-     * Removes Input Validation from General Settings Array.
-     * @param array $generalSettings General Settings Array
-     * @return array
-     */
-    private function removeInputValidationFromGeneralSettings(array $generalSettings) : array {
-        $keyExists = array_key_exists('preg', $generalSettings);
-        if ($keyExists) {
-            unset($generalSettings['preg']);
-        }   
-        return $generalSettings;
-    }
-
-    /**
-     * Removes other comment mandatory from Advanced Settings Array.
-     * @param array $advancedSettings Advanced Settings Array
-     * @return array
-     */
-    private function removeOtherCommentMandatoryFromLogicTab(array $advancedSettings): array
-    {
-        $keyExists = array_key_exists('Logic', $advancedSettings);
-        if ($keyExists) {
-            unset($advancedSettings['Logic'][0]);
-        }
-        return $advancedSettings;
     }
 
     /**
@@ -2991,11 +2941,6 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aQuestionTypeGroups = [];
 
-        if (App()->session['questionselectormode'] !== 'default') {
-            $selectormodeclass = App()->session['questionselectormode'];
-        } else {
-            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
-        }
         uasort($aQuestionTypeList, "questionTitleSort");
         foreach ($aQuestionTypeList as $questionType) {
             $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));

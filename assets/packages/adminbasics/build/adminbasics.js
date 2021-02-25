@@ -29251,8 +29251,8 @@
 	    var form;
 
 	    if ($(that).attr('data-use-form-id') == 1) {
-	      formId = '#' + $(that).attr('data-form-to-save');
-	      form = [$(formId)];
+	      var formId = '#' + $(that).attr('data-form-to-save');
+	      form = $(document).find(formId).first();
 	    } else {
 	      form = $('#pjax-content').find('form:not(#translatemenu)').first(); // #translatemenu is a first form on survey quick translate page, so we want to skip it
 	    }

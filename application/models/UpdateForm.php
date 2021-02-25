@@ -91,11 +91,11 @@ class UpdateForm extends CFormModel
     /**
      * The server will do some checks and will ask for the correct view to be diplayed.
      *
-     * @param string $updateKey the update key
+     * @param string $updateKey the update key - 
      * @param string $destinationBuild
      * @return string html
      */
-    public function getWelcomeMessage($updateKey = null, $destinationBuild)
+    public function getWelcomeMessage($updateKey, $destinationBuild)
     {
         // First, we destroy any previous cookie :
         if (file_exists(realpath($this->path_cookie))) {
@@ -827,8 +827,10 @@ class UpdateForm extends CFormModel
 
     /**
      * build the file / Directory path using APPATH, and then call the check method
+     * NB: This method is called by building the method name string in _getFileSystemCheckList.
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
      * @return stdClass the result of the test
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _fileSystemCheckAppath($obj)
     {
@@ -839,8 +841,10 @@ class UpdateForm extends CFormModel
 
     /**
      * build the file / Directory path using getConfig(), and then call the check method
+     * NB: This method is called by building the method name string in _getFileSystemCheckList.
      * @param object $obj an object containing the name of the file/directory to check, and what must be checked
      * @return stdClass the result of the test
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _fileSystemCheckConfig($obj)
     {
@@ -959,7 +963,7 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
-        $content = curl_exec($ch);
+        curl_exec($ch);
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
         curl_close($ch);
 

@@ -1105,21 +1105,25 @@ class remotecontrol_handle
                     return array('status' => 'Invalid extension');
                 }
                 libxml_use_internal_errors(true);
-                Yii::app()->loadHelper('admin/import');
+                Yii::app()->loadHelper('admin.import');
                 // First save the data to a temporary file
                 $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
                 if (strtolower($sImportDataType) == 'lsg') {
-                    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    if (\PHP_VERSION_ID < 80000) {
+                        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    }
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
                     if (!$xml) {
                         unlink($sFullFilePath);
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        if (\PHP_VERSION_ID < 80000) {
+                            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        }
                         return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
                     }
-                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
+                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID, true);
                 } else {
                                     return array('status' => 'Invalid extension');
                 }
@@ -1128,7 +1132,9 @@ class remotecontrol_handle
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return array('status' => 'Error: ' . $aImportResults['fatalerror']);
                 } else {
                     $iNewgid = $aImportResults['newgid'];
@@ -1145,7 +1151,9 @@ class remotecontrol_handle
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return (int) $aImportResults['newgid'];
                 }
             } else {
@@ -1441,25 +1449,32 @@ class remotecontrol_handle
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
                 if (strtolower($sImportDataType) == 'lsq') {
-                    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-
+                    if (\PHP_VERSION_ID < 80000) {
+                        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    }
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
                     if (!$xml) {
                         unlink($sFullFilePath);
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        if (\PHP_VERSION_ID < 80000) {
+                            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        }
                         return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
                     }
                     $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
                 } else {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return array('status' => 'Really Invalid extension'); //just for symmetry!
                 }
 
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return array('status' => 'Error: ' . $aImportResults['fatalerror']);
                 } else {
                     fixLanguageConsistency($iSurveyID);
@@ -1481,8 +1496,9 @@ class remotecontrol_handle
                                         $oQuestion->setAttribute('mandatory', 'N');
                     }
 
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
 
                     try {
                         $oQuestion->save();

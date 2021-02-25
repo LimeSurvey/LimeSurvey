@@ -81,9 +81,13 @@ class ThemeUpdater extends ExtensionUpdater
             );
         }
 
-        libxml_disable_entity_loader(false);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
         $config = simplexml_load_file(realpath($file));
-        libxml_disable_entity_loader(true);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
 
         return new \ExtensionConfig($config);
     }

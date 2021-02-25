@@ -116,7 +116,9 @@ if (is_dir($configUserFontsDir)) {
             $userFontDir = $userFont->getFilename();
             $configFile = $configUserFontsDir . DIRECTORY_SEPARATOR . $userFontDir . DIRECTORY_SEPARATOR . 'config.xml';
             if (function_exists('simplexml_load_file') && file_exists($configFile)){
-                libxml_disable_entity_loader(false);
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader(false); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                }
                 $xml = simplexml_load_file($configFile);
                 $cssFiles = array();
                 foreach($xml->files->css as $file){
@@ -132,7 +134,9 @@ if (is_dir($configUserFontsDir)) {
                         'basePath' => 'fonts',
                         'css' => $cssFiles,
                 );
-                libxml_disable_entity_loader(true);
+                if (\PHP_VERSION_ID < 80000) {
+                    libxml_disable_entity_loader(true);
+                }
             }
         }
     }

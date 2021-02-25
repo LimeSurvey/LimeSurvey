@@ -53,7 +53,6 @@
         <attribute>encrypted</attribute>
         <attribute>save_as_default</attribute>
         <attribute>clear_default</attribute>
-        <attribute>preg</attribute>
     </generalattributes>
 
     <!-- Question attributes -->
@@ -186,31 +185,6 @@
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-        </attribute>
-        <attribute>
-            <name>other_comment_mandatory</name>
-            <category>Logic</category>
-            <sortorder>100</sortorder>
-            <inputtype>switch</inputtype>
-            <options>
-                <option>
-                    <value>0</value>
-                    <text>No</text>
-                </option>
-                <option>
-                    <value>1</value>
-                    <text>Yes</text>
-                </option>
-            </options>
-            <default>0</default>
-            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039;
-                option is active
-            </help>
-            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
-            <i18n></i18n>
-            <readonly></readonly>
-            <readonly_when_active></readonly_when_active>
-            <expression></expression>
         </attribute>
         <attribute>
             <name>em_validation_q_tip</name>

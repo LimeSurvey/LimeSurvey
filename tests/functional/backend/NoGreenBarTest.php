@@ -52,6 +52,8 @@ class NoGreenBarTest extends TestBaseClassWeb
         $input = $web->findById('firstname');
         $input->sendKeys('dummy name');
         sleep(1);
+        self::ignoreAdminNotification();
+        self::ignoreAdminNotification();
         $savebutton = $web->findById('save-button');
         $savebutton->click();
         sleep(1);

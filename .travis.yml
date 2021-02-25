@@ -43,10 +43,12 @@ before_script:
     # NB: PHPUnit 6.5.* is installed with composer.
     - composer install
     - ./third_party/bin/phpunit --version
+
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+
     # InnoDb needs large_file_prefix & Barracuda file format
     # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
     - sudo service mysql status
@@ -63,7 +65,9 @@ before_script:
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
     # TODO: Disable, a lines was added to config file and some tests started to fail.
+    # NB: EmCache is always disabled when debug => 2
     # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
+    # - cat application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -84,9 +88,8 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
-    # Check for syntax errors.
-    # NB: '!' doesn't work properly, see https://github.com/travis-ci/travis-ci/issues/7494
-    - "! find application/ -type f -name '*.php' -exec php -l {} \;  | grep -v 'No syntax errors'"
+    # This will run syntax check, CodeSniffer, MessDetector, etc
+    - composer test
 
     # Test server.
     - wget localhost
@@ -111,5 +114,5 @@ before_script:
 
 script:
     # Run tests.
-    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure
+    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure --testdox
     - yarn --cwd ./assets/packages/adminbasics run test
