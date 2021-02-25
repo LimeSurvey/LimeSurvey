@@ -242,6 +242,8 @@ class TestBaseClassWeb extends TestBaseClass
             // Do nothing.
         } catch (NoSuchElementException $ex) {
             // Do nothing.
+        } catch (UnrecognizedExceptionException $ex) {
+            // Do nothing.
         }
     }
 }
