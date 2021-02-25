@@ -21,8 +21,11 @@ class ResetPasswordCommand extends CConsoleCommand
         if (isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1])) {
             $oUser = User::findByUsername($sArgument[0]);
             if ($oUser) {
+                Yii::import('application.helpers.common_helper', true);
                 $oUser->setPassword($sArgument[1]);
-                if ($oUser->save()) {
+                // Save the model validating only the password, because there may be issues with other attributes
+                // (like an invalid value for some setting), which the user cannot fix because he doesn't have access.
+                if ($oUser->save(true, ['password'])) {
                     echo "Password for user {$sArgument[0]} was set.\n";
                     return 0;
                 } else {
