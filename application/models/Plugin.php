@@ -102,7 +102,7 @@ class Plugin extends LSActiveRecord
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(false);
             }
-            $xml = simplexml_load_file(realpath($file));
+            $config = simplexml_load_file(realpath($file));
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
             }

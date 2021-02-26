@@ -1586,7 +1586,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0) {
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)) {
-            $token = TokenDynamic::model($iSurveyID)->find(array('token'=>$response->token));
+            $token = TokenDynamic::model($iSurveyID)->findByAttributes(array('token'=>$response->token));
             if (!empty($token)) {
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
@@ -2769,7 +2769,7 @@ function tsvSurveyExport($surveyid)
                 $tsv_output['type/scale'] = $group['group_order'];
                 $tsv_output['name'] = !empty($group['group_name']) ? $group['group_name'] : '';
                 $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
-                $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
+                $tsv_output['relevance'] = isset($group['grelevance']) ? $group['grelevance'] : '';
                 $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
                 $tsv_output['language'] = $language;
                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
@@ -2783,7 +2783,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['class'] = 'Q';
                         $tsv_output['type/scale'] = $question['type'];
                         $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
-                        $tsv_output['relevance'] = !empty($question['relevance']) ? $question['relevance'] : '';
+                        $tsv_output['relevance'] = isset($question['relevance']) ? $question['relevance'] : '';
                         $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];
