@@ -123,7 +123,9 @@ if (typeof PreviewModalScript === 'function') {
               
               $('#in_survey_common').off('change.previewModal');
               $('#in_survey_common').on('change.previewModal', `#${this.widgetsJsName}`, (e) => {
-                  this.options.onUpdate($(e.currentTarget).val());
+                  var target = $(e.currentTarget);
+                  var option = target.find("option:selected");
+                  this.options.onUpdate(target.val(), option.data('theme'));
               });
           }
           

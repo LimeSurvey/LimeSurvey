@@ -233,6 +233,12 @@ class QuestionAdministrationController extends LSBaseController
             'core'
         );
 
+        if (App()->session['questionselectormode'] !== 'default') {
+            $selectormodeclass = App()->session['questionselectormode'];
+        } else {
+            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
+        }
+
         $viewData = [
             'oSurvey'                => $question->survey,
             'oQuestion'              => $question,
@@ -242,7 +248,8 @@ class QuestionAdministrationController extends LSBaseController
             'generalSettings'        => $generalSettings,
             'showScriptField'       => $showScriptField,
             'jsVariablesHtml'       => $jsVariablesHtml,
-            'modalsHtml'            => $modalsHtml
+            'modalsHtml'            => $modalsHtml,
+            'selectormodeclass'     => $selectormodeclass,
         ];
 
         $this->aData = array_merge($this->aData, $viewData);
@@ -2940,11 +2947,6 @@ class QuestionAdministrationController extends LSBaseController
     {
         $aQuestionTypeGroups = [];
 
-        if (App()->session['questionselectormode'] !== 'default') {
-            $selectormodeclass = App()->session['questionselectormode'];
-        } else {
-            $selectormodeclass = App()->getConfig('defaultquestionselectormode');
-        }
         uasort($aQuestionTypeList, "questionTitleSort");
         foreach ($aQuestionTypeList as $questionType) {
             $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
