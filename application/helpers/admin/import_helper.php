@@ -1222,14 +1222,16 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
         case 'lss':
             $aImportResults = XMLImportSurvey($sFullFilePath, null, $sNewSurveyName, $DestSurveyID, $bTranslateLinksFields);
             if (!empty($aImportResults['newsid'])) {
-                Survey::model()->findByPk($aImportResults['newsid'])->fixSurveyConsistency();
+                $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                $SurveyIntegrity->fixSurveyIntegrity();
             }
             return $aImportResults;
         case 'txt':
         case 'tsv':
             $aImportResults = TSVImportSurvey($sFullFilePath);
             if ($aImportResults && $aImportResults['newsid']) {
-                Survey::model()->findByPk($aImportResults['newsid'])->fixSurveyConsistency();
+                $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                $SurveyIntegrity->fixSurveyIntegrity();
             }
             return $aImportResults;
         case 'lsa':
@@ -1248,7 +1250,8 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     //Import the LSS file
                     $aImportResults = XMLImportSurvey(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $aFile['filename'], null, null, null, true, false);
                     if ($aImportResults && $aImportResults['newsid']) {
-                        Survey::model()->findByPk($aImportResults['newsid'])->fixSurveyConsistency();
+                        $SurveyIntegrity = new LimeSurvey\Models\Services\SurveyIntegrity(Survey::model()->findByPk($aImportResults['newsid']));
+                        $SurveyIntegrity->fixSurveyIntegrity();
                     }
                     // Activate the survey
                     Yii::app()->loadHelper("admin/activate");
