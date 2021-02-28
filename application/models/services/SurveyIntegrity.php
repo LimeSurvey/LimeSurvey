@@ -15,7 +15,7 @@ use TemplateConfiguration;
 class SurveyIntegrity
 {
 
-    /** @var SurveysGroups */
+    /** @var Survey */
     private $survey;
 
     /**
