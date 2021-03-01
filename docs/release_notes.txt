@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.15 (build 210223) to 3.25.16 (build 210302) March 1, 2021
+-Fixed issue: Text - Text to be updated - add participant(s) to survey button - cpdb (Jessica Höck)
+-Fixed issue #17114: Import from TSV : relevance set to "0" not imported (#1771) (Gabriel Jenik)
+-Fixed issue #17003: LDAP plugin - login lenght (#1778) (Gabriel Jenik)
+-Fixed issue #16979: Email continue not shown clearly after activation (#1762) (Gabriel Jenik)
+-Fixed issue #16976: Date format problem (#1761) (Gabriel Jenik)
+-Fixed issue #16867: Randomization happen in survey logic file and in export (#1770) (Gabriel Jenik)
+-Fixed issue #15539: queXML PDF shows JS script (#1768) (Gabriel Jenik)
+-Fixed issue #15514: Image "save" button no response action after click (#1777) (Gabriel Jenik)
+-Fixed issue #14203: Assessments mode vs Assessment mode (Jessica Höck)
+-Fixed issue #16867: Randomization happen in survey logic file and in export (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Russian by vipgroup, ilgizy, ddrmoscow
+
+
 Changes from 3.25.14 (build 210218) to 3.25.15 (build 210223) February 22, 2021
 -Fixed issue: queXMLExport broken (Carsten Schmitz)
 -Fixed issue: [security] Updated ckEditor to 4.16.0 (Carsten Schmitz)
