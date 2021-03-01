@@ -50,7 +50,7 @@ class LSYii_Validators extends CValidator
             // Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         }
-        $this->xssfilter = ($this->xssfilter && Yii::app()->user->isXssFiltered());
+        $this->xssfilter = ($this->xssfilter && (get_class($controller) !== 'ConsoleApplication' ) && Yii::app()->user->isXssFiltered());
         return;
     }
 
