@@ -44,7 +44,7 @@ class TemplateConfig extends CActiveRecord
     /** @var  string $filesPath Path of the tmeplate's files */
     public $filesPath;
 
-    /** @var string[] $cssFramework What framework css is used */
+    /** @var object $cssFramework What framework css is used */
     public $cssFramework;
 
     /** @var boolean $isStandard Is this template a core one? */
@@ -198,7 +198,7 @@ class TemplateConfig extends CActiveRecord
         if (!empty($aPackage[$sType])) {
             if (!empty($aFilesToRemove)) {
                 foreach ($aFilesToRemove as $sFileToRemove) {
-                    if (($key = array_search($sFileToRemove, $aPackage[$sType])) !== false) {
+                    if (array_search($sFileToRemove, $aPackage[$sType]) !== false) {
                         App()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFileToRemove);
                     }
                 }
@@ -1004,9 +1004,6 @@ class TemplateConfig extends CActiveRecord
             $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    $oTemplateConfig = TemplateConfiguration::model()->findByAttributes(
-                        array('template_name' => $templatename)
-                    );
                     return TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
                         array(':templateName' => $templatename)
@@ -1235,8 +1232,6 @@ class TemplateConfig extends CActiveRecord
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             $oRTemplate = $oMotherTemplate;
-            $sPackageName = $oRTemplate->sPackageName;
-
             $sFilePath = Yii::getPathOfAlias(
                 App()->clientScript->packages[$oRTemplate->sPackageName]["basePath"]
             ) . DIRECTORY_SEPARATOR . $sFile;

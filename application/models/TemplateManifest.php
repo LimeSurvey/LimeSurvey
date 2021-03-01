@@ -98,7 +98,6 @@ class TemplateManifest extends TemplateConfiguration
         foreach ($oScreensFromXML[0] as $sScreen => $oScreen) {
           // We reset LayoutName and FileName at each loop to avoid errors
             $sLayoutName = "";
-            $sFileName = "";
             $sTitle = "";
 
             foreach ($oScreen as $sKey => $oField) {
@@ -206,11 +205,7 @@ class TemplateManifest extends TemplateConfiguration
 
     public function getDefaultDataForLanguageChanger($thissurvey = array())
     {
-
         $thissurvey    = empty($thissurvey) ? array() : $thissurvey;
-        $oDataFromXML = $this->templateEditor->default_data->xpath('//survey_data');
-
-
         $thissurvey['alanguageChanger']['datas'] = [
                     'sSelected' => 'en',
                     //'withForm' => true,  // Set to true for no-js functionality.
@@ -980,7 +975,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // First we get the XML file
         if (\PHP_VERSION_ID < 80000) {
-        	libxml_disable_entity_loader(false);
+            libxml_disable_entity_loader(false);
         }
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
@@ -994,7 +989,7 @@ class TemplateManifest extends TemplateConfiguration
         $oNewManifest->save($sConfigPath . "/config.xml");
 
         if (\PHP_VERSION_ID < 80000) {
-        	libxml_disable_entity_loader(true);
+            libxml_disable_entity_loader(true);
         }
     }
 
@@ -1166,7 +1161,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig->insertBefore($oFiles, $oOptions);
         $oNewManifest->save($this->path . "config.xml");
         if (\PHP_VERSION_ID < 80000) {
-        	libxml_disable_entity_loader(true);
+            libxml_disable_entity_loader(true);
         }
     }
 
@@ -1179,9 +1174,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFilesTo($oTemplate, $sType, $sAction)
     {
         $aFiles = array();
-        $oRFilesTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'files') : $oTemplate;
-
-        if (isset($oRFilesTemplate->config->files->$sType->$sAction)) {
+        if (isset($oTemplate->config->files->$sType->$sAction)) {
             $aFiles = (array) $oTemplate->config->files->$sType->$sAction;
         }
 
@@ -1322,8 +1315,6 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oAssetsToReplaceFormated = new stdClass();
         if (!empty($oEngine->cssframework->$sType) && !empty($oEngine->cssframework->$sType->attributes()->replace)) {
-            //var_dump($oEngine->cssframework->$sType);  die();
-
             $sAssetsToReplace   = (string) $oEngine->cssframework->$sType->attributes()->replace;
             $sAssetsReplacement = (string) $oEngine->cssframework->$sType;
 
@@ -1381,14 +1372,14 @@ class TemplateManifest extends TemplateConfiguration
     {
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(false);
-        }            
+        }
         $file = realpath($path . "config.xml");
         if (file_exists($file)) {
             $sXMLConfigFile        = file_get_contents($file);
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
-            }               
+            }
             $aOptions['categories'] = array();
 
             foreach ($oXMLConfig->options->children() as $key => $option) {
