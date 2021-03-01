@@ -34,6 +34,41 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.10 (build 210222) to 4.4.11 (build 210301) March 1, 2021
+-Fixed issue: Text - Text to be updated - add participant(s) to survey button - cpdb (Jessica Höck)
+-Fixed issue: Question Attributes List With Comment (Jessica Höck)
+-Fixed issue: Question Attribute Image Select List (radio) (Jessica Höck)
+-Fixed issue: Question Attribute - Multiple Short Text (Jessica Höck)
+-Fixed issue: Question Attribute - Image Select List (radio) (Jessica Höck)
+-Fixed issue #17113: Randomization happen in survey logic file and in export (#1780) (Gabriel Jenik)
+-Fixed issue #17089: Date format problem (#1760) (Gabriel Jenik)
+-Fixed issue #17036: Question attribute: Time limit disable next (Olle Haerstedt)
+-Fixed issue #17018: No simple selector for Question type (#1773) (Gabriel Jenik)
+-Fixed issue #17015: Import from TSV : relevance set to "0" not imported (#1772) (Gabriel Jenik)
+-Fixed issue #16997: LDAP plugin - login lenght (#1779) (Gabriel Jenik)
+-Fixed issue #16955: Save and close in Group Editor not working (when editing existing group) (#1759) (Gabriel Jenik)
+-Fixed issue #16455: Public statistics for Ranking question not shown (#1767) (Gabriel Jenik)
+-Fixed issue #16449: Error with CLI password reset (#1781) (Gabriel Jenik)
+-Fixed issue #14203: Assessments mode vs Assessment mode (Jessica Höck)
+-Fixed issue #17018: No simple selector for Question type (Gabriel Jenik)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by jmlopez
+#Updated translation: Russian by vipgroup
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, richterd, eddylackmann, Joffm
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.4.9 (build 210219) to 4.4.10 (build 210222) February 22, 2021
 -Fixed issue: queXMLExport broken (Carsten Schmitz)
 -Fixed issue: [security] Updated ckEditor to 4.16.0 (Carsten Schmitz)
