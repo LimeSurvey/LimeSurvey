@@ -56,7 +56,7 @@
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
-            "./third_party/bin/psalm application/models/services/"
+            "./third_party/bin/psalm"
         ]
     }
 }
