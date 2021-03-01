@@ -29,7 +29,7 @@ return array(
         'position' =>CClientScript::POS_HEAD,
         'js' => array(
             'jquery-3.5.1'.$minVersion.'.js',
-            'jquery-migrate-3.3.0'.$minVersion.'.js',
+            'jquery-migrate-3.3.2'.$minVersion.'.js',
         )
     ),
 
