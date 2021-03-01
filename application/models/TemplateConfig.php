@@ -59,7 +59,7 @@ class TemplateConfig extends CActiveRecord
      */
     public $oMotherTemplate;
 
-    /** @var array $oOptions The template options */
+    /** @var object $oOptions The template options */
     public $oOptions;
     public $oOptionAttributes;
 
@@ -348,7 +348,7 @@ class TemplateConfig extends CActiveRecord
      * Get the depends package
      * @uses self::@package
      * @param TemplateConfiguration $oTemplate
-     * @return string[]
+     * @return stdClass[]
      */
     protected function getDependsPackages($oTemplate)
     {
