@@ -131,7 +131,7 @@ class Expressions extends Survey_Common_Action
 
         SetSurveyLanguage($sid, $language);
 
-        LimeExpressionManager::SetDirtyFlag();
+        killSurveySession($sid);
 
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
 

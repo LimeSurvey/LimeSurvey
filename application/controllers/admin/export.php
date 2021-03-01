@@ -123,7 +123,6 @@ class export extends Survey_Common_Action
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-
         if (!isset($imageurl)) { $imageurl = "./images"; }
         if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
 
@@ -156,6 +155,9 @@ class export extends Survey_Common_Action
         $surveybaselang = $survey->language;
         $exportoutput = "";
 
+        // Avoid randomization of the fieldmap
+        killSurveySession($iSurveyID);
+
         // Get info about the survey
         $thissurvey = getSurveyInfo($iSurveyID);
 
@@ -164,7 +166,7 @@ class export extends Survey_Common_Action
         $exports = $resultsService->getExports();
 
         if (!$sExportType) {
-            $aFieldMap = createFieldMap($survey, 'full', false, false, $survey->language);
+            $aFieldMap = createFieldMap($survey, 'full', true, false, $survey->language);
 
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
