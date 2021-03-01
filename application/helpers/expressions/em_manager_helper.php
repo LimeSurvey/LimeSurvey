@@ -791,6 +791,12 @@
         public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
         {
             LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
+
+            // Get survey ID from question if qid is specified and surveyId is null
+            if(is_null($surveyId) && !empty($qid)) {
+                $surveyId = Question::model()->findByPk($qid)->sid;
+            }
+
             // Cheat and upgrade question attributes here too.
             self::UpgradeQuestionAttributes(true,$surveyId,$qid);
 
@@ -8637,13 +8643,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         public static function UpgradeQuestionAttributes($changeDB=false,$iSurveyID=NULL,$onlythisqid=NULL)
         {
             $LEM =& LimeExpressionManager::singleton();
-            if (is_null($iSurveyID))
+            $aSurveyIDs = array();
+
+            // If survey given, set target surveys.
+            if (!is_null($iSurveyID)) {
+                $aSurveyIDs=array($iSurveyID);
+            }
+
+            // If no surveys fetched but question given, fetch survey from question
+            if (empty($aSurveyIDs) && $onlythisqid) {
+                $oQuestion = Question::model()->find("qid = :qid", array(":qid"=> $onlythisqid));
+                if($oQuestion) {
+                    $aSurveyIDs = array($oQuestion->sid);
+                }
+            }            
+
+            // If no surveys fetched still, go for all surveys
+            if (empty($aSurveyIDs))
             {
                 $sQuery='SELECT sid FROM {{surveys}}';
                 $aSurveyIDs = Yii::app()->db->createCommand($sQuery)->queryColumn();
-            }
-            else{
-                $aSurveyIDs=array($iSurveyID);
             }
 
             $attibutemap = array(
