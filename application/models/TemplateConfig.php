@@ -35,7 +35,7 @@ class TemplateConfig extends CActiveRecord
     /** @var  string $path Path of this template */
     public $path;
 
-    /** @var string[] $sTemplateurl Url to reach the framework */
+    /** @var string $sTemplateurl Url to reach the framework */
     public $sTemplateurl;
 
     /** @var  string $viewPath Path of the views files (twig template) */
@@ -214,7 +214,7 @@ class TemplateConfig extends CActiveRecord
      * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
      * @param TemplateConfig $oRTemplate template from which the recurrence should start
      * @param boolean $force file to be in template or mother template
-     * @return TemplateConfig|null|void
+     * @return TemplateConfig
      */
     public function getTemplateForFile($sFile, $oRTemplate, $force = false)
     {
@@ -227,7 +227,7 @@ class TemplateConfig extends CActiveRecord
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 if (!$force && App()->twigRenderer->getPathOfFile($sFile)) {
                     // return dummy template , new self broke (No DB : TODO : must fix init of self)
-                    $templateConfig = new stdClass();
+                    $templateConfig = new TemplateConfig();
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
@@ -415,7 +415,7 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
-     * @param null $sCustomMessage
+     * @param string|null $sCustomMessage
      * @throws CException
      * @todo document me
      */
@@ -1019,7 +1019,7 @@ class TemplateConfig extends CActiveRecord
      * @param string $sTemplateName the name of the template to import
      * @param array $aDatas
      * @return boolean true on success | exception
-     * @throws Exception, InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public static function importManifest($sTemplateName, $aDatas)
     {
@@ -1071,10 +1071,10 @@ class TemplateConfig extends CActiveRecord
 
                 return true;
             } else {
-                throw new Exception($oNewTemplateConfiguration->getErrors());
+                throw new Exception(json_encode($oNewTemplateConfiguration->getErrors()));
             }
         } else {
-            throw new Exception($oNewTemplate->getErrors());
+            throw new Exception(json_encode($oNewTemplate->getErrors()));
         }
     }
 
@@ -1217,7 +1217,7 @@ class TemplateConfig extends CActiveRecord
      * Find which template should be used to render a given view
      * @param  string    $sFile           the file to check
      * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
-     * @return Template|boolean
+     * @return TemplateConfiguration|boolean
      */
     public function getTemplateForAsset($sFile, $oRTemplate)
     {
