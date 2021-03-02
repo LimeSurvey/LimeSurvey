@@ -1979,7 +1979,8 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
-            LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
+            $uploadHelper = new LSUploadHelper();
+            $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
 
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');

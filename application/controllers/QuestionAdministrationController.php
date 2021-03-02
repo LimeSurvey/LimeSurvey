@@ -1054,7 +1054,8 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         try {
-            LSUploadHelper::checkUploadedFileSize('the_file');
+            $uploadHelper = new LSUploadHelper();
+            $uploadHelper->checkUploadedFileSize('the_file');
         } catch (Exception $ex) {
             App()->setFlashMessage($ex->getMessage(), 'error');
             $this->redirect('importView/surveyid/' . $iSurveyID);

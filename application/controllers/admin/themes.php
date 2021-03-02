@@ -222,7 +222,8 @@ class themes extends Survey_Common_Action
         $debug[] = $_FILES;
 
         // Check file size and render JSON on error
-        LSUploadHelper::checkUploadedFileSizeAndRenderJson('file', $debug);
+        $uploadHelper = new LSUploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImageContent['check'] === false) {
@@ -283,7 +284,8 @@ class themes extends Survey_Common_Action
         $this->checkDemoMode();
 
         // Redirect back at file size error.
-        LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
+        $uploadHelper = new LSUploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
 
         $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
 
@@ -427,7 +429,8 @@ class themes extends Survey_Common_Action
             $screenname             = returnGlobal('screenname');
 
             // Check file size and redirect on error
-            LSUploadHelper::checkUploadedFileSizeAndRedirect(
+            $uploadHelper = new LSUploadHelper();
+            $uploadHelper->checkUploadedFileSizeAndRedirect(
                 'upload_file', 
                 array(
                     'admin/themes',

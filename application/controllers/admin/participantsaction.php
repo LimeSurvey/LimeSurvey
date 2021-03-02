@@ -780,7 +780,8 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('import');
 
-        LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
+        $uploadHelper = new LSUploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
 
         if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');

@@ -22,7 +22,7 @@ class LSUploadHelper
      * 
      * @throws Exception if the file is too large or no file is found.
      */
-    public static function checkUploadedFileSize($sFileName, $customMaxSize = null)
+    public function checkUploadedFileSize($sFileName, $customMaxSize = null)
     {
         if (is_null($customMaxSize)) {
             $iMaximumSize = getMaximumFileUploadSize();
@@ -65,10 +65,10 @@ class LSUploadHelper
      * @param mixed $redirectUrl the URL to redirect on failure
      * @param mixed $customMaxSize maximum file upload size
      */
-    public static function checkUploadedFileSizeAndRedirect($sFileName, $redirectUrl, $customMaxSize = null)
+    public function checkUploadedFileSizeAndRedirect($sFileName, $redirectUrl, $customMaxSize = null)
     {
         try {
-            self::checkUploadedFileSize($sFileName, $customMaxSize);
+            $this->checkUploadedFileSize($sFileName, $customMaxSize);
         } catch (Exception $ex) {
             Yii::app()->setFlashMessage($ex->getMessage(), 'error');
             App()->getController()->redirect($redirectUrl);
@@ -82,10 +82,10 @@ class LSUploadHelper
      * @param array $debugInfo the URL to redirect on failure
      * @param mixed $customMaxSize maximum file upload size
      */
-    public static function checkUploadedFileSizeAndRenderJson($sFileName, $debugInfo = [], $customMaxSize = null)
+    public function checkUploadedFileSizeAndRenderJson($sFileName, $debugInfo = [], $customMaxSize = null)
     {
         try {
-            self::checkUploadedFileSize($sFileName, $customMaxSize);
+            $this->checkUploadedFileSize($sFileName, $customMaxSize);
         } catch (Exception $ex) {
             $error = $ex->getMessage();
             return Yii::app()->getController()->renderPartial(

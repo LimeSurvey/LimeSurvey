@@ -128,7 +128,8 @@ class labels extends Survey_Common_Action
         $action = returnGlobal('action');
         $aViewUrls = array();
 
-        LSUploadHelper::checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
+        $uploadHelper = new LSUploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
 
         if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');
