@@ -411,7 +411,7 @@ class index extends CAction
                     Yii::app()->setConfig('move', 'reload');
                     $move = "reload"; // veyRunTimeHelper use $move in $arg
                 } else {
-                    $aLoadErrorMsg['matching'] = gT("There is no matching saved survey.");
+                    $aLoadErrorMsg['matching'] = gT("There is no matching saved response.");
                 }
 
                 randomizationGroupsAndQuestions($surveyid);
