@@ -794,7 +794,7 @@
 
             // Get survey ID from question if qid is specified and surveyId is null
             if(is_null($surveyId) && !empty($qid)) {
-                $surveyId = Question::model()->findByPk($qid)->sid;
+                $surveyId = Question::model()->find("qid = :qid", array(":qid"=> $qid))->sid;
             }
 
             // Cheat and upgrade question attributes here too.
