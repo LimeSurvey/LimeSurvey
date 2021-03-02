@@ -1265,7 +1265,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         $this->oOptions = new stdClass();
         if (!empty($this->options)) {
-            $this->oOptions = json_decode($this->options, true);
+            $this->oOptions = json_decode($this->options);
         }
         // unset "comment" property which is auto generated from HTML comments in xml file
         unset($this->oOptions->comment);
@@ -1282,7 +1282,7 @@ class TemplateConfiguration extends TemplateConfig
 
         if (!empty($oOptions)) {
             foreach ($oOptions as $sKey => $sOption) {
-                    $oOptions->$sKey = $this->getOptionKey($sKey);
+                $oOptions->$sKey = $this->getOptionKey($sKey);
             }
         }
     }
