@@ -1125,9 +1125,8 @@ class TemplateConfiguration extends TemplateConfig
             if ($oFiles === null) {
                 App()->setFlashMessage(
                     sprintf(
-                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "%s".'),
-                        $sField,
-                        $oFiles
+                        gT('Error: Malformed JSON - field %s must be either a JSON array or the string "inherit". Found "null".'),
+                        $sField
                     ),
                     'error'
                 );
@@ -1164,7 +1163,7 @@ class TemplateConfiguration extends TemplateConfig
             $sMotherTemplateName   = $this->template->extends;
             $instance = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
             $instance->template->checkTemplate();
-            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
+            $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, '');
         }
     }
 
@@ -1241,6 +1240,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * @todo document me
+     * @return void
      */
     private function setCssFramework()
     {
@@ -1250,18 +1250,22 @@ class TemplateConfiguration extends TemplateConfig
             $this->cssFramework->css  = json_decode($this->cssframework_css);
             $this->cssFramework->js   = json_decode($this->cssframework_js);
         } else {
-            $this->cssFramework = '';
+            $this->cssFramework = new \stdClass();
+            $this->cssFramework->name = '';
+            $this->cssFramework->css  = '';
+            $this->cssFramework->js   = '';
         }
     }
 
     /**
      * @todo document me
+     * @return void
      */
     protected function setOptions()
     {
-        $this->oOptions = array();
+        $this->oOptions = new stdClass();
         if (!empty($this->options)) {
-            $this->oOptions = json_decode($this->options);
+            $this->oOptions = json_decode($this->options, true);
         }
         // unset "comment" property which is auto generated from HTML comments in xml file
         unset($this->oOptions->comment);

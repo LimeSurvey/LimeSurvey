@@ -3699,6 +3699,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if($iOldDBVersion < 439) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Some tables were renamed in dbversion 400 - their sequence needs to be fixed in Postgres
+            if (Yii::app()->db->driverName == 'pgsql') {
+                fixPostgresSequence('questions');
+                fixPostgresSequence('groups');
+                fixPostgresSequence('answers');
+                fixPostgresSequence('labels');
+                fixPostgresSequence('defaultvalues');
+            }
+                $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 439), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -5815,6 +5830,40 @@ function fixLanguageConsistencyAllSurveys()
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ($surveyidresult as $sv) {
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
+    }
+}
+
+/**
+ * This function fixes Postgres sequences for one/all tables in a database 
+ * This is necessary if a table is renamed. If tablename is given then only that table is fixed
+ * @param string $tableName Table name without prefix
+ * @return void
+ */
+function fixPostgresSequence($tableName = null)
+{
+    $oDB = Yii::app()->getDb();
+    $query = "SELECT 'SELECT SETVAL(' ||
+                quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
+                ', COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1) ) FROM ' ||
+                quote_ident(PGT.schemaname)|| '.'||quote_ident(T.relname)|| ';'
+            FROM pg_class AS S,
+                pg_depend AS D,
+                pg_class AS T,
+                pg_attribute AS C,
+                pg_tables AS PGT
+            WHERE S.relkind = 'S'
+                AND S.oid = D.objid
+                AND D.refobjid = T.oid
+                AND D.refobjid = C.attrelid
+                AND D.refobjsubid = C.attnum
+                AND T.relname = PGT.tablename";
+    if ($tableName != null) {
+        $query .= " AND PGT.tablename= '{{" . $tableName . "}}' ";
+    }
+    $query .= "ORDER BY S.relname;";
+    $FixingQueries = Yii::app()->db->createCommand($query)->queryColumn();
+    foreach ($FixingQueries as $fixingQuery) {
+        $oDB->createCommand($fixingQuery)->execute();
     }
 }
 

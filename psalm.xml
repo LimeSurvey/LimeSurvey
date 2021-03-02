@@ -9,14 +9,7 @@
 >
     <projectFiles>
         <directory name="application/datavalueobjects" />
-        <directory name="application/helpers" />
-        <directory name="application/libraries/ExtensionInstaller" />
-        <directory name="application/libraries/MenuObjects" />
-        <directory name="application/libraries/PluginManager" />
-        <directory name="application/libraries/PluginManager/Storage" />
         <directory name="application/models/services" />
-        <directory name="application/models" />
-        <directory name="application/controllers" />
         <ignoreFiles>
             <directory name="third_party" />
             <directory name="framework" />
