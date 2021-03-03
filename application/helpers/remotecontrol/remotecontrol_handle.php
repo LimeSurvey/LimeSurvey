@@ -1005,11 +1005,18 @@ class remotecontrol_handle
 
                 $oGroup = new QuestionGroup();
                 $oGroup->sid = $iSurveyID;
-                $oGroup->group_name = $sGroupTitle;
-                $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
-                if ($oGroup->save()) {
+                if (!$oGroup->save()) {
+                    return array('status' => 'Creation Failed');
+                }
+
+                $oQuestionGroupL10n = new QuestionGroupL10n();
+                $oQuestionGroupL10n->group_name = $sGroupTitle;
+                $oQuestionGroupL10n->description = $sGroupDescription;
+                $oQuestionGroupL10n->language = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestionGroupL10n->gid = $oGroup->gid;
+
+                if ($oQuestionGroupL10n->save()) {
                                     return (int) $oGroup->gid;
                 } else {
                                     return array('status' => 'Creation Failed');
@@ -1263,7 +1270,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iGroupID  - ID of the Survey
+     * @param integer $iGroupID  - ID of the Group
      * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @return array Of succeeded and failed modifications according to internal validation.
      */
@@ -1271,7 +1278,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
@@ -1280,12 +1287,72 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
+                
+                // Backwards compatibility for L10n data
+                if (!empty($aGroupData['language'])) {
+                    $language = $aGroupData['language'];
+                    $aGroupData['questiongroupl10ns'][$language] = array(
+                        'language' => $language,
+                        'group_name' => !empty($aGroupData['group_name']) ? $aGroupData['group_name'] : '',
+                        'description' => !empty($aGroupData['description']) ? $aGroupData['description'] : '',
+                    );
+                }
+
+                // Process L10n data
+                if (!empty($aGroupData['questiongroupl10ns']) && is_array($aGroupData['questiongroupl10ns'])) {
+                    $aL10nDestinationFields = array_flip(QuestionGroupL10n::model()->tableSchema->columnNames);
+                    foreach ($aGroupData['questiongroupl10ns'] as $language => $aLanguageData) {
+                        // Get existing L10n data or create new
+                        if (isset($oGroup->questiongroupl10ns[$language])) {
+                            $oQuestionGroupL10n = $oGroup->questiongroupl10ns[$language];
+                        } else {
+                            $oQuestionGroupL10n = new QuestionGroupL10n();
+                            $oQuestionGroupL10n->gid = $iGroupID;
+                            $oQuestionGroupL10n->setAttribute('language', $language);
+                            $oQuestionGroupL10n->setAttribute('group_name', '');
+                            $oQuestionGroupL10n->setAttribute('description', '');
+                            if (!$oQuestionGroupL10n->save()) {
+                                $aResult['questiongroupl10ns'][$language] = false;
+                                continue;
+                            }
+                        }
+
+                        // Remove invalid fields
+                        $aGroupL10nData = array_intersect_key($aLanguageData, $aL10nDestinationFields);
+                        if (empty($aGroupL10nData)) {
+                            $aResult['questiongroupl10ns'][$language] = 'Empty group L10n data';
+                            continue;
+                        }
+
+                        $aGroupL10nAttributes = $oQuestionGroupL10n->getAttributes();
+                        foreach ($aGroupL10nData as $sFieldName => $sValue) {
+                            $oQuestionGroupL10n->setAttribute($sFieldName, $sValue);
+                            try {
+                                // save the change to database - one by one to allow for validation to work
+                                $bSaveResult = $oQuestionGroupL10n->save();
+                                $aResult['questiongroupl10ns'][$language][$sFieldName] = $bSaveResult;
+                                //unset failed values
+                                if (!$bSaveResult) {
+                                    $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                                }
+                            } catch (Exception $e) {
+                                //unset values that cause exception
+                                $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                            }
+                        }
+                    }
+                }
+
                 // Remove invalid fields
                 $aDestinationFields = array_flip(QuestionGroup::model()->tableSchema->columnNames);
                 $aGroupData = array_intersect_key($aGroupData, $aDestinationFields);
                 $aGroupAttributes = $oGroup->getAttributes();
                 if (empty($aGroupData)) {
-                                    return array('status' => 'No valid Data');
+                    if (empty($aResult)) {
+                        return array('status' => 'No valid Data');
+                    } else {
+                        return $aResult;
+                    }
                 }
 
                 foreach ($aGroupData as $sFieldName => $sValue) {
