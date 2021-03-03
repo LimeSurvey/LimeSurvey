@@ -190,7 +190,6 @@ class SurveysGroupsPermissionController extends LSBaseController
             'warning' => false,
             'error' => false,
         );
-  
         $oPermission = Permission::setMinimalEntityPermission($uid, $id, 'SurveysGroups');
         if (!$oPermission->hasErrors()) {
             $result['success'] = gT("User added.");
@@ -296,7 +295,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         }
         /* Check if logged user can see user group */
         if (!in_array($to, getUserGroupList())) {
-            throw new CHttpException(403, gT("You do not have permission to this user group."));
+            throw new CHttpException(403, gT("You do not have permission to access this user group."));
         }
         $this->viewUserOrUserGroup($id, $to, 'group');
     }
@@ -336,7 +335,7 @@ class SurveysGroupsPermissionController extends LSBaseController
                 throw new CHttpException(400, gT("Invalid action"));
             }
             if (!in_array($uid, getUserList('onlyuidarray'))) {
-                throw new CHttpException(403, gT("You do not have permission to this user."));
+                throw new CHttpException(403, gT("You do not have permission to access this user."));
             }
             $uids = array($uid);
         }
@@ -359,9 +358,9 @@ class SurveysGroupsPermissionController extends LSBaseController
             }
         }
         if ($success) {
-            App()->setFlashMessage("Surveys groups permissions were successfully updated");
+            App()->setFlashMessage("Surveys groups permissions were successfully updated.");
         } else {
-            App()->setFlashMessage("An error happen when update surveys groups permissions", 'danger');
+            App()->setFlashMessage("An error happened when updating surveys groups permissions.", 'danger');
         }
         if ($type == 'group') {
             App()->request->redirect(App()->getController()->createUrl('surveysGroupsPermission/index', array('id' => $id)));
@@ -389,10 +388,10 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(401, gT("User not found"));
         }
         if (!in_array($uid, getUserList('onlyuidarray'))) {
-            throw new CHttpException(403, gT("You do not have permission to this user."));
+            throw new CHttpException(403, gT("You do not have permission to access this user."));
         }
         if ($uid == App()->user->getId()) {
-            throw new CHttpException(403, gT("You do not delete your own permission."));
+            throw new CHttpException(403, gT("You cannot delete your own permissions."));
         }
         Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = :entity", array(
             ':uid' => $uid,
