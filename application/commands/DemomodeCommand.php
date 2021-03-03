@@ -133,8 +133,12 @@ class DemomodeCommand extends CConsoleCommand
                 $surveysToActivate[] = $result['newsid'];
             }
         }
-        require_once(__DIR__ . '/../helpers/admin/activate_helper.php');
-        array_map('activateSurvey', $surveysToActivate);
+        //require_once(__DIR__ . '/../helpers/admin/activate_helper.php');
+        foreach ($surveysToActivate as $surveyID) {
+            $survey = \Survey::model()->findByPk($surveyID);
+            $surveyActivator = new SurveyActivator($survey);
+            $result = $surveyActivator->activate();        
+        }
     }
 }
 
