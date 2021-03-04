@@ -199,11 +199,24 @@ JS
      */
     protected function spitOutUrl()
     {
-        $data = [
-            'url' => $this->getCheckUrl(),
-            'notificationUpdateUrl' => Notification::getUpdateUrl()
-        ];
-        echo $this->api->renderTwig(__DIR__ . '/views/index.twig', $data);
+        $url = $this->getCheckUrl();
+        $notificationUpdateUrl = Notification::getUpdateUrl();
+
+        $script = <<<JS
+// Namespace
+var LS = LS || {};
+LS.plugin = LS.plugin || {};
+LS.plugin.updateCheck = LS.plugin.updateCheck || {};
+
+LS.plugin.updateCheck.url = '$url';
+LS.plugin.updateCheck.notificationUpdateUrl = '$notificationUpdateUrl';
+JS;
+
+        Yii::app()->clientScript->registerScript(
+            'updatecheckurls',
+            $script,
+            CClientScript::POS_HEAD
+        );
     }
 
     /**

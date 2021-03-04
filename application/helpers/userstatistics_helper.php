@@ -211,7 +211,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $labelTmp = array();
             while (isset($gdata[$i])) {
                 $aHelperArray = array_keys($lbl);
-                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen($sLanguageCode->gT("Comments"))) == $sLanguageCode->gT("Comments"))) {
+                if ($gdata[$i] == 0 || ($sQuestionType == Question::QT_O_LIST_WITH_COMMENT && substr($aHelperArray[$i], 0, strlen(gT("Comments"))) == gT("Comments"))) {
                     array_splice($gdata, $i, 1);
                 } else {
                     $i++;
@@ -490,22 +490,22 @@ function buildSelects($allfields, $surveyid, $language)
                 //timestamp equals
                 $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                    $sDateValue = $datetimeobj->convert("Y-m-d");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                    $sDateValue = $datetimeobj->format("Y-m-d");
 
                     $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
                 } else {
                     //timestamp less than
                     if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
                     }
 
                     //timestamp greater than
                     if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }
@@ -601,7 +601,7 @@ class userstatistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language' => $language, ':qid' => $qqid));
+            $nresult = Question::model()->with('questionl10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language' => $language, ':qid' => $qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
             $qquestion = flattenText($nresult->questionl10ns[$language]->question);
@@ -609,14 +609,14 @@ class userstatistics_helper
             $qother = $nresult->other;
 
             //1. Get list of answers
-            $result = Question::model()->findAll(array(
+            $result = Question::model()->with('questionl10ns')->findAll(array(
                 'order'     => 'question_order',
                 'condition' => 'language=:language AND parent_qid=:qid AND scale_id=0',
                 'params'    => array(':language' => $language, ':qid' => $qqid)
             ));
             foreach ($result as $row) {
-                $mfield = substr($rt, 1, strlen($rt)) . $row['title'];
-                $alist[] = array($row['title'], flattenText($row['question']), $mfield);
+                $mfield = substr($rt, 1, strlen($rt)) . $row->title;
+                $alist[] = array($row->title, flattenText($row->questionl10ns[$language]->question), $mfield);
             }
 
             //Add the "other" answer if it exists
@@ -686,27 +686,31 @@ class userstatistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
 
             //get question data
-            $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-            $nresult = Yii::app()->db->createCommand($nquery)->query();
+            $nresult = Question::model()->with('questionl10ns')->findAll(array(
+                'order'     => 'question_order',
+                'condition' => 'language=:language AND t.qid=:qid',
+                'params'    => array(':language' => $language, ':qid' => $qqid)
+            ));
 
             //loop through question data
-            foreach ($nresult->readAll() as $nrow) {
-                $nrow = array_values($nrow);
-                $qtitle = flattenText($nrow[0]) . " [" . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
-                $qtype = $nrow[1];
-                $qquestion = flattenText($nrow[2]) . "[" . gT("Ranking") . " " . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
+            foreach ($nresult as $nrow) {
+                $qtitle = flattenText($nrow->title) . " [" . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
+                $qtype = $nrow->type;
+                $qquestion = flattenText($nrow->questionl10ns[$language]->question) . "[" . gT("Ranking") . " " . substr($rt, strpos($rt, "-") - ($lengthofnumeral), $lengthofnumeral) . "]";
             }
 
             //get answers
-            $query = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $result = Answer::model()->with('answerl10ns')->findAll([
+                'condition' => 'language=:language AND qid=:qid',
+                'params'    => [':language' => $language, ':qid' => $qqid],
+                'order'     => 'sortorder'
+            ]);
 
             //loop through answers
-            foreach ($result->readAll() as $row) {
-                $row = array_values($row);
+            foreach ($result as $row) {
                 //create an array containing answer code, answer and fieldname(??)
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
-                $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
+                $alist[] = array("$row->code", flattenText($row->answerl10ns[$language]->answer), $mfield);
             }
         } else {
             if ($firstletter == "|") {
@@ -827,10 +831,10 @@ class userstatistics_helper
             //N = numerical input
             //K = multiple numerical input
             elseif ($firstletter == "N" || $firstletter == "K") {
-//NUMERICAL TYPE
+                //NUMERICAL TYPE
                 //Zero handling
                 if (!isset($excludezeros)) {
-//If this hasn't been set, set it to on as default:
+                    //If this hasn't been set, set it to on as default:
                     $excludezeros = 1;
                 }
                 //check last character, greater/less/equals don't need special treatment

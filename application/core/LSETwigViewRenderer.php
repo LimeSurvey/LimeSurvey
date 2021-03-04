@@ -685,6 +685,11 @@ window.addEventListener('message', function(event) {
             // Add the survey theme options
             if ($oTemplate->oOptions) {
                 foreach ($oTemplate->oOptions as $key => $value) {
+                    // TODO: Same issue as commit 2972aea41c51c74db95bfe40c337ae839471152c
+                    // Options are not loaded the same way in all places.
+                    if ($value instanceof stdClass) {
+                        $value = 'N/A';
+                    }
                     $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
                 }
             }

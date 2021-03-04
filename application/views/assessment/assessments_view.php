@@ -15,7 +15,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
       <div class="container-fluid">
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
-                . gt("If you want to activate it click here:").'<br/>'
+                . gt("If you want to activate it, click here:").'<br/>'
                 . '<a type="submit" class="btn btn-primary" href="'
                 . $this->createUrl('/assessment/activate', ['surveyid'=> $surveyid])
                 .'">'.gT('Activate assessements').'</a>';
@@ -23,7 +23,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         ?>
           <div class="row text-center">
             <div class="jumbotron message-box warningheader col-sm-12 col-md-6 col-md-offset-3">
-              <h2><?= gT("Assessments mode not activated"); ?></h2>
+              <h2><?= gT("Assessment mode not activated"); ?></h2>
               <?php echo $messageLink; ?>
             </div>
           </div>

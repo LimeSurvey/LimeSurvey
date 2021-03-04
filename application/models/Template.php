@@ -54,9 +54,6 @@ class Template extends LSActiveRecord
     /** @var Template - The instance of template object */
     private static $instance;
 
-    /** @var string[] list of standard template */
-    private static $standardTemplates = array();
-
     /**
      * @return string the associated database table name
      */
