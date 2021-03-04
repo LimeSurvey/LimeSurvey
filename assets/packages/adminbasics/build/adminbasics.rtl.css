@@ -1,4 +1,8 @@
 @charset "UTF-8";
+#cpdbatt {
+  min-height: 100px;
+}
+
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -116,111 +120,123 @@
   display: none;
 }
 
-.draggable-container {
-  min-height: 300px;
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
 }
 
-#newcreated,
-#tokenattribute,
-#csvattribute,
-#centralattribute {
-  margin-right: 0.75%;
-  margin-left: 0.75%;
-  margin-bottom: 20px;
+.grid-view .table th > .sort-link .caret {
+  left: -10px;
 }
 
-#tokenattribute {
-  margin-right: 1.5%;
+.dropdown-menu.larger-dropdown {
+  min-width: 240px;
 }
 
-#centralattribute {
-  margin-left: 1.5%;
+.dropdown-submenu {
+  position: relative;
 }
 
-#centralattribute .centralatt {
-  padding-bottom: 15px;
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  right: 100%;
+  margin-top: -6px;
+  margin-right: -1px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
 }
 
-#newcreated .attribute-item input {
-  display: block;
-  margin: 2px auto;
-  width: 80%;
+.dropdown-submenu:hover > a:after {
+  border-right-color: #555;
 }
 
-#centralattribute div.centralatt div.token-attribute {
-  margin-top: -5px;
-  min-height: 20px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
 
-#newcreated,
-#tokenattribute {
-  height: 100%;
+.dropdown-submenu.pull-left > .dropdown-menu {
+  right: -100%;
+  margin-right: 10px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
 }
 
-.heading {
-  height: auto;
-  padding-top: 7px;
-  font-weight: bold;
+#vue-apps-main-container {
+  min-height: 75vh;
 }
 
-div.mappable-attribute-wrapper {
-  width: 80%;
-  margin: 6px auto;
-  padding: 6px;
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
 }
 
-div.attribute-item, .already-mapped-attribute {
-  width: 80%;
-  margin: 6px auto;
-  padding: 4px;
-  text-align: center;
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
 }
 
-#centralattribute .explanation {
-  width: 90%;
-  margin: 0 auto;
+.fa-1x.halfed {
+  font-size: 0.5em;
+}
+
+.contain-pulse {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: bottom;
+  height: 3em;
+}
+
+.square {
+  background: #0f3e12;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: 2em;
+  margin: 0.2em;
+  overflow: hidden;
+  padding: 0.5em;
+  width: 2em;
+}
+
+.animate-pulse .square:nth-of-type(1) {
+  animation: pulse ease-in-out 1.8s infinite 0.2s;
+}
+
+.animate-pulse .square:nth-of-type(2) {
+  animation: pulse ease-in-out 1.8s infinite 0.6s;
+}
+
+.animate-pulse .square:nth-of-type(3) {
+  animation: pulse ease-in-out 1.8s infinite 1.0s;
+}
+
+.animate-pulse .square:nth-of-type(4) {
+  animation: pulse ease-in-out 1.8s infinite 1.4s;
+}
+
+.simpleWrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: inline-block;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
   text-align: right;
-}
-
-#centralattribute .explanation-row {
-  display: table-row;
-}
-
-#centralattribute .explanation input,
-#centralattribute .explanation label {
-  display: table-cell;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#centralattribute .explanation label {
-  padding-right: 8px;
-}
-
-.attribute-item.draggable {
-  cursor: move;
-}
-
-div.mappable-attribute-wrapper.target-hover {
-  padding-bottom: 27px;
-}
-
-div.mappable-attribute-wrapper.paired.target-hover {
-  padding-bottom: 4px;
-}
-
-div.mappable-attribute-wrapper.paired.ui-state-disabled {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.draggable-container .attribute-column .ui-draggable-dragging {
-  z-index: 100;
-}
-
-/* Existing attribute column in CSV CPDB import */
-.centralatt {
-  min-height: 100px;
+  padding-bottom: 15px;
 }
 
 #selectable .ui-selecting {
@@ -2322,7 +2338,7 @@ h3 .glyphicon-chevron-right {
   margin-right: -1.875em;
   margin-top: -2.125em;
   transform-origin: center center;
-  transform: rotateY(180deg) rotateZ(60deg);
+  transform: rotateY(-180deg) rotateZ(60deg);
 }
 
 .preloader .slice {
@@ -2372,32 +2388,32 @@ h3 .glyphicon-chevron-right {
 }
 
 .preloader.loading .slice:nth-child(1) {
-  transform: rotateZ(-60deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-60deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-1 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(2) {
-  transform: rotateZ(-120deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-120deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-2 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(3) {
-  transform: rotateZ(-180deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-180deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-3 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(4) {
-  transform: rotateZ(-240deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-240deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-4 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(5) {
-  transform: rotateZ(-300deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-300deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-5 linear infinite both;
 }
 
 .preloader.loading .slice:nth-child(6) {
-  transform: rotateZ(-360deg) rotateY(90deg) rotateX(0);
+  transform: rotateZ(-360deg) rotateY(-90deg) rotateX(0);
   animation: 2s preload-cycle-6 linear infinite both;
 }
 
@@ -4413,125 +4429,109 @@ table.dataTable thead .sorting_desc:after {
   /* sort-by-attributes-alt */
 }
 
-#cpdbatt {
-  min-height: 100px;
+.draggable-container {
+  min-height: 300px;
 }
 
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
+#newcreated,
+#tokenattribute,
+#csvattribute,
+#centralattribute {
+  margin-right: 0.75%;
+  margin-left: 0.75%;
+  margin-bottom: 20px;
 }
 
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
+#tokenattribute {
+  margin-right: 1.5%;
 }
 
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
+#centralattribute {
+  margin-left: 1.5%;
+}
+
+#centralattribute .centralatt {
   padding-bottom: 15px;
 }
 
-.grid-view .table td.button-column, .grid-view .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
+#newcreated .attribute-item input {
+  display: block;
+  margin: 2px auto;
+  width: 80%;
 }
 
-.grid-view .table th > .sort-link .caret {
-  left: -10px;
+#centralattribute div.centralatt div.token-attribute {
+  margin-top: -5px;
+  min-height: 20px;
 }
 
-.dropdown-menu.larger-dropdown {
-  min-width: 240px;
+#newcreated,
+#tokenattribute {
+  height: 100%;
 }
 
-.dropdown-submenu {
-  position: relative;
+.heading {
+  height: auto;
+  padding-top: 7px;
+  font-weight: bold;
 }
 
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  right: 100%;
-  margin-top: -6px;
-  margin-right: -1px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
+div.mappable-attribute-wrapper {
+  width: 80%;
+  margin: 6px auto;
+  padding: 6px;
 }
 
-.dropdown-submenu:hover > a:after {
-  border-right-color: #555;
+div.attribute-item, .already-mapped-attribute {
+  width: 80%;
+  margin: 6px auto;
+  padding: 4px;
+  text-align: center;
 }
 
-.dropdown-submenu.pull-left {
-  float: none;
+#centralattribute .explanation {
+  width: 90%;
+  margin: 0 auto;
+  text-align: right;
 }
 
-.dropdown-submenu.pull-left > .dropdown-menu {
-  right: -100%;
-  margin-right: 10px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
+#centralattribute .explanation-row {
+  display: table-row;
 }
 
-#vue-apps-main-container {
-  min-height: 75vh;
+#centralattribute .explanation input,
+#centralattribute .explanation label {
+  display: table-cell;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
+#centralattribute .explanation label {
+  padding-right: 8px;
 }
 
-.fa-stack-1x.halfed {
-  font-size: 0.5em;
+.attribute-item.draggable {
+  cursor: move;
 }
 
-.fa-1x.halfed {
-  font-size: 0.5em;
+div.mappable-attribute-wrapper.target-hover {
+  padding-bottom: 27px;
 }
 
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em;
+div.mappable-attribute-wrapper.paired.target-hover {
+  padding-bottom: 4px;
 }
 
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em;
+div.mappable-attribute-wrapper.paired.ui-state-disabled {
+  opacity: 1;
+  filter: alpha(opacity=100);
 }
 
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s;
+.draggable-container .attribute-column .ui-draggable-dragging {
+  z-index: 100;
 }
 
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s;
-}
-
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1.0s;
-}
-
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-.simpleWrapper {
-  padding: 0;
-  margin: 0;
-  border: none;
-  display: inline-block;
+/* Existing attribute column in CSV CPDB import */
+.centralatt {
+  min-height: 100px;
 }
