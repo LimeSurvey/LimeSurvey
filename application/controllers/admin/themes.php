@@ -774,7 +774,7 @@ class themes extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect(array("themeOptions"));
+        $this->getController()->redirect(array("themeOptions/index"));
     }
 
     /**
