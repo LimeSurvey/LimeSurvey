@@ -80,7 +80,7 @@ $baseLanguage = $oSurvey->language;
                                 array('class'=>'btn btn-success')
                             ); ?>
                             <a href="<?php echo App()->createUrl(
-                                'urveyAdministration/listquestions',
+                                'questionAdministration/listquestions',
                                 ['surveyid'=>$oSurvey->primaryKey]
                             );?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
