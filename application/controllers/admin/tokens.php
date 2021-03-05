@@ -1489,6 +1489,8 @@ class tokens extends Survey_Common_Action
                             $maildebug = (string)$event->get('error', $maildebug);
                             $success = $event->get('error') == null;
                         } else {
+                            Yii::import('application.helpers.mailHelper');
+                            mailHelper::setModeForNext(mailHelper::PREVIOUS_INSTANCE_MODE, ['smtpKeepAlive' => true]);
                             $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $customheaders);
                         }
 
