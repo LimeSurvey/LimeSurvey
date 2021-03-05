@@ -1246,25 +1246,31 @@ function finalizeRandomization($fieldmap)
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
     $FlashError = '';
-    if (!$subscenarios['tokenValid']) {
-
-        //Check if there is a clienttoken set
-        if ((!isset($clienttoken) || $clienttoken == "")) {
-            if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
-                $renderToken = 'register';
+    if (FailedLoginAttempt::model()->isLockedOut()) {
+        $FlashError = sprintf(gT('You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
+        $renderToken = 'main';
+    } else {
+        if (!$subscenarios['tokenValid']) {
+            //Check if there is a clienttoken set
+            if ((!isset($clienttoken) || $clienttoken == "")) {
+                if (isset($thissurvey) && $thissurvey['allowregister'] == "Y") {
+                    $renderToken = 'register';
+                } else {
+                    $renderToken = 'main';
+                }
             } else {
+                //token was wrong
+                $errorMsg    = gT("The token you have provided is either not valid, or has already been used.");
+                $FlashError .= $errorMsg;
                 $renderToken = 'main';
+                FailedLoginAttempt::model()->addAttempt();
             }
         } else {
-            //token was wrong
-            $errorMsg    = gT("The token you have provided is either not valid, or has already been used.");
-            $FlashError .= $errorMsg;
-            $renderToken = 'main';
+            $aEnterTokenData['visibleToken'] = $clienttoken;
+            $aEnterTokenData['token'] = $clienttoken;
+            $renderToken = 'correct';
+            FailedLoginAttempt::model()->deleteAttempts();
         }
-    } else {
-        $aEnterTokenData['visibleToken'] = $clienttoken;
-        $aEnterTokenData['token'] = $clienttoken;
-        $renderToken = 'correct';
     }
 
     return array($renderToken, $FlashError, $aEnterTokenData);
