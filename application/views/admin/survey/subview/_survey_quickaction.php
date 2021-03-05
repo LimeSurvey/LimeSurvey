@@ -215,19 +215,19 @@
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
-                                                <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
+                                                <a  href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
-                                                <p><a href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
+                                                <p><a href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
                                             </div>
                                         </div>
                                     </div>
