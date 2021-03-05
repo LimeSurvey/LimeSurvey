@@ -17,14 +17,14 @@
             ></i>
         <?php endif; ?>
         <label class="form-label" :for="elId">
-            <?= $this->setting['caption']; ?>
+            <?= gT($this->setting['caption']); ?>
         </label>
         <?= $content; ?>
         <div
             id="general-setting-help-<?= $this->setting['name']; ?>"
             class="question-option-help well"
             >
-            <?= $this->setting['help']; ?>
+            <?= gT($this->setting['help']); ?>
         </div>
     </div>
 </div>
