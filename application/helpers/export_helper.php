@@ -1453,6 +1453,9 @@ function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
 
     // Change the value in the DOM element
     $element->setAttribute("defaultValue", $value);
+
+    // Change length
+    $element->getElementsByTagName("free")->item(0)->getElementsByTagName("length")->item(0)->nodeValue = strlen($value);
 }
 
 
