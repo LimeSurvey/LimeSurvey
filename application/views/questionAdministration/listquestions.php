@@ -43,7 +43,7 @@ $baseLanguage = $oSurvey->language;
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
                             'action' => App()->createUrl(
-                                'admin/survey/sa/listquestions',
+                                'questionAdministration/listquestions',
                                 ['surveyid'=>$oSurvey->primaryKey]
                             ),
                             'method' => 'get',
@@ -80,7 +80,7 @@ $baseLanguage = $oSurvey->language;
                                 array('class'=>'btn btn-success')
                             ); ?>
                             <a href="<?php echo App()->createUrl(
-                                'admin/survey/sa/listquestions',
+                                'urveyAdministration/listquestions',
                                 ['surveyid'=>$oSurvey->primaryKey]
                             );?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
