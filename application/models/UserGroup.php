@@ -433,7 +433,7 @@ class UserGroup extends LSActiveRecord
     public function hasUser($uid)
     {
         // superadmin is part of all groups
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             return true;
         }
         $userInGroup = UserInGroup::model()->findByAttributes(['ugid'=>$this->ugid], 'uid=:uid', [':uid'=>$uid]);
