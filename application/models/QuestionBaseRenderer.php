@@ -294,7 +294,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setDefaultIfEmpty($value, $default)
     {
-        if (!$value) {
+        if (is_null($value)) {
             return $default;
         }
         return trim($value) == '' ? $default : $value;
