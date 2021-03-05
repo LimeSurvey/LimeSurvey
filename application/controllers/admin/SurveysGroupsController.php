@@ -317,9 +317,13 @@ class SurveysGroupsController extends Survey_Common_Action
         if (!$oGroupToDelete->hasPermission('group', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
-        $sGroupTitle = $oGroupToDelete->title;
+        $sGroupTitle    = $oGroupToDelete->title;
         $returnUrl = App()->getRequest()->getPost('returnUrl', array('surveyAdministration/listsurveys', '#' => 'surveygroups'));
-        if ($oGroupToDelete->hasSurveys) {
+
+        if ($oGroupToDelete->gsid==1) {
+            Yii::app()->setFlashMessage(gT("You can't delete the default survey group!"), 'error');
+            $this->getController()->redirect($returnUrl);
+        } elseif ($oGroupToDelete->hasSurveys) {
             Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
             $this->getController()->redirect($returnUrl);
         } elseif ($oGroupToDelete->hasChildGroups) {
