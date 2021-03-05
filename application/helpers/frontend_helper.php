@@ -1269,7 +1269,8 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
             $aEnterTokenData['visibleToken'] = $clienttoken;
             $aEnterTokenData['token'] = $clienttoken;
             $renderToken = 'correct';
-            FailedLoginAttempt::model()->deleteAttempts();
+            // Intentionally don't reset FailedLoginAttempt for this IP.            
+            // FailedLoginAttempt::model()->deleteAttempts();
         }
     }
 
