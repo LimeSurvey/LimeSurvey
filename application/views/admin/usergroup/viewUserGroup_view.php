@@ -44,14 +44,12 @@
                         </tr></thead>
                     <tbody>
                     <?php
-                    foreach ($userloop as $currentuser)
-                    {
+                    foreach ($userloop as $currentuser) {
                         ?>
                         <tr class='<?php echo $currentuser["rowclass"];?>'>
                             <td align='center'>
                             <?php
-                            if(isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true && $currentuser["userid"] != '1')
-                            { ?>
+                            if ((isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true || Permission::model()->hasGlobalPermission('superadmin')) && $currentuser["userid"] != '1') { ?>
                                 <?php echo CHtml::form(array("admin/usergroups/sa/user/ugid/{$ugid}/action/remove"), 'post'); ?>
                                     <button  data-toggle="tooltip" data-placement="bottom" title="<?php eT('Delete');?>" type="submit" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-xs ">
                                         <span class="fa fa-trash text-warning"></span>
@@ -59,9 +57,7 @@
                                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
                                 </form>
                                 <?php
-                            }
-                            else
-                            {
+                            } else {
                                 ?>
                                 &nbsp;
                             <?php
