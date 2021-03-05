@@ -80,7 +80,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 'form' => 'surveys-groups-form'
             ),
             'returnbutton' => array(
-                'url' => $this->getController()->createUrl('surveyAdministration/listsurveys', array("#" => 'surveygroups')),
+                'url' => 'surveyAdministration/listsurveys#surveygroups',
                 'text' => gT('Close'),
             )
         );
