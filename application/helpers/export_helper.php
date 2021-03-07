@@ -120,7 +120,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
     foreach ($result as $row) {
         $rownr++;
         if ($rownr == 1) {
-            $num_fields = safecount($row);
+            $num_fields = safecount($fields);
             // Add column headers (used by R export)
             if ($header == true) {
                 $i = 1;
