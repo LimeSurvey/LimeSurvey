@@ -34,6 +34,40 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.11 (build 210301) to 4.4.12 (build 210308) March 8, 2021
+-Fixed issue: Wipe command was leaving some data (Carsten Schmitz)
+-Fixed issue: Password is not sent in 'Resume later' email anymore for security reasons (Carsten Schmitz)
+-Fixed issue: Demo command not activating surveys (Carsten Schmitz)
+-Fixed issue: Default survey group can be deleted (Carsten Schmitz)
+-Fixed issue #17164: Closing of unsaved Survey Group leads to 404 (Carsten Schmitz)
+-Fixed issue #17162: Adminbasics build failed. (Jessica Höck)
+-Fixed issue #17159: Question type: Array dual scale doesn't save state (Olle Harstedt)
+-Fixed issue #17138: 404 after delete a theme (Olle Haerstedt)
+-Fixed issue #17085: Unable to copy a survey when updated from 3.x using Postgres (Carsten Schmitz)
+-Fixed issue #16833: new config setting for date format and question code updates (#1684) (Gabriel Jenik)
+-Fixed issue #16788: Column 'expire' in lime_sessions has no index (Olle Haerstedt)
+-Fixed issue #16730: A lot of attribute can not be translated in admin GUI (Olle Haerstedt)
+-Fixed issue #16723: SPSS data export does not include any delimiters after lastpage field (Carsten Schmitz)
+-Fixed issue #16706: Can't choose "No" option in "Slider initial value set at start" for "Multiple numerical input" - "Slider" (Olle Haerstedt)
+-Fixed issue #16347: Error while updating database using console command (Carsten Schmitz)
+-Fixed issue #15500: getSurveyInfo() fails with fatal error for a plugin from console (Olle Haerstedt)
+-Fixed issue #14732: Superadmin user cannot modify members of a group he is not a member of (Carsten Schmitz)
+#Updated translation: Turkish by bulent
+#Updated translation: Spanish (Spain) by jmlopez
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+
+
 Changes from 4.4.10 (build 210222) to 4.4.11 (build 210301) March 1, 2021
 -Fixed issue: Text - Text to be updated - add participant(s) to survey button - cpdb (Jessica Höck)
 -Fixed issue: Question Attributes List With Comment (Jessica Höck)
