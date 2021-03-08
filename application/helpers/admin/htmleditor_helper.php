@@ -87,6 +87,7 @@
         $aTranslationTable = array(
         'ca-valencia'=>'ca',
         'de-informal'=>'de',
+        'de-easy'=>'de',
         'es-AR-informal'=>'es',
         'es-AR'=>'es',
         'es-CL'=>'es',
