@@ -47,20 +47,17 @@
             />
             {% endif %}
 
-                <input
-                    type='text'
-                    class="code form-control input"
-                    id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
-                    name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
-                    class='code code-title'
-                    value="{{ answerOption.code }}"
-                    maxlength='5'
-                    required='required'
-                    {% if question.survey.active == 'Y' %}
-                    readonly="readonly"
-                    {% endif %}
-                    onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
-                />
+            <input
+                type='text'
+                class="code form-control input"
+                id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
+                name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][code]'
+                class='code code-title'
+                value="{{ answerOption.code }}"
+                maxlength='5'
+                required='required'
+                onfocusout="LS.questionEditor.showAnswerOptionCodeUniqueError(this);"
+            />
         </td>
         {# If survey is not active, and it's not the first language : no move button, code not editable #}
     {% else %}

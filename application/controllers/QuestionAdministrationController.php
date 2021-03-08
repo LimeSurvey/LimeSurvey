@@ -452,12 +452,7 @@ class QuestionAdministrationController extends LSBaseController
                 }
             } else {
                 // TODO: Update subquestions.
-                if ($question->questionType->answerscales > 0) {
-                    $this->updateAnswerOptions(
-                        $question,
-                        $request->getPost('answeroptions')
-                    );
-                }
+                // TODO: Update answer options.
             }
             $transaction->commit();
 
@@ -2833,77 +2828,38 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        return true;
-    }
+                /*
+        foreach ($dataSet as $aAnswerOptions) {
+            foreach ($aAnswerOptions as $iScaleId => $aAnswerOptionDataSet) {
+                $aAnswerOptionDataSet['sortorder'] = (int)$aAnswerOptionDataSet['sortorder'];
+                $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
+                if ($oAnswer == null || $isCopyProcess) {
+                    $oAnswer = new Answer();
+                    $oAnswer->qid = $question->qid;
+                    unset($aAnswerOptionDataSet['aid']);
+                    unset($aAnswerOptionDataSet['qid']);
+                }
 
-    /**
-     * Like storeAnswerOptions, but adapted for when survey is active (not allowed to change codes).
-     *
-     * @param Question $question
-     * @param array $answerOptionsArray
-     * @return void
-     * @throws CHttpException
-     */
-    private function updateAnswerOptions(Question $question, array $answerOptionsArray)
-    {
-        $i = 0;
-        foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
-            foreach ($answerOptionArray as $scaleId => $data) {
-                if (!isset($data['code'])) {
-                    throw new Exception(
-                        'code is not set in data: ' . json_encode($data)
-                    );
-                }
-                $answer = Answer::model()->findByAttributes(
-                    [
-                        'qid' => $question->qid,
-                        'code' => $data['code']
-                    ]
-                );
-                if (empty($answer)) {
-                    throw new Exception(
-                        'Found no answer option with code ' . $data['code']
-                    );
-                }
-                $answer->sortorder = $i;
-                $i++;
-                if (isset($data['assessment'])) {
-                    $answer->assessment_value = $data['assessment'];
-                } else {
-                    $answer->assessment_value = 0;
-                }
-                $answer->scale_id = $scaleId;
-                if (!$answer->update()) {
+                $codeIsEmpty = (!isset($aAnswerOptionDataSet['code']));
+                if ($codeIsEmpty) {
                     throw new CHttpException(
                         500,
-                        gT("Could not save answer option") . PHP_EOL
-                        . print_r($answer->getErrors(), true)
+                        "Answer option code cannot be empty"
                     );
                 }
-                $answer->refresh();
-                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
-                    $l10n = AnswerL10n::model()->findByAttributes(
-                        [
-                            'aid' => $answer->aid,
-                            'language' => $lang
-                        ]
+                $oAnswer->setAttributes($aAnswerOptionDataSet);
+                $answerSaved = $oAnswer->save();
+                if (!$answerSaved) {
+                    throw new CHttpException(
+                        500,
+                        "Answer option couldn't be saved. Error: "
+                        . print_r($oAnswer->getErrors(), true)
                     );
-                    if (empty($l10n)) {
-                        $l10n = new AnswerL10n();
-                    }
-                    $l10n->aid = $answer->aid;
-                    $l10n->language = $lang;
-                    $l10n->answer = $answerOptionText;
-                    if (!$l10n->save()) {
-                        throw new CHttpException(
-                            500,
-                            gT("Could not save answer option") . PHP_EOL
-                            . print_r($l10n->getErrors(), true)
-                        );
-                    }
                 }
+                $this->applyAnswerI10N($oAnswer, $question, $aAnswerOptionDataSet);
             }
         }
+                 */
         return true;
     }
 
