@@ -511,6 +511,8 @@ class SurveyAdministrationController extends LSBaseController
     /**
      * Function responsible to import survey resources from a '.zip' file.
      *
+     * @todo is this function used? the function editlocalsetting does not exists  (also not in old controller surveyadmin)
+     *
      * @access public
      * @return void
      */
