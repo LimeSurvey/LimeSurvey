@@ -20,8 +20,8 @@
 class mailHelper
 {
 
-    public const NEW_INSTANCE_MODE = 0;
-    public const PREVIOUS_INSTANCE_MODE = 1;
+    const NEW_INSTANCE_MODE = 0;
+    const PREVIOUS_INSTANCE_MODE = 1;
 
     /**
      * Instance of PHPMailer
