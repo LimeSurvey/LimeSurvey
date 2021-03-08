@@ -2215,13 +2215,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     global $maildebug, $maildebugbody;
     require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
 
-    $emailmethod = Yii::app()->getConfig('emailmethod');
-    $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
-    $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-    $emailsmtppassword = Yii::app()->getConfig("emailsmtppassword");
     $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
-    $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
-    $defaultlang = Yii::app()->getConfig("defaultlang");
     $emailcharset = Yii::app()->getConfig("emailcharset");
 
     if ($emailcharset != 'utf-8') {
@@ -2233,8 +2227,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     if (!is_array($to)) {
         $to = array($to);
     }
-
-
 
     if (!is_array($customheaders) && $customheaders == '') {
         $customheaders = array();
@@ -2251,17 +2243,8 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $sender = $bouncemail;
     }
 
-
-    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
-    $mail = new PHPMailer\PHPMailer\PHPMailer;
-    $mail->SMTPAutoTLS = false;
-    if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
-        $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
-    }
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl) !== '' && $emailsmtpssl !== 0) {
-        if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; } else {$mail->SMTPSecure = $emailsmtpssl; }
-    }
+    Yii::import('application.helpers.mailHelper');
+    $mail = mailHelper::getMailer();
 
     $fromname = '';
     $fromemail = $from;
@@ -2273,34 +2256,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     $senderemail = $sender;
     if (strpos($sender, '<')) {
         $senderemail = substr($sender, strpos($sender, '<') + 1, strpos($sender, '>') - 1 - strpos($sender, '<'));
-    }
-
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug > 0) {
-                $mail->SMTPDebug = $emailsmtpdebug;
-            }
-            if (strpos($emailsmtphost, ':') > 0) {
-                $mail->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
-                $mail->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
-            } else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username = $emailsmtpuser;
-            $mail->Password = $emailsmtppassword;
-            if (trim($emailsmtpuser) != "") {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            $mail->IsMail();
     }
 
     $mail->SetFrom($fromemail, $fromname);
@@ -2339,7 +2294,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             if (is_array($attachment)) {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             } else {
-// Or a string with the filename.
+            // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
         }

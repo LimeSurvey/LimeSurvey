@@ -153,6 +153,8 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
                                                 'error'=>'Token not valid anymore');
 
         } else {
+            Yii::import('application.helpers.mailHelper');
+            mailHelper::setModeForNext(mailHelper::PREVIOUS_INSTANCE_MODE, ['smtpKeepAlive' => true]);
             if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders)) {
                 $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                     'email'=>$fieldsarray["{EMAIL}"],
