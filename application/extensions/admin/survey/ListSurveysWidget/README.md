@@ -6,7 +6,7 @@
  - $model            : the survey search model
  - $bRenderFooter    : set if the footer should the footer be rendered
  - $bRenderSearchBox : set if the search boxes should be rendered
- - $formUrl          : url of the action for the search action (default: admin/survey/sa/listsurveys/)
+ - $formUrl          : url of the action for the search action (default: surveyAdministration/listsurveys/)
 
 ## Usage Example:
 

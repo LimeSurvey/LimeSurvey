@@ -91,7 +91,10 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->sliderOptionsArray['slider_default_set'] = (bool) ($this->getQuestionAttribute('slider_default_set') && $this->sliderOptionsArray['slider_default'] !== '');
 
             // Put the slider init to initial state (when no click is set or when 'reset')
-            if ($this->sliderOptionsArray['slider_default'] !== '') {
+            if (
+                   $this->sliderOptionsArray['slider_default'] !== ''
+                && $this->sliderOptionsArray['slider_default_set']
+            ) {
                 $this->sliderOptionsArray['slider_position'] = $this->sliderOptionsArray['slider_default'];
             } elseif ($this->getQuestionAttribute('slider_middlestart') == 1) {
                 $this->sliderOptionsArray['slider_position'] = intval(($this->sliderOptionsArray['slider_max'] + $this->sliderOptionsArray['slider_min']) / 2);

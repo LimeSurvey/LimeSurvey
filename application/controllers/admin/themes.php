@@ -170,7 +170,7 @@ class themes extends Survey_Common_Action
     {
         $action = returnGlobal('action');
         if ($action == 'templateuploadimagefile' && App()->request->getPost('surveyid')) {
-            App()->getController()->forward("/admin/survey/sa/uploadimagefile/");
+            App()->getController()->forward("/surveyAdministration/uploadimagefile/");
             App()->end();
         }
         $sTemplateName = App()->request->getPost('templatename');
@@ -774,7 +774,7 @@ class themes extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect(array("themeOptions"));
+        $this->getController()->redirect(array("themeOptions/index"));
     }
 
     /**

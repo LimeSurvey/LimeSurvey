@@ -28,7 +28,7 @@
 
               <!-- Delete survey -->
               <li>
-                  <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$oSurvey->sid}"); ?>">
+                  <a href="<?php echo $this->createUrl("surveyAdministration/delete/surveyid/{$oSurvey->sid}"); ?>">
                     <span class="fa fa-trash" ></span>
                     <?php eT("Delete survey"); ?>
                   </a>

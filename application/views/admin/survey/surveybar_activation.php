@@ -18,7 +18,7 @@
 
     <!-- activate -->
     <?php if ($canactivate): ?>
-        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("admin/survey/sa/activate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <a id='ls-activate-survey' class="btn btn-success" href="<?php echo $this->createUrl("surveyAdministration/activate/surveyid/$oSurvey->sid"); ?>" role="button">
             <?php eT("Activate this survey"); ?>
         </a>
 
@@ -51,7 +51,7 @@
 
     <!-- Stop survey -->
     <?php if ($canactivate): ?>
-        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
+        <a class="btn btn-danger btntooltip" href="<?php echo $this->createUrl("surveyAdministration/deactivate/surveyid/$oSurvey->sid"); ?>" role="button">
             <i class="fa fa-stop-circle" ></i>
             <?php eT("Stop this survey"); ?>
         </a>

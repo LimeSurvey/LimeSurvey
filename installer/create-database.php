@@ -475,9 +475,8 @@ function populateDatabase($oDB)
             'expire' => "integer NULL",
             'data' => "longbinary",
         ), $options);
-
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
-
+        $oDB->createCommand()->createIndex('sess_expire', '{{sessions}}', 'expire');
 
         // settings_global
 

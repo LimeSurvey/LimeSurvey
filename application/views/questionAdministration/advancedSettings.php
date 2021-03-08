@@ -39,8 +39,7 @@
                             role="tab"
                             data-toggle="tab"
                             >
-                            <!-- TODO: Localization -->
-                            <?= $category; ?>
+                            <?= gT($category); ?>
                         </a>
                     </li>
                 <?php endforeach; ?>

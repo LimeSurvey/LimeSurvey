@@ -1257,7 +1257,7 @@ class Survey_Common_Action extends CAction
             if (!empty($ugid)) {
                 $userGroup = UserGroup::model()->findByPk($ugid);
                 $uid = Yii::app()->session['loginID'];
-                if ($userGroup && $userGroup->hasUser($uid)) {
+                if (($userGroup && $userGroup->hasUser($uid)) || Permission::model()->hasGlobalPermission('superadmin') ) {
                     $data['userGroup'] = $userGroup;
                 } else {
                     $data['userGroup'] = null;

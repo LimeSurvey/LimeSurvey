@@ -137,7 +137,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 
         $rownr++;
         if ($rownr == 1) {
-            $num_fields = safecount($row);
+            $num_fields = safecount($fields);
             // Add column headers (used by R export)
             if ($header == true) {
                 $i = 1;
@@ -1453,6 +1453,9 @@ function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
 
     // Change the value in the DOM element
     $element->setAttribute("defaultValue", $value);
+
+    // Change length
+    $element->getElementsByTagName("free")->item(0)->getElementsByTagName("length")->item(0)->nodeValue = strlen($value);
 }
 
 
