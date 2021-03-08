@@ -339,6 +339,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['de']['radixpoint'] = 1;
     $supportedLanguages['de']['momentjs'] = 'de';
 
+    // German easy
+    $supportedLanguages['de-easy']['description'] = gT('German (easy)');
+    $supportedLanguages['de-easy']['nativedescription'] = 'Deutsch - Leichte Sprache';
+    $supportedLanguages['de-easy']['rtl'] = false;
+    $supportedLanguages['de-easy']['dateformat'] = 1;
+    $supportedLanguages['de-easy']['radixpoint'] = 1;
+    $supportedLanguages['de-easy']['cldr'] = 'de';
+    $supportedLanguages['de-easy']['momentjs'] = 'de';
+
     // German informal
     $supportedLanguages['de-informal']['description'] = gT('German (informal)');
     $supportedLanguages['de-informal']['nativedescription'] = 'Deutsch (Du)';
