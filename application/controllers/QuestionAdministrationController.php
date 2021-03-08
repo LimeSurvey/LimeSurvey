@@ -451,7 +451,12 @@ class QuestionAdministrationController extends LSBaseController
                     );
                 }
             } else {
-                // TODO: Update subquestions.
+                if ($question->questionType->subquestions > 0) {
+                    $this->updateSubquestions(
+                        $question,
+                        $request->getPost('subquestions')
+                    );
+                }
                 if ($question->questionType->answerscales > 0) {
                     $this->updateAnswerOptions(
                         $question,
@@ -2689,11 +2694,6 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionOrder = 0;
         foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
-            if ($subquestionId == 0 or strpos($subquestionId, 'new') === 0) {
-                // New subquestion
-            } else {
-                // Updating subquestion
-            }
             foreach ($subquestionArray as $scaleId => $data) {
                 $subquestion = new Question();
                 $subquestion->sid        = $question->sid;
@@ -2733,51 +2733,80 @@ class QuestionAdministrationController extends LSBaseController
                         );
                     }
                 }
-                /*
-                $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
-                $oSubQuestion = Question::model()->find(
-                    'sid = :sid AND qid = :qid',
-                    [':sid' => $question->sid, ':qid' => (int) $aSubquestionDataSet['qid']]
-                );
-                if ($oSubQuestion != null && !$isCopyProcess) {
-                    $oSubQuestion = $this->updateQuestionData($oSubQuestion, $aSubquestionDataSet);
-                } elseif (!$question->survey->isActive) {
-                    $aSubquestionDataSet['parent_qid'] = $question->qid;
-                    $oSubQuestion = $this->storeNewQuestionData($aSubquestionDataSet, true);
-                }
-                $this->applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
-                 */
             }
         }
     }
 
     /**
-     * @todo document me
-     * @todo delete if not used
+     * Save subquestion.
+     * Used when survey *is* activated.
      *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return boolean
+     * @param Question $question
+     * @param array $subquestionsArray Data from request.
+     * @return void
      * @throws CHttpException
      */
-    private function applyI10NSubquestion($oQuestion, $dataSet)
+    private function updateSubquestions($question, $subquestionsArray)
     {
-        foreach ($oQuestion->survey->allLanguages as $sLanguage) {
-            $aI10NBlock = $dataSet[$sLanguage];
-            $i10N = QuestionL10n::model()->findByAttributes(['qid' => $oQuestion->qid, 'language' => $sLanguage]);
-            $i10N->setAttributes(
-                [
-                    'question' => $aI10NBlock['question'],
-                    'help'     => $aI10NBlock['help'],
-                ],
-                false
-            );
-            if (!$i10N->save()) {
-                throw new CHttpException(500, gT("Could not store translation for subquestion"));
+        $questionOrder = 0;
+        foreach ($subquestionsArray as $subquestionId => $subquestionArray) {
+            foreach ($subquestionArray as $scaleId => $data) {
+                $subquestion = Question::model()->findByAttributes(
+                    [
+                        'parent_qid' => $question->qid,
+                        'title'      => $data['code']
+                    ]
+                );
+                if (empty($subquestion)) {
+                    throw new Exception('Found no subquestion with code ' . $data['code']);
+                }
+                $subquestion->sid        = $question->sid;
+                $subquestion->gid        = $question->gid;
+                $subquestion->parent_qid = $question->qid;
+                $subquestion->question_order = $questionOrder;
+                $questionOrder++;
+                if (!isset($data['code'])) {
+                    throw new CHttpException(
+                        500,
+                        'Internal error: Missing mandatory field code for question: ' . json_encode($data)
+                    );
+                }
+                $subquestion->title      = $data['code'];
+                if ($scaleId === 0) {
+                    $subquestion->relevance  = $data['relevance'];
+                }
+                $subquestion->scale_id   = $scaleId;
+                if (!$subquestion->update()) {
+                    throw new CHttpException(
+                        500,
+                        gT("Could not save subquestion") . PHP_EOL
+                        . print_r($subquestion->getErrors(), true)
+                    );
+                }
+                $subquestion->refresh();
+                foreach ($data['subquestionl10n'] as $lang => $questionText) {
+                    $l10n = QuestionL10n::model()->findByAttributes(
+                        [
+                            'qid' => $subquestion->qid,
+                            'language' => $lang
+                        ]
+                    );
+                    if (empty($l10n)) {
+                        $l10n = new QuestionL10n();
+                    }
+                    $l10n->qid = $subquestion->qid;
+                    $l10n->language = $lang;
+                    $l10n->question = $questionText;
+                    if (!$l10n->save()) {
+                        throw new CHttpException(
+                            500,
+                            gT("Could not save subquestion") . PHP_EOL
+                            . print_r($l10n->getErrors(), true)
+                        );
+                    }
+                }
             }
         }
-
-        return true;
     }
 
     /**
@@ -2904,82 +2933,6 @@ class QuestionAdministrationController extends LSBaseController
                 }
             }
         }
-        return true;
-    }
-
-    /**
-     * @todo document me
-     * @todo delete if not used
-     *
-     * @param Question $oQuestion
-     * @param array $dataSet
-     * @return void
-     */
-    private function cleanAnsweroptions(&$oQuestion, &$dataSet)
-    {
-        $aAnsweroptions = $oQuestion->answers;
-        array_walk(
-            $aAnsweroptions,
-            function ($oAnsweroption) use (&$dataSet) {
-                $exists = false;
-                foreach ($dataSet as $scaleId => $aAnsweroptions) {
-                    foreach ($aAnsweroptions as $i => $aAnsweroptionDataSet) {
-                        if (
-                            ((is_numeric($aAnsweroptionDataSet['aid'])
-                                    && $oAnsweroption->aid == $aAnsweroptionDataSet['aid'])
-                                || $oAnsweroption->code == $aAnsweroptionDataSet['code'])
-                            && ($oAnsweroption->scale_id == $scaleId)
-                        ) {
-                            $exists = true;
-                            $dataSet[$scaleId][$i]['aid'] = $oAnsweroption->aid;
-                        }
-
-                        if (!$exists) {
-                            $oAnsweroption->delete();
-                        }
-                    }
-                }
-            }
-        );
-    }
-
-    /**
-     * @todo document me
-     * @todo delete if not used
-     *
-     * @param Answer $oAnswer
-     * @param Question $oQuestion
-     * @param array $dataSet
-     *
-     * @return boolean
-     * @throws CHttpException
-     */
-    private function applyAnswerI10N($oAnswer, $oQuestion, $dataSet)
-    {
-        foreach ($oQuestion->survey->allLanguages as $sLanguage) {
-            $i10N = AnswerL10n::model()->findByAttributes(['aid' => $oAnswer->aid, 'language' => $sLanguage]);
-            if ($i10N == null) {
-                $i10N = new AnswerL10n();
-                $i10N->setAttributes(
-                    [
-                        'aid'      => $oAnswer->aid,
-                        'language' => $sLanguage,
-                    ],
-                    false
-                );
-            }
-            $i10N->setAttributes(
-                [
-                    'answer' => $dataSet[$sLanguage]['answer'],
-                ],
-                false
-            );
-
-            if (!$i10N->save()) {
-                throw new CHttpException(500, gT("Could not store translation for answer option"));
-            }
-        }
-
         return true;
     }
 
