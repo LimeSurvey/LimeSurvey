@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.16 (build 210302) to 3.25.17 (build 210309) March 8, 2021
+-Fixed issue: Password is not sent in 'Resume later' email anymore for security reasons (Carsten Schmitz)
+-Fixed issue: Default survey group can be deleted (Carsten Schmitz)
+-Fixed issue #17149: UserGroup hasUser() return true for superadmin (#1789) (Dan)
+-Fixed issue #16723: SPSS data export does not include any delimiters after lastpage field (Carsten Schmitz)
+-Fixed issue #16604: Adding condition triggers bulk update for complete database (#1788) (Gabriel Jenik)
+-Fixed issue #16604: Adding condition triggers bulk update for complete database (#1564) (Gabriel Jenik)
+-Fixed issue #15854: Cannot open pop up editor - subquestions (an extra page refresh needed) (#1784) (Gabriel Jenik)
+-Fixed issue #15683: Error after changing the language to Tajik (Carsten Schmitz)
+-Fixed issue #15500: getSurveyInfo() fails with fatal error for a plugin from console (Olle Haerstedt)
+-Fixed issue #15239: Brute-force attack with tokens to enter survey is possible (#1794) (Gabriel Jenik)
+-Fixed issue #15239: Brute-force attack with tokens to enter survey is possible (#1792) (Gabriel Jenik)
+-Fixed issue #14732: Superadmin user cannot modify members of a group he is not a member of (Carsten Schmitz)
+#Updated translation: Turkish by bulent
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfortunato, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+
+
 Changes from 3.25.15 (build 210223) to 3.25.16 (build 210302) March 1, 2021
 -Fixed issue: Text - Text to be updated - add participant(s) to survey button - cpdb (Jessica Höck)
 -Fixed issue #17114: Import from TSV : relevance set to "0" not imported (#1771) (Gabriel Jenik)
