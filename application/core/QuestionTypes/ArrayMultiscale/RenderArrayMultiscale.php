@@ -429,6 +429,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
         $this->registerAssets();
         $this->inputnames[] = $this->sSGQA;
+
+        if (!Yii::app()->getClientScript()->isScriptFileRegistered(Yii::app()->getConfig('generalscripts') . "dualscale.js", LSYii_ClientScript::POS_BEGIN)) {
+            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "dualscale.js", LSYii_ClientScript::POS_BEGIN);
+        }
+        Yii::app()->getClientScript()->registerScript('doDualScaleFunction' . $this->oQuestion->qid, "{$this->doDualScaleFunction}({$this->oQuestion->qid});", LSYii_ClientScript::POS_POSTSCRIPT);
+
         return array($answer, $this->inputnames);
     }
 }
