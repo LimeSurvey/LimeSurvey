@@ -479,6 +479,65 @@ class GlobalSettings extends Survey_Common_Action
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
+    public function sendTestEmail()
+    {
+        $sSiteName = Yii::app()->getConfig('sitename');
+
+        //Use the current user details for the default administrator name and email
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $sTo = $user->full_name . " <" . $user->email . ">";
+        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
+        $sSubject = sprintf(gT('Test email from %s'), $sSiteName);
+        
+        $body   = array();
+        $body[] = sprintf(gT('This is a test email from %s'), $sSiteName);
+        $body   = implode("\n", $body);
+
+        $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
+    }
+
+    private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
+    {
+        $mailer = new \LimeMailer();
+        $mailer->emailType = 'settings_test';
+        $mailer->rawBody = $body;
+        $mailer->rawSubject = $sSubject;
+        $mailer->SMTPDebug = 2;
+        $mailer->setTo($sTo);
+        $mailer->setFrom($sFrom);
+
+        $success = $mailer->sendMessage();
+
+        if ($success) {
+            $content = gT('Email sent successfully');
+        } else {
+            $content = sprintf(gT("Email sending failure: %s"), $mailer->getError());
+        }
+
+        $data = [];
+        $data['message'] = $content;
+        $data['success'] = $success;
+        $data['maildebug'] = $mailer->getDebug('html');
+
+        $this->_renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
+    }
+
+    public function sendTestEmailConfirmation()
+    {
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $aData = [
+            'testEmail' => $user->email,
+            'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
+            'siteadminname' => Yii::app()->getConfig("siteadminname"),
+            'emailmethod' => Yii::app()->getConfig("emailmethod"),
+            'emailsmtphost' => Yii::app()->getConfig("emailsmtphost"),
+            'emailsmtpuser' => Yii::app()->getConfig("emailsmtpuser"),
+            'emailsmtppassword' => 'somepassword',
+            'emailsmtpssl' => Yii::app()->getConfig("emailsmtpssl"),
+        ];
+        $this->getController()->renderPartial("globalsettings/_emailTestConfirmation", $aData);
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *

@@ -100,6 +100,41 @@
                 <span class="hint"><?php eT("Number of seconds to wait until the next email batch is sent."); ?></span>
             </div>
         </div>
+        <!-- Test email -->
+        <div class="form-group">
+            <label class="text-left control-label" for='sendTestEmail'>
+            <?php eT("Send test email:"); ?>
+            </label>
+            <div class="">
+                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send Email");?></a-->
+                <button 
+                    id="sendtestemailbutton"
+                    class='btn btn-large btn-primary' 
+                    data-href='<?= \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmailConfirmation")) ?>'>
+                    <?php eT("Send Email");?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sendtestemail-confirmation-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- the ajax loader -->
+        <div class="ajaxloader">
+            <p><?php eT('Please wait, loading data...');?></p>
+            <div class="preloader loading">
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+                <span class="slice"></span>
+            </div>
+        </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            
+        </div>
     </div>
 </div>
 
