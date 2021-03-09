@@ -17,19 +17,19 @@ class SimpleSurveyValues
 {
 
     /** @var string language selected by user */
-    private $baseLanguage;
+    public $baseLanguage;
 
     /** @var string title of the survey */
-    private $title;
+    public $title;
 
     /** @var  int the surveygroup from which the new survey will inherit values */
-    private $surveyGroupId;
+    public $surveyGroupId;
 
     /** @var string administrator name */
-    private $admin = 'inherit';
+    public $admin = 'inherit';
 
     /** @var string administrator email */
-    private $adminEmail = 'inherit';
+    public $adminEmail = 'inherit';
 
     /**
      * @return string
