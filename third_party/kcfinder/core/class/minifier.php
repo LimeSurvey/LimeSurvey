@@ -68,7 +68,7 @@ class minifier {
         header($header);
 
         // GET SOURCE CODE FROM SERVER-SIDE CACHE
-        if (($cacheFile !== null) &&
+        /* if (($cacheFile !== null) &&
             file_exists($cacheFile) &&
             (
                 (filemtime($cacheFile) >= $mtime) ||
@@ -78,7 +78,7 @@ class minifier {
             readfile($cacheFile);
             die;
         }
-
+        */
         // MINIFY AND JOIN SOURCE CODE
         $source = "";
         foreach ($files as $file) {
@@ -91,6 +91,7 @@ class minifier {
                 $source .= file_get_contents($file);
         }
 
+        /*
         // UPDATE SERVER-SIDE CACHE
         if (($cacheFile !== null) &&
             (
@@ -104,7 +105,7 @@ class minifier {
             file_put_contents($cacheFile, $source);
             touch($cacheFile, $mtime);
         }
-
+        */
         // OUTPUT SOURCE CODE
         echo $source;
 

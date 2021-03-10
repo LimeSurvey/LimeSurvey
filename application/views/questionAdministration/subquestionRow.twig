@@ -25,7 +25,20 @@
 
         <!-- Code (title) -->
         <td class="code-title" style="vertical-align: middle;">
-            {{ subquestion.title|escape('html') }}
+            <input
+                type='text'
+                class="code form-control input"
+                id='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
+                name='subquestions[{{ subquestion.qid }}][{{ scale_id }}][code]'
+                class='code code-title'
+                value="{{ subquestion.title|escape('html_attr') }}"
+                required='required'
+                maxlength="20"
+                {% if question.survey.active == 'Y' %}
+                readonly="readonly"
+                {% endif %}
+                onfocusout="LS.questionEditor.showSubquestionCodeUniqueError(this);"
+            />
         </td>
 
     {# If survey is not activated and first language : move button, code editable   #}
@@ -67,6 +80,9 @@
                 value="{{ subquestion.title|escape('html_attr') }}"
                 required='required'
                 maxlength="20"
+                {% if question.survey.active == 'Y' %}
+                readonly="readonly"
+                {% endif %}
                 onfocusout="LS.questionEditor.showSubquestionCodeUniqueError(this);"
             />
         </td>

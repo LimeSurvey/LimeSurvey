@@ -85,9 +85,12 @@
                 {% if first %}
                     <!-- TODO: Not used??? -->
                     <input type='hidden' id='answercount_{{ scale_id }}' name='answercount_{{ scale_id }}' value='{{ anscount }}' />
-                    {% set disabled="" %}
                 {% endif %}
-                <br/>
+                {% if activated == 'Y' %}
+                    {% set disabled = 'disabled="disabled"' %}
+                {% else %}
+                    {% set disabled = '' %}
+                {% endif %}
 
                 <button
                     {{ disabled }}
