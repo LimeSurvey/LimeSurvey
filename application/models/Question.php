@@ -28,7 +28,7 @@ if (!defined('BASEPATH')) {
  * @property string $preg
  * @property string $help Question help-text for display
  * @property string $other Other option enabled for question (Y/N)
- * @property string $mandatory Whther question is mandatory (Y/N)
+ * @property string $mandatory Whether question is mandatory (Y/N/S)
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property string $language Question language code. Note: Primary key is qid & language columns combined
@@ -107,7 +107,7 @@ class Question extends LSActiveRecord
                     array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
                     array('title,question,help', 'LSYii_Validators'),
                     array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-                    array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+                    array('mandatory', 'in', 'range'=>array('Y', 'N', 'S'), 'allowEmpty'=>true),
                     array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
                     array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
                     array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -925,7 +925,13 @@ class Question extends LSActiveRecord
     public function getMandatoryIcon()
     {
         if ($this->type != "X" && $this->type != "|") {
-            $sIcon = ($this->mandatory == "Y") ? '<span class="fa fa-asterisk text-danger"></span>' : '<span></span>';
+            if ($this->mandatory == "Y"){
+                $sIcon = '<span class="fa fa-asterisk text-danger"></span>';
+            } elseif ($this->mandatory == "S"){
+                $sIcon = '<span class="fa fa-asterisk text-danger"> ' . gT('Soft') . '</span>';
+            } else {
+                $sIcon = '<span></span>';
+            }
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
@@ -1109,7 +1115,7 @@ class Question extends LSActiveRecord
         if ($this->parent_qid != 0) {
             /* Fix #15228: This survey throw a Error when try to print : seems subquestion gid can be outdated */
             // Use parents relation
-            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ? 
+            if(!empty($this->parents)) { // Maybe need to throw error or find it if it's not set ?
                 return "{$this->parents->sid}X{$this->parents->gid}X{$this->parent_qid}";
             }
             return "{$this->sid}X{$this->gid}X{$this->parent_qid}";

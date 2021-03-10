@@ -28,6 +28,8 @@
                         <?php if ($qrrow['type'] != "X"): ?>
                             <?php if ($qrrow['mandatory'] == "Y") :?>
                                 : (<i><?php eT("Mandatory Question"); ?></i>)
+                            <?php elseif ($qrrow['mandatory'] == "S") : ?>
+                                : (<i><?php eT("Soft Mandatory Question"); ?></i>)
                             <?php else: ?>
                                     : (<i><?php eT("Optional Question"); ?></i>)
                             <?php endif; ?>
@@ -157,6 +159,8 @@
                         <td>
                             <?php if ($qrrow['mandatory'] == "Y") : ?>
                                 <?php eT("Yes"); ?>
+                            <?php elseif ($qrrow['mandatory'] == "S") : ?>
+                                <?php eT("Soft"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>
                             <?php endif;  ?>

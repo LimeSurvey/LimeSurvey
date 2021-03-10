@@ -336,7 +336,7 @@
         * 'type' => 'N'    // the one character question type
         * 'hidden' => 0    // 1 if it should be always_hidden
         * 'gid' => "34"    // group id
-        * 'mandatory' => 'N'   // 'Y' if mandatory
+        * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
         * 'eqn' => ""  // TODO ??
         * 'help' => "" // the help text
         * 'qtext' => "Enter a larger number than {num}"    // the question text
@@ -1821,7 +1821,7 @@
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_equals',
-                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
+                            'eqn' =>  ($qinfo['mandatory']=='Y' || $qinfo['mandatory']=='S')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -5147,6 +5147,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=> (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5209,6 +5211,8 @@
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'qseq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> $result['mandViolation'],
+                                'mandSoft'=> (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> $result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5256,6 +5260,8 @@
                         'gseq'=>1,
                         'seq'=>1,
                         'mandViolation'=>$result['mandViolation'],
+                        'mandSoft'=> (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
+                        'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                         'valid'=>$result['valid'],
                         'unansweredSQs'=>$result['unansweredSQs'],
                         'invalidSQs'=>$result['invalidSQs'],
@@ -5272,7 +5278,7 @@
                         $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                         $message .= $result['message'];
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                        if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                        if (!is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft')))
                         {
                             // redisplay the current group
                             $message .= $LEM->_UpdateValuesInDatabase();
@@ -5283,6 +5289,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>$result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=>$result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5303,6 +5311,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=>(isset($result['valid']) ? $result['valid'] : false), // Why return invalid if it's not set ?
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5332,6 +5342,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5352,7 +5364,7 @@
                         $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                         $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
                         $grel = $gRelInfo['result'];
-                        if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                        if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']) && empty(App()->request->getPost('mandSoft')))
                         {
                             // redisplay the current question with all error
                             $message .= $LEM->_UpdateValuesInDatabase();
@@ -5364,6 +5376,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> $result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> $result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5385,6 +5399,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5427,6 +5443,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5749,6 +5767,8 @@
                         'gseq'=>1,
                         'seq'=>1,
                         'mandViolation'=>$result['mandViolation'],
+                        'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                        'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                         'valid'=>$result['valid'],
                         'unansweredSQs'=>$result['unansweredSQs'],
                         'invalidSQs'=>$result['invalidSQs'],
@@ -5779,6 +5799,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>$result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=>$result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5802,6 +5824,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=>(isset($result['valid']) ? $result['valid'] : false),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5839,6 +5863,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5873,6 +5899,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5897,6 +5925,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (isset($result['valid']) ? $result['valid'] : false),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5948,6 +5978,8 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
+                                'mandNonSoft'=> (isset($result['mandNonSoft'])) ? $result['mandNonSoft'] : false,
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5972,6 +6004,8 @@
             $srel=false;
             $shidden=true;
             $smandViolation=false;
+            $smandSoft=false;
+            $smandNonSoft=false;
             $svalid=true;
             $unansweredSQs = array();
             $invalidSQs = array();
@@ -5998,6 +6032,12 @@
                 if ($gStatus['relevant'] && !$gStatus['hidden'] && $gStatus['mandViolation']) {
                     $smandViolation = true;
                 }
+                if ($gStatus['mandSoft']) {
+                    $smandSoft = true;
+                }
+                if ($gStatus['mandNonSoft']) {
+                    $smandNonSoft = true;
+                }
                 if ($gStatus['relevant'] && !$gStatus['hidden'] && !$gStatus['valid']) {
                     $svalid=false;
                 }
@@ -6023,6 +6063,8 @@
             'relevant' => $srel,
             'hidden' => $shidden,
             'mandViolation' => $smandViolation,
+            'mandSoft'=>(isset($smandSoft) ? $smandSoft : false),
+            'mandNonSoft'=>(isset($smandNonSoft) ? $smandNonSoft : false),
             'valid' => $svalid,
             'anyUnanswered' => $sanyUnanswered,
             'message' => $message,
@@ -6059,6 +6101,8 @@
             $grel=false;  // assume irrelevant until find a relevant question
             $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
             $gmandViolation=false;  // assume that the group contains no manditory questions that have not been fully answered
+            $gmandSoft=false;  // assume that the group contains no SOFT manditory questions that have not been fully answered
+            $gmandNonSoft=false;  // is there any non SOFT manditory questions that have not been fully answered
             $gvalid=true;   // assume valid until discover otherwise
             $debug_message = '';
             $messages = array();
@@ -6101,6 +6145,13 @@
                 }
                 if (strlen($qStatus['invalidSQs']) > 0) {
                     $invalidSQs[] = $qStatus['invalidSQs'];
+                }
+                // SOFT mandatory
+                if ($qStatus['mandSoft'] == true){
+                    $gmandSoft=true;   // at least one relevant question fails mandatory test
+                }
+                if ($qStatus['mandNonSoft'] == true){
+                    $gmandNonSoft=true;
                 }
             }
             $unansweredSQList = implode('|',$unansweredSQs);
@@ -6169,6 +6220,8 @@
             'relevant' => $grel,
             'hidden' => $ghidden,
             'mandViolation' => $gmandViolation,
+            'mandSoft' => $gmandSoft,
+            'mandNonSoft' => $gmandNonSoft,
             'valid' => $gvalid,
             'qset' => $currentQset,
             'unansweredSQs' => $unansweredSQList,
@@ -6188,6 +6241,7 @@
             'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
             'valid' => $gvalid,
             'mandViolation' => $gmandViolation,
+            'mandSoft' => $gmandSoft,
             'show' => (($grel && !$ghidden) ? true : false),
             );
 
@@ -6560,7 +6614,8 @@
             //////////////////////////////////////////////
             $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
             $mandatoryTip = '';
-            if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
+            // bypass validation if soft mandatory button was pressed
+            if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft')))
             {
                 //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
                 $mandatoryTip = Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
@@ -6841,7 +6896,7 @@
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
                 . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
-                . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
+                . (($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')? ' mandatory' : ' ')
                 . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(fails validation rule)</span> " : ' valid') : '')
                 . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . $prettyPrintRelEqn
@@ -7052,6 +7107,9 @@
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br />',$prettyPrintSQRelEqns),
             'mandViolation' => (!$force) ? $qmandViolation : false,
+            'mandSoft' => $qInfo['mandatory'] == 'S' && $qmandViolation === true ? true : false,
+            'mandNonSoft' => ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'N') && ($qmandViolation === true || $qvalid === false) ? true : false,
+            'mandatory' => isset($qInfo['mandatory']) ? $qInfo['mandatory'] : 'N',
             'anyUnanswered' => $anyUnanswered,
             'mandTip' => (!$force) ? $mandatoryTip : '',
             'message' => $debug_qmessage,
@@ -7083,6 +7141,9 @@
             'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
             'gid' => $LEM->gseq2info[$groupSeq]['gid'],
             'mandViolation' => $qmandViolation,
+            'mandSoft' => $qInfo['mandatory'] == 'S' && $qmandViolation === true ? true : false,
+            'mandNonSoft' => $qInfo['mandatory'] == 'Y' && $qmandViolation === true ? true : false,
+            'mandatory' => isset($qInfo['mandatory']) ? $qInfo['mandatory'] : 'N',
             'valid' => $qvalid,
             );
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
@@ -9682,7 +9743,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // SHOW QUESTION-LEVEL INFO
                 //////
-                $mandatory = (($q['info']['mandatory']=='Y') ? "<span class='mandatory'>*</span>" : '');
+                $mandatory = (($q['info']['mandatory']=='Y' || $q['info']['mandatory']=='S') ? "<span class='mandatory'>*</span>" : '');
                 $type = $q['info']['type'];
                 $typedesc = $qtypes[$type]['description'];
                 $sgqas = explode('|',$q['sgqa']);
