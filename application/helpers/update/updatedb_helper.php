@@ -3753,7 +3753,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 "htmleditormode='source'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 438), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 441), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
