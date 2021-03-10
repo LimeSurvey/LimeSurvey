@@ -443,14 +443,14 @@ class SurveyAdministrationController extends LSBaseController
             if ($baseLanguage === null) {
                 $baseLanguage = 'en'; //shoulb be const somewhere ... or get chosen language from user
             }
-            $simpleSurveyValues->setBaseLanguage($baseLanguage);
-            $simpleSurveyValues->setSurveyGroupId((int) App()->request->getPost('gsid', '1'));
-            $simpleSurveyValues->setTitle($surveyTitle);
+            $simpleSurveyValues->baseLanguage = $baseLanguage;
+            $simpleSurveyValues->surveyGroupId = (int) App()->request->getPost('gsid', '1');
+            $simpleSurveyValues->title = $surveyTitle;
 
             $administrator = Yii::app()->request->getPost('administrator');
             if ($administrator == 'custom') {
-                $simpleSurveyValues->setAdmin(Yii::app()->request->getPost('admin'));
-                $simpleSurveyValues->setAdminEmail(Yii::app()->request->getPost('adminemail'));
+                $simpleSurveyValues->admin = Yii::app()->request->getPost('admin');
+                $simpleSurveyValues->adminEmail = Yii::app()->request->getPost('adminemail');
             }
             $overrideAdministrator = ($administrator != 'owner');
 
