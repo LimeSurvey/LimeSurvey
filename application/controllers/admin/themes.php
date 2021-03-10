@@ -379,10 +379,26 @@ class themes extends Survey_Common_Action
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
                     }
-                    $sThemeDirectory = scandir($sPathToThemeDirectory)[2];
-                    // install the Question Theme
-                    $sQuestionThemeTitle = $questionTheme->importManifest($sPathToThemeDirectory . DIRECTORY_SEPARATOR . $sThemeDirectory);
-                    if (empty($sQuestionThemeTitle)) {
+                    // Question themes that apply to more than one question type, are technically different themes but can be distributed
+                    // in the same ZIP. So we must try to install all the available themes in the folder.
+                    $importedThemes = 0;
+                    $directory = new RecursiveDirectoryIterator($sPathToThemeDirectory);
+                    $iterator = new RecursiveIteratorIterator($directory);
+                    foreach ($iterator as $info) {
+                        if ($info->isFile() && $info->getBasename() == 'config.xml') {
+                            $questionConfigFilePath = dirname($info->getPathname());
+                            $sQuestionThemeTitle = null;
+                            try {
+                                $sQuestionThemeTitle = $questionTheme->importManifest($questionConfigFilePath);
+                            } catch (Exception $e) {
+                                // Should probably push the error to an array an display the contents on a results page
+                            }
+                            if (!empty($sQuestionThemeTitle)) {
+                                $importedThemes++;
+                            }
+                        }
+                    }
+                    if ($importedThemes == 0) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
                             gT("An error occured while generating the Question theme"),
