@@ -420,10 +420,7 @@ function mandatory_popup($ia, $notanswered = null)
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
         } else {
-            $popup = gT("One or more mandatory questions have not been answered.");
-            if ($ia[6] != 'S') {
-                $popup .= " " . gT("You cannot proceed until these have been completed.");
-            }
+            $popup = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
             $mandatorypopup = "Y";
         }
         return array($mandatorypopup, $popup);
