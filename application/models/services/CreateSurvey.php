@@ -64,15 +64,15 @@ class CreateSurvey
      *
      * @return Survey|bool returns the survey or false if survey could not be created for any reason
      */
-    public function createSimple($simpleSurveyValues, $userID, $permissionModel)
+    public function createSimple($simpleSurveyValues, $userID, $permissionModel, $overrideAdministrator = true)
     {
 
         $this->simpleSurveyValues = $simpleSurveyValues;
-        $this->survey->gsid = $simpleSurveyValues->getSurveyGroupId();
+        $this->survey->gsid = $simpleSurveyValues->surveyGroupId;
         try {
             $this->createSurveyId();
             $this->setBaseLanguage();
-            $this->initialiseSurveyAttributes();
+            $this->initialiseSurveyAttributes($overrideAdministrator);
 
             if (!$this->survey->save()) {
                 // TODO: Localization?
@@ -102,7 +102,7 @@ class CreateSurvey
      */
     private function createRelationSurveyLanguageSettings($langsettings)
     {
-        $sTitle = html_entity_decode($this->simpleSurveyValues->getTitle(), ENT_QUOTES, "UTF-8");
+        $sTitle = html_entity_decode($this->simpleSurveyValues->title, ENT_QUOTES, "UTF-8");
 
         // Fix bug with FCKEditor saving strange BR types
         $sTitle = fixCKeditorText($sTitle);
@@ -146,7 +146,7 @@ class CreateSurvey
      */
     private function setBaseLanguage()
     {
-        $baseLang = $this->simpleSurveyValues->getBaseLanguage();
+        $baseLang = $this->simpleSurveyValues->baseLanguage;
 
         //check if language exists in our language array...
         $languageShortNames = getLanguageDataRestricted(true, 'short');
@@ -183,18 +183,17 @@ class CreateSurvey
     /**
      * @return void
      */
-    private function initialiseSurveyAttributes()
+    private function initialiseSurveyAttributes($overrideAdministrator = true)
     {
         $this->survey->expires = null;
         $this->survey->startdate = null;
         $this->survey->template = 'inherit'; //default template from default group is set to 'fruity'
-        $this->survey->admin = 'inherit'; //admin name ...
         $this->survey->active = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->anonymized = self::STRING_VALUE_FOR_NO_FALSE;
         $this->survey->faxto = null;
         $this->survey->format = self::STRING_SHORT_VALUE_INHERIT; //inherits value from survey group
         $this->survey->savetimings = self::STRING_SHORT_VALUE_INHERIT; //could also be 'I' for inherit from survey group ...
-        $this->survey->language = $this->simpleSurveyValues->getBaseLanguage();
+        $this->survey->language = $this->simpleSurveyValues->baseLanguage;
         $this->survey->datestamp = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->ipaddr = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->ipanonymize = self::STRING_SHORT_VALUE_INHERIT;
@@ -226,7 +225,10 @@ class CreateSurvey
         $this->survey->assessments = self::STRING_SHORT_VALUE_INHERIT;
         $this->survey->emailresponseto = 'inherit';
         $this->survey->tokenlength = self::INTEGER_VALUE_FOR_INHERIT;
-        $this->survey->adminemail = 'inherit';
         $this->survey->bounce_email = 'inherit';
+        if ($overrideAdministrator) {
+            $this->survey->admin = $this->simpleSurveyValues->admin; //admin name ...
+            $this->survey->adminemail = $this->simpleSurveyValues->adminEmail;
+        }
     }
 }

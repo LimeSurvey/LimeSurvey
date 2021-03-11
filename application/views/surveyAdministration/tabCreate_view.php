@@ -98,6 +98,37 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-6">
+                                <label class="control-label" for="administrator"><?= gT("Administrator:")?></label>
+                                <div class="">
+                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                        'name' => 'administrator',
+                                        'value'=> 'default',
+                                        'selectOptions' => isset($optionsAdmin) ?  $optionsAdmin : [],
+                                    ));?>
+                                </div>
+                            </div>
+                            <div id="conditional-administrator-fields" style="display: none;">
+                                <div class="form-group col-md-4 col-md-6">
+                                    <label class="control-label" for="admin"><?= gt("Administrator name")?></label>
+                                    <?php echo CHtml::textField('admin', '', array(
+                                        'class' => 'form-control',
+                                        'id' => 'admin',
+                                        'size' => '50',
+                                        'maxlength' => '50',
+                                    ));?>
+                                </div>
+                                <div class="form-group col-md-4 col-md-6">
+                                    <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
+                                    <?php echo CHtml::textField('adminemail', '', array(
+                                        'class' => 'form-control',
+                                        'id' => 'adminemail',
+                                        'size' => '50',
+                                    ));?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
