@@ -1787,6 +1787,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
+     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
      * @return double
      */
@@ -1826,6 +1827,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Fix invalid question in this survey
+     * Delete question that don't exist in primary language
      */
     public function fixInvalidQuestions()
     {
@@ -1980,7 +1982,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
-
 
     /**
      * Returns true if this survey has any question of type $type.
