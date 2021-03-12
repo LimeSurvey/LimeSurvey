@@ -411,7 +411,6 @@ class QuestionTheme extends LSActiveRecord
         foreach ($questionDirectories as $key => $questionDirectory) {
             $questionDirectories[$key] = str_replace('\\', '/', $questionDirectory);
         }
-        $publicurl = App()->getConfig('publicurl');
 
         $pathToXML = str_replace('\\', '/', $pathToXML);
         if (\PHP_VERSION_ID < 80000) {
@@ -459,7 +458,7 @@ class QuestionTheme extends LSActiveRecord
         // get custom previewimage if defined
         if (!empty($oQuestionConfig->files->preview->filename)) {
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
-            $questionMetaData['image_path'] = $publicurl . $pathToXML . '/assets/' . $previewFileName;
+            $questionMetaData['image_path'] = DIRECTORY_SEPARATOR . $pathToXML . '/assets/' . $previewFileName;
         }
 
         $questionMetaData['xml_path'] = $pathToXML;
