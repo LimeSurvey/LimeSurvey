@@ -176,7 +176,11 @@
         <!-- Relevance equation -->
         <?php if (trim($question->relevance) != ''): ?>
             <tr>
-                <td><?php eT("Relevance equation:"); ?></td>
+                <td>
+                    <strong>
+                    <?php eT("Relevance equation"); ?>:
+                    </strong>
+                </td>
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString("{" . $question->relevance . "}", $question->qid);    // tests Relevance equation so can pretty-print it
@@ -204,6 +208,7 @@
             <?php foreach ($settings as $setting): ?>
                 <tr>
                     <td>
+                        <?php echo $setting['caption'];?>:
                     </td>
                     <td>
                         <?php
@@ -211,11 +216,11 @@
                                 LimeExpressionManager::ProcessString('{' . $setting->value . '}', $question->qid);
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             } else {
-                                //if ($setting->aFormElementOptions->i18n == false) {
-                                    //echo htmlspecialchars($setting->aFormElementOptions->value);
-                                //} else {
-                                    //echo htmlspecialchars($setting['aFormElementOptions'][$question->survey->language]['value']);
-                                //}
+                                if (($setting->aFormElementOptions->i18n ==null) || ($setting->aFormElementOptions->i18n == false)) {
+                                    echo htmlspecialchars($setting->aFormElementOptions->value);
+                                } else {
+                                    echo htmlspecialchars($setting['aFormElementOptions'][$question->survey->language]['value']);
+                                }
                             }
                         ?>
                     </td>
