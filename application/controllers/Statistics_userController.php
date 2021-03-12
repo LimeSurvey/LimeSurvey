@@ -316,26 +316,26 @@ class Statistics_userController extends SurveyController
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
                     $resultsScale0 = Question::model()->with('questionl10ns')->findAll([
-                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale:id',
+                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale_id',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid, ':scale_id' => 0],
                         'order'     => 'question_order'
                     ]);
                     $resultsScale1 = Question::model()->with('questionl10ns')->findAll([
-                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale:id',
+                        'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale_id',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid, ':scale_id' => 1],
                         'order'     => 'question_order'
                     ]);
                     foreach ($resultsScale0 as $rowScale0) {
                         foreach ($resultsScale1 as $rowScale1) {
-                            $allfields[] = $SGQidentifier . reset($rowScale0) . "_" . $rowScale1['title'];
+                            $allfields[] = $SGQidentifier . $rowScale0['title'] . "_" . $rowScale1['title'];
                         }
                     }
                     break;
                 case Question::QT_R_RANKING_STYLE: //RANKING
-                    $results = Question::model()->with('questionl10ns')->findAll([
-                        'condition' => 'language=:language AND parent_qid=:parent_qid',
-                        'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
-                        'order'     => 'question_order'
+                    $results = Answer::model()->with('answerl10ns')->findAll([
+                        'condition' => 'language=:language AND qid=:qid',
+                        'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
+                        'order'     => 'sortorder'
                     ]);
                     $count = count($results);
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics

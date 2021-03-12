@@ -735,7 +735,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $landOnSideMenuTab = 'structure';
         if (empty($sScenario)) {
-            if (App()->request->getPost('save-and-close', '')) {
+            if (App()->request->getPost('close-after-save', '')) {
                 $sScenario = 'save-and-close';
             } elseif (App()->request->getPost('saveandnew', '')) {
                 $sScenario = 'save-and-new';

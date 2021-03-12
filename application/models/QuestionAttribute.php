@@ -425,19 +425,23 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * Return the question attribute settings for the passed type (parameter)
      *
-     * @param $sType : type of question (this is the attribute 'question_type' in table question_theme)
-     *
+     * @param string $sType : type of question (this is the attribute 'question_type' in table question_theme)
+     * @param boolean $advancedOnly If true, only fetch advanced attributes
      * @return array : the attribute settings for this question type
      *                 returns values from getGeneralAttributesFromXml and getAdvancedAttributesFromXml if this fails
      *                 getAttributesDefinition and getDefaultSettings are returned
      *
      * @throws CException
      */
-    public static function getQuestionAttributesSettings($sType)
+    public static function getQuestionAttributesSettings($sType, $advancedOnly = false)
     {
         $sXmlFilePath = QuestionTheme::getQuestionXMLPathForBaseType($sType);
-        // get attributes from config.xml
-        $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        if ($advancedOnly) {
+            $generalAttributes = [];
+        } else {
+            // Get attributes from config.xml
+            $generalAttributes = self::getGeneralAttibutesFromXml($sXmlFilePath);
+        }
         $advancedAttributes = self::getAdvancedAttributesFromXml($sXmlFilePath);
         self::$questionAttributesSettings[$sType] = array_merge($generalAttributes, $advancedAttributes);
 
@@ -495,7 +499,9 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -504,7 +510,9 @@ class QuestionAttribute extends LSActiveRecord
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }            
         } else {
             return null;
         }
@@ -559,7 +567,9 @@ class QuestionAttribute extends LSActiveRecord
 
         if (file_exists($sXmlFilePath)) {
             // load xml file
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
@@ -568,7 +578,9 @@ class QuestionAttribute extends LSActiveRecord
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
             }
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
         } else {
             return null;
         }

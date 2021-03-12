@@ -151,9 +151,13 @@ class ExtensionConfig
         if (!file_exists($file)) {
             return null;
         } else {
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
             $xml = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
             $config = new \ExtensionConfig($xml);
             return $config;
         }

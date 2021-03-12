@@ -120,7 +120,7 @@ class statistics extends Survey_Common_Action
 
         if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$surveyid}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$surveyid}"));
         }
 
         // Set language for questions and answers to base language of this survey
@@ -680,7 +680,7 @@ class statistics extends Survey_Common_Action
 
         if (!$oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("This survey is not active and has no responses."), 'error');
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$oSurveyid}"));
+            $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$oSurveyid}"));
         }
 
 

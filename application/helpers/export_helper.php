@@ -17,12 +17,15 @@
 * Strips html tags and replaces new lines
 *
 * @param $string
+* @param $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
-function stripTagsFull($string)
+function stripTagsFull($string, $removeOther = true)
 {
     $string = flattenText($string, false, true); // stripo whole + html_entities
-    $string = str_replace('-oth', '', $string);// Why ?
+    if ($removeOther) {
+        $string = str_replace('-oth-', '', $string);
+    }
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return $string;
@@ -110,6 +113,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 {
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
+    $survey = Survey::model()->findByPk($iSurveyID);
+
     // Now see if we have parameters for from (offset) & num (limit)
     $limit = App()->getRequest()->getParam('limit');
     $offset = App()->getRequest()->getParam('offset');
@@ -137,7 +142,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
 
         $rownr++;
         if ($rownr == 1) {
-            $num_fields = safecount($row);
+            $num_fields = safecount($fields);
             // Add column headers (used by R export)
             if ($header == true) {
                 $i = 1;
@@ -166,8 +171,8 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                 // convert mysql datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
                 if (isset($row[$fieldno])) {
                     list($year, $month, $day, $hour, $minute, $second) = preg_split('([^0-9])', $row[$fieldno]);
-                    if ($year != '' && (int) $year >= 1900) {
-                        echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)), $q, field);
+                     if ($year != '' && (int) $year >= 1900) {
+                        echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)), $q, $field);
                     } elseif ($row[$fieldno] === '') {
                         echo quoteSPSS($sEmptyAnswerValue, $q, $field);
                     } else {
@@ -250,7 +255,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
                         if (trim($strTmp) != '') {
                             echo quoteSPSS($strTmp, $q, $field);
                         } elseif ($row[$fieldno] === '') {
@@ -312,7 +317,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
                 foreach ($result as $row) {
                     $answers[] = array(
                         'code' => $row['code'],
-                        'value' => mb_substr(stripTagsFull($row["answer"]), 0, $length_vallabel),
+                        'value' => mb_substr(stripTagsFull($row["answer"], false), 0, $length_vallabel),
                     );
                 }
             }
@@ -406,8 +411,18 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
                 $spsstype = 'A';
             }
         }
+        // For questions types with answer options, if all answer codes are numeric but "Other" option is enabled,
+        // field should be exported as SPSS type 'A', size 6. See issue #16939
+        if (strpos("!LORFH1", $field['LStype']) !== false && $spsstype == 'F') {
+            $oQuestion = Question::model()->findByPk($field["qid"]);
+            if ($oQuestion->other == 'Y') {
+                $spsstype = 'A';
+                $size = 6;
+            }
+        }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
+        $answers['needsAlterType'] = true;
         return $answers;
     } else {
         /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
@@ -646,6 +661,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             if (isset($answers['SPSStype'])) {
                 $tempArray['SPSStype'] = $answers['SPSStype'];
                 unset($answers['SPSStype']);
+            }
+            if (isset($answers['needsAlterType'])) {
+                $tempArray['needsAlterType'] = $answers['needsAlterType'];
+                unset($answers['needsAlterType']);
             }
             if (!empty($answers)) {
                 $tempArray['answers'] = $answers;
@@ -1453,6 +1472,9 @@ function quexml_reformat_date(DOMElement $element, $qid, $iSurveyID)
 
     // Change the value in the DOM element
     $element->setAttribute("defaultValue", $value);
+
+    // Change length
+    $element->getElementsByTagName("free")->item(0)->getElementsByTagName("length")->item(0)->nodeValue = strlen($value);
 }
 
 
@@ -1586,7 +1608,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0) {
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)) {
-            $token = TokenDynamic::model($iSurveyID)->find(array('condition' => 'token = \'' . $response->token . '\''));
+            $token = TokenDynamic::model($iSurveyID)->findByAttributes(array('token'=>$response->token));
             if (!empty($token)) {
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
@@ -2769,7 +2791,7 @@ function tsvSurveyExport($surveyid)
                 $tsv_output['type/scale'] = $group['group_order'];
                 $tsv_output['name'] = !empty($group['group_name']) ? $group['group_name'] : '';
                 $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
-                $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
+                $tsv_output['relevance'] = isset($group['grelevance']) ? $group['grelevance'] : '';
                 $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
                 $tsv_output['language'] = $language;
                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
@@ -2783,7 +2805,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['class'] = 'Q';
                         $tsv_output['type/scale'] = $question['type'];
                         $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
-                        $tsv_output['relevance'] = !empty($question['relevance']) ? $question['relevance'] : '';
+                        $tsv_output['relevance'] = isset($question['relevance']) ? $question['relevance'] : '';
                         $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];

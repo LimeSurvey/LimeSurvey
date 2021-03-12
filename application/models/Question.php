@@ -30,7 +30,7 @@ use LimeSurvey\Helpers\questionHelper;
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
- * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
+ * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog ('Edit default answers')
  * @property string $relevance Questions relevane equation
  * @property string $modulename
  *
@@ -298,7 +298,8 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($this->qid, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type);
+        $advancedOnly = true;
+        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
 
         // If the question has a custom template, we first check if it provides custom attributes
         $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
@@ -619,7 +620,7 @@ class Question extends LSActiveRecord
     {
         switch ($sType) {
             case Question::QT_1_ARRAY_MULTISCALE:
-                return 'array-flexible-duel-scale';
+                return 'array-flexible-dual-scale';
             case Question::QT_5_POINT_CHOICE:
                 return 'choice-5-pt-radio';
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:

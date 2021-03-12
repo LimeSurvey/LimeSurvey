@@ -1,11 +1,11 @@
 <div class="inputtype--toggle-container">
     <div class="btn-group" role="group" data-toggle="buttons">
-        <?php if ($this->setting['value'] == 'Y') : ?>
+        <?php if ($this->setting['value'] == "1") : ?>
             <label class="btn btn-default active">
                 <input
                     type="radio"
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="Y"
+                    value="1"
                     checked
                     />
                 <?= gT('On'); ?>
@@ -14,7 +14,7 @@
                 <input
                     type="radio"
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="N"
+                    value="0"
                     />
                 <?= gT('Off'); ?>
             </label>
@@ -23,7 +23,7 @@
                 <input
                     type="radio"
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="Y"
+                    value="1"
                     />
                 <?= gT('On'); ?>
             </label>
@@ -31,7 +31,7 @@
                 <input
                     type="radio"
                     name="advancedSettings[<?= strtolower($this->setting['category']); ?>][<?= $this->setting['name']; ?>]"
-                    value="N"
+                    value="0"
                     checked
                     />
                 <?= gT('Off'); ?>

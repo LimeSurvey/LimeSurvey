@@ -99,7 +99,8 @@
                                 'aQuestionTypeGroups' => $aQuestionTypeGroups,
                                 'questionThemeTitle'  => $questionTheme['title'],
                                 'questionThemeName'   => $questionTheme['name'],
-                                'questionThemeClass'  => ($questionTheme['settings'])->class
+                                'questionThemeClass'  => ($questionTheme['settings'])->class,
+                                'selectormodeclass'   => $selectormodeclass,
                             ]
                         ); ?>
                     </div>

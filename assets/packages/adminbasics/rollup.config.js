@@ -33,7 +33,7 @@ if( ENVIRONEMENT=='production' ) {
                     "@babel/preset-env",
                     {
                         targets: "> 0.25%, not dead",
-                        modules: 'false',
+                        modules: 'auto',
                         useBuiltIns: "entry",
                         corejs: 3,
                     }
@@ -65,7 +65,7 @@ if( ENVIRONEMENT=='production' ) {
                     "@babel/preset-env",
                     {
                         targets: "> 0.25%, not dead",
-                        modules: 'false',
+                        modules: 'auto',
                         useBuiltIns: "entry",
                         corejs: 3,
                     }

@@ -115,27 +115,27 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
         $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
-        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time'], 0);
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0);
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
 
         //Render timer 2
         $timer_html = Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer',
-            array('iQid' => $ia[0], 'sWarnId' => '_Warning_2'),
+            array('iQid' => $oQuestion->qid, 'sWarnId' => '_Warning_2'),
             true
         );
 
-        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay'], 1000);
+        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
-        $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time'], 0);
-        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style'], '');
+        $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
+        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
-        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style'], '');
+        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style']['value'], '');
         $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
-        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style'], '');
+        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style']['value'], '');
         $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
-        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style'], '');
+        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style']['value'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
@@ -212,7 +212,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 'time_limit_warning_2' => $time_limit_warning_2,
                 'time_limit_warning_display_time' => $time_limit_warning_display_time,
                 'time_limit_warning_2_display_time' => $time_limit_warning_2_display_time,
-                'disable' => $disable,
+                'disable' => false  // $disable,  // TODO When to use? Where defined?
             ),
             true
         );
@@ -294,7 +294,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setDefaultIfEmpty($value, $default)
     {
-        if (!$value) {
+        if (is_null($value)) {
             return $default;
         }
         return trim($value) == '' ? $default : $value;

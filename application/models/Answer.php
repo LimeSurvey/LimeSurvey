@@ -105,7 +105,7 @@ class Answer extends LSActiveRecord
             ->query();
     }
 
-    public function checkUniqueness($attribute, $params)
+    public function checkUniqueness()
     {
         if ($this->code !== $this->oldCode || $this->qid != $this->oldQid || $this->scale_id != $this->oldScaleId) {
             $model = self::model()->find('code = ? AND qid = ? AND scale_id = ?', array($this->code, $this->qid, $this->scale_id));
@@ -214,25 +214,6 @@ class Answer extends LSActiveRecord
             $row->sortorder = $position++;
             $row->save();
         }
-    }
-
-    /**
-     * @param integer $surveyid
-     * @param string $lang
-     * @param bool $return_query
-     * @return array|CDbCommand
-     * @deprecated since 2018-02-05 its not working also (the language change)
-     */
-    public function getAnswerQuery($surveyid, $lang, $return_query = true)
-    {
-        $query = Yii::app()->db->createCommand();
-        $query->select("{{answers}}.*, {{questions}}.gid");
-        $query->from("{{answers}}, {{questions}}");
-        $query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
-        $query->order('qid, code, sortorder');
-        $query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
-        $query->bindParams(":lang", $lang, PDO::PARAM_STR);
-        return ($return_query) ? $query->queryAll() : $query;
     }
 
     /**

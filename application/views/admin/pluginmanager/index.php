@@ -52,14 +52,14 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                 <?php if (!Yii::app()->getConfig('demoMode')): ?>
                     <a
                         href=''
-                        class='btn btn-success '
+                        class='btn btn-default'
                         data-toggle='modal'
                         data-target='#installPluginZipModal'
                         data-tooltip='true'
                         title='<?php eT('Install plugin by ZIP archive'); ?>'
                     >
-                        <i class='fa fa-file-zip-o'></i>&nbsp;
-                        <?php eT('Install ZIP'); ?>
+                        <i class='icon-import'></i>&nbsp;
+                        <?php eT('Upload & install'); ?>
                     </a>
                 <?php endif; ?>
                 <a 

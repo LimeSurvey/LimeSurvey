@@ -167,6 +167,9 @@ class export extends Survey_Common_Action
         $surveybaselang = $survey->language;
         $exportoutput = "";
 
+        // Avoid randomization of the fieldmap
+        killSurveySession($iSurveyID);
+
         // Get info about the survey
         $thissurvey = getSurveyInfo($iSurveyID);
 
@@ -175,7 +178,7 @@ class export extends Survey_Common_Action
         $exports = $resultsService->getExports();
 
         if (!$sExportType) {
-            $aFieldMap = createFieldMap($survey, 'full', false, false, $survey->language);
+            $aFieldMap = createFieldMap($survey, 'full', true, false, $survey->language);
 
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
@@ -548,6 +551,18 @@ class export extends Survey_Common_Action
                             echo " $str \"{$answer['value']}\".\n";
                         }
                     }
+                }
+            }
+
+            // Add instructions to change variable type and recode 'Other' option.
+            // This is needed when all answer option codes are numeric but the question has 'Other' enabled,
+            // because the variable is initialy set as alphanumeric in order to hold the '-oth-' value. See issue #16939
+            foreach ($fields as $field) {
+                if (isset($field['needsAlterType'])) {
+                    echo "RECODE {$field['id']} (\"-oth-\" = \"666666\").\n";
+                    echo "EXECUTE.\n";
+                    echo "ADD VALUE LABELS {$field['id']} 666666 \"other\".\n";
+                    echo "ALTER TYPE {$field['id']} (F6.0).\n";
                 }
             }
 
@@ -1357,14 +1372,18 @@ class export extends Survey_Common_Action
 
     private function _xmlToJson($fileContents)
     {
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        if (\PHP_VERSION_ID < 80000) {
+            $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        }
 
         $fileContents          = str_replace(array("\n", "\r", "\t"), '', $fileContents);
         $fileContents          = trim(str_replace('"', "'", $fileContents));
         $simpleXml             = simplexml_load_string($fileContents, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json                  = json_encode($simpleXml);
 
-        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        }
         return $json;
     }
 

@@ -58,6 +58,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
     return;
   }
 
+  $('.ace:not(.none)').ace({
+    'mode': 'javascript',
+    'highlightActiveLine': false
+  });
+
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();
 

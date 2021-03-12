@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-md-4 col-sm-12">
-                <?=gT('Connected users')?>
+                <?=gT('Users assigned to this role')?>
             </div>
             <div class="col-md-8 col-sm-12">
                 <ul class="list-group">

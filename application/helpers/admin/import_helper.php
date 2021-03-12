@@ -26,7 +26,9 @@ use LimeSurvey\Helpers\questionHelper;
 function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
-    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+    if (\PHP_VERSION_ID < 80000) {
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+    }
 
     $sXMLdata              = file_get_contents($sFullFilePath);
     $xml                   = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
@@ -589,7 +591,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     $results['labelsets'] = 0;
     $results['labels'] = 0;
 
-    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    }
     return $results;
 }
 
@@ -981,6 +985,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
                 $attributes->save();
             }
+            checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
         }
     }
@@ -1417,6 +1422,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['allowjumps']);
         }
 
+        if (isset($insertdata['tokenlength']) && $insertdata['tokenlength']>35) {
+            $insertdata['tokenlength']=35;
+        }
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
         $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
@@ -1919,7 +1927,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     safeDie(gT("Error") . ": Failed to insert data[8]<br />");
                 }
             }
-
+            checkWrongQuestionAttributes($insertdata['qid']);
             $results['question_attributes']++;
         }
     }
@@ -2319,6 +2327,34 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 }
 
 /**
+ * This function checks if there are set wrong values ('Y' or 'N') into table
+ * question_attributes. These are set to 1 and 0 if needed.
+ *
+ * @param $questionId
+ */
+function checkWrongQuestionAttributes($questionId){
+    //these attributes could be wrongly set to 'Y' or 'N' instead of 1 and 0
+    $attributesTobeChecked = ['statistics_showgraph', 'public_statistics' , 'page_break' , 'other_numbers_only',
+        'other_comment_mandatory', 'hide_tip' , 'hidden', 'exclude_all_others_auto',
+        'commented_checkbox_auto', 'num_value_int_only', 'alphasort', 'use_dropdown',
+        'slider_default_set', 'slider_layout', 'slider_middlestart', 'slider_reset',
+        'slider_reversed', 'slider_showminmax', 'value_range_allows_missing'];
+    $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['qid' => $questionId]);
+    foreach($questionAttributes as $questionAttribute){
+        if(in_array($questionAttribute->attribute, $attributesTobeChecked)){
+            //now check if value is 0 or 1 (if not then reset the wrong values ('Y' or 'N')
+            if($questionAttribute->value === 'Y'){
+                $questionAttribute->value = 1;
+                $questionAttribute->save();
+            }elseif($questionAttribute->value === 'N'){
+                $questionAttribute->value = 0;
+                $questionAttribute->save();
+            }
+        }
+    }
+}
+
+/**
  * @param string $sFullFilePath
  * @return mixed
  */
@@ -2404,11 +2440,15 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $results = [];
     $results['responses'] = 0;
 
-    libxml_disable_entity_loader(false);
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader(false);
+    }
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    libxml_disable_entity_loader(true);
-    if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
+    if (\PHP_VERSION_ID < 80000) {
+        libxml_disable_entity_loader(true);
+    }
+if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
         $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         while ($oXMLReader->read()) {
             if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {

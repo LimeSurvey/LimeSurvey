@@ -3948,13 +3948,18 @@ class LimeExpressionManager
 
             $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
             if ($token) {
+                $tokenEncryptionOptions = $survey->getTokenEncryptionOptions();
                 foreach ($token as $key => $val) {
-                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+                    // Decrypt encrypted token attributes
+                    if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y'){
+                        $val = $token->decrypt($val);
+                    }
+                    $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code' => $anonymized ? '' : $val,
                         'jsName_on' => '',
                         'jsName' => '',
                         'readWrite' => 'N',
-                    );
+                    ];
                 }
             }
         } else {
@@ -8043,9 +8048,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
     private static function getConditionsForEM($surveyid, $qid = null)
     {
         if (!is_null($qid)) {
-            $where = " c.qid = " . $qid . " AND ";
+            $where = " c.qid = " . (int)$qid . " AND ";
         } elseif (!is_null($surveyid)) {
-                $where = " qa.sid = {$surveyid} AND ";
+                 $where = " qa.sid = ".(int)$surveyid." AND ";
         } else {
             $where = "";
         }
@@ -9095,7 +9100,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             $value = '{' . $value . '}';
                         }
                         $LEM->ProcessString($value, $qid, $qReplacement, 1, 1, false, false);
-                        $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
+                        $value = $LEM->GetLastPrettyPrintExpression();
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
                         }
@@ -9106,7 +9111,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         continue;   // since continuing from within a switch statement doesn't work
                     }
                     ++$count;
-                    $attrTable .= "<tr><td>$key</td><td>$value</td></tr>\n";
+                        $attrTable .= "<tr><td>$key</td><td>".viewHelper::stripTagsEM($value)."</td></tr>\n";
                 }
                 $attrTable .= "</table>\n";
                 if ($count == 0) {
