@@ -119,7 +119,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $questionId = (int) $questionId;
 
-        /** @var Question|null */
+        /** @var $question Question|null */
         $question = Question::model()->findByPk($questionId);
         if (empty($question)) {
             throw new CHttpException(404, gT("Invalid question id"));

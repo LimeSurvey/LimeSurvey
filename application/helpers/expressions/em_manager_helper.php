@@ -3947,13 +3947,18 @@ class LimeExpressionManager
 
             $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
             if ($token) {
+                $tokenEncryptionOptions = $survey->getTokenEncryptionOptions();
                 foreach ($token as $key => $val) {
-                    $this->knownVars["TOKEN:" . strtoupper($key)] = array(
+                    // Decrypt encrypted token attributes
+                    if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y'){
+                        $val = $token->decrypt($val);
+                    }
+                    $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code' => $anonymized ? '' : $val,
                         'jsName_on' => '',
                         'jsName' => '',
                         'readWrite' => 'N',
-                    );
+                    ];
                 }
             }
         } else {
