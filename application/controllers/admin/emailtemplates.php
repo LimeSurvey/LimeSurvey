@@ -99,38 +99,22 @@ class emailtemplates extends Survey_Common_Action
      */
     function update($iSurveyId)
     {
-        $sBaseUrl = Yii::app()->getBaseUrl();
-        $uploadUrl = Yii::app()->getConfig('uploadurl');
-        if (substr($uploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
-            $uploadUrl = substr($uploadUrl, strlen($sBaseUrl));
-        }
-        $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
-        $sPublicUrl = Yii::app()->getConfig("publicurl");
-        $aPublicUrl = parse_url($sPublicUrl);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
-            $sBaseAbsoluteUrl = $sPublicUrl;
-        }
-        $uploadUrl = trim($sBaseAbsoluteUrl, "/").$uploadUrl;
         // We need the real path since we check that the resolved file name starts with this path.
-        $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod = Yii::app()->request->getPost('save', '');
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '') {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
             array_filter($languagelist);
+            $attachmentsDir = realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId . DIRECTORY_SEPARATOR . 'files');
             foreach ($languagelist as $langname) {
                 if (isset($_POST['attachments'][$langname])) {
                     foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
                         foreach ($attachments as  $index => &$attachment) {
                             // We again take the real path.
-                            $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
-                            if ($localName !== false) {
-                                if (strpos($localName, $uploadDir) === 0) {
-                                    $attachment['url'] = $localName;
-                                    $attachment['size'] = filesize($localName);
-                                } else {
-                                    unset($attachments[$index]);
-                                }
+                            $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
+                            if (App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir, true)) {
+                                $attachment['url'] = $baseName;
+                                $attachment['size'] = filesize($attachmentsDir . DIRECTORY_SEPARATOR . $baseName);
                             } else {
                                 unset($attachments[$index]);
                             }
@@ -140,7 +124,6 @@ class emailtemplates extends Survey_Common_Action
                 } else {
                     $_POST['attachments'][$langname] = array();
                 }
-
                 $attributes = array(
                     'surveyls_email_invite_subj' => $_POST['email_invitation_subj_'.$langname],
                     'surveyls_email_invite' => $_POST['email_invitation_'.$langname],

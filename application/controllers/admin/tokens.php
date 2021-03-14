@@ -1441,15 +1441,19 @@ class tokens extends Survey_Common_Action
                             $sTemplate = 'reminder';
                         }
                         $aRelevantAttachments = array();
+                        $attachmentsDir =realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId . DIRECTORY_SEPARATOR . 'files');
                         if (isset($aData['thissurvey'][$emrow['language']]['attachments'])) {
                             $aAttachments = unserialize($aData['thissurvey'][$emrow['language']]['attachments']);
                             if (!empty($aAttachments)) {
                                 if (isset($aAttachments[$sTemplate])) {
                                     LimeExpressionManager::singleton()->loadTokenInformation($aData['thissurvey']['sid'], $emrow['token']);
                                     foreach ($aAttachments[$sTemplate] as $aAttachment) {
-                                        if (Yii::app()->is_file($aAttachment['url'], Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId)) {
-                                            if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                                                $aRelevantAttachments[] = $aAttachment['url'];
+                                        if(!empty($attachment['url'])) {
+                                            $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
+                                            if (App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir)
+                                                && LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])
+                                                ) {
+                                                    $aRelevantAttachments[] = $attachmentsDir . DIRECTORY_SEPARATOR . $baseName;
                                             }
                                         }
                                     }

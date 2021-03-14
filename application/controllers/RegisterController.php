@@ -338,13 +338,17 @@ class RegisterController extends LSYii_Controller
         $aRelevantAttachments = array();
         if (isset($aSurveyInfo['attachments'])) {
             $aAttachments = unserialize($aSurveyInfo['attachments']);
+            $attachmentsDir =realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId . DIRECTORY_SEPARATOR . 'files');
             if (!empty($aAttachments)) {
                 if (isset($aAttachments['registration'])) {
                     LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
                     foreach ($aAttachments['registration'] as $aAttachment) {
-                        if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$iSurveyId,false)) {
-                            if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                                $aRelevantAttachments[] = $aAttachment['url'];
+                        if (!empty($attachment['url'])) {
+                            $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
+                            if(App()->is_file($surveyUploadDir . DIRECTORY_SEPARATOR . $baseName, $surveyUploadDir, false)) {
+                                if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
+                                    $aRelevantAttachments[] = $aAttachment['url'];
+                                }
                             }
                         }
                     }
