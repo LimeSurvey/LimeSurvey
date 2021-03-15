@@ -345,9 +345,9 @@ class RegisterController extends LSYii_Controller
                     foreach ($aAttachments['registration'] as $aAttachment) {
                         if (!empty($attachment['url'])) {
                             $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
-                            if(App()->is_file($surveyUploadDir . DIRECTORY_SEPARATOR . $baseName, $surveyUploadDir, false)) {
+                            if(App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir, false)) {
                                 if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                                    $aRelevantAttachments[] = $aAttachment['url'];
+                                    $aRelevantAttachments[] = $attachmentsDir . DIRECTORY_SEPARATOR . $baseName;
                                 }
                             }
                         }
