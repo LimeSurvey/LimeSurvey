@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.17 (build 210309) to 3.25.18 (build 210316) March 15, 2021
+-Fixed issue: Mass emailing using SMTP unnecessary slow due to reconnect on every email being sent out (Gabriel Jenik)
+-Fixed issue: Grammar Correction - Array Dual Scale Question Type (Jessica Höck)
+-Fixed issue #16902: publicurl disable attchments (#1707) (Gabriel Jenik)
+-Fixed issue #15141: Limesurvey uses an out-of-date version of bootstrap.min.js that has security vulnerabilities (#1798) (Gabriel Jenik)
+#Updated translation: Turkish by bulent
+#Updated translation: Slovak by jelen1
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Basque by zatarain
+
+
 Changes from 3.25.16 (build 210302) to 3.25.17 (build 210309) March 8, 2021
 -Fixed issue: Password is not sent in 'Resume later' email anymore for security reasons (Carsten Schmitz)
 -Fixed issue: Default survey group can be deleted (Carsten Schmitz)
