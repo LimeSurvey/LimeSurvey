@@ -500,13 +500,13 @@ function submittokens($quotaexit = false)
                  * Iterate through attachments and check them for relevance.
                  */
                 if (isset($aAttachments['confirmation'])) {
-                    $attachmentsDir = realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId . DIRECTORY_SEPARATOR . 'files');
+                    $attachmentsDir = realpath(App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $surveyid . DIRECTORY_SEPARATOR . 'files');
                     foreach ($aAttachments['confirmation'] as $aAttachment) {
                         $relevance = $aAttachment['relevance'];
                         $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
                         // If the attachment is relevant it will be added to the mail.
                         if (LimeExpressionManager::ProcessRelevance($relevance)
-                            && App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir, false) ) {
+                            && App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . /** @scrutinizer ignore-type we get PATHINFO_BASENAME */ $baseName, $attachmentsDir, false) ) {
                             $aRelevantAttachments[] = $attachmentsDir . DIRECTORY_SEPARATOR . $baseName;
                         }
                     }
@@ -645,7 +645,7 @@ function sendSubmitNotifications($surveyid)
             $relevance = $aAttachment['relevance'];
             $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
             // If the attachment is relevant it will be added to the mail.
-            if (LimeExpressionManager::ProcessRelevance($relevance) && App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir, false)) {
+            if (LimeExpressionManager::ProcessRelevance($relevance) && App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . /** @scrutinizer ignore-type we get PATHINFO_BASENAME */ $baseName, $attachmentsDir, false)) {
                 $aRelevantAttachments[] = $attachmentsDir . DIRECTORY_SEPARATOR . $baseName;
             }
         }

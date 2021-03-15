@@ -112,7 +112,7 @@ class emailtemplates extends Survey_Common_Action
                         foreach ($attachments as  $index => &$attachment) {
                             // We again take the real path.
                             $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
-                            if (App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir, true)) {
+                            if (App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . /** @scrutinizer ignore-type we get PATHINFO_BASENAME */ $baseName, $attachmentsDir, true)) {
                                 $attachment['url'] = $baseName;
                                 $attachment['size'] = filesize($attachmentsDir . DIRECTORY_SEPARATOR . $baseName);
                             } else {

@@ -1448,8 +1448,8 @@ class tokens extends Survey_Common_Action
                                 if (isset($aAttachments[$sTemplate])) {
                                     LimeExpressionManager::singleton()->loadTokenInformation($aData['thissurvey']['sid'], $emrow['token']);
                                     foreach ($aAttachments[$sTemplate] as $aAttachment) {
-                                        if(!empty($attachment['url'])) {
-                                            $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
+                                        if(!empty($aAttachment['url'])) {
+                                            $baseName = pathinfo($aAttachment['url'], PATHINFO_BASENAME);
                                             if (App()->is_file($attachmentsDir . DIRECTORY_SEPARATOR . $baseName, $attachmentsDir)
                                                 && LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])
                                                 ) {
