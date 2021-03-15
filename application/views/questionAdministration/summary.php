@@ -204,28 +204,34 @@
         <?php endif; ?>
 
         <!-- Advanced Settings -->
-        <?php foreach ($advancedSettings as $settings): ?>
-            <?php foreach ($settings as $setting): ?>
+        <?php foreach ($advancedSettings as $settings){ ?>
+            <?php foreach ($settings as $setting){
+
+                if($setting['default'] != $setting['value']){ ?>
                 <tr>
                     <td>
-                        <?php echo $setting['caption'];?>:
+                        <strong>
+                            <?php echo $setting['caption'];?>:
+                        </strong>
                     </td>
                     <td>
                         <?php
-                            if (isset($setting->expression) && $setting->expression == 2) {
-                                LimeExpressionManager::ProcessString('{' . $setting->value . '}', $question->qid);
+                            if (isset($setting['expression']) && $setting['expression'] == 2) {
+                                LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             } else {
-                                if (($setting->aFormElementOptions->i18n ==null) || ($setting->aFormElementOptions->i18n == false)) {
-                                    echo htmlspecialchars($setting->aFormElementOptions->value);
+                                if (($setting['i18n'] ==null) || ($setting['i18n'] == false)) {
+                                    echo htmlspecialchars($setting['value']);
                                 } else {
-                                    echo htmlspecialchars($setting['aFormElementOptions'][$question->survey->language]['value']);
+                                    echo htmlspecialchars($setting[$question->survey->language]['value']);
                                 }
                             }
                         ?>
                     </td>
                 </tr>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
+            <?php
+                }
+            }
+        } ?>
     </table>
 </div>
