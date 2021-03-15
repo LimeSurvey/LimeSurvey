@@ -131,14 +131,14 @@ class TbApi extends CApplicationComponent
      */
     public function registerCoreScripts($url = null, $position = CClientScript::POS_END)
     {
-        if ($url === null) {
+        /*if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
             $url = $this->getBootstrapUrl() . '/js/' . $fileName;
-        }
+        }*/
         /** @var CClientScript $cs */
-        $cs = Yii::app()->getClientScript();
+        /*$cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
-        $cs->registerScriptFile($url, $position);
+        $cs->registerScriptFile($url, $position);*/
     }
 
     /**
