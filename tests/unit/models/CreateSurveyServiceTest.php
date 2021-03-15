@@ -41,9 +41,9 @@ class CreateSurveyServiceTest extends TestCase
 
         $createSurveyServiceClass = new CreateSurvey($surveyMock, $newLanguageSettingMock);
         $simpleValues =  new SimpleSurveyValues();
-        $simpleValues->setBaseLanguage('en');
-        $simpleValues->setSurveyGroupId('1'); //must exists (this is default, means always exists)
-        $simpleValues->setTitle('myNewTestSurvey');
+        $simpleValues->baseLanguage = 'en';
+        $simpleValues->surveyGroupId = '1'; //must exists (this is default, means always exists)
+        $simpleValues->title = 'myNewTestSurvey';
 
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadHelper("surveytranslator");

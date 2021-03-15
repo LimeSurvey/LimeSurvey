@@ -173,12 +173,12 @@
             </tr>
         <?php endif; ?>
 
-        <!-- Relevance equation -->
+        <!-- Condition for this question -->
         <?php if (trim($question->relevance) != ''): ?>
             <tr>
                 <td>
                     <strong>
-                    <?php eT("Relevance equation"); ?>:
+                    <?php eT("Condition:"); ?>
                     </strong>
                 </td>
                 <td>

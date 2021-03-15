@@ -967,11 +967,6 @@ class responses extends Survey_Common_Action
      */
     private function _zipFiles($iSurveyID, $responseIds, $zipfilename)
     {
-        /**
-         * @todo Move this to model.
-         */
-        App()->loadLibrary('admin/pclzip');
-
         $tmpdir = App()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyID . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR;
 
         $filelist = array();
@@ -987,19 +982,20 @@ class responses extends Survey_Common_Action
                 */
                 if (file_exists($tmpdir . basename($fileInfo['filename']))) {
                     $filelist[] = array(
-                        PCLZIP_ATT_FILE_NAME => $tmpdir . basename($fileInfo['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                        $tmpdir . basename($fileInfo['filename']),
+                        sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'], $fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
                     );
                 }
             }
         }
 
         if (count($filelist) > 0) {
-            $zip = new PclZip($tmpdir . $zipfilename);
-            if ($zip->create($filelist) === 0) {
-                //Oops something has gone wrong!
+            $zip = new ZipArchive();
+            $zip->open($tmpdir.$zipfilename,ZipArchive::CREATE);
+            foreach($filelist as $aFile) {
+                $zip->addFile($aFile[0],$aFile[1]);
             }
-
+            $zip->close();
             if (file_exists($tmpdir . '/' . $zipfilename)) {
                 @ob_clean();
                 header('Content-Description: File Transfer');

@@ -620,7 +620,7 @@ class Question extends LSActiveRecord
     {
         switch ($sType) {
             case Question::QT_1_ARRAY_MULTISCALE:
-                return 'array-flexible-duel-scale';
+                return 'array-flexible-dual-scale';
             case Question::QT_5_POINT_CHOICE:
                 return 'choice-5-pt-radio';
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
