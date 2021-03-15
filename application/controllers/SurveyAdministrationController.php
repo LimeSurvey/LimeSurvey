@@ -416,6 +416,20 @@ class SurveyAdministrationController extends LSBaseController
     public function actionInsert($iSurveyID = null)
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
+            $user = Yii::app()->user;
+            
+            // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
+            if ($user !== null) {
+                $userid = (int) $user->getId();
+                $ownsPreviousSurveys  = Survey::model()->findByAttributes(array('owner_id' => $userid));
+                if ($ownsPreviousSurveys === null) {
+                    $ownsPreviousSurveys = false;
+                } else {
+                    $ownsPreviousSurveys = true;
+                }
+            }
+            // CHECK IF USER OWNS PREVIOUS SURVEYS END
+
             // Check if survey title was set
             $surveyTitle = Yii::app()->request->getPost('surveyls_title');
             $surveyTitle = trim($surveyTitle);
@@ -489,7 +503,13 @@ class SurveyAdministrationController extends LSBaseController
                     $iNewQuestionID,
                     $landOnSideMenuTab
                 );
-            } else {
+            } elseif (!$ownsPreviousSurveys) {
+                // SET create question and create question group as default view.
+                $redirecturl = $this->createUrl(
+                   'questionGroupsAdministration/add/',
+                   ['surveyid' => $iNewSurveyid]
+                );
+           } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
