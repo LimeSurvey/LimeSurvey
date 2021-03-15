@@ -286,7 +286,7 @@ class QuestionGroup extends LSActiveRecord
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
-                $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '">'
+                $button .= '<span data-toggle="tooltip" title="' . gT('Delete question group') . '">'
                     . '<button class="btn btn-default" '
                     . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '
                     . ' data-target="#confirmation-modal"'
@@ -295,7 +295,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' data-message="' . gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js") . '"'
                     . '>'
                         . '<i class="fa fa-trash text-danger "></i>'
-                        . '<span class="sr-only">' . gT('Delete survey group') . '</span>'
+                        . '<span class="sr-only">' . gT('Delete question group') . '</span>'
                     . '</button>'
                     . '</span>';
             } else {
@@ -307,7 +307,7 @@ class QuestionGroup extends LSActiveRecord
                     . ' data-tooltip="true"'
                     . ' title="' . gT("Impossible to delete this group because there is at least one question having a condition on its content", "js") . '">'
                         . '<i class="fa fa-trash text-muted "></i>'
-                        . '<span class="sr-only">' . gT('Delete survey group not possible') . '</span>'
+                        . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
                     . '</button>'
                     . '</span>';
             }
