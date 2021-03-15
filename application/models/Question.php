@@ -690,7 +690,7 @@ class Question extends LSActiveRecord
         $url         = App()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
-        $editurl     = Yii::app()->createUrl("questionAdministration/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
         $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="' . gT("Question preview") . '"  aria-data-url="' . $previewUrl . '" aria-data-sid="' . $this->sid . '" aria-data-gid="' . $this->gid . '" aria-data-qid="' . $this->qid . '" aria-data-language="' . $this->survey->language . '" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
