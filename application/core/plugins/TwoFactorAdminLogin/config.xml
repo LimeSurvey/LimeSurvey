@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>TwoFactorAdminLogin</name>
+        <type>plugin</type>
+        <creationDate>2019-03-10</creationDate>
+        <lastUpdate>2020-08-24</lastUpdate>
+        <author>Markus Fluer, Eddy Lackmann</author>
+        <authorUrl>https://limesurvey.org</authorUrl>
+        <version>1.2.5</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Use a TOTP based 2 factor authentication on logging in into the admin portal.]]></description>
+        <supportUrl>https://www.limesurvey.org</supportUrl>
+    </metadata>
+    <compatibility>
+        <version>4.0</version>
+ 	    <version>3.0</version>
+    </compatibility>
+    <updaters>
+        <updater>
+            <stable>1</stable>
+            <type>rest</type>
+            <source>https://comfortupdate.limesurvey.org/index.php?r=limestorerest</source>
+        </updater>
+    </updaters>
+</config>
