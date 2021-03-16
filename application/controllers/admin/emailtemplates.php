@@ -99,20 +99,9 @@ class emailtemplates extends Survey_Common_Action
      */
     function update($iSurveyId)
     {
-        $sBaseUrl = Yii::app()->getBaseUrl();
-        $uploadUrl = Yii::app()->getConfig('uploadurl');
-        if (substr($uploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
-            $uploadUrl = substr($uploadUrl, strlen($sBaseUrl));
-        }
-        $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
-        $sPublicUrl = Yii::app()->getConfig("publicurl");
-        $aPublicUrl = parse_url($sPublicUrl);
-        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host'])) {
-            $sBaseAbsoluteUrl = $sPublicUrl;
-        }
-        $uploadUrl = trim($sBaseAbsoluteUrl, "/").$uploadUrl;
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
+        $uploadSurveyFilesDir = $uploadDir . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $iSurveyId . DIRECTORY_SEPARATOR . 'files';
         $sSaveMethod = Yii::app()->request->getPost('save', '');
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update') && $sSaveMethod != '') {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -122,8 +111,10 @@ class emailtemplates extends Survey_Common_Action
                 if (isset($_POST['attachments'][$langname])) {
                     foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
                         foreach ($attachments as  $index => &$attachment) {
-                            // We again take the real path.
-                            $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
+                            // Take only the base name
+                            $baseName = pathinfo($attachment['url'], PATHINFO_BASENAME);
+                            // get the localName according to current $uploadSurveyFilesDir
+                            $localName = realpath($uploadSurveyFilesDir . DIRECTORY_SEPARATOR . $baseName);
                             if ($localName !== false) {
                                 if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;

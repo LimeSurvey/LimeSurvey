@@ -64,7 +64,7 @@ $script = array();
     $hideAttacehemtTable = true;
     if (isset($esrow->attachments[$tab])) {
         foreach ($esrow->attachments[$tab] as $attachment) {
-            $script[] = sprintf("prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
+            $script[] = sprintf("prepEmailTemplates.addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode(basename($attachment['url'])), json_encode($attachment['relevance']), json_encode($attachment['size']));
         }
         $hideAttacehemtTable = false;
     }
