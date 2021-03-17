@@ -12,7 +12,9 @@
  * 
  */
 
-class LSUploadHelper
+namespace LimeSurvey\Models\Services;
+
+class UploadHelper
 {
     /**
      * Check uploaded file size
@@ -37,7 +39,7 @@ class LSUploadHelper
             throw new \Exception(
                 sprintf(
                     gT("No file was uploaded or the request exceeded %01.2f MB."),
-                    convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024 
+                    convertPHPSizeToBytes(ini_get('post_max_size')) / 1024 / 1024
                 )
             );
         }
@@ -69,8 +71,8 @@ class LSUploadHelper
     {
         try {
             $this->checkUploadedFileSize($sFileName, $customMaxSize);
-        } catch (Exception $ex) {
-            Yii::app()->setFlashMessage($ex->getMessage(), 'error');
+        } catch (\Exception $ex) {
+            \Yii::app()->setFlashMessage($ex->getMessage(), 'error');
             App()->getController()->redirect($redirectUrl);
         }
     }
@@ -86,9 +88,9 @@ class LSUploadHelper
     {
         try {
             $this->checkUploadedFileSize($sFileName, $customMaxSize);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $error = $ex->getMessage();
-            return Yii::app()->getController()->renderPartial(
+            return \Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array('data' => ['success' => 'error', 'message' => $error, 'debug' => $debugInfo]),
                 false,

@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 /**
 * Tokens Controller
 *
@@ -1979,7 +1981,7 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
-            $uploadHelper = new LSUploadHelper();
+            $uploadHelper = new UploadHelper();
             $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
 
             $oFile = CUploadedFile::getInstanceByName("the_file");

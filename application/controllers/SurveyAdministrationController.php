@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\FilterImportedResources;
+use LimeSurvey\Models\Services\UploadHelper;
 
 class SurveyAdministrationController extends LSBaseController
 {
@@ -1257,7 +1258,7 @@ class SurveyAdministrationController extends LSBaseController
         // Check file size and render JSON on error.
         // This is done before checking the survey permissions because, if the max POST size was exceeded,
         // there is no Survey ID to check for permissions, so the error could be misleading.
-        $uploadHelper = new LSUploadHelper();
+        $uploadHelper = new UploadHelper();
         $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);

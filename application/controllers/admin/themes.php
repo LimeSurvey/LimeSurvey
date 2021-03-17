@@ -12,6 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 /**
 * templates
 *
@@ -222,7 +224,7 @@ class themes extends Survey_Common_Action
         $debug[] = $_FILES;
 
         // Check file size and render JSON on error
-        $uploadHelper = new LSUploadHelper();
+        $uploadHelper = new UploadHelper();
         $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
@@ -284,7 +286,7 @@ class themes extends Survey_Common_Action
         $this->checkDemoMode();
 
         // Redirect back at file size error.
-        $uploadHelper = new LSUploadHelper();
+        $uploadHelper = new UploadHelper();
         $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
 
         $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
@@ -429,7 +431,7 @@ class themes extends Survey_Common_Action
             $screenname             = returnGlobal('screenname');
 
             // Check file size and redirect on error
-            $uploadHelper = new LSUploadHelper();
+            $uploadHelper = new UploadHelper();
             $uploadHelper->checkUploadedFileSizeAndRedirect(
                 'upload_file', 
                 array(

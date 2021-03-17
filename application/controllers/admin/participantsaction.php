@@ -14,6 +14,7 @@
 */
 
 use ls\ajax\AjaxHelper;
+use LimeSurvey\Models\Services\UploadHelper;
 
 /**
  * @param array $a
@@ -780,7 +781,7 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('import');
 
-        $uploadHelper = new LSUploadHelper();
+        $uploadHelper = new UploadHelper();
         $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
 
         if ($_FILES['the_file']['name'] == '') {

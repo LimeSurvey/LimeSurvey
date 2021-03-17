@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 class QuestionAdministrationController extends LSBaseController
 {
 
@@ -1054,7 +1056,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         try {
-            $uploadHelper = new LSUploadHelper();
+            $uploadHelper = new UploadHelper();
             $uploadHelper->checkUploadedFileSize('the_file');
         } catch (Exception $ex) {
             App()->setFlashMessage($ex->getMessage(), 'error');
