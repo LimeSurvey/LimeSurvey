@@ -171,7 +171,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $sEmptyAnswerValue = '',
                 // convert mysql datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
                 if (isset($row[$fieldno])) {
                     list($year, $month, $day, $hour, $minute, $second) = preg_split('([^0-9])', $row[$fieldno]);
-                     if ($year != '' && (int) $year >= 1900) {
+                    if ($year != '' && (int) $year >= 1900) {
                         echo quoteSPSS(date('d-m-Y H:i:s', mktime($hour, $minute, $second, $month, $day, $year)), $q, $field);
                     } elseif ($row[$fieldno] === '') {
                         echo quoteSPSS($sEmptyAnswerValue, $q, $field);
@@ -1608,7 +1608,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
     if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0) {
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)) {
-            $token = TokenDynamic::model($iSurveyID)->findByAttributes(array('token'=>$response->token));
+            $token = TokenDynamic::model($iSurveyID)->findByAttributes(array('token' => $response->token));
             if (!empty($token)) {
                 $RowQReplacements['TOKEN'] = $token->token;
                 $RowQReplacements['TOKEN:EMAIL'] = $token->email;
@@ -2405,10 +2405,9 @@ function stringSize($sColumn)
             $lengthWord = 'LENGTH';
     }
     $lengthReal = Yii::app()->db->createCommand()
-    ->select("{$lengthWord}(" . Yii::app()->db->quoteColumnName($sColumn) . ")")
+    ->select("MAX({$lengthWord}(" . Yii::app()->db->quoteColumnName($sColumn) . "))")
     ->from("{{survey_" . $iSurveyId . "}}")
-    ->order("{$lengthWord}(" . Yii::app()->db->quoteColumnName($sColumn) . ")  DESC")
-    ->limit(1)
+    ->where(Yii::app()->db->quoteColumnName($sColumn) . " IS NOT NULL ")
     ->queryScalar();
     // PSPP didn't accept A0 then min value to 1, see bug #13008
     return max(1, (int) $lengthReal);
