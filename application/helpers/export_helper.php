@@ -2258,10 +2258,9 @@ function stringSize($sColumn)
             $lengthWord = 'LENGTH';
     }
     $lengthReal = Yii::app()->db->createCommand()
-    ->select("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")")
+    ->select("MAX({$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn)."))")
     ->from("{{survey_".$iSurveyId."}}")
-    ->order("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")  DESC")
-    ->limit(1)
+    ->where(Yii::app()->db->quoteColumnName($sColumn)." IS NOT NULL ")
     ->queryScalar();
     // PSPP didn't accept A0 then min value to 1, see bug #13008
     return max(1, (int) $lengthReal);
