@@ -1675,6 +1675,7 @@ class Participant extends LSActiveRecord
                 $blacklistSkipped++;
                 continue;
             }
+            $oParticipant->decrypt();
             $isDuplicate = array_reduce($oTokens, function ($carry, $oToken) use ($oParticipant) {
                 return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
@@ -1723,7 +1724,7 @@ class Participant extends LSActiveRecord
                 $oToken->lastname = $oParticipant->lastname;
                 $oToken->email = $oParticipant->email;
                 $oToken->language = $oParticipant->language;
-                if (!$oToken->save()) {
+                if (!$oToken->encryptSave(true)) {
                     throw new Exception(CHtml::errorSummary($oToken));
                 }
                 $insertedtokenid = $oToken->tid;
@@ -1809,10 +1810,10 @@ class Participant extends LSActiveRecord
         $this->checkColumnDuplicates($surveyId, $newAttributes);
 
         // TODO: Why use two variables for this?
-        list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
+        [$addedAttributes, $addedAttributeIds] = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
         //Write each participant to the survey survey participants table
-        list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
+        [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
             $mappedAttributes,
@@ -1822,13 +1823,13 @@ class Participant extends LSActiveRecord
             $options
         );
 
-        $returndata = array(
-            'success' => $successful,
-            'duplicate' => $duplicate,
+        $returndata = [
+            'success'          => $successful,
+            'duplicate'        => $duplicate,
             'blacklistskipped' => $blacklistSkipped,
-            'overwriteauto' => $options['overwriteauto'],
-            'overwriteman' => $options['overwriteman']
-        );
+            'overwriteauto'    => $options['overwriteauto'],
+            'overwriteman'     => $options['overwriteman']
+        ];
         return $returndata;
     }
 
@@ -2230,13 +2231,13 @@ class Participant extends LSActiveRecord
         if (empty($aOptions)) {
             $aOptions = Participant::getDefaultEncryptionOptions();
             return $aOptions;
-        } else {
-            $aOptionReturn['enabled'] = 'Y';
-            foreach ($aOptions as $key => $value) {
-                $aOptionReturn['columns'][$value['defaultname']] = $value['encrypted'];
-            }
-            return $aOptionReturn;
         }
+
+        $aOptionReturn['enabled'] = 'Y';
+        foreach ($aOptions as $key => $value) {
+            $aOptionReturn['columns'][$value['defaultname']] = $value['encrypted'];
+        }
+        return $aOptionReturn;
     }
 
     public static function getDefaultEncryptionOptions()
