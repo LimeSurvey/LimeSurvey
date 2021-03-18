@@ -368,7 +368,6 @@ class themes extends Survey_Common_Action
                     TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
                 if ($themeType == 'question') {
-                    $questionTheme = new QuestionTheme();
                     $sPathToThemeDirectory = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
                     // check if the required path is right and existing
                     if (!is_dir($sPathToThemeDirectory)) {
@@ -384,14 +383,17 @@ class themes extends Survey_Common_Action
                     $importedThemes = 0;
                     $directory = new RecursiveDirectoryIterator($sPathToThemeDirectory);
                     $iterator = new RecursiveIteratorIterator($directory);
+                    $aImportErrors = [];
                     foreach ($iterator as $info) {
                         if ($info->isFile() && $info->getBasename() == 'config.xml') {
                             $questionConfigFilePath = dirname($info->getPathname());
                             $sQuestionThemeTitle = null;
                             try {
-                                $sQuestionThemeTitle = $questionTheme->importManifest($questionConfigFilePath);
-                            } catch (Exception $e) {
-                                // Should probably push the error to an array an display the contents on a results page
+                                $questionTheme = new QuestionTheme();
+                                $sQuestionThemeTitle = $questionTheme->importManifest($questionConfigFilePath, false, true);
+                            } catch (Throwable $t) {
+                                $sThemeDirectoryName = $questionTheme->getThemeDirectoryPath($questionConfigFilePath . "/config.xml");
+                                $aImportErrors[$sThemeDirectoryName] = $t->getMessage();
                             }
                             if (!empty($sQuestionThemeTitle)) {
                                 $importedThemes++;
@@ -405,6 +407,9 @@ class themes extends Survey_Common_Action
                             'error'
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
+                    }
+                    if (count($aImportErrors) > 0) {
+                        Yii::app()->setFlashMessage(gT("Some of the themes couldn't be imported."), 'error');
                     }
                 }
             }
@@ -421,6 +426,7 @@ class themes extends Survey_Common_Action
         return array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
+            'aImportErrors' => $aImportErrors,
             'lid' => $lid,
             'newdir' => $sNewDirectoryName,
             'theme' => $themeType

@@ -292,7 +292,7 @@ class QuestionTheme extends LSActiveRecord
      * @return bool|string
      * @throws Exception
      */
-    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false)
+    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
     {
         if (empty($sXMLDirectoryPath)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
@@ -302,8 +302,12 @@ class QuestionTheme extends LSActiveRecord
         if ($bSkipConversion === false) {
             $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
-                App()->setFlashMessage($aConvertSuccess['message'], 'error');
-                App()->getController()->redirect(array("themeOptions/index#questionthemes"));
+                if ($bThrowConversionException) {
+                    throw new Exception($aConvertSuccess['message']);
+                } else {
+                    App()->setFlashMessage($aConvertSuccess['message'], 'error');
+                    App()->getController()->redirect(array("themeOptions/index#questionthemes"));
+                }
             }
         }
 
