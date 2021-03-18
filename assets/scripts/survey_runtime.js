@@ -228,7 +228,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if (displayVal=='NaN')
         {
             newval=displayVal;
-            if(cleansedValue == '') {
+            if (cleansedValue == '' && value != cleansedValue) {
                 window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 400);
             }
         }
@@ -244,7 +244,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 }
             }
 
-            if($('#answer'+name).val() != newval){
+            if(value != newval){
                 window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
             }
         }
