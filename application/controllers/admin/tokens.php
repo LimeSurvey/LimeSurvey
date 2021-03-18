@@ -100,13 +100,13 @@ class tokens extends Survey_Common_Action
                 $hostname = getGlobalSetting('bounceaccounthost');
                 $username = getGlobalSetting('bounceaccountuser');
                 $pass = getGlobalSetting('bounceaccountpass');
-                $hostencryption = strtoupper(getGlobalSetting('bounceencryption'));
+                $hostencryption = strtolower(getGlobalSetting('bounceencryption'));
             } else {
                 $accounttype = strtoupper($thissurvey['bounceaccounttype']);
                 $hostname = $thissurvey['bounceaccounthost'];
                 $username = $thissurvey['bounceaccountuser'];
                 $pass = $thissurvey['bounceaccountpass'];
-                $hostencryption = strtoupper($thissurvey['bounceaccountencryption']);
+                $hostencryption = strtolower($thissurvey['bounceaccountencryption']);
             }
 
             @list($hostname, $port) = explode(':', $hostname);
@@ -114,25 +114,21 @@ class tokens extends Survey_Common_Action
             if (empty($port)) {
                 if ($accounttype == "IMAP") {
                     switch ($hostencryption) {
-                        case "OFF":
+                        case "off":
+                        case "tls":
                             $hostname = $hostname . ":143";
                             break;
-                        case "SSL":
-                            $hostname = $hostname . ":993";
-                            break;
-                        case "TLS":
+                        case "ssl":
                             $hostname = $hostname . ":993";
                             break;
                     }
                 } else {
                     switch ($hostencryption) {
-                        case "OFF":
+                        case "off":
+                        case "tls":
                             $hostname = $hostname . ":110";
                             break;
-                        case "SSL":
-                            $hostname = $hostname . ":995";
-                            break;
-                        case "TLS":
+                        case "ssl":
                             $hostname = $hostname . ":995";
                             break;
                     }
@@ -154,13 +150,13 @@ class tokens extends Survey_Common_Action
 
             switch ($hostencryption) // novalidate-cert to have personal CA , maybe option.
             {
-                case "OFF":
+                case "off":
                     $flags .= "/notls"; // Really Off
                     break;
-                case "SSL":
+                case "ssl":
                     $flags .= "/ssl/novalidate-cert";
                     break;
-                case "TLS":
+                case "tls":
                     $flags .= "/tls/novalidate-cert";
                     break;
             }
