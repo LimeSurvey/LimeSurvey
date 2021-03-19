@@ -2306,8 +2306,8 @@ $url .= "_view"; });
     {
         $newarr = Yii::app()->request->getPost('newarr');
         $mapped = Yii::app()->request->getPost('mapped');
-        $overwriteauto = Yii::app()->request->getPost('overwriteauto');
-        $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $overwriteauto = Yii::app()->request->getPost('overwriteauto', false);
+        $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);

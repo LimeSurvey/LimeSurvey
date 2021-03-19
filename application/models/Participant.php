@@ -1959,7 +1959,7 @@ class Participant extends LSActiveRecord
         if (is_array($arr)) {
             $tokenfieldnames = array_keys($arr);
         }
-
+        $aAutoMapped=$survey->getCPDBMappings();
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
@@ -2010,11 +2010,16 @@ class Participant extends LSActiveRecord
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman == "true" && !empty($aMapped)) {
+                    if ($overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
+                    if ($overwriteauto && !empty($aAutoMapped)) {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        }
+                    }                    
                 }
                 /* If there isn't an existing entry, create one! */
                 else {
