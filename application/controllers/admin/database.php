@@ -492,15 +492,19 @@ class database extends Survey_Common_Action
                             $bAnswerSave = false;
 
                             while (!$bAnswerSave) {
-                                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                $oSubQuestion->title = 'SQ'.strval(rand(11111, 99999)); 
+                                // Also set the new question code for other languages being saved
+                                $aCodes[$iScaleID][$iPosition]=$oSubQuestion->title;
+
                                 if ($oSubQuestion->save()) {
-                                    $sError = '<strong>'.sprintf(gT('A code has been updated to %s.'), $oSubQuestion->title).'</strong><br/>';
+                                    $sError = sprintf(gT('The invalid question code has been updated to %s.'), $oSubQuestion->title);
                                     Yii::app()->setFlashMessage($sError, 'error');
                                     $bAnswerSave = true;
                                 }
                             }
                         } else {
-                            Yii::app()->setFlashMessage(sprintf(gT("Subquestions %s could not be updated."), $aCodes[$iScaleID][$iPosition]), 'error');
+                            Yii::app()->setFlashMessage(sprintf(gT("Subquestion %s could not be updated."), $aCodes[$iScaleID][$iPosition]), 'error');
                         }
                     }
                     $iPosition++;
