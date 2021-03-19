@@ -409,6 +409,9 @@ class Participant extends LSActiveRecord
             if ($attribute['visible'] == "FALSE") {
                 continue;
             }
+            if (!isset($extraAttributeParams[$name])) {
+                $extraAttributeParams[$name]='';
+            }
             $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
