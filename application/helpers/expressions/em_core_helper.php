@@ -1787,8 +1787,11 @@ class ExpressionManager
                     break;
             }
         }
-        if ($nesting != 0) {
+        if ($nesting > 0) {
             $this->RDP_AddError(sprintf(self::gT("Missing %s closing right parentheses"), $nesting), null);
+        }
+        if ($nesting < 0) {
+            $this->RDP_AddError(sprintf(self::gT("Missing %s closing left parentheses"), abs($nesting)), null);
         }
         return (count($this->RDP_errs) > 0);
     }
