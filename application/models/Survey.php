@@ -473,7 +473,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('sid', 'numerical', 'integerOnly' => true,'min' => 1), // max ?
             array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly' => true),
-            array('datecreated', 'default', 'value' => date("Y-m-d")),
+            array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
             array('admin,faxto', 'LSYii_Validators'),
