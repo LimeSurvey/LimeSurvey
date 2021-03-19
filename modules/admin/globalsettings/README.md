@@ -195,7 +195,7 @@ Now, the views from the module are the one rendered, not the views from the core
 In globalSettings_view.php:
 ```php
 <?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> this view is rendered from globall setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> This view is rendered from the global settings module. This message is shown only when debug mode is on. </p>
 <?php endif;?>
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/globalSettings_view.php#L15-L17
@@ -203,12 +203,12 @@ https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06
 In _overview.php :
 ```php
 <?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> this subview is rendered from globall setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> This subview is rendered from global settings module. This message is shown only when debug mode is on. </p>
 <?php endif;?>
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L15-L17
 
-If debug mode is on, it will show you an alert that tell you those views are the on from the module.
+If debug mode is on, it will show you an alert that tells you those views are the one from the module.
 
 Then, in  globalSettings_view.phop, we add the parameter $myNewParam to the data passed to the view  _overview.php
 ```php
