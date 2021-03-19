@@ -711,6 +711,25 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
+     *
+     * @return array Array of mappings
+     */
+    public function getCPDBMappings()
+    {
+        $mappings = [];
+        foreach ($this->getTokenAttributes() as $name => $attribute) {
+            if ($attribute['cpdbmap'] != '') {
+                if (ParticipantAttributeName::model()->findByPk($attribute['cpdbmap'])){
+                    $mappings[$attribute['cpdbmap']] = $name;
+                }
+            }
+        }
+        return $mappings;
+    }
+
+    /**
      * Return the name of survey tokens table
      * @return string
      */
