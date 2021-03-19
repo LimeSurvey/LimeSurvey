@@ -1,4 +1,4 @@
-<div class="col-xs-12" >
+<div class="col-xs-12" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
     <div class="button-toolbar">
         <div class="btn-group" role="group" data-toggle="buttons">
             <?php foreach($oSurvey->allLanguages as $lang): ?>

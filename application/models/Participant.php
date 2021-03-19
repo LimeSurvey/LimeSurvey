@@ -1943,6 +1943,7 @@ class Participant extends LSActiveRecord
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
+        $aAutoMapped=$survey->getCPDBMappings();
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
@@ -1996,11 +1997,16 @@ class Participant extends LSActiveRecord
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman == "true" && !empty($aMapped)) {
+                    if ($overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
+                    if ($overwriteauto && !empty($aAutoMapped)) {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        }
+                    }                    
                 }
                 /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participants table */

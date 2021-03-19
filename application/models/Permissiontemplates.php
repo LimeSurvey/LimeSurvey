@@ -222,12 +222,12 @@ class Permissiontemplates extends CActiveRecord
             ),
             array(
                 "name" => 'renewed_last',
-                "header" => gT("Renewed"),
+                "header" => gT("Modified"),
                 "value" => '$data->formattedDateModified'
             ),
             array(
                 "name" => "created_at",
-                "header" => gT("Created on"),
+                "header" => gT("Created"),
                 "value" => '$data->formattedDateCreated',
     
             )

@@ -1455,11 +1455,15 @@ class UserManagementController extends LSBaseController
      */
     protected function applyPermissionFromArray($iUserId, $aPermissionArray)
     {
+        //Delete all current Permissions
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('uid', $iUserId);
+        // without entity
         $oCriteria->compare('entity_id', 0);
-        //Delete all Permissions without entity.
+        // except for template entity (no entity_id is set here)
+        $oCriteria->compare('entity', "<>template");
         Permission::model()->deleteAll($oCriteria);
+
         $results = [];
         //Apply the permission array
         foreach ($aPermissionArray as $sPermissionKey => $aPermissionSettings) {

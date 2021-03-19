@@ -34,6 +34,33 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.12 (build 210308) to 4.4.13 (build 210315) March 15, 2021
+-Fixed issue #17179: Translations not available in GlotPress (Olle Haerstedt)
+-Fixed issue #17172: Question type: List (Radio) does not save state (Olle Harstedt)
+-Fixed issue #17154: Cannot edit answer options on active surveys (Olle Haerstedt)
+-Fixed issue #17147: Unable to export data to SPSS (Carsten Schmitz)
+-Fixed issue #17121: Customq question preview image not shown (#1790) (Gabriel Jenik)
+-Fixed issue #17090: Email continue not shown clearly after activation (#1763) (Gabriel Jenik)
+-Fixed issue #17040: Question editor buttons dont appear and the button general settings "pull right " (#1797) (Gabriel Jenik)
+-Fixed issue #17029: import wrong question attribute values ('Y' or 'N') (Patricia Stelling)
+-Fixed issue #16971: Unable to use encrypted token attribute in survey (Patrick Teichmann)
+-Fixed issue #16939: exporting list question with 'other' to SPSS does not read all data (#1791) (Gabriel Jenik)
+-Fixed issue #16610: Conditionals with Array Dual Scale not working (Olle Harstedt)
+-Fixed issue #16288: Bad character encoding when export file as zip (#1782) (Gabriel Jenik)
+-Fixed issue #15904: Default survey admin & admin email not copied from user profile (#1786) (Gabriel Jenik)
+#Updated translation: Turkish by bulent
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Malay by apisznasdin
+#Updated translation: Italian by ritapas
+#Updated translation: Italian (Informal) by ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.4.11 (build 210301) to 4.4.12 (build 210308) March 8, 2021
 -Fixed issue: Wipe command was leaving some data (Carsten Schmitz)
 -Fixed issue: Password is not sent in 'Resume later' email anymore for security reasons (Carsten Schmitz)

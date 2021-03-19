@@ -16,6 +16,7 @@
         'dropUpText'  => gT('Selected theme(s)...'),
         'aActions'    => array(
             //reset
+            /*  this makes only sense if feature "change question theme attributes" is implemented ...
             array(
                 //li element
                 'type' => 'action',
@@ -35,7 +36,7 @@
                 'no'            => gT('Cancel'),
                 'sModalTitle'   => gT('Reset theme'),
                 'htmlModalBody' =>gT('Are you sure you want to reset the selected themes?')
-            ),
+            ),*/
             //uninstall 
             array(
                 //li element
