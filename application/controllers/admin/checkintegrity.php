@@ -1167,16 +1167,14 @@ class CheckIntegrity extends Survey_Common_Action
         if (!empty($result)) {
             foreach ($result as &$info) {
                 $info['viewSurveyLink'] = Yii::app()->getController()->createUrl(
-                    'admin/survey',
+                    'surveyAdministration/view',
                     [
-                        'sa' => 'view',
-                        'surveyid' => $info['sid'],
+                        'iSurveyID' => $info['sid']
                     ]
                 );
                 $info['viewGroupLink'] = Yii::app()->getController()->createUrl(
-                    'admin/questiongroups',
+                    'questionGroupsAdministration/view',
                     [
-                        'sa' => 'view',
                         'surveyid' => $info['sid'],
                         'gid' => $info['gid']
                     ]
