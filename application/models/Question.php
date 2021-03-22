@@ -85,6 +85,8 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
+    /** Set defaut relevance **/
+    public $relevance ='';
 
     /**
      * @inheritdoc
