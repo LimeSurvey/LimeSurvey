@@ -3756,6 +3756,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 441), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 442) {
+            $oTransaction = $oDB->beginTransaction();
+            $questionTheme = new QuestionTheme();
+            $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
+            foreach ($questionsMetaData as $questionMetaData) {
+                $oQuestionTheme = QuestionTheme::model()->findByAttributes([
+                    "name" => $questionMetaData['name'],
+                    "extends" => $questionMetaData['questionType'],
+                    "theme_type" => $questionMetaData['type']
+                ]);
+                if (!empty($oQuestionTheme) && $oQuestionTheme->image_path != $questionMetaData['image_path']) {
+                    $oQuestionTheme->image_path = $questionMetaData['image_path'];
+                    $oQuestionTheme->save();
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
