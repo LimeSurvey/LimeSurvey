@@ -920,7 +920,6 @@ class statistics_helper
                     //standard deviation
                     $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as stdev";
                 }
-
                 //sum
                 $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as sum";
 
@@ -2756,6 +2755,9 @@ class statistics_helper
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
             }
+            if (!empty($sql)) {
+                $criteria->addCondition($sql);
+            }             
             if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL"); } elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL"); }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
             if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
@@ -4097,7 +4099,6 @@ class statistics_helper
                 ."\t\t<p>"
                 ."\t\t\t<input type='submit' class='btn btn-default' value='".gT("Browse")."'  />\n"
                 ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
                 ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
                 ."\t\t</p>"
                 ."\t\t</form>\n";
