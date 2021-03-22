@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.13 (build 210315) to 4.4.14 (build 210322) March 22, 2021
+-Fixed issue: Set Create question group and question as default option. (Jessica Höck)
+-Fixed issue: Display issue in question group bar when deletion button is deactivated (Carsten Schmitz)
+-Fixed issue #17197: Cannot open file browser on new surveys (Carsten Schmitz)
+-Fixed issue #17194: Wrong error message in EM about parenthesis count (Carsten Schmitz)
+-Fixed issue #17193: Auto-mapped participant attributes are not copied to CPDB (Carsten Schmitz)
+-Fixed issue #17189: Wrong field size in SPSS syntax export when using Postgres (Carsten Schmitz)
+-Fixed issue #17185: Template permissions deleted when editing global permissions (Denis Chenu)
+-Fixed issue #17181: User group deletion not working (Carsten Schmitz)
+-Fixed issue #17180: Bad HTML page after importing bad label set with invalid extension (Carsten Schmitz)
+-Fixed issue #17153: [security] Brute-force attack with tokens to enter survey is possible (#1802) (Gabriel Jenik)
+-Fixed issue #17078: checkbox layout (ARRAY(numbers)) now shown in question overview (Patricia Stelling)
+-Fixed issue #16999: Plugin description missing at plugin overview (Carsten Schmitz)
+-Fixed issue #16920: LimeReplacement Fields not working (#1739) (Gabriel Jenik)
+-Fixed issue #16320: Error exporting survey to TXT format when debug=2 (Carsten Schmitz)
+-Fixed issue #14952: Check integrity does not delete orphaned localizations (Carsten Schmitz)
+-Fixed issue #14777: For "Numerical input" question type sometimes the first number is erased when beginning to type (Carsten Schmitz)
+-Fixed issue #14153: Wrong text on quick action buttons when using question group list (Carsten Schmitz)
+
+
 Changes from 4.4.12 (build 210308) to 4.4.13 (build 210315) March 15, 2021
 -Fixed issue #17179: Translations not available in GlotPress (Olle Haerstedt)
 -Fixed issue #17172: Question type: List (Radio) does not save state (Olle Harstedt)
