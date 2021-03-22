@@ -920,6 +920,7 @@ class statistics_helper
                     //standard deviation
                     $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as stdev";
                 }
+
                 //sum
                 $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as sum";
 
@@ -4099,6 +4100,7 @@ class statistics_helper
                 ."\t\t<p>"
                 ."\t\t\t<input type='submit' class='btn btn-default' value='".gT("Browse")."'  />\n"
                 ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+                ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
                 ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
                 ."\t\t</p>"
                 ."\t\t</form>\n";
