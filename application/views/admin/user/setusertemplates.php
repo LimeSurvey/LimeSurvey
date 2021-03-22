@@ -1,4 +1,9 @@
 <div class="pagetitle h3"><?php printf(gT('Edit theme permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></div>
+<div class="row">
+    <div class="col-lg-12">
+        <p><?php eT("If the user doesn't have view/read global permission, please select the themes he would be able to assign to surveys."); ?></p>
+    </div>
+</div>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-6 col-lg-offset-3 content-right">
 
@@ -10,7 +15,7 @@
                         <?php eT('Theme name');?>
                     </th>
                     <th>
-                        <?php eT('Access');?>
+                        <?php eT('Assign to survey');?>
                     </th>
                 </tr>
                 <tr>
