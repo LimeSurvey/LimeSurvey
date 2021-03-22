@@ -1905,6 +1905,7 @@ class SurveyAdministrationController extends LSBaseController
                 $temp['i'] = $i;
                 $temp['dateformatdetails'] = getDateFormatData(App()->session['dateformat']);
                 $temp['oSurvey'] = $survey;
+                Yii::app()->session['FileManagerContext'] = "edit:survey:{$iSurveyID}";
                 $aTabContents[$language] = $this->renderPartial('/admin/survey/editLocalSettings_view', $temp, true);
             }
 
