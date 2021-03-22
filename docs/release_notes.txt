@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.18 (build 210316) to 3.25.19 (build 210323) March 22, 2021
+-Fixed issue: Notice when listing CPDB participants (Carsten Schmitz)
+-Fixed issue: Error spam when saving invalid question code in a survey with multiple languages (Carsten Schmitz)
+-Fixed issue: Display issue in question group bar when deletion button is deactivated (Carsten Schmitz)
+-Fixed issue #17193: Auto-mapped participant attributes are not copied to CPDB (Carsten Schmitz)
+-Fixed issue #17189: Wrong field size in SPSS syntax export (Carsten Schmitz)
+-Fixed issue #17181: User group deletion not working (Carsten Schmitz)
+-Fixed issue #14777: For "Numerical input" question type sometimes the first number is erased when beginning to type (Carsten Schmitz)
+-Fixed issue #14738: Percentages are not correct for  multiple choice questions if a date filter is set (Carsten Schmitz)
+
+
 Changes from 3.25.17 (build 210309) to 3.25.18 (build 210316) March 15, 2021
 -Fixed issue: Mass emailing using SMTP unnecessary slow due to reconnect on every email being sent out (Gabriel Jenik)
 -Fixed issue: Grammar Correction - Array Dual Scale Question Type (Jessica Höck)
