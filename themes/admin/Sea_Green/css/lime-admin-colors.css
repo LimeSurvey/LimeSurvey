@@ -696,7 +696,7 @@ fieldset[disabled] .btn-link:focus {
   color: #8a8a8a; }
 
 .btn:hover {
-  color: #eee; }
+  color: #333333; }
 
 .btn:focus {
   color: #333333; }
@@ -1951,12 +1951,6 @@ div.panel.disabled {
 input[type="checkbox"]:checked:after,
 .checkbox input[type="checkbox"]:checked:after,
 .checkbox-inline input[type="checkbox"]:checked:after {
-  background-color: #328637;
-  border-color: #328637; }
-
-input[type="checkbox"]:indeterminate:after,
-.checkbox input[type="checkbox"]:indeterminate:after,
-.checkbox-inline input[type="checkbox"]:indeterminate:after {
   background-color: #328637;
   border-color: #328637; }
 
