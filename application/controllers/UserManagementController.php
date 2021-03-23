@@ -158,6 +158,7 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
+
             //generate random password when password is empty
             if (empty($aUser['password'])) {
                 $newPassword = $this->getRandomPassword(8);
@@ -166,7 +167,13 @@ class UserManagementController extends LSBaseController
             
             //retrive the raw password to show up in registration email
             $aUser['rawPassword'] = $aUser['password'];
-            $this->createAdminUser($aUser);
+
+            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
+            if($passwordSetByUser == 0){ //in this case admin has not set a password, email with link will be sent
+                $this->createAdminUser($aUser);
+            }else{ //in this case admin has set a password, no email will be send ...just create user with given credentials
+                $this->createAdminUser($aUser, false);
+            }
         }
     }
 
@@ -1154,18 +1161,19 @@ class UserManagementController extends LSBaseController
      * this method creates a new admin user
      *
      * @param array $aUser
+     * @param boolean $sendEmail
      * @return string
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function createAdminUser($aUser)
+    private function createAdminUser($aUser, $sendEmail=true)
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
             $sReturnMessage = gT('User successfully created');
             $success = true;
 
-            if (Yii::app()->getConfig("sendadmincreationemail")) {
+            if (Yii::app()->getConfig("sendadmincreationemail") && $sendEmail) {
                 $mailer = $this->sendAdminMail($aUser, 'registration');
 
                 if ($mailer->getError()) {
@@ -1179,6 +1187,8 @@ class UserManagementController extends LSBaseController
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
                 }
+            }else{
+
             }
 
             if ($success) {
@@ -1275,10 +1285,7 @@ class UserManagementController extends LSBaseController
      */
     public function sendAdminMail($aUser, $type = 'registration')
     {
-        //Get email template from globalSettings
-        $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'], $aUser['uid']);
 
-        $body = "";
         switch ($type) {
             case "resetPassword":
                 $renderArray = [
@@ -1295,17 +1302,18 @@ class UserManagementController extends LSBaseController
                     'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
                 ];
                 $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("Your login credentials have been reset");
-                $emailType = "addadminuser";
                 $body = Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
                 break;
             case 'registration':
             default:
+                //Get email template from globalSettings
+                $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'], $aUser['uid']);
                 $subject = $aAdminEmail["subject"];
                 $body = $aAdminEmail["body"];
-                $emailType = "addadminuser";
                 break;
         }
 
+        $emailType = "addadminuser";
 
         $oCurrentlyLoggedInUser = User::model()->findByPk(Yii::app()->user->id);
 
