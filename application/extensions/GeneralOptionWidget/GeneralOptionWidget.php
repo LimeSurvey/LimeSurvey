@@ -26,6 +26,8 @@ class GeneralOptionWidget extends CWidget
             unset($this->generalOption->formElement->options['attributes']['name']);
             unset($this->generalOption->formElement->options['attributes']['value']);
             unset($this->generalOption->formElement->options['attributes']['class']);
+        } else {
+            $this->generalOption->formElement->options['attributes'] = [];
         }
 
         $content = $this->render($this->generalOption->inputType, null, true);
