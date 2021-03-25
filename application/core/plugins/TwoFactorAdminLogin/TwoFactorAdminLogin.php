@@ -79,6 +79,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     public function init()
     {
+
         //System events
         $this->subscribe('direct');
         $this->subscribe('newDirectRequest');
@@ -203,7 +204,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
     {
         $oEvent = $this->getEvent();
         $aMenuItems = [];
-       
+
         $aMenuItemUserOptions = [
             'isDivider' => false,
             'isSmallText' => false,
@@ -233,12 +234,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'iconClass' => 'fa fa-lock fa-lg',
         ];
         $oNewMenu = new TFAMenuClass($aNewMenuOptions);
-        
+
         //enable menu only if plugin is active
-        if(TFAHelper::isPluginActive()){
+        if (TFAHelper::isPluginActive()) {
             $oEvent->append('extraMenus', [$oNewMenu]);
         }
-      
     }
 
     /**
@@ -503,67 +503,9 @@ class TwoFactorAdminLogin extends AuthPluginBase
      */
     protected function pageScripts()
     {
-        $this->registerScript('assets/tfaScripts.js', null, LSYii_ClientScript::POS_HEAD);
-        $this->registerCss('assets/tfaStyles.css', null);
-    }
 
-    /**
-     * Adding a script depending on path of the plugin
-     * This method checks if the file exists depending on the possible different plugin locations, which makes this Plugin LimeSurvey Pro safe.
-     *
-     * @param string $relativePathToScript
-     * @param integer $pos See LSYii_ClientScript constants for options, default: LSYii_ClientScript::POS_BEGIN
-     * @return void
-     */
-    protected function registerScript($relativePathToScript, $pos = LSYii_ClientScript::POS_BEGIN)
-    {
-        $parentPlugin = get_class($this);
-        $pathPossibilities = [
-            YiiBase::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript,
-            YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript,
-            Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToScript,
-            //added limesurvey 4 compatibilities
-            YiiBase::getPathOfAlias('webroot') . '/upload/plugins/' . $parentPlugin . '/' . $relativePathToScript,
-        ];
-
-        $scriptToRegister = null;
-        foreach ($pathPossibilities as $path) {
-            if (file_exists($path)) {
-                $scriptToRegister = Yii::app()->getAssetManager()->publish($path);
-            }
-        }
-
-        Yii::app()->getClientScript()->registerScriptFile($scriptToRegister, $pos);
-    }
-
-    
-
-    /**
-     * Adding a stylesheet depending on path of the plugin
-     * This method checks if the file exists depending on the possible different plugin locations, which makes this Plugin LimeSurvey Pro safe.
-     *
-     * @param string $relativePathToCss
-     * @return void
-     */
-    protected function registerCss($relativePathToCss, $parentPlugin = null)
-    {
-        $parentPlugin = get_class($this);
-
-        $pathPossibilities = [
-            YiiBase::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss,
-            YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss,
-            Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToCss,
-            //added limesurvey 4 compatibilities
-            YiiBase::getPathOfAlias('webroot') . '/upload/plugins/' . $parentPlugin . '/' . $relativePathToCss,
-        ];
-
-        $cssToRegister = null;
-        foreach ($pathPossibilities as $path) {
-            if (file_exists($path)) {
-                $cssToRegister = Yii::app()->getAssetManager()->publish($path);
-            }
-        }
-
-        Yii::app()->getClientScript()->registerCssFile($cssToRegister);
+        $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets');
+        Yii::app()->clientScript->registerScriptFile($assetsUrl . '/tfaScripts.js', LSYii_ClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerCssFile($assetsUrl . '/tfaStyles.css');
     }
 }

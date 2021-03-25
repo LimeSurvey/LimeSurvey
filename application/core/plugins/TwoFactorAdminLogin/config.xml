@@ -4,7 +4,7 @@
         <name>TwoFactorAdminLogin</name>
         <type>plugin</type>
         <creationDate>2019-03-10</creationDate>
-        <lastUpdate>2021-03-22</lastUpdate>
+        <lastUpdate>2021-03-25</lastUpdate>
         <author>Markus Fluer, Eddy Lackmann</author>
         <authorUrl>https://limesurvey.org</authorUrl>
         <version>1.2.5</version>
