@@ -9,7 +9,7 @@
  */
 class LSBaseController extends LSYii_Controller
 {
-    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here ...
+    //todo: this variable should go to the questioneditor controller when refactoring it ...no need to declare it here
     /** @var null  this is needed for the preview rendering inside the questioneditor */
     public $sTemplate = null;
 
@@ -38,16 +38,36 @@ class LSBaseController extends LSYii_Controller
 
         $this->userId = Yii::app()->user->getId();
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("surveyID")) {Yii::app()->setConfig("surveyID", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
+        if (!Yii::app()->getConfig("surveyid")) {
+            Yii::app()->setConfig("surveyid", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("surveyID")) {
+            Yii::app()->setConfig("surveyID", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {
+            Yii::app()->setConfig("ugid", returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {
+            Yii::app()->setConfig("gid", returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {
+            Yii::app()->setConfig("qid", returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {
+            Yii::app()->setConfig("lid", returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {
+            Yii::app()->setConfig("code", returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig("action")) {
+            Yii::app()->setConfig("action", returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {
+            Yii::app()->setConfig("subaction", returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {
+            Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
+        } // for html editor integration
 
         // This line is needed for template editor to work
         AdminTheme::getInstance();
@@ -67,6 +87,7 @@ class LSBaseController extends LSYii_Controller
     {
         //this lines come from _renderWarppedTemplate
         //todo: this should be moved to the new questioneditor controller when it is being refactored
+        /*
         if (isset($this->aData['surveyid'])) {
             $this->aData['oSurvey'] = Survey::model()->findByPk($this->aData['surveyid']);
 
@@ -75,9 +96,9 @@ class LSBaseController extends LSYii_Controller
             LimeExpressionManager::SetSurveyId($this->aData['surveyid']);
             LimeExpressionManager::StartProcessingPage(false, true);
 
-            $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-            $this->layout = $basePath.'/layout_insurvey.php';
-        }
+            $basePath = (string) Yii::getPathOfAlias('application.views.layouts');
+            $this->layout = $basePath.'/layout_questioneditor.php';
+        }*/
 
         return parent::beforeRender($view);
     }
@@ -168,5 +189,26 @@ class LSBaseController extends LSYii_Controller
         }
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         //todo end
+    }
+
+    /**
+     * Method to render an array as a json document
+     * (this one called by a lot of actions in different controllers)
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData, $success = true)
+    {
+        $aData['success'] = $aData['success'] ?? $success;
+
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
+            'data' => $aData
+        ], true, false);
+        return;
     }
 }

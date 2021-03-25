@@ -1,4 +1,4 @@
-![LimeSurvey Logo](https://www.limesurvey.org/images/logos/logo_main.png)
+![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
 # Sophisticated online survey software
 [![Build Status](https://travis-ci.org/LimeSurvey/LimeSurvey.svg?branch=master)](https://travis-ci.org/LimeSurvey/LimeSurvey/)
 
@@ -20,7 +20,7 @@ Or try taking one of our [test surveys](https://survey.limesurvey.org/index.php?
 
 ### Release
 We release early and often.
-The latest stable release version is available for download at https://www.limesurvey.org/about-limesurvey/download
+The latest stable release version is available for download at https://community.limesurvey.org/downloads/
 We recommend using those.
 
 ### Repository

@@ -1,5 +1,9 @@
 <?php
 $aReplacementData=array();
+
+/** @deprecated this view is deprecated and not used anymore... "question_topbar.php" is used instead
+    @deprecated don't delete it now (maybe we will reuse after vue.js is deleted ...)
+ */
 ?>
 
 <div class='menubar surveybar' id="questionbarid" style="display:none">
@@ -116,7 +120,7 @@ $aReplacementData=array();
                 <button class="btn btn-default"
                    data-toggle="modal"
                    data-target="#confirmation-modal"
-                   data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid"=>$gid])); ?>'
+                   data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid])); ?>'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
                     <span class="fa fa-trash text-danger"></span>
@@ -164,7 +168,7 @@ $aReplacementData=array();
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
-                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('questionAdministration/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
                     </a>
@@ -198,7 +202,7 @@ $aReplacementData=array();
                     </a>
                 <?php endif;?>
                 
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

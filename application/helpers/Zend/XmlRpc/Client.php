@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -283,8 +284,9 @@ class Zend_XmlRpc_Client
              */
             require_once 'Zend/XmlRpc/Client/HttpException.php';
             throw new Zend_XmlRpc_Client_HttpException(
-                                    $httpResponse->getMessage(),
-                                    $httpResponse->getStatus());
+                $httpResponse->getMessage(),
+                $httpResponse->getStatus()
+            );
         }
 
         if ($response === null) {
@@ -374,8 +376,10 @@ class Zend_XmlRpc_Client
              * @see Zend_XmlRpc_Client_FaultException
              */
             require_once 'Zend/XmlRpc/Client/FaultException.php';
-            throw new Zend_XmlRpc_Client_FaultException($fault->getMessage(),
-                                                        $fault->getCode());
+            throw new Zend_XmlRpc_Client_FaultException(
+                $fault->getMessage(),
+                $fault->getCode()
+            );
         }
 
         return $this->_lastResponse->getReturnValue();

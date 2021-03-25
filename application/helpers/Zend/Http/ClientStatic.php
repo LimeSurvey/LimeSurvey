@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -49,7 +50,7 @@ class ClientStatic
             return false;
         }
 
-        $request= new Request();
+        $request = new Request();
         $request->setUri($url);
         $request->setMethod(Request::METHOD_GET);
 
@@ -85,7 +86,7 @@ class ClientStatic
             return false;
         }
 
-        $request= new Request();
+        $request = new Request();
         $request->setUri($url);
         $request->setMethod(Request::METHOD_POST);
 

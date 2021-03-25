@@ -11,4 +11,5 @@ return array(
     'LimeSurvey\\Menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
     'LimeSurvey\\Helpers\\' => array($baseDir . '/application/helpers'),
     'LimeSurvey\\ExtensionInstaller\\' => array($baseDir . '/application/libraries/ExtensionInstaller'),
+    'LimeSurvey\\Datavalueobjects\\' => array($baseDir . '/application/datavalueobjects'),
 );

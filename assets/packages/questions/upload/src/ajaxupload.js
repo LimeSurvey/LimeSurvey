@@ -635,6 +635,7 @@
 
                 // Fix IE mixed content issue
                 iframe.src = "javascript:'<html></html>';";
+                removeNode(iframe);
             });
         },
         /**
@@ -657,6 +658,10 @@
 
             // sending request
             var iframe = this._createIframe();
+
+            // Get response from iframe and fire onComplete event when ready
+            this._getResponse(iframe, file);
+
             var form = this._createForm(iframe);
 
             // assuming following structure
@@ -672,9 +677,6 @@
             // request set, clean up
             removeNode(form); form = null;
             removeNode(this._input); this._input = null;
-
-            // Get response from iframe and fire onComplete event when ready
-            this._getResponse(iframe, file);
 
             // get ready for next request
             this._createInput();

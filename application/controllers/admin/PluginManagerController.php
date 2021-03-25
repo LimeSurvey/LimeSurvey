@@ -12,10 +12,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
-use \LimeSurvey\ExtensionInstaller\PluginInstaller;
-use \LimeSurvey\Menu\Menu;
-use \LimeSurvey\Menu\MenuItem;
+use LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
+use LimeSurvey\ExtensionInstaller\PluginInstaller;
+use LimeSurvey\Menu\Menu;
+use LimeSurvey\Menu\MenuItem;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
@@ -97,6 +97,19 @@ class PluginManagerController extends Survey_Common_Action
         $oPluginManager = App()->getPluginManager();
         $result = $oPluginManager->scanPlugins();
 
+        // Add delete URL for each plugin
+        foreach ($result as $name => &$scannedPlugin) {
+            if (isset($scannedPlugin['pluginType']) && $scannedPlugin['pluginType'] == 'upload') {
+                $scannedPlugin['deleteUrl'] = $this->getController()->createUrl(
+                    '/admin/pluginmanager',
+                    [
+                        'sa' => 'deleteFiles',
+                        'plugin' => $name,
+                    ]
+                );
+            }
+        }
+
         Yii::app()->setFlashMessage(
             sprintf(
                 gT('Found %s plugins in file system'),
@@ -113,6 +126,12 @@ class PluginManagerController extends Survey_Common_Action
                 'sa' => 'installPluginFromFile'
             ]
         );
+        $data['scanFilesUrl'] = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'scanFiles',
+            ]
+        );
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
         $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
 
@@ -124,6 +143,32 @@ class PluginManagerController extends Survey_Common_Action
 
         //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
         //$this->getController()->redirect($indexUrl);
+    }
+
+    public function deleteFiles($plugin)
+    {
+        $this->checkUpdatePermission();
+
+        // Pre supposes the plugin is in the uploads folder. Other plugins are not deletable by button.
+        $pluginDir = Yii::getPathOfAlias(App()->getPluginManager()->pluginDirs['upload']) . DIRECTORY_SEPARATOR . $plugin;
+
+        if (!file_exists($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Plugin folder does not exist.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        if (!is_writable($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Plugin files cannot be deleted due to permissions problem.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
+
+        if (!rmdirr($pluginDir)) {
+            Yii::app()->setFlashMessage(gT('Could not remove plugin files.'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        } else {
+            Yii::app()->setFlashMessage(gT('Plugin files successfully deleted.'), 'success');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
     }
 
     /**
@@ -268,12 +313,12 @@ class PluginManagerController extends Survey_Common_Action
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
                 'save' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> '.gT('Save'),
+                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save'),
                     'class' => array('btn-success'),
                     'type'  => 'submit'
                 ),
                 'redirect' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> '.gT('Save and close'),
+                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save and close'),
                     'class' => array('btn-default'),
                     'type'  => 'submit',
                     'value' => $url,
@@ -498,7 +543,6 @@ class PluginManagerController extends Survey_Common_Action
                 'uploadConfirm',
                 $data
             );
-
         } catch (Exception $ex) {
             $installer->abort();
             $this->errorAndRedirect($ex->getMessage());
@@ -699,9 +743,11 @@ function pluginExtractFilter($p_event, &$p_header)
         return 0;
     }
 
-    if ($p_header['folder']
+    if (
+        $p_header['folder']
         || !isset($info['extension'])
-        || in_array($info['extension'], $aAllowExtensions)) {
+        || in_array($info['extension'], $aAllowExtensions)
+    ) {
         return 1;
     } else {
         return 0;

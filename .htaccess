@@ -21,8 +21,13 @@ RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
 
 # XSS protection
 <IfModule mod_headers.c>
-	Header set X-XSS-Protection "1; mode=block"
+    Header set X-XSS-Protection "1; mode=block"
     <FilesMatch "\.(svgz?)$">
         Header set Content-Security-Policy "default-src 'none'; frame-ancestors 'none'; style-src 'self' 'unsafe-inline'"
     </FilesMatch>
+</IfModule>
+
+# Disable Multiviews (issue #16859)
+<IfModule mod_negotiation.c>
+    Options -MultiViews
 </IfModule>

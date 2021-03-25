@@ -1,6 +1,5 @@
 <?php
 
-
 class LayoutHelper
 {
     /**
@@ -54,7 +53,7 @@ class LayoutHelper
             $aData['meta'] = $meta;
         }
 
-        $aData['baseurl'] = Yii::app()->baseUrl.'/';
+        $aData['baseurl'] = Yii::app()->baseUrl . '/';
         $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
@@ -104,7 +103,7 @@ class LayoutHelper
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('Password warning'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
                         gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
                 ));
                 $not->save();
@@ -114,7 +113,7 @@ class LayoutHelper
                     'user_id' => App()->user->id,
                     'importance' => Notification::HIGH_IMPORTANCE,
                     'title' => gT('SSL not enforced'),
-                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                    'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
                         gT("Warning: Please enforce SSL encrpytion in Global settings/Security after SSL is properly configured for your webserver.")
                 ));
                 $not->save();
@@ -187,8 +186,9 @@ class LayoutHelper
      * @param $data
      * @throws CException
      */
-    public function renderMenuBar($aData){
-        if(isset($aData['menubar_pathname']) ){
+    public function renderMenuBar($aData)
+    {
+        if (isset($aData['menubar_pathname'])) {
             Yii::app()->getController()->renderPartial($aData['menubar_pathname'], $aData);
         }
     }
@@ -240,8 +240,10 @@ class LayoutHelper
             $updateNotification = $updateModel->updateNotification;
 
             if ($updateNotification->result) {
-                return Yii::app()->getController()->renderPartial("/admin/update/_update_notification",
-                    array('security_update_available'=>$updateNotification->security_update));
+                return Yii::app()->getController()->renderPartial(
+                    "/admin/update/_update_notification",
+                    array('security_update_available' => $updateNotification->security_update)
+                );
             }
         }
     }
@@ -256,7 +258,7 @@ class LayoutHelper
             $aMessage = array();
         }
         unset(App()->session['arrayNotificationMessages']);
-        return Yii::app()->getController()->renderPartial("/admin/notifications/notifications", array('aMessage'=>$aMessage));
+        return Yii::app()->getController()->renderPartial("/admin/notifications/notifications", array('aMessage' => $aMessage));
     }
 
     /**
@@ -296,7 +298,7 @@ class LayoutHelper
 
         $aData['buildtext'] = "";
         if (Yii::app()->getConfig("buildnumber") != "") {
-            $aData['buildtext'] = "+".Yii::app()->getConfig("buildnumber");
+            $aData['buildtext'] = "+" . Yii::app()->getConfig("buildnumber");
         }
 
         //If user is not logged in, don't print the version number information in the footer.
@@ -311,7 +313,6 @@ class LayoutHelper
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['url'] = $url;
         return Yii::app()->getController()->renderPartial("/admin/super/footer", $aData, $return);
-
     }
 
     /**
@@ -333,4 +334,258 @@ class LayoutHelper
         return Yii::app()->getController()->renderPartial('/layouts/messagebox', $aData, $return);
     }
 
+    /**
+     * Renders the titlebar of question editor page
+     *
+     * @param $aData
+     */
+    public function rendertitlebar($aData)
+    {
+        if (isset($aData['title_bar'])) {
+            Yii::app()->getController()->renderPartial("/layouts/title_bar", $aData);
+        }
+    }
+
+    /**
+     * Show side menu for survey view
+     *
+     * @param array $aData all the needed data
+     */
+    public function renderSurveySidemenu($aData)
+    {
+        $iSurveyID = $aData['surveyid'];
+
+        $survey = Survey::model()->findByPk($iSurveyID);
+        // TODO : create subfunctions
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array('condition' => 'surveyls_language=language')
+            )
+        )->find('sid = :surveyid', array(':surveyid' => $aData['surveyid'])); //$sumquery1, 1) ; //Checked
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
+            $aData['permission'] = true;
+        } else {
+            $aData['gid'] = null;
+            $aData['permission'] = false;
+        }
+
+        if (!is_null($sumresult1)) {
+            $aData['activated'] = $survey->isActive;
+
+            // Tokens
+            $bTokenExists = $survey->hasTokensTable;
+            if (!$bTokenExists) {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
+            } else {
+                $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'export')
+                    || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'import'); // and export / import ?
+            }
+
+            // Question explorer
+            $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group_order ASC'));
+            $aData['quickmenu'] = $this->renderQuickmenu($aData);
+            $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
+            $aData['aGroups'] = $aGroups;
+            $aData['surveycontent'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'read');
+            $aData['surveycontentupdate'] = Permission::model()->hasSurveyPermission($aData['surveyid'], 'surveycontent', 'update');
+            $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
+
+            Yii::app()->getController()->renderPartial("/layouts/sidemenu", $aData);
+        } else {
+            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
+            Yii::app()->getController()->redirect(array("admin/index"));
+        }
+    }
+
+    /**
+     * Render the quick-menu that is shown
+     * when side-menu is hidden.
+     *
+     * Only show home-icon for now.
+     *
+     * Add support for plugin to attach
+     * icon elements using event afterQuickMenuLoad
+     *
+     * @param array $aData
+     * @return string
+     * @todo Make quick-menu user configurable
+     */
+    protected function renderQuickmenu(array $aData)
+    {
+        $event = new PluginEvent('afterQuickMenuLoad', $this);
+        $event->set('aData', $aData);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+
+        $quickMenuItems = $result->get('quickMenuItems');
+        if (!empty($quickMenuItems)) {
+            usort($quickMenuItems, function ($b1, $b2) {
+                return (int) $b1['order'] > (int) $b2['order'];
+            });
+        }
+
+        $aData['quickMenuItems'] = $quickMenuItems;
+
+        if ($aData['quickMenuItems'] === null) {
+            $aData['quickMenuItems'] = array();
+        }
+
+        $html = Yii::app()->getController()->renderPartial('/admin/super/quickmenu', $aData, true);
+        return $html;
+    }
+
+    /**
+     * Returns content from event beforeSideMenuRender
+     * @param array $aData
+     * @return string
+     */
+    protected function beforeSideMenuRender(array $aData)
+    {
+        $event = new PluginEvent('beforeSideMenuRender', $this);
+        $event->set('aData', $aData);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        return $result->get('html');
+    }
+
+    /**
+     * New Topbar
+     * @param $aData
+     */
+    public static function renderTopbar($aData)
+    {
+
+        $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
+
+        return Yii::app()->getController()->widget(
+            'ext.TopbarWidget.TopbarWidget',
+            array(
+                'config' => $oTopbarConfig,
+                'aData' => $aData,
+            ),
+            true
+        );
+    }
+
+    /**
+     * Vue Topbar
+     * @param $aData
+     */
+    public function renderGeneraltopbar($aData)
+    {
+
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'type' => 'survey',
+                'sid' => $aData['sid'],
+                'gid' => $aData['gid'] ?? 0,
+                'qid' => $aData['qid'] ?? 0,
+                'showSaveButton' => false,
+                'showCloseButton' => false,
+            ],
+            $aData['topBar']
+        ); //$aData['topBar']['showSaveButton']['url']
+
+        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
+    }
+
+    /**
+     * listquestion groups
+     *
+     * @deprecated not used anymore, is rendered directly from actionListquestiongroups
+     *
+     * @param array $aData
+     */
+    public function renderListQuestionGroups(array $aData)
+    {
+        if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
+            Yii::app()->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
+        }
+    }
+
+    /**
+     *
+     * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
+     *
+     * @param $aData
+     * @throws CException
+     */
+    public function renderListQuestions($aData)
+    {
+        if (isset($aData['display']['menu_bars']['listquestions'])) {
+            $iSurveyID = $aData['surveyid'];
+            $oSurvey = $aData['oSurvey'];
+
+            // The DataProvider will be build from the Question model, search method
+            $model = new Question('search');
+
+            // Global filter
+            if (isset($_GET['Question'])) {
+                $model->setAttributes($_GET['Question'], false);
+            }
+
+            // Filter group
+            if (isset($_GET['gid'])) {
+                $model->gid = $_GET['gid'];
+            }
+
+            // Set number of page
+            if (isset($_GET['pageSize'])) {
+                App()->user->setState('pageSize', (int) $_GET['pageSize']);
+            }
+
+            $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
+
+            // We filter the current survey id
+            $model->sid = $iSurveyID;
+
+            $aData['model'] = $model;
+
+            Yii::app()->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
+        }
+    }
+
+    /**
+     * todo: document me...
+     *
+     * @param $aData
+     */
+    public function renderGeneralTopbarAdditions($aData)
+    {
+        $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
+        $aData['topBar'] = array_merge(
+            [
+                'type' => 'survey',
+                'sid' => $aData['sid'],
+                'gid' => $aData['gid'] ?? 0,
+                'qid' => $aData['qid'] ?? 0,
+                'showSaveButton' => false,
+                'showCloseButton' => false,
+            ],
+            $aData['topBar']
+        );
+
+        if (isset($aData['qid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'question';
+        } elseif (isset($aData['gid'])) {
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'group';
+        } elseif (isset($aData['surveyid'])) {
+            $sid = $aData['sid'];
+            $oSurvey       = Survey::model()->findByPk($sid);
+            $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+                Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
+                Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
+            $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+            $oneLanguage  = (count($oSurvey->allLanguages) == 1);
+            $aData['respstatsread'] = $respstatsread;
+            $aData['surveyexport']  = $surveyexport;
+            $aData['onelanguage']   = $oneLanguage;
+            $aData['topBar']['type'] = isset($aData['topBar']['type']) ? $aData['topBar']['type'] : 'survey';
+        }
+        Yii::app()->getController()->renderPartial("/admin/survey/topbar/topbar_additions", $aData);
+    }
 }

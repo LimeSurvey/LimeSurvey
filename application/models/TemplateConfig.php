@@ -1,7 +1,5 @@
 <?php
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -37,7 +35,7 @@ class TemplateConfig extends CActiveRecord
     /** @var  string $path Path of this template */
     public $path;
 
-    /** @var string[] $sTemplateurl Url to reach the framework */
+    /** @var string $sTemplateurl Url to reach the framework */
     public $sTemplateurl;
 
     /** @var  string $viewPath Path of the views files (twig template) */
@@ -46,7 +44,7 @@ class TemplateConfig extends CActiveRecord
     /** @var  string $filesPath Path of the tmeplate's files */
     public $filesPath;
 
-    /** @var string[] $cssFramework What framework css is used */
+    /** @var object $cssFramework What framework css is used */
     public $cssFramework;
 
     /** @var boolean $isStandard Is this template a core one? */
@@ -61,7 +59,7 @@ class TemplateConfig extends CActiveRecord
      */
     public $oMotherTemplate;
 
-    /** @var array $oOptions The template options */
+    /** @var object $oOptions The template options */
     public $oOptions;
     public $oOptionAttributes;
 
@@ -146,7 +144,6 @@ class TemplateConfig extends CActiveRecord
                     self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
                     self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
                 }
-
             } else {
                 self::$aPreparedToRender = array();
                 self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
@@ -201,7 +198,7 @@ class TemplateConfig extends CActiveRecord
         if (!empty($aPackage[$sType])) {
             if (!empty($aFilesToRemove)) {
                 foreach ($aFilesToRemove as $sFileToRemove) {
-                    if (($key = array_search($sFileToRemove, $aPackage[$sType])) !== false) {
+                    if (array_search($sFileToRemove, $aPackage[$sType]) !== false) {
                         App()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFileToRemove);
                     }
                 }
@@ -217,18 +214,20 @@ class TemplateConfig extends CActiveRecord
      * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
      * @param TemplateConfig $oRTemplate template from which the recurrence should start
      * @param boolean $force file to be in template or mother template
-     * @return TemplateConfig|null|void
+     * @return TemplateConfig
      */
     public function getTemplateForFile($sFile, $oRTemplate, $force = false)
     {
-        while (!file_exists($oRTemplate->path.$sFile) &&
-            !file_exists($oRTemplate->viewPath.$sFile) &&
-            !file_exists($oRTemplate->filesPath.$sFile)) {
+        while (
+            !file_exists($oRTemplate->path . $sFile) &&
+            !file_exists($oRTemplate->viewPath . $sFile) &&
+            !file_exists($oRTemplate->filesPath . $sFile)
+        ) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 if (!$force && App()->twigRenderer->getPathOfFile($sFile)) {
                     // return dummy template , new self broke (No DB : TODO : must fix init of self)
-                    $templateConfig = new stdClass();
+                    $templateConfig = new TemplateConfig();
                     $templateConfig->sTemplateName = null;
                     return $templateConfig;
                 }
@@ -242,7 +241,7 @@ class TemplateConfig extends CActiveRecord
                     ),
                     'error'
                 );
-                App()->getController()->redirect(array("admin/themeoptions"));
+                App()->getController()->redirect(array("themeOptions/index"));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -262,8 +261,8 @@ class TemplateConfig extends CActiveRecord
     protected function createTemplatePackage($oTemplate)
     {
         // Each template in the inheritance tree needs a specific alias
-        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
+        $sPathName  = 'survey.template-' . $oTemplate->sTemplateName . '.path';
+        $sViewName  = 'survey.template-' . $oTemplate->sTemplateName . '.viewpath';
 
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
@@ -284,9 +283,11 @@ class TemplateConfig extends CActiveRecord
         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
         // Remove/Replace mother template files
-        if (App()->getConfig('force_xmlsettings_for_survey_rendering') ||
+        if (
+            App()->getConfig('force_xmlsettings_for_survey_rendering') ||
             ($this->template instanceof Template &&  $this->template->extends) ||
-            !empty($this->config->metadata->extends)) {
+            !empty($this->config->metadata->extends)
+        ) {
               $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
@@ -294,7 +295,7 @@ class TemplateConfig extends CActiveRecord
         // Then we add the direction files if they exist
         // TODO: attribute system rather than specific fields for RTL
 
-        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
+        $this->sPackageName = 'survey-template-' . $this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
 
         $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
@@ -330,10 +331,10 @@ class TemplateConfig extends CActiveRecord
         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate, false);
 
         if ($oTemplate instanceof TemplateConfiguration) {
-            if (file_exists($oTemplate->path.$sFile)) {
-                return $oTemplate->path.$sFile;
-            } elseif (file_exists($oTemplate->viewPath.$sFile)) {
-                return $oTemplate->viewPath.$sFile;
+            if (file_exists($oTemplate->path . $sFile)) {
+                return $oTemplate->path . $sFile;
+            } elseif (file_exists($oTemplate->viewPath . $sFile)) {
+                return $oTemplate->viewPath . $sFile;
             }
         }
         $sExtension = substr(strrchr($sFile, '.'), 1);
@@ -347,7 +348,7 @@ class TemplateConfig extends CActiveRecord
      * Get the depends package
      * @uses self::@package
      * @param TemplateConfiguration $oTemplate
-     * @return string[]
+     * @return stdClass[]
      */
     protected function getDependsPackages($oTemplate)
     {
@@ -397,42 +398,41 @@ class TemplateConfig extends CActiveRecord
         if (empty($this->sPreviewImgTag)) {
             if (is_a($this->template, 'Template')) {
                 $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
-                $previewPath         = Template::getTemplatePath($this->template->name).'/'.$sTemplateFileFolder;
+                $previewPath         = Template::getTemplatePath($this->template->name) . '/' . $sTemplateFileFolder;
 
-                if ($previewPath && file_exists($previewPath.'/preview.png')) {
-                    $previewUrl = Template::getTemplateURL($this->template->name).$sTemplateFileFolder;
-                    $this->sPreviewImgTag = '<img src="'.
-                        $previewUrl.
+                if ($previewPath && file_exists($previewPath . '/preview.png')) {
+                    $previewUrl = Template::getTemplateURL($this->template->name) . $sTemplateFileFolder;
+                    $this->sPreviewImgTag = '<img src="' .
+                        $previewUrl .
                         '/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
                 }
             } else {
-                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
+                $this->sPreviewImgTag = '<em>' . gT('No preview available') . '</em>';
             }
-
         }
 
         return $this->sPreviewImgTag;
     }
 
     /**
-     * @param null $sCustomMessage
+     * @param string|null $sCustomMessage
      * @throws CException
      * @todo document me
      */
-    public function throwConsoleError($sCustomMessage=null)
+    public function throwConsoleError($sCustomMessage = null)
     {
         $sMessage = "\\n";
         $sMessage .= "\\n";
         $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
         $sMessage .= "\\n";
 
-        if ($sCustomMessage==null) {
+        if ($sCustomMessage == null) {
             $sMessage .= "\\n unknown error";
         } else {
             $sMessage .= $sCustomMessage;
         }
 
-        App()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+        App()->clientScript->registerScript('error_' . $this->template_name, "throw Error(\"$sMessage\");");
     }
 
 
@@ -489,7 +489,7 @@ class TemplateConfig extends CActiveRecord
             $aVariationFile = explode('/', $this->aCssFrameworkReplacement[0]);
             $aVariationFile = explode('.', end($aVariationFile));
             $sVariationName = $aVariationFile[0];
-            $aClassAndAttributes['class']['body']  .= ' '.$sVariationName;
+            $aClassAndAttributes['class']['body']  .= ' ' . $sVariationName;
         }
 
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ';
@@ -698,7 +698,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerformcolrow']       = ' ';
         $aClassAndAttributes['class']['registerformcolrowb']      = '  ';
         $aClassAndAttributes['class']['registerformcolrowc']      = '  ';
-        $aClassAndAttributes['class']['registerformcoladdidtions']= ' register-form-column-additions ';
+        $aClassAndAttributes['class']['registerformcoladdidtions'] = ' register-form-column-additions ';
         $aClassAndAttributes['class']['registerformextras']       = '  ';
         $aClassAndAttributes['class']['registerformcaptcha']      = ' captcha-item ';
         $aClassAndAttributes['class']['registerformcolrowblabel'] = ' ';
@@ -743,8 +743,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['errorHtml']         = ' ls-questions-have-errors ';
         $aClassAndAttributes['class']['activealertbutton'] = '  ';
         $aClassAndAttributes['class']['errorHtmlbutton']   = ' ';
-        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
-        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
+        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="' . gT("Close") . '" ';
+        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="' . gT("Close") . '" ';
 
         $aClassAndAttributes['attr']['activealert'] = 'role="alert"';
 
@@ -1004,9 +1004,6 @@ class TemplateConfig extends CActiveRecord
             $oTemplate = Template::model()->findByAttributes(array('name' => $templatename));
             if ($oTemplate) {
                 if ($oTemplate->delete()) {
-                    $oTemplateConfig = TemplateConfiguration::model()->findByAttributes(
-                        array('template_name' => $templatename)
-                    );
                     return TemplateConfiguration::model()->deleteAll(
                         'template_name=:templateName',
                         array(':templateName' => $templatename)
@@ -1022,7 +1019,7 @@ class TemplateConfig extends CActiveRecord
      * @param string $sTemplateName the name of the template to import
      * @param array $aDatas
      * @return boolean true on success | exception
-     * @throws Exception, InvalidArgumentException
+     * @throws Exception|InvalidArgumentException
      */
     public static function importManifest($sTemplateName, $aDatas)
     {
@@ -1030,7 +1027,7 @@ class TemplateConfig extends CActiveRecord
             throw new InvalidArgumentException('$aDatas cannot be empty');
         }
 
-        $oNewTemplate                   = new Template;
+        $oNewTemplate                   = new Template();
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
         $oNewTemplate->title            = $sTemplateName; // For now, when created via template editor => name == folder == title. If you change it, please, also update TemplateManifest::getTemplateURL
@@ -1046,7 +1043,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->extends          = $aDatas['extends'];
 
         if ($oNewTemplate->save()) {
-            $oNewTemplateConfiguration                  = new TemplateConfiguration;
+            $oNewTemplateConfiguration                  = new TemplateConfiguration();
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
@@ -1058,14 +1055,15 @@ class TemplateConfig extends CActiveRecord
             $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
             $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
             $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
-            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions']);
+            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions'], true);
             $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
             if ($oNewTemplateConfiguration->save()) {
                 // Find all surveys using this theme (if reinstalling) and create an entry on db for them
                 $aSurveysUsingThisTeme  =  Survey::model()->findAll(
-                    'template=:template', array(':template'=>$sTemplateName)
+                    'template=:template',
+                    array(':template' => $sTemplateName)
                 );
                 foreach ($aSurveysUsingThisTeme as $oSurvey) {
                      TemplateConfiguration::checkAndcreateSurveyConfig($oSurvey->sid);
@@ -1073,10 +1071,10 @@ class TemplateConfig extends CActiveRecord
 
                 return true;
             } else {
-                throw new Exception($oNewTemplateConfiguration->getErrors());
+                throw new Exception(json_encode($oNewTemplateConfiguration->getErrors()));
             }
         } else {
-            throw new Exception($oNewTemplate->getErrors());
+            throw new Exception(json_encode($oNewTemplate->getErrors()));
         }
     }
 
@@ -1084,9 +1082,10 @@ class TemplateConfig extends CActiveRecord
      * Convert the values to a json.
      * It checks that the correct values is inserted.
      * @param array|object $oFiled the filed to convert
+     * @param boolean $bConvertEmptyToString formats empty values as empty strings instead of objects.
      * @return string  json
      */
-    public static function formatToJsonArray($oFiled)
+    public static function formatToJsonArray($oFiled, $bConvertEmptyToString = false)
     {
         // encode then decode will convert the SimpleXML to a normal object
         $jFiled = json_encode($oFiled);
@@ -1102,6 +1101,10 @@ class TemplateConfig extends CActiveRecord
                 $jFiled      = json_encode($oFiled);
             }
         }
+        // Converts empty objects to empty strings
+        if ($bConvertEmptyToString) {
+            $jFiled = str_replace('{}', '""', $jFiled);
+        }
         return $jFiled;
     }
 
@@ -1112,7 +1115,7 @@ class TemplateConfig extends CActiveRecord
     public function getAllDbTemplateFolders()
     {
         if (empty($this->allDbTemplateFolders)) {
-            $oCriteria = new CDbCriteria;
+            $oCriteria = new CDbCriteria();
             $oCriteria->select = 'folder';
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
 
@@ -1180,7 +1183,7 @@ class TemplateConfig extends CActiveRecord
             // we must add it.
             // (and leave it in moter template definition if it already exists.)
             foreach ($aSettings as $key => $sFileName) {
-                if (file_exists($this->path.$sFileName)) {
+                if (file_exists($this->path . $sFileName)) {
                     App()->clientScript->removeFileFromPackage(
                         $this->oMotherTemplate->sPackageName,
                         $sType,
@@ -1204,7 +1207,6 @@ class TemplateConfig extends CActiveRecord
                         $sMessage .= "\\n";
                         self::throwConsoleError($sMessage);
                     }
-
                 }
             }
         }
@@ -1215,28 +1217,27 @@ class TemplateConfig extends CActiveRecord
      * Find which template should be used to render a given view
      * @param  string    $sFile           the file to check
      * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
-     * @return Template|boolean
+     * @return TemplateConfiguration|boolean
      */
     public function getTemplateForAsset($sFile, $oRTemplate)
     {
         do {
-            if (!($oRTemplate instanceof TemplateConfiguration) ||
-                !($oRTemplate->oMotherTemplate instanceof TemplateConfiguration)) {
+            if (
+                !($oRTemplate instanceof TemplateConfiguration) ||
+                !($oRTemplate->oMotherTemplate instanceof TemplateConfiguration)
+            ) {
                 return false;
                 break;
             }
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             $oRTemplate = $oMotherTemplate;
-            $sPackageName = $oRTemplate->sPackageName;
-
             $sFilePath = Yii::getPathOfAlias(
                 App()->clientScript->packages[$oRTemplate->sPackageName]["basePath"]
-                ) . DIRECTORY_SEPARATOR . $sFile;
+            ) . DIRECTORY_SEPARATOR . $sFile;
+        } while (!file_exists($sFilePath));
 
-      }while(!file_exists($sFilePath));
-
-      return $oRTemplate;
+        return $oRTemplate;
     }
 
 

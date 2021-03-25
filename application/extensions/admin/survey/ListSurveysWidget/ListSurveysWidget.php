@@ -20,7 +20,7 @@ class ListSurveysWidget extends CWidget
     public $model;                                                              // Survey model
     public $bRenderFooter    = true;                                            // Should the footer be rendered?
     public $bRenderSearchBox = true;                                            // Should the search box be rendered?
-    public $formUrl          = 'admin/survey/sa/listsurveys/';
+    public $formUrl          = 'surveyAdministration/listsurveys/';
 
     public $massiveAction;                                                      // Used to render massive action in GridViews footer
     public $pageSize;                                                           // Default page size (should be set to Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']))

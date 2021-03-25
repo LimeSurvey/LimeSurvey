@@ -31,27 +31,28 @@ class RenderShortFreeText extends QuestionBaseRenderer
     public function render($sCoreClasses = '')
     {
         $result =  @do_shortfreetext($this->aFieldArray);
+        $this->registerAssets();
         return $result;
 
         $answer = '';
         $inputnames = [];
         $placeholder = "";
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
-        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+        if (trim($this->getQuestionAttribute('placeholder', $this->sLanguage)) != '') {
+            $placeholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA,
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA,
             'content' => $this->oQuestion,
-            'coreClass'=> 'ls-answers '.$sCoreClasses,
-            'placeholder'=> $placeholder,
+            'coreClass' => 'ls-answers ' . $sCoreClasses,
+            'placeholder' => $placeholder,
             ), true);
 
         $this->registerAssets();

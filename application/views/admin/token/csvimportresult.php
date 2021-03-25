@@ -41,6 +41,7 @@
                                 !empty($aInvalidFormatList) ||
                                 !empty($aInvalidEmailList) ||
                                 !empty($aModelErrorList) ||
+                                !empty($aPluginErrorMessageList) ||
                                 !empty($aInvalideAttrFieldName) ||
                                 !empty($aMissingAttrFieldName)) { ?>
                         <h2 class='text-warning'><?php eT('Warnings'); ?></h2>
@@ -100,6 +101,24 @@
                                     </div>
                                 </li>
                             <?php } ?>
+
+                            <?php if (!empty($aPluginErrorMessageList)) { 
+                                        $iPluginErrorIndex=0;
+                                        foreach ($aPluginErrorMessageList as $sPluginErrorMessage => $aTokenSpecificErrorList) { 
+                                            $iPluginErrorIndex++; ?>
+                                            <li>
+                                                <?php printf($sPluginErrorMessage, count($aTokenSpecificErrorList)); ?>
+                                                [<a href='#' onclick='$("#pluginerrorlist-<?=$iPluginErrorIndex?>").toggle();'><?php eT("List"); ?></a>]
+                                                <div class='badtokenlist well' id='pluginerrorlist-<?=$iPluginErrorIndex?>' style='display: none;'>
+                                                    <ul class="list-unstyled">
+                                                        <?php foreach ($aTokenSpecificErrorList as $sTokenSpecificErrorMessage) { ?>
+                                                            <li><?php echo $sTokenSpecificErrorMessage; ?></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                            <?php       } 
+                                    } ?>
 
                             <?php if (!empty($aModelErrorList)) { ?>
                                 <li>

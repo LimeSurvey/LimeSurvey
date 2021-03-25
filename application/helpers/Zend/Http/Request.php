@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -145,7 +146,8 @@ class Request extends AbstractMessage implements RequestInterface
             }
 
 
-            if (empty($rawBody)
+            if (
+                empty($rawBody)
                 && preg_match('/^[a-z0-9!#$%&\'*+.^_`|~-]+:$/i', $nextLine)
             ) {
                 throw new Exception\RuntimeException('CRLF injection detected');

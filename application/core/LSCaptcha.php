@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CCaptcha class file.
  *
@@ -26,7 +27,7 @@ class LSCaptcha extends CCaptcha
                     $this->imageOptions['id'] = $this->getId();
         }
 
-        $url = $this->getController()->createUrl($this->captchaAction, array('v'=>uniqid()));
+        $url = $this->getController()->createUrl($this->captchaAction, array('v' => uniqid()));
         $alt = isset($this->imageOptions['alt']) ? $this->imageOptions['alt'] : '';
         return CHtml::image($url, $alt, $this->imageOptions);
     }

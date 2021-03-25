@@ -39,7 +39,7 @@
                                     foreach($aGroupAndQuestions['questions'] as $aQuestion)
                                     {?>
                                     <li id='list_q<?php echo $aQuestion['qid'];?>' class='well well-sm no-nest' data-level='question'><div>
-                                        <b><a href='<?php echo Yii::app()->getController()->createUrl('admin/questions/sa/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>:
+                                        <b><a href='<?php echo Yii::app()->getController()->createUrl('questionAdministration/view/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>:
                                          <?php echo ellipsize($aQuestion['question'], 80);?>
                                     </div></li>
                                     <?php }?>
@@ -51,7 +51,7 @@
             </ol>
         </div>
 
-        <?php echo CHtml::form(array("admin/survey/sa/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
+        <?php echo CHtml::form(array("surveyAdministration/organize/surveyid/{$surveyid}"), 'post', array('id'=>'frmOrganize')); ?>
             <p>
                 <input type='hidden' id='orgdata' name='orgdata' value='' />
                 <input type='hidden' id='close-after-save' name='close-after-save' value='' />

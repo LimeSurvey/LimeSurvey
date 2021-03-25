@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -50,9 +49,8 @@ class UserInGroup extends LSActiveRecord
     {
         return array(
             array('uid, ugid', 'required'),
-            array('uid, ugid', 'numerical', 'integerOnly'=>true),
+            array('uid, ugid', 'numerical', 'integerOnly' => true),
         );
-
     }
 
     /** @inheritdoc */
@@ -106,5 +104,4 @@ class UserInGroup extends LSActiveRecord
         $data = $user->queryRow();
         return $data;
     }
-
 }

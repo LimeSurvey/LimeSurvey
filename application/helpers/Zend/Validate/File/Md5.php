@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -171,7 +172,7 @@ class Zend_Validate_File_Md5 extends Zend_Validate_File_Hash
             return $this->_throw($file, self::NOT_DETECTED);
         }
 
-        foreach($hashes as $hash) {
+        foreach ($hashes as $hash) {
             if ($filehash === $hash) {
                 return true;
             }

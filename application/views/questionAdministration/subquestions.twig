@@ -1,0 +1,144 @@
+<input type='hidden' name='subquestions_sortorder' value='' />
+<input type='hidden' id='subquestions_deletedqids' name='subquestions_deletedqids' value='' />
+
+{% set first = true %}
+{% set scale_id = 0 %}
+
+<!-- Loop all language, and then hide all but the current selected one with JS. -->
+{% for lang in allLanguages %}
+    <div class="lang-hide lang-{{ lang }}">
+        {% for scale_id in range(0, scalecount - 1) %}
+            {% set anscount = subquestions|length %}
+            {# TODO : check the rendering of XSCALES / Y SCALES #}
+
+            {% set position=0 %}
+            {% if scalecount > 1 %}
+                {% if scale_id==0 %}
+                    <div class='header ui-widget-header'>
+                        <i>{{ gT("Y-Scale") }}</i>
+                    </div>
+                {% else %}
+                    <div class='header ui-widget-header'>
+                        <i>{{ gT("X-Scale") }}</i>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- Subquestions table -->
+            <!-- NB: Both questions and answer options uses class "answertable". -->
+            <table
+                class='answertable subquestions-table table table-responsive'
+                id='subquestions_{{lang}}_{{scale_id}}'
+                data-scaleid='{{ scale_id }}'
+                data-input-data-id='add-subquestion-input-javascript-datas'
+            >
+
+                <!-- Headers -->
+                <thead>
+                    <tr>
+                        <th class="col-md-1">
+                            {% if first and activated != 'Y' %}
+                                {{ gT("Position") }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </th>
+                        <th class='col-md-1'>{{ gT("Code") }}</th>
+                        <th>
+                            {{ gT("Subquestion") }}
+                            <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                        </th>
+                        {% if first %}
+                            {% if scale_id == 0 %}
+                                <th id='rel-eq-th' class='col-md-1'>
+                                    {{ gT("Relevance equation") }}
+                                </th>
+                            {% endif %}
+                            <th class="col-md-1">
+                                {{ gT("Action") }}
+                            </th>
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <!-- Body -->
+                <tbody>
+                    {% for subquestion in subquestions[scale_id] %}
+                        <!-- Line tag -->
+                        {% include 'subquestionRow.twig' with {
+                            'position'  : position,
+                            'scale_id'  : scale_id,
+                            'activated' : activated,
+                            'first'     : first,
+                            'subquestion': subquestion,
+                            'subquestionl10n': subquestion.questionl10ns[lang],
+                            'language'  : lang,
+                            'oldCode'   : true,
+                        } %}
+
+                        {% set position = position + 1 %}
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="action-buttons" style="padding-bottom: 10px;">
+                {% if activated == 'Y' %}
+                    {% set disabled = 'disabled="disabled"' %}
+                {% else %}
+                    {% set disabled = '' %}
+                {% endif %}
+
+                <button
+                    {{ disabled }}
+                    data-scale-id="{{ scale_id }}"
+                    class='btnlsbrowser btn btn-default'
+                    type='button'
+                    onclick="LS.questionEditor.showLabelSetPicker(event, 'subquestions');"
+                >
+                    {{ gT('Predefined label sets...') }}
+                </button>
+
+                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button' data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                    {{ gT('Quick add...') }}
+                </button>
+
+                {% if hasLabelSetPermission %}
+                    <button
+                        class='bthsaveaslabel btn btn-default'
+                        id='bthsaveaslabel_{{ scale_id }}'
+                        type='button'
+                        onclick="LS.questionEditor.showLabelSetSaver(event, 'subquestions-table');"
+                        data-target="#saveaslabelModal"
+                    >
+                        {{ gT('Save as label set') }}
+                    </button>
+                {% endif %}
+            </div>
+            {% set position=sprintf("%05d", position) %}
+        {% endfor %}
+    </div>
+    {% set first=false %}
+{% endfor %}
+
+<!-- For javascript -->
+<input
+    type="hidden"
+    id="add-subquestion-input-javascript-datas"
+    data-url="{{ createUrl('/questionAdministration/getSubquestionRowForAllLanguages/') }}"
+    data-quickurl="{{ createUrl(
+        '/questionAdministration/getSubquestionRowQuickAdd',
+        ({
+            'surveyid' : question.sid,
+            'gid' : question.gid
+        })
+    ) }}"
+    data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
+    data-errormessage="An error occured while processing the ajax request."
+    data-languages='{{ json_encode(allLanguages) }}'
+    data-surveyid="{{ question.sid }}"
+    data-gid="{{ question.gid }}"
+    data-qid="{{ question.qid }}"
+    data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
+/>
+<input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />

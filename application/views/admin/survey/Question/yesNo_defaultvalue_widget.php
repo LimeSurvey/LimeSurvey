@@ -31,7 +31,6 @@
         public function run()
         {
 
-            $qtproperties = $this->widgetOptions['qtproperties'];
             $questionrow = $this->widgetOptions['questionrow'];
             $langopts = $this->widgetOptions['langopts'];
             $language = $this->widgetOptions['language'];

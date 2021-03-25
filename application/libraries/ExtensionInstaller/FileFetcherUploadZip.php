@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+
 /**
  * Extension file fetcher for upload ZIP file.
  * Must work for all extension types: plugins, theme, question theme, etc.
@@ -50,33 +52,38 @@ class FileFetcherUploadZip extends FileFetcher
 
         $tempdir = $this->getTempdir();
         if (empty($tempdir)) {
-            throw new \Exception(gT('Temporary folder cannot be determined.'));
+            throw new Exception(gT('Temporary folder cannot be determined.'));
         }
 
         if (!file_exists($tempdir)) {
-            throw new \Exception(gT('Temporary folder does not exist.'));
+            throw new Exception(gT('Temporary folder does not exist.'));
+        }
+
+        if (!file_exists($destdir)) {
+            // NB: mkdir() always applies the set umask to 0777. See https://www.php.net/manual/en/function.mkdir
+            mkdir($destdir, 0777, true);
         }
 
         if (!is_writable(dirname($destdir))) {
-            throw new \Exception(gT('Cannot move files due to permission problem.'));
+            throw new Exception(gT('Cannot move files due to permission problem. ' . $destdir));
         }
 
         if (file_exists($destdir) && !rmdirr($destdir)) {
-            throw new \Exception('Could not remove old files.');
+            throw new Exception('Could not remove old files.');
         }
 
-        return @rename($tempdir, $destdir);
+        return $this->recurseCopy($tempdir, $destdir);
     }
 
     /**
-     * @return SimpleXMLElement
+     * @return \ExtensionConfig
      * @throws Exception
      */
     public function getConfig()
     {
         $tempdir = $this->getTempdir();
         if (empty($tempdir)) {
-            throw new \Exception(gT('No temporary folder, cannot read configuration file.'));
+            throw new Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
         $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
@@ -96,17 +103,17 @@ class FileFetcherUploadZip extends FileFetcher
                     //set new config file
                     $configFile = $configXml;
                 } else {
-                    throw new \Exception(gT('Configuration file config.xml does not exist.'));
+                    throw new Exception(gT('Configuration file config.xml does not exist.'));
                 }
             } else {
-                throw new \Exception(gT('Configuration file config.xml does not exist.'));
+                throw new Exception(gT('Configuration file config.xml does not exist.'));
             }
         }
 
         $config = \ExtensionConfig::loadConfigFromFile($configFile);
 
         if (empty($config)) {
-            throw new \Exception(gT('Could not parse config.xml file.'));
+            throw new Exception(gT('Could not parse config.xml file.'));
         }
 
         return $config;
@@ -171,11 +178,11 @@ class FileFetcherUploadZip extends FileFetcher
     protected function checkFileSizeError()
     {
         if (!isset($_FILES['the_file'])) {
-            throw new \Exception(gT('Found no file'));
+            throw new Exception(gT('Found no file'));
         }
 
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
                     getMaximumFileUploadSize() / 1024 / 1024
@@ -193,7 +200,7 @@ class FileFetcherUploadZip extends FileFetcher
         // Check zip bomb.
         \Yii::import('application.helpers.common_helper', true);
         if (isZipBomb($_FILES['the_file']['name'])) {
-            throw new \Exception(gT('Unzipped file is too big.'));
+            throw new Exception(gT('Unzipped file is too big.'));
         }
     }
 
@@ -209,13 +216,13 @@ class FileFetcherUploadZip extends FileFetcher
         $this->checkZipBom();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
-            throw new \Exception(
+            throw new Exception(
                 gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.")
             );
         }
 
         if (empty($this->filterName)) {
-            throw new \Exception("No filter name is set, can't unzip.");
+            throw new Exception("No filter name is set, can't unzip.");
         }
 
         $zip = new \PclZip($_FILES['the_file']['tmp_name']);
@@ -227,12 +234,39 @@ class FileFetcherUploadZip extends FileFetcher
         );
 
         if ($aExtractResult === 0) {
-            throw new \Exception(
+            throw new Exception(
                 gT("This file is not a valid ZIP file archive. Import failed.")
                 . ' ' . $zip->error_string
             );
         } else {
             // All good?
         }
+    }
+
+    /**
+     * Recursively copy source folder $src to destination $dest.
+     *
+     * @param string $src
+     * @param string $dest
+     * @return boolean
+     * @see https://stackoverflow.com/questions/2050859/copy-entire-contents-of-a-directory-to-another-using-php
+     */
+    protected function recurseCopy($src, $dest)
+    {
+        $dir = opendir($src);
+        mkdir($dest);
+        while (false !== ($file = readdir($dir))) {
+            if ($file != '.' && $file != '..') {
+                if (is_dir($src . '/' . $file)) {
+                    $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                } else {
+                    copy($src . '/' . $file, $dest . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+
+        // TODO: When should this return false?
+        return true;
     }
 }

@@ -26,13 +26,13 @@ abstract class QuestionBaseRenderer extends StaticModel
     public $bPreview;
     public $sCoreClass;
     public $checkconditionFunction = "checkconditions";
-    
+
     protected $aFieldArray;
     protected $aQuestionAttributes;
     protected $aSurveySessionArray;
     protected $mSessionValue;
     protected $sLanguage;
-    
+
     protected $aSubQuestions = [];
     protected $aAnswerOptions = [];
 
@@ -40,57 +40,57 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected $aScripts = [];
     protected $aScriptFiles = [];
     protected $aStyles = [];
-    
+
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         $this->aFieldArray = $aFieldArray;
         $this->sSGQA = $this->aFieldArray[1];
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
-        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_'.$this->oQuestion->sid]['s_lang']);
-        if(!$this->sLanguage) {
+        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_' . $this->oQuestion->sid]['s_lang']);
+        if (!$this->sLanguage) {
                 $this->sLanguage = $this->oQuestion->survey->language;
         }
-        
+
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-        $this->aSurveySessionArray = @$_SESSION['survey_'.$this->oQuestion->sid];
+        $this->aSurveySessionArray = @$_SESSION['survey_' . $this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
-        
+
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
-        
-        if(!empty($this->oQuestion->questionl10ns[$this->sLanguage]->script)){
-            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionl10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
-            $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
+
+        if (!empty($this->oQuestion->questionl10ns[$this->sLanguage]->script)) {
+            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionl10ns[$this->sLanguage]->script, $this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            $this->addScript('QuestionStoredScript-' . $this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
         }
     }
-    
+
     protected function getTimeSettingRender()
     {
         $oQuestion = $this->oQuestion;
         $oSurvey = $this->oQuestion->survey;
-        
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js', CClientScript::POS_BEGIN);
+
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'coookies.js', CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerPackage('timer-addition');
 
         $langTimer = array(
-            'hours'=>gT("hours"),
-            'mins'=>gT("mins"),
-            'seconds'=>gT("seconds"),
+            'hours' => gT("hours"),
+            'mins' => gT("mins"),
+            'seconds' => gT("seconds"),
         );
         /* Registering script : don't go to EM : no need usage of ls_json_encode */
-        App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=".json_encode($langTimer).";", CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript("LSVarLangTimer", "LSvar.lang.timer=" . json_encode($langTimer) . ";", CClientScript::POS_BEGIN);
         /**
          * The following lines cover for previewing questions, because no $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] exists.
          * This just stops error messages occuring
          */
-        if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'])) {
-            $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['fieldarray'] = [];
+        if (!isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'])) {
+            $_SESSION['survey_' . Yii::app()->getConfig('surveyID')]['fieldarray'] = [];
         }
         /* End */
 
         //Used to count how many timer questions in a page, and ensure scripts only load once
-        $_SESSION['survey_'.$oSurvey->sid]['timercount'] = (isset($_SESSION['survey_'.$oSurvey->sid]['timercount'])) ? $_SESSION['survey_'.$oSurvey->sid]['timercount']++ : 1;
+        $_SESSION['survey_' . $oSurvey->sid]['timercount'] = (isset($_SESSION['survey_' . $oSurvey->sid]['timercount'])) ? $_SESSION['survey_' . $oSurvey->sid]['timercount']++ : 1;
 
         /* Work in all mode system : why disable it ? */
         //~ if ($thissurvey['format'] != "S")
@@ -103,8 +103,8 @@ abstract class QuestionBaseRenderer extends StaticModel
         //~ }
 
         //Render timer
-        $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid'=>$oQuestion->qid, 'sWarnId'=>''), true);
-        
+        $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $oQuestion->qid, 'sWarnId' => ''), true);
+
         $time_limit = $oQuestion->questionattributes['time_limit']['value'];
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
@@ -115,45 +115,45 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
         $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
         $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
-        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time'], 0);
-        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
-        
+        $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0);
+        $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
+
 
         //Render timer 2
         $timer_html = Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer',
-            array('iQid'=>$ia[0], 'sWarnId'=>'_Warning_2'),
+            array('iQid' => $oQuestion->qid, 'sWarnId' => '_Warning_2'),
             true
         );
-        
-        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay'], 1000);
+
+        $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
         $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
-        $time_limit_warning_2_display_time = trim($oQuestion->questionattributes['time_limit_warning_2_display_time'], 0);
-        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style'], '');
+        $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
+        $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
-        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style'], '');
+        $time_limit_warning_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_style']['value'], '');
         $time_limit_warning_class = "hidden ls-timer-content ls-timer-warning ls-no-js-hidden";
-        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style'], '');
+        $time_limit_warning_2_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_style']['value'], '');
         $time_limit_warning_2_class = "hidden ls-timer-content ls-timer-warning2 ls-no-js-hidden";
-        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style'], '');
+        $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style']['value'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
-        $timersessionname = "timer_question_".$oQuestion->qid;
-        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname])) {
-            $time_limit = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$timersessionname];
+        $timersessionname = "timer_question_" . $oQuestion->qid;
+        if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname])) {
+            $time_limit = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname];
         }
 
         $output = Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_header',
-            array('timersessionname'=>$timersessionname, 'time_limit'=>$time_limit),
+            array('timersessionname' => $timersessionname, 'time_limit' => $time_limit),
             true
         );
 
-        if ($_SESSION['survey_'.$oSurvey->sid]['timercount'] < 2) {
+        if ($_SESSION['survey_' . $oSurvey->sid]['timercount'] < 2) {
             $iAction = '';
             if ($oSurvey->format == "G") {
                 $qcount = 0;
-                foreach ($_SESSION['survey_'.$oSurvey->sid]['fieldarray'] as $ib) {
+                foreach ($_SESSION['survey_' . $oSurvey->sid]['fieldarray'] as $ib) {
                     if ($ib[5] == $oQuestion->gid) {
                         $qcount++;
                     }
@@ -172,12 +172,12 @@ abstract class QuestionBaseRenderer extends StaticModel
             }
 
             $output .= Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer_javascript', array(
-                'timersessionname'=>$timersessionname,
-                'time_limit'=>$time_limit,
-                'iAction'=>$iAction,
-                'disable_next'=>$disable_next,
-                'disable_prev'=>$disable_prev,
-                'time_limit_countdown_message' =>$time_limit_countdown_message,
+                'timersessionname' => $timersessionname,
+                'time_limit' => $time_limit,
+                'iAction' => $iAction,
+                'disable_next' => $disable_next,
+                'disable_prev' => $disable_prev,
+                'time_limit_countdown_message' => $time_limit_countdown_message,
                 'time_limit_message_delay' => $time_limit_message_delay
                 ), true);
         }
@@ -185,18 +185,18 @@ abstract class QuestionBaseRenderer extends StaticModel
         $output .= Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_content',
             array(
-                'iQid'=>$oQuestion->qid,
-                'time_limit_message_style'=>$time_limit_message_style,
-                'time_limit_message_class'=>$time_limit_message_class,
-                'time_limit_message'=>$time_limit_message,
-                'time_limit_warning_style'=>$time_limit_warning_style,
-                'time_limit_warning_class'=>$time_limit_warning_class,
-                'time_limit_warning_message'=>$time_limit_warning_message,
-                'time_limit_warning_2_style'=>$time_limit_warning_2_style,
-                'time_limit_warning_2_class'=>$time_limit_warning_2_class,
-                'time_limit_warning_2_message'=>$time_limit_warning_2_message,
-                'time_limit_timer_style'=>$time_limit_timer_style,
-                'time_limit_timer_class'=>$time_limit_timer_class,
+                'iQid' => $oQuestion->qid,
+                'time_limit_message_style' => $time_limit_message_style,
+                'time_limit_message_class' => $time_limit_message_class,
+                'time_limit_message' => $time_limit_message,
+                'time_limit_warning_style' => $time_limit_warning_style,
+                'time_limit_warning_class' => $time_limit_warning_class,
+                'time_limit_warning_message' => $time_limit_warning_message,
+                'time_limit_warning_2_style' => $time_limit_warning_2_style,
+                'time_limit_warning_2_class' => $time_limit_warning_2_class,
+                'time_limit_warning_2_message' => $time_limit_warning_2_message,
+                'time_limit_timer_style' => $time_limit_timer_style,
+                'time_limit_timer_class' => $time_limit_timer_class,
             ),
             true
         );
@@ -204,23 +204,25 @@ abstract class QuestionBaseRenderer extends StaticModel
         $output .= Yii::app()->twigRenderer->renderQuestion(
             '/survey/questions/question_timer/timer_footer',
             array(
-                'iQid'=>$oQuestion->qid,
-                'time_limit'=>$time_limit,
-                'time_limit_action'=>$time_limit_action,
-                'time_limit_warning'=>$time_limit_warning,
-                'time_limit_warning_2'=>$time_limit_warning_2,
-                'time_limit_warning_display_time'=>$time_limit_warning_display_time,
-                'time_limit_warning_2_display_time'=>$time_limit_warning_2_display_time,
-                'disable'=>$disable,
+                'iQid' => $oQuestion->qid,
+                'iSid' => Yii::app()->getConfig('surveyID'),
+                'time_limit' => $time_limit,
+                'time_limit_action' => $time_limit_action,
+                'time_limit_warning' => $time_limit_warning,
+                'time_limit_warning_2' => $time_limit_warning_2,
+                'time_limit_warning_display_time' => $time_limit_warning_display_time,
+                'time_limit_warning_2_display_time' => $time_limit_warning_2_display_time,
+                'disable' => false  // $disable,  // TODO When to use? Where defined?
             ),
             true
         );
         return $output;
     }
 
-    protected function getQuestionAttribute($key1, $key2=null) {
+    protected function getQuestionAttribute($key1, $key2 = null)
+    {
         $result =  isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
-        if($key2 !== null && $result !== null) {
+        if ($key2 !== null && $result !== null) {
             $result =  isset($result[$key2]) ? $result[$key2] : null;
         }
         return $result;
@@ -228,7 +230,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setSubquestions($scale_id = null)
     {
-       
+
         $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
     }
 
@@ -237,20 +239,20 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
     }
 
-    protected function getAnswerCount($iScaleId=0)
+    protected function getAnswerCount($iScaleId = 0)
     {
         return count($this->aAnswerOptions[$iScaleId]);
     }
 
-    protected function getQuestionCount($iScaleId=0)
+    protected function getQuestionCount($iScaleId = 0)
     {
         return count($this->aSubQuestions[$iScaleId]);
     }
 
-    protected function getFromSurveySession($sIndex, $default="")
+    protected function getFromSurveySession($sIndex, $default = "")
     {
-        return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex]) 
-            ? $_SESSION['survey_'.$this->oQuestion->sid][$sIndex]
+        return isset($_SESSION['survey_' . $this->oQuestion->sid][$sIndex])
+            ? $_SESSION['survey_' . $this->oQuestion->sid][$sIndex]
             : $default;
     }
 
@@ -264,7 +266,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     protected function addScript($name, $content, $position = LSYii_ClientScript::POS_BEGIN, $appendId = false)
     {
         $this->aScripts[] = [
-            'name' => $name.($appendId ? '_'.$this->oQuestion->qid : ''),
+            'name' => $name . ($appendId ? '_' . $this->oQuestion->qid : ''),
             'content' => $content,
             'position' => $position
         ];
@@ -292,7 +294,7 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setDefaultIfEmpty($value, $default)
     {
-        if(!$value) {
+        if (is_null($value)) {
             return $default;
         }
         return trim($value) == '' ? $default : $value;
@@ -323,15 +325,16 @@ abstract class QuestionBaseRenderer extends StaticModel
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
             foreach (explode(';', $sExcludeAllOther) as $sExclude) {
-                $sExclude = $this->sSGQA.$sExclude;
-                if ((!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
-                && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
+                $sExclude = $this->sSGQA . $sExclude;
+                if (
+                    (!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
+                    && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
                 ) {
                     return "ls-irrelevant ls-disabled";
                 }
             }
         }
-    
+
         // Currently null/0/false=> hidden , 1 : disabled
         $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
@@ -359,7 +362,7 @@ abstract class QuestionBaseRenderer extends StaticModel
                 ? null
                 : intval($labelAttributeWidth)
             );
-        
+
         if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
             $sInputContainerWidth = 8;
             $sLabelWidth = 4;
@@ -395,13 +398,13 @@ abstract class QuestionBaseRenderer extends StaticModel
     */
     public function includeKeypad()
     {
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party')."jquery-keypad/jquery.keypad.alt.css");
-        
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
-        $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
+
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $localefile = Yii::app()->getConfig('rootdir') . '/third_party/jquery-keypad/jquery.keypad-' . App()->language . '.js';
         if (App()->language != 'en' && file_exists($localefile)) {
-            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party') . 'jquery-keypad/jquery.keypad-' . App()->language . '.js', 'position' => LSYii_ClientScript::POS_BEGIN];
         }
     }
 

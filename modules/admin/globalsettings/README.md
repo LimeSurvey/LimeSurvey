@@ -137,7 +137,7 @@ You can reach it via: **index.php?r=admin/globalsettings/sa/HelloWorld/**
 
 As you can see, it's using its own view, so it's rendered in its own page like if it was a separated module. It's still availabe via the globalsettings route. So it could be a page displayed by clicking on a button or a menu in global setting, it could be an adavanced editing page for some kind of new settings, etc.  
 
-![Full page HelloWorld Module](https://www.limesurvey.org/images/github/full-page-global-setting-extension.png)
+![Full page HelloWorld Module](https://account.limesurvey.org/images/github/full-page-global-setting-extension.png)
 
 ## Extending a method from the GlobalSettings controller
 
@@ -195,7 +195,7 @@ Now, the views from the module are the one rendered, not the views from the core
 In globalSettings_view.php:
 ```php
 <?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> this view is rendered from globall setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> This view is rendered from the global settings module. This message is shown only when debug mode is on. </p>
 <?php endif;?>
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/globalSettings_view.php#L15-L17
@@ -203,12 +203,12 @@ https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06
 In _overview.php :
 ```php
 <?php if(YII_DEBUG ): ?>
-  <p class="alert alert-info "> this subview is rendered from globall setting module. This message is shown only when debug mode is on </p>
+  <p class="alert alert-info "> This subview is rendered from global settings module. This message is shown only when debug mode is on. </p>
 <?php endif;?>
 ```
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L15-L17
 
-If debug mode is on, it will show you an alert that tell you those views are the on from the module.
+If debug mode is on, it will show you an alert that tells you those views are the one from the module.
 
 Then, in  globalSettings_view.phop, we add the parameter $myNewParam to the data passed to the view  _overview.php
 ```php
@@ -239,7 +239,7 @@ Now, in _overview.php, we show that data:
 https://github.com/LimeSurvey/LimeSurvey/blob/98df1afb094077995e2e3b4426a4b64d06d20d60/modules/admin/globalsettings/views/_overview.php#L39-L44
 
 Now, if debug mode is on, you should see:
-![Full page Global Settings view overriden](https://www.limesurvey.org/images/github/global-setting-views-override.png)
+![Full page Global Settings view overriden](https://account.limesurvey.org/images/github/global-setting-views-override.png)
 
 ## Conclusion
 

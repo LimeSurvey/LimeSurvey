@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -145,11 +146,11 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
     {
         $ns         = $reflection->getNamespace();
         $name       = $reflection->getName();
-        $method     = empty($ns) ? $name : $ns.'.'.$name;
+        $method     = empty($ns) ? $name : $ns . '.' . $name;
 
         if (!$this->_overwriteExistingMethods && $this->_table->hasMethod($method)) {
             require_once 'Zend/Server/Exception.php';
-            throw new Zend_Server_Exception('Duplicate method registered: '.$method);
+            throw new Zend_Server_Exception('Duplicate method registered: ' . $method);
         }
 
         $definition = new Zend_Server_Method_Definition();
@@ -212,7 +213,7 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
                 $reflection = new ReflectionClass($class);
                 $object     = $reflection->newInstanceArgs($invokeArgs);
             } else {
-                $object = new $class;
+                $object = new $class();
             }
         }
         return call_user_func_array(array($object, $method), $params);

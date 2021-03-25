@@ -40,7 +40,7 @@ class remotecontrol extends Survey_Common_Action
         if (Yii::app()->getRequest()->isPostRequest) {
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
-                set_include_path($cur_path.PATH_SEPARATOR.APPPATH.'helpers');
+                set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
                 // Yii::import was causing problems for some odd reason
                 require_once('Zend/XmlRpc/Server.php');
                 require_once('Zend/XmlRpc/Server/Exception.php');
@@ -66,7 +66,7 @@ class remotecontrol extends Survey_Common_Action
                 LSjsonRPCServer::handle($oHandler);
             }
             foreach (App()->log->routes as $route) {
-                $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+                $route->enabled = $route->enabled && !($route instanceof CWebLogRoute);
             }
             Yii::app()->session->destroy();
             exit;
@@ -90,7 +90,6 @@ class remotecontrol extends Survey_Common_Action
             }
         }
         Yii::app()->session->destroy();
-
     }
 
     /**
@@ -104,11 +103,11 @@ class remotecontrol extends Survey_Common_Action
         if ($enabled) {
             $RPCType = Yii::app()->getConfig("RPCInterface");
             $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-            $sFileToImport = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'ls205_sample_survey_english.lss';
+            $sFileToImport = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . 'docs' . DIRECTORY_SEPARATOR . 'demosurveys' . DIRECTORY_SEPARATOR . 'ls205_sample_survey_english.lss';
 
             if ($RPCType == 'xml') {
                 $cur_path = get_include_path();
-                set_include_path($cur_path.PATH_SEPARATOR.APPPATH.'helpers');
+                set_include_path($cur_path . PATH_SEPARATOR . APPPATH . 'helpers');
                 require_once('Zend/XmlRpc/Client.php');
 
                 $client = new Zend_XmlRpc_Client($serverUrl);
@@ -122,38 +121,41 @@ class remotecontrol extends Survey_Common_Action
 
 
             $sSessionKey = $client->call('get_session_key', array('admin', 'password'));
-            if (is_array($sSessionKey)) {echo $sSessionKey['status']; die(); } else {
-                echo 'Retrieved session key'.'<br>';
+            if (is_array($sSessionKey)) {
+                echo $sSessionKey['status'];
+                die();
+            } else {
+                echo 'Retrieved session key' . '<br>';
             }
 
             $sLSSData = base64_encode(file_get_contents($sFileToImport));
             $iSurveyID = $client->call('import_survey', array($sSessionKey, $sLSSData, 'lss', 'Test import by JSON_RPC'));
-            echo 'Created new survey SID:'.$iSurveyID.'<br>';
+            echo 'Created new survey SID:' . $iSurveyID . '<br>';
 
             $aResult = $client->call('activate_survey', array($sSessionKey, $iSurveyID));
             if ($aResult['status'] == 'OK') {
-                echo 'Survey '.$iSurveyID.' successfully activated.<br>';
+                echo 'Survey ' . $iSurveyID . ' successfully activated.<br>';
             }
             $aResult = $client->call('activate_tokens', array($sSessionKey, $iSurveyID, array(1, 2)));
             if ($aResult['status'] == 'OK') {
-                echo 'Tokens for Survey ID '.$iSurveyID.' successfully activated.<br>';
+                echo 'Tokens for Survey ID ' . $iSurveyID . ' successfully activated.<br>';
             }
-            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto'=>'0800-LIMESURVEY')));
+            $aResult = $client->call('set_survey_properties', array($sSessionKey, $iSurveyID, array('faxto' => '0800-LIMESURVEY')));
             if (!array_key_exists('status', $aResult)) {
-                echo 'Modified survey settings for survey '.$iSurveyID.'<br>';
+                echo 'Modified survey settings for survey ' . $iSurveyID . '<br>';
             }
             $aResult = $client->call('add_language', array($sSessionKey, $iSurveyID, 'ar'));
             if ($aResult['status'] == 'OK') {
-                echo 'Added Arabian as additional language'.'<br>';
+                echo 'Added Arabian as additional language' . '<br>';
             }
-            $aResult = $client->call('set_language_properties', array($sSessionKey, $iSurveyID, array('surveyls_welcometext'=>'An Arabian welcome text!'), 'ar'));
+            $aResult = $client->call('set_language_properties', array($sSessionKey, $iSurveyID, array('surveyls_welcometext' => 'An Arabian welcome text!'), 'ar'));
             if ($aResult['status'] == 'OK') {
-                echo 'Modified survey locale setting welcometext for Arabian in survey ID '.$iSurveyID.'<br>';
+                echo 'Modified survey locale setting welcometext for Arabian in survey ID ' . $iSurveyID . '<br>';
             }
 
             $aResult = $client->call('delete_language', array($sSessionKey, $iSurveyID, 'ar'));
             if ($aResult['status'] == 'OK') {
-                echo 'Removed Arabian as additional language'.'<br>';
+                echo 'Removed Arabian as additional language' . '<br>';
             }
 
             //Very simple example to export responses as Excel file
@@ -164,15 +166,11 @@ class remotecontrol extends Survey_Common_Action
             //file_put_contents('test.xls',base64_decode(chunk_split($aResult)));
 
             $aResult = $client->call('delete_survey', array($sSessionKey, $iSurveyID));
-            echo 'Deleted survey SID:'.$iSurveyID.'-'.$aResult['status'].'<br>';
+            echo 'Deleted survey SID:' . $iSurveyID . '-' . $aResult['status'] . '<br>';
 
             // Release the session key - close the session
             $Result = $client->call('release_session_key', array($sSessionKey));
-            echo 'Closed the session'.'<br>';
-
+            echo 'Closed the session' . '<br>';
         }
-
     }
-
-
 }

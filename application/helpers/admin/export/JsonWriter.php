@@ -1,4 +1,5 @@
 <?php
+
 class JsonWriter extends Writer
 {
     private $output;
@@ -19,7 +20,7 @@ class JsonWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $sStartOutput = '{'.json_encode("responses").': [';
+        $sStartOutput = '{' . json_encode("responses") . ': [';
         if ($oOptions->output == 'display') {
             header("Content-type: application/json");
             echo $sStartOutput;
@@ -31,18 +32,15 @@ class JsonWriter extends Writer
                 safeDie('Could not open JSON file');
             }
         }
-        
     }
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        $aJson = [];
-        $aJson[$values[0]] = array_combine($headers, $values);
+        $aJson = array_combine($headers, $values);
         $sJson = json_encode($aJson);
         Yii::log($this->havePrev, 'info', 'info');
         if ($this->havePrev) {
-            $sJson = ','.$sJson;
-
+            $sJson = ',' . $sJson;
         }
         $this->havePrev = true;
         if ($oOptions->output == 'display') {
@@ -53,7 +51,6 @@ class JsonWriter extends Writer
             fwrite($this->file, $this->output);
             $this->output = '';
         }
-
     }
 
     public function close()

@@ -8,7 +8,7 @@
                 <th></th>
                 {% for colname, value in subquestion.answervalueslabels %}
                     <th class="text-center"><b>{{value}} - {{colname}}</b></th>
-                {% endfor %}                    
+                {% endfor %}
             </tr>
         {% endif %}
         
@@ -18,8 +18,8 @@
             </td>
             {% for colname, value in subquestion.answervalues %}
                 <td>
-                    {{value}}
-                </td>    
+                    {{value|escape}}
+                </td>
             {% endfor %}
         </tr>
     {% endfor %}

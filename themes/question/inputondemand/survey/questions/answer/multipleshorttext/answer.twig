@@ -2,7 +2,7 @@
 /**
  * Multiple Short Text question Html
  *
- * @var $sRows      : the rows, generated with the views rows/answer_row*.php
+ * @var $aRows      : the rows, generated with the views rows/answer_row*.php
  *
  */
 #}
@@ -13,7 +13,14 @@
     <div class="row">
         <div class="col-xs-12">
             <ul class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-                {{ sRows }}
+                {% if aRows is empty %}
+                    {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
+                {% else %}
+                    {% for aRow in aRows %}
+                        {% set rowTemplate = (aRow.textarea ? 'survey/questions/answer/multipleshorttext/rows/answer_row_textarea.twig' : 'survey/questions/answer/multipleshorttext/rows/answer_row_inputtext.twig') %}
+                        {% include rowTemplate with aRow only %}
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
         <div class="col-xs-12 text-right">

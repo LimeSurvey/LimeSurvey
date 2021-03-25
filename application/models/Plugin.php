@@ -99,9 +99,13 @@ class Plugin extends LSActiveRecord
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            libxml_disable_entity_loader(false);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
             $config = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
             return new ExtensionConfig($config);
         } else {
             throw new \Exception('Missing configuration file for plugin ' . $this->name);
@@ -156,8 +160,8 @@ class Plugin extends LSActiveRecord
      */
     public function getActionButtons()
     {
-        $output='';
-        if (Permission::model()->hasGlobalPermission('settings','update')) {
+        $output = '';
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             if ($this->load_error == 1) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
@@ -166,7 +170,7 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') ."' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
                 $output = $this->getActivateButton();
             } else {
@@ -184,7 +188,7 @@ class Plugin extends LSActiveRecord
     /**
      * @return string HTML
      */
-    protected function getActivateButton()
+    public function getActivateButton()
     {
         $activateUrl = App()->getController()->createUrl(
             '/admin/pluginmanager',
@@ -212,7 +216,7 @@ class Plugin extends LSActiveRecord
     /**
      * @return string HTML
      */
-    protected function getDeactivateButton()
+    public function getDeactivateButton()
     {
         $deactivateUrl = App()->getController()->createUrl(
             '/admin/pluginmanager',

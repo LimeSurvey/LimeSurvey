@@ -4,12 +4,12 @@
         <name>expressionQuestionForAll</name>
         <type>plugin</type>
         <creationDate>2019-07-24</creationDate>
-        <last_update>2019-07-24</last_update>
+        <lastUpdate>2021-01-26</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <license>GPL</license>
-        <description><![CDATA[Add QCODE.question for question with subquestion for expression Manager.]]></description>
+        <description><![CDATA[Add QCODE.question for question with subquestion for expression Manager. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">AMore information on LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <!-- Set priority before question.help -->

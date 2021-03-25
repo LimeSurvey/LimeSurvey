@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -157,9 +158,11 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
      */
     public static function attachObserver($class)
     {
-        if (!is_string($class)
+        if (
+            !is_string($class)
             || !class_exists($class)
-            || !is_callable(array($class, 'observe'))) {
+            || !is_callable(array($class, 'observe'))
+        ) {
             return false;
         }
 

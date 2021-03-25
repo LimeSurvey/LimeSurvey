@@ -39,7 +39,7 @@
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
             {% endif %}
 
-            <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
+            <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" id="answer{{myfname}}slid-container">
                     {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item hidden',
                             'id' : "answer" ~ myfname ~ "slid", 

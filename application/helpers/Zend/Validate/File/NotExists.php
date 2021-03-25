@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -60,7 +61,7 @@ class Zend_Validate_File_NotExists extends Zend_Validate_File_Exists
         $directories = $this->getDirectory(true);
         if (($file !== null) and (!empty($file['destination']))) {
             $directories[] = $file['destination'];
-        } else if (!isset($file['name'])) {
+        } elseif (!isset($file['name'])) {
             $file['name'] = $value;
         }
 

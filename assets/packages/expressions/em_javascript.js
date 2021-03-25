@@ -80,13 +80,13 @@ function checkconditions(value, name, type, evt_type)
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-    /* did we must check if LSvar is set ? and are valid ? */
+    /* Do we have to check if LSvar is set and is valid ? */
     if(window.event){
-    var keyPressed =  window.event.keyCode || 0;
-    if(
-            keyPressed == 37 //left arrow
-        ||  keyPressed == 39 //right arrow
-    ){return false; }
+        var keyPressed =  window.event.keyCode || 0;
+        if(
+                keyPressed == 37 //left arrow
+            ||  keyPressed == 39 //right arrow
+        ){return false; }
     }
 
     var decimalValue;
@@ -175,8 +175,8 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if (displayVal=='NaN')
         {
             newval=displayVal;
-            if(cleansedValue == '') {
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 400);
+            if(cleansedValue == '' && value != cleansedValue) {
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 500);
             }
         }
         else{
@@ -191,7 +191,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                 }
             }
 
-            if($('#answer'+name).val() != newval){
+            if(value != newval){
                 window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
             }
         }
@@ -850,7 +850,8 @@ function LEMregexMatch(sRegExp,within)
         var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
         var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
         var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11
-        return reg.test(within);
+        var decodedValue = html_entity_decode(within);
+        return reg.test(decodedValue);
     }
     catch (err) {
         return false;

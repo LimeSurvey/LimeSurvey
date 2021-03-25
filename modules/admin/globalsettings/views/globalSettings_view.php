@@ -28,6 +28,7 @@ LS.renderBootstrapSwitch();
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#bounce'><?php eT("Bounce settings"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#security'><?php eT("Security"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#useradmin'><?php eT("User administration"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#presentation'><?php eT("Presentation"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
@@ -70,6 +71,14 @@ LS.renderBootstrapSwitch();
 
     <div id="security" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./globalsettings/_security"); ?>
+    </div>
+    <div id="useradmin" class="tab-pane col-md-10 col-md-offset-1">
+       <?php $this->renderPartial("./globalsettings/_useradministration", [
+                'sSendAdminCreationEmail'       => $sGlobalSendAdminCreationEmail,
+                'sAdminCreationEmailSubject'    => $sGlobalAdminCreationEmailSubject,   
+                'sAdminCreationEmailTemplate'   => $sGlobalAdminCreationEmailTemplate,     
+            ]);
+        ?>
     </div>
 
     <div id="presentation" class="tab-pane col-md-10 col-md-offset-1">

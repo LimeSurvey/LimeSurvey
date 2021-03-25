@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-md-7">
         <div class="form-group">
-            <label class=" control-label"  for='repeatheadings'><?php eT("Repeating headings in array questions every X subquestions:"); ?></label>
+            <label class=" control-label"  for='repeatheadings'><?php eT("Repeat headings in array questions every X subquestions:"); ?></label>
             <div class="">
                 <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo getGlobalSetting('repeatheadings'); ?>' size='4' maxlength='4' />
             </div>

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -18,7 +20,7 @@
 /**
  * Returns a global setting
  * @deprecated : use App()->getConfig($settingname)
- * since all config are set at start of App : no need to read and test again 
+ * since all config are set at start of App : no need to read and test again
  *
  * @param string $settingname
  * @return string

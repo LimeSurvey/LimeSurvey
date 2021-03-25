@@ -89,6 +89,9 @@
 
     <!-- Here datas about how LimeSurvey should load the theme -->
     <engine>
+        <!-- core: use core options view file, custom: use customized options.twig view file -->
+        <optionspage>core</optionspage>
+
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>
             <name>bootstrap</name>
@@ -269,6 +272,16 @@
                     <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
                     <file type="view" role="subview">./subviews/printanswers/printanswers_foot.twig</file>
                 </printanswers>
+
+                <statistics_user>
+                    <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('Public statistics')}} ]]></screen_title>
+                    <file type="view" role="layout">layout_statistics_user.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/statistics_user.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_head.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_content.twig</file>
+                    <file type="view" role="subview">./subviews/statistics_user/statistics_user_foot.twig</file>
+                </statistics_user>
 
                 <pdf>
                     <screen_title  type="data"  role="title" twig="on"><![CDATA[ {{gT('PDF')}} ]]></screen_title>

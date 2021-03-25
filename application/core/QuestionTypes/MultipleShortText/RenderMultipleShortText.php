@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -47,7 +45,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
             $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
             $this->extraclass   .= " numberonly";
             $this->sCoreClasses .= " number-list ";
-        } 
+        }
 
         if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -61,7 +59,8 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         }
     }
 
-    public function setPrefixAndSuffix(){
+    public function setPrefixAndSuffix()
+    {
         $sPrefix = $this->getQuestionAttribute('prefix', $this->sLanguage);
         if ($sPrefix != '') {
             $this->prefix = $sPrefix;
@@ -75,8 +74,9 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         }
     }
 
-    public function setPlaceholder(){
-        $sPlaceholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+    public function setPlaceholder()
+    {
+        $sPlaceholder = $this->getQuestionAttribute('placeholder', $this->sLanguage);
         if ($sPlaceholder != '') {
             $this->placeholder = $sPlaceholder;
         }
@@ -91,19 +91,19 @@ class RenderMultipleShortText extends QuestionBaseRenderer
     {
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $oSubquestion) {
-            $myfname = $this->sSGQA.$oSubquestion->title;
+            $myfname = $this->sSGQA . $oSubquestion->title;
             $sSubquestionText = $this->setDefaultIfEmpty($oSubquestion->questionl10ns[$this->sLanguage]->question, "&nbsp;");
 
             // color code missing mandatory questions red
             $alert = (
-                (($this->aSurveySessionArray['step'] != $this->aSurveySessionArray['maxstep']) 
+                (($this->aSurveySessionArray['step'] != $this->aSurveySessionArray['maxstep'])
                 || ($this->aSurveySessionArray['step'] == $this->aSurveySessionArray['prevstep']))
                 && (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && $this->aSurveySessionArray[$myfname] === '')
             );
 
             $sDisplayStyle = '';
 
-            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname],'');
+            $dispVal       = $this->setDefaultIfEmpty($this->aSurveySessionArray[$myfname], '');
             if ($this->numbersonly === true) {
                 $dispVal = str_replace('.', $this->sSeparator, $dispVal);
             }
@@ -115,7 +115,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'sDisplayStyle'          => '',
                     'alert'                  => $alert,
                     'myfname'                => $myfname,
-                    'labelname'              => 'answer'.$myfname,
+                    'labelname'              => 'answer' . $myfname,
                     'dispVal'                => $dispVal,
                     'question'               => $sSubquestionText,
                     'numbersonly'            => $this->numbersonly,
@@ -139,7 +139,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'sDisplayStyle'          => '',
                     'alert'                  => $alert,
                     'myfname'                => $myfname,
-                    'labelname'              => 'answer'.$myfname,
+                    'labelname'              => 'answer' . $myfname,
                     'dispVal'                => $dispVal,
                     'question'               => $sSubquestionText,
                     'numbersonly'            => $this->numbersonly,
@@ -166,12 +166,12 @@ class RenderMultipleShortText extends QuestionBaseRenderer
 
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion(
-            $this->getMainView().'/answer',
+            $this->getMainView() . '/answer',
             array(
                 'aRows' => $this->getRows(),
-                'coreClass'=>$this->sCoreClasses.' '.$sCoreClasses,
-                'basename'=>$this->sSGQA,
-            ), 
+                'coreClass' => $this->sCoreClasses . ' ' . $sCoreClasses,
+                'basename' => $this->sSGQA,
+            ),
             true
         );
 

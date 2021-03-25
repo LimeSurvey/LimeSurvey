@@ -1,6 +1,6 @@
 <?php
 
-use \LimeSurvey\PluginManager\PluginEvent;
+use LimeSurvey\PluginManager\PluginEvent;
 
 class PluginEventBehavior extends CModelBehavior
 {
@@ -19,8 +19,8 @@ class PluginEventBehavior extends CModelBehavior
 
     public function afterDelete(CEvent $event)
     {
-        $this->dispatchPluginModelEvent('after'.get_class($this->owner).'Delete');
-        $this->_dispatchDynamic('after','Delete');
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Delete');
+        $this->_dispatchDynamic('after', 'Delete');
         $this->dispatchPluginModelEvent('afterModelDelete');
     }
 
@@ -31,16 +31,16 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('after'.get_class($this->owner).'Save');
-        $this->_dispatchDynamic('after','Save');
+        $this->dispatchPluginModelEvent('after' . get_class($this->owner) . 'Save');
+        $this->_dispatchDynamic('after', 'Save');
         $this->dispatchPluginModelEvent('afterModelSave');
     }
 
 
     public function beforeDelete(CModelEvent $event)
     {
-        $this->dispatchPluginModelEvent('before'.get_class($this->owner).'Delete');
-        $this->_dispatchDynamic('before','Delete');
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Delete');
+        $this->_dispatchDynamic('before', 'Delete');
         $this->dispatchPluginModelEvent('beforeModelDelete');
     }
 
@@ -52,8 +52,8 @@ class PluginEventBehavior extends CModelBehavior
         if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
-        $this->dispatchPluginModelEvent('before'.get_class($this->owner).'Save');
-        $this->_dispatchDynamic('before','Save');
+        $this->dispatchPluginModelEvent('before' . get_class($this->owner) . 'Save');
+        $this->_dispatchDynamic('before', 'Save');
         $this->dispatchPluginModelEvent('beforeModelSave');
     }
 
@@ -64,13 +64,13 @@ class PluginEventBehavior extends CModelBehavior
      * @param string $what
      * @return PluginEvent the dispatched event
      */
-    private function _dispatchDynamic($when,$what)
+    private function _dispatchDynamic($when, $what)
     {
-        if(is_subclass_of($this->owner,'Dynamic')) {
+        if (is_subclass_of($this->owner, 'Dynamic')) {
             $params = array(
                 'dynamicId' => $this->owner->getDynamicId()
             );
-            return $this->dispatchPluginModelEvent($when.get_parent_class($this->owner).$what,null,$params);
+            return $this->dispatchPluginModelEvent($when . get_parent_class($this->owner) . $what, null, $params);
         }
     }
     /**
@@ -86,11 +86,11 @@ class PluginEventBehavior extends CModelBehavior
     {
         $oPluginEvent = new PluginEvent($sEventName, $this);
         $oPluginEvent->set('model', $this->owner);
-        if(method_exists($this->owner,'getSurveyId')) {
+        if (method_exists($this->owner, 'getSurveyId')) {
             $oPluginEvent->set('iSurveyID', $this->owner->getSurveyId());
             $oPluginEvent->set('surveyId', $this->owner->getSurveyId());
         }
-        foreach($eventParams as $param => $value) {
+        foreach ($eventParams as $param => $value) {
             $oPluginEvent->set($param, $value);
         }
         if (isset($criteria)) {

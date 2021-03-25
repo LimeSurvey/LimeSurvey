@@ -27,7 +27,7 @@
             <?php echo $form->hiddenField($model,'ptid'); ?>
 
             <div class="row">
-                <?php echo $form->labelEx($model,'name'); ?>
+                <?php echo $form->labelEx($model,'New User Role'); ?>
                 <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>192, 'required' => 'required')); ?>
                 <?php echo $form->error($model,'name'); ?>
             </div>

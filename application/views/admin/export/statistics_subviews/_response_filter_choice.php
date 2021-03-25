@@ -27,6 +27,7 @@
                             <?php $this->renderPartial('/admin/export/statistics_subviews/_question', array(
                                     'key1'=>$key1,
                                     'flt'=>$flt,
+                                    'dateformatdetails'=>$dateformatdetails,
                                     'filterchoice_state'=>$filterchoice_state,
                                     'filters'=>$filters,
                                     'aGroups'=>$aGroups,

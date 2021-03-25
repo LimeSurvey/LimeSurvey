@@ -225,20 +225,27 @@
 
     {% if (aSurveyInfo.options.crosshover == "on" ) %}
         @media (min-width: 1024px){
-            table.ls-answers.table-hover
+            table.ls-answers.table-hover,
+            table.ls-answers.table-col-hover
             {
                 overflow: hidden;
                 }
 
             table.ls-answers.table-hover>tbody>tr:hover td,
-            table.ls-answers.table-hover>tbody>tr:hover th {
+            table.ls-answers.table-hover>tbody>tr:hover th,
+            table.ls-answers.table-col-hover>tbody>tr:hover td,
+            table.ls-answers.table-col-hover>tbody>tr:hover th {
                 background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
             }
 
             table.ls-answers.table-hover>tbody>tr>td, th {
                 position: relative;
             }
-            table.ls-answers.table-hover>tbody>tr>td:hover::after {
+            table.ls-answers.table-col-hover>tbody>tr>td, th {
+                position: relative;
+            }
+            table.ls-answers.table-hover>tbody>tr>td:hover::after,
+            table.ls-answers.table-col-hover>tbody>tr>td:hover::after {
                 content: "";
                 position: absolute;
                 background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};

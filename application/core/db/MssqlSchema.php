@@ -9,6 +9,8 @@ class MssqlSchema extends CMssqlSchema
          * Recommended practice.
          */
         $this->columnTypes['text'] = 'nvarchar(max)';
+        $this->columnTypes['mediumtext'] = 'nvarchar(max)';
+        $this->columnTypes['longtext'] = 'nvarchar(max)';
         /**
          * DbLib bugs if no explicit NOT NULL is specified.
          */
@@ -33,7 +35,7 @@ class MssqlSchema extends CMssqlSchema
             $sResult = $this->columnTypes[$type];
         } elseif (preg_match('/^(\w+)\((.+?)\)(.*)$/', $type, $matches)) {
             if (isset($this->columnTypes[$matches[1]])) {
-                $sResult = preg_replace('/\(.+\)/', '('.$matches[2].')', $this->columnTypes[$matches[1]]).$matches[3];
+                $sResult = preg_replace('/\(.+\)/', '(' . $matches[2] . ')', $this->columnTypes[$matches[1]]) . $matches[3];
             }
         } elseif (preg_match('/^(\w+)\s+/', $type, $matches)) {
             if (isset($this->columnTypes[$matches[1]])) {
@@ -41,7 +43,8 @@ class MssqlSchema extends CMssqlSchema
             }
         }
         if (stripos($sResult, 'NULL') === false) {
-            $sResult .= ' NULL'; }
+            $sResult .= ' NULL';
+        }
         return $sResult;
     }
 
@@ -52,15 +55,15 @@ class MssqlSchema extends CMssqlSchema
         foreach ($columns as $name => $type) {
             if (is_array($type) && $name == 'composite_pk') {
                 // ...except this line.
-                $cols[] = "\t".$this->getCompositePrimaryKey($type);
+                $cols[] = "\t" . $this->getCompositePrimaryKey($type);
             } elseif (is_string($name)) {
-                $cols[] = "\t".$this->quoteColumnName($name).' '.$this->getColumnType($type);
+                $cols[] = "\t" . $this->quoteColumnName($name) . ' ' . $this->getColumnType($type);
             } else {
-                $cols[] = "\t".$type;
+                $cols[] = "\t" . $type;
             }
         }
-        $sql = "CREATE TABLE ".$this->quoteTableName($table)." (\n".implode(",\n", $cols)."\n)";
-        return $options === null ? $sql : $sql.' '.$options;
+        $sql = "CREATE TABLE " . $this->quoteTableName($table) . " (\n" . implode(",\n", $cols) . "\n)";
+        return $options === null ? $sql : $sql . ' ' . $options;
     }
 
     /**
@@ -71,9 +74,8 @@ class MssqlSchema extends CMssqlSchema
     public function getCompositePrimaryKey(array $columns)
     {
         $columns = array_map(
-            function($column)
-            {
-                return '['.$column.']';
+            function ($column) {
+                return '[' . $column . ']';
             },
             $columns
         );

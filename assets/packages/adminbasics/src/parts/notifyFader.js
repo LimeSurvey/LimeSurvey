@@ -29,7 +29,8 @@ class NotifyFader {
         this.increment();
         customOptions = customOptions || {};
         styles = styles || {};
-        classes = classes || "well well-lg";
+        // NB: Class "well" will overide any background set, like bg-danger. Only use well-lg.
+        classes = classes || "well-lg";
 
         const options = {
             useHtml : customOptions.useHtml || true,

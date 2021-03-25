@@ -7,14 +7,14 @@
                 {% if subquestion.answervalue is sameas("Y") %}
                     <i class="fa fa-check-square-o"></i>
                 {% else %}
-                    {{subquestion.answervalue}}
+                    {{subquestion.answervalue|escape}}
                 {% endif %}
             </div>
             <div class="col-md-4 text-left">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>
             </div>
             <div class="col-md-4 text-left">
-                    {{subquestion.comment.answervalue}}
+                    {{subquestion.comment.answervalue|escape}}
             </div>
         </div>
     {% endfor %}

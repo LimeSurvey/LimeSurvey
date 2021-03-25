@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Do the index : group by group or question by question
  *
@@ -16,7 +17,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 namespace LimeSurvey\Helpers;
+
 use Yii;
 use LimeExpressionManager;
 
@@ -65,8 +68,8 @@ class questionIndexHelper
         $this->iSurveyId = $iSurveyId;
         $oSurvey = \Survey::model()->findByPk($this->iSurveyId);
         if ($oSurvey) {
-            $this->indexType = $oSurvey->questionindex;
-            $this->surveyFormat = $oSurvey->format;
+            $this->indexType = $oSurvey->aOptions['questionindex'];
+            $this->surveyFormat = $oSurvey->aOptions['format'];
         } else {
             $this->indexType = 0;
             $this->surveyFormat = null;
@@ -127,22 +130,23 @@ class questionIndexHelper
         /* get the step info from LEM : for already seen group : give if error/show and answered ...*/
         $stepInfos = LimeExpressionManager::GetStepIndexInfo();
         $stepIndex = array();
-        foreach ($sessionLem['grouplist'] as $step=>$groupInfo) {
+        foreach ($sessionLem['grouplist'] as $step => $groupInfo) {
             /* EM step start at 1, we start at 0*/
             $groupInfo['step'] = $step + 1;
-            $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step] : array('show'=>true, 'anyUnanswered'=>null, 'anyErrors'=>null);
-            if (($type > 1 || $groupInfo['step'] <= $sessionLem['maxstep'])
+            $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step] : array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
+            if (
+                ($type > 1 || $groupInfo['step'] <= $sessionLem['maxstep'])
                 && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for irrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
             ) {
                 /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step] = array(
-                    'gid'=>$groupInfo['gid'],
-                    'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
-                    'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
-                    'step'=>$groupInfo['step'],
-                    'url'=>Yii::app()->getController()->createUrl("survey/index", array('sid'=>$this->iSurveyId, 'move'=>$groupInfo['step'])),
-                    'submit'=>ls_json_encode(array('move'=>$groupInfo['step'])),
-                    'stepStatus'=>array(
+                    'gid' => $groupInfo['gid'],
+                    'text' => LimeExpressionManager::ProcessString($groupInfo['group_name']),
+                    'description' => LimeExpressionManager::ProcessString($groupInfo['description']),
+                    'step' => $groupInfo['step'],
+                    'url' => Yii::app()->getController()->createUrl("survey/index", array('sid' => $this->iSurveyId, 'move' => $groupInfo['step'])),
+                    'submit' => ls_json_encode(array('move' => $groupInfo['step'])),
+                    'stepStatus' => array(
                         'index-item-before' => ($groupInfo['step'] < $sessionLem['step']), /* did we need a before ? seen seems better */
                         'index-item-seen' => ($groupInfo['step'] <= $sessionLem['maxstep']),
                         'index-item-unanswered' => $stepInfo['anyUnanswered'],
@@ -176,14 +180,15 @@ class questionIndexHelper
         $stepIndex = array();
         $prevStep = -1;
         $prevGroupSeq = -1;
-        foreach ($sessionLem['fieldmap'] as $step=>$questionFieldmap) {
+        foreach ($sessionLem['fieldmap'] as $step => $questionFieldmap) {
             if (isset($questionFieldmap['questionSeq']) && $questionFieldmap['questionSeq'] != $prevStep) {
 // Sub question have same questionSeq, and no questionSeq : must be hidden (lastpage, id, seed ...)
                 /* This question can be in index */
                 $questionStep = $questionFieldmap['questionSeq'] + 1;
-                $stepInfo = isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']] : array('show'=>true, 'anyUnanswered'=>null, 'anyErrors'=>null);
-                if (($questionStep <= $sessionLem['maxstep']) // || $type>1 : index can be shown : but next step is disable somewhere
-                   && $stepInfo['show']// attribute hidden + relevance : @todo review EM function ?
+                $stepInfo = isset($stepInfos[$questionFieldmap['questionSeq']]) ? $stepInfos[$questionFieldmap['questionSeq']] : array('show' => true, 'anyUnanswered' => null, 'anyErrors' => null);
+                if (
+                    ($questionStep <= $sessionLem['maxstep']) // || $type>1 : index can be shown : but next step is disable somewhere
+                    && $stepInfo['show']// attribute hidden + relevance : @todo review EM function ?
                 ) {
                     /* Control if we are in a new group : always true at first question*/
                     //$GroupId=(isset($questionFieldmap['random_gid']) && $questionFieldmap['random_gid']) ? $questionFieldmap['random_gid'] : $questionFieldmap['gid'];
@@ -196,22 +201,22 @@ class questionIndexHelper
                         //add the group
                         $groupInfo = $groupList[$questionFieldmap['groupSeq']];
                         $actualGroup = array(
-                            'gid'=>$groupInfo['gid'],
-                            'text'=>LimeExpressionManager::ProcessString($groupInfo['group_name']),
-                            'description'=>LimeExpressionManager::ProcessString($groupInfo['description']),
+                            'gid' => $groupInfo['gid'],
+                            'text' => LimeExpressionManager::ProcessString($groupInfo['group_name']),
+                            'description' => LimeExpressionManager::ProcessString($groupInfo['description']),
                         );
                         /* The 'show' question in this group */
                         $questionInGroup = array();
                         $prevGroupSeq = $questionFieldmap['groupSeq'];
                     }
                     $questionInfo = array(
-                        'qid'=>$questionFieldmap['qid'],
-                        'code'=>$questionFieldmap['title'], /* @todo : If survey us set to show question code : we must show it */
-                        'text'=>LimeExpressionManager::ProcessString($questionFieldmap['question']),
-                        'step'=>$questionStep,
-                        'url'=>Yii::app()->getController()->createUrl("survey/index", array('sid'=>$this->iSurveyId, 'move'=>$questionStep)),
-                        'submit'=>ls_json_encode(array('move'=>$questionStep)),
-                        'stepStatus'=>array(
+                        'qid' => $questionFieldmap['qid'],
+                        'code' => $questionFieldmap['title'], /* @todo : If survey us set to show question code : we must show it */
+                        'text' => LimeExpressionManager::ProcessString($questionFieldmap['question']),
+                        'step' => $questionStep,
+                        'url' => Yii::app()->getController()->createUrl("survey/index", array('sid' => $this->iSurveyId, 'move' => $questionStep)),
+                        'submit' => ls_json_encode(array('move' => $questionStep)),
+                        'stepStatus' => array(
                             'index-item-before' => ($questionStep < $sessionLem['step']), /* did we need a before ? seen seems better */
                             'index-item-seen' => ($questionStep <= $sessionLem['maxstep']),
                             'index-item-unanswered' => $stepInfo['anyUnanswered'],
@@ -234,5 +239,4 @@ class questionIndexHelper
         }
         return $stepIndex;
     }
-
 }

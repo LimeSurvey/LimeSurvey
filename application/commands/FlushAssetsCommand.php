@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -21,17 +22,16 @@ class FlushAssetsCommand extends CConsoleCommand
     public function run($aArguments)
     {
         $sCurrentDir = dirname(__FILE__);
-        $tmpFolder = realpath($sCurrentDir.'/../../tmp/');
+        $tmpFolder = realpath($sCurrentDir . '/../../tmp/');
         if ($tmpFolder === false) {
-            echo 'Tmp folder  '.$sCurrentDir.'/../../tmp/ not found';
-            return; 
+            echo 'Tmp folder  ' . $sCurrentDir . '/../../tmp/ not found';
+            return;
         }
-        echo "Flushing assets in ".$tmpFolder;
+        echo "Flushing assets in " . $tmpFolder;
         echo "\n";
 
-        $this->_sureRemoveFiles($tmpFolder.'/assets/', false, ['index.html']);
-        $this->_sureRemoveFiles($tmpFolder.'/runtime/cache/', false, ['index.html']);
-
+        $this->_sureRemoveFiles($tmpFolder . '/assets/', false, ['index.html']);
+        $this->_sureRemoveFiles($tmpFolder . '/runtime/cache/', false, ['index.html']);
     }
     private function _sureRemoveFiles($dir, $DeleteMe, $exclude = array())
     {
@@ -42,16 +42,15 @@ class FlushAssetsCommand extends CConsoleCommand
             if ($obj == '.' || $obj == '..' || in_array($obj, $exclude)) {
                 continue;
             }
-            if (!@unlink($dir.'/'.$obj)) {
-                $this->_sureRemoveFiles($dir.'/'.$obj, true);
+            if (!@unlink($dir . '/' . $obj)) {
+                $this->_sureRemoveFiles($dir . '/' . $obj, true);
             }
         }
         closedir($dh);
         if ($DeleteMe) {
             if (!@rmdir($dir)) {
-                echo "Error: could not delete ".$dir;
+                echo "Error: could not delete " . $dir;
             }
-    
         }
     }
 }

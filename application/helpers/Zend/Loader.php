@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -167,7 +168,8 @@ class Zend_Loader
             return true;
         }
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'
+        if (
+            strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'
             && preg_match('/^[a-z]:/i', $filename)
         ) {
             // If on windows, and path provided is clearly an absolute path,
@@ -338,6 +340,6 @@ class Zend_Loader
             $file      = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
         $file .= str_replace('_', DIRECTORY_SEPARATOR, $fileName) . '.php';
-        return $file;    
+        return $file;
     }
 }

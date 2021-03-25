@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -116,7 +117,7 @@ class Zend_Validate_File_Hash extends Zend_Validate_Abstract
     {
         if (is_string($options)) {
             $options = array($options);
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception("False parameter given");
         }
@@ -166,7 +167,7 @@ class Zend_Validate_File_Hash extends Zend_Validate_Abstract
                 return $this->_throw($file, self::NOT_DETECTED);
             }
 
-            foreach($hashes as $hash) {
+            foreach ($hashes as $hash) {
                 if ($filehash === $hash) {
                     return true;
                 }

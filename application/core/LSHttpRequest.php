@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -135,11 +136,11 @@ class LSHttpRequest extends CHttpRequest
         $navStack = App()->session['LSNAVSTACK'];
         foreach ($navStack as $url) {
             $refEqualsUrl = ($referrerURL == $url);
-                if ($refEqualsUrl) {
-                    return true;
-                }
+            if ($refEqualsUrl) {
+                return true;
+            }
         }
-        return false;  
+        return false;
     }
 
     protected function normalizeRequest()
@@ -153,30 +154,32 @@ class LSHttpRequest extends CHttpRequest
         $route = Yii::app()->getUrlManager()->parseUrl($this);
 
         if ($this->enableCsrfValidation) {
-            
             $validationRoutes = $this->noCsrfValidationRoutes;
             $validationParams = $this->noCsrfValidationParams;
             // $validationRoutes[] = 'plugins/direct/plugin/AuthSAML/function/acs';
             // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
-                if (preg_match('#'.$cr.'#', $route)) {
-                    Yii::app()->detachEventHandler('onBeginRequest',
-                        array($this, 'validateCsrfToken'));
-                    Yii::trace('Route "'.$route.' passed without CSRF validation');
+                if (preg_match('#' . $cr . '#', $route)) {
+                    Yii::app()->detachEventHandler(
+                        'onBeginRequest',
+                        array($this, 'validateCsrfToken')
+                    );
+                    Yii::trace('Route "' . $route . ' passed without CSRF validation');
                     break; // found first route and break
                 }
             }
 
             foreach ($validationParams as $key => $value) {
                 if ($this->getParam($key) === $value) {
-                    Yii::app()->detachEventHandler('onBeginRequest',
-                        array($this, 'validateCsrfToken'));
-                    Yii::trace('Route "'.$route.' passed without CSRF validation');
+                    Yii::app()->detachEventHandler(
+                        'onBeginRequest',
+                        array($this, 'validateCsrfToken')
+                    );
+                    Yii::trace('Route "' . $route . ' passed without CSRF validation');
                     break; // found first param and break
                 }
             }
-
         }
     }
 
@@ -218,5 +221,4 @@ class LSHttpRequest extends CHttpRequest
         }
         return $this->_pathInfo;
     }
-
 }

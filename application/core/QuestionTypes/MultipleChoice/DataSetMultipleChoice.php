@@ -1,5 +1,6 @@
 <?php
 
+class DataSetMultipleChoice extends QuestionBaseDataSet
+{
 
-
-class DataSetMultipleChoice extends QuestionBaseDataSet {}
+}

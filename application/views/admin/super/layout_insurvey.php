@@ -1,5 +1,8 @@
 <?php
 
+/* @deprecated moved to layouts/layout_questioneditor */
+//todo should be removed when all controllers have been refactored
+
     //All paths relative from /application/views
 
 //headers will be generated with the template file /admin/super/header.php
@@ -32,10 +35,9 @@ $this->_showHeaders($aData, false);
         echo '<div '
         . 'class="ls-flex-column align-items-flex-start align-content-flex-start col-11 ls-flex-item transition-animate-width main-content-container" '
         . '>';
-            //New general top bar (VueComponent)
-            $this->_generaltopbar($aData);
 
             echo '<div id="pjax-content" class="col-12">';
+                echo LayoutHelper::renderTopbar($aData);
 
                 //Rendered through /admin/responses/browsemenubar_view
                 //$this->_browsemenubar($aData);
@@ -43,7 +45,7 @@ $this->_showHeaders($aData, false);
                 $this->_organizequestionbar($aData);
 
                 echo '<div id="in_survey_common" '
-                . 'class="container-fluid ls-flex-column fill col-12"'
+                . 'class="container-fluid ls-flex-column col-12"'
                 . '>';
 
                     //Rendered through /admin/update/_update_notification
@@ -62,7 +64,6 @@ $this->_showHeaders($aData, false);
 
                     echo $content;
                     
-                    $this->_generaltopbarAdditions($aData);
                 echo "</div>\n";
             echo "</div>\n";
         echo "</div>\n";

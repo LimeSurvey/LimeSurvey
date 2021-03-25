@@ -26,8 +26,12 @@ function jquery_goodchars(e, goods)
    return false;
 }
 
+/* todo: is this used somewhere??
 var assessmentTable = '#selector__assessment-table',
     $assessmentTable = $(assessmentTable);
+
+ */
+
 var bindAction = function(){
 
     $('.action_assessments_deleteModal').on('click.assessments', function(){
@@ -37,6 +41,8 @@ var bindAction = function(){
 
     $('.action_assessments_editModal').on('click.assessments', function(){
         $('input[name=action]').val('assessmentupdate');
+        var linkLoadEditUrl = document.getElementById('loadEditUrl_forModalView');
+        var loadEditUrl = linkLoadEditUrl.dataset.editurl;
         $.ajax({
             url: loadEditUrl,
             data: {id: $(this).closest('tr').data('assessment-id')},// crsf is already in ajaxsetup
@@ -61,6 +67,8 @@ var bindAction = function(){
 
     $('#selector__assessment-add-new').on('click.assessments', function(){
         var editAddForm = $('#assesements-edit-add');
+
+        $('input[name=action]').val('assessmentadd');
 
         editAddForm.modal('show');
         editAddForm.on('shown.bs.modal',  function removeValues(){
@@ -89,7 +97,7 @@ var bindAction = function(){
             error: function(err){
                 console.ls.error(err);
             }
-        })
+        });
     });
 
     $('#selector__assessements-delete-modal').on('click.assessments', function(){
@@ -133,5 +141,5 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         function(e){
             return jquery_goodchars(e,'1234567890-');
         }
-    )
+    );
 });

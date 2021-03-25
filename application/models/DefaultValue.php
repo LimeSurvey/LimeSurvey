@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -23,7 +22,7 @@
  * @property string $specialtype of column “other” currently (no GUI for comments)
  *
  * @property Question $question
- * 
+ *
  * @property DefaultValueL10n[] $defaultvalueL10ns
  */
 class DefaultValue extends LSActiveRecord
@@ -59,7 +58,6 @@ class DefaultValue extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'question' => array(self::HAS_ONE, 'Question', "qid"),
             'defaultvaluel10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
@@ -71,8 +69,7 @@ class DefaultValue extends LSActiveRecord
     {
         return array(
             array('qid', 'required'),
-            array('qid,sqid,scale_id', 'numerical', 'integerOnly'=>true),
-            array('defaultvalue', 'LSYii_Validators'),
+            array('qid,sqid,scale_id', 'numerical', 'integerOnly' => true),
         );
     }
 
@@ -83,7 +80,7 @@ class DefaultValue extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $oRecord = new self;
+        $oRecord = new self();
         foreach ($data as $k => $v) {
             $oRecord->$k = $v;
         }

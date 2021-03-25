@@ -6,15 +6,20 @@
  * @throws CHttpException
  * @throws CException
  */
-function populateDatabase($oDB){
+function populateDatabase($oDB)
+{
     /**
     * Populate the database for a limesurvey installation
     * Rules:
     * - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
     * - Never use foreign keys
-    * - Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
+    * - Only use the database field types provided by Yii as they are guaranteed to be cross-DB compatible
+    * - You may also use: text / mediumtext/ longtext
+    *       - MySQL is differentiating here: text - max size 64kb, mediumtext - max size 16MB , longtext - max size 2.1 GB
+    *       - MSSQL: all three types use text (max size 2.1 GB)
+    *       - Postgres: all three types use text (max size unlimited)
     * - If you want to use database functions make sure they exist on all three supported database types
-    * - Always prefix key/index names by using curly brackets {{ }}*
+    * - Always prefix key/index names by using curly brackets {{ }}
     */
 
     // Get current database version:
@@ -24,12 +29,12 @@ function populateDatabase($oDB){
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
     $options = '';
-    if(in_array($oDB->driverName,['mysql','mysqli'])) {
+    if (in_array($oDB->driverName, ['mysql','mysqli'])) {
         $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
     }
 
     $oTransaction = $oDB->beginTransaction();
-    try{
+    try {
         //answers table
         $oDB->createCommand()->createTable('{{answers}}', array(
             'aid' =>  "pk",
@@ -38,7 +43,7 @@ function populateDatabase($oDB){
             'sortorder' => 'integer NOT NULL',
             'assessment_value' => 'integer NOT NULL DEFAULT 0',
             'scale_id' => 'integer NOT NULL DEFAULT 0',
-        ),$options);
+        ), $options);
 
         $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
         $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
@@ -46,7 +51,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
             'id' =>  "pk",
             'aid' =>  "integer NOT NULL",
-            'answer' =>  "text NOT NULL",
+            'answer' =>  "mediumtext NOT NULL",
             'language' =>  "string(20) NOT NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{answer_l10ns_idx}}', '{{answer_l10ns}}', ['aid', 'language'], true);
@@ -55,12 +60,12 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createTable('{{assessments}}', array(
             'id' =>         'autoincrement',
             'sid' =>        'integer NOT NULL DEFAULT 0',
-            'scope' =>      'string(5) NOT NULL'	,
+            'scope' =>      'string(5) NOT NULL'    ,
             'gid' =>        'integer NOT NULL DEFAULT 0',
             'name' =>       'text NOT NULL',
             'minimum' =>    'string(50) NOT NULL',
             'maximum' =>    'string(50) NOT NULL',
-            'message' =>    'text NOT NULL',
+            'message' =>    'mediumtext NOT NULL',
             'language' =>   "string(20) NOT NULL DEFAULT 'en'",
             'composite_pk' => array('id', 'language')
         ), $options);
@@ -80,7 +85,7 @@ function populateDatabase($oDB){
             'usergroup' => "integer NOT NULL "
         ), $options);
         
-        foreach( $boxesData=LsDefaultDataSets::getBoxesData() as $box){
+        foreach ($boxesData = LsDefaultDataSets::getBoxesData() as $box) {
             $oDB->createCommand()->insert("{{boxes}}", $box);
         }
        
@@ -154,7 +159,7 @@ function populateDatabase($oDB){
             'id' =>  "pk",
             'gid' =>  "integer NOT NULL",
             'group_name' =>  "text NOT NULL",
-            'description' =>  "text",
+            'description' =>  "mediumtext",
             'language' =>  "string(20) NOT NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], true);
@@ -193,7 +198,7 @@ function populateDatabase($oDB){
             'entity' =>  "string(15) NOT NULL ",
             'entity_id' =>  "integer NOT NULL",
             'title' =>  "string(255) NOT NULL",
-            'message' =>  "text NOT NULL",
+            'message' =>  "mediumtext NOT NULL",
             'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
             'importance' =>  "integer NOT NULL DEFAULT 1",
             'display_class' =>  "string(31) DEFAULT 'default' ",
@@ -262,13 +267,13 @@ function populateDatabase($oDB){
         // load sodium library
         $sodium = Yii::app()->sodium;
         // check if sodium library exists
-        if ($sodium->bLibraryExists === true){
+        if ($sodium->bLibraryExists === true) {
             $sEncrypted = 'Y';
         } else {
             $sEncrypted = 'N';
         }
 
-        foreach($aCoreAttributes as $attribute){
+        foreach ($aCoreAttributes as $attribute) {
             $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
                 'attribute_type'    => 'TB',
                 'defaultname'       => $attribute,
@@ -283,7 +288,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
             'value_id' => "pk",
             'attribute_id' => "integer NOT NULL",
-            'value' => "text NOT NULL",
+            'value' => "mediumtext NOT NULL",
         ), $options);
 
 
@@ -349,7 +354,7 @@ function populateDatabase($oDB){
             'model' => "string(50) NULL",
             'model_id' => "integer NULL",
             'key' => "string(50) NOT NULL",
-            'value' => "text NULL",
+            'value' => "mediumtext NULL",
         ), $options);
 
 
@@ -382,8 +387,8 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createTable('{{question_l10ns}}', array(
             'id' =>  "pk",
             'qid' =>  "integer NOT NULL",
-            'question' =>  "text NOT NULL",
-            'help' =>  "text",
+            'question' =>  "mediumtext NOT NULL",
+            'help' =>  "mediumtext",
             'script' => " text NULL default NULL",
             'language' =>  "string(20) NOT NULL"
         ), $options);
@@ -397,7 +402,7 @@ function populateDatabase($oDB){
             'qaid' => "pk",
             'qid' => "integer NOT NULL default '0'",
             'attribute' => "string(50) NULL",
-            'value' => "text NULL",
+            'value' => "mediumtext NULL",
             'language' => "string(20) NULL",
         ), $options);
 
@@ -425,7 +430,7 @@ function populateDatabase($oDB){
             'quotals_quota_id' => "integer NOT NULL default '0'",
             'quotals_language' => "string(45) NOT NULL default 'en'",
             'quotals_name' => "string(255) NULL",
-            'quotals_message' => "text NOT NULL",
+            'quotals_message' => "mediumtext NOT NULL",
             'quotals_url' => "string(255)",
             'quotals_urldescrip' => "string(255)",
         ), $options);
@@ -470,15 +475,14 @@ function populateDatabase($oDB){
             'expire' => "integer NULL",
             'data' => "longbinary",
         ), $options);
-
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
-
+        $oDB->createCommand()->createIndex('sess_expire', '{{sessions}}', 'expire');
 
         // settings_global
 
         $oDB->createCommand()->createTable('{{settings_global}}', array(
             'stg_name' =>  "string(50) NOT NULL default ''",
-            'stg_value' =>  "text NOT NULL",
+            'stg_value' =>  "mediumtext NOT NULL",
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
@@ -493,7 +497,7 @@ function populateDatabase($oDB){
             'entity' => "string(15) NULL",
             'entity_id' => "string(31) NULL",
             'stg_name' => "string(63) NOT NULL",
-            'stg_value' => "text NULL",
+            'stg_value' => "mediumtext NULL",
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_settings_user}}', '{{settings_user}}', 'uid', false);
@@ -529,12 +533,12 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
         $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-            foreach ($surveyMenuRowData as $surveyMenuRow) {
-                if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-                    unset($surveyMenuRow['id']);
-                }
-                $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+        foreach ($surveyMenuRowData as $surveyMenuRow) {
+            if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+                unset($surveyMenuRow['id']);
             }
+            $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+        }
         
         // Surveymenu entries
 
@@ -557,7 +561,7 @@ function populateDatabase($oDB){
             'classes' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission_grade' =>  "string(192)  NULL",
-            'data' =>  "text ",
+            'data' =>  "mediumtext",
             'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
             'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
             'showincollapse' => 'integer DEFAULT 0',
@@ -572,12 +576,11 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
         $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
         
-        foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+        foreach ($surveyMenuEntryRowData = LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow) {
             if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
                 unset($surveyMenuEntryRow['id']);
             }
             $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
-            
         }
 
         // surveys
@@ -596,7 +599,7 @@ function populateDatabase($oDB){
             'savetimings' => "string(1) NOT NULL default 'N'",
             'template' => "string(100) default 'default'",
             'language' => "string(50) NULL",
-            'additional_languages' => "string(255) NULL",
+            'additional_languages' => "text NULL",
             'datestamp' => "string(1) NOT NULL default 'N'",
             'usecookie' => "string(1) NOT NULL default 'N'",
             'allowregister' => "string(1) NOT NULL default 'N'",
@@ -620,7 +623,7 @@ function populateDatabase($oDB){
             'usecaptcha' => "string(1) NOT NULL default 'N'",
             'usetokens' => "string(1) NOT NULL default 'N'",
             'bounce_email' => "string(254) NULL",
-            'attributedescriptions' => "text",
+            'attributedescriptions' => "mediumtext",
             'emailresponseto' => "text NULL",
             'emailnotificationto' => "text NULL",
             'tokenlength' => "integer NOT NULL default '15'",
@@ -662,6 +665,7 @@ function populateDatabase($oDB){
             'sortorder' => "integer NOT NULL",
             'owner_id' => "integer NULL",
             'parent_id' => "integer NULL",
+            'alwaysavailable' => "boolean NULL",
             'created' => "datetime NULL",
             'modified' => "datetime NULL",
             'created_by' => "integer NOT NULL"
@@ -670,7 +674,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_surveys_groups}}', '{{surveys_groups}}', 'name', false);
         $oDB->createCommand()->createIndex('{{idx2_surveys_groups}}', '{{surveys_groups}}', 'title', false);
 
-        foreach($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup){
+        foreach ($surveyGroupData = LsDefaultDataSets::getSurveygroupData() as $surveyGroup) {
             $oDB->createCommand()->insert("{{surveys_groups}}", $surveyGroup);
         }
 
@@ -799,7 +803,7 @@ function populateDatabase($oDB){
                 "assessments" => "I",
                 "usecaptcha" => "E",
                 "bounce_email" => "inherit",
-                "attributedescriptions" => NULL,
+                "attributedescriptions" => null,
                 "emailresponseto" => "inherit",
                 "emailnotificationto" => "inherit",
                 "tokenlength" => -1,
@@ -813,7 +817,7 @@ function populateDatabase($oDB){
                 "navigationdelay" => -1,
                 "nokeyboard" => "I",
                 "alloweditaftercompletion" => "I",
-        );      
+        );
         $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
 
@@ -822,28 +826,28 @@ function populateDatabase($oDB){
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
             'surveyls_title' => "string(200) NOT NULL",
-            'surveyls_description' => "text NULL",
-            'surveyls_welcometext' => "text NULL",
-            'surveyls_endtext' => "text NULL",
-            'surveyls_policy_notice' => "text NULL",
+            'surveyls_description' => "mediumtext NULL",
+            'surveyls_welcometext' => "mediumtext NULL",
+            'surveyls_endtext' => "mediumtext NULL",
+            'surveyls_policy_notice' => "mediumtext NULL",
             'surveyls_policy_error' => "text NULL",
             'surveyls_policy_notice_label' => 'string(192) NULL',
             'surveyls_url' => "text NULL",
             'surveyls_urldescription' => "string(255) NULL",
             'surveyls_email_invite_subj' => "string(255) NULL",
-            'surveyls_email_invite' => "text NULL",
+            'surveyls_email_invite' => "mediumtext NULL",
             'surveyls_email_remind_subj' => "string(255) NULL",
-            'surveyls_email_remind' => "text NULL",
+            'surveyls_email_remind' => "mediumtext NULL",
             'surveyls_email_register_subj' => "string(255) NULL",
-            'surveyls_email_register' => "text NULL",
+            'surveyls_email_register' => "mediumtext NULL",
             'surveyls_email_confirm_subj' => "string(255) NULL",
-            'surveyls_email_confirm' => "text NULL",
+            'surveyls_email_confirm' => "mediumtext NULL",
             'surveyls_dateformat' => "integer NOT NULL DEFAULT 1",
             'surveyls_attributecaptions' => "text NULL",
             'email_admin_notification_subj' => "string(255) NULL",
-            'email_admin_notification' => "text NULL",
+            'email_admin_notification' => "mediumtext NULL",
             'email_admin_responses_subj' => "string(255) NULL",
-            'email_admin_responses' => "text NULL",
+            'email_admin_responses' => "mediumtext NULL",
             'surveyls_numberformat' => "integer NOT NULL DEFAULT 0",
             'attachments' => "text NULL",
         ), $options);
@@ -889,12 +893,12 @@ function populateDatabase($oDB){
             'author_email' =>  "string(255) NULL",
             'author_url' =>  "string(255) NULL",
             'copyright' =>  "text ",
-            'license' =>  "text ",
+            'license' =>  "mediumtext",
             'version' =>  "string(45) NULL",
             'api_version' =>  "string(45) NOT NULL",
             'view_folder' =>  "string(45) NOT NULL",
             'files_folder' =>  "string(45) NOT NULL",
-            'description' =>  "text ",
+            'description' =>  "mediumtext",
             'last_update' =>  "datetime NULL",
             'owner_id' =>  "integer NULL",
             'extends' =>  "string(150)  NULL",
@@ -909,8 +913,8 @@ function populateDatabase($oDB){
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder',
         'description','last_update','owner_id','extends'];
 
-        foreach($templateData=LsDefaultDataSets::getTemplatesData() as $template){
-            $oDB->createCommand()->insert("{{templates}}", $template );
+        foreach ($templateData = LsDefaultDataSets::getTemplatesData() as $template) {
+            $oDB->createCommand()->insert("{{templates}}", $template);
         }
 
         // template_configuration
@@ -925,8 +929,8 @@ function populateDatabase($oDB){
             'files_print_css' => "text",
             'options' => "text ",
             'cssframework_name' => "string(45) NULL",
-            'cssframework_css' => "text",
-            'cssframework_js' => "text",
+            'cssframework_css' => "mediumtext",
+            'cssframework_js' => "mediumtext",
             'packages_to_load' => "text",
             'packages_ltr' => "text",
             'packages_rtl' => "text",
@@ -937,8 +941,8 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
         $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
-        foreach($templateConfigurationData=LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration){
-            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration );
+        foreach ($templateConfigurationData = LsDefaultDataSets::getTemplateConfigurationData() as $templateConfiguration) {
+            $oDB->createCommand()->insert("{{template_configuration}}", $templateConfiguration);
         }
 
         // question_themes
@@ -977,17 +981,19 @@ function populateDatabase($oDB){
 
         //tutorials
         $oDB->createCommand()->createTable(
-            '{{tutorials}}',[
+            '{{tutorials}}',
+            [
                 'tid' =>  'pk',
                 'name' =>  'string(128)',
                 'title' =>  'string(192)',
                 'icon' =>  'string(64)',
                 'description' =>  'text',
                 'active' =>  'integer DEFAULT 0',
-                'settings' => 'text',
+                'settings' => 'mediumtext',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
-            ], $options
+            ],
+            $options
         );
         $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
@@ -1014,13 +1020,15 @@ function populateDatabase($oDB){
 
         //tutorial entries
         $oDB->createCommand()->createTable(
-            '{{tutorial_entries}}',[
+            '{{tutorial_entries}}',
+            [
                 'teid' =>  'pk',
                 'ordering' =>  'integer',
                 'title' =>  'text',
-                'content' =>  'text',
-                'settings' => 'text'
-            ], $options
+                'content' =>  'mediumtext',
+                'settings' => 'mediumtext'
+            ],
+            $options
         );
 
         //user_in_groups
@@ -1073,7 +1081,7 @@ function populateDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
         // asset version
-        $oDB->createCommand()->createTable('{{asset_version}}',array(
+        $oDB->createCommand()->createTable('{{asset_version}}', array(
             'id' => 'pk',
             'path' => 'text NOT NULL',
             'version' => 'integer NOT NULL',
@@ -1086,9 +1094,9 @@ function populateDatabase($oDB){
         }
 
         // Set database version
-        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
+        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
         $oTransaction->commit();
-    }catch(Exception $e){
+    } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LimeSurvey\Models\Services;
 
 /**
@@ -32,10 +31,10 @@ class IpAddressAnonymizer
      */
     public function isIpv4()
     {
-        if($this->ipAddress === ''){
+        if ($this->ipAddress === '') {
             $result = false;
-        }else{
-            $result = (boolean)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        } else {
+            $result = (bool)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
         }
 
         return $result;
@@ -48,10 +47,10 @@ class IpAddressAnonymizer
      */
     public function isIpv6()
     {
-        if($this->ipAddress === ''){
+        if ($this->ipAddress === '') {
             $result = false;
-        }else{
-            $result = (boolean)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+        } else {
+            $result = (bool)filter_var($this->ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
         }
         return $result;
     }

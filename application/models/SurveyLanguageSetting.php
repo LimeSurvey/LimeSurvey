@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -101,40 +100,42 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('email_admin_responses', 'lsdefault'),
 
             array('surveyls_email_invite_subj', 'LSYii_Validators'),
-            array('surveyls_email_invite_subj', 'length', 'min' => 0, 'max'=>255),
+            array('surveyls_email_invite_subj', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_email_invite', 'LSYii_Validators'),
             array('surveyls_email_remind_subj', 'LSYii_Validators'),
-            array('surveyls_email_remind_subj', 'length', 'min' => 0, 'max'=>255),
+            array('surveyls_email_remind_subj', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_email_remind', 'LSYii_Validators'),
             array('surveyls_email_confirm_subj', 'LSYii_Validators'),
-            array('surveyls_email_confirm_subj', 'length', 'min' => 0, 'max'=>255),
+            array('surveyls_email_confirm_subj', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_email_confirm', 'LSYii_Validators'),
             array('surveyls_email_register_subj', 'LSYii_Validators'),
-            array('surveyls_email_register_subj', 'length', 'min' => 0, 'max'=>255),
+            array('surveyls_email_register_subj', 'length', 'min' => 0, 'max' => 255),
             array('surveyls_email_register', 'LSYii_Validators'),
             array('email_admin_notification_subj', 'LSYii_Validators'),
-            array('email_admin_notification_subj', 'length', 'min' => 0, 'max'=>255),
+            array('email_admin_notification_subj', 'length', 'min' => 0, 'max' => 255),
             array('email_admin_notification', 'LSYii_Validators'),
             array('email_admin_responses_subj', 'LSYii_Validators'),
-            array('email_admin_responses_subj', 'length', 'min' => 0, 'max'=>255),
+            array('email_admin_responses_subj', 'length', 'min' => 0, 'max' => 255),
             array('email_admin_responses', 'LSYii_Validators'),
 
             array('surveyls_title', 'LSYii_Validators'),
-            array('surveyls_title', 'length', 'min' => 0, 'max'=>200),
+            array('surveyls_title', 'length', 'min' => 0, 'max' => 200),
             array('surveyls_description', 'LSYii_Validators'),
             array('surveyls_welcometext', 'LSYii_Validators'),
             array('surveyls_endtext', 'LSYii_Validators'),
             array('surveyls_policy_notice', 'LSYii_Validators'),
             array('surveyls_policy_error', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'LSYii_Validators'),
-            array('surveyls_policy_notice_label', 'length', 'min' => 0, 'max'=>192),
-            array('surveyls_url', 'filter', 'filter'=>'trim'),
-            array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
+            array('surveyls_policy_notice_label', 'length', 'min' => 0, 'max' => 192),
+            array('surveyls_url', 'filter', 'filter' => 'trim'),
+            array('surveyls_url', 'LSYii_Validators', 'isUrl' => true),
             array('surveyls_urldescription', 'LSYii_Validators'),
-            array('surveyls_urldescription', 'length', 'min' => 0, 'max'=>255),
+            array('surveyls_urldescription', 'length', 'min' => 0, 'max' => 255),
 
-            array('surveyls_dateformat', 'numerical', 'integerOnly'=>true, 'min'=>'1', 'max'=>'12', 'allowEmpty'=>true),
-            array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
+            array('surveyls_dateformat', 'numerical', 'integerOnly' => true, 'min' => '1', 'max' => '12', 'allowEmpty' => true),
+            array('surveyls_numberformat', 'numerical', 'integerOnly' => true, 'min' => '0', 'max' => '1', 'allowEmpty' => true),
+
+            array('attachments', 'attachmentsInfo'),
         );
     }
 
@@ -145,9 +146,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      * Remind to use resetScope if you need to disable this behaviour
      * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#resetScope-detail
      */
-    public  function defaultScope()
+    public function defaultScope()
     {
-        return array('index'=>'surveyls_language');
+        return array('index' => 'surveyls_language');
     }
 
     /**
@@ -174,15 +175,41 @@ class SurveyLanguageSetting extends LSActiveRecord
                 'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
                 'email_admin_responses' => $aDefaultTexts['admin_detailed_notification']
             );
-        if ($sEmailFormat == "html") {
-            $aDefaultTextData['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
-        }
+            if ($sEmailFormat == "html") {
+                $aDefaultTextData['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'] . $aDefaultTexts['admin_detailed_notification'];
+            }
 
-        if (empty($this->$attribute)) {
-            $this->$attribute = $aDefaultTextData[$attribute];
-        }
+            if (empty($this->$attribute)) {
+                $this->$attribute = $aDefaultTextData[$attribute];
+            }
     }
 
+    /**
+     * Defines the customs validation rule attachmentsInfo
+     *
+     * @param mixed $attribute
+     */
+    public function attachmentsInfo($attribute)
+    {
+        if (empty($this->$attribute)) {
+            return;
+        }
+
+        $value = [];
+        $attachmentsByType = unserialize($this->$attribute);
+        if (is_array($attachmentsByType)) {
+            foreach ($attachmentsByType as $type => $attachments) {
+                if (is_array($attachments)) {
+                    foreach ($attachments as $key => $attachment) {
+                        if (isset($attachment['url']) && isset($attachment['size']) && isset($attachment['relevance'])) {
+                            $value[$type][$key] = $attachment;
+                        }
+                    }
+                }
+            }
+        }
+        return serialize($value);
+    }
 
     /**
      * Returns the token's captions
@@ -266,7 +293,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     function insertSomeRecords($data)
     {
-        $lang = new self;
+        $lang = new self();
         foreach ($data as $k => $v) {
             $lang->$k = $v;
         }

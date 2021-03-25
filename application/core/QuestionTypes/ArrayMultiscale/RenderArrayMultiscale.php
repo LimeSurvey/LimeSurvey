@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -46,11 +44,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $this->doDualScaleFunction = "doDualScaleRadio";
         }
 
-        $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), null);
-        $this->defaultWidth = false;
-        if ($this->answerwidth == null) {
+        if (ctype_digit(trim($this->getQuestionAttribute('answer_width')))) {
+            $this->answerwidth = trim($this->getQuestionAttribute('answer_width'));
+            $this->defaultWidth = false;
+        } else {
             $this->answerwidth = 33;
-            $this->defaultWidth = true;
+            $this->defaultWidth = false;
         }
     }
 
@@ -83,11 +82,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->numrows = 0;
         foreach ($this->aAnswerOptions as $iScaleId => $aScale) {
             foreach ($aScale as $oAnswerOption) {
-                $aData['labelans'.$iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
-                $aData['labelcode'.$iScaleId][] = $oAnswerOption->code;
+                $aData['labelans' . $iScaleId][] = $oAnswerOption->answerl10ns[$this->sLanguage]->answer;
+                $aData['labelcode' . $iScaleId][] = $oAnswerOption->code;
             }
             
-            $this->numrows = $this->numrows + count($aData['labelans'.$iScaleId]);
+            $this->numrows = $this->numrows + count($aData['labelans' . $iScaleId]);
         }
         return $aData;
     }
@@ -96,12 +95,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
     {
         // Find if we have rigth and center text
         /* All of this part seem broken actually : we don't send it to view and don't explode it */
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%'";
+        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%'";
         $rigthCount  = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $right_exists: flag to find out if there are any right hand answer parts. leaving right column but don't force with
         $rightexists = ($rigthCount > 0);
         
-        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=".$this->oQuestion->qid." and scale_id=0 AND question like '%|%|%'";
+        $sQuery  = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid WHERE parent_qid=" . $this->oQuestion->qid . " and scale_id=0 AND question like '%|%|%'";
         $centerCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
         // $center_exists: flag to find out if there are any center hand answer parts. leaving center column but don't force with
         $centerexists  = ($centerCount > 0);
@@ -144,7 +143,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         } else {
             $extraanswerwidth = $separatorwidth;
         }
-        $cellwidth = $columnswidth / $this->numrows;
+        $cellwidth = $columnswidth / ($this->numrows ? $this->numrows : 1);
 
         // Header row and colgroups
         $aData['answerwidth'] = $this->answerwidth;
@@ -165,11 +164,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $anscount = count($this->aSubQuestions[0]);
 
         foreach ($this->aSubQuestions[0] as $i => $oQuestionRow) {
-            $myfname = $this->sSGQA.$oQuestionRow->title;
-            $myfname0 = $this->sSGQA.$oQuestionRow->title."#0";
-            $myfid0 = $this->sSGQA.$oQuestionRow->title."_0";
-            $myfname1 = $this->sSGQA.$oQuestionRow->title."#1";
-            $myfid1 = $this->sSGQA.$oQuestionRow->title."_1";
+            $myfname = $this->sSGQA . $oQuestionRow->title;
+            $myfname0 = $this->sSGQA . $oQuestionRow->title . "#0";
+            $myfid0 = $this->sSGQA . $oQuestionRow->title . "_0";
+            $myfname1 = $this->sSGQA . $oQuestionRow->title . "#1";
+            $myfid1 = $this->sSGQA . $oQuestionRow->title . "_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
             
@@ -236,12 +235,13 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
                 $answertextcenter = "";
             }
 
-            $myfname = $this->sSGQA.$oQuestionRow->title;
-            $myfname0 = $this->sSGQA.$oQuestionRow->title.'#0';
-            $myfid0 = $this->sSGQA.$oQuestionRow->title.'_0';
-            $myfname1 = $this->sSGQA.$oQuestionRow->title.'#1'; // new multi-scale-answer
-            $myfid1 = $this->sSGQA.$oQuestionRow->title.'_1';
+            $myfname = $this->sSGQA . $oQuestionRow->title;
+            $myfname0 = $this->sSGQA . $oQuestionRow->title . '#0';
+            $myfid0 = $this->sSGQA . $oQuestionRow->title . '_0';
+            $myfname1 = $this->sSGQA . $oQuestionRow->title . '#1'; // new multi-scale-answer
+            $myfid1 = $this->sSGQA . $oQuestionRow->title . '_1';
 
+            $aData['aSubQuestions'][$i]['title'] = $oQuestionRow->title;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
             $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
             $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
@@ -274,7 +274,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
             foreach ($aData['labelcode0'] as $j => $ld) {
                 // First label set
-                if (!empty($this->getFromSurveySession($myfname0)) && $this->getFromSurveySession($myfname0) == $ld) {
+                if (!is_null($this->getFromSurveySession($myfname0)) && $this->getFromSurveySession($myfname0) == $ld) {
                     $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = CHECKED;
                 } else {
                     $aData['labelcode0_checked'][$oQuestionRow->title][$ld] = "";
@@ -306,7 +306,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
                 foreach ($aData['labelcode1'] as $j => $ld) {
                     // second label set
-                    if (!empty($this->getFromSurveySession($myfname1)) && $this->getFromSurveySession($myfname1) == $ld) {
+                    if (!is_null($this->getFromSurveySession($myfname1)) && $this->getFromSurveySession($myfname1) == $ld) {
                         $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = CHECKED;
                     } else {
                         $aData['labelcode1_checked'][$oQuestionRow->title][$ld] = "";
@@ -381,7 +381,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->parseSubquestionsDropdown($aData);
 
         $answer = Yii::app()->twigRenderer->renderQuestion(
-            $this->getMainView().'/answer_dropdown',
+            $this->getMainView() . '/answer_dropdown',
             $aData,
             true
         );
@@ -404,7 +404,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
         $this->parseSubquestionsNoDropdown($aData);
         
         $answer = Yii::app()->twigRenderer->renderQuestion(
-            $this->getMainView().'/answer',
+            $this->getMainView() . '/answer',
             $aData,
             true
         );
@@ -429,6 +429,12 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
 
         $this->registerAssets();
         $this->inputnames[] = $this->sSGQA;
+
+        if (!Yii::app()->getClientScript()->isScriptFileRegistered(Yii::app()->getConfig('generalscripts') . "dualscale.js", LSYii_ClientScript::POS_BEGIN)) {
+            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . "dualscale.js", LSYii_ClientScript::POS_BEGIN);
+        }
+        Yii::app()->getClientScript()->registerScript('doDualScaleFunction' . $this->oQuestion->qid, "{$this->doDualScaleFunction}({$this->oQuestion->qid});", LSYii_ClientScript::POS_POSTSCRIPT);
+
         return array($answer, $this->inputnames);
     }
 }

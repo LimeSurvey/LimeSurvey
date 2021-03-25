@@ -28,7 +28,7 @@
 
               <!-- Delete survey -->
               <li>
-                  <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$oSurvey->sid}"); ?>">
+                  <a href="<?php echo $this->createUrl("surveyAdministration/delete/surveyid/{$oSurvey->sid}"); ?>">
                     <span class="fa fa-trash" ></span>
                     <?php eT("Delete survey"); ?>
                   </a>
@@ -142,7 +142,9 @@
 
             <!-- Straight -->
             <li>
-                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/straight"); ?>">
+                <a href="<?php
+                echo $this->createUrl("/surveyAdministration/regenerateQuestionCodes/surveyid/{$oSurvey->sid}/subaction/straight");
+                ?>">
                 <span class="icon-resetsurveylogic" ></span>
                 <?php eT("Straight"); ?>
                 </a>
@@ -150,7 +152,7 @@
 
             <!-- By question group -->
             <li>
-            <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
+            <a href="<?php echo $this->createUrl("surveyAdministration/regenerateQuestionCodes/surveyid/{$oSurvey->sid}/subaction/bygroup"); ?>">
                 <span class="icon-resetsurveylogic" ></span>
                 <?php eT("By question group"); ?>
             </a>

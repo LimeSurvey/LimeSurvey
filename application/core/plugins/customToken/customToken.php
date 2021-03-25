@@ -1,9 +1,14 @@
 <?php
-class customToken extends PluginBase {
+
+class customToken extends PluginBase
+{
 
     protected $storage = 'DbStorage';
-    static protected $name = 'customToken';
-    static protected $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
+    protected static $name = 'customToken';
+    protected static $description = 'At token generation this plugin enforces certain token formats like Numeric, non-ambiguous or uppercase tokens';
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
 
     public function init()
     {
@@ -43,7 +48,7 @@ class customToken extends PluginBase {
                 // https://github.com/LimeSurvey/LimeSurvey/commit/154e026fbe6e53037e46a8c30f2b837459235acc
                 $token = str_replace(
                     array('~','_','0','O','1','l','I'),
-                    array('a','z','7','P','8','k','K'), 
+                    array('a','z','7','P','8','k','K'),
                     Yii::app()->securityManager->generateRandomString($iTokenLength)
                 );
                 break;
@@ -55,16 +60,16 @@ class customToken extends PluginBase {
                      * Use crypto_rand_secure($min, $max) defined in application/helpers/common_helper.php
                      */
                     $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    for($i=0;$i<$iTokenLength;$i++){
-                        $token .= $codeAlphabet[crypto_rand_secure(0,strlen($codeAlphabet))];
+                    for ($i = 0; $i < $iTokenLength; $i++) {
+                        $token .= $codeAlphabet[crypto_rand_secure(0, strlen($codeAlphabet))];
                     }
                 } else {
                     /**
                      * Secure enough, although not cryptographically secure
                      * https://www.php.net/manual/en/function.rand.php
                      */
-                    for($i=0;$i<$iTokenLength;$i++){
-                        $token .= chr(64+rand(1, 26));
+                    for ($i = 0; $i < $iTokenLength; $i++) {
+                        $token .= chr(64 + rand(1, 26));
                     }
                 }
                 break;
@@ -88,11 +93,11 @@ class customToken extends PluginBase {
             'settings' => array(
                 'customToken' => array(
                     'type' => 'select',
-                    'options'=>array(
-                        0=>$this->gT('No custom function for this survey'),
-                        1=>$this->gT('Numeric tokens'),
-                        2=>$this->gT('Without ambiguous characters'),
-                        3=>$this->gT('Uppercase only')
+                    'options' => array(
+                        0 => $this->gT('No custom function for this survey'),
+                        1 => $this->gT('Numeric tokens'),
+                        2 => $this->gT('Without ambiguous characters'),
+                        3 => $this->gT('Uppercase only')
                     ),
                     'default' => 0,
                     'label' => $this->gT('Custom token'),
@@ -120,5 +125,4 @@ class customToken extends PluginBase {
     {
         PluginSetting::model()->deleteAll("plugin_id = :plugin_id", array(":plugin_id" => $this->id));
     }
-
 }

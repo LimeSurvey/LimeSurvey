@@ -86,7 +86,7 @@
                        value='<?php eT("Open imported theme") ?>'
                        onclick="window.open('<?php
                        if ($theme == 'question') {
-                           echo $this->createUrl('admin/themeoptions/sa/index/#questionthemes') . '\', ' . '\'_top\'';
+                           echo $this->createUrl('themeOptions/index#questionthemes') . '\', ' . '\'_top\'';
                        } elseif ($theme == 'survey') {
                            echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) . '\', ' . '\'_top\'';
                        }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -68,5 +69,4 @@ class Zend_Validate_Hex extends Zend_Validate_Abstract
 
         return true;
     }
-
 }

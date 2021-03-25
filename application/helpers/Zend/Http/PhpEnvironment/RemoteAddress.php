@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -118,7 +119,8 @@ class RemoteAddress
      */
     protected function getIpAddressFromProxy()
     {
-        if (!$this->useProxy
+        if (
+            !$this->useProxy
             || (isset($_SERVER['REMOTE_ADDR']) && !in_array($_SERVER['REMOTE_ADDR'], $this->trustedProxies))
         ) {
             return false;

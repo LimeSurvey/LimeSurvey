@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -37,16 +35,16 @@ class RenderArrayYesUncertainNo extends QuestionBaseRenderer
         $answer = '';
         $inputnames = [];
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, 
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA,
             'content' => $this->oQuestion,
-            'coreClass'=> 'ls-answers '.$sCoreClasses,
+            'coreClass' => 'ls-answers ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = [];

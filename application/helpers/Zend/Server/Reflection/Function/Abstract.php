@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -114,8 +115,10 @@ abstract class Zend_Server_Reflection_Function_Abstract
         // both extend ReflectionFunctionAbstract. So, we can't do normal type
         // hinting in the prototype, but instead need to do some explicit
         // testing here.
-        if ((!$r instanceof ReflectionFunction)
-            && (!$r instanceof ReflectionMethod)) {
+        if (
+            (!$r instanceof ReflectionFunction)
+            && (!$r instanceof ReflectionMethod)
+        ) {
             require_once 'Zend/Server/Reflection/Exception.php';
             throw new Zend_Server_Reflection_Exception('Invalid reflection class');
         }
@@ -344,9 +347,10 @@ abstract class Zend_Server_Reflection_Function_Abstract
             require_once 'Zend/Server/Reflection/Exception.php';
             throw new Zend_Server_Reflection_Exception(
                 'Variable number of arguments is not supported for services (except optional parameters). '
-                . 'Number of function arguments in '.$function->getDeclaringClass()->getName().'::'
-                . $function->getName().'() must correspond to actual number of arguments described in the '
-                . 'docblock.');
+                . 'Number of function arguments in ' . $function->getDeclaringClass()->getName() . '::'
+                . $function->getName() . '() must correspond to actual number of arguments described in the '
+                . 'docblock.'
+            );
         }
 
         $paramTypes = array();
@@ -376,7 +380,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
         }
 
         require_once 'Zend/Server/Reflection/Exception.php';
-        throw new Zend_Server_Reflection_Exception('Invalid reflection method ("'.$method.'")');
+        throw new Zend_Server_Reflection_Exception('Invalid reflection method ("' . $method . '")');
     }
 
     /**

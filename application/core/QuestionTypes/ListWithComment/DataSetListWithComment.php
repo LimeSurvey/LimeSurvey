@@ -1,5 +1,6 @@
 <?php
 
+class DataSetListWithComment extends QuestionBaseDataSet
+{
 
-
-class DataSetListWithComment extends QuestionBaseDataSet {}
+}

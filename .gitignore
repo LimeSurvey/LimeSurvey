@@ -143,7 +143,7 @@ third_party/theseer/
 third_party/vimeo/
 third_party/webmozart/
 upload/templates/
-
+assets/packages/ckeditor/samples
 
 
 ## ignore Vagrantfile and Adminer
@@ -181,3 +181,4 @@ third_party/
 .Dockerfile
 docker-compose.yml
 docker/
+/geckodriver-v0.23.0-linux64.tar.gz

@@ -22,19 +22,20 @@ class EncryptAttributesTest extends TestBaseClass
     }
     
     /**
-     * Test token.
+     * Test token without validation.
      */
-    public function testToken()
+    public function testTokenWithoutValidation()
     {
         // Get our token.
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
         $this->assertNotEmpty($tokens);
         $this->assertCount(1, $tokens);
         $token = $tokens[0];
+        $token->decrypt();
 
         // Change lastname.
         $token->lastname = 'last';
-        $token->encryptSave();
+        $token->encryptSave(false);
 
         // Load token and decrypt.
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
@@ -42,6 +43,38 @@ class EncryptAttributesTest extends TestBaseClass
         $token = $tokens[0];
         $token->decrypt();
         $this->assertEquals('last', $token->lastname);
+        $this->assertEquals('foo@bar.com', $token->email);
+
+        // Test the omitting decrypt() works.
+        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $tokens);
+        $token = $tokens[0];
+        $this->assertNotEquals('last', $token->lastname);
+    }
+
+    /**
+     * Test token with validation.
+     */
+    public function testTokenWithValidation()
+    {
+        // Get our token.
+        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $this->assertNotEmpty($tokens);
+        $this->assertCount(1, $tokens);
+        $token = $tokens[0];
+        $token->decrypt();
+
+        // Change lastname.
+        $token->lastname = 'last';
+        $token->encryptSave(true);
+
+        // Load token and decrypt.
+        $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $tokens);
+        $token = $tokens[0];
+        $token->decrypt();
+        $this->assertEquals('last', $token->lastname);
+        $this->assertEquals('foo@bar.com', $token->email);
 
         // Test the omitting decrypt() works.
         $tokens = \TokenDynamic::model(self::$surveyId)->findAll();
@@ -53,12 +86,12 @@ class EncryptAttributesTest extends TestBaseClass
     /**
      * Test response.
      */
-    public function testResponse()
+    public function testResponseWithoutValidation()
     {
         $responses = \Response::model(self::$surveyId)->findAll();
         $this->assertCount(1, $responses);
-
         $response = $responses[0];
+        $response->decrypt();
 
         // Get questions.
         $survey = \Survey::model()->findByPk(self::$surveyId);
@@ -70,11 +103,57 @@ class EncryptAttributesTest extends TestBaseClass
 
         $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
 
+        // Change answer
+        $response->$sgqa = "New answer.";
+        $response->encryptSave(false);
+
+        // Load answer
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+        $response = $responses[0];
+
         $answer = $response->$sgqa;
         $response->decrypt();
         $decryptedAnswer = $response->$sgqa;
 
-        $this->assertEquals('One answer.', $decryptedAnswer);
-        $this->assertNotEquals('One answer.', $answer);
+        $this->assertEquals('New answer.', $decryptedAnswer);
+        $this->assertNotEquals('New answer.', $answer);
+    }
+
+    /**
+     * Test response.
+     */
+    public function testResponseWithValidation()
+    {
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+        $response = $responses[0];
+        $response->decrypt();
+
+        // Get questions.
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $questionObjects = $survey->groups[0]->questions;
+        $questions = [];
+        foreach ($questionObjects as $q) {
+            $questions[$q->title] = $q;
+        }
+
+        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+
+        // Change answer
+        $response->$sgqa = "New answer.";
+        $response->encryptSave(true);
+
+        // Load answer
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+        $response = $responses[0];
+
+        $answer = $response->$sgqa;
+        $response->decrypt();
+        $decryptedAnswer = $response->$sgqa;
+
+        $this->assertEquals('New answer.', $decryptedAnswer);
+        $this->assertNotEquals('New answer.', $answer);
     }
 }

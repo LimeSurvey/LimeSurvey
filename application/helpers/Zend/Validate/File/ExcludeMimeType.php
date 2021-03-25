@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -90,7 +91,7 @@ class Zend_Validate_File_ExcludeMimeType extends Zend_Validate_File_MimeType
 
         $types = explode('/', $this->_type);
         $types = array_merge($types, explode('-', $this->_type));
-        foreach($mimetype as $mime) {
+        foreach ($mimetype as $mime) {
             if (in_array($mime, $types)) {
                 return $this->_throw($file, self::FALSE_TYPE);
             }

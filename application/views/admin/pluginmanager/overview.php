@@ -74,16 +74,12 @@
             <?php if ($plugin['active']): ?>
                 <div class="col-sm-2"><span class="fa fa-check text-success"></span></div>
                 <div class="col-sm-2">
-                    <a data-toggle="tooltip" title="<?php eT('Deactivate'); ?>" href='#activate' data-action='activate' data-id='<?php echo $plugin['id']; ?>' class='ls_action_changestate btn btn-warning btn-xs btntooltip'>
-                       <span class='fa fa-power-off'></span>
-                    </a>
+                    <?= $plugin->getDeactivateButton() ?>
                 </div>
             <?php else: ?>
                 <div class="col-sm-2"><span class="fa fa-times text-warning"></span></div>
                 <div class="col-sm-2">
-                    <a data-toggle="tooltip" title="<?php eT('Activate'); ?>" href='#activate' data-action='activate' data-id='<?php echo $plugin['id']; ?>' class='ls_action_changestate btn btn-default btn-xs btntooltip'>
-                       <span class='fa fa-power-off'></span>
-                    </a>
+                    <?= $plugin->getActivateButton() ?>
                 </div>
             <?php endif; ?>
         </div>

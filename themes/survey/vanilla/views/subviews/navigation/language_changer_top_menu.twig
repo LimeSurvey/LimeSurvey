@@ -42,7 +42,7 @@
             {% for value, lang in aLCD.aListLang %}
                 <li class="{{ aSurveyInfo.class.lctdropdownli }}" {{ aSurveyInfo.attr.lctdropdownli }}>
                     <a href='#' data-limesurvey-lang='{{ value }}' class="{{ aSurveyInfo.class.lctdropdownlia }} animate" {{ aSurveyInfo.attr.lctdropdownlia }}>
-                        {{gT( lang )}}
+                        {{lang}}
                     </a>
                 </li>
             {% endfor %}

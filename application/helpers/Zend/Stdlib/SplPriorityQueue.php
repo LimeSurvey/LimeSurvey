@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -20,11 +21,11 @@
 
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     /**
-     * SplPriorityQueue 
+     * SplPriorityQueue
      *
      * PHP 5.2.X userland implementation of PHP's SplPriorityQueue
      */
-    class SplPriorityQueue implements Iterator , Countable 
+    class SplPriorityQueue implements Iterator, Countable
     {
         /**
          * Extract data only
@@ -66,9 +67,9 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
         /**
          * Constructor
-         * 
+         *
          * Creates a new, empty queue
-         * 
+         *
          * @return void
          */
         public function __construct()
@@ -78,10 +79,10 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
         /**
          * Compare two priorities
          *
-         * Returns positive integer if $priority1 is greater than $priority2, 0 
+         * Returns positive integer if $priority1 is greater than $priority2, 0
          * if equal, negative otherwise.
          *
-         * Unused internally, and only included in order to retain the same 
+         * Unused internally, and only included in order to retain the same
          * interface as PHP's SplPriorityQueue.
          *
          * @param  mixed $priority1
@@ -102,7 +103,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
         /**
          * Countable: return number of items composed in the queue
-         * 
+         *
          * @return int
          */
         public function count()
@@ -124,13 +125,13 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
                 throw new OutOfBoundsException('Cannot iterate SplPriorityQueue; no elements present');
             }
 
-if (!is_array($this->preparedQueue)) {
-    throw new DomainException(sprintf(
-        "Queue was prepared, but is empty?\n    PreparedQueue: %s\n    Internal Queue: %s\n",
-        var_export($this->preparedQueue, 1),
-        var_export($this->queue, 1)
-    ));
-}
+            if (!is_array($this->preparedQueue)) {
+                throw new DomainException(sprintf(
+                    "Queue was prepared, but is empty?\n    PreparedQueue: %s\n    Internal Queue: %s\n",
+                    var_export($this->preparedQueue, 1),
+                    var_export($this->queue, 1)
+                ));
+            }
 
             $return      = array_shift($this->preparedQueue);
             $priority    = $return['priority'];
@@ -245,7 +246,7 @@ if (!is_array($this->preparedQueue)) {
         /**
          * Recover from corrupted state and allow further actions on the queue
          *
-         * Unimplemented, and only included in order to retain the same interface as PHP's 
+         * Unimplemented, and only included in order to retain the same interface as PHP's
          * SplPriorityQueue.
          *
          * @return void
@@ -268,10 +269,10 @@ if (!is_array($this->preparedQueue)) {
 
         /**
          * Set the extract flags
-         * 
-         * Defines what is extracted by SplPriorityQueue::current(), 
+         *
+         * Defines what is extracted by SplPriorityQueue::current(),
          * SplPriorityQueue::top() and SplPriorityQueue::extract().
-         * 
+         *
          * - SplPriorityQueue::EXTR_DATA (0x00000001): Extract the data
          * - SplPriorityQueue::EXTR_PRIORITY (0x00000002): Extract the priority
          * - SplPriorityQueue::EXTR_BOTH (0x00000003): Extract an array containing both
@@ -295,7 +296,7 @@ if (!is_array($this->preparedQueue)) {
         }
 
         /**
-         * Return the value or priority (or both) of the top node, depending on 
+         * Return the value or priority (or both) of the top node, depending on
          * the extract flag
          *
          * @return mixed
@@ -335,7 +336,7 @@ if (!is_array($this->preparedQueue)) {
 
         /**
          * Sort the queue
-         * 
+         *
          * @return void
          */
         protected function sort()
@@ -345,7 +346,7 @@ if (!is_array($this->preparedQueue)) {
 
         /**
          * Prepare the queue for iteration and/or extraction
-         * 
+         *
          * @return void
          */
         protected function prepareQueue()
@@ -398,7 +399,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
 
     /**
      * Constructor
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -409,11 +410,11 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
     /**
      * Insert a value with a given priority
      *
-     * Utilizes {@var $serial} to ensure that values of equal priority are 
+     * Utilizes {@var $serial} to ensure that values of equal priority are
      * emitted in the same order in which they are inserted.
-     * 
-     * @param  mixed $datum 
-     * @param  mixed $priority 
+     *
+     * @param  mixed $datum
+     * @param  mixed $priority
      * @return void
      */
     public function insert($datum, $priority)
@@ -434,7 +435,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
      * Serialize to an array
      *
      * Array will be priority => data pairs
-     * 
+     *
      * @return array
      */
     public function toArray()
@@ -463,7 +464,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
 
     /**
      * Serialize
-     * 
+     *
      * @return string
      */
     public function serialize()
@@ -486,7 +487,7 @@ class Zend_Stdlib_SplPriorityQueue extends SplPriorityQueue implements Serializa
 
     /**
      * Deserialize
-     * 
+     *
      * @param  string $data
      * @return void
      */

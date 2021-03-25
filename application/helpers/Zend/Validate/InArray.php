@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -72,7 +73,7 @@ class Zend_Validate_InArray extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (!is_array($options)) {
+        } elseif (!is_array($options)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('Array expected as parameter');
         } else {
@@ -143,7 +144,7 @@ class Zend_Validate_InArray extends Zend_Validate_Abstract
      */
     public function setStrict($strict)
     {
-        $this->_strict = (boolean) $strict;
+        $this->_strict = (bool) $strict;
         return $this;
     }
 
@@ -165,7 +166,7 @@ class Zend_Validate_InArray extends Zend_Validate_Abstract
      */
     public function setRecursive($recursive)
     {
-        $this->_recursive = (boolean) $recursive;
+        $this->_recursive = (bool) $recursive;
         return $this;
     }
 
@@ -183,12 +184,12 @@ class Zend_Validate_InArray extends Zend_Validate_Abstract
         $this->_setValue($value);
         if ($this->getRecursive()) {
             $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($this->_haystack));
-            foreach($iterator as $element) {
+            foreach ($iterator as $element) {
                 if ($this->_strict) {
                     if ($element === $value) {
                         return true;
                     }
-                } else if ($element == $value) {
+                } elseif ($element == $value) {
                     return true;
                 }
             }

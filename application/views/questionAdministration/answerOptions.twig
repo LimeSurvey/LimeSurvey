@@ -1,0 +1,152 @@
+<input type='hidden' name='answeroptions_sortorder' value='' />
+<input type='hidden' id='answeroptions_deletedqids' name='answeroptions_deletedqids' value='' />
+
+{% set first=true %}
+{% set scale_id = 0 %}
+
+<!-- Loop all language, and then hide all but the current selected one with JS. -->
+{% for lang in allLanguages %}
+    <div class="lang-hide lang-{{ lang }}">
+        {% for scale_id in range(0, scalecount - 1) %}
+
+            {% set position = 1 %}
+            {%  if scalecount > 1 %}
+                <div class='header ui-widget-header' style='margin-top:5px;'>
+                    <i>{{ sprintf(gT("Answer scale %s"), scale_id + 1) }}</i>
+                </div>
+            {% endif %}
+
+            <!-- Answer options table -->
+            <table
+                class='answertable answeroptions-table table table-responsive'
+                id='answeroptions_{{lang}}_{{scale_id}}'
+                data-scaleid='{{ scale_id }}'
+                data-input-data-id='add-answer-option-input-javascript-datas'
+            >
+
+                <!-- Headers -->
+                <thead>
+                    <tr>
+                        <th class="col-md-1">
+                            {% if first and activated != 'Y' %}
+                                {{ gT("Position") }}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
+                        </th>
+                        <th class='col-md-1'>{{ gT("Code") }}</th>
+
+                        {% if assessmentvisible %}
+                            <th class='col-md-1'>
+                                {{ gT("Assessment value") }}
+                            </th>
+                        {% else %}
+                            <th style='display:none;'>
+                                &nbsp;
+                            </th>
+                        {% endif %}
+
+                        <th class='col-md-8'>
+                            {{ gT("Answer options") }}
+                            <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                        </th>
+
+                        <th class='col-md-1'>
+                            {% if first %}
+                                {{ gT("Actions") }}
+                            {% endif %}
+                        </th>
+                    </tr>
+                </thead>
+
+                <!-- Body -->
+                <tbody>
+                    {% for answerOption in answers[scale_id] %}
+                        <!-- Line tag -->
+                        {% include 'answerOptionRow.twig' with {
+                            'activated'         : activated,
+                            'position'          : position,
+                            'first'             : first,
+                            'assessmentvisible' : assessmentvisible,
+                            'scale_id'          : scale_id,
+                            'question'          : question,
+                            'answerOption'      : answerOption,
+                            'answerOptionl10n'  : answerOption.answerl10ns[lang],
+                            'oldCode'           : true,
+                            'language'          : lang
+                        } %}
+
+                        {% set position = position + 1 %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="action-buttons" style="padding-bottom: 10px;">
+                {% if first %}
+                    <!-- TODO: Not used??? -->
+                    <input type='hidden' id='answercount_{{ scale_id }}' name='answercount_{{ scale_id }}' value='{{ anscount }}' />
+                {% endif %}
+                {% if activated == 'Y' %}
+                    {% set disabled = 'disabled="disabled"' %}
+                {% else %}
+                    {% set disabled = '' %}
+                {% endif %}
+
+                <button
+                    {{ disabled }}
+                    data-scale-id="{{ scale_id }}"
+                    class='btnlsbrowser btn btn-default'
+                    type='button'
+                    onclick="LS.questionEditor.showLabelSetPicker(event, 'answeroptions');"
+                >
+                    {{ gT('Predefined label sets...') }}
+                </button>
+
+                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                    {{ gT('Quick add...') }}
+                </button>
+
+                {% if hasLabelSetPermission %}
+                    <button
+                        class='bthsaveaslabel btn btn-default'
+                        id='bthsaveaslabel_{{ scale_id }}'
+                        type='button'
+                        onclick="LS.questionEditor.showLabelSetSaver(event, 'answeroptions-table');"
+                        data-target="#saveaslabelModal"
+                    >
+                        {{ gT('Save as label set') }}
+                    </button>
+                {% endif %}
+            </div>
+            {% set position = sprintf("%05d", position) %}
+        {% endfor %}
+    </div>
+    {% set first=false %}
+{% endfor %}
+
+<!--   Modals   -->
+{% if first==false %} {# pseudo condition due to reverse parsing problems while generating twig admin cache via console.php twig generateAdminCache #}
+    {% include 'modals.twig' %}
+{% endif %}
+
+<!-- For javascript -->
+<input
+    type="hidden"
+    id="add-answer-option-input-javascript-datas"
+    data-url="{{ createUrl('/questionAdministration/getAnswerOptionRowForAllLanguages/') }}"
+    data-quickurl="{{ createUrl(
+        '/questionAdministration/getAnswerOptionRowQuickAdd',
+        ({
+            'surveyid' : question.sid,
+            'gid' : question.gid
+        })
+    ) }}"
+    data-assessmentvisible="{% if assessmentvisible==true %}1{% else %}0{% endif %}"
+    data-errormessage="An error occured while processing the ajax request."
+    data-languages='{{ json_encode(allLanguages) }}'
+    data-surveyid="{{ question.sid }}"
+    data-gid="{{ question.gid }}"
+    data-qid="{{ question.qid }}"
+    data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
+/>
+<input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />

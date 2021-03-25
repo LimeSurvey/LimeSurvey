@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -99,7 +100,8 @@ abstract class AbstractAccept implements HeaderInterface
     public function getFieldValuePartsFromHeaderLine($headerLine)
     {
         // process multiple accept values, they may be between quotes
-        if (!preg_match_all('/(?:[^,"]|"(?:[^\\\"]|\\\.)*")+/', $headerLine, $values)
+        if (
+            !preg_match_all('/(?:[^,"]|"(?:[^\\\"]|\\\.)*")+/', $headerLine, $values)
                 || !isset($values[0])
         ) {
             throw new Exception\InvalidArgumentException(
@@ -253,7 +255,8 @@ abstract class AbstractAccept implements HeaderInterface
             ));
         }
 
-        if (!is_int($priority) && !is_float($priority) && !is_numeric($priority)
+        if (
+            !is_int($priority) && !is_float($priority) && !is_numeric($priority)
             || $priority > 1 || $priority < 0
         ) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -310,7 +313,8 @@ abstract class AbstractAccept implements HeaderInterface
                 }
 
                 if ($left->type == $right->type) {
-                    if (($left->subtype == $right->subtype || ($right->subtype == '*' || $left->subtype == '*')) &&
+                    if (
+                        ($left->subtype == $right->subtype || ($right->subtype == '*' || $left->subtype == '*')) &&
                         ($left->format == $right->format || $right->format == '*' || $left->format == '*')
                     ) {
                         if ($this->matchAcceptParams($left, $right)) {
@@ -344,7 +348,8 @@ abstract class AbstractAccept implements HeaderInterface
                         $pieces
                     );
 
-                    if (count($pieces) == 3 &&
+                    if (
+                        count($pieces) == 3 &&
                         (version_compare($pieces[1], $match1->params[$key], '<=')  xor
                          version_compare($pieces[2], $match1->params[$key], '>=')
                         )
@@ -406,7 +411,8 @@ abstract class AbstractAccept implements HeaderInterface
      */
     protected function sortFieldValueParts()
     {
-        $sort = function ($a, $b) { // If A has higher precedence than B, return -1.
+        $sort = function ($a, $b) {
+ // If A has higher precedence than B, return -1.
             if ($a->priority > $b->priority) {
                 return -1;
             } elseif ($a->priority < $b->priority) {

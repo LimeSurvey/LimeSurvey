@@ -800,6 +800,16 @@ class quexmlpdf extends pdf
     protected $cornerLines = true;
 
     /**
+     * Initialize from config
+     *
+     */
+    public function __construct()
+    {
+        $this->questionTitleWidth = Yii::app()->getConfig('quexmlquestiontitlewidth', $this->questionTitleWidth);
+        parent::__construct();
+    }
+
+    /**
      * Return the length of the longest word
      *
      * @param mixed $txt
@@ -1967,7 +1977,7 @@ class quexmlpdf extends pdf
                 }
 
                 if (Yii::app()->getConfig('quexmlusequestiontitleasid') == true) {
-                    $qtmp['title'] = ((string) $qu->response->attributes()->varName).$this->questionTitleSuffix;
+                    $qtmp['title'] = explode('_', (string) $qu->response->attributes()->varName)[0].$this->questionTitleSuffix;
                 } else {
                     $qtmp['title'] = $sl.$qcount.$this->questionTitleSuffix;
                 }
@@ -3547,8 +3557,8 @@ class quexmlpdf extends pdf
             }
 
             //draw the response boxes
-            $arraySize = count($subquestions);
-            for ($j = 0; $j < $arraySize; $j++) {
+            $subquestionCount = count($subquestions);
+            for ($j = 0; $j < $subquestionCount; $j++) {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {

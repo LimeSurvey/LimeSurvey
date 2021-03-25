@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -35,15 +33,15 @@ class RenderBoilerplate extends QuestionBaseRenderer
         $answer = '';
         $inputnames = [];
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
+        if (!empty($this->getQuestionAttribute('time_limit'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, /* is this needed ? */
-            'coreClass'=> 'ls-answers hidden '.$sCoreClasses,
+            'ia' => $this->aFieldArray,
+            'name' => $this->sSGQA,
+            'basename' => $this->sSGQA, /* is this needed ? */
+            'coreClass' => 'ls-answers hidden ' . $sCoreClasses,
             ), true);
 
         $inputnames[] = $this->sSGQA;

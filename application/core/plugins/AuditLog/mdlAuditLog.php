@@ -16,17 +16,20 @@
 /**
  * This is the model class for table "{{plugins}}".
  */
-class mdlAuditlog extends LSActiveRecord {
+class mdlAuditlog extends LSActiveRecord
+{
 
     /**
      * @param type $className
      * @return Plugin
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
-    public function tableName() {
+    public function tableName()
+    {
         return '{{auditlog}}';
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+class DataSetFileUpload extends QuestionBaseDataSet
+{
 
-
-class DataSetFileUpload extends QuestionBaseDataSet {}
+}

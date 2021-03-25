@@ -19,6 +19,7 @@ use Facebook\WebDriver\WebDriverElement;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Exception\NoSuchElementException;
+use Facebook\WebDriver\Exception\UnrecognizedExceptionException;
 
 /**
  * Class TestBaseClassWeb
@@ -169,6 +170,10 @@ class TestBaseClassWeb extends TestBaseClass
 
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
+
+        self::ignoreAdminNotification();
+        self::ignoreAdminNotification();
+
         /*
         try {
             sleep(1);
@@ -219,5 +224,27 @@ class TestBaseClassWeb extends TestBaseClass
         }
 
         return $element;
+    }
+
+    /**
+     * @return void
+     */
+    protected static function ignoreAdminNotification()
+    {
+        // Ignore password warning.
+        try {
+            $button = self::$webDriver->wait(1)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                )
+            );
+            $button->click();
+        } catch (TimeOutException $ex) {
+            // Do nothing.
+        } catch (NoSuchElementException $ex) {
+            // Do nothing.
+        } catch (UnrecognizedExceptionException $ex) {
+            // Do nothing.
+        }
     }
 }

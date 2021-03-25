@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -86,7 +87,7 @@ class AcceptLanguage extends AbstractAccept
         }
 
         if (strpos($fieldValuePart, '-')) {
-            $subtypeWhole = $format = $subtype = trim(substr($fieldValuePart, strpos($fieldValuePart, '-')+1));
+            $subtypeWhole = $format = $subtype = trim(substr($fieldValuePart, strpos($fieldValuePart, '-') + 1));
         } else {
             $subtypeWhole = '';
             $format = '*';

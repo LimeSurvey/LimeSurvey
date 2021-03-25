@@ -1,7 +1,9 @@
 <?php
+
 /**
  * This file is part of statFunctions plugin
  */
+
 namespace statFunctions;
 
 use Yii;

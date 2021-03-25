@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey (tm)
  * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -60,14 +59,14 @@ class Label extends LSActiveRecord
     public function rules()
     {
         return array(
-            array('lid', 'numerical', 'integerOnly'=>true),
-            array('code', 'unique', 'caseSensitive'=>true, 'criteria'=>array(
-                            'condition'=>'lid = :lid',
-                            'params'=>array(':lid'=>$this->lid)
+            array('lid', 'numerical', 'integerOnly' => true),
+            array('code', 'unique', 'caseSensitive' => true, 'criteria' => array(
+                            'condition' => 'lid = :lid',
+                            'params' => array(':lid' => $this->lid)
                     ),
-                    'message'=>'{attribute} "{value}" is already in use.'),
-            array('sortorder', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-            array('assessment_value', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+                    'message' => '{attribute} "{value}" is already in use.'),
+            array('sortorder', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+            array('assessment_value', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
     }
 
@@ -82,11 +81,12 @@ class Label extends LSActiveRecord
         );
     }
 
-    public function getTranslated($sLanguage) {
+    public function getTranslated($sLanguage)
+    {
         $ol10N = $this->labell10ns;
-        if(isset($ol10N[$sLanguage])) {
+        if (isset($ol10N[$sLanguage])) {
             return array_merge($this->attributes, $ol10N[$sLanguage]->attributes);
-        } 
+        }
 
         return [];
     }
@@ -106,11 +106,10 @@ class Label extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        $lbls = new self;
+        $lbls = new self();
         foreach ($data as $k => $v) {
                     $lbls->$k = $v;
         }
         $lbls->save();
     }
-
 }

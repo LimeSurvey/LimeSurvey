@@ -32,7 +32,7 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                    <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y');?>">
                         <?php eT("Active surveys");?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
                     </a>
                 </li>
@@ -40,7 +40,7 @@
 
             <!-- List surveys -->
             <li>
-                <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                     <?php eT("List surveys");?>
                 </a>
             </li>
@@ -65,7 +65,7 @@
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
-                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                <a style="" href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                     <span class="fa fa-list" ></span>
                     <?php eT("Surveys");?>
                 </a>
@@ -79,21 +79,21 @@
                          <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
                          <!-- Create a new survey -->
                          <li>
-                             <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
+                             <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>">
                                  <?php eT("Create");?>
                              </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
-                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
+                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/import"); ?>">
                                <?php eT("Import");?>
                            </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
-                           <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
+                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/copy"); ?>">
                                <?php eT("Copy");?>
                            </a>
                          </li>
@@ -102,7 +102,7 @@
                         <?php endif;?>
                          <!-- List surveys -->
                          <li>
-                             <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                             <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
                                  <?php eT("List all");?>
                              </a>
                          </li>
@@ -114,7 +114,7 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                    <a href="<?php echo $this->createUrl('surveyAdministration/listsurveys/active/Y');?>">
                         <?php eT("Active surveys");?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
                     </a>
                 </li>

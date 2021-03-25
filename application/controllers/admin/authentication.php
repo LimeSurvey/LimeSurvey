@@ -1,10 +1,8 @@
 <?php
+
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
 // use LimeSurvey\PluginManager\PluginEvent;
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,7 +23,7 @@ if (!defined('BASEPATH')) {
 *
 * @package        LimeSurvey
 * @subpackage    Backend
-* 
+*
 * @method void redirect(string|array $url, boolean $terminate, integer $statusCode)
  */
 class Authentication extends Survey_Common_Action
@@ -59,7 +57,7 @@ class Authentication extends Survey_Common_Action
             if ($succeeded) {
                 ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
                 return;
-            } else if ($failed) {
+            } elseif ($failed) {
                 ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
                 return;
             }
@@ -68,7 +66,7 @@ class Authentication extends Survey_Common_Action
         else {
             if ($succeeded) {
                 self::doRedirect();
-            } else if ($failed) {
+            } elseif ($failed) {
                 $message = $result[1];
                 App()->user->setFlash('error', $message);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
@@ -92,7 +90,7 @@ class Authentication extends Survey_Common_Action
         $aData = array();
 
         if (!class_exists('Authdb', false)) {
-            $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+            $plugin = Plugin::model()->findByAttributes(array('name' => 'Authdb'));
             if (!$plugin) {
                 // TODO: Should not be possible to get here after LS4. See LsDefaultDataSets::getDefaultPluginsData().
                 $plugin = new Plugin();
@@ -134,9 +132,9 @@ class Authentication extends Survey_Common_Action
                 // eg: 'config'=>array()'debug'=>2,'debugsql'=>0, 'default_displayed_auth_method'=>'muh_auth_method')
                 if (App()->getPluginManager()->isPluginActive(Yii::app()->getConfig('default_displayed_auth_method'))) {
                         $aData['defaultAuth'] = Yii::app()->getConfig('default_displayed_auth_method');
-                    } else {
-                        $aData['defaultAuth'] = 'Authdb';
-                    }
+                } else {
+                    $aData['defaultAuth'] = 'Authdb';
+                }
             }
 
             // Call the plugin method newLoginForm
@@ -235,9 +233,9 @@ class Authentication extends Survey_Common_Action
             $aData = [];
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.').'<br>';
+                $aData['message'] = '<br>' . gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.') . '<br>';
             } else {
-                $aData['message'] = '<br>'.$this->_sendPasswordEmail($aFields[0]).'</br>';
+                $aData['message'] = '<br>' . $this->_sendPasswordEmail($aFields[0]) . '</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
@@ -261,13 +259,13 @@ class Authentication extends Survey_Common_Action
     /**
      * Send the forgot password email
      *
-     * @param CActiveRecord User 
+     * @param CActiveRecord User
      */
-    private function _sendPasswordEmail( $arUser)
+    private function _sendPasswordEmail($arUser)
     {
-        $mailer = New \LimeMailer;
+        $mailer = new \LimeMailer();
         $mailer->emailType = 'passwordreminderadminuser';
-        $mailer->addAddress($arUser->email,$arUser->full_name);
+        $mailer->addAddress($arUser->email, $arUser->full_name);
         $mailer->Subject = gT('User data');
         /* Body construct */
         $sNewPass = createPassword();
@@ -304,17 +302,17 @@ class Authentication extends Survey_Common_Action
         }
 
         switch ($sMethod) {
-            case 'logout' :
+            case 'logout':
                 $sSummary = gT('Please log in first.');
                 break;
 
-            case 'login' :
-            default :
-                $sSummary = '<br />'.sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']).'<br />&nbsp;';
+            case 'login':
+            default:
+                $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
                 if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === false) {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
-                    . ' content="1;URL='.Yii::app()->session['redirect_after_login'].'" />';
-                    $sSummary = '<p><font size="1"><i>'.gT('Reloading screen. Please wait.').'</i></font>';
+                    . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
+                    $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';
                     unset(Yii::app()->session['redirect_after_login']);
                 }
                 break;
@@ -359,5 +357,4 @@ class Authentication extends Survey_Common_Action
         $aData['language'] = Yii::app()->getLanguage() != Yii::app()->getConfig("defaultlang") ? Yii::app()->getLanguage() : 'default';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
 }

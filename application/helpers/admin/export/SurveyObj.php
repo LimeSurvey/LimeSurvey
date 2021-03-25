@@ -1,4 +1,5 @@
 <?php
+
 class SurveyObj
 {
     /**
@@ -102,8 +103,8 @@ class SurveyObj
                 $fullAnswer = $answerCode;
                 if (trim($fullAnswer) !== '') {
                     // SQL DECIMAL
-                    if($fullAnswer[0] === ".") {
-                        $fullAnswer = "0".$fullAnswer;
+                    if ($fullAnswer[0] === ".") {
+                        $fullAnswer = "0" . $fullAnswer;
                     }
                     if (strpos($fullAnswer, ".") !== false) {
                         $fullAnswer = rtrim(rtrim($fullAnswer, "0"), ".");
@@ -156,34 +157,34 @@ class SurveyObj
                 break;
 
             case Question::QT_Y_YES_NO_RADIO:   //YES/NO
-            switch ($answerCode) {
-                case 'Y':
-                    $fullAnswer = $translator->translate('Yes', $sLanguageCode);
-                    break;
+                switch ($answerCode) {
+                    case 'Y':
+                        $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                        break;
 
-                case 'N':
-                    $fullAnswer = $translator->translate('No', $sLanguageCode);
-                    break;
+                    case 'N':
+                        $fullAnswer = $translator->translate('No', $sLanguageCode);
+                        break;
 
-                default:
-                    $fullAnswer = $translator->translate('N/A', $sLanguageCode);
-            }
-            break;
+                    default:
+                        $fullAnswer = $translator->translate('N/A', $sLanguageCode);
+                }
+                break;
 
             case Question::QT_G_GENDER_DROPDOWN:
-            switch ($answerCode) {
-                case 'M':
-                    $fullAnswer = $translator->translate('Male', $sLanguageCode);
-                    break;
+                switch ($answerCode) {
+                    case 'M':
+                        $fullAnswer = $translator->translate('Male', $sLanguageCode);
+                        break;
 
-                case 'F':
-                    $fullAnswer = $translator->translate('Female', $sLanguageCode);
-                    break;
+                    case 'F':
+                        $fullAnswer = $translator->translate('Female', $sLanguageCode);
+                        break;
 
-                default:
-                    $fullAnswer = $translator->translate('N/A', $sLanguageCode);
-            }
-            break;
+                    default:
+                        $fullAnswer = $translator->translate('N/A', $sLanguageCode);
+                }
+                break;
 
             case Question::QT_M_MULTIPLE_CHOICE:   //MULTIOPTION
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
@@ -203,36 +204,36 @@ class SurveyObj
                 break;
 
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
-            switch ($answerCode) {
-                case 'Y':
-                    $fullAnswer = $translator->translate('Yes', $sLanguageCode);
-                    break;
+                switch ($answerCode) {
+                    case 'Y':
+                        $fullAnswer = $translator->translate('Yes', $sLanguageCode);
+                        break;
 
-                case 'N':
-                    $fullAnswer = $translator->translate('No', $sLanguageCode);
-                    break;
+                    case 'N':
+                        $fullAnswer = $translator->translate('No', $sLanguageCode);
+                        break;
 
-                case 'U':
-                    $fullAnswer = $translator->translate('Uncertain', $sLanguageCode);
-                    break;
-            }
-            break;
+                    case 'U':
+                        $fullAnswer = $translator->translate('Uncertain', $sLanguageCode);
+                        break;
+                }
+                break;
 
             case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
-            switch ($answerCode) {
-                case 'I':
-                    $fullAnswer = $translator->translate('Increase', $sLanguageCode);
-                    break;
+                switch ($answerCode) {
+                    case 'I':
+                        $fullAnswer = $translator->translate('Increase', $sLanguageCode);
+                        break;
 
-                case 'S':
-                    $fullAnswer = $translator->translate('Same', $sLanguageCode);
-                    break;
+                    case 'S':
+                        $fullAnswer = $translator->translate('Same', $sLanguageCode);
+                        break;
 
-                case 'D':
-                    $fullAnswer = $translator->translate('Decrease', $sLanguageCode);
-                    break;
-            }
-            break;
+                    case 'D':
+                        $fullAnswer = $translator->translate('Decrease', $sLanguageCode);
+                        break;
+                }
+                break;
 
             case Question::QT_F_ARRAY_FLEXIBLE_ROW:
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
@@ -241,7 +242,6 @@ class SurveyObj
                 break;
 
             default:
-
                 $fullAnswer .= $answerCode;
         }
 

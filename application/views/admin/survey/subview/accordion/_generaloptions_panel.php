@@ -325,7 +325,7 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Theme:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('/admin/themeoptions/sa/getpreviewtag') ?>' data-inherit-template-name='<?php echo $oSurveyOptions->template?>'>
+                <select id='template' class="form-control"  name='template' data-updateurl='<?php echo App()->createUrl('themeOptions/getPreviewTag') ?>' data-inherit-template-name='<?php echo $oSurveyOptions->template?>'>
                     <?php if ($bShowInherited){ ?>
                         <option value="inherit" <?php echo ($oSurvey->template == 'inherit')?'selected="selected"':''; ?>><?php echo eT('Inherit').' ['. $oSurveyOptions->template . ']'; ?></option>
                     <?php } ?>

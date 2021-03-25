@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -35,7 +33,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
             $aRows[] = array(
                 'name'                   => $this->sSGQA,
                 'value'                  => $fp,
-                'id'                     => $this->sSGQA.$fp,
+                'id'                     => $this->sSGQA . $fp,
                 'labelText'              => $fp,
                 'itemExtraClass'         => '',
                 'checkedState'           => ($this->mSessionValue == $fp ? ' CHECKED ' : ''),
@@ -74,7 +72,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
             $this->aPackages[] = 'question-5pointchoice-star';
             $this->addScript(
                 'doRatingStar',
-                "doRatingStar('".$this->oQuestion->qid."');",
+                "doRatingStar('" . $this->oQuestion->qid . "');",
                 LSYii_ClientScript::POS_POSTSCRIPT,
                 true
             );
@@ -86,8 +84,8 @@ class RenderFivePointChoice extends QuestionBaseRenderer
             $this->addScript(
                 'doRatingSlider',
                 "
-                    var doRatingSlider_".$this->aFieldArray[1]."= new getRatingSlider('".$this->aFieldArray[0]."');
-                    doRatingSlider_".$this->aFieldArray[1]."();
+                    var doRatingSlider_" . $this->aFieldArray[1] . "= new getRatingSlider('" . $this->aFieldArray[0] . "');
+                    doRatingSlider_" . $this->aFieldArray[1] . "();
                 ",
                 LSYii_ClientScript::POS_POSTSCRIPT,
                 true

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -107,7 +108,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
         }
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } else if (func_num_args() > 1) {
+        } elseif (func_num_args() > 1) {
             $options       = func_get_args();
             $temp['table'] = array_shift($options);
             $temp['field'] = array_shift($options);
@@ -312,15 +313,16 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
             $select = new Zend_Db_Select($db);
             $select->from($this->_table, array($this->_field), $this->_schema);
             if ($db->supportsParameters('named')) {
-                $select->where($db->quoteIdentifier($this->_field, true).' = :value'); // named
+                $select->where($db->quoteIdentifier($this->_field, true) . ' = :value'); // named
             } else {
-                $select->where($db->quoteIdentifier($this->_field, true).' = ?'); // positional
+                $select->where($db->quoteIdentifier($this->_field, true) . ' = ?'); // positional
             }
             if ($this->_exclude !== null) {
                 if (is_array($this->_exclude)) {
                     $select->where(
-                          $db->quoteIdentifier($this->_exclude['field'], true) .
-                            ' != ?', $this->_exclude['value']
+                        $db->quoteIdentifier($this->_exclude['field'], true) .
+                            ' != ?',
+                        $this->_exclude['value']
                     );
                 } else {
                     $select->where($this->_exclude);
@@ -348,7 +350,7 @@ abstract class Zend_Validate_Db_Abstract extends Zend_Validate_Abstract
             $select,
             array('value' => $value), // this should work whether db supports positional or named params
             Zend_Db::FETCH_ASSOC
-            );
+        );
 
         return $result;
     }

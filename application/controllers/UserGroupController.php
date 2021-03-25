@@ -1,6 +1,5 @@
 <?php
 
-
 class UserGroupController extends LSBaseController
 {
     public function accessRules()
@@ -98,8 +97,10 @@ class UserGroupController extends LSBaseController
             $ugid = (int)$ugid;
             $userGroup = UserGroup::model()->findByPk($ugid);
             $uid = Yii::app()->user->id;
-            if ($userGroup &&
-                ($userGroup->hasUser($uid) || Permission::model()->hasGlobalPermission('superadmin', 'read'))) {
+            if (
+                $userGroup &&
+                ($userGroup->hasUser($uid) || Permission::model()->hasGlobalPermission('superadmin', 'read'))
+            ) {
                 $aData['userGroup'] = $userGroup;
             }
         } else {
@@ -138,7 +139,7 @@ class UserGroupController extends LSBaseController
                 }
                 $userloop[$row]["userid"] = $oUser->uid;
 
-                //	output users
+                //  output users
                 $userloop[$row]["rowclass"] = $bgcc;
                 if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $oUser->parent_id == Yii::app()->session['loginID']) {
                     $userloop[$row]["displayactions"] = true;
@@ -163,7 +164,7 @@ class UserGroupController extends LSBaseController
             if ($aFilteredUserGroups > 0) {
                 $aData["useradddialog"] = true;
 
-                $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL"]);
+                $aUsers = User::model()->findAll(['join' => "LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition' => "id IS NULL ORDER BY users_name"]);
                 $aNewUserListData = CHtml::listData($aUsers, 'uid', function ($user) {
                     return \CHtml::encode($user->users_name) . " (" . \CHtml::encode($user->full_name) . ')';
                 });
@@ -208,8 +209,8 @@ class UserGroupController extends LSBaseController
             if ($action == "editusergroupindb") {
                 $ugid = (int) $_POST['ugid'];
 
-                $groupName = $_POST['name'];
-                $groupDescription = $_POST['description'];
+                $groupName = flattenText($_POST['name'], false, true, 'UTF-8');
+                $groupDescription = flattenText($_POST['description']);
                 if (UserGroup::model()->updateGroup($groupName, $groupDescription, $ugid)) {
                     Yii::app()->session['flashmessage'] = gT("User group successfully saved!");
                     $aData['ugid'] = $ugid;
@@ -263,7 +264,7 @@ class UserGroupController extends LSBaseController
                     $this->redirect(array('userGroup/index'));
                 } else {
                     //show error msg
-                    $errors= $model->getErrors();
+                    $errors = $model->getErrors();
                     //show only the first error, so the user could fix them one by one ...
                     foreach ($errors as $key => $value) {
                         $firstError = $key;
@@ -309,7 +310,7 @@ class UserGroupController extends LSBaseController
                 ]);
             }
 
-            if ($model!==null && $model->delete()) {
+            if ($model !== null && $model->delete()) {
                 Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
             } else {
                 Yii::app()->user->setFlash("error", gT("Could not delete user group."));
@@ -442,7 +443,7 @@ class UserGroupController extends LSBaseController
             $result = UserInGroup::model()->findAllByPk(array('ugid' => (int)$ugid, 'uid' => Yii::app()->session['loginID']));
             if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 try {
-                    $sendCopy = Yii::app()->getRequest()->getPost('copymail')==1 ? 1 :0;
+                    $sendCopy = Yii::app()->getRequest()->getPost('copymail') == 1 ? 1 : 0;
                     $emailSendingResults = UserGroup::model()->sendUserEmails(
                         $ugid,
                         Yii::app()->getRequest()->getPost('subject'),

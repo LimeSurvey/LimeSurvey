@@ -28,6 +28,8 @@ $script = "
 * See https://stackoverflow.com/questions/2851068/prevent-ckeditor-from-formatting-code-in-source-mode
 */ 
 $script.="CKEDITOR.on('instanceReady', function(event) {
+        var textareaId = event.editor.element.getId();
+        $('#'+textareaId+'_htmleditor_loader').remove();
         event.editor.dataProcessor.writer.setRules( 'br', { breakAfterOpen: 0 } );
     });    
 
@@ -58,7 +60,7 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
 
         if (activepopup == null)
         {
-            document.getElementsByName(fieldname)[0].readOnly=true;
+            document.getElementById(fieldname).readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
             popup = window.open('".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
@@ -87,6 +89,13 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
         }
     }
 
+    var ckSettings = {
+        language : '" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "',
+        sid : '" . sanitize_int(App()->request->getQuery('sid', 0)) . "',
+        gid : '" . sanitize_int(App()->request->getQuery('gid', 0)) . "',
+        qid : '" . sanitize_int(App()->request->getQuery('qid', 0)) . "',
+        replacementFieldsPath : '" . $this->createUrl("/limereplacementfields/index") . "',
+    }
 ";
 
 Yii::app()->getClientScript()->registerScript('ckEditorPreparingSettings', $script, LSYii_ClientScript::POS_BEGIN);

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -48,7 +50,8 @@ class LSYii_Validators extends CValidator
             // Permission::model exist only after 172 DB version
             return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
         }
-        $this->xssfilter = ($this->xssfilter && Yii::app()->user->isXssFiltered());
+        // If run from console there his no user
+        $this->xssfilter = ($this->xssfilter && (($controller = Yii::app()->getController()) !== null && (get_class($controller) !== 'ConsoleApplication' )) && Yii::app()->user->isXssFiltered());
         return;
     }
 
@@ -109,69 +112,12 @@ class LSYii_Validators extends CValidator
      */
     public function xssFilter($value)
     {
-        $filter = new CHtmlPurifier();
-        $filter->options = array(
-            'AutoFormat.RemoveEmpty'=>false,
-            'Core.NormalizeNewlines'=>false,
-            'CSS.AllowTricky'=>true, // Allow display:none; (and other)
-            'HTML.SafeObject'=>true, // To allow including youtube
-            'Output.FlashCompat'=>true,
-            'Attr.EnableID'=>true, // Allow to set id
-            'Attr.AllowedFrameTargets'=>array('_blank', '_self'),
-            'URI.AllowedSchemes'=>array(
-                'http' => true,
-                'https' => true,
-                'mailto' => true,
-                'ftp' => true,
-                'nntp' => true,
-                'news' => true,
-                )
-        );
-        // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
-
-        // to enable video or something else we must use the config object of HTML-Purifier
-        $config = $filter->getPurifier()->config;
-
-        // enable video
-        $config->set('HTML.DefinitionID', 'html5-definitions');
-
-        $def = $config->maybeGetRawHTMLDefinition();
-        $max = $config->get('HTML.MaxImgLength');
-        if ($def) {
-            $def->addElement(
-                'video',   // name
-                'Inline',  // content set
-                'Flow', // allowed children
-                'Common', // attribute collection
-                array( // attributes
-                    'src' => 'URI',
-                    'id' => 'Text',
-                    'poster' => 'Text',
-                    'width' => 'Pixels#' . $max,
-                    'height' => 'Pixels#' . $max,
-                    'controls' => 'Bool#controls',
-                    'autobuffer' => 'Bool#autobuffer',
-                    'autoplay' => 'Bool#autoplay',
-                    'loop' => 'Bool#loop',
-                    'muted' => 'Bool#muted'
-                )
-            );
-            $def->addElement(
-                'source',   // name
-                'Inline',  // content set
-                'Empty', // allowed children
-                null, // attribute collection
-                array( // attributes
-                    'src*' => 'URI',
-                    'type' => 'Enum#video/mp4,video/webm',
-                )
-            );
-        }
+        $filter = LSYii_HtmlPurifier::getXssPurifier();
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $filter->purify($value));
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
-        $oExpressionManager = new ExpressionManager;
+        $oExpressionManager = new ExpressionManager();
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues = $oExpressionManager->asSplitStringOnExpressions($value); // Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues = $oExpressionManager->asSplitStringOnExpressions($sFiltered); // Same but for the filtered string
@@ -187,9 +133,9 @@ class LSYii_Validators extends CValidator
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression) {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
-                        $sNewValue .= "\"".(string) $filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS
+                        $sNewValue .= "\"" . (string) $filter->purify($aParsedExpression[0]) . "\""; // This disallow complex HTML construction with XSS
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
-                        $sNewValue .= "'".(string) $filter->purify($aParsedExpression[0])."'";
+                        $sNewValue .= "'" . (string) $filter->purify($aParsedExpression[0]) . "'";
                     } else {
                         $sNewValue .= $aParsedExpression[0];
                     }

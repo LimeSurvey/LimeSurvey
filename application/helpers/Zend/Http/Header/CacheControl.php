@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -145,7 +146,7 @@ class CacheControl implements HeaderInterface
                 $parts[] = $key;
             } else {
                 if (preg_match('#[^a-zA-Z0-9._-]#', $value)) {
-                    $value = '"' . $value.'"';
+                    $value = '"' . $value . '"';
                 }
                 $parts[] = "$key=$value";
             }
@@ -223,7 +224,6 @@ class CacheControl implements HeaderInterface
 
             default:
                 throw new Exception\InvalidArgumentException('expected SEPARATOR or END');
-
         }
     }
 

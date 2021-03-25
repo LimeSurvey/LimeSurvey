@@ -606,6 +606,7 @@
             toDeleteFlag = true; // Fix IE mixed content issue
 
             iframe.src = "javascript:'<html></html>';";
+            removeNode(iframe);
           });
         },
 
@@ -629,7 +630,10 @@
           } // sending request
 
 
-          var iframe = this._createIframe();
+          var iframe = this._createIframe(); // Get response from iframe and fire onComplete event when ready
+
+
+          this._getResponse(iframe, file);
 
           var form = this._createForm(iframe); // assuming following structure
           // div -> input type='file'
@@ -644,10 +648,7 @@
           removeNode(form);
           form = null;
           removeNode(this._input);
-          this._input = null; // Get response from iframe and fire onComplete event when ready
-
-          this._getResponse(iframe, file); // get ready for next request
-
+          this._input = null; // get ready for next request
 
           this._createInput();
         }
@@ -832,7 +833,7 @@
 
       var renderPreviewItem = function (fieldname, item, iterator) {
         var i = iterator;
-        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
+        var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico', 'heic');
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
         var previewContainer = $('<div class="file-preview"></div>');
 
@@ -931,9 +932,11 @@
              */
 
 
-            var allowSubmit = allowed_filetypes.reduce(function (col, item) {
-              return col || ext.toLowerCase() === item;
-            }, false);
+            let allowSubmit = false;
+
+            for (let fileType of allowed_filetypes) {
+              allowSubmit = allowed_filetypes.includes(fileType);
+            }
 
             if (allowSubmit == false) {
               $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;' + uploadLang.errorOnlyAllowed.replace('%s', $('#' + fieldname + '_allowed_filetypes').val()) + '</p>');
@@ -973,37 +976,7 @@
                 $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus_" + options.qid);
               }
 
-              renderPreviewItem(fieldname, metadata, count); // var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock file-element'>";
-              // previewblock +="<div class='file-preview'>";
-              // if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-              //     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth()' />";
-              // else
-              //     previewblock += "<div class='upload-placeholder' />";
-              // previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
-              // previewblock += "</div>";
-              // previewblock +="<div class='file-info'><fieldset>";
-              // if ($('#'+fieldname+'_show_title').val() == 1 || $('#'+fieldname+'_show_comment').val() == 1)
-              // {
-              //     if($('#'+fieldname+'_show_title').val() == 1)
-              //     {
-              //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_title_"+count+"'>"+uploadLang.titleFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_title_"+count+"' /></div></div>";
-              //     }
-              //     if($('#'+fieldname+'_show_comment').val() == 1)
-              //     {
-              //         previewblock += "<div class='form-group'><label class='control-label col-xs-4' for='"+fieldname+"_comment_"+count+"'>"+uploadLang.commentFld+"</label>"+"<div class='input-container'><input class='form-control' type='text' value='' id='"+fieldname+"_comment_"+count+"' /></div></div>";
-              //     }
-              // }
-              // previewblock += "<div class='form-group'><div class='col-xs-4'></div><div class='input-container'><a class='btn btn-danger' onclick='deletefile(\""+fieldname+"\", "+count+")'><span class='fa fa-trash'></span>&nbsp;"+uploadLang.deleteFile+"</a></div></div>";
-              // previewblock += "</fieldset></div>";
-              // previewblock += "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
-              //                 "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
-              //                 "<input type='hidden' id='"+fieldname+"_name_"+count+"' value="+metadata.name+" />"+
-              //                 "<input type='hidden' id='"+fieldname+"_filename_"+count+"' value="+metadata.filename+" />"+
-              //                 "<input type='hidden' id='"+fieldname+"_ext_" +count+"' value="+metadata.ext+"  />";
-              // previewblock += "</li>";
-              // // add file to the list
-              // $('#field'+fieldname+'_listfiles').prepend(previewblock);
-
+              renderPreviewItem(fieldname, metadata, count);
               var filecount = parseInt($('#' + fieldname + '_filecount').val());
               var minfiles = parseInt($('#' + fieldname + '_minfiles').val());
               filecount++;
@@ -1129,10 +1102,7 @@
     }
 
     window.getUploadHandler = function (qid, options) {
-      if (!window.currentUploadHandler) {
-        window.currentUploadHandler = new uploadHandler(qid, options);
-      }
-
+      window.currentUploadHandler = new uploadHandler(qid, options);
       window.currentUploadHandler.init();
       return window.currentUploadHandler;
     };

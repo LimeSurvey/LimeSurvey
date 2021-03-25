@@ -43,7 +43,8 @@ abstract class PluginBase implements iPlugin
     private $store = null;
 
     /**
-     * @var array
+     * Global settings of plugin
+     * @var array[]
      */
     protected $settings = [];
 
@@ -59,6 +60,17 @@ abstract class PluginBase implements iPlugin
      * @var \SimpleXMLElement|null
      */
     public $config = null;
+
+    /**
+     * List of allowed public method, null mean all method are allowed.
+     * Else method must be in the list.
+     * Used in public controller :
+     * - PluginHelper::ajax (admin/pluginhelper&sa=ajax)
+     * - PluginHelper::fullpagewrapper (admin/pluginhelper&sa=fullpagewrapper)
+     * - PluginHelper::sidebody (admin/pluginhelper&sa=sidebody)
+     * @var string[]|null
+     */
+    public $allowedPublicMethods = null;
 
     /**
      * Constructor for the plugin
@@ -161,7 +173,6 @@ abstract class PluginBase implements iPlugin
      */
     public function getPluginSettings($getValues = true)
     {
-
         $settings = $this->settings;
         foreach ($settings as $name => &$setting) {
             if ($getValues) {
@@ -212,7 +223,7 @@ abstract class PluginBase implements iPlugin
                  * By using the asset manager the assets are moved to a publicly accessible path.
                  * This approach allows a locked down plugin directory that is not publicly accessible.
                  */
-                $url = App()->assetManager->publish($path);
+                $url = \Yii::app()->assetManager->publish($path);
             }
         } else {
             $url = $fileName;
@@ -412,9 +423,13 @@ abstract class PluginBase implements iPlugin
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
-            libxml_disable_entity_loader(false);
-            $this->config = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(false);
+            }
+        $this->config = simplexml_load_file(realpath($file));
+            if (\PHP_VERSION_ID < 80000) {
+                libxml_disable_entity_loader(true);
+            }
 
             if ($this->config === null) {
                 // Failed. Popup error message.
@@ -423,15 +438,15 @@ abstract class PluginBase implements iPlugin
             } elseif ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
-                $pluginModel = \Plugin::model()->findByPk($this->id);
-
-                // "Impossible"
-                if (empty($pluginModel)) {
-                    throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                if ($this->id !== null) {
+                    $pluginModel = \Plugin::model()->findByPk($this->id);
+                    // "Impossible"
+                    if (empty($pluginModel)) {
+                        throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                    }
+                    $this->checkActive($pluginModel);
+                    $this->saveNewVersion($pluginModel);
                 }
-
-                $this->checkActive($pluginModel);
-                $this->saveNewVersion($pluginModel);
             }
             return true;
         } else {
@@ -453,8 +468,8 @@ abstract class PluginBase implements iPlugin
 
         if ($this->config->active == 1) {
             // Activate plugin
-            $result = App()->getPluginManager()->dispatchEvent(
-                new PluginEvent('beforeActivate', App()->getController()),
+            $result = \Yii::app()->getPluginManager()->dispatchEvent(
+                new PluginEvent('beforeActivate', \Yii::app()->getController()),
                 $this->getName()
             );
 
@@ -465,7 +480,7 @@ abstract class PluginBase implements iPlugin
                 // Failed. Popup error message.
                 $not = new \Notification(
                     [
-                        'user_id' => App()->user->id,
+                        'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
                             '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
@@ -487,7 +502,7 @@ abstract class PluginBase implements iPlugin
     {
         $not = new \Notification(
             [
-            'user_id' => App()->user->id,
+            'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
                 '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
@@ -534,24 +549,23 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
-        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+        } elseif (file_exists(\Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
-            $scriptToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
             );
         }
-        Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
+        \Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
     }
 
     /**
@@ -564,19 +578,19 @@ abstract class PluginBase implements iPlugin
         $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
 
         $cssToRegister = null;
-        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
-                YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
-        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
-            $cssToRegister = Yii::app()->getAssetManager()->publish(
-                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = \Yii::app()->getAssetManager()->publish(
+                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
             );
         }
-        Yii::app()->getClientScript()->registerCssFile($cssToRegister);
+        \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
 }

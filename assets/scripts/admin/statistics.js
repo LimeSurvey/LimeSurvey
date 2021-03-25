@@ -139,11 +139,25 @@ function init_chart_js_graph_with_datasets($type, $qid) {
         dataDefinition.datasets[0].pointHoverBorderColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",1)");
     });
 
+    var parsedType = parseType($type);
+    var options = {};
+
+    if (parsedType == 'bar' || parsedType == 'line') {
+        options.scales = {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                }
+            }]
+        };
+    }
+
     console.ls.log("Creating chart with definition: ", dataDefinition);
 
     window.chartjs[$qid] = new Chart($canvas, {
-        type: parseType($type),
-        data: dataDefinition
+        type: parsedType,
+        data: dataDefinition,
+        options: options,
     });
 }
 
@@ -180,9 +194,20 @@ function init_chart_js_graph_with_datas($type, $qid) {
         $chartDef.datasets[0].hoverBackgroundColor.push("rgba(" + COLORS_FOR_SURVEY[colorIndex] + ",0.9)");
     });
 
+    var parsedType = parseType($type);
     var $options = {
         tooltipTemplate: "<%if (label){%><%=label %>: <%}%><%= value + '%' %>",
     };
+
+    if (parsedType == 'bar' || parsedType == 'line') {
+        options.scales = {
+            yAxes: [{
+                ticks: {
+                    suggestedMin: 0,
+                }
+            }]
+        };
+    }
 
     if (typeof chartjs != "undefined") {
         if (typeof chartjs[$qid] != "undefined") {
@@ -193,7 +218,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
     console.ls.log("Creating chart with definition: ", $chartDef);
 
     window.chartjs[$qid] = new Chart($canvas, {
-        type: parseType($type),
+        type: parsedType,
         data: $chartDef,
         options: $options
     });

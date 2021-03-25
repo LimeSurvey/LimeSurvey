@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -78,7 +79,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
             }
 
             $this->setToken($token['token']);
-        } else if (null !== $token) {
+        } elseif (null !== $token) {
             $this->setToken($token);
         }
     }
@@ -124,7 +125,7 @@ class Zend_Validate_Identical extends Zend_Validate_Abstract
      */
     public function setStrict($strict)
     {
-        $this->_strict = (boolean) $strict;
+        $this->_strict = (bool) $strict;
         return $this;
     }
 

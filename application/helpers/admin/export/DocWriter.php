@@ -1,4 +1,5 @@
 <?php
+
 class DocWriter extends Writer
 {
     private $output;
@@ -22,7 +23,7 @@ class DocWriter extends Writer
         App()->setLanguage($sLanguageCode);
 
         if ($oOptions->output == 'display') {
-            header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
+            header("Content-Disposition: attachment; filename=results-survey" . $survey->id . ".doc");
             header("Content-type: application/vnd.ms-word");
         }
 
@@ -56,7 +57,7 @@ class DocWriter extends Writer
     {
         if ($oOptions->answerFormat == 'short') {
             //No headers at all, only output values.
-            $this->output .= implode($this->separator, $values).PHP_EOL;
+            $this->output .= implode($this->separator, $values) . PHP_EOL;
         } elseif ($oOptions->answerFormat == 'long') {
             //Output each record, one per page, with a header preceding every value.
             if ($this->isBeginning) {
@@ -64,7 +65,7 @@ class DocWriter extends Writer
             } else {
                 $this->output .= "<br clear='all' style='page-break-before:always'>";
             }
-            $this->output .= "<table><tr><th colspan='2'>".gT("Survey response")."</th></tr>".PHP_EOL;
+            $this->output .= "<table><tr><th colspan='2'>" . gT("Survey response") . "</th></tr>" . PHP_EOL;
 
             $counter = 0;
             foreach ($headers as $header) {
@@ -73,10 +74,10 @@ class DocWriter extends Writer
                 if ($values[$counter] != "") {
                     $value = $values[$counter];
                 }
-                $this->output .= "<tr><td>".$header."</td><td>".$value."</td></tr>".PHP_EOL;
+                $this->output .= "<tr><td>" . $header . "</td><td>" . $value . "</td></tr>" . PHP_EOL;
                 $counter++;
             }
-            $this->output .= "</table>".PHP_EOL;
+            $this->output .= "</table>" . PHP_EOL;
         } else {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }

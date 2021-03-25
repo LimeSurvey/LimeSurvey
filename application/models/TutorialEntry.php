@@ -34,7 +34,7 @@ class TutorialEntry extends LSActiveRecord
             array('title, content, settings', 'required'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('teid, title, content, settings', 'safe', 'on'=>'search'),
+            array('teid, title, content, settings', 'safe', 'on' => 'search'),
         );
     }
 
@@ -63,7 +63,8 @@ class TutorialEntry extends LSActiveRecord
         );
     }
 
-    public function getColumns(){
+    public function getColumns()
+    {
         return [
             [
                 'name' => 'teid',
@@ -96,7 +97,7 @@ class TutorialEntry extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('teid', $this->teid);
         $criteria->compare('title', $this->title, true);
@@ -104,7 +105,7 @@ class TutorialEntry extends LSActiveRecord
         $criteria->compare('settings', $this->settings, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 

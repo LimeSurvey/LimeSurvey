@@ -5,7 +5,12 @@
         <div class="col-md-4 text-right">
         </div>
         <div class="col-md-8 text-left">
-            {{question.answervalue}} - {{question.answeroption.answer}}
+            {{question.answervalue}} -
+            {% if question.answercode == '-oth-' %}
+                {{question.answeroption.answer|escape}}
+            {% else %}
+                {{question.answeroption.answer}}
+            {%endif %}
         </div>
     </div>
 </div>

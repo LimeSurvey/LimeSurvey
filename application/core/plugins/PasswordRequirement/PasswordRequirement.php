@@ -1,11 +1,15 @@
 <?php
 
-class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
+class PasswordRequirement extends \LimeSurvey\PluginManager\PluginBase
+{
      /**
      * Where to save plugin settings etc.
      * @var string
      */
     protected $storage = 'DbStorage';
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
 
     protected $settings = [
         'needsNumber' => array(
@@ -38,45 +42,47 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
         $this->subscribe('createRandomPassword');
     }
 
-    public function checkPasswordRequirement() {
+    public function checkPasswordRequirement()
+    {
         $oEvent = $this->getEvent();
         $password = $oEvent->get('password');
 
-        if($this->get('needsNumber',null,null,false) && ctype_alpha($password)){
+        if ($this->get('needsNumber', null, null, false) && ctype_alpha($password)) {
             $oEvent->set('passwordOk', false);
             $oEvent->set('passwordError', gT('The password does require at least one digit'));
             return;
         }
 
-        if($this->get('needsUppercase',null,null,false) && ctype_lower($password)){
+        if ($this->get('needsUppercase', null, null, false) && ctype_lower($password)) {
             $oEvent->set('passwordOk', false);
             $oEvent->set('passwordError', gT('The password does require at least one uppercase character'));
             return;
         }
 
-        if($this->get('needsNonAlphanumeric',null,null,false) && ctype_alnum($password)){
+        if ($this->get('needsNonAlphanumeric', null, null, false) && ctype_alnum($password)) {
             $oEvent->set('passwordOk', false);
             $oEvent->set('passwordError', gT('The password does require at least one special character'));
             return;
         }
 
-        if(strlen($password) < $this->get('minimumSize',null,null,8)){
+        if (strlen($password) < $this->get('minimumSize', null, null, 8)) {
             $oEvent->set('passwordOk', false);
-            $oEvent->set('passwordError', sprintf(gT('The password does not reach the minimum length of %s characters'), $this->get('minimumSize',null,null,8)));
+            $oEvent->set('passwordError', sprintf(gT('The password does not reach the minimum length of %s characters'), $this->get('minimumSize', null, null, 8)));
             return;
         }
     }
 
-    public function createRandomPassword(){
+    public function createRandomPassword()
+    {
         $oEvent = $this->getEvent();
-        $targetSize = $oEvent->get('targetSize',8);
+        $targetSize = $oEvent->get('targetSize', 8);
 
-        $targetSize = $targetSize < $this->get('minimumSize',null,null,8) ? $this->get('minimumSize',null,null,8) : $targetSize;
-        $uppercase = $this->get('needsUppercase',null,null,false);
-        $numeric = $this->get('needsNumber',null,null,false);
-        $nonAlpha = $this->get('needsNonAlphanumeric',null,null,false);
+        $targetSize = $targetSize < $this->get('minimumSize', null, null, 8) ? $this->get('minimumSize', null, null, 8) : $targetSize;
+        $uppercase = $this->get('needsUppercase', null, null, false);
+        $numeric = $this->get('needsNumber', null, null, false);
+        $nonAlpha = $this->get('needsNonAlphanumeric', null, null, false);
 
-        $randomPassword = $this->getRandomString($targetSize, $uppercase ,$numeric, $nonAlpha);
+        $randomPassword = $this->getRandomString($targetSize, $uppercase, $numeric, $nonAlpha);
         
         $oEvent->set('password', $randomPassword);
         return;
@@ -116,29 +122,29 @@ class PasswordRequirement  extends \LimeSurvey\PluginManager\PluginBase {
         return $settings;
     }
 
-    private function getRandomString($length=8, $uppercase=false, $numeric=false, $nonAlpha=false)
+    private function getRandomString($length = 8, $uppercase = false, $numeric = false, $nonAlpha = false)
     {
         $chars = "abcdefghijklmnopqrstuvwxyz";
         
-        if($uppercase) {
+        if ($uppercase) {
             $chars .=  'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         }
-        if($numeric) {
+        if ($numeric) {
             $chars .=  '0123456789';
         }
-        if($nonAlpha) {
+        if ($nonAlpha) {
             $chars .=  '-=!@#$%&*_+,.?;:';
         }
 
         $str = '';
         $max = strlen($chars) - 1;
 
-        if(function_exists('random_int')) {
-            for ($i=0; $i < $length; $i++){
+        if (function_exists('random_int')) {
+            for ($i = 0; $i < $length; $i++) {
                 $str .= $chars[random_int(0, $max)];
             }
         } else {
-            for ($i=0; $i < $length; $i++) {
+            for ($i = 0; $i < $length; $i++) {
                 $str .= $chars[mt_rand(0, $max)];
             }
         }

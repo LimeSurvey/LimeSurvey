@@ -85,12 +85,15 @@ $config['defaulttheme']              = 'fruity'; // This setting specifys the de
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // File types allowed to be uploaded in the themes section.
+$config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
+$config['allowedthemeuploads'] = 'css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
 $config['allowedfileuploads'] = [
     //Documents
     'xls', 'doc', 'xlsx', 'docx', 'odt', 'ods', 'pdf',
     //Images - as mentioned above be very careful if you want to allow SVG files
     'png', 'bmp', 'gif', 'jpg', 'jpeg', 'tif',
+    // Iphone file extensions (version 11 and above)
+    'heif', 'heic', 'heifs', 'heics', 'avci', 'avcs', 'avif', 'avifs',
     //soundfiles
     'wav', 'mp3', 'flac', 'aac', 'm4a', 'opus', 'ogg', 'wma', 'mka',
     //videos
@@ -110,6 +113,7 @@ $config['showpopups']         = 2; // Show popup messages if mandatory or condit
 // -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$config['sendingrate']        = 60; // Number of seconds to wait until the next email batch is sent
 
 // Experimental parameters, only change if you know what you're doing
 //
@@ -247,6 +251,10 @@ $config['disablescriptwithxss'] = true;
 // Otherwise they can see all operators defines in LimeSurvey
 $config['usercontrolSameGroupPolicy'] = true;
 
+// ownerManageAllSurveysInGroup
+// If this option is set to true, then oner of a group
+// have all rights on surveys in is group
+$config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.
@@ -421,6 +429,9 @@ $config['quexmlusequestiontitleasid'] = false;
 
 // QueXML: If set to true, the Data/Time answers will be formated with the survey's date format
 $config['quexmlkeepsurveydateformat'] = false;
+
+// QueXML: Width of the question title column in MM
+$config['quexmlquestiontitlewidth'] = 14;
 
 $config['minlengthshortimplode'] = 20; // Min length required to use short_implode instead of standard implode
 $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of returned string
@@ -667,6 +678,9 @@ $config['defaultfixedtheme'] = 'vanilla';
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
+// The public URL is the URL that is used for anything that is facing a survey participant.
+// It can be used to have a separation / distinction between a public URL for surveys and a private one for
+// the administration - for example for certain proxy configurations or internal/external domain separation
 if (!isset($argv[0]) && Yii::app() != null) {
     $config['publicurl'] = Yii::app()->baseUrl.'/'; // The public website location (url) of the public survey script
 } else {
@@ -683,6 +697,7 @@ $config['uploadurl']              = $config['publicurl'].'upload';
 $config['standardthemerooturl']   = $config['publicurl'].'themes/survey'; // Location of the standard themes
 $config['adminscripts']           = $config['publicurl'].'assets/scripts/admin/';
 $config['generalscripts']         = $config['publicurl'].'assets/scripts/';
+$config['packages']               = $config['publicurl'].'packages/';
 $config['third_party']            = $config['publicurl'].'third_party/';
 $config['styleurl']               = $config['publicurl'].'themes/admin/';
 $config['publicstyle']            = $config['publicurl'].$config['assets'].'styles-public/';

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -220,7 +221,8 @@ class Zend_Http_UserAgent implements Serializable
             $options = $options->toArray();
         }
 
-        if (!is_array($options)
+        if (
+            !is_array($options)
             && !$options instanceof ArrayAccess
             && !$options instanceof Traversable
         ) {
@@ -316,7 +318,8 @@ class Zend_Http_UserAgent implements Serializable
             return $this->_browserTypeClass[$browserType];
         }
 
-        if (isset($this->_config[$browserType])
+        if (
+            isset($this->_config[$browserType])
             && isset($this->_config[$browserType]['device'])
         ) {
             $deviceConfig = $this->_config[$browserType]['device'];

@@ -1,5 +1,6 @@
 <?php
 
+class DataSetArrayFlexibleRow extends QuestionBaseDataSet
+{
 
-
-class DataSetArrayFlexibleRow extends QuestionBaseDataSet {}
+}

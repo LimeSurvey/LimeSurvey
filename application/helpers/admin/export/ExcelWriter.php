@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Exports results in Microsoft Excel format.  By default the Writer sends
 * HTTP headers and the file contents via HTTP.  For testing purposes a
@@ -22,7 +23,7 @@ class ExcelWriter extends Writer
      */
     public function __construct()
     {
-        require_once(APPPATH.'/third_party/xlsx_writer/xlsxwriter.class.php');
+        require_once(APPPATH . '/third_party/xlsx_writer/xlsxwriter.class.php');
         $this->separator = '~|';
         $this->hasOutputHeader = false;
         $this->rowCounter = 0;
@@ -37,7 +38,7 @@ class ExcelWriter extends Writer
         $worksheetName = $survey->languageSettings['surveyls_title'];
         $worksheetName = mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'), array(' '), $worksheetName), 0, 31, 'utf-8'); // Remove invalid characters
         if ($worksheetName == '') {
-            $worksheetName = 'survey_'.$survey->id;
+            $worksheetName = 'survey_' . $survey->id;
         }
         $this->currentSheet = $worksheetName;
         $this->forceDownload = !($oOptions->output == 'file');
@@ -58,7 +59,7 @@ class ExcelWriter extends Writer
         if ($this->forceDownload) {
             header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             header("Content-Disposition: attachment; filename=\"{$this->webfilename}.xlsx\"");
-            header('Content-Length: '.filesize($this->filename));
+            header('Content-Length: ' . filesize($this->filename));
             readfile($this->filename);
         }
         return $this->workbook;

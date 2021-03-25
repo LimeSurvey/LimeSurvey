@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -164,8 +165,10 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      */
     public function getMagicFile()
     {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')
-            && null === $this->_magicfile) {
+        if (
+            version_compare(PHP_VERSION, '5.3.0', '<')
+            && null === $this->_magicfile
+        ) {
             if (!empty($_ENV['MAGIC'])) {
                 $this->setMagicFile($_ENV['MAGIC']);
             } elseif (
@@ -207,11 +210,11 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
     {
         if (empty($file)) {
             $this->_magicfile = null;
-        } else if (!(class_exists('finfo', false))) {
+        } elseif (!(class_exists('finfo', false))) {
             $this->_magicfile = null;
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('Magicfile can not be set. There is no finfo extension installed');
-        } else if (!is_file($file) || !is_readable($file)) {
+        } elseif (!is_file($file) || !is_readable($file)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception('The given magicfile can not be read');
         } else {
@@ -245,7 +248,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      */
     public function setTryCommonMagicFilesFlag($flag = true)
     {
-        $this->_tryCommonMagicFiles = (boolean) $flag;
+        $this->_tryCommonMagicFiles = (bool) $flag;
 
         return $this;
     }
@@ -280,7 +283,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
      */
     public function enableHeaderCheck($headerCheck = true)
     {
-        $this->_headerCheck = (boolean) $headerCheck;
+        $this->_headerCheck = (bool) $headerCheck;
         return $this;
     }
 
@@ -400,7 +403,7 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
         $types = explode('/', $this->_type);
         $types = array_merge($types, explode('-', $this->_type));
         $types = array_merge($types, explode(';', $this->_type));
-        foreach($mimetype as $mime) {
+        foreach ($mimetype as $mime) {
             if (in_array($mime, $types)) {
                 return true;
             }
@@ -453,8 +456,10 @@ class Zend_Validate_File_MimeType extends Zend_Validate_Abstract
             }
         }
 
-        if (empty($type) &&
-            (function_exists('mime_content_type') && ini_get('mime_magic.magicfile'))) {
+        if (
+            empty($type) &&
+            (function_exists('mime_content_type') && ini_get('mime_magic.magicfile'))
+        ) {
                 $type = mime_content_type($file);
         }
 

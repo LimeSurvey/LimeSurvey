@@ -22,7 +22,7 @@
     <div id="survey-action-title" class="panel-heading" >
         <div class="row">
             <div class="col-xs-2 col-sm-1">
-                <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>">
+                <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("surveyAdministration/toggleQuickAction/");?>">
                     <i class="fa <?=($quickactionstate > 0 ?  'fa-caret-up' : 'fa-caret-down')?>"></i>
                 </button>
             </div>
@@ -79,7 +79,7 @@
                                         <button type="button" data-value='G' class="btn btn-default <?php if($oSurvey->format=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
                                         <button type="button" data-value='A' class="btn btn-default <?php if($oSurvey->format=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
                                     </div>
-                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$oSurvey->sid);?>" />
+                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("surveyAdministration/changeFormat/surveyid/".$oSurvey->sid);?>" />
                                     <br/><br/>
 
                                 </div>
@@ -141,19 +141,19 @@
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>">
+                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
-                                                    <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
+                                                    <a  href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                                         <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("questionGroupsAdministration/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,19 +188,19 @@
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>">
+                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="panel-heading">
                                                     <div class="panel-title h4"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="panel-body-ico">
-                                                        <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>" >
+                                                        <a  href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>" >
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                 <span class="sr-only"><?php eT('Add question');?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
-                                                        <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
+                                                        <p><a href="<?php echo $this->createUrl("questionAdministration/view/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,19 +215,19 @@
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
-                                                <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
+                                                <a  href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
                             <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
-                                                <p><a href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
+                                                <p><a href="<?php echo $this->createUrl("surveyAdministration/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
                                             </div>
                                         </div>
                                     </div>

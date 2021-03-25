@@ -1,5 +1,6 @@
 <?php
 
+class DataSetListRadio extends QuestionBaseDataSet
+{
 
-
-class DataSetListRadio extends QuestionBaseDataSet {}
+}

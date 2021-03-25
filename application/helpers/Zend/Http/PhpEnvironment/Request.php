@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -243,7 +244,8 @@ class Request extends HttpRequest
         }
 
         // set HTTP version
-        if (isset($this->serverParams['SERVER_PROTOCOL'])
+        if (
+            isset($this->serverParams['SERVER_PROTOCOL'])
             && strpos($this->serverParams['SERVER_PROTOCOL'], self::VERSION_10) !== false
         ) {
             $this->setVersion(self::VERSION_10);
@@ -253,7 +255,8 @@ class Request extends HttpRequest
         $uri = new HttpUri();
 
         // URI scheme
-        if ((!empty($this->serverParams['HTTPS']) && strtolower($this->serverParams['HTTPS']) !== 'off')
+        if (
+            (!empty($this->serverParams['HTTPS']) && strtolower($this->serverParams['HTTPS']) !== 'off')
             || (!empty($this->serverParams['HTTP_X_FORWARDED_PROTO'])
                  && $this->serverParams['HTTP_X_FORWARDED_PROTO'] == 'https')
         ) {
@@ -299,7 +302,7 @@ class Request extends HttpRequest
             // Reported at least for Safari on Windows
             if (isset($this->serverParams['SERVER_ADDR']) && preg_match('/^\[[0-9a-fA-F\:]+\]$/', $host)) {
                 $host = '[' . $this->serverParams['SERVER_ADDR'] . ']';
-                if ($port . ']' == substr($host, strrpos($host, ':')+1)) {
+                if ($port . ']' == substr($host, strrpos($host, ':') + 1)) {
                     // The last digit of the IPv6-Address has been taken as port
                     // Unset the port so the default port can be used
                     $port = null;
@@ -545,7 +548,8 @@ class Request extends HttpRequest
         // If using mod_rewrite or ISAPI_Rewrite strip the script filename
         // out of the base path. $pos !== 0 makes sure it is not matching a
         // value from PATH_INFO or QUERY_STRING.
-        if (strlen($requestUri) >= strlen($baseUrl)
+        if (
+            strlen($requestUri) >= strlen($baseUrl)
             && (false !== ($pos = strpos($requestUri, $baseUrl)) && $pos !== 0)
         ) {
             $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));

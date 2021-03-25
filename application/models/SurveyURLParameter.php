@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -74,7 +75,7 @@ class SurveyURLParameter extends LSActiveRecord
      */
     public function deleteRecords($aConditions)
     {
-        foreach ($aConditions as $sFieldname=>$sFieldvalue) {
+        foreach ($aConditions as $sFieldname => $sFieldvalue) {
             Yii::app()->db->createCommand()->where($sFieldname, $sFieldvalue);
         }
         return Yii::app()->db->delete('survey_url_parameters'); // Deletes from token
@@ -88,5 +89,4 @@ class SurveyURLParameter extends LSActiveRecord
     {
         return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aData);
     }
-
 }

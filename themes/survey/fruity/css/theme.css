@@ -306,6 +306,9 @@ element.style {
     min-height: 50px;
 }
 
+.slider-container {
+    min-height: 15px;
+}
 
 /* Show more the heading in table */
 .ls-answers .ls-heading th{font-weight:700}

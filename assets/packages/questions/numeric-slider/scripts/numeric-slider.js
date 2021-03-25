@@ -98,6 +98,10 @@ var LSSlider = function (options) {
         },
         setValue = function (value) {
             value = value || parseFloat(position);
+            // If value is NaN, validation fails while first moving the slider
+            if (isNaN(value)) {
+                value = "";
+            }
             sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
@@ -147,7 +151,7 @@ var LSSlider = function (options) {
             if (custom_handle != null) {
                var customStyleSheet = $('<style></style>');
                customStyleSheet.attr('type','text/css');
-               customStyleSheet.text('#' + elementObject.attr('id') + ' .slider-handle.custom::before { content: "' + custom_handle + '" }');
+               customStyleSheet.text('#' + elementObject.attr('id') + '-container .slider-handle.custom::before { content: "\\' + custom_handle + '" }');
                customStyleSheet.appendTo('body');
                 // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
