@@ -3757,7 +3757,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 442) { 
+        if ($iOldDBVersion < 442) {
+            $oTransaction = $oDB->beginTransaction();
+            $questionTheme = new QuestionTheme();
+            $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
+            foreach ($questionsMetaData as $questionMetaData) {
+                $oQuestionTheme = QuestionTheme::model()->findByAttributes([
+                    "name" => $questionMetaData['name'],
+                    "extends" => $questionMetaData['questionType'],
+                    "theme_type" => $questionMetaData['type']
+                ]);
+                if (!empty($oQuestionTheme) && $oQuestionTheme->image_path != $questionMetaData['image_path']) {
+                    $oQuestionTheme->image_path = $questionMetaData['image_path'];
+                    $oQuestionTheme->save();
+                }
+            }
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
                 'name'               => 'TwoFactorAdminLogin',

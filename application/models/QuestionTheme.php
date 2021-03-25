@@ -714,7 +714,7 @@ class QuestionTheme extends LSActiveRecord
             $baseQuestion['image_path'] = str_replace(
                 '//',
                 '/',
-                App()->getConfig('publicurl') . $baseQuestion['image_path']
+                Yii::app()->baseUrl . '/' . $baseQuestion['image_path']
             );
             $baseQuestionsModified[] = $baseQuestion;
         }
