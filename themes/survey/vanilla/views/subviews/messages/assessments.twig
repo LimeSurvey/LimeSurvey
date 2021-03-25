@@ -64,7 +64,7 @@
 
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
-                    {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
+                    {% if ( assessed is iterable and aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
                     {# val ({PERC}): It displays the score of a question group, it don't exist for global … take the last one (must remove it for 4.X: show an error) #}
                     {% set assesmentReplacement = { PERC: val, TOTAL: aAssessments.total_score, ASSESSMENT_CURRENT_TOTAL: aAssessments.total_score } %}
                         <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
