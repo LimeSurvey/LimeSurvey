@@ -1652,6 +1652,11 @@ class questionHelper
         $additionalAttributes = array();
         // Create array of attribute with name as key
         foreach($custom_attributes['attribute'] as $customAttribute) {
+            // Try to translate the category title. Custom categories may not be translated, but at least if the theme tries
+            // to "reuse" a core category the attribute will be displayed properly. See issue #15671
+            if(!empty($customAttribute['category'])) {
+                $customAttribute['category'] = gT($customAttribute['category']);
+            }
             if(!empty($customAttribute['name'])) {
                 $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
             }
