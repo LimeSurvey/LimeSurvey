@@ -314,12 +314,12 @@ class LimeReplacementFieldsController extends LSBaseController
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment
-            $replFields['EMAIL'] = gT("Email address of the participant");
-            $replFields['TOKEN'] = gT("Access code for this participant");
-            $replFields['OPTOUTURL'] = gT("URL for a respondent to opt-out of this survey");
-            $replFields['OPTINURL'] = gT("URL for a respondent to opt-in to this survey");
-            $replFields['FIRSTNAME'] = gT("First name of the participant");
-            $replFields['LASTNAME'] = gT("Last name of the participant");
+            $replFields['EMAIL'] = gT("Participant Email address");
+            $replFields['TOKEN'] = gT("Participant Access code");
+            $replFields['OPTOUTURL'] = gT("Participant - Opt-out URL");
+            $replFields['OPTINURL'] = gT("Participant - Opt-in URL");
+            $replFields['FIRSTNAME'] = gT("Participant - First name");
+            $replFields['LASTNAME'] = gT("Participant - Last name");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -329,16 +329,16 @@ class LimeReplacementFieldsController extends LSBaseController
                 $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
-            $replFields['ADMINNAME'] = gT("Name of the survey administrator");
-            $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
-            $replFields['SURVEYURL'] = gT("URL of the survey");
+            $replFields['ADMINNAME'] = gT("Survey administrator - Name");
+            $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
+            $replFields['SURVEYURL'] = gT("Survey URL");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, false);
 
             // $replFields['SID']= gT("Survey ID");
         } elseif (strpos($fieldtype, 'email_registration') !== false) {
-            $replFields['FIRSTNAME'] = gT("First name of the participant");
-            $replFields['LASTNAME'] = gT("Last name of the participant");
+            $replFields['FIRSTNAME'] = gT("Participant - First name");
+            $replFields['LASTNAME'] = gT("Participant - Last name");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -348,16 +348,16 @@ class LimeReplacementFieldsController extends LSBaseController
                 $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
-            $replFields['ADMINNAME'] = gT("Name of the survey administrator");
-            $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
-            $replFields['SURVEYURL'] = gT("URL of the survey");
+            $replFields['ADMINNAME'] = gT("Survey administrator - Name");
+            $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
+            $replFields['SURVEYURL'] = gT("Survey URL");
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, false);
         } elseif (strpos($fieldtype, 'email_confirmation') !== false) {
-            $replFields['TOKEN'] = gT("Access code for this participant");
-            $replFields['FIRSTNAME'] = gT("First name of the participant");
-            $replFields['LASTNAME'] = gT("Last name of the participant");
-            $replFields['EMAIL'] = gT("Email address of the participant");
+            $replFields['TOKEN'] = gT("Participant - Access code");
+            $replFields['FIRSTNAME'] = gT("Participant - First name");
+            $replFields['LASTNAME'] = gT("Participant - Last name");
+            $replFields['EMAIL'] = gT("Participant - Email address");
             $replFields['SURVEYNAME'] = gT("Survey title");
             $replFields['SID'] = gT("Survey ID");
             $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
@@ -367,9 +367,9 @@ class LimeReplacementFieldsController extends LSBaseController
                 $replFields[strtoupper($attributefield)] = sprintf(gT("Participant attribute: %s"), $attributedescription['description']);
             }
 
-            $replFields['ADMINNAME'] = gT("Name of the survey administrator");
-            $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
-            $replFields['SURVEYURL'] = gT("URL of the survey");
+            $replFields['ADMINNAME'] = gT("Survey administrator - Name");
+            $replFields['ADMINEMAIL'] = gT("Survey administrator - Email address");
+            $replFields['SURVEYURL'] = gT("Survey URL");
             $replFields['EXPIRY'] = gT("Survey expiration date");
 
             // email-conf can accept insertans fields for non anonymous surveys
@@ -388,13 +388,12 @@ class LimeReplacementFieldsController extends LSBaseController
             || strpos($fieldtype, 'editquestion') !== false             // for translation
             || strpos($fieldtype, 'editquestion_help') !== false        // for translation
         ) {
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
-            $replFields['SID'] = gT("This question's survey ID number");
-            $replFields['GID'] = gT("This question's group ID number");
-            $replFields['QID'] = gT("This question's question ID number");
-            $replFields['SGQ'] = gT("This question's SGQA code");
+            $replFields['TOKEN:FIRSTNAME'] = gT("Participant - First name");
+            $replFields['TOKEN:LASTNAME'] = gT("Participant - Last name");
+            $replFields['TOKEN:EMAIL'] = gT("Participant - Email address");
+            $replFields['SID'] = gT("Survey ID");
+            $replFields['GID'] = gT("Question group ID");
+            $replFields['QID'] = gT("Question ID");
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
@@ -404,13 +403,12 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['EXPIRY'] = gT("Survey expiration date");
             return array($replFields, true);
         } elseif (strpos($fieldtype, 'editanswer') !== false) {
-            $replFields['TOKEN:FIRSTNAME'] = gT("First name of the participant");
-            $replFields['TOKEN:LASTNAME'] = gT("Last name of the participant");
-            $replFields['TOKEN:EMAIL'] = gT("Email address of the participant");
-            $replFields['SID'] = gT("This question's survey ID number");
-            $replFields['GID'] = gT("This question's group ID number");
-            $replFields['QID'] = gT("This question's question ID number");
-            $replFields['SGQ'] = gT("This question's SGQA code");
+            $replFields['TOKEN:FIRSTNAME'] = gT("Participant - First name");
+            $replFields['TOKEN:LASTNAME'] = gT("Participant - Last name");
+            $replFields['TOKEN:EMAIL'] = gT("Participant - Email address");
+            $replFields['SID'] = gT("Survey ID");
+            $replFields['GID'] = gT("Question group ID");
+            $replFields['QID'] = gT("Question ID");
             $attributes = getTokenFieldsAndNames($surveyid, true);
 
             foreach ($attributes as $attributefield => $attributedescription) {
