@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2020 The LimeSurvey Project Team / Carsten Schmitz
@@ -9,7 +10,7 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  */
 
 namespace LimeSurvey\Models\Services;
@@ -18,10 +19,10 @@ class UploadHelper
 {
     /**
      * Check uploaded file size
-     * 
+     *
      * @param string $sFileName the name of the posted file
      * @param mixed $customMaxSize maximum file upload size
-     * 
+     *
      * @throws Exception if the file is too large or no file is found.
      */
     public function checkUploadedFileSize($sFileName, $customMaxSize = null)
@@ -62,7 +63,7 @@ class UploadHelper
 
     /**
      * Check uploaded file size. Redirects to the specified URL on failure.
-     * 
+     *
      * @param string $sFileName the name of the posted file
      * @param mixed $redirectUrl the URL to redirect on failure
      * @param mixed $customMaxSize maximum file upload size
@@ -79,7 +80,7 @@ class UploadHelper
 
     /**
      * Check uploaded file size. Renders JSON on failure.
-     * 
+     *
      * @param string $sFileName the name of the posted file
      * @param array $debugInfo the URL to redirect on failure
      * @param mixed $customMaxSize maximum file upload size
