@@ -4,6 +4,8 @@
 }((function () { 'use strict';
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -40,7 +42,7 @@
   }
 
   function _readOnlyError(name) {
-    throw new Error("\"" + name + "\" is read-only");
+    throw new TypeError("\"" + name + "\" is read-only");
   }
 
   /* ========================================================================
@@ -680,9 +682,7 @@
    */
   var document$1 = window.document;
 
-  var Tour =
-  /*#__PURE__*/
-  function () {
+  var Tour = /*#__PURE__*/function () {
     function Tour(options) {
       _classCallCheck(this, Tour);
 
@@ -917,8 +917,8 @@
       }
     }, {
       key: "_setStepFlag",
-      // step flags are used to remember specific internal step data across a tour
-      value: function _setStepFlag(stepNumber, flagName, value) {
+      value: // step flags are used to remember specific internal step data across a tour
+      function _setStepFlag(stepNumber, flagName, value) {
         if (this._options.steps[stepNumber] != null) {
           this._options.steps[stepNumber].internalFlags[flagName] = value;
         }
@@ -932,9 +932,9 @@
       }
     }, {
       key: "init",
-      //=======================================================================================================================================
+      value: //=======================================================================================================================================
       // Initiate tour and movement between steps
-      value: function init() {
+      function init() {
         console.log('You should remove Tour.init() from your code. It\'s not required with Bootstrap Tourist');
       }
     }, {
@@ -1093,8 +1093,8 @@
       }
     }, {
       key: "reshowCurrentStep",
-      // fully closes and reopens the current step, triggering all callbacks etc
-      value: function reshowCurrentStep() {
+      value: // fully closes and reopens the current step, triggering all callbacks etc
+      function reshowCurrentStep() {
         this._debug("Reshowing current step " + this.getCurrentStepIndex());
 
         var promise = this.hideStep();
@@ -1102,9 +1102,9 @@
       }
     }, {
       key: "hideStep",
-      //=======================================================================================================================================
+      value: //=======================================================================================================================================
       // hides current step
-      value: function hideStep() {
+      function hideStep() {
         var _this4 = this;
 
         var step = this.getStep(this.getCurrentStepIndex());
@@ -1168,8 +1168,8 @@
       }
     }, {
       key: "showStep",
-      // loads all required step info and prepares to show
-      value: function showStep(i) {
+      value: // loads all required step info and prepares to show
+      function showStep(i) {
         var _this5 = this;
 
         if (this.ended()) {
@@ -1608,9 +1608,9 @@
       }
     }, {
       key: "_isOrphan",
-      // Tests if the step is orphan
+      value: // Tests if the step is orphan
       // Step can be "orphan" (unattached to any element) if specifically set as such in tour step options, or with an invalid/hidden element
-      value: function _isOrphan(step) {
+      function _isOrphan(step) {
         var isOrphan = step.orphan == true || step.element == null || !$(step.element).length || $(step.element).is(':hidden') && $(step.element)[0].namespaceURI !== 'http://www.w3.org/2000/svg';
 
         this._debug("It seems this element is an orphan -> ", step);
@@ -1624,9 +1624,9 @@
       }
     }, {
       key: "_showPopoverAndOverlay",
-      // wraps the calls to show the tour step in a popover and the background overlay.
+      value: // wraps the calls to show the tour step in a popover and the background overlay.
       // Note this is ALSO called by scroll event handler. Individual funcs called will determine whether redraws etc are required.
-      value: function _showPopoverAndOverlay(i) {
+      function _showPopoverAndOverlay(i) {
         if (this.getCurrentStepIndex() !== i || this.ended()) {
           return;
         }
@@ -1653,8 +1653,8 @@
       }
     }, {
       key: "_showPopover",
-      // handles view of popover
-      value: function _showPopover(step, i) {
+      value: // handles view of popover
+      function _showPopover(step, i) {
         var _this8 = this;
 
         var isOrphan = this._isOrphan(step); // is this step already visible? _showPopover is called by _showPopoverAndOverlay, which is called by window scroll event. This
@@ -1933,9 +1933,9 @@
       }
     }, {
       key: "_onScroll",
-      // Note: this method is not required, but remains here in case any future forkers want to reinstate the code that moves a non-orphan popover
+      value: // Note: this method is not required, but remains here in case any future forkers want to reinstate the code that moves a non-orphan popover
       // when window is scrolled
-      value: function _onScroll(callback, timeout) {
+      function _onScroll(callback, timeout) {
         return $(window).on("scroll.tour-" + this._options.name, function () {
           clearTimeout(timeout);
           return timeout = setTimeout(callback, 100);
@@ -2006,11 +2006,11 @@
       }
     }, {
       key: "_makePromise",
-      // If param is a promise, returns the promise back to the caller. Otherwise returns null.
+      value: // If param is a promise, returns the promise back to the caller. Otherwise returns null.
       // Only purpose is to make calls to _callOnPromiseDone() simple - first param of _callOnPromiseDone()
       // accepts either null or a promise to smart call either promise or straight callback. This
       // pair of funcs therefore allows easy integration of user code to return callbacks or promises
-      value: function _makePromise(possiblePromise) {
+      function _makePromise(possiblePromise) {
         if (possiblePromise && $.isFunction(possiblePromise.then)) {
           return possiblePromise;
         } else {
@@ -2019,9 +2019,9 @@
       }
     }, {
       key: "_callOnPromiseDone",
-      // Creates a promise wrapping the callback if valid promise is provided as first arg. If
+      value: // Creates a promise wrapping the callback if valid promise is provided as first arg. If
       // first arg is not a promise, simply uses direct function call of callback.
-      value: function _callOnPromiseDone(promise, callback, arg) {
+      function _callOnPromiseDone(promise, callback, arg) {
         var _this12 = this;
 
         if (promise) {
@@ -2034,8 +2034,8 @@
       }
     }, {
       key: "_fixBootstrapSelectPickerZindex",
-      // Bootstrap Select custom draws the drop down, force the Z index between Tour overlay and popoper
-      value: function _fixBootstrapSelectPickerZindex(step) {
+      value: // Bootstrap Select custom draws the drop down, force the Z index between Tour overlay and popoper
+      function _fixBootstrapSelectPickerZindex(step) {
         if (this._isOrphan(step)) {
           // If it's an orphan step, it can't be a selectpicker element
           return;
@@ -2196,8 +2196,8 @@
       }
     }, {
       key: "_getProtocol",
-      // =============================================================================================================================
-      value: function _getProtocol(url) {
+      value: // =============================================================================================================================
+      function _getProtocol(url) {
         url = url.split('://');
 
         if (url.length > 1) {
@@ -2402,9 +2402,9 @@
           tourObject.debug = window.debugState.backend;
           tourObject.framework = "bootstrap3";
           _actionActiveTour = new Tour(tourObject);
-          // window.addEventListener('resize', function () {
-          //  _actionActiveTour.redraw();
-          // });
+          window.addEventListener('resize', function () {
+            _actionActiveTour.redraw();
+          });
           resolve(_actionActiveTour);
         }, console.ls.err);
       });

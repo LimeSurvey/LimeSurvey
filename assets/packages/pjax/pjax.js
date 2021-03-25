@@ -1767,4 +1767,3 @@
   return index;
 
 }));
-//# sourceMappingURL=pjax.js.map

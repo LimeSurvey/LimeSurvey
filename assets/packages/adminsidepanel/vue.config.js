@@ -10,6 +10,7 @@ module.exports = {
     outputDir: outputDir,
     filenameHashing: false,
     runtimeCompiler: true,
+    productionSourceMap: false,
     configureWebpack: {
         entry: entryPoint,
         output: {
