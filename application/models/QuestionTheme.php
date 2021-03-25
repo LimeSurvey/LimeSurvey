@@ -292,7 +292,7 @@ class QuestionTheme extends LSActiveRecord
      * @return bool|string
      * @throws Exception
      */
-    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false)
+    public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
     {
         if (empty($sXMLDirectoryPath)) {
             throw new InvalidArgumentException('$templateFolder cannot be empty');
@@ -302,8 +302,12 @@ class QuestionTheme extends LSActiveRecord
         if ($bSkipConversion === false) {
             $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
-                App()->setFlashMessage($aConvertSuccess['message'], 'error');
-                App()->getController()->redirect(array("themeOptions/index#questionthemes"));
+                if ($bThrowConversionException) {
+                    throw new Exception($aConvertSuccess['message']);
+                } else {
+                    App()->setFlashMessage($aConvertSuccess['message'], 'error');
+                    App()->getController()->redirect(array("themeOptions/index#questionthemes"));
+                }
             }
         }
 
@@ -919,7 +923,7 @@ class QuestionTheme extends LSActiveRecord
             $oThemeConfig->compatibility->version = '4.0';
         }
 
-        $sThemeDirectoryName = basename(dirname($sQuestionConfigFilePath, 1)); //todo: this does not work for all themes in array/... like arrays/10point
+        $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
         $sPathToCoreConfigFile = str_replace('\\', '/', App()->getConfig('rootdir') . '/application/views/survey/questions/answer/' . $sThemeDirectoryName . '/config.xml');
         // check if core question theme can be found to fill in missing information
         if (!is_file($sPathToCoreConfigFile)) {
@@ -1044,5 +1048,16 @@ class QuestionTheme extends LSActiveRecord
             }
         }
         return $additionalAttributes;
+    }
+
+    public static function getThemeDirectoryPath($sQuestionConfigFilePath)
+    {
+        $sQuestionConfigFilePath = str_replace('\\', '/', $sQuestionConfigFilePath);
+        $aMatches = array();
+        $sThemeDirectoryName = '';
+        if (preg_match('$questions/answer/(.*)/config.xml$', $sQuestionConfigFilePath, $aMatches)) {
+            $sThemeDirectoryName = $aMatches[1];
+        }
+        return $sThemeDirectoryName;
     }
 }
