@@ -3772,7 +3772,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $oQuestionTheme->save();
                 }
             }
-            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
                 'name'               => 'TwoFactorAdminLogin',
                 'plugin_type'        => 'core',
