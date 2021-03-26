@@ -2636,7 +2636,7 @@ function tsvSurveyExport($surveyid)
         // groups data
         if (array_key_exists('groups', $xmlData)) {
             // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
-            if (!array_key_exists('gid', $xmlData['groups']['rows']['row'][0])) {
+            if (!isset($xmlData['groups']['rows']['row'][0]) || !array_key_exists('gid', $xmlData['groups']['rows']['row'][0])) {
                 $aSaveData = $xmlData['groups']['rows']['row'];
                 unset($xmlData['groups']['rows']['row']);
                 $xmlData['groups']['rows']['row'][0] = $aSaveData;
@@ -2647,7 +2647,7 @@ function tsvSurveyExport($surveyid)
             }
 
             // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
-            if (!array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])) {
+            if (!isset($xmlData['group_l10ns']['rows']['row'][0]) ||!array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])) {
                 $aSaveData = $xmlData['group_l10ns']['rows']['row'];
                 unset($xmlData['group_l10ns']['rows']['row']);
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
@@ -2661,10 +2661,20 @@ function tsvSurveyExport($surveyid)
 
         // questions data
         if (array_key_exists('questions', $xmlData)) {
+            if (!isset($xmlData['questions']['rows']['row'][0]) || !array_key_exists('qid', $xmlData['questions']['rows']['row'][0])) {
+                $aSaveData = $xmlData['questions']['rows']['row'];
+                unset($xmlData['questions']['rows']['row']);
+                $xmlData['questions']['rows']['row'][0] = $aSaveData;
+            }            
             foreach ($xmlData['questions']['rows']['row'] as $question) {
                 $questions_data[$question['qid']] = $question;
             }
 
+            if (!isset($xmlData['question_l10ns']['rows']['row'][0]) || !array_key_exists('qid', $xmlData['question_l10ns']['rows']['row'][0])) {
+                $aSaveData = $xmlData['question_l10ns']['rows']['row'];
+                unset($xmlData['question_l10ns']['rows']['row']);
+                $xmlData['question_l10ns']['rows']['row'][0] = $aSaveData;
+            }                 
             foreach ($xmlData['question_l10ns']['rows']['row'] as $question_l10ns) {
                 if (array_key_exists($question_l10ns['qid'], $questions_data)) {
                     if ($question_l10ns['language'] === $language) {
@@ -2695,10 +2705,20 @@ function tsvSurveyExport($surveyid)
 
         // answers data
         if (array_key_exists('answers', $xmlData)) {
+            if (!isset($xmlData['answers']['rows']['row'][0]) || !array_key_exists('aid', $xmlData['answers']['rows']['row'][0])) {
+                $aSaveData = $xmlData['answers']['rows']['row'];
+                unset($xmlData['answers']['rows']['row']);
+                $xmlData['answers']['rows']['row'][0] = $aSaveData;
+            }    
             foreach ($xmlData['answers']['rows']['row'] as $answer) {
                 $answers_data[$answer['aid']] = $answer;
             }
 
+            if (!isset($xmlData['answer_l10ns']['rows']['row'][0]) || !array_key_exists('aid', $xmlData['answer_l10ns']['rows']['row'][0])) {
+                $aSaveData = $xmlData['answer_l10ns']['rows']['row'];
+                unset($xmlData['answer_l10ns']['rows']['row']);
+                $xmlData['answer_l10ns']['rows']['row'][0] = $aSaveData;
+            }               
             foreach ($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns) {
                 if (array_key_exists($answer_l10ns['aid'], $answers_data)) {
                     if ($answer_l10ns['language'] === $language) {
@@ -2789,7 +2809,7 @@ function tsvSurveyExport($surveyid)
                 $tsv_output['type/scale'] = $group['group_order'];
                 $tsv_output['name'] = !empty($group['group_name']) ? $group['group_name'] : '';
                 $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
-                $tsv_output['relevance'] = isset($group['grelevance']) ? $group['grelevance'] : '';
+                $tsv_output['relevance'] = isset($group['grelevance']) && !is_array($group['grelevance']) ? $group['grelevance'] : '';
                 $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
                 $tsv_output['language'] = $language;
                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));

@@ -98,7 +98,7 @@
                                         'name' => 'bounceaccountencryption',
                                         'value'=> strtolower($settings['bounceaccountencryption']),
                                         'selectOptions'=>array(
-                                            "off"=>gT("Off (insecure)",'unescaped'),
+                                            "off"=>gT("Off (unsafe)",'unescaped'),
                                             "ssl"=>gT("SSL/TLS",'unescaped'),
                                             "tls"=>gT("StartTLS",'unescaped')
                                         )

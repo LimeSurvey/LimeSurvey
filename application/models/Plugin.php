@@ -155,6 +155,19 @@ class Plugin extends LSActiveRecord
     }
 
     /**
+     * Description as shown in plugin list.
+     * @return string
+     */
+    public function getDescription()
+    {
+        $config = $this->getExtensionConfig();
+        // Harden for XSS
+        $filter = LSYii_HtmlPurifier::getXssPurifier();
+        return $filter->purify($config->getDescription());
+    }
+
+
+    /**
      * Action buttons in plugin list.
      * @return string HTML
      */

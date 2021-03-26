@@ -9,7 +9,7 @@
         <authorUrl>https://www.sondages.pro</authorUrl>
         <version>1.0.1</version>
         <license>GPL</license>
-        <description><![CDATA[Add QCODE.question for question with subquestion for expression Manager. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">AMore information on LimeSurvey manual.</a>]]></description>
+        <description><![CDATA[Adds QCODE.question for questions with subquestions for ExpressionScript Engine. <a href="https://manual.limesurvey.org/ExpressionQuestionForAll">More information in LimeSurvey manual.</a>]]></description>
     </metadata>
 
     <!-- Set priority before question.help -->

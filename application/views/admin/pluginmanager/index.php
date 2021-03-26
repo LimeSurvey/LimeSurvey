@@ -123,7 +123,9 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
         ],
         [
             'header' => gT('Description'),
-            'name' => 'description'
+            'name' => 'description',
+            'type' => 'html',
+            'value' => '$data->getDescription()'
         ],
         [
             'type' => 'raw',

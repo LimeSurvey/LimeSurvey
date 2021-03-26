@@ -7,6 +7,9 @@
   background-color: #ebebeb;
   border: 1px solid #adadad; }
 
+.active.btn-default, .open .active.dropdown-toggle.btn-default {
+  background-color: white; }
+
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
   color: #ffffff;
   background-color: #fe3202;
@@ -1951,12 +1954,6 @@ div.panel.disabled {
 input[type="checkbox"]:checked:after,
 .checkbox input[type="checkbox"]:checked:after,
 .checkbox-inline input[type="checkbox"]:checked:after {
-  background-color: #FE5B35;
-  border-color: #FE5B35; }
-
-input[type="checkbox"]:indeterminate:after,
-.checkbox input[type="checkbox"]:indeterminate:after,
-.checkbox-inline input[type="checkbox"]:indeterminate:after {
   background-color: #FE5B35;
   border-color: #FE5B35; }
 
