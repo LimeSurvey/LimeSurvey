@@ -23,7 +23,7 @@ class UploadHelper
      * @param string $sFileName the name of the posted file
      * @param mixed $customMaxSize maximum file upload size
      *
-     * @throws Exception if the file is too large or no file is found.
+     * @throws \Exception if the file is too large or no file is found.
      */
     public function checkUploadedFileSize($sFileName, $customMaxSize = null)
     {
