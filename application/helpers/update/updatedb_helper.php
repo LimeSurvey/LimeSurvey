@@ -3784,6 +3784,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 443) {
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->renameColumn('{{users}}', 'lastLogin', 'last_login');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 443), "stg_name='DBVersion'");
             $oTransaction->commit();
