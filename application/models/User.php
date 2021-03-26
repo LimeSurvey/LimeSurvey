@@ -122,7 +122,7 @@ class User extends LSActiveRecord
             'dateformat' => gT('Date format'),
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
-            'lastLogin' => gT('Last recorded login'),
+            'last_login' => gT('Last recorded login'),
         ];
     }
 
@@ -741,7 +741,7 @@ class User extends LSActiveRecord
     public function getLastloginFormatted()
     {
         
-        $lastLogin = $this->lastLogin;
+        $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
         }
