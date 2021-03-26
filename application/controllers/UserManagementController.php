@@ -1184,7 +1184,8 @@ class UserManagementController extends LSBaseController
             if ($success) {
                 $data = [
                     'success' => $success,
-                    'message' => $sReturnMessage
+                    'message' => $sReturnMessage,
+                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
                 ];
             } else {
                 $data = [
