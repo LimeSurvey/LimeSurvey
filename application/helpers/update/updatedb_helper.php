@@ -3783,12 +3783,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 443) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->renameColumn('{{users}}', 'lastLogin', 'last_login');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 443), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 444) {
+            $oTransaction = $oDB->beginTransaction();
+            // Delete duplicate template configurations
+            $deleteQuery = "DELETE FROM {{template_configuration}}
+                WHERE id NOT IN (
+                    SELECT id FROM (
+                        SELECT MIN(id) as id
+                            FROM {{template_configuration}} t 
+                            GROUP BY t.template_name, t.sid, t.gsid, t.uid
+                    ) x
+                )";
+            $oDB->createCommand($deleteQuery)->execute();
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }        
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
