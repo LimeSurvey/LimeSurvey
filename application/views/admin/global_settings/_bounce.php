@@ -59,7 +59,7 @@
                 'name' => 'bounceencryption',
                 'value'=> strtolower(getGlobalSetting('bounceencryption')),
                 'selectOptions'=>array(
-                "off"=>gT("Off (insecure)",'unescaped'),
+                "off"=>gT("Off (unsafe)",'unescaped'),
                 "ssl"=>"SSL/TLS",
                 "tls"=>"StartTLS"
                 )
