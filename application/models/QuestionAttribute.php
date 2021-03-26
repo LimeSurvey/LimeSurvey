@@ -82,6 +82,7 @@ class QuestionAttribute extends LSActiveRecord
         return array(
             array('qid,attribute', 'required'),
             array('value', 'LSYii_Validators'),
+            array('language', 'LSYii_Validators', 'isLanguage' => true)
         );
     }
 
