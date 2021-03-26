@@ -86,7 +86,7 @@ class jsonRPCClient
     {
         $this->url = $url;
         $this->proxy = $proxy;
-        $this->debug = ($this->debug === true);
+        $this->debug = ($debug === true);
         // message id
         $this->id = 1;
     }
