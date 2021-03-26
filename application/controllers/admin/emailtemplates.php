@@ -68,10 +68,12 @@ class emailtemplates extends Survey_Common_Action
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $attachments = unserialize($aData['attrib'][$key]['attachments']);
-            foreach ($attachments as &$template) {
-                foreach ($template as &$attachment) {
-                    if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
-                        $attachment['url'] = substr($attachment['url'], strlen($uploadDir));
+            if (is_array($attachments)) {
+                foreach ($attachments as &$template) {
+                    foreach ($template as &$attachment) {
+                        if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                            $attachment['url'] = substr($attachment['url'], strlen($uploadDir));
+                        }
                     }
                 }
             }
