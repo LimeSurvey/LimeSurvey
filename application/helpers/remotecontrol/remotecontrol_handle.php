@@ -1817,6 +1817,7 @@ class remotecontrol_handle
                             return array('status' => 'No survey participants table');
             }
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
+            $aReturn = [];
             foreach ($aParticipantData as &$aParticipant) {
                 $token = Token::create($iSurveyID);
                 $token->setAttributes(array_intersect_key($aParticipant, $aDestinationFields));
@@ -1824,12 +1825,12 @@ class remotecontrol_handle
                     $token->generateToken();
                 }
                 if ($token->encryptSave(true)) {
-                    $aParticipant = $token->getAttributes();
+                    $aReturn[] = $token->getAttributes();
                 } else {
-                    $aParticipant["errors"] = $token->errors;
+                    $aReturn["errors"][] = $token->errors;
                 }
             }
-            return $aParticipantData;
+            return $aReturn;
         } else {
                     return array('status' => 'No permission');
         }
