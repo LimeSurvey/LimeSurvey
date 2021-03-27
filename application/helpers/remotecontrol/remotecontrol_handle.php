@@ -1782,12 +1782,12 @@ class remotecontrol_handle
                     $token->generateToken();
                 }
                 if ($token->save()) {
-                    $aParticipant = $token->getAttributes();
+                    $return = $token->getAttributes();
                 } else {
-                    $aParticipant["errors"] = $token->errors;
+                    $return["status"] = 'Error: '.$token->errors;
                 }
             }
-            return $aParticipantData;
+            return $return;
         } else {
                     return array('status' => 'No permission');
         }
