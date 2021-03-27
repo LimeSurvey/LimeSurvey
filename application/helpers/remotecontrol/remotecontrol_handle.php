@@ -1823,13 +1823,13 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->encryptSave(true)) {
-                    $aParticipant = $token->getAttributes();
+             	if ($token->encryptSave(true)) {
+                    $return = $token->getAttributes();
                 } else {
-                    $aParticipant["errors"] = $token->errors;
+                    $return["status"] = 'Error: '.$token->errors;
                 }
             }
-            return $aParticipantData;
+            return $return;
         } else {
                     return array('status' => 'No permission');
         }
