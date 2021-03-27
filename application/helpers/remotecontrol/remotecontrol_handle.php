@@ -1782,9 +1782,9 @@ class remotecontrol_handle
                     $token->generateToken();
                 }
                 if ($token->save()) {
-                    $return[] = $token->getAttributes();
+                    $return = $token->getAttributes();
                 } else {
-                    $return["errors"] = $token->errors;
+                    $return["status"] = 'Error: '.$token->errors;
                 }
             }
             return $return;
