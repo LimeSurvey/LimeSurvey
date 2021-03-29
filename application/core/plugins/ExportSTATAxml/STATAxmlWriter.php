@@ -49,7 +49,7 @@ class STATAxmlWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
-            header("Content-Disposition: attachment; filename=survey_".$survey->id."_STATA.xml");
+            header("Content-Disposition: attachment; filename=survey_" . $survey->id . "_STATA.xml");
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
@@ -68,7 +68,7 @@ class STATAxmlWriter extends Writer
      */
     protected function out($content)
     {
-        fwrite($this->handle, $content."\n");
+        fwrite($this->handle, $content . "\n");
     }
 
 
@@ -105,12 +105,12 @@ class STATAxmlWriter extends Writer
 
         //tokens need to be "smuggled" into the fieldmap as additional questions
         $aFieldmap['tokenFields'] = array_intersect_key($survey->tokenFields, array_flip($oOptions->selectedColumns));
-        foreach ($aFieldmap['tokenFields'] as $key=>$value) {
+        foreach ($aFieldmap['tokenFields'] as $key => $value) {
             $aFieldmap['questions'][$key] = $value;
             $aFieldmap['questions'][$key]['qid'] = '';
             $aFieldmap['questions'][$key]['question'] = $value['description'];
             $aFieldmap['questions'][$key]['fieldname'] = $key;
-            $aFieldmap['questions'][$key]['type'] = 'S';
+            $aFieldmap['questions'][$key]['type'] = Question::QT_S_SHORT_FREE_TEXT;
         }
         // add only questions and answers to the fieldmap that are relevant to the selected columns (variables)
         foreach ($aFieldmap['questions'] as $question) {
@@ -151,19 +151,19 @@ class STATAxmlWriter extends Writer
 
             //set field types for standard vars
             if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'D';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_D_DATE;
             } elseif ($aQuestion['varname'] == 'startlanguage') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'token') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'id') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             } elseif ($aQuestion['varname'] == 'ipaddr') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'refurl') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_S_SHORT_FREE_TEXT;
             } elseif ($aQuestion['varname'] == 'lastpage') {
-                $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
+                $aFieldmap['questions'][$sSGQAkey]['type'] = Question::QT_N_NUMERICAL;
             }
 
 
@@ -173,16 +173,16 @@ class STATAxmlWriter extends Writer
             // create variable labels
             $aQuestion['varlabel'] = $aQuestion['question'];
             if (isset($aQuestion['scale'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['scale']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['scale']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion2'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] " . $aQuestion['varlabel'];
             }
             if (isset($aQuestion['subquestion1'])) {
-                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] ".$aQuestion['varlabel'];
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] " . $aQuestion['varlabel'];
             }
 
             //write varlabel back to fieldmap
@@ -195,7 +195,7 @@ class STATAxmlWriter extends Writer
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
 
 
-                if ($aQuestion['type'] == 'M') {
+                if ($aQuestion['type'] == Question::QT_M_MULTIPLE_CHOICE) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -204,7 +204,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                } elseif ($aQuestion['type'] == "P") {
+                } elseif ($aQuestion['type'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -213,7 +213,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                } elseif ($aQuestion['type'] == "G") {
+                } elseif ($aQuestion['type'] == Question::QT_G_GENDER_DROPDOWN) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
                         'answer' => gT('Female')
@@ -222,7 +222,7 @@ class STATAxmlWriter extends Writer
                         'code' => 'M',
                         'answer' => gT('Male')
                     );
-                } elseif ($aQuestion['type'] == "Y") {
+                } elseif ($aQuestion['type'] == Question::QT_Y_YES_NO_RADIO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
                         'answer' => gT('Yes')
@@ -231,7 +231,7 @@ class STATAxmlWriter extends Writer
                         'code' => $nvalue,
                         'answer' => gT('No')
                     );
-                } elseif ($aQuestion['type'] == "C") {
+                } elseif ($aQuestion['type'] == Question::QT_C_ARRAY_YES_UNCERTAIN_NO) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Yes')
@@ -244,7 +244,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => gT('Uncertain')
                     );
-                } elseif ($aQuestion['type'] == "E") {
+                } elseif ($aQuestion['type'] == Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS) {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
                         'answer' => gT('Increase')
@@ -259,7 +259,7 @@ class STATAxmlWriter extends Writer
                     );
                 }
             } // close: no-other/comment variable
-        $aFieldmap['questions'][$sSGQAkey]['varname'] = $aQuestion['varname']; //write changes back to array
+            $aFieldmap['questions'][$sSGQAkey]['varname'] = $aQuestion['varname']; //write changes back to array
         } // close foreach question
 
 
@@ -276,7 +276,7 @@ class STATAxmlWriter extends Writer
     {
         if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) {
 //var starting with a number?
-            $sVarname = "v".$sVarname; //add a leading 'v'
+            $sVarname = "v" . $sVarname; //add a leading 'v'
         }
         $sVarname = str_replace(array(
             "-",
@@ -306,10 +306,9 @@ class STATAxmlWriter extends Writer
         Yii::app()->loadHelper('export');
         function clean(&$item)
         {
-            if (is_string($item)){
-            $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
+            if (is_string($item)) {
+                $item = trim((htmlspecialchars_decode(stripTagsFull($item))));
             }
-
         }
         array_walk_recursive($tobestripped, 'clean');
         return ($tobestripped);
@@ -344,8 +343,10 @@ class STATAxmlWriter extends Writer
             foreach ($aResponses as $iVarid => &$response) {
                 $response = trim($response);
                 //recode answercode=answer if codes are non-numeric (cannot be used with value labels)
-                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true
-                    && $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['commentother'] == false) {
+                if (
+                    $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true
+                    && $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['commentother'] == false
+                ) {
                     // set $iScaleID to the scale_id of the respective question, if it exists...if not set to '0'
                     $iScaleID = 0;
                     if (isset($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['scale'])) {
@@ -361,7 +362,7 @@ class STATAxmlWriter extends Writer
                 if ($response != '') {
                     // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
                     switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
-                        case "G": //GENDER drop-down list
+                        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
                             $response = str_replace(array(
                                 'F',
                                 'M'
@@ -370,8 +371,8 @@ class STATAxmlWriter extends Writer
                                 '1'
                             ), $response);
                             break;
-                        case "Y": //YES/NO radio-buttons
-                        case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $response = str_replace(array(
                                 'Y',
                                 'N',
@@ -382,7 +383,7 @@ class STATAxmlWriter extends Writer
                                 '9'
                             ), $response);
                             break;
-                        case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                             $response = str_replace(array(
                                 'I',
                                 'S',
@@ -393,10 +394,10 @@ class STATAxmlWriter extends Writer
                                 '-1'
                             ), $response);
                             break;
-                        case "D": //replace in customResponsemap: date/time as string with STATA-timestamp
-                            $response = strtotime($response.' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
+                        case Question::QT_D_DATE: //replace in customResponsemap: date/time as string with STATA-timestamp
+                            $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
-                        case "L":
+                        case Question::QT_L_LIST_DROPDOWN:
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
@@ -407,7 +408,7 @@ class STATAxmlWriter extends Writer
                             }
                             break;
                     }
-                    
+
                     /* look at each of the responses and determine STATA data type and format of the respective variables
                        datatypes coded as follows:
                        1=""
@@ -433,7 +434,7 @@ class STATAxmlWriter extends Writer
                             } elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt) {
                                 $iDatatype = 3; // and this is is 'int'
                             } else {
-                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
+                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == Question::QT_D_DATE) {
 // if datefield then a 'double' data type is needed
                                     $iDatatype = 6; // double
                                 } else {
@@ -451,9 +452,9 @@ class STATAxmlWriter extends Writer
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
                 } else {
-                    $iDatatype = 1; // response = "" 
+                    $iDatatype = 1; // response = ""
                 }
-                
+
                 // initialize format and type (default: empty)
                 if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type'])) {
                                     $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
@@ -473,41 +474,40 @@ class STATAxmlWriter extends Writer
                     if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength) {
                                             $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
                     }
-                    
                 }
                 //write the recoded response back to the response array
                 $this->customResponsemap[$iRespId][$iVarid] = $response;
             }
         }
-        
+
         // translate coding into STATA datatypes, format and length
         foreach ($aStatatypelist as $variable => $data) {
             switch ($data['type']) {
-                case 7: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'str'.min($data['format'], $this->maxStringLength);
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%'.min($data['format'], $this->maxStringLength).'s';
+                case 7:
+                    $this->customFieldmap['questions'][$variable]['statatype']   = 'str' . min($data['format'], $this->maxStringLength);
+                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%' . min($data['format'], $this->maxStringLength) . 's';
                     break;
-                case 6: 
+                case 6:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'double';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%tc';
                     break;
-                case 5: 
+                case 5:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'float';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 4: 
+                case 4:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'long';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 3: 
+                case 3:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'int';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 2: 
+                case 2:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
                     break;
-                case 1: 
+                case 1:
                     $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
                     $this->customFieldmap['questions'][$variable]['stataformat'] = '%9.0g';
                     break;
@@ -540,7 +540,7 @@ class STATAxmlWriter extends Writer
         $xml->writeElement('filetype', 1);
         $xml->writeElement('nvar', count($this->customFieldmap['questions']));
         $xml->writeElement('nobs', count($this->customResponsemap));
-        $xml->writeElement('data_label', $this->customFieldmap['info']['surveyls_title'].' (SID: '.$this->customFieldmap['info']['sid'].')');
+        $xml->writeElement('data_label', $this->customFieldmap['info']['surveyls_title'] . ' (SID: ' . $this->customFieldmap['info']['sid'] . ')');
         $xml->writeElement('time_stamp', date('d M Y H:i'));
         $xml->endElement(); // close header
 
@@ -584,7 +584,7 @@ class STATAxmlWriter extends Writer
             $xml->writeAttribute('varname', $question['varname']);
             if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['nonnumericanswercodes'] == false) {
                 $iScaleID = isset($question['scale_id']) ? $question['scale_id'] : 0;
-                $xml->text('vall'.$question['qid'].$iScaleID);
+                $xml->text('vall' . $question['qid'] . $iScaleID);
             }
             $xml->endElement(); //close lblname
         }
@@ -625,7 +625,7 @@ class STATAxmlWriter extends Writer
                 if (!array_key_exists($iQid, $this->aQIDnonumericalAnswers)) {
 //if QID is not one of those with nonnumeric answers write value label
                     $xml->startElement('vallab');
-                    $xml->writeAttribute('name', 'vall'.$iQid.$iScaleID);
+                    $xml->writeAttribute('name', 'vall' . $iQid . $iScaleID);
                     foreach ($aAnswercodes as $iAnscode => $aAnswer) {
                         $xml->startElement('label');
                         $xml->writeAttribute('value', $iAnscode);
@@ -634,9 +634,7 @@ class STATAxmlWriter extends Writer
                     }
                     $xml->endElement(); // close vallab
                 }
-
             }
-
         }
         $xml->endElement(); // close value_labels
 

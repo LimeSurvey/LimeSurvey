@@ -30,6 +30,7 @@ var RankingQuestion = function (options) {
             console.ls.log("With options: ", options);
             $('#sortable-choice-' + questionId).sortable({
                 group: "sortable-" + questionId,
+                filter: '.ls-irrelevant',
                 ghostClass: "ls-rank-placeholder",
                 sort: false,
                 scroll: false,
@@ -99,7 +100,7 @@ var RankingQuestion = function (options) {
         },
         bindActions = function () {
             // Allow users to double click to move to selections from list to list
-            $('#sortable-choice-' + questionId).on('dblclick', 'li:not(.disabled)', function () {
+            $('#sortable-choice-' + questionId).on('dblclick', 'li:not(.ls-irrelevant)', function () {
 
                 if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
                     sortableAlert();
@@ -119,6 +120,7 @@ var RankingQuestion = function (options) {
             fixScreenReaderCompatibility();
             createSorting();
             loadDragDropRank();
+            fixDisableDropdown();
             bindActions();
         },
 
@@ -130,6 +132,7 @@ var RankingQuestion = function (options) {
             $('#sortable-rank-' + questionId + ' li').each(function (index) {
                 $('#question' + questionId + ' .select-item select').eq(index).data("old-val", $('#question' + questionId + ' .select-item select').eq(index).val());
                 $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
+                /* todo ? Set next option with same value disable ? */
             });
 
             // Update #relevance and lauch checkconditions function
@@ -151,7 +154,13 @@ var RankingQuestion = function (options) {
             $('#sortable-choice-' + questionId + ' li').removeClass("text-error");
             $('#sortable-rank-' + questionId + ' li:gt(' + (max_answers * 1 - 1) + ')').addClass("text-error");
         },
-
+        fixDisableDropdown = function() {
+            /* Since due to ajax mode : loaded after default triggerEmRelevanceSubQuestion : must set disable on unavailbale option (sreen reader) */
+            /* Not needed if script is in POS_END … */
+            $('#question' + questionId + ' .sortable-item.ls-irrelevant').each(function() {
+                $(this).closest(".ls-answers").find("option[value=" + $(this).data("value") + "]").prop('disabled', true);
+            });
+        },
         sortableAlert = function () {
             if (showpopups) {
                 var txtAlert = $("#question" + questionId + " .em_num_answers").text()
@@ -248,31 +257,18 @@ var RankingQuestion = function (options) {
             $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height", totalHeight + "px");
         },
         triggerEmRelevanceSortable = function () {
-            $('#question' + questionId).off('relevance:on', "[id^='javatbd']");
-            $('#question' + questionId).off('relevance:off', "[id^='javatbd']");
             $('#question' + questionId + ' .sortable-item').on('relevance:on', function (event, data) {
                 data = $.extend({
                     style: 'hidden'
                 }, data);
-                data = $.extend({
-                    style: 'hidden'
-                }, data);
-                $(this).removeClass("ls-irrelevant ls-" + data.style);
-                if (data.style == 'disable') { // not needed if hidden
-                    $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
-                    $(event.target).removeClass("disabled");
-                }
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
             });
 
             $('#question' + questionId + ' .sortable-item').on('relevance:off', function (event, data) {
                 data = $.extend({
                     style: 'hidden'
                 }, data);
-                $(this).addClass("ls-irrelevant ls-" + data.style);
-                if (data.style == 'disable') { // not needed if hidden
-                    $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
-                    $(event.target).addClass("disabled");
-                }
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
                 /* reset already ranked item */
                 if ($(event.target).parent().hasClass("sortable-rank")) {
                     $(event.target).appendTo($(event.target).closest(".answers-list").find(".sortable-choice"));

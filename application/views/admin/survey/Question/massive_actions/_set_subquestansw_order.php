@@ -3,6 +3,9 @@
  * Set subquestion/answer order
  */
 $surveyid = App()->request->getParam('surveyid', 0);
+/** @var AdminController $this */
+/** @var Question $model */
+
 ?>
 <form class="custom-modal-datas form-horizontal">
     <div  class="form-group" id="CssClass">
@@ -13,7 +16,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
                 <option value="1"><?php eT('Randomize on each page load');?></option>
             </select>
         </div>
-        <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" class="custom-data"/>
+        <input type="hidden" name="sid" value="<?php echo (int) $surveyid; ?>" class="custom-data"/>
         <input type="hidden" name="aValidQuestionTypes" value="!ABCEFHKLMOPQRWZ1:;" class="custom-data"/>
     </div>
 </form>

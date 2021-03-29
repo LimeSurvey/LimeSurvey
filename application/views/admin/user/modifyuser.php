@@ -43,17 +43,20 @@ echo viewHelper::getViewTestTag('modifyUser');
                         <?php eT("Full name");?>
                     </label>
                     <div class="">
-                        <?php echo $form->textField($oUser, 'full_name');?>
-                    </div>
+                        <?php echo $form->textField($oUser, 'full_name', array('maxlength'=>50));?>
+                    </div> 
                 </div>
 
-                <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) ): ?>
+                <?php if( !Permission::model()->hasGlobalPermission('superadmin','read', $oUser->uid) || (Permission::isForcedSuperAdmin(Permission::model()->getUserId())) ): ?>
                 <div class="form-group">
                     <label for="password" class=" control-label">
                         <?php eT("Password");?>
                     </label>
                     <div class="">
                         <?php echo $form->passwordField($oUser, 'password',array('value'=>'', 'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                    </div>
+                    <div class="">
+                        <span class='text-info'><?php echo $passwordHelpText; ?></span>
                     </div>
                 </div>
                 <?php endif; ?>

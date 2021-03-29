@@ -154,4 +154,7 @@ $( document ).ready(function() {
     $('#user').focus();
     $("#width").val($(window).width());
 });
+$( window ).resize(function() {
+    $("#width").val($(window).width());;
+});
 </script>

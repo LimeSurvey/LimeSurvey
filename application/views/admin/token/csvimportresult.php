@@ -16,14 +16,14 @@
                                 }
                                 else
                                 {
-                                    eT("Failed to create token entries");
+                                    eT("Failed to create participant entries");
                                 }
                         ?>
                     </h2>
             <?php else:?>
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Uploaded CSV file successfully"); ?></h2>
-                    <p class='lead text-success'><?php eT("Successfully created token entries"); ?></p>
+                    <p class='lead text-success'><?php eT("Successfully created participant entries"); ?></p>
             <?php endif;?>
                     <p>
                         <ul class="list-unstyled">
@@ -41,6 +41,7 @@
                                 !empty($aInvalidFormatList) ||
                                 !empty($aInvalidEmailList) ||
                                 !empty($aModelErrorList) ||
+                                !empty($aPluginErrorMessageList) ||
                                 !empty($aInvalideAttrFieldName) ||
                                 !empty($aMissingAttrFieldName)) { ?>
                         <h2 class='text-warning'><?php eT('Warnings'); ?></h2>
@@ -48,7 +49,7 @@
                         <ul class="list-unstyled">
                             <?php if (!empty($aInvalidTokenList)) { ?>
                                 <li>
-                                    <?php printf(gT("%s lines with invalid tokens skipped (tokens may only contain 0-9,a-z,A-Z,_)."), count($aInvalidTokenList)); ?>
+                                    <?php printf(gT("%s lines with invalid access codes skipped (access codes may only contain 0-9,a-z,A-Z,_)."), count($aInvalidTokenList)); ?>
                                     [<a href='#' onclick='$("#badtokenlist").toggle();'><?php eT("List"); ?></a>]
                                     <div class='badtokenlist well' id='badtokenlist' style='display: none;'>
                                         <ul class="list-unstyled">
@@ -100,6 +101,24 @@
                                     </div>
                                 </li>
                             <?php } ?>
+
+                            <?php if (!empty($aPluginErrorMessageList)) { 
+                                        $iPluginErrorIndex=0;
+                                        foreach ($aPluginErrorMessageList as $sPluginErrorMessage => $aTokenSpecificErrorList) { 
+                                            $iPluginErrorIndex++; ?>
+                                            <li>
+                                                <?php printf($sPluginErrorMessage, count($aTokenSpecificErrorList)); ?>
+                                                [<a href='#' onclick='$("#pluginerrorlist-<?=$iPluginErrorIndex?>").toggle();'><?php eT("List"); ?></a>]
+                                                <div class='badtokenlist well' id='pluginerrorlist-<?=$iPluginErrorIndex?>' style='display: none;'>
+                                                    <ul class="list-unstyled">
+                                                        <?php foreach ($aTokenSpecificErrorList as $sTokenSpecificErrorMessage) { ?>
+                                                            <li><?php echo $sTokenSpecificErrorMessage; ?></li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                            <?php       } 
+                                    } ?>
 
                             <?php if (!empty($aModelErrorList)) { ?>
                                 <li>

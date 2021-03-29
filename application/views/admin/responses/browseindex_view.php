@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('surveyResponsesIndex');
                     <tbody>
                         <tr><th><?php eT("Total invitations sent"); ?></th><td><?php echo $tokeninfo['sent']; ?></td></tr>
                         <tr><th><?php eT("Total surveys completed"); ?></th><td><?php echo $tokeninfo['completed']; ?></td></tr>
-                        <tr><th><?php eT("Total with no unique token"); ?></th><td><?php echo $tokeninfo['invalid'] ?></td></tr>
+                        <tr><th><?php eT("Total with no unique access code"); ?></th><td><?php echo $tokeninfo['invalid'] ?></td></tr>
                     </tbody>
                     <tr><th><?php eT("Total records"); ?></th><td><?php echo $tokeninfo['count']; ?></td></tr>
                 </table>

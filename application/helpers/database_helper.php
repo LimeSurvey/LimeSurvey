@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
@@ -16,38 +17,7 @@ if (!defined('BASEPATH')) {
 */
 
 /**
- *
- * @param string $sql
- * @param array|bool $inputarr
- * @param boolean $silent
- * @return bool|CDbDataReader
- * @throws Exception
- * @deprecated Do not use anymore. If you see this replace it with a proper CDbCommand query
- */
-function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
-{
-    $error = '';
-    try {
-        if ($inputarr) {
-            $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
-        } else {
-            $dataset = Yii::app()->db->createCommand($sql)->query();
-
-        }
-    } catch (CDbException $e) {
-        $error = $e->getMessage();
-        $dataset = false;
-    }
-
-    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
-        // Exception is better than safeDie, because you can see the backtrace.
-        throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
-    }
-    return $dataset;
-}
-
-/**
- * Return the random function to use in ORDER BY sql statements
+ * Return the database-specific random function to use in ORDER BY sql statements
  *
  * @return string
  */
@@ -77,7 +47,6 @@ function dbRandom()
     }
 
     return $srandom;
-
 }
 
 /**
@@ -92,15 +61,16 @@ function dbSelectTablesLike($table)
 {
     switch (Yii::app()->db->getDriverName()) {
         case 'mysqli':
-        case 'mysql' :
+        case 'mysql':
             return "SHOW TABLES LIKE '$table'";
-        case 'dblib' :
-        case 'mssql' :
-        case 'sqlsrv' :
+        case 'dblib':
+        case 'mssql':
+        case 'sqlsrv':
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table' ESCAPE '\'";
-        case 'pgsql' :
+        case 'pgsql':
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-        default: safeDie("Couldn't create 'select tables like' query for connection type '".Yii::app()->db->getDriverName()."'");
+        default:
+            safeDie("Couldn't create 'select tables like' query for connection type '" . Yii::app()->db->getDriverName() . "'");
     }
 }
 

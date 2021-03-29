@@ -25,7 +25,6 @@ class UniqueNotification extends Notification
     /**
      * As parent constructor but with markAsUndread
      * @inheritdoc
-     * @return UniqueNotification
      */
     public function __construct($options = null)
     {
@@ -48,7 +47,7 @@ class UniqueNotification extends Notification
      */
     public function save($runValidation = true, $attributes = null)
     {
-        $toHash = $this->entity.$this->entity_id.$this->title.$this->message;
+        $toHash = $this->entity . $this->entity_id . $this->title . $this->message;
         $this->hash = hash('sha256', $toHash);
 
         $duplicate = self::model()->findByAttributes(array(
@@ -58,7 +57,6 @@ class UniqueNotification extends Notification
         if (empty($duplicate)) {
             parent::save($runValidation, $attributes);
         } else {
-
             if ($this->markAsNew) {
                 $duplicate->status = 'new';
             }
@@ -69,7 +67,6 @@ class UniqueNotification extends Notification
 
             $duplicate->update();
         }
-
     }
 
     /** @inheritdoc */

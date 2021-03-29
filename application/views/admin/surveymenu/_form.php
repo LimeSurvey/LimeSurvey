@@ -61,7 +61,7 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'name'); ?>
-				<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
+				<?php echo $form->textField($model,'name',array('title'=>gT('Lowercase characters and digits, starting with a character - length from 6 to 60 characters'), 'required'=>true, 'size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
 				<?php echo $form->error($model,'name'); ?>
 			</div>
 			

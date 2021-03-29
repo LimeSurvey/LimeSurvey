@@ -800,6 +800,16 @@ class quexmlpdf extends pdf
     protected $cornerLines = true;
 
     /**
+     * Initialize from config
+     *
+     */
+    public function __construct()
+    {
+        $this->questionTitleWidth = Yii::app()->getConfig('quexmlquestiontitlewidth', $this->questionTitleWidth);
+        parent::__construct();
+    }
+
+    /**
      * Return the length of the longest word
      *
      * @param mixed $txt
@@ -918,7 +928,7 @@ class quexmlpdf extends pdf
 
     /**
      * Set margin before questionnare info
-     * 
+     *
      * @param int $margin between 0 and 100mm
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -934,7 +944,7 @@ class quexmlpdf extends pdf
 
     /**
      * Get the margin before questionnaire info
-     * 
+     *
      * @return int Height in mm between 0 and 100
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -947,7 +957,7 @@ class quexmlpdf extends pdf
 
     /**
      * Set the height of responses items in a sub question matrix
-     * 
+     *
      * @param int $height Height between 1 and 100mm
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -963,7 +973,7 @@ class quexmlpdf extends pdf
 
     /**
      * Get the height of responses in a sub question matrix
-     * 
+     *
      * @return string Height in mm between 1 and 100
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -976,7 +986,7 @@ class quexmlpdf extends pdf
 
     /**
      * Set vertical height of a single response item
-     * 
+     *
      * @param int $height Height between 1 and 100mm
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -992,7 +1002,7 @@ class quexmlpdf extends pdf
 
     /**
      * Get vertical height of a single response item
-     * 
+     *
      * @return string Height in mm between 1 and 100
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -1005,7 +1015,7 @@ class quexmlpdf extends pdf
 
     /**
      * Set background colour for a question
-     * 
+     *
      * @param int $colour Background colour between 0 and 255
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -1021,7 +1031,7 @@ class quexmlpdf extends pdf
 
     /**
      * Get background colour for a question
-     * 
+     *
      * @return int Background colour between 0 and 255
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -1034,7 +1044,7 @@ class quexmlpdf extends pdf
 
     /**
      * Set background colour for a section
-     * 
+     *
      * @param int $colour Background colour between 0 and 255
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -1050,7 +1060,7 @@ class quexmlpdf extends pdf
 
     /**
      * Get background colour for a section
-     * 
+     *
      * @return int Background colour between 0 and 255
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
@@ -1966,7 +1976,11 @@ class quexmlpdf extends pdf
                     }
                 }
 
-                $qtmp['title'] = $sl.$qcount.$this->questionTitleSuffix;
+                if (Yii::app()->getConfig('quexmlusequestiontitleasid') == true) {
+                    $qtmp['title'] = explode('_', (string) $qu->response->attributes()->varName)[0].$this->questionTitleSuffix;
+                } else {
+                    $qtmp['title'] = $sl.$qcount.$this->questionTitleSuffix;
+                }
 
                 if (isset($qu['hidetitle']) && $qu['hidetitle'] == "true") {
                     $qtmp['hidetitle'] = "true";
@@ -2248,7 +2262,7 @@ class quexmlpdf extends pdf
 
     /**
      * Import the settings/styles set from XML
-     * 
+     *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2015-06-18
      */
@@ -2297,7 +2311,7 @@ class quexmlpdf extends pdf
 
     /**
      * Export the settings/styles set in XML
-     * 
+     *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2015-06-18
      */
@@ -2439,7 +2453,8 @@ class quexmlpdf extends pdf
                 return;
             }
 
-            for ($rcount = 0; $rcount < count($question['responses']); $rcount++) {
+            $arraySize = count($question['responses']);
+            for ($rcount = 0; $rcount < $arraySize; $rcount++) {
                 $r = $question['responses'][$rcount];
 
                 //only split after one response
@@ -2969,13 +2984,13 @@ class quexmlpdf extends pdf
         for ($i = 0; $i < $lines; $i++) {
             if ($lines == 1) {
 //one line only
-                $cells = $width; 
+                $cells = $width;
             } else if (($i + 1 == $lines)) {
 //last line
-                $cells = ($width - ($textResponsesPerLine * $i)); 
+                $cells = ($width - ($textResponsesPerLine * $i));
             } else {
 //middle line
-                $cells = $textResponsesPerLine; 
+                $cells = $textResponsesPerLine;
             }
 
 
@@ -3019,7 +3034,7 @@ class quexmlpdf extends pdf
             $currentY = $ncurrentY;
 
             //New line
-            $this->SetY($currentY, false); 
+            $this->SetY($currentY, false);
 
 
             if (!(($i + 1) == $lines) && $this->textResponseLineSpacing > 0) {
@@ -3259,7 +3274,8 @@ class quexmlpdf extends pdf
             return;
         }
 
-        for ($i = 0; $i < count($subquestions); $i++) {
+        $arraySize = count($subquestions);
+        for ($i = 0; $i < $arraySize; $i++) {
             if ($split && $i == 1) {
                 //don't proceed if breaking the page already
                 if ($this->pageBreakOccured) {
@@ -3385,7 +3401,8 @@ class quexmlpdf extends pdf
      */
     protected function drawSingleChoiceVerticalSeparate($categories, $subquestions, $parenttext, $help, $split = 'notset')
     {
-        for ($sc = 0; $sc < count($subquestions); $sc++) {
+        $arraySize = count($subquestions);
+        for ($sc = 0; $sc < $arraySize; $sc++) {
             $s = $subquestions[$sc];
 
             $this->drawQuestionHead("", $this->numberToLetter($sc + 1).". ".$s['text'], $help);
@@ -3484,7 +3501,8 @@ class quexmlpdf extends pdf
             $split = $this->allowSplittingSingleChoiceVertical && ($total >= $this->minSplittingSingleChoiceVertical);
         }
 
-        for ($i = 0; $i < count($categories); $i++) {
+        $arraySize = count($categories);
+        for ($i = 0; $i < $arraySize; $i++) {
             //don't continue if page break already (start on new page)
             if ($i == 1 && $split) {
                 if ($this->pageBreakOccured) {
@@ -3535,11 +3553,12 @@ class quexmlpdf extends pdf
             }
             if (isset($r['other']) && $rnum == $total) {
 //only set for last in set
-                $other = $r['other'];    
+                $other = $r['other'];
             }
 
             //draw the response boxes
-            for ($j = 0; $j < count($subquestions); $j++) {
+            $subquestionCount = count($subquestions);
+            for ($j = 0; $j < $subquestionCount; $j++) {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {
@@ -3713,15 +3732,16 @@ class quexmlpdf extends pdf
      */
     protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
+        $html = '';
         $this->sectionCP++;
         $mtitle = $title;
-        
+
         if ($title === false) {
             $mtitle = $this->sectionCP;
         }
-        
+
         $this->section[$this->sectionCP] = array('label' => $desc, 'title' => $mtitle);
-        
+
         $html = '';
         if ($title !== false) {
                 $html .= "<span class=\"sectionTitle\">$title:</span>&nbsp;";
@@ -3799,6 +3819,16 @@ class quexmlpdf extends pdf
             $this->SetMargins(0, 0, 0);
             $this->SetHeaderMargin(0);
             $this->SetFooterMargin(0);
+
+            $oTemplate = Template::model()->getInstance();
+            $sLogoFileName = $oTemplate->filesPath . Yii::app()->getConfig('pdflogofile');
+            if (file_exists($sLogoFileName)) {
+                $result = LSYii_ImageValidator::validateImage($sLogoFileName);
+                if (isset($result['check']) && $result['check'] == true) {
+                    $sLogo = "@" . file_get_contents($sLogoFileName);
+                    $this->Image($sLogo, 15, 5, 0, 7);
+                }
+            }
 
             //Shortcuts to make the code (a bit) nicer
             $width = $this->getPageWidth();

@@ -7,6 +7,8 @@
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadata>
         <name>ranking_advanced</name>
+        <type>question_theme</type>
+        <title>Ranking Advanced</title>
         <creationDate>15/11/2017</creationDate>
         <author>Markus Flür</author>
         <authorEmail>mfluer@limesurvey.org</authorEmail>
@@ -16,7 +18,18 @@
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>New implementation of the ranking question</description>
+        <questionType>R</questionType>
+        <group>Mask questions</group>
+        <subquestions>0</subquestions>
+        <answerscales>1</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>1</assessable>
+        <class>ranking</class>
     </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
 
     <!--
         Here the list of the css/js files to load.
@@ -31,7 +44,7 @@
         </js>
     </files>
 
-    <custom_attributes>
+    <attributes>
         <attribute>
             <name>show_handle</name>
             <category>Display</category>
@@ -86,7 +99,7 @@
             <help>Change visualization of the ranking question</help>
             <caption>Viuzialisation: </caption>
         </attribute>
-    </custom_attributes>
+    </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
     <engine>

@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{gT("Database usage")}}:</strong>
+    </div>
+    <ul class="list-group">
+        <!-- usage -->
+        {% if tableusage != false %}
+            {% if tableusage.dbtype == 'mysql' or tableusage.dbtype == 'mysqli' %}
+                {% set column_usage = tableusage.column[0] / tableusage.column[1] * 100  %}
+                {% set size_usage =  tableusage.size[0] / tableusage.size[1] * 100  %}
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{gT("Table column usage")}}:
+                        </div>
+                        <div class="col-8">
+                            <div class='progressbar' style='width:{{column_usage | round}}%; height:15px;' name='{{column_usage | round(2) }}'></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{gT("Table size usage")}}
+                        </div>
+                        <div class="col-8">
+                            <div class='progressbar' style='width:{{size_usage | round}}%; height:15px;' name='{{size_usage | round(2) }}'></div>
+                        </div>
+                    </div>
+                </li>
+            {% elseif ((arrCols.dbtype == 'mssql') or (arrCols.dbtype == 'postgre') or ( arrCols.dbtype == 'dblib' )) %}
+                {% set column_usage = tableusage.column[0] / tableusage.column[1] * 100 %}
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            {{gT("Table column usage")}}
+                        </div>
+                        <div class="col-8">
+                            <div class='progressbar' style='width:{{ column_usage | round }}%; height:15px;' name='{{column_usage | round(2) }}'></div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% else %}
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                {{ gT("No info or no data found") }}
+            </div>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+    

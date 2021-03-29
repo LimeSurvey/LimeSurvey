@@ -2,7 +2,7 @@ Software License Agreement
 ==========================
 
 CKEditor Accessibility Checker Plugin
-Copyright (c) 2014-2016 CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2014-2018, CKSource - Frederico Knabben. All rights reserved.
 
 License under the terms of the GNU General Public License Version 2 or later (the "GPL") (Appendix A).
 
@@ -42,7 +42,7 @@ Third-party software included:
 Parts of code taken from the following libraries are included in CKEditor Accessibility Checker:
 
 - CKEditor, Copyright (c) 2003 CKSource - Frederico Knabben (quickfix/TableHeaders.js)<br>
-  http://ckeditor.com<br>
+  https://ckeditor.com/<br>
   License under the terms of the GNU General Public License Version 2 license.
 
 Trademarks

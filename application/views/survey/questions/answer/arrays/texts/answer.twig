@@ -54,7 +54,7 @@
             </td>
             {% for i, ld in labelans %}
                 <th>
-                    {{ ld }}
+                    {{ processString(ld) }}
                 </th>
             {% endfor %}
 
@@ -80,14 +80,6 @@
     </tbody>
 </table>
 
-{% if q_table_id is empty %}
-    {{ registerScript('ArrayTypeScript_' ~ name, "
-$('#question" ~ name ~ "').find('input[type=text]').on('blur keyup', function(event){
-    " ~ checkconditionFunction ~ "($(this).val(), $(this).attr('name'), 'text');
-    return true;
-})
-", "POS_POSTSCRIPT") }}
-{% endif %}
 <!-- end of answer -->
 
 {% if (showGrandTotal == true) or (showtotals == true) %}

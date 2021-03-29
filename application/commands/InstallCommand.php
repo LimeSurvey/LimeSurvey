@@ -30,6 +30,8 @@ class InstallCommand extends CConsoleCommand
     /**
      * @param array $aArguments
      * @return int
+     * @throws CException
+     * @throws Exception
      */
     public function run($aArguments)
     {
@@ -42,65 +44,27 @@ class InstallCommand extends CConsoleCommand
                 $this->output('Connecting to database...');
                 $this->connection = App()->getDb();
                 $this->connection->active = true;
-                $this->output('Using connection string '.$this->connection->connectionString);
+                $this->output('Using connection string ' . $this->connection->connectionString);
             } catch (CDbException $e) {
-                $this->output('Could not connect to database: '.$e->getMessage());
+                $this->output('Could not connect to database: ' . $e->getMessage());
                 $this->createDatabase();
             };
 
-            $this->connection->charset = 'utf8';
+            $this->prepareCharset();
 
-            switch ($this->connection->driverName) {
-                case 'mysql':
-                case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                    break;
-                case 'pgsql':
-                case 'dblib':
-                case 'mssql':
-                case 'sqlsrv':
-                    break;
-                    default:
-                    throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
-            }
-
-            $sFileName = dirname(APPPATH).'/installer/create-database.php';
+            $sFileName = dirname(APPPATH) . '/installer/create-database.php';
             require_once($sFileName);
             try {
                 $this->output('Creating tables...');
-                createDatabase($this->connection);
+                populateDatabase($this->connection);
             } catch (Exception $e) {
-                $this->output('Could not create LimeSurvey tables: '.$e->getMessage());
+                $this->output('Could not create LimeSurvey tables: ' . $e->getMessage());
                 return 1;
             }
 
-            $this->output('Creating admin user...');
-            $this->connection->createCommand()->insert(
-                $this->connection->tablePrefix.'users',
-                array(
-                    'users_name'=>$aArguments[0],
-                    'password'=>password_hash($aArguments[1], PASSWORD_DEFAULT),
-                    'full_name'=>$aArguments[2],
-                    'parent_id'=>0,
-                    'lang'=>'auto',
-                    'email'=>$aArguments[3]
-                )
-            );
-            $this->connection->createCommand()->insert(
-                $this->connection->tablePrefix.'permissions',
-                array(
-                    'entity'=>'global',
-                    'entity_id'=>0,
-                    'uid'=>1,
-                    'permission'=>'superadmin',
-                    'create_p'=>0,
-                    'read_p'=>1,
-                    'update_p'=>0,
-                    'delete_p'=>0,
-                    'import_p'=>0,
-                    'export_p'=>0
-                )
-            );
+            $this->createUser($aArguments);
+            $this->createPermissions();
+
             $this->output('All done!');
             return 0;
         } else {
@@ -109,6 +73,8 @@ class InstallCommand extends CConsoleCommand
             return 1;
         }
     }
+
+
 
     /**
      * @param string $sProperty
@@ -121,7 +87,7 @@ class InstallCommand extends CConsoleCommand
             $connectionString = $this->connection->connectionString;
         }
         // Yii doesn't give us a good way to get the database name
-        if (preg_match('/'.$sProperty.'=([^;]*)/', $connectionString, $aMatches) == 1) {
+        if (preg_match('/' . $sProperty . '=([^;]*)/', $connectionString, $aMatches) == 1) {
             return $aMatches[1];
         }
         return null;
@@ -130,13 +96,15 @@ class InstallCommand extends CConsoleCommand
     /**
      * Create database with name?
      * @return void
+     * @throws CException
      */
     protected function createDatabase()
     {
         $this->output('Creating database...');
-        App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
+        App()->configure(array('components' => array('db' => array('autoConnect' => false))));
         $this->connection = App()->db;
-        App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
+
+        App()->configure(array('components' => array('db' => array('autoConnect' => true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
@@ -147,7 +115,21 @@ class InstallCommand extends CConsoleCommand
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 
+        if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
+            /** @var string */
+            $dbEngine = getenv('DBENGINE');
+            if (empty($dbEngine)) {
+                throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
+            }
+
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
+        /** @var string */
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
+
         try {
             switch ($this->connection->driverName) {
                 case 'mysqli':
@@ -182,7 +164,7 @@ class InstallCommand extends CConsoleCommand
     public function output($msg)
     {
         if ($this->noisy) {
-            echo $msg.PHP_EOL;
+            echo $msg . PHP_EOL;
         }
     }
 
@@ -196,5 +178,60 @@ class InstallCommand extends CConsoleCommand
         if (isset($args[4]) && $args[4]) {
             $this->noisy = true;
         }
+    }
+
+
+    private function prepareCharset()
+    {
+        $this->connection->charset = 'utf8';
+        switch ($this->connection->driverName) {
+            case 'mysql':
+            case 'mysqli':
+                $this->connection->createCommand("ALTER DATABASE " . $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) . " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                break;
+            case 'pgsql':
+            case 'dblib':
+            case 'mssql':
+            case 'sqlsrv':
+                break;
+            default:
+                throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
+        }
+    }
+
+    private function createUser($data)
+    {
+        $this->output('Creating admin user...');
+        $this->connection->createCommand()->insert(
+            $this->connection->tablePrefix . 'users',
+            array(
+                'users_name' => $data[0],
+                'password' => password_hash($data[1], PASSWORD_DEFAULT),
+                'full_name' => $data[2],
+                'parent_id' => 0,
+                'lang' => 'auto',
+                'email' => $data[3]
+            )
+        );
+    }
+
+    private function createPermissions()
+    {
+        $this->output('Creating permissions ...');
+        $this->connection->createCommand()->insert(
+            $this->connection->tablePrefix . 'permissions',
+            array(
+                'entity' => 'global',
+                'entity_id' => 0,
+                'uid' => 1,
+                'permission' => 'superadmin',
+                'create_p' => 0,
+                'read_p' => 1,
+                'update_p' => 0,
+                'delete_p' => 0,
+                'import_p' => 0,
+                'export_p' => 0
+            )
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @inheritdoc
  * Leave it for compatibility of old config.php file
@@ -11,6 +12,6 @@ class DbHttpSession extends \CDbHttpSession
      */
     public function getTimeout()
     {
-        return (int)Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
+        return (int)Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
     }
 }

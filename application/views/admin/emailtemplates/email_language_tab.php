@@ -1,5 +1,5 @@
 <?php
-    $tabs = emailtemplates::getTabTypeArray();
+    $tabs = emailtemplates::getTabTypeArray($surveyid);
 
     echo "<div id='tab-".CHtml::encode($grouplang)."' class='tab-pane fade in ".CHtml::encode($active)."'>";
 ?>

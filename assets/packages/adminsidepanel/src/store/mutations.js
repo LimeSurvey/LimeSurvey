@@ -87,5 +87,8 @@ export default {
     },
     newToggleKey(state){
         state.toggleKey = Math.floor(Math.random()*10000)+'--key';
+    },
+    setAllowOrganizer(state, newVal){
+        state.allowOrganizer = newVal;
     }
 };

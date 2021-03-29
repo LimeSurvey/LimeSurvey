@@ -51,7 +51,7 @@
         <link rel="shortcut icon" href="{{ templateurl }}favicon.ico" />
     </head>
 
-    <body  class="{{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" marginwidth="0" marginheight="0" {{ aSurveyInfo.attr.body }}>
+    <body  class="{{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{surveyformat}}" marginwidth="0" marginheight="0" {{ aSurveyInfo.attr.body }}>
         <article id="block_error">
             <div>
                 {% if aError.error %}
@@ -65,13 +65,20 @@
                     {% if aError.contact %}
                         {{ aError.contact }}
                     {% else %}
-                        {{gT("For further information please contact %s:")|format (aSurveyInfo.adminname)}}
+                        {{gT("For further information please contact %s:")|format (aSurveyInfo.admin)}}
                         {% if aSurveyInfo.adminemail %}
                             <br>
                             <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
                         {% endif %}
                     {% endif %}
                 </p>
+            </div>
+            {% if aError.trace is not empty %}
+                <pre>
+                    {{ aError.trace }}
+                </pre>
+            {% endif %}
+            <div>
             </div>
         </article>
         {% block footer %}

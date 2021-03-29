@@ -1,11 +1,15 @@
 <?php
+
 class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 {
-    protected $storage = 'DbStorage';    
+    protected $storage = 'DbStorage';
     
-    static protected $description = 'Core: Webserver authentication';
-    static protected $name = 'Webserver';
-    
+    protected static $description = 'Core: Webserver authentication';
+    protected static $name = 'Webserver';
+
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
     protected $settings = array(
         'strip_domain' => array(
             'type' => 'checkbox',
@@ -55,7 +59,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 
     public function beforeLogin()
     {
-        // normal login through webserver authentication    
+        // normal login through webserver authentication
         $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && isset($_SERVER[$serverKey])) {
             $sUser = $_SERVER[$serverKey];
@@ -106,7 +110,8 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            if (Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid)) {
+            if (Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_webserver', ":uid" => $oUser->uid))) {
+                // Don't use Permission::model()->hasGlobalPermission : it's update the plugins event (and remove user/pass from event)
                 $this->setAuthSuccess($oUser);
                 return;
             } else {
@@ -116,18 +121,17 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser)) {
-// user doesn't exist but auto-create user is set
-            $oUser = new User;
+            // user doesn't exist but auto-create user is set
+            $oUser = new User();
             $oUser->users_name = $sUser;
-            $oUser->setPassword(createPassword()); // needed ? 
+            $oUser->setPassword(createPassword()); // needed ?
             $oUser->full_name = $aUserProfile['full_name'];
             $oUser->parent_id = 1;
             $oUser->lang = $aUserProfile['lang'];
             $oUser->email = $aUserProfile['email'];
 
             if ($oUser->save()) {
-                $permission = new Permission;
-                $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
+                Permission::setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
                 Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
 
                 // read again user from newly created entry
@@ -137,8 +141,5 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
         }
-        
-    }  
-    
-    
+    }
 }

@@ -1,7 +1,7 @@
 <div id="quick-menu-container">
     <!-- TODO: Placement right won't work with right-to-left -->
     <a
-        href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>"
+        href="<?php echo $this->createUrl("surveyAdministration/view/surveyid/$surveyid"); ?>"
         data-toggle="tooltip"
         data-title="<?php eT("Survey"); ?>"
         data-placement="right"

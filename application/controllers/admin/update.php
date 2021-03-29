@@ -1,7 +1,5 @@
 <?php
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -72,6 +70,11 @@ class update extends Survey_Common_Action
      */
     public function index()
     {
+        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+            Yii::app()->setFlashMessage(gT('You are not allowed to enter this page'), 'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
+        }
+
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
@@ -81,9 +84,9 @@ class update extends Survey_Common_Action
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['update'] = true;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/comfortupdate.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/buildComfortButtons.js');
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }
@@ -158,10 +161,9 @@ class update extends Survey_Common_Action
                             break;
                     }
 
-                    App()->setFlashMessage('<strong>'.gT($title).'</strong> '.gT($message), 'error');
+                    App()->setFlashMessage('<strong>' . gT($title) . '</strong> ' . gT($message), 'error');
                     App()->getController()->redirect(Yii::app()->getController()->createUrl('admin/update/sa/managekey'));
                 }
-
             }
         }
     }
@@ -177,7 +179,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function return the update buttons for stable branch
-     * @return html the button code
+     * @return string html the button code
      */
     public function getstablebutton()
     {
@@ -186,7 +188,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function return the update buttons for all versions
-     * @return html the buttons code
+     * @return string the buttons code
      */
     public function getbothbuttons()
     {
@@ -217,7 +219,7 @@ class update extends Survey_Common_Action
 
     /**
      * returns the "Checking basic requirements" step
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function checkLocalErrors()
     {
@@ -242,12 +244,11 @@ class update extends Survey_Common_Action
 
     /**
      * Display change log
-     * @return HTML
+     * @return string
      */
     public function changeLog()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
             if (isset($_REQUEST['destinationBuild'])) {
                 $destinationBuild = $_REQUEST['destinationBuild'];
@@ -275,12 +276,11 @@ class update extends Survey_Common_Action
     /**
      * diaplay the result of the changed files check
      *
-     * @return html  HTML
+     * @return string  HTML
      */
     public function fileSystem()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-
             if (isset($_REQUEST['destinationBuild'])) {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token = $_REQUEST['access_token'];
@@ -308,7 +308,7 @@ class update extends Survey_Common_Action
 
     /**
      * backup files
-     * @return html
+     * @return string
      */
     public function backup()
     {
@@ -334,7 +334,6 @@ class update extends Survey_Common_Action
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
-
                     } else {
                         $error = $backup->error;
                     }
@@ -350,7 +349,7 @@ class update extends Survey_Common_Action
 
     /**
      * Display step4
-     * @return html
+     * @return string
      */
     function step4()
     {
@@ -383,7 +382,7 @@ class update extends Survey_Common_Action
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
                                 // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
+                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild' => $destinationBuild), false, false);
                             } else {
                                 $error = $remove->error;
                             }
@@ -407,7 +406,7 @@ class update extends Survey_Common_Action
      * This function update the updater
      * It is called from the view _updater_update.
      * The view _updater_update is called by the ComfortUpdate server during the getWelcome step if the updater version is not the minimal required one.
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function updateUpdater()
     {
@@ -431,7 +430,7 @@ class update extends Survey_Common_Action
                             SettingGlobal::setSetting('updaterversions', '');
                             Yii::app()->session['update_result'] = null;
                             Yii::app()->session['next_update_check'] = null;
-                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
+                            return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild' => $destinationBuild), false, false);
                         } else {
                             $error = $unzip->error;
                         }
@@ -439,9 +438,8 @@ class update extends Survey_Common_Action
                         $error = $file->error;
                     }
                 } else {
-                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks'=>$localChecks), false, false);
+                    return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks' => $localChecks), false, false);
                 }
-
             }
             return $this->_renderErrorString($error);
         }
@@ -449,7 +447,7 @@ class update extends Survey_Common_Action
 
     /**
      * This return the subscribe message
-     * @return html the welcome message
+     * @return string the welcome message
      */
     public function getnewkey()
     {
@@ -465,7 +463,7 @@ class update extends Survey_Common_Action
 
     /**
      * This function create or update the LS update key
-     * @return html
+     * @return string
      */
     public function submitkey()
     {
@@ -523,7 +521,7 @@ class update extends Survey_Common_Action
                 die();
             }
             $aData = Yii::app()->session['installlstep4b'];
-            unset (Yii::app()->session['installlstep4b']);
+            unset(Yii::app()->session['installlstep4b']);
             $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
         }
     }
@@ -572,21 +570,20 @@ class update extends Survey_Common_Action
                 if (isset($serverAnswer->key_infos->validuntil)) {
                     $sValidityDate = convertToGlobalSettingFormat($serverAnswer->key_infos->validuntil);
                 }
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate), false, false);
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_' . $serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate' => $sValidityDate), false, false);
             } else {
                 $serverAnswer->result = false;
                 $serverAnswer->error = "unknown_view";
             }
         }
         echo $this->_renderError($serverAnswer);
-
     }
 
 
     /**
      * This method renders the error view
      * @param object $errorObject
-     * @return html
+     * @return string
      */
     private function _renderError($errorObject)
     {
@@ -596,7 +593,7 @@ class update extends Survey_Common_Action
     /**
      * This method convert a string to an error object, and then render the error view
      * @param string $error the error message
-     * @return html
+     * @return string
      */
     private function _renderErrorString($error)
     {
@@ -617,5 +614,4 @@ class update extends Survey_Common_Action
         $data = json_encode($updateinfos);
         return base64_encode($data);
     }
-
 }

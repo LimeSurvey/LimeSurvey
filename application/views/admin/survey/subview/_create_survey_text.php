@@ -8,7 +8,7 @@
 
 $standardthemerooturl = Yii::app()->getConfig('standardthemerooturl');
 $templaterooturl      = Yii::app()->getConfig('userthemerooturl');
-$sAdminEmailAddressNeeded = gT("If you are using token functions or notifications emails you need to set an administrator email address.");
+$sAdminEmailAddressNeeded = gT("If you are using participants or notification emails you need to set an administrator email address.");
 
 App()->getClientScript()->registerScript(
     "createSurveyText-variables",
@@ -69,7 +69,7 @@ $surveyid = $aTabContents['surveyid'];
                         'data' => getLanguageDataRestricted (false,'short'),
                         'value' => $oSurvey->language,
                         'name' => 'language',
-                        'pluginOptions' => array()
+                        'pluginOptions' => array('width'=>'100%')
                     ));?>
                     <?php else:?>
                     <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>

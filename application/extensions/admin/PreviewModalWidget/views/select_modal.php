@@ -27,12 +27,12 @@
                       data-key="<?=$sItemKey?>"
                       data-item-value='<?=json_encode([
                             "key" => $sItemKey,
-                            "title" => htmlentities($aItemContent['description']),
+                            "title" => htmlentities($aItemContent['title']),
                             "itemArray" => $aItemContent
                         ]); ?>' 
                       <?=@$aItemContent['extraAttributes']?>
                     >
-                      <?=$aItemContent['description']?>
+                      <?=$aItemContent['title']?>
                         <?php if (YII_DEBUG) {
                             ?>
                           <em class="small"><?=gT($this->debugKeyCheck)?> <?=$sItemKey?></em>

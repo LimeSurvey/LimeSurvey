@@ -52,6 +52,7 @@ class PluginDynamic extends LSActiveRecord
             }
             return self::$_models[$sTableName];
         }
+        return null;
     }
 
     /** @inheritdoc */
@@ -73,7 +74,5 @@ class PluginDynamic extends LSActiveRecord
             $md = self::model($this->tableName())->_md;
             return $this->_md = $md;
         }
-
     }
-
 }

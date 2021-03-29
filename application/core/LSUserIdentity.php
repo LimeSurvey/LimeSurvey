@@ -1,5 +1,7 @@
 <?php
+
 use LimeSurvey\PluginManager\PluginEvent;
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -82,9 +84,10 @@ class LSUserIdentity extends CUserIdentity
             // Perform postlogin
             regenerateCSRFToken();
             $this->postLogin();
+            // Reset counter after successful login
+            FailedLoginAttempt::model()->deleteAttempts();
         } else {
             // Log a failed attempt
-            $userHostAddress = getIPAddress();
             FailedLoginAttempt::model()->addAttempt();
             regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii
@@ -134,7 +137,7 @@ class LSUserIdentity extends CUserIdentity
                 'user_id' => App()->user->id,
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'title' => 'Password warning',
-                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
                     gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
             ));
             $not->save();
@@ -153,14 +156,14 @@ class LSUserIdentity extends CUserIdentity
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName').$user->users_name.$user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName') . $user->users_name . $user->uid);
 
         // Perform language settings
         if (App()->request->getPost('loginlang', 'default') != 'default') {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
             $sLanguage = $user->lang;
-        } else if ($user->lang == 'auto' || $user->lang == '') {
+        } elseif ($user->lang == 'auto' || $user->lang == '') {
             $sLanguage = getBrowserLanguage();
         } else {
             $sLanguage = $user->lang;
@@ -174,6 +177,10 @@ class LSUserIdentity extends CUserIdentity
             $pm = Yii::app()->getPluginManager();
             $pm->readConfigFiles();
         }
+
+        //At last store the login time in the user table
+        $user->lastLogin = date('Y-m-d H:i:s');
+        $user->save();
     }
 
     public function setPlugin($name)

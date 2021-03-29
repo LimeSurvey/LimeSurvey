@@ -66,8 +66,12 @@
                     ),
                     'onLabel'=>gT('Yes'),
                     'offLabel'=>gT('No'),
+                    /*
                     'onColor'=> 'warning',
                     'offColor'=> 'primary'
+                    */
+                    'onColor'=> 'primary',
+                    'offColor'=> 'warning'
                 )
             );
             ?>
@@ -76,25 +80,16 @@
 
         <!-- Change owner -->
         <?php if ($model->isOwnerOrSuperAdmin()): ?>
+        <?php  ?>
             <div class='form-group'>
                 <label class='control-label '><?php eT("Owner:"); ?></label>
                 <div class=''>
-                <select class='form-control' id='owner_uid' name='Participant[owner_uid]'>
-
-                    <?php // When we add a new user, owner is default to current user ?>
-                    <?php if ($editType == 'add'): ?>
-                        <?php foreach ($users as $user): ?>
-                            <option <?php if (Yii::app()->user->id == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->full_name; ?></option>
-                        <?php endforeach; ?>
-
-                    <?php // When we add a user, owner is set to current owner ?>
-                    <?php else: ?>
-                        <?php foreach ($users as $user): ?>
-                            <option <?php if ($model->owner_uid == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->full_name; ?></option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-
-                </select>
+                <?php
+                    // When we add a new user, owner is default to current user
+                    $selected = ($editType == 'add') ? Yii::app()->user->id : $model->owner_uid;
+                    $listUsers = CHtml::listData($users,'uid','full_name');
+                    echo CHtml::dropDownList('Participant[owner_uid]',$selected,$listUsers,array('id'=>'owner_uid','class'=>'form-control'));
+                ?>
                 </div>
                 <div class=''></div>
             </div>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -19,7 +20,6 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id: Client.php 24159 2011-06-28 12:30:56Z adamlundrigan $
  */
-
 
 /**
  * For handling the HTTP connection to the XML-RPC service
@@ -257,10 +257,8 @@ class Zend_XmlRpc_Client
     {
         $this->_lastRequest = $request;
 
-        iconv_set_encoding('input_encoding', 'UTF-8');
-        iconv_set_encoding('output_encoding', 'UTF-8');
-        iconv_set_encoding('internal_encoding', 'UTF-8');
-
+        ini_set("default_charset", "UTF-8");
+        
         $http = $this->getHttpClient();
         if ($http->getUri() === null) {
             $http->setUri($this->_serverAddress);
@@ -286,8 +284,9 @@ class Zend_XmlRpc_Client
              */
             require_once 'Zend/XmlRpc/Client/HttpException.php';
             throw new Zend_XmlRpc_Client_HttpException(
-                                    $httpResponse->getMessage(),
-                                    $httpResponse->getStatus());
+                $httpResponse->getMessage(),
+                $httpResponse->getStatus()
+            );
         }
 
         if ($response === null) {
@@ -377,8 +376,10 @@ class Zend_XmlRpc_Client
              * @see Zend_XmlRpc_Client_FaultException
              */
             require_once 'Zend/XmlRpc/Client/FaultException.php';
-            throw new Zend_XmlRpc_Client_FaultException($fault->getMessage(),
-                                                        $fault->getCode());
+            throw new Zend_XmlRpc_Client_FaultException(
+                $fault->getMessage(),
+                $fault->getCode()
+            );
         }
 
         return $this->_lastResponse->getReturnValue();

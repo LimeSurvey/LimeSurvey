@@ -32,10 +32,9 @@ class TutorialEntry extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('title, content, settings', 'required'),
-            array('numerical', 'integerOnly'=>true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('teid, title, content, settings', 'safe', 'on'=>'search'),
+            array('teid, title, content, settings', 'safe', 'on' => 'search'),
         );
     }
 
@@ -47,7 +46,7 @@ class TutorialEntry extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'tutorialEntryGroup' => array(self::HAS_MANY, 'TutorialEntryGroups', 'teid'),
+            'tutorialEntryRelation' => array(self::HAS_MANY, 'TutorialEntryRelation', 'teid'),
         );
     }
 
@@ -57,11 +56,29 @@ class TutorialEntry extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'teid' => 'Tutorial Entry Id',
-            'title' => 'Title',
-            'content' => 'Content',
-            'settings' => 'Settings',
+            'teid' => gT('Tutorial Entry Id'),
+            'title' => gT('Title'),
+            'content' => gT('Content'),
+            'settings' => gT('Settings'),
         );
+    }
+
+    public function getColumns()
+    {
+        return [
+            [
+                'name' => 'teid',
+            ],
+            [
+                'name' => 'title',
+            ],
+            [
+                'name' => 'content',
+            ],
+            [
+                'name' => 'settings',
+            ],
+        ];
     }
 
     /**
@@ -80,7 +97,7 @@ class TutorialEntry extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('teid', $this->teid);
         $criteria->compare('title', $this->title, true);
@@ -88,7 +105,7 @@ class TutorialEntry extends LSActiveRecord
         $criteria->compare('settings', $this->settings, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 

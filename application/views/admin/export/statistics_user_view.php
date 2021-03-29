@@ -11,37 +11,39 @@
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
     <div class="row">
-        <div class="col-sm-12">
-            <h3>
-                <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
-                <?php eT("Statistics"); ?>
-            </h3>
-        </div>
-
-
-        <div class="text-right">
-            <div class="form-group">
-                <div style="display:inline-block;position:relative;top:-65px;">
-                    <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
-                    <?php
-                    echo CHtml::dropDownList(
-                        'completionstate',
-                        incompleteAnsFilterState(),
-                        array(
-                            "all"=>gT("All responses",'unescaped'),
-                            "complete"=>gT("Complete only",'unescaped'),
-                            "incomplete"=>gT("Incomplete only",'unescaped'),
-                        ),
-                        array(
-                            'class'=>'form-control',
-                            'style'=>'display: inline;width: auto;',
-                            'data-url'=>App()->createUrl('/admin/statistics/sa/setIncompleteanswers/')
-                        ))
-                    ;
-                    ?>
+        <div class="col-md-12">
+            <div class="col-md-3 text-left">
+                <h4>
+                    <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
+                    <?php eT("Statistics"); ?>
+                </h4>
+            </div>
+            <div class="col-md-9 text-right">
+                <div class="form-group">
+                    <div >
+                        <label for='completionstate' class="control-label"><?php eT("Include:"); ?> </label>
+                        <?php
+                        echo CHtml::dropDownList(
+                            'completionstate',
+                            incompleteAnsFilterState(),
+                            array(
+                                "all"=>gT("All responses",'unescaped'),
+                                "complete"=>gT("Complete only",'unescaped'),
+                                "incomplete"=>gT("Incomplete only",'unescaped'),
+                            ),
+                            array(
+                                'class'=>'form-control',
+                                'style'=>'display: inline;width: auto;',
+                                'data-url'=>App()->createUrl('/admin/statistics/sa/setIncompleteanswers/')
+                            ))
+                        ;
+                        ?>
+                    </div>
                 </div>
+                
             </div>
         </div>
+        <h3></h3>
     </div>
 
 

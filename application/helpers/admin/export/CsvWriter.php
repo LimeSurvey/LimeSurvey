@@ -1,4 +1,5 @@
 <?php
+
 class CsvWriter extends Writer
 {
     private $output;
@@ -11,13 +12,13 @@ class CsvWriter extends Writer
     
     /**
      * The filename to use for the resulting file when output = display
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $csvFilename = '';
     
     /**
-     * Should headers be output? For example spss and r export use more or less 
+     * Should headers be output? For example spss and r export use more or less
      * the same output but do not need headers at all.
      *
      * @var boolean
@@ -34,22 +35,21 @@ class CsvWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $this->csvFilename = "results-survey".$survey->id.".csv";
+        $this->csvFilename = "results-survey" . $survey->id . ".csv";
         if ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
         }
-        
     }
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $sRecord = '';
-        if (!empty($oOptions->csvFieldSeparator)){
+        if (!empty($oOptions->csvFieldSeparator)) {
             $this->separator = $oOptions->csvFieldSeparator;
         }
         if (!$this->hasOutputHeader) {
             if ($oOptions->output == 'display') {
-                header("Content-Disposition: attachment; filename=".$this->csvFilename);
+                header("Content-Disposition: attachment; filename=" . $this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
                 echo chr(239) . chr(187) . chr(191);
             } else {
@@ -64,7 +64,7 @@ class CsvWriter extends Writer
                     $index++;
                 }
                 //Output the header...once and only once.
-                $sRecord .= implode($this->separator, $headers)."\r\n";
+                $sRecord .= implode($this->separator, $headers) . "\r\n";
             }
             $this->hasOutputHeader = true;
         }
@@ -74,9 +74,9 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord .= implode($this->separator, $values)."\r\n";
+        $sRecord .= implode($this->separator, $values) . "\r\n";
         if ($oOptions->output == 'display') {
-            echo $sRecord; 
+            echo $sRecord;
             $this->output = '';
         } elseif ($oOptions->output == 'file') {
             $this->output .= $sRecord;
@@ -104,6 +104,6 @@ class CsvWriter extends Writer
     protected function csvEscape($value)
     {
         $sString = preg_replace(array('~\R~u'), array("\n"), $value);
-        return '"'.str_replace('"', '""', $sString).'"';
+        return '"' . str_replace('"', '""', $sString) . '"';
     }
 }

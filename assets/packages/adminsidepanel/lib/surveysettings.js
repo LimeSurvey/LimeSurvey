@@ -22,6 +22,15 @@ var defineActions = function (dataArray) {
     return container.html();
 };
 
+function setAdministratorFieldsVisibility(form) {
+    var option = form.find("[name=administrator]:checked").val();
+    var fieldsContainer = $("#conditional-administrator-fields");
+    if (option == "custom") {
+        fieldsContainer.show();
+    } else {
+        fieldsContainer.hide();
+    }
+}
 
 $(document).on('click', '[data-copy] :submit', function () {
     $('form :input[value=\'' + $(this).val() + '\']').click();
@@ -50,6 +59,19 @@ $(document).on('ready  pjax:scriptcomplete', function () {
             $('#btnSave').show();
         }
     });
+
+    // If on "Create survey" form
+    if ($('#addnewsurvey')) {
+        var form = $('#addnewsurvey');
+
+        // Set initial visibility
+        setAdministratorFieldsVisibility(form);
+
+        // Update visibility when 'administrator' option changes
+        form.find("[name=administrator]").on('change', function() {
+            setAdministratorFieldsVisibility(form);
+        });
+    }
 });
 /**
  * Bind to submit event
@@ -164,12 +186,17 @@ function templatechange($element) {
     $('#preview-image-container').html(
         '<div style="height:200px;" class="ls-flex ls-flex-column align-content-center align-items-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>'
     );
+    let templateName = $element.val();
+    if (templateName === 'inherit')
+    {
+        templateName = $element.data('inherit-template-name');
+    }
     $.ajax({
         url: $element.data('updateurl'),
-        data: {templatename : $element.val()},
+        data: {templatename: templateName},
         method: 'POST',
         dataType: 'json',
-        success: function(data){
+        success: function (data) {
             $('#preview-image-container').html(data.image);
         },
         error: console.ls.error

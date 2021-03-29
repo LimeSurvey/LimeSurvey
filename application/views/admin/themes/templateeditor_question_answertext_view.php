@@ -11,6 +11,7 @@ echo App()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/
         'dispVal'                => gT('Some text in this answer'),
         'tiwidth'                => 40,
         'maxlength'              => '',
-        'inputsize'              => null
+        'inputsize'              => null,
+        'placeholder'            => ''
     ));
 ?>

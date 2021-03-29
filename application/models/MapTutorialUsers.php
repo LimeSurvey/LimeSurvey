@@ -27,10 +27,10 @@ class MapTutorialUsers extends CActiveRecord
         // will receive user inputs.
         return array(
             array('tid', 'required'),
-            array('tid, uid, taken', 'numerical', 'integerOnly'=>true),
+            array('tid, uid, taken', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('tid, uid, taken', 'safe', 'on'=>'search'),
+            array('tid, uid, taken', 'safe', 'on' => 'search'),
         );
     }
 
@@ -73,14 +73,14 @@ class MapTutorialUsers extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('tid', $this->tid);
         $criteria->compare('uid', $this->uid);
         $criteria->compare('taken', $this->taken);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -92,6 +92,8 @@ class MapTutorialUsers extends CActiveRecord
      */
     public static function model($className = __CLASS__)
     {
-        return parent::model($className);
+        /** @var MapTutorialUsers $model */
+        $model = parent::model($className);
+        return $model;
     }
 }

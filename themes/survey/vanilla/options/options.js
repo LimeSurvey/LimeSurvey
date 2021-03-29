@@ -14,7 +14,6 @@ var ThemeOptions = function(){
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 
-
     /////////////////
     // Define methods run on startup
     
@@ -73,6 +72,7 @@ var ThemeOptions = function(){
                 if($(item).prop('checked')){
                     optionObject[$(item).attr('name')] = $(item).val();
                 }
+
             }
 
         });
@@ -86,18 +86,6 @@ var ThemeOptions = function(){
     ///////////////
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
-    
-    //Disables image previews when the image selector is set to inherit
-    var disableImagePreviewIfneeded = function(item){
-        // Image selectors are disabled on inherit
-        if($(item).hasClass('selector_image_selector')){
-            if($(item).val() == 'inherit'){
-                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
-            } else {
-                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
-            }
-        }
-    };
 
     //Parses the option value for an item
     var parseOptionValue = function(item, fallbackValue){
@@ -130,7 +118,6 @@ var ThemeOptions = function(){
         globalForm.find('.selector_option_value_field').each(function(i,item){
             var itemValue = parseOptionValue(item);
             $(item).val(itemValue);
-            disableImagePreviewIfneeded(item);
         });
     };
     
@@ -152,7 +139,7 @@ var ThemeOptions = function(){
         optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
         
         if( optionObject.font !== 'inherit' ){
-            $('#simple_edit_font').val(optionObject.font);
+            $('#simple_edit_options_font').val(optionObject.font);
         }
         updateFieldSettings();
     };
@@ -174,9 +161,12 @@ var ThemeOptions = function(){
                     $(selectorItem).prop('disabled', true);
                 }
 
-                if($(selectorItem).hasClass('selector_image_selector')){
-                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
+                if ($(selectorItem).hasClass('selector_image_selector')) {
+                    $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
 
             });
         });
@@ -187,7 +177,6 @@ var ThemeOptions = function(){
         
         globalForm.find('.selector_option_value_field').on('change', function(evt){ 
             updateFieldSettings(); 
-            disableImagePreviewIfneeded(this);
         });
 
         globalForm.find('.selector_option_radio_field').on('change', updateFieldSettings);
@@ -207,12 +196,12 @@ var ThemeOptions = function(){
     };
 
     var hotswapFontField = function(){
-        $('#simple_edit_font').on('change', function(evt){
+        $('#simple_edit_options_font').on('change', function(evt){
             var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
                 ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
                 : $(this).data('inheritvalue');
 
-            if($('#simple_edit_font').val() === 'inherit'){
+            if($('#simple_edit_options_font').val() === 'inherit'){
 
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
 
@@ -237,16 +226,21 @@ var ThemeOptions = function(){
     
         if(generalInherit()){
             $('#TemplateConfiguration_options').val('inherit');
-            $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
+            $('#template-options-form').trigger('submit'); // submit the form
         } else {
             //Create a copy of the inherent optionObject
             var newOptionObject = $.extend(true, {}, optionObject);
             newOptionObject.generalInherit = null;
 
-            //now write the newly created object to the correspondent field as a json string
+            // Now write the newly created object to the correspondent field as a json string
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
-            //and submit the form
-            $('#template-options-form').find('button[type=submit]').trigger('click');
+            
+            // And submit the form
+            // Beware, we are triggering 'submit' directly, which doesn't trigger HTML5 validations. 
+            // No HTML5 validations needed here, so all good. 
+            // If not we would need to add a hidden submit button and trigger a 'click' on it. (see fruity theme).
+            // Like these: $('#template-options-form').find('button[type=submit]').trigger('click');
+            $('#template-options-form').trigger('submit');
         }
     };
 
@@ -255,7 +249,7 @@ var ThemeOptions = function(){
     // Instance methods
     var bind = function(){
         //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', onSaveButtonClickAction);
+        $('.action_update_options_string_button, #theme-options--submit').on('click', onSaveButtonClickAction);
 
         //Bind the hotwaps
         hotSwapParentRadioButtons();
@@ -307,10 +301,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if(imgTitle !== 'inherit'){
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
         $('#lightbox-modal').modal('show');
     });
 

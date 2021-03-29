@@ -35,7 +35,7 @@
         <div class="row ls-space margin top-10 bottom-10">
             <div class='form-group'>
                 <label class='control-label col-sm-4'>
-                    <?php eT('Display survey tokens after adding?'); ?>
+                    <?php eT('Display survey participant table after addition?'); ?>
                 </label>
                 <div class='col-sm-8'>
                     <!--<input type='checkbox' name='redirect' />-->

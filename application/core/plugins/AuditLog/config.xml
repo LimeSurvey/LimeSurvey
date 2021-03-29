@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>AuditLog</name>
+        <type>plugin</type>
+        <creationDate>2013-03-20</creationDate>
+        <last_update>2017-08-31</last_update>
+        <author>Carsten Schmitz</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0.0</version>
+        <description><![CDATA[Core: Create an audit log of changes]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>3.0</version>
+        <version>2.73</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

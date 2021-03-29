@@ -1,5 +1,5 @@
 import 'popper.js';
-import '../scss/main.scss';
+import '../scss/lstutorial.scss';
 
 import Tour from '../lib/bootstrap-tourist.js';
 import globalTourObject from './tours/global-tour-object.js';

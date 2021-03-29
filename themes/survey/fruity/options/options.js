@@ -12,6 +12,8 @@ var ThemeOptions = function () {
         "general_inherit": 1
     }
 
+    var optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
+    var optionCssFiles = JSON.parse(JSON.parse($('#optionCssFiles').val()));
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 
@@ -92,18 +94,6 @@ var ThemeOptions = function () {
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
 
-    //Disables image previews when the image selector is set to inherit
-    var disableImagePreviewIfneeded = function (item) {
-        // Image selectors are disabled on inherit
-        if ($(item).hasClass('selector_image_selector')) {
-            if ($(item).val() == 'inherit') {
-                $('button[data-target="#' + $(item).attr('id') + '"]').prop('disabled', true);
-            } else {
-                $('button[data-target="#' + $(item).attr('id') + '"]').prop('disabled', false);
-            }
-        }
-    };
-
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
@@ -123,6 +113,24 @@ var ThemeOptions = function () {
             }
         }
     }
+
+    // display inherited options as tooltips
+    var showInheritedValue = function () {
+        $.each($("#simple_edit_add_css > option"), function (i, option) {
+            $.each(optionCssFiles.add, function (i, item) {
+                if (option.value == item && $("#simple_edit_add_css option:first").val() == 'inherit'){
+                    $("#simple_edit_add_css option:first").text($("#simple_edit_add_css option:first").text()+' '+option.text+']');
+                }
+            });
+        });
+
+        globalForm.find('.selector-numerical-input').each(function (i, item) {
+            var element = $(item);
+            //element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);
+            element.tooltip();
+        });
+
+    };
 
     //Parses the option value for an item
     var parseOptionValue = function (item, fallbackValue) {
@@ -155,7 +163,6 @@ var ThemeOptions = function () {
         globalForm.find('.selector_option_value_field').each(function (i, item) {
             var itemValue = parseOptionValue(item);
             $(item).val(itemValue);
-            disableImagePreviewIfneeded(item);
             applyColorPickerValue(item);
         });
     };
@@ -178,7 +185,7 @@ var ThemeOptions = function () {
         optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
 
         if (optionObject.font !== 'inherit') {
-            $('#simple_edit_font').val(optionObject.font);
+            $('#simple_edit_options_font').val(optionObject.font);
         }
         updateFieldSettings();
     };
@@ -215,16 +222,18 @@ var ThemeOptions = function () {
         // If an option is set to off, the attached selectors are disabled
         $('.selector_radio_childfield').each(function (i, selectorItem) {
             $('input[name=' + $(selectorItem).data('parent') + ']').on('change', function () {
-
                 if ($(this).val() == 'on' && $(this).prop('checked') == true) {
                     $(selectorItem).prop('disabled', false);
                 } else {
                     $(selectorItem).prop('disabled', true);
                 }
 
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
                 if ($(selectorItem).hasClass('selector_image_selector')) {
                     $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
 
             });
         });
@@ -235,7 +244,6 @@ var ThemeOptions = function () {
 
         globalForm.find('.selector_option_value_field').on('change', function (evt) {
             updateFieldSettings();
-            disableImagePreviewIfneeded(this);
             parseNumeric(this);
         });
 
@@ -259,12 +267,12 @@ var ThemeOptions = function () {
     };
 
     var hotswapFontField = function () {
-        $('#simple_edit_font').on('change', function (evt) {
+        $('#simple_edit_options_font').on('change', function (evt) {
             var currentPackageObject = $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' ?
                 JSON.parse($('#TemplateConfiguration_packages_to_load').val()) :
                 $(this).data('inheritvalue');
 
-            if ($('#simple_edit_font').val() === 'inherit') {
+            if ($('#simple_edit_options_font').val() === 'inherit') {
 
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
 
@@ -331,7 +339,7 @@ var ThemeOptions = function () {
 
         if ($('#general_inherit_on').prop('checked')) {
             $('#TemplateConfiguration_options').val('inherit');
-            $('#template-options-form').find('button[type=submit]').trigger('click'); // submit the form
+            $('#template-options-form').trigger('submit'); // submit the form
         } else {
             updateFieldSettings();
             //Create a copy of the inherent optionObject
@@ -341,7 +349,7 @@ var ThemeOptions = function () {
             //now write the newly created object to the correspondent field as a json string
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
             //and submit the form
-            $('#template-options-form').find('button[type=submit]').trigger('click');
+            $('#template-options-form').trigger('submit');
         }
     };
 
@@ -350,7 +358,7 @@ var ThemeOptions = function () {
     // Instance methods
     var bind = function () {
         //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', onSaveButtonClickAction);
+        $('#theme-options--submit').on('click', onSaveButtonClickAction);
 
         //Bind the hotwaps
         hotSwapParentRadioButtons();
@@ -370,6 +378,7 @@ var ThemeOptions = function () {
         parseParentSwitchFields();
         prepareFontField();
         prepareFruityThemeField();
+        showInheritedValue();
 
         bind();
     };
@@ -395,7 +404,7 @@ var prepare = function () {
 };
 
 
-$(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomplete.templateOptions', function () {
+$(function () {
     $('.simple-template-edit-loading').css('display', 'block');
     prepare().then(function (runsesolve) {
         $('.simple-template-edit-loading').css('display', 'none');
@@ -406,13 +415,11 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if (imgTitle !== 'inherit') {
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({
-                'src': imgSrc,
-                'alt': imgTitle
-            });
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({
+            'src': imgSrc,
+            'alt': imgTitle
+        });
         $('#lightbox-modal').modal('show');
     });
 

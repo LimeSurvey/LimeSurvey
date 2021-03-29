@@ -32,22 +32,14 @@
     <title>
         {{ processString(aSurveyInfo.surveyls_title,1) }}
     </title>
-
-    <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    {% if(imageSrc('./files/favicon.ico')) %}
+        <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    {% endif %}
     <script type="text/javascript">
         if(window.basicThemeScripts === undefined){ 
             window.basicThemeScripts = new ThemeScripts(); 
         } 
     </script>
-    {# Ajax mode #}
-    {% if(aSurveyInfo.options.ajaxmode == "on") %}
-        <script type="text/javascript">
-            var ajaxHandler = new AjaxSubmitObject();
-            $(document).on('ready', function () {
-                ajaxHandler.bindActions();
-            });
-        </script>
-    {% endif %}
     {# LSvar update with  #}
     {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
     {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}

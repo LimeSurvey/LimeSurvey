@@ -4,7 +4,10 @@
 * Load the globals helper as early as possible. Only earlier solution is to use
 * index.php
 */
-require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
+
+require_once(dirname(dirname(__FILE__)) . '/helpers/globals.php');
+
+use LimeSurvey\PluginManager\LimesurveyApi;
 
 class ConsoleApplication extends CConsoleApplication
 {
@@ -24,9 +27,9 @@ class ConsoleApplication extends CConsoleApplication
     {
 
         /* Using some config part for app config, then load it before*/
-        $baseConfig = require(__DIR__.'/../config/config-defaults.php');
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
+        $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
+        if (file_exists(__DIR__ . '/../config/config.php')) {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
             if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
@@ -34,29 +37,55 @@ class ConsoleApplication extends CConsoleApplication
 
         /* Set the runtime path according to tempdir if needed */
         if (!isset($aApplicationConfig['runtimePath'])) {
-            $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'].DIRECTORY_SEPARATOR.'runtime';
+            $aApplicationConfig['runtimePath'] = $baseConfig['tempdir'] . DIRECTORY_SEPARATOR . 'runtime';
         } /* No need to test runtimePath validity : Yii return an exception without issue */
 
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
 
         // Set webroot alias.
-        Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application').'/../'));
-
+        Yii::setPathOfAlias('webroot', realpath(Yii::getPathOfAlias('application') . '/../'));
         /* Because we have app now : we have to call again the config : can be done before : no real usage of url in console, but usage of getPathOfAlias */
-        $coreConfig = require(__DIR__.'/../config/config-defaults.php');
-        $consoleConfig = require(__DIR__.'/../config/console.php'); // Only for console : replace some config-defaults
-        $emailConfig = require(__DIR__.'/../config/email.php');
-        $versionConfig = require(__DIR__.'/../config/version.php');
-        $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $consoleConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
+        $coreConfig = require(__DIR__ . '/../config/config-defaults.php');
+        $consoleConfig = require(__DIR__ . '/../config/console.php'); // Only for console : replace some config-defaults
+        $emailConfig = require(__DIR__ . '/../config/email.php');
+        $versionConfig = require(__DIR__ . '/../config/version.php');
+        $updaterVersionConfig = require(__DIR__ . '/../config/updater_version.php');
+
+        $lsConfig = array_merge(
+            $coreConfig,
+            $consoleConfig,
+            $emailConfig,
+            $versionConfig,
+            $updaterVersionConfig
+        );
+
+        if (file_exists(__DIR__ . '/../config/security.php')) {
+            $securityConfig = require(__DIR__ . '/../config/security.php');
+            if (is_array($securityConfig)) {
+                $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
+        /* Custom config file */
+        $configdir = $coreConfig['configdir'];
+        if (file_exists($configdir .  '/security.php')) {
+            $securityConfig = require($configdir . '/security.php');
+            if (is_array($securityConfig)) {
+                $lsConfig = array_merge($lsConfig, $securityConfig);
+            }
+        }
+
+        if (file_exists(__DIR__ . '/../config/config.php')) {
+            $userConfigs = require(__DIR__ . '/../config/config.php');
             if (is_array($userConfigs['config'])) {
                 $lsConfig = array_merge($lsConfig, $userConfigs['config']);
             }
         }
         $this->config = array_merge($this->config, $lsConfig);
+        
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+           it would be decrypted in LimeMailer when needed */
+           $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
 
         /* Load the database settings : if available */
         try {
@@ -68,7 +97,6 @@ class ConsoleApplication extends CConsoleApplication
         } catch (Exception $exception) {
             // Allow exception (install for example)
         }
-
     }
 
     /**
@@ -89,7 +117,6 @@ class ConsoleApplication extends CConsoleApplication
     public function getController()
     {
         return $this;
-
     }
 
 
@@ -128,7 +155,7 @@ class ConsoleApplication extends CConsoleApplication
      */
     public function loadHelper($helper)
     {
-        Yii::import('application.helpers.'.$helper.'_helper', true);
+        Yii::import('application.helpers.' . $helper . '_helper', true);
     }
 
     /**
@@ -148,5 +175,4 @@ class ConsoleApplication extends CConsoleApplication
     {
         return $this->getComponent('pluginManager');
     }
-
 }

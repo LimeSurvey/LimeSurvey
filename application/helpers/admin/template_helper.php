@@ -1,4 +1,5 @@
 <?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -75,12 +76,12 @@ function mkdir_p($target)
 function themeoptions($optionarray, $selectedvalue)
 {
     $return = '';
-    foreach ($optionarray as $arkey=>$arvalue) {
-        $return .= "<option value='".HTMLEscape($arkey)."'";
+    foreach ($optionarray as $arkey => $arvalue) {
+        $return .= "<option value='" . HTMLEscape($arkey) . "'";
         if ($arkey == $selectedvalue) {
             $return .= " selected='selected'";
         }
-        $return .= '>'.HTMLEscape($arkey)."</option>\n";
+        $return .= '>' . HTMLEscape($arkey) . "</option>\n";
     }
     return $return;
 }
@@ -113,7 +114,7 @@ function recursive_in_array($needle, $haystack)
 */
 function is_template_editable($templatename)
 {
-    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true) {
+    if (Template::isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true) {
         return false;
     } else {
         return true;
@@ -129,7 +130,7 @@ function is_template_editable($templatename)
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
+    $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats'));
     $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
 

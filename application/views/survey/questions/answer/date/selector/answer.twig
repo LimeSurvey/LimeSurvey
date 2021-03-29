@@ -22,7 +22,7 @@
 <div class='form-inline'>
     <div class='{{coreClass}} form-group'>
         <label for='answer{{name}}' class='sr-only control-label'>
-            {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
+            {{ sprintf(gT('Date format: %s'), dateformatdetails) }}
         </label>
         <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
             {{ C.Html.textField(name,dateoutput,{
@@ -31,7 +31,7 @@
                 'aria-describedby' : "ls-question-text-" ~ name,
             }) }}
             <div class="input-group-addon btn btn-primary">
-                <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open the date time chooser") }}</span>
+                <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open date/time selector") }}</span>
             </div>
         </div>
         {% if(hidetip) %}
@@ -43,7 +43,7 @@
 </div>
 
 <div class='hidden' style='display:none'>
-    <!-- Obs: No spaces in the div - it will mess up Javascript string parsing -->
+    <!-- Obs: No spaces in the div - it will mess up Javascript string parsing , EM replacement done in qanda -->
     <div id='datemin{{name}}'>{{ mindate }}</div>
     <div id='datemax{{name}}'>{{ maxdate }}</div>
     <div id='dateformat{{name}}'>{{ dateformatdetailsjs }}</div>

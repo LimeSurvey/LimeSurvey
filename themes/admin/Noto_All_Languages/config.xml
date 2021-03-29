@@ -14,9 +14,9 @@
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
         <version>3.0</version>
-        <description>Default LimeSurvey admin interface template with NOTO font. NOTO font is will provide a correct display for any existing language.</description>
+        <description>Default LimeSurvey admin interface template with NOTO font. The NOTO font provides a correct display for most existing languages.</description>
         <basecolor>#328637</basecolor>
-        <last_update>2017-27-11 17:00:00</last_update>
+        <lastUpdate>2017-27-11 17:00:00</lastUpdate>
     </metadata>
 
     <!--

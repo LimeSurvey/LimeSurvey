@@ -374,7 +374,7 @@ class CUrlManager extends CApplicationComponent
 			}
 			if($this->useStrictParsing)
 				throw new CHttpException(404,Yii::t('yii','Unable to resolve the request "{route}".',
-					array('{route}'=>$pathInfo)));
+					array('{route}'=>substr($pathInfo,0,20))));
 			else
 				return $pathInfo;
 		}

@@ -12,16 +12,20 @@ export default {
     mixins: [ajaxMethods],
     props: {
         'openSubpanelId' : {type: Number},
+        loading: {type: Boolean, default: false}
     },
     data(){
         return {
             menues : {},
-            loading: true
         };
     },
     computed: {
         sortedMenues(){
             return LS.ld.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
+        },
+        loadingState: {
+            get() { return this.loading; },
+            set(newState) { this.$emit('changeLoadingState', newState); }
         }
     },
     methods:{
@@ -55,7 +59,7 @@ export default {
             this.$log.error
         )
         .finally(
-            (result) => { this.loading = false }
+            (result) => { this.loadingState = false }
         );
     },
     mounted(){
@@ -70,11 +74,11 @@ export default {
 </script>
 <template>
     <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0 margin top-5" >
-        <div v-show="!loading"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
+        <div v-show="!loadingState"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
             <label class="menu-label">{{menu.title}}</label>
             <submenu :menu="menu"></submenu>
         </div>
-        <loader-widget v-if="loading" id="sidemenuLoaderWidget" />
+        <loader-widget v-if="loadingState" id="sidemenuLoaderWidget" />
     </div>
 </template>
 <style lang="scss">

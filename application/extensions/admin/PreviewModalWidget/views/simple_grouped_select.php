@@ -7,15 +7,15 @@
     <?php 
     foreach ($this->groupStructureArray as $sGroupTitle => $aGroupArray) {  
         echo sprintf("<optgroup label='%s'>", $aGroupArray[$this->groupTitleKey]);
-        foreach ($aGroupArray[$this->groupItemsKey] as $sItemKey => $aItemContent) { 
-            $selected = $this->value == $sItemKey ? 'selected' : '';
+        foreach ($aGroupArray[$this->groupItemsKey] as $aItemContent) {
+            $selected = $this->value == $aItemContent['type'] && $this->theme == $aItemContent['name'] ? 'selected' : '';
             if(YII_DEBUG) {
-                echo sprintf("<option value='%s' %s>%s (%s)</option>", $sItemKey, $selected, $aItemContent['description'], $sItemKey);
+                echo sprintf("<option value='%s' data-theme='%s' %s>%s (%s)</option>", $aItemContent['type'], $aItemContent['name'], $selected, $aItemContent['title'], $aItemContent['type']);
             } else {
-                echo sprintf("<option value='%s' %s>%s</option>", $sItemKey, $selected, $aItemContent['description']);
+                echo sprintf("<option value='%s' data-theme='%s' %s>%s</option>", $aItemContent['type'], $aItemContent['name'], $selected, $aItemContent['title']);
             }
         } 
-        echo "</optgroup>"; 
+        echo "</optgroup>";
     } 
     ?>
 </select> 

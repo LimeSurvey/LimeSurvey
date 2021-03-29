@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -15,49 +17,15 @@
  */
 //Ensure script is not run directly, avoid path disclosure
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-injectglobalsettings();
-
-
-function injectglobalsettings()
-{
-    $settings = SettingGlobal::model()->findAll();
-
-    //if ($dbvaluearray!==false)
-    if (count($settings) > 0) {
-        foreach ($settings as $setting) {
-            Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
-        }
-    }
-}
 /**
  * Returns a global setting
  * @deprecated : use App()->getConfig($settingname)
- * since all config are set at start of App : no need to read and test again 
+ * since all config are set at start of App : no need to read and test again
  *
  * @param string $settingname
  * @return string
  */
 function getGlobalSetting($settingname)
 {
-    $dbvalue = Yii::app()->getConfig($settingname);
-
-    if ($dbvalue === false) {
-        $dbvalue = SettingGlobal::model()->findByPk($settingname);
-
-        if ($dbvalue === null) {
-            Yii::app()->setConfig($settingname, null);
-            $dbvalue = '';
-        } else {
-            $dbvalue = $dbvalue->getAttribute('stg_value');
-        }
-
-        if (Yii::app()->getConfig($settingname) !== false) {
-            // If the setting was not found in the setting table but exists as a variable (from config.php)
-            // get it and save it to the table
-            SettingGlobal::setSetting($settingname, Yii::app()->getConfig($settingname));
-            $dbvalue = Yii::app()->getConfig($settingname);
-        }
-    }
-
-    return $dbvalue;
+    return App()->getConfig($settingname);
 }

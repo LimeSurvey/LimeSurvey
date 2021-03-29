@@ -1,4 +1,5 @@
 <?php
+
 class FormattingOptions
 {
     public $responseMinRecord;
@@ -49,7 +50,7 @@ class FormattingOptions
     public $headingTextLength;
 
     /**
-     * Indicates whether to use Expression Manager code
+     * Indicates whether to use ExpressionScript Engine code
      *
      * @var boolean
      */
@@ -74,7 +75,7 @@ class FormattingOptions
      *
      * @var boolean
      */
-    public $csvMaskEquations=false;    
+    public $csvMaskEquations = false;
 
     /**
      * Valid values are:
@@ -117,7 +118,7 @@ class FormattingOptions
     
     /**
      * Destination format - either 'display' (send to browser) or 'file' (send to file)
-     * 
+     *
      * @var string
      */
     public $output;
@@ -126,11 +127,11 @@ class FormattingOptions
     
     public function toString()
     {
-        return $this->format.','.$this->headingFormat.','
-        .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
-        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','.$this->aResponses.','
-        .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
-        .$this->convertN.','.$this->nValue.','.$this->csvMaskEquations.','
-        .implode(',', $this->selectedColumns);
+        return $this->format . ',' . $this->headingFormat . ','
+        . $this->headerSpacesToUnderscores . ',' . $this->responseCompletionState
+        . ',' . $this->responseMinRecord . ',' . $this->responseMaxRecord . ',' . $this->aResponses . ','
+        . $this->answerFormat . ',' . $this->convertY . ',' . $this->yValue . ','
+        . $this->convertN . ',' . $this->nValue . ',' . $this->csvMaskEquations . ','
+        . implode(',', $this->selectedColumns);
     }
 }

@@ -25,6 +25,7 @@ $(document).on('ready  pjax:scriptcomplete',  function(){
             case 'zh-Hant-TW': sToLang='zh-TW'; break;
             case 'zh-Hant-HK': sToLang='zh-TW'; break;
             case 'nl-informal': sToLang='nl'; break;
+            case 'de-easy': sToLang='de'; break;
             case 'de-informal': sToLang='de'; break;
             case 'ie': sToLang='ga'; break;
             case 'it-formal': sToLang='it'; break;

@@ -1,0 +1,25 @@
+{#
+/**
+ * List Radio Html
+ *
+ * @var $name
+ * @var $value
+ */
+#}
+
+<!-- List Radio -->
+
+<!-- answer -->
+{{ sTimer }}
+
+<div class="{{ coreClass }} row" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}">
+    {# rows/answer_row.php #}
+    {{ sRows }}
+</div>
+{# Value for expression manager javascript (use id) ; no need to submit #}
+{{ C.Html.hiddenField("java"~name,value,({
+    'id' : "java"~name,
+    'disabled' : true,
+}))
+}}
+<!-- end of answer -->

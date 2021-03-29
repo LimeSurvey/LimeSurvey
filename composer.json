@@ -2,7 +2,7 @@
 	"name" : "limesurvey/limesurvey",
 	"description" : "The most popular FOSS online survey tool on the web",
 	"homepage" : "https://www.limesurvey.org/",
-	"license" : "GPL 2.0",
+	"license": "GPL-2.0-or-later",
 	"authors" : [{
 			"name" : "LimeSurvey Team",
 			"email" : "support@limesurvey.org",
@@ -14,8 +14,8 @@
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
-		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
-		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
+		"issues" : "https://community.limesurvey.org/bug-tracker/",
+		"forum" : "https://forums.limesurvey.org"
 	},
 	"autoload": {
 		"psr-4": {
@@ -24,18 +24,39 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
-			"LimeSurvey\\Helpers\\": "application/helpers"
+			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
+			"LimeSurvey\\Helpers\\": "application/helpers",
+			"LimeSurvey\\Models\\Services\\": "application/models/services",
+			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects"
 		}
 	},
 	"require": {
-		"facebook/webdriver": "^1.4"
 	},
     "config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
-	"require-dev": {
-        "squizlabs/php_codesniffer": "2.*",
-        "phpunit/phpunit": "5.7.*"
-	}
+    "require-dev": {
+        "facebook/webdriver": "^1.4",
+        "phpunit/dbunit": "^4.0",
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpmd/phpmd" : "^2.8",
+        "phpunit/phpunit": "7.5.*",
+        "vimeo/psalm": "^4.6"
+    },
+    "scripts": {
+        "test": [
+            "! find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
+            "! find tests/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfig.php",
+            "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/psalm"
+        ]
+    }
 }

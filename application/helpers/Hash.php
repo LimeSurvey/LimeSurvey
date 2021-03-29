@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -56,7 +57,6 @@ class Hash
             } else {
                 return null;
             }
-
         }
         return $data;
     }
@@ -103,7 +103,7 @@ class Hash
         if (strpos($path, '[') === false) {
             $tokens = explode('.', $path);
         } else {
-            // FIXME !
+            // FIXME !!!
             $tokens = String::tokenize($path, '.', '[', ']');
         }
 
@@ -140,7 +140,6 @@ class Hash
                 $next = $filter;
             }
             $context = array($_key => $next);
-
         }
         return $context[$_key];
     }
@@ -214,7 +213,6 @@ class Hash
             ) {
                 return false;
             }
-
         }
         return true;
     }
@@ -550,9 +548,9 @@ class Hash
                 }
                 $data = $element;
                 reset($data);
-                $path .= $key.$separator;
+                $path .= $key . $separator;
             } else {
-                $result[$path.$key] = $element;
+                $result[$path . $key] = $element;
             }
 
             if (empty($data) && !empty($stack)) {
@@ -1017,5 +1015,4 @@ class Hash
         }
         return array_values($return);
     }
-
 }

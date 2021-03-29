@@ -20,7 +20,7 @@
 <tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %}ls-odd {% else %}ls-even{% endif %} {% if error %} has-error{% endif %}" role="radiogroup" aria-labelledby="answertext{{ myfname }}">
     <!-- Answer text /  Errors -->
     <th class="answertext control-label{% if error %} error-mandatory{% endif %}{% if answerwidth==0 %} sr-only{% endif %}" id="answertext{{ myfname }}">
-        {{ answertext }}
+        {{ processString(answertext) }}
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
             'id' : "java"~myfname,

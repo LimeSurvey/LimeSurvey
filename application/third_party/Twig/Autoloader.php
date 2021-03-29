@@ -49,6 +49,11 @@ class Twig_Autoloader
 
         if (is_file($file = dirname(__FILE__).'/../'.str_replace(array('_', "\0"), array('/', ''), $class).'.php')) {
             require $file;
+        } else {
+            $file = str_replace('\\', '/', $file);
+            if (is_file($file)) {
+                require $file;
+            }
         }
     }
 }

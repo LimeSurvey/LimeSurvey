@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This class implements the basis for dynamic models.
  * In this implementation class definitions are generated dynamically.
@@ -32,7 +33,7 @@ abstract class Dynamic extends LSActiveRecord
         if (!isset($className)) {
             $className = get_called_class();
         } elseif (is_numeric($className)) {
-            $className = get_called_class().'_'.$className;
+            $className = get_called_class() . '_' . $className;
         }
         /** @var self $model */
         $model = parent::model($className);
@@ -46,11 +47,12 @@ abstract class Dynamic extends LSActiveRecord
      */
     public static function create($id, $scenario = 'insert')
     {
-        $className = get_called_class().'_'.$id;
+        $className = get_called_class() . '_' . $id;
         return new $className($scenario);
     }
 
-    public function getDynamicId() {
+    public function getDynamicId()
+    {
         return $this->dynamicId;
     }
 }

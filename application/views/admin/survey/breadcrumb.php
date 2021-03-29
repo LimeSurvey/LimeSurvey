@@ -1,4 +1,4 @@
-<?php 
+<?php
     $extraClass = isset($extraClass) ? $extraClass : '';
     $title = isset($title) ? $title : '';
 ?>
@@ -8,7 +8,7 @@
             <div class="">
                 <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?php echo $extraClass?>">
                     <li>
-                        <a id="breadcrumb__surveylist--link" class="pjax animate home-icon" href="<?php echo App()->createUrl('admin/survey/sa/listsurveys'); ?>">
+                        <a id="breadcrumb__surveylist--link" class="pjax animate home-icon" href="<?php echo App()->createUrl('surveyAdministration/listsurveys'); ?>">
                             <img src="<?php echo LOGO_ICON_URL ?>" height="26" style="display:block;" alt="Survey list" title="<?php et('Survey list')?>" />
                         </a>
                     </li>
@@ -17,7 +17,7 @@
                         <?php if (!isset($oQuestionGroup)): ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
+                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/', ['iSurveyID' => $oSurvey->sid]); ?>">
                                     <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                         (<?php echo $oSurvey->sid; ?>)
                                     </a>
@@ -26,7 +26,7 @@
                         <?php else: ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/surveyid/'.$oSurvey->sid); ?>">
+                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/',['iSurveyID' => $oSurvey->sid]); ?>">
                                     <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                     </a>
                                 </div>
@@ -36,12 +36,12 @@
 
                             <?php if(isset($sSubaction) && !isset($oQuestionGroup) && !isset($oQuestion)):  ?>
                                 <li class="marks_as_active">
-                                    <?php echo gT($sSubaction)?>
+                                    <?php echo $sSubaction; ?>
                                 </li>
                             <?php /* else: ?>
                                 <li>
                                     <div>
-                                        <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
+                                        <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/surveyAdministration/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
                                             <?php echo gT($sSubaction);?>
                                         </a>
                                     </div>
@@ -51,21 +51,25 @@
                     <?php endif; ?>
 
                     <?php //If we are in a questiongroup view render the breadcrumb with question group ?>
-                    <?php if (isset($oQuestionGroup)): ?>
+                    <?php if (isset($oQuestionGroup) ): ?>
                         <?php //If the questiongroup view is active right now, don't link it?>
                         <?php if(!$sSubaction && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
-                                <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1);?>
+                                <?= (
+                                    $oQuestionGroup->isNewRecord
+                                    ? gT('New question group')
+                                    : viewHelper::flatEllipsizeText($oQuestionGroup->questiongroupl10ns[$oSurvey->language]->group_name, 1)
+                                ); ?>
                             </li>
                         <?php else: ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__group--detail" class="pjax animate" href="<?php echo App()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $oQuestionGroup->sid, 'gid'=>$oQuestionGroup->gid]); ?>">
-                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"..."); ?>
+                                    <a id="breadcrumb__group--detail" class="pjax animate" href="<?php echo App()->createUrl('questionGroupsAdministration/view/', ['surveyid' => $oQuestionGroup->sid, 'gid'=>$oQuestionGroup->gid]); ?>">
+                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->questiongroupl10ns[$oSurvey->language]->group_name, 1, 60, '...');?>
                                     </a>
                                 </div>
-                            </li>  
-                            <?php if(isset($sSubaction) && !isset($oQuestion)): ?>               
+                            </li>
+                            <?php if(isset($sSubaction) && !isset($oQuestion)): ?>
                                 <li class="marks_as_active">
                                     <?php echo gT($sSubaction)?>
                                 </li>
@@ -75,7 +79,7 @@
 
                     <?php //If we are in a question view render the breadcrumb with the question ?>
                     <?php if (isset($oQuestion)): ?>
-                        <?php //If the question view is active right now, don't link it?>    
+                        <?php //If the question view is active right now, don't link it?>
                         <?php if(!isset($sSubaction)): ?>
                             <li class="marks_as_active">
                                 <?php echo $oQuestion->title;?>
@@ -83,7 +87,7 @@
                         <?php else: ?>
                             <li>
                                 <div>
-                                    <a id="breadcrumb__question--detail" class="pjax animate" href="<?php echo App()->createUrl('/admin/questions/sa/view/', ['surveyid' => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]); ?>">
+                                    <a id="breadcrumb__question--detail" class="pjax animate" href="<?php echo App()->createUrl('questionAdministration/view/', ['surveyid' => $oQuestion->sid, 'gid' => $oQuestion->gid, 'qid' => $oQuestion->qid]); ?>">
                                         <?php echo $oQuestion->title; ?>
                                     </a>
                                 </div>
@@ -94,7 +98,7 @@
                             </li>
 
                         <?php endif; ?>
-                        
+
                     <?php endif; ?>
 
                     <?php if (isset($token)): ?>
@@ -106,6 +110,19 @@
                         <li class="marks_as_active">
                             <?php echo gT($active)?>
                         </li>
+                    <?php endif; ?>
+
+                    <?php if (isset($module_subaction)): ?>
+                        <li>
+                            <a id="breadcrumb__module--subaction" class="pjax animate" href="<?php echo $module_subaction_url?>">
+                                <?php echo $module_subaction; ?>
+                            </a>
+                        </li>
+                        <?php if (isset($module_current_action)): ?>
+                        <li class="marks_as_active">
+                            <?php echo $module_current_action; ?>
+                        </li>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     </ol>

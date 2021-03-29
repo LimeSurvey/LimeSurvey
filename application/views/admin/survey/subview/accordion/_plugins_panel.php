@@ -2,7 +2,12 @@
 /**
  * Optionnal plugins options panels
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPlugins');
+
 ?>
+
 <?php App()->getClientScript()->registerScript("plugins-panel-variables", "
 
     var jsonUrl = '';

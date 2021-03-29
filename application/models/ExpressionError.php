@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -54,28 +53,14 @@ class ExpressionError extends LSActiveRecord
         return 'scid';
     }
 
-    /**
-     * @param bool|mixed $condition
-     * @return mixed
-     */
-    public function getAllRecords($condition = false)
-    {
-        if ($condition != false) {
-            $this->db->where($condition);
-        }
-
-        $data = $this->db->get('expression_errors');
-
-        return $data;
-    }
 
     /**
      * @param array $data
      * @return mixed
+     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
      */
     public function insertRecords($data)
     {
         return $this->db->insert('expression_errors', $data);
     }
-
 }

@@ -4,6 +4,10 @@
     This file render the language changer out of limesurvey form when no form is required (example survey listing)
     This file can be added for a no javascript solution to change language when not inside limesurvey form
 #}
-<form method="get">
+{% if(aSurveyInfo.surveyUrl) %}
+    {{ C.Html.form(aSurveyInfo.surveyUrl,'get') }} {# auto adding needed parameters #}
+{% else %}
+    <form method="get">
+{% endif %}
     {{ include('./subviews/navigation/language_changer.twig') }}
 </form>

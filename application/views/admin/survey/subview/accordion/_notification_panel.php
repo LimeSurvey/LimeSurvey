@@ -18,6 +18,17 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
     var sURLParameters = '';
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN);
+
+$googleAnalyticsOptions = array(
+    "N"=>gT("None",'unescaped'),
+    "Y"=>gT("Use settings below",'unescaped'),
+    "G"=>gT("Use global settings",'unescaped')
+);
+$googleAnalyticsStyleOptions = array(
+    "0"=>gT("Off",'unescaped'),
+    "1"=>gT("Default",'unescaped'),
+    "2"=>gT("Survey-SID/Group",'unescaped')
+);
 ?>
 <!-- Notification panel -->
 <div id='notification-panel'  class="container-fluid">
@@ -37,24 +48,23 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <?php echo CHtml::hiddenField('datestamp',$oSurvey->datestamp); // Maybe use a readonly dropdown? ?>
                         <?php }
                         else {
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'datestamp',
-                            'value'=> $oSurvey->isDateStamp,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off'),
-                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            'value'=> $oSurvey->datestamp,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->datestamp . ']')): $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_1').modal();
                                 }
-                            }")
+                            }")*/
                             ));
-                            $this->widget('bootstrap.widgets.TbModal', array(
+                            /*$this->widget('bootstrap.widgets.TbModal', array(
                                 'id' => 'datestampModal_1',
                                 'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
                                 'header' => gt('Warning','unescaped'),
                                 'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
                                 'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
-                            ));
+                            ));*/
                             }
                         ?>
                 </div>
@@ -67,29 +77,54 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         if ($oSurvey->ipaddr!= "Y") {
                             eT("Responses will not have the IP address logged.");
                         } else {
-                            eT("Responses will have the IP address logged");
+                            eT("Responses will have the IP address logged.");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
                     } else {
-                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'ipaddr',
-                            'value'=> $oSurvey->isIpAddr,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off'),
-                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            'value'=> $oSurvey->ipaddr,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->ipaddr . ']')): $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_2').modal();
                                 }
-                            }")
+                            }")*/
                         ));
-                        $this->widget('bootstrap.widgets.TbModal', array(
+
+                        /*$this->widget('bootstrap.widgets.TbModal', array(
                             'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
                             'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
-                        ));
+                        ));*/
                         }
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" control-label" for='ipanonymize'><?php  eT("Anonymize IP address:"); ?></label>
+                <div class="">
+                    <?php
+                    if ($oSurvey->isActive) {
+                        if ($oSurvey->ipanonymize!= "Y") {
+                            eT("Responses will not have the IP address anonymized.");
+                        } else {
+                            eT("Responses will have the IP address anonymized.");
+                        } ?>
+                        <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
+                        <?php echo CHtml::hiddenField('ipanonymize',$oSurvey->ipanonymize);
+                    }else {
+                        // <!-- only visible if ipaddr is set to yes in db or switch to yes -->
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'ipanonymize',
+                            'value' => $oSurvey->ipanonymize,
+                            'selectOptions' => ($bShowInherited) ? array_merge($optionsOnOff, array(
+                                'I' => gT('Inherit', 'unescaped') . ' [' . $oSurveyOptions->ipanonymize . ']'
+                            )) : $optionsOnOff,
+                        ));
+                    }
                     ?>
                 </div>
             </div>
@@ -107,11 +142,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('refurl',$oSurvey->refurl);?>
                         <?php } else {
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'refurl',
-                            'value'=> $oSurvey->isRefUrl,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
+                            'value'=> $oSurvey->refurl,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->refurl . ']')): $optionsOnOff,
                             ));
                     } ?>
                 </div>
@@ -131,11 +165,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <?php endif; ?>
                     <?php else: ?>
                         <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'savetimings',
-                                'value'=> $oSurvey->isSaveTimings,
-                                'onLabel'=>gT('On'),
-                                'offLabel'=>gT('Off')
+                                'value'=> $oSurvey->savetimings,
+                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->savetimings . ']')): $optionsOnOff,
                             ));
                         ?>
                     <?php endif;?>
@@ -149,11 +182,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
             <div class="form-group">
                 <label class=" control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
                 <div class=""><?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'assessments',
-                        'value'=> $oSurvey->isAssessments,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->assessments,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->assessments . ']')): $optionsOnOff,
                     ));
                 ?></div>
             </div>
@@ -163,31 +195,63 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                 <label class=" control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'allowsave',
-                        'value'=> $oSurvey->isAllowSave,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->allowsave,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->allowsave . ']')): $optionsOnOff,
                     ));
                 ?>
                 </div>
             </div>
             <!-- email basic to -->
             <div class="form-group">
-                <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
+            <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                        <label class=" control-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailnotificationtobutton',
+                            'value'=> ($bShowInherited && $emailnotificationto === 'inherit' ? 'Y' : 'N'),
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
 
             <!-- email detail to  -->
             <div class="form-group">
-                <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
+            <?php $emailresponseto = $oSurvey->emailresponseto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                        <label class=" control-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailresponsetobutton',
+                            'value'=> ($bShowInherited && $emailresponseto === 'inherit' ? 'Y' : 'N'),
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
-
+        
+            <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">
                 <label class=" control-label" for="googleanalyticsapikeysetting">
@@ -197,11 +261,7 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsapikeysetting',
                         'value'=>  $oSurvey->googleanalyticsapikeysetting,
-                        'selectOptions'=>array(
-                            "N"=>gT("None",'unescaped'),
-                            "Y"=>gT("Use settings below",'unescaped'),
-                            "G"=>gT("Use global settings",'unescaped')
-                        )
+                        'selectOptions'=>$googleAnalyticsOptions,
                     ));?>
                 </div>
             </div>
@@ -209,7 +269,11 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
             <div class="form-group">
                 <label class=" control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::textField('googleanalyticsapikey',$oSurvey->googleanalyticsapikey,array('size'=>20), array('class'=>"form-control")); ?>
+                    <?php echo CHtml::textField(
+                        'googleanalyticsapikey',
+                        $oSurvey->googleanalyticsapikey,
+                        array('size'=>20, 'class' => 'form-control')
+                    ); ?>
                 </div>
             </div>
             <!-- Google Analytics style -->
@@ -219,13 +283,11 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsstyle',
                         'value'=> $oSurvey->googleanalyticsstyle ,
-                        'selectOptions'=>array(
-                        "0"=>gT("Off",'unescaped'),
-                        "1"=>gT("Default",'unescaped'),
-                        "2"=>gT("Survey-SID/Group",'unescaped'))
+                        'selectOptions'=>$googleAnalyticsStyleOptions,
                         ));?>
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </div>

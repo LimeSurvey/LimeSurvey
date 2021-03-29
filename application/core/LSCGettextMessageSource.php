@@ -23,7 +23,7 @@ class LSCGettextMessageSource extends CGettextMessageSource
         // TODO: Where is catalog set (except default value)?
         $this->catalog = $language;
 
-        $messageFile = $this->basePath.DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.$this->catalog;
+        $messageFile = $this->basePath . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . $this->catalog;
         if ($this->useMoFile) {
                     $messageFile .= self::MO_FILE_EXT;
         } else {
@@ -31,7 +31,7 @@ class LSCGettextMessageSource extends CGettextMessageSource
         }
 
         if ($this->cachingDuration > 0 && $this->cacheID !== false && ($cache = Yii::app()->getComponent($this->cacheID)) !== null) {
-            $key = self::CACHE_KEY_PREFIX.$messageFile.".".$category;
+            $key = self::CACHE_KEY_PREFIX . $messageFile . "." . $category;
             if (($data = $cache->get($key)) !== false) {
                             return unserialize($data);
             }

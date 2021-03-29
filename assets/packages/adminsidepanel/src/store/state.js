@@ -3,7 +3,7 @@ export default  function(userid) {
         surveyid: 0,
         language: '',
         maxHeight: 0,
-        inSurveyViewHeight: 400,
+        inSurveyViewHeight: 1000,
         sideBodyHeight: '100%',
         sideBarHeight: 400,
         currentUser: userid,
@@ -24,6 +24,7 @@ export default  function(userid) {
         topmenus: null,
         bottommenus: null,
         surveyActiveState: false,
-        toggleKey: Math.floor(Math.random()*10000)+'--key'
+        toggleKey: Math.floor(Math.random()*10000)+'--key',
+        allowOrganizer: true
     };
 };

@@ -146,16 +146,16 @@ switch ($errorObject->error)
 <div>
 
 <?php if( $buttons == 1 ): ?>
-        <a class="btn btn-default" href="https://www.limesurvey.org/editions-and-prices/limesurvey-ce/editions-and-prices-community" role="button" aria-disabled="false" target="_blank">
+        <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
             <?php eT("Buy a new key"); ?>
         </a>
 
-        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
 <?php if( $buttons == 3 ): ?>
-        <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">
+        <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
 <?php endif;?>

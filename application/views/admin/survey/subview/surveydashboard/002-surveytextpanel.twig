@@ -1,0 +1,94 @@
+<!-- Survey's texts -->
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <strong>{{gT("Text elements:")}}</strong>
+        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{ gT("Survey text elements") }}" href="{{ createUrl('surveyAdministration/rendersidemenulink', {'subaction': 'surveytexts', 'surveyid' : surveyid}) }}">
+            <i class="fa fa-cogs"></i>
+        </a>
+    </div>
+    <!-- List group -->
+    <ul class="list-group">
+            <!-- Description -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Description:")}}
+                </div>
+                <div class="col-8">
+                        {% if surveyTextContent.surveyls_description != '' %}
+                            {{getExpressionManagerOutput(surveyTextContent.surveyls_description)}}
+                        {% endif %}
+                </div>
+            </div>
+        </li>
+        <!-- Welcome -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Welcome:")}}
+                </div>
+                <div class="col-8">
+                        {% if surveyTextContent.surveyls_welcometext != '' %}
+                            {{getTextDisplayWidget(surveyTextContent.surveyls_welcometext, "welcome_text")}}
+                        {% endif %}
+                </div>
+            </div>
+        </li>
+
+        <!-- End message -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("End message:")}}
+                </div>
+                <div class="col-8">
+                    {% if surveyTextContent.surveyls_endtext != '' %}
+                        {{getTextDisplayWidget(surveyTextContent.surveyls_endtext, "end_text")}}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+        {% if oSurvey.showsurveypolicynotice > 0 %}
+                    <!-- Data security notice -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                 {{ gT("Privacy policy text:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_notice != '' %}
+                                    {{getTextDisplayWidget(surveyTextContent.surveyls_policy_notice, "security_notice")}}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice error -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                {{ gT("Privacy policy error text:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_error != '' %}
+                                    {{getTextDisplayWidget(surveyTextContent.surveyls_policy_error, "security_error")}}
+                                {% endif %}                               
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Data security notice label -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                {{ gT("Privacy policy label text:") }}
+                            </div>
+                            <div class="col-8">
+                                {% if surveyTextContent.surveyls_policy_notice_label != '' %}
+                                    {{getExpressionManagerOutput(surveyTextContent.surveyls_policy_notice_label)}}
+                                {% endif %}   
+                            </div>
+                        </div>
+                    </li>
+            {% endif %}
+    </ul>
+</div>

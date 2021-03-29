@@ -15,17 +15,7 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyQuotas');
 
-Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change', "
-    $('#pageSize').on('change', function()
-    {
-        $.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }});
-    });
-", LSYii_ClientScript::POS_POSTSCRIPT);
-
 ?>
-
-<!-- To update grid when pageSize is changed -->
-
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
@@ -46,82 +36,87 @@ Yii::app()->getClientScript()->registerScript('quotas_update_onpagesize_change',
             <div class="row">
                 <div class="col-sm-12 content-right">
                     <?php $this->widget('bootstrap.widgets.TbGridView', array(
-                        'dataProvider' => $oDataProvider,
-                        'id' => 'quota-grid',
-                        'emptyText'=>gT('No quotas'),
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'dataProvider'  => $oDataProvider,
+                        'id'            => 'quota-grid',
+                        'emptyText'     => gT('No quotas'),
+                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $iGridPageSize,
                                     Yii::app()->params['pageSizeOptions'],
-                                    array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
-                        'columns' => array(
+                                    array(
+                                        'class' => 'changePageSize form-control',
+                                        'style' => 'display: inline; width: auto',
+                                        'onchange' => "$.fn.yiiGridView.update('quota-grid',{ data:{ pageSize: $(this).val() }})"
+                                    )
+                                )
+                            ),
+                        'columns'       => array(
                             array(
-                                'id'=>'id',
-                                'class'=>'CCheckBoxColumn',
+                                'id'             => 'id',
+                                'class'          => 'CCheckBoxColumn',
                                 'selectableRows' => '100',
-                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'htmlOptions'    => array('style' => 'vertical-align:top'),
                             ),
                             array(
-                                'name'=>gT('Quota members'),
-                                'type'=>'raw',
-                                'htmlOptions'=>array('style'=>'vertical-align:top'),
-                                'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
+                                'name'        => gT('Quota members'),
+                                'type'        => 'raw',
+                                'htmlOptions' => array('style' => 'vertical-align:top'),
+                                'value'       => function ($oQuota) use ($oSurvey, $aQuotaItems) {
                                     /** @var Quota $oQuota */
-                                    $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
-                                        array(
-                                            'oSurvey'=>$oSurvey,
-                                            'oQuota'=>$oQuota,
-                                            'aQuotaItems'=>$aQuotaItems,
-                                        ),true).'<p>';
+                                    $out = '<p>' . $this->renderPartial('/admin/quotas/viewquotas_quota_members',
+                                            array(
+                                                'oSurvey'     => $oSurvey,
+                                                'oQuota'      => $oQuota,
+                                                'aQuotaItems' => $aQuotaItems,
+                                            ), true) . '<p>';
                                     return $out;
                                 },
                             ),
                             array(
-                                'name'=>'completeCount',
-                                'header'=>gT('Completed'),
-                                'type'=>'raw',
-                                'htmlOptions'=>array('style'=>'vertical-align:top'),
+                                'name'        => 'completeCount',
+                                'header'      => gT('Completed'),
+                                'type'        => 'raw',
+                                'htmlOptions' => array('style' => 'vertical-align:top'),
                                 // 'value'=>function($oQuota)use($oSurvey){
                                 //     $completerCount =getQuotaCompletedCount($oSurvey->sid, $oQuota->id);
                                 //     $class = ($completerCount <= $oQuota->qlimit ? 'text-warning':null);
                                 //     $span = CHtml::tag('span',array('class'=>$class),$completerCount);
                                 //     return $span;
                                 // },
-                                'footer'=>$totalcompleted,
+                                'footer'      => $totalcompleted,
                             ),
                             array(
-                                'name'=>'qlimit',
-                                'header'=>gT('Limit'),
-                                'htmlOptions'=>array('style'=>'vertical-align:top'),
-                                'footer'=>$totalquotas,
+                                'name'        => 'qlimit',
+                                'header'      => gT('Limit'),
+                                'htmlOptions' => array('style' => 'vertical-align:top'),
+                                'footer'      => $totalquotas,
                             ),
                             array(
-                                'header'=>gT("Action"),
-                                'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
+                                'header'            => gT("Action"),
+                                'value'             => function ($oQuota) use ($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems) {
                                     /** @var Quota $oQuota */
                                     return $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
-                                            'oSurvey'=>$oSurvey,
-                                            'oQuota'=>$oQuota,
-                                            'editUrl'=>$aEditUrls[$oQuota->getPrimaryKey()],
-                                            'deleteUrl'=>$aDeleteUrls[$oQuota->getPrimaryKey()],
-                                            'aQuotaItems'=>$aQuotaItems,
-                                        ),true);
+                                            'oSurvey'     => $oSurvey,
+                                            'oQuota'      => $oQuota,
+                                            'editUrl'     => $aEditUrls[$oQuota->getPrimaryKey()],
+                                            'deleteUrl'   => $aDeleteUrls[$oQuota->getPrimaryKey()],
+                                            'aQuotaItems' => $aQuotaItems,
+                                        ), true);
                                 },
-                                'type' => 'raw',
-                                'headerHtmlOptions'=>array(
-                                    'style'=>'text-align:right;',
+                                'type'              => 'raw',
+                                'headerHtmlOptions' => array(
+                                    'style' => 'text-align:right;',
                                 ),
-                                'htmlOptions'=>array(
-                                    'style'=>'text-align: right; vertical-align:top',
+                                'htmlOptions'       => array(
+                                    'style' => 'text-align: right; vertical-align:top',
                                 ),
                             ),
 
                         ),
-                        'itemsCssClass' =>'table-quotas table-striped table-condensed',
-                        'ajaxUpdate' => 'quota-grid',
+                        'itemsCssClass' => 'table-quotas table-striped table-condensed',
+                        'ajaxUpdate'    => 'quota-grid',
                     ));
                     ?>
                 </div>

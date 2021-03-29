@@ -1,15 +1,15 @@
 {% extends "./subviews/logincomponents/captcha.twig" %}
 
     {% block formheading %}
-        {{ gT("To participate in this restricted survey, you need a valid token.") }}
+        {{ gT("To participate in this restricted survey, you need a valid access code.") }}
     {% endblock %}
 
     {% block description %}
         <p class='{{ aSurveyInfo.class.maincoldivdivbp }} text-info' {{ aSurveyInfo.attr.maincoldivdivbp }}>
             {% if aSurveyInfo.aForm.token == null  %}
-                {{ gT("If you have been issued a token, please enter it in the box below and click continue.") }}
+                {{ gT("If you have been issued an access code, please enter it in the box below and click continue.") }}
             {% else %}
-                {{ gT("Please confirm the token by answering the security question below and click continue.") }}
+                {{ gT("Please confirm the access code by answering the security question below and click continue.") }}
             {% endif %}
         </p>
     {% endblock %}
@@ -20,10 +20,10 @@
         <div class='{{ aSurveyInfo.class.maincolform }} form-group' {{ aSurveyInfo.attr.maincolform }}>
             <label class='{{ aSurveyInfo.class.maincolformlabel }} control-label col-sm-3' {{ aSurveyInfo.attr.maincolformlabel }}>
                 <small class="{{ aSurveyInfo.class.maincolformlabelsmall }} text-danger asterisk fa fa-asterisk small " {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
-                {{ gT("Token:") }}
+                {{ gT("Access code:") }}
                 <span class="{{ aSurveyInfo.class.maincolformlabelspan }} sr-only text-danger asterisk " {{ aSurveyInfo.attr.maincolformlabelspan }}>
                     ( {{ gT("Mandatory") }} )
-                <span>
+                </span>
 
             </label>
 
@@ -61,7 +61,7 @@
                     <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }} text-danger asterisk fa fa-asterisk pull-left small"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
                     <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                         ( {{ gT("Mandatory") }} )
-                    <span>
+                    </span>
                 </label>
                 <div class="col-sm-2">
                     <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >

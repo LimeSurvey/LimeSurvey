@@ -198,7 +198,7 @@ class PluginEvent
     /**
      * Set content for $plugin, replacing any preexisting content
      * 
-     * @param string $plugin The plugin setting the context or a string name
+     * @param string|PluginBase $plugin The plugin setting the context or a string name
      * @param string $content
      * @param string $cssClass
      * @param string $id

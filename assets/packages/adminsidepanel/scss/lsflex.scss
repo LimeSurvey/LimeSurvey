@@ -38,6 +38,9 @@ $x-directions: center flex-start flex-end space-between space-around;
         .grow-#{$i} {
             flex-grow: $i;
         }
+        .shrink-#{$i} {
+            flex-shrink: $i;
+        }
         .col-#{$i} {
             width: 100*( $i/12)*1%;
         }

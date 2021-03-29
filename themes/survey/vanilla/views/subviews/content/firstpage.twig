@@ -17,21 +17,20 @@
 
 {# render the layout_global content block #}
 
+{# Include the alert for no JavaScript #}
+{{ include('./subviews/messages/no_js_alert.twig') }}
+
+{# Include the language changer selector #}
+{{ include('./subviews/navigation/language_changer_first_page.twig') }}
+
 {# Include the form opening tag #}
 {{ include('./subviews/header/start_form.twig') }} <!-- main form -->
 
-    {# This will display the script and the hidden inputs needed for Expression Manager #}
+    {# This will display the script and the hidden inputs needed for ExpressionScript Engine #}
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-
-    {# Include the alert for no JavaScript #}
-    {{ include('./subviews/messages/no_js_alert.twig') }}
-
-    {# Include the language changer selector #}
-    {{ include('./subviews/navigation/language_changer.twig') }}
 
     {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
     {{ include('./subviews/messages/welcome.twig') }}
-    
 
     {{ include('./subviews/privacy/privacy.twig') }}
 

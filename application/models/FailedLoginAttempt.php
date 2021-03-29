@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    die('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -55,7 +54,7 @@ class FailedLoginAttempt extends LSActiveRecord
      */
     public function deleteAttempts()
     {
-        $ip = substr(getIPAddress(), 0, 40);
+        $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
         $this->deleteAllByAttributes(array('ip' => $ip));
     }
 
@@ -67,8 +66,8 @@ class FailedLoginAttempt extends LSActiveRecord
     public function isLockedOut()
     {
         $isLockedOut = false;
-        $ip = substr(getIPAddress(), 0, 40);
-        $criteria = new CDbCriteria;
+        $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
+        $criteria = new CDbCriteria();
         $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
         $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
 
@@ -97,29 +96,30 @@ class FailedLoginAttempt extends LSActiveRecord
     }
 
     /**
-     * Creates an attempt
+     * Records an failed login-attempt if IP is not already locked out
      *
      * @access public
      * @return true
      */
     public function addAttempt()
     {
-        $timestamp = date("Y-m-d H:i:s");
-        $ip = substr(getIPAddress(), 0, 40);
-        $row = $this->findByAttributes(array('ip' => $ip));
-
-        if ($row !== null) {
-            $row->number_attempts = $row->number_attempts + 1;
-            $row->last_attempt = $timestamp;
-            $row->save();
-        } else {
-            $record = new FailedLoginAttempt;
-            $record->ip = $ip;
-            $record->number_attempts = 1;
-            $record->last_attempt = $timestamp;
-            $record->save();
+        if (!$this->isLockedOut()) {
+            $timestamp = date("Y-m-d H:i:s");
+            $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
+            $row = $this->findByAttributes(array('ip' => $ip));
+    
+            if ($row !== null) {
+                $row->number_attempts = $row->number_attempts + 1;
+                $row->last_attempt = $timestamp;
+                $row->save();
+            } else {
+                $record = new FailedLoginAttempt();
+                $record->ip = $ip;
+                $record->number_attempts = 1;
+                $record->last_attempt = $timestamp;
+                $record->save();
+            }
         }
-
         return true;
     }
 }

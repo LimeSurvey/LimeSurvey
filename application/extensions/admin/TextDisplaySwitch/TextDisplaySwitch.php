@@ -5,6 +5,7 @@ class TextDisplaySwitch extends CWidget {
     public $textToDisplay = "";
     public $abbreviationSize = 120;
     public $abbreviationSign = '...';
+    public $returnHtml = false;
 
     public function run() {
         //clean up the widgets name to be js friendly
@@ -12,6 +13,11 @@ class TextDisplaySwitch extends CWidget {
         
         $this->registerScripts();
         $outView = (strlen($this->textToDisplay) > $this->abbreviationSize) ? 'default' : 'short';
+        
+        if( $this->returnHtml ){
+            return $this->render($outView, null, true);
+        }
+
         $this->render($outView);
 
     }

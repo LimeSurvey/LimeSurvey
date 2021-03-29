@@ -243,6 +243,7 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	 * @param array $value cookie parameters, valid keys include: lifetime, path,
 	 * domain, secure, httponly. Note that httponly is all lowercase.
 	 * @see http://us2.php.net/manual/en/function.session-set-cookie-params.php
+	 * @see patch from https://github.com/yiisoft/yii/pull/4313/files 
 	 */
 	public function setCookieParams($value)
 	{
@@ -250,12 +251,25 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 		extract($data);
 		extract($value);
 		$this->freeze();
-		if(isset($httponly))
+		if(isset($httponly) && isset($samesite))
+		{
+			if(version_compare(PHP_VERSION,'7.3.0','>='))
+				session_set_cookie_params(array('lifetime'=>$lifetime,'path'=>$path,'domain'=>$domain,'secure'=>$secure,'httponly'=>$httponly,'samesite'=>$samesite));
+			else
+			{
+				// Work around for setting sameSite cookie prior PHP 7.3
+				// https://stackoverflow.com/questions/39750906/php-setcookie-samesite-strict/46971326#46971326
+				$path .= '; samesite=' . $samesite;
+				session_set_cookie_params($lifetime,$path,$domain,$secure,$httponly);
+			}
+		}
+		else if(isset($httponly))
 			session_set_cookie_params($lifetime,$path,$domain,$secure,$httponly);
 		else
 			session_set_cookie_params($lifetime,$path,$domain,$secure);
 		$this->unfreeze();
 	}
+
 
 	/**
 	 * @return string how to use cookie to store session ID. Defaults to 'Allow'.

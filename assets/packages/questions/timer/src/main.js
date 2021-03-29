@@ -6,11 +6,12 @@
 
 import TimerConstructor from './timeclass';
 
-window.countdown = function countdown(questionid, timer, action, warning, warning2, warninghide, warning2hide, disable) {
+window.countdown = function countdown(questionid, surveyid, timer, action, warning, warning2, warninghide, warning2hide, disable) {
     window.timerObjectSpace = window.timerObjectSpace || {};
     if (!window.timerObjectSpace[questionid]) {
         window.timerObjectSpace[questionid] = new TimerConstructor({
             questionid: questionid,
+            surveyid: surveyid,
             timer: timer,
             action: action,
             warning: warning,

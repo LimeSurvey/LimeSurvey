@@ -18,12 +18,12 @@ if( ENVIRONEMENT=='production' ) {
     output = {
       file: 'build/lstutorial.min.js',
       format: 'umd',
-      sourcemap: true,
+      sourcemap: false,
     };
     plugins = [
         replace({
             ENVENVIRONEMENT:ENVIRONEMENT,
-            'process.env.NODE_ENV': ENVIRONEMENT,
+            'process.env.NODE_ENV': JSON.stringify(ENVIRONEMENT),
             'process.env.VUE_ENV': JSON.stringify('browser')
         }),
         babel({

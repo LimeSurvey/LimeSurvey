@@ -8,7 +8,7 @@ return [
     // General stuff ---------------------------------------
     // --------------------------------------------------
 
-    // Expression Manager
+    // ExpressionScript Engine
 
     ['expressionsTest', ['route'=>'expressions']],
     ['expressionsFunctions',['route'=>'expressions/sa/functions']],

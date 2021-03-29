@@ -1,5 +1,5 @@
 <!-- Modal error if no item selected -->
-<div id="error-first-select" class="modal fade" role="dialog">
+<div id="error-first-select<?php echo $this->gridid; ?>" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

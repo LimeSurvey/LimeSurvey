@@ -4,4 +4,4 @@
  *
  */
 ?>
-<?php echo gT("To participate in this restricted survey, you need a valid token."); ?>
+<?php echo gT("To participate in this restricted survey, you need a valid access code."); ?>

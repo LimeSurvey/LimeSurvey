@@ -1,9 +1,12 @@
 <?php
 /**
  * Render the selector for question massive actions.
- * @var $model      The question model
- * @var $oSurvey    The survey object
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
+/** @var Survey $oSurvey */
+
 ?>
 
 <!-- Rendering massive action widget -->
@@ -32,7 +35,7 @@
             // li element
             'type' => 'action',
             'action' => 'delete',
-            'url' => App()->createUrl('/admin/questions/sa/deleteMultiple/'),
+            'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
             'iconClasses' => 'text-danger fa fa-trash',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',
@@ -41,6 +44,8 @@
             'actionType' => 'modal',
             'modalType' => 'yes-no',
             'keepopen' => 'yes',
+            'showSelected'  => 'yes',
+            'selectedUrl'   => App()->createUrl('questionAdministration/renderItemsSelected/'),
             'sModalTitle' => gT('Delete question(s)'),
             'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
@@ -51,7 +56,7 @@
             // li element
             'type' => 'action',
             'action' => 'set-group-position',
-            'url' => App()->createUrl('/admin/questions/sa/setMultipleQuestionGroup/'),
+            'url' => App()->createUrl('questionAdministration/setMultipleQuestionGroup/'),
             'iconClasses' => 'fa fa-folder-open',
             'text' => gT('Set question group and position'),
             'grid-reload' => 'yes',
@@ -63,7 +68,7 @@
             'yes' => gT('Apply'),
             'no' => gT('Cancel'),
             'sModalTitle' => gT('Set question group'),
-            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_question_group_position', array('model' => $model, 'oSurvey' => $oSurvey), true),
+            'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_question_group_position', array('model' => $model, 'oSurvey' => $oSurvey), true),
         );
     }
 
@@ -72,7 +77,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-mandatory',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionMandatoryState/'),
         'iconClasses' => 'fa fa-asterisk text-danger',
         'text' => gT('Set "Mandatory" state'),
         'grid-reload' => 'yes',
@@ -84,7 +89,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set "Mandatory" state'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array(), true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
     );
 
     // Set CSS Class
@@ -92,7 +97,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-css',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-css3',
         'text' => gT('Set CSS class'),
         'grid-reload' => 'yes',
@@ -104,7 +109,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set CSS class'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array(), true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_css_class', ['model' => $model], true),
     );
 
     // Set Statistics
@@ -112,7 +117,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-statistics',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-bar-chart',
         'text' => gT('Set statistics options'),
         'grid-reload' => 'yes',
@@ -124,7 +129,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_statistics_options', array(), true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
     );
 
     // Separator
@@ -142,13 +147,13 @@
 
     if(!$oSurvey->isActive) {
         // Set other
-        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by /admin/questions/sa/setMultipleOther/ )
+        // DEPEND IF SURVEY IS ACTIVE !!!! (checked by questionEditor/changeMultipleQuestionOtherState )
         // TODO: don't show that action if survey is active
         $aActions[] = array(
             // li element
             'type' => 'action',
             'action' => 'set-other',
-            'url' => App()->createUrl('/admin/questions/sa/setMultipleOther/'),
+            'url' => App()->createUrl('questionAdministration/changeMultipleQuestionOtherState'),
             'iconClasses' => 'fa fa-dot-circle-o',
             'text' => gT('Set "Other" state'),
             'grid-reload' => 'yes',
@@ -160,7 +165,7 @@
             'no' => gT('Cancel'),
             'keepopen' => 'no',
             'sModalTitle' => gT('Set "Other" state'),
-            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array(), true),
+            'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
         );
     }    
 
@@ -169,7 +174,7 @@
         // li element
         'type' => 'action',
         'action' => 'set-subquestions-answers-sort',
-        'url' => App()->createUrl('/admin/questions/sa/setMultipleAttributes/'),
+        'url' => App()->createUrl('questionAdministration/changeMultipleQuestionAttributes/'),
         'iconClasses' => 'fa fa-sort',
         'text' => gT('Present subquestions/answer options in random order'),
         'grid-reload' => 'yes',
@@ -181,7 +186,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'false',
         'sModalTitle' => gT('Present subquestions/answer options in random order'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_subquestansw_order', array(), true),
+        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_subquestansw_order',  ['model' => $model], true),
     );
 
 

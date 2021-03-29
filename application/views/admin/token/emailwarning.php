@@ -2,13 +2,13 @@
 <div class="jumbotron message-box message-box-warning">
     <h2><?php eT("Warning"); ?></h2>
     <?php echo CHtml::form(array("admin/tokens/sa/email/action/{$sSubAction}/surveyid/{$surveyid}"), 'post', ['id' => 'tokenSubmitInviteForm']); ?>
-        <?php echo sprintf(gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s seconds."), '<span id="tokensendcounter">20</span>'); ?>
+        <span id="tokenSendNotice"><?php printf(ngT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s second.|There are more emails pending than can be sent in one batch. Continue sending emails by clicking below, or wait %s{n}%s seconds.", Yii::app()->getConfig('sendingrate')), '<span id="tokenSendCounter">', '</span>'); ?></span>
         <br />
         <br />
         <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br />
         <br />
-        <input type='submit' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
+        <input type='button' class="btn btn-default" id="sendTokenInvitationsNow" value='<?php eT("Continue"); ?>' />
         <span>&nbsp;&nbsp;&nbsp;</span><button id="cancelAutomaticSubmission" class="btn btn-danger"><?php eT("Cancel automatic sending"); ?></button>
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
@@ -47,7 +47,7 @@
     <div class="progress">
         <div class="progress-bar progress-bar-striped active" id="countdown-progress" role="progressbar" aria-valuenow="70"
         aria-valuemin="0" aria-valuemax="100" style="width:100%">
-            <span class="sr-only">20 seconds to go</span>
+            <span class="sr-only"><?php neT("{n} second to go|{n} seconds to go", Yii::app()->getConfig('sendingrate')); ?></span>
         </div>
     </div>
 </div>
@@ -56,27 +56,42 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
     $('#countdown-progress').css('-webkit-animation-duration', '1s');
     $('#countdown-progress').css('-moz-animation-duration', '1s');
     $('#countdown-progress').css('animation-duration', '1s');
-    window.countdownTimerTokenSend = 20;
+    window.countdownTimerTokenSend = " . Yii::app()->getConfig('sendingrate') . ";
+
+    var submitInviteForm = function() {
+        $('body').append('<div class=\"overlay\"></div>');
+        $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
+        $('#cancelAutomaticSubmission').remove();
+        $('#sendTokenInvitationsNow').remove();
+        $('#tokenSubmitInviteForm').trigger('submit');
+    };
+
     var intervaltoRenew = window.setInterval(function(){
         if(window.countdownTimerTokenSend === 0){
-            $('body').append('<div class=\"overlay\"></div>');
-            $('#sendTokenInvitationsNow').after('<p class=\"text-center\"><i class=\"fa fa-cog fa-spin\"></i></p>');
-            $('#cancelAutomaticSubmission').remove();
-            $('#sendTokenInvitationsNow').remove();
-            $('#tokenSubmitInviteForm').trigger('submit');
+            submitInviteForm();
             clearInterval(intervaltoRenew);
             return;
         }
         window.countdownTimerTokenSend--;
-        $('#countdown-progress').css('width', (window.countdownTimerTokenSend*5)+'%');
-        $('#tokensendcounter').text(window.countdownTimerTokenSend);
+        $('#countdown-progress').css('width', (window.countdownTimerTokenSend*100/" . Yii::app()->getConfig('sendingrate') . ")+'%');
+        $('#tokenSendCounter').text(window.countdownTimerTokenSend);
     },1000);
+
+    $('#sendTokenInvitationsNow').on('click', function(evt){
+        clearInterval(intervaltoRenew);
+        $('#countdown-progress').css('-webkit-animation-duration', '500ms');
+        $('#countdown-progress').css('-moz-animation-duration', '500ms');
+        $('#countdown-progress').css('animation-duration', '500ms');
+        $('#countdown-progress').css('width', '0');
+        $('#tokensendcounter').text('0');
+        submitInviteForm();
+    });        
 
     $('#cancelAutomaticSubmission').on('click', function(evt){
         evt.preventDefault();
         clearInterval(intervaltoRenew);
         $('#countdown-progress').css('width', '0%');
-        $('#tokensendcounter').text('X');
+        $('#tokenSendNotice').text('" . gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.") . "');
     });
 
 ", LSYii_ClientScript::POS_POSTSCRIPT);

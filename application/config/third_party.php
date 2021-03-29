@@ -1,6 +1,7 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+/** @var array $userConfig */
 
 /**
  * This file contains package definition for third party libraries.
@@ -27,8 +28,8 @@ return array(
         'basePath' => 'third_party.jquery',
         'position' =>CClientScript::POS_HEAD,
         'js' => array(
-            'jquery-3.4.1'.$minVersion.'.js',
-            'jquery-migrate-3.1.0'.$minVersion.'.js',
+            'jquery-3.5.1'.$minVersion.'.js',
+            'jquery-migrate-3.3.2'.$minVersion.'.js',
         )
     ),
 
@@ -269,6 +270,7 @@ return array(
     'ace' => array(
         'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             $minFolder.'/ace.js'
         ),
@@ -346,6 +348,9 @@ return array(
     'jquery-datatable' => array(
         'basePath' => 'third_party.datatables',
         'position' => CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/datatables'.$minVersion.'.css'
+        ),
         'js' => array(
             'js/jquery.dataTables'.$minVersion.'.js',
             'js/dataTables.bootstrap'.$minVersion.'.js'
@@ -389,10 +394,11 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        )
-    ),
+            )
+        ),
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
+        'devBaseUrl' => 'third_party/jquery-actual',
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
             'jquery.actual'.$minVersion.'.js'

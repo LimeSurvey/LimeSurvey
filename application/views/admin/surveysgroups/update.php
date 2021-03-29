@@ -9,11 +9,14 @@
     <?php $this->renderPartial('super/fullpagebar_view', array(
             'fullpagebar' => array(
                 'returnbutton'=>array(
-                    'url'=>'admin/survey/sa/listsurveys#surveygroups',
+                    'url'=>'surveyAdministration/listsurveys#surveygroups',
                     'text'=>gT('Close'),
                 ),
                 'savebutton' => array(
-                    'form' => 'surveys-groups-form'
+                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
+                ),
+                'saveandclosebutton' => array(
+                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
                 )
             )
         )); ?>
@@ -21,7 +24,9 @@
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
-            <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
+            <?php if($model->hasPermission('group','read')):?>
+                <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
+            <?php endif;?>
             <li><a href="#templateSettingsFortThisGroup"><?php eT('Themes options for this survey group'); ?></a></li>
         </ul>
         <div class="tab-content">
@@ -36,35 +41,51 @@
                     ?>
                 </div>
             </div>
-            <div id="settingsForThisGroup" class="tab-pane">
-                <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
-            </div>
+            <?php if($model->hasPermission('group','read')):?>
+                <div id="settingsForThisGroup" class="tab-pane">
+                    <?php $this->renderPartial('./surveysgroups/_form', $_data_); ?>
+                </div>
+            <?php endif;?>
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                         $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize )); 
+                        Yii::app()->getController()->renderPartial('/themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
+                         //$this->renderPartial('//themeOptions/surveythemelist', array( 'oSurveyTheme'=> $templateOptionsModel, 'pageSize'=>$pageSize ));
                     }
                 ?>
             </div>
+
         </div>
     </div>
 </div>
 <script>
+
     $('#surveygrouptabsystem a').click(function (e) {
         window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
-        console.log($(this).attr('href'));
-        if($(this).attr('href') == '#templateSettingsFortThisGroup'){
-            $('#save-form-button').attr('data-form-id', 'template-options-form');
-        } else {
-            $('#save-form-button').attr('data-form-id', 'surveys-groups-form');
+        $("surveygrouptabsystem.last a").unbind('click');
 
+        if($(this).attr('href') == '#surveysInThisGroup'){
+            e.preventDefault();
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#settingsForThisGroup'){
+            //e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#securityForThisGroup'){
+            e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-permission');
+            $(this).tab('show');
+        } else if($(this).attr('href') == '#templateSettingsFortThisGroup'){
+            e.preventDefault();
+            $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'template-options-form');
+            $(this).tab('show');
         }
     });
+
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
-            $('#surveysystem').find('a[href='+window.location.hash+']').trigger('click');
+            $('#surveygrouptabsystem').find('a[href='+window.location.hash+']').trigger('click');
         }
+
     })
 </script>

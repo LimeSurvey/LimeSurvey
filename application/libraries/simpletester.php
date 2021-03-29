@@ -135,7 +135,7 @@ class SimpleTester
 */
 class ShowPasses extends HtmlReporter
 {
-    function ShowPasses()
+    function __construct()
     {
         $this->HtmlReporter();
     }

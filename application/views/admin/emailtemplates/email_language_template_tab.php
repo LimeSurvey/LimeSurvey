@@ -10,7 +10,7 @@ $script = array();
             <div class=''>
                 <?php
                 $sSubjectField=$details['field']['subject'];
-                echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'size'=>80)); ?>
+                echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'maxlength'=>255)); ?>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@ $script = array();
             <label class=' control-label'><?php et('Actions:');?></label>
             <div class=''>
                 <a class='btn btn-default' id="validate_expression_<?=$grouplang?>_<?=$tab?>" data-parent-element="#in_survey_common" data-target="modal" data-remote-link="<?=App()->createUrl('admin/validate',['sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab])?>" data-footer="false" data-modal-title="<?=$details['title']?>" > 
-                    <?=gT("Validate expressions")?> 
+                    <?=gT("Validate ExpressionScript")?> 
                 </a> 
                 <?php
                 $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
@@ -109,8 +109,8 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit relevance equation') ?>" data-toggle="tooltip" data-placement="bottom">
-                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit relevance equation')?></span>
+            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit condition') ?>" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit condition')?></span>
             </button>
             <input class="relevance" type="hidden">
         </td>

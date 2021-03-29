@@ -1,0 +1,12 @@
+{#
+/**
+ * render the error text when user submit a page without filling a mandatory question
+ * @var sMandatoryText : string
+ * @var part : part of mandatory (ranking, multiple etc …)
+ * @var qInfo : from ExpressionManager
+ */
+#}
+<div class='ls-question-mandatory ls-question-mandatory-{{part}} text-danger ' role='alert'>
+    <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
+    {{ sMandatoryText }}
+</div>

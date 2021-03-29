@@ -1,5 +1,7 @@
 'use strict'
 import Vue from 'vue';
+
+Vue.config.devtools = true;
 class EventBus extends Vue {
 
     $getEventsBound() {
@@ -11,18 +13,30 @@ class EventBus extends Vue {
         console.ls.log("Emitting -> ", event, ...args);
         if(this.eventsBound != undefined && this.eventsBound[event] != undefined) {
             this.eventsBound[event].forEach(element => {
-                element[0](...args);
+                // element[0](...args);
             });
         }
         return super.$emit(event, ...args);
     }
-    // Override Vue's $emit to call a logger for any event bound.
+    // Override Vue's $on to call a logger for any event bound.
     $on(event, ...args) {
         this.eventsBound = this.eventsBound || {};
         this.eventsBound[event] = this.eventsBound[event] || [];
         this.eventsBound[event].push(args);
         console.ls.log("Binding -> ", event, ...args);
-        return super.$emit(event, ...args);
+        return super.$on(event, ...args);
+    }
+
+    // Override Vue's $emit to call a logger for any event bound.
+    $off(event, ...args) {
+        this.eventsBound = this.eventsBound || {};
+        if(this.eventsBound[event] != undefined ) {
+            this.eventsBound[event] = this.eventsBound[event].filter((arg) => {
+                args.indexOf(arg) == -1;
+            });
+        }
+        console.ls.log("Remove Binding -> ", event, ...args);
+        return super.$off(event, ...args);
     }
 }
 

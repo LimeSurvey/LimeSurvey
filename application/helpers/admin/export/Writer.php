@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Contains functions and properties that are common to all writers.
 * All extending classes must implement the internalWrite(...) method and
@@ -32,8 +33,8 @@ abstract class Writer implements IWriter
     {
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
-        $this->filename = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR.randomChars(40);
-        $this->webfilename = 'results-survey'.$oSurvey->id;
+        $this->filename = Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
+        $this->webfilename = 'results-survey' . $oSurvey->id;
     }
 
     /**
@@ -52,7 +53,7 @@ abstract class Writer implements IWriter
                 $question = $survey->fieldMap[$column];
             } else {
                 // Token field
-                $question = array('gid'=>0, 'qid'=>'');
+                $question = array('gid' => 0, 'qid' => '');
             }
             $question['index'] = $index;
             $aGroupMap[intval($question['gid'])][] = $question;
@@ -104,7 +105,7 @@ abstract class Writer implements IWriter
         if (isset($oSurvey->fieldMap[$fieldName])) {
             $aField = $oSurvey->fieldMap[$fieldName];
             $aField['question'] = '';
-            $subHeading = trim(viewHelper::getFieldText($aField, array('separator'=>array('[', ']'), 'abbreviated'=>$oOptions->headingTextLength, 'ellipsis'=>".. ")));
+            $subHeading = trim(viewHelper::getFieldText($aField, array('separator' => array('[', ']'), 'abbreviated' => $oOptions->headingTextLength, 'ellipsis' => ".. ")));
             if ($subHeading) {
                             return " {$subHeading}";
             }
@@ -140,7 +141,7 @@ abstract class Writer implements IWriter
     public function getHeadingCode(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName])) {
-            return viewHelper::getFieldCode($oSurvey->fieldMap[$fieldName], array('separator'=>array('[', ']'), 'LEMcompat'=>$oOptions->useEMCode));
+            return viewHelper::getFieldCode($oSurvey->fieldMap[$fieldName], array('separator' => array('[', ']'), 'LEMcompat' => $oOptions->useEMCode));
         } else {
             return $fieldName;
         }
@@ -157,7 +158,7 @@ abstract class Writer implements IWriter
     public function getHeadingText(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
     {
         if (isset($oSurvey->fieldMap[$fieldName])) {
-            $textHead = $this->getFullQuestionHeading($oSurvey, $oOptions, $fieldName).$this->getFullFieldSubHeading($oSurvey, $oOptions, $fieldName);
+            $textHead = $this->getFullQuestionHeading($oSurvey, $oOptions, $fieldName) . $this->getFullFieldSubHeading($oSurvey, $oOptions, $fieldName);
         } elseif (isset($oSurvey->tokenFields[$fieldName])) {
             $textHead = $oSurvey->tokenFields[$fieldName]['description'];
         } else {
@@ -181,11 +182,11 @@ abstract class Writer implements IWriter
     public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName, $sValue)
     {
         return $this->transformResponseValue(
-                $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
-                $oSurvey->fieldMap[$fieldName]['type'],
-                $oOptions,
-                $fieldName
-                );
+            $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
+            $oSurvey->fieldMap[$fieldName]['type'],
+            $oOptions,
+            $fieldName
+        );
     }
 
     /**
@@ -200,11 +201,11 @@ abstract class Writer implements IWriter
     public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName, $sValue)
     {
         return $this->transformResponseValue(
-                $oSurvey->getShortAnswer($fieldName, $sValue),
-                $oSurvey->fieldMap[$fieldName]['type'],
-                $oOptions,
-                $fieldName
-                );
+            $oSurvey->getShortAnswer($fieldName, $sValue),
+            $oSurvey->fieldMap[$fieldName]['type'],
+            $oOptions,
+            $fieldName
+        );
     }
 
     /**
@@ -224,18 +225,20 @@ abstract class Writer implements IWriter
     protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null)
     {
         //The following if block handles transforms of Ys and Ns.
-        if (($oOptions->convertN || $oOptions->convertY) &&
-        isset($fieldType) &&
-        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y')) {
+        if (
+            ($oOptions->convertN || $oOptions->convertY) &&
+            isset($fieldType) &&
+            ($fieldType == Question::QT_M_MULTIPLE_CHOICE || $fieldType == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS || $fieldType == Question::QT_Y_YES_NO_RADIO)
+        ) {
             if (($value == 'N' || ($value == '' && !is_null($value))) && $oOptions->convertN) {
                 $value = $oOptions->nValue;
-            } else if ($value == 'Y' && $oOptions->convertY) {
+            } elseif ($value == 'Y' && $oOptions->convertY) {
                 $value = $oOptions->yValue;
             }
         }
         // Quote equal signs to prevent CSV injection attacks
-        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0]=='=') {
-            $value="'".$value;
+        if ($oOptions->csvMaskEquations && isset($value[0]) && $value[0] == '=') {
+            $value = "'" . $value;
         }
         return $value;
     }
@@ -273,7 +276,7 @@ abstract class Writer implements IWriter
                         $value = $this->getFullHeading($oSurvey, $oOptions, $sColumn);
                         break;
                     case 'codetext':
-                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn).$oOptions->headCodeTextSeparator.$this->getHeadingText($oSurvey, $oOptions, $sColumn);
+                        $value = $this->getHeadingCode($oSurvey, $oOptions, $sColumn) . $oOptions->headCodeTextSeparator . $this->getHeadingText($oSurvey, $oOptions, $sColumn);
                         break;
                     case 'code':
                     default:
@@ -288,18 +291,32 @@ abstract class Writer implements IWriter
 
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
         if ($oSurvey->responses->rowCount == 0) {
-                foreach ($oOptions->selectedColumns as $column) {
-                    $elementArray[] = "";
-                }
+            foreach ($oOptions->selectedColumns as $column) {
+                $elementArray[] = "";
+            }
             $this->outputRecord($headers, $elementArray, $oOptions);
         }
 
         // If no empty survey, render/export responses array.
         foreach ($oSurvey->responses as $response) {
+            // prepare the data for decryption
+            $sTokenTableName = 'tokens_' . $oSurvey->id;
+            $aResponse = $response;
+            if (tableExists($sTokenTableName)) {
+                $oToken = Token::model($oSurvey->id);
+                $oToken->setAttributes($response, false);
+                $oToken->decrypt();
+                $aResponse = array_merge($aResponse, $oToken->attributes);
+            }
+            $oResponse = Response::model($oSurvey->id);
+            $oResponse->setAttributes($response, false);
+            $oResponse->decrypt();
+            $aResponse = array_merge($aResponse, $oResponse->attributes);
+
             $elementArray = array();
 
             foreach ($oOptions->selectedColumns as $column) {
-                $value = $response[$column];
+                $value = $aResponse[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time') {
                     switch ($oOptions->answerFormat) {
                         case 'long':

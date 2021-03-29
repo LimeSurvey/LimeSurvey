@@ -71,7 +71,7 @@
     <p><strong><?php eT("Copy of survey is completed."); ?></strong></p>
 
     <p>
-        <a class="btn btn-default btn-large" href='<?php echo $this->createUrl("admin/survey/sa/view/".$aImportResults['newsid']); ?>'>
+        <a class="btn btn-default btn-large" href='<?php echo $this->createUrl("surveyAdministration/view/".$aImportResults['newsid']); ?>'>
             <?php eT("Go to survey"); ?>
         </a>
     </p>

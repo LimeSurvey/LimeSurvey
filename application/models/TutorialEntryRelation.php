@@ -28,10 +28,10 @@ class TutorialEntryRelation extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('teid, tid', 'required'),
-            array('teid, tid, uid, sid', 'numerical', 'integerOnly'=>true),
+            array('teid, tid, uid, sid', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('teid, tid, uid, sid', 'safe', 'on'=>'search'),
+            array('teid, tid, uid, sid', 'safe', 'on' => 'search'),
         );
     }
 
@@ -44,7 +44,7 @@ class TutorialEntryRelation extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'tutorials' => array(self::HAS_ONE, 'Tutorial', 'tid', 'together' => true),
-            'tutorialEntry' => array(self::HAS_ONE, 'TutorialEntry', 'teid', 'order'=>'ordering ASC', 'together' => true),
+            'tutorialEntry' => array(self::HAS_ONE, 'TutorialEntry', 'teid', 'order' => 'ordering ASC', 'together' => true),
         );
     }
 
@@ -77,7 +77,7 @@ class TutorialEntryRelation extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('teid', $this->teid);
         $criteria->compare('tid', $this->tid);
@@ -85,7 +85,7 @@ class TutorialEntryRelation extends LSActiveRecord
         $criteria->compare('sid', $this->sid);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -97,6 +97,8 @@ class TutorialEntryRelation extends LSActiveRecord
      */
     public static function model($className = __CLASS__)
     {
-        return parent::model($className);
+        /** @var TutorialEntryRelation $model */
+        $model = parent::model($className);
+        return $model;
     }
 }

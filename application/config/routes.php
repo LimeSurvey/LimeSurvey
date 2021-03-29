@@ -31,7 +31,7 @@ $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 $route['admin/labels/<_action:\w+>'] = "admin/labels/index/<_action>";
 $route['admin/labels/<_action:\w+>/<_lid:\d+>'] = "admin/labels/index/<_action>/<_lid>";
 
-//Expression Manager tests
+//ExpressionScript Engine tests
 $route['admin/expressions'] = "admin/expressions/index";
 
 //optout - optin

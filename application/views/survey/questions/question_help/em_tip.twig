@@ -1,0 +1,17 @@
+{#
+/**
+ * Question tips. For now, called from em_manager_helper::_ValidateQuestion
+ * @var qid
+ * @var coreId : need to be the id of the tag (part of the API)
+ * @var coreClass : need to be in class (part of the API)
+ * @var vclass : the tip type (default, max, min …)
+ * @var vtip : string to show
+ * @var qInfo : from ExpressionManager
+ */
+#}
+{% if not hideTip %}
+<div id='{{ coreId }}' class='ls-question-message {{ coreClass }}'>
+    <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
+   {{ vtip }}
+</div>
+{% endif %}

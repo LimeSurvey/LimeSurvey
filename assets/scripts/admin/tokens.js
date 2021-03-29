@@ -246,9 +246,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         })
     });
 
-    $('.edit-token').off('click.edittoken').on('click.edittoken', startEditToken);
+    $(document).off('click.edittoken', '.edit-token').on('click.edittoken', '.edit-token', startEditToken);
 
-    $('#edittoken').off('submit.edittoken').on('submit.edittoken',function(event){
+    $(document).off('submit.edittoken', '#edittoken').on('submit.edittoken', '#edittoken', function(event){
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();

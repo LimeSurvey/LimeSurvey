@@ -1,7 +1,9 @@
 <?php
+
 /**
 * This class handles all methods of the RemoteControl 2 API
 */
+
 use LimeSurvey\PluginManager\PluginEvent;
 
 class remotecontrol_handle
@@ -48,9 +50,9 @@ class remotecontrol_handle
         if ($loginResult === true) {
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $session = new Session;
+            $session = new Session();
             $session->id = $sSessionKey;
-            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime', ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
@@ -74,8 +76,8 @@ class remotecontrol_handle
     {
         $sSessionKey = (string) $sSessionKey;
         Session::model()->deleteAllByAttributes(array('id' => $sSessionKey));
-        $criteria = new CDbCriteria;
-        $criteria->condition = 'expire < '.time();
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'expire < ' . time();
         Session::model()->deleteAll($criteria);
         return 'OK';
     }
@@ -142,7 +144,7 @@ class remotecontrol_handle
                     'template' => App()->getConfig('defaulttheme'),
                     'owner_id' => Yii::app()->session['loginID'],
                     'active' => 'N',
-                    'language'=>$sSurveyLanguage,
+                    'language' => $sSurveyLanguage,
                     'format' => $sformat
                 );
 
@@ -165,7 +167,7 @@ class remotecontrol_handle
                         'surveyls_language' => $sSurveyLanguage,
                     );
 
-                    $langsettings = new SurveyLanguageSetting;
+                    $langsettings = new SurveyLanguageSetting();
                     $langsettings->insertNewSurvey($aInsertData);
                     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
@@ -207,7 +209,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Import a survey in a known format
+     * Import survey in a known format (RPC function)
      *
      * Allow importing lss, csv, xls or survey zip archive in BASE 64 encoded.
      *
@@ -235,12 +237,12 @@ class remotecontrol_handle
                 }
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
                 $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
                 unlink($sFullFilePath);
                 if (isset($aImportResults['error']) && $aImportResults['error']) {
-                    return array('status' => 'Error: '.$aImportResults['error']);
+                    return array('status' => 'Error: ' . $aImportResults['error']);
                 } else {
                     return (int) $aImportResults['newsid'];
                 }
@@ -253,13 +255,13 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to copy a survey.
+     * Copy survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID_org Id of the source survey
      * @param string $sNewname name of the new survey
-     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * @return array On success: new $iSurveyID in array['newsid']. On failure array with error information
      * */
     public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname)
     {
@@ -288,8 +290,8 @@ class remotecontrol_handle
                 Yii::app()->loadHelper('admin/import');
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, null, $btranslinksfields);
                 if (isset($aExcludes['conditions'])) {
-                    Question::model()->updateAll(array('relevance'=>'1'), 'sid='.$aImportResults['newsid']);
-                    QuestionGroup::model()->updateAll(array('grelevance'=>'1'), 'sid='.$aImportResults['newsid']);
+                    Question::model()->updateAll(array('relevance' => '1'), 'sid=' . $aImportResults['newsid']);
+                    QuestionGroup::model()->updateAll(array('grelevance' => '1'), 'sid=' . $aImportResults['newsid']);
                 }
                 if (!isset($aExcludes['permissions'])) {
                     Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
@@ -299,16 +301,16 @@ class remotecontrol_handle
             }
         }
         if ($aData['bFailed']) {
-            return array('status' => 'Copy failed', 'error'=> $aData['sErrorMessage']);
+            return array('status' => 'Copy failed', 'error' => $aData['sErrorMessage']);
         } else {
-            return array('status' => 'OK', 'newsid'=>$aImportResults['newsid']);
+            return array('status' => 'OK', 'newsid' => $aImportResults['newsid']);
         }
     }
 
     /**
-     * RPC Routine to get survey properties.
-     * Get properties of a survey
+     * Get survey properties (RPC function)
      *
+     * Get properties of a survey
      * All internal properties of a survey are available.
      * @see \Survey for the list of available properties
      *
@@ -353,7 +355,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Set survey properties.
+     * Set survey properties (RPC function)
      *
      * @see \Survey for the list of available properties
      * Properties available are restricted
@@ -401,7 +403,7 @@ class remotecontrol_handle
                 $aBasicAttributes = $oSurvey->getAttributes();
                 $aResult = array();
 
-                if ($oSurvey->active == 'Y') {
+                if ($oSurvey->isActive) {
                     // remove all fields that may not be changed when a survey is active
                     unset($aSurveyData['anonymized']);
                     unset($aSurveyData['datestamp']);
@@ -414,7 +416,7 @@ class remotecontrol_handle
                                     return array('status' => 'No valid Data');
                 }
 
-                foreach ($aSurveyData as $sFieldName=>$sValue) {
+                foreach ($aSurveyData as $sFieldName => $sValue) {
                     $oSurvey->$sFieldName = $sValue;
                     try {
                         $bSaveResult = $oSurvey->save(); // save the change to database
@@ -439,10 +441,10 @@ class remotecontrol_handle
 
 
     /**
-     * Activate an existing survey
+     * Activate survey (RPC function)
      *
      * Return the result of the activation
-     * Failure status : Invalid Survey ID, Constistency check error, Activation Error, Invalid session key, No permission
+     * Failure status : Invalid Survey ID, Survey already active, Consistency check error, Activation Error, Invalid session key, No permission
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -457,18 +459,26 @@ class remotecontrol_handle
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
             }
+            if ($oSurvey->isActive) {
+                return array('status' => 'Error: Survey already active');
+            }
             // Check consistency for groups and questions
             Yii::app()->loadHelper('admin/activate');
             $checkHasGroup = checkHasGroup($iSurveyID);
             $checkGroup = checkGroup($iSurveyID);
-            if ($checkHasGroup !== false || $checkGroup !== false){
+
+            if ($checkHasGroup !== false || $checkGroup !== false) {
                 return array('status' => 'Error: Survey does not pass consistency check');
             }
 
+            $surveyActivator = new SurveyActivator($oSurvey);
+
+            
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-                $aActivateResults = activateSurvey($iSurveyID);
+                $aActivateResults = $surveyActivator->activate();
+
                 if (isset($aActivateResults['error'])) {
-                    return array('status' => 'Error: '.$aActivateResults['error']);
+                    return array('status' => 'Error: ' . $aActivateResults['error']);
                 } else {
                     return $aActivateResults;
                 }
@@ -481,7 +491,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Export statistics of a survey to a user.
+     * Export survey statistics (RPC function)
      *
      * Allow to export statistics available Returns string - base64 encoding of the statistics.
      *
@@ -518,7 +528,7 @@ class remotecontrol_handle
                     $sLanguage = $oSurvey->language;
         }
 
-        $oAllQuestions = Question::model()->getQuestionList($iSurveyID, $sLanguage);
+        $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
         if (!isset($oAllQuestions)) {
                     return array('status' => 'No available data');
         }
@@ -578,11 +588,11 @@ class remotecontrol_handle
         }
 
         return base64_encode($sResult);
-
     }
 
     /**
-     * RPC Routine to export submission timeline.
+     * Export submission timeline (RPC function)
+     *
      * Returns an array of values (count and period)
      *
      * @access public
@@ -602,8 +612,7 @@ class remotecontrol_handle
             return array('status' => 'Invalid session key');
         }
         $iSurveyID = (int) $iSurveyID;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey)) {
+        if (is_null($survey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
         if (!in_array($sType, array('day', 'hour'))) {
@@ -625,11 +634,10 @@ class remotecontrol_handle
         }
 
         return $oResponses;
-
     }
 
     /**
-     * Get survey summary, regarding token usage and survey participation.
+     * Get survey summary, regarding token usage and survey participation (RPC function)
      *
      * Returns the requested value as string, or all status in an array
      *
@@ -659,7 +667,6 @@ class remotecontrol_handle
     {
 
         if ($this->_checkSessionKey($sSessionKey)) {
-
             $aPermittedTokenStats = array(
                 'token_count',
                 'token_invalid',
@@ -731,7 +738,7 @@ class remotecontrol_handle
     /*Survey language specific functions */
 
     /**
-     * RPC Routine to add a survey language.
+     * Add a survey language (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -772,7 +779,7 @@ class remotecontrol_handle
                         'surveyls_title' => '',
                         'surveyls_dateformat' => $languagedetails['dateformat']
                     );
-                    $setting = new SurveyLanguageSetting;
+                    $setting = new SurveyLanguageSetting();
                     foreach ($insertdata as $k => $v) {
                                         $setting->$k = $v;
                     }
@@ -782,7 +789,6 @@ class remotecontrol_handle
                 } catch (Exception $e) {
                     return array('status' => 'Error');
                 }
-
             } else {
                             return array('status' => 'No permission');
             }
@@ -791,7 +797,7 @@ class remotecontrol_handle
     }
 
     /**
-     * RPC Routine to delete a language from a survey.
+     * Delete a language from a survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -809,7 +815,6 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')) {
-
                 Yii::app()->loadHelper('surveytranslator');
                 $aLanguages = getLanguageData();
 
@@ -831,7 +836,6 @@ class remotecontrol_handle
                 } catch (Exception $e) {
                     return array('status' => 'Error');
                 }
-
             } else {
                             return array('status' => 'No permission');
             }
@@ -841,7 +845,7 @@ class remotecontrol_handle
 
 
     /**
-     * Get survey language properties.
+     * Get survey language properties (RPC function)
      *
      * @see \SurveyLanguageSetting for available properties
      *
@@ -895,7 +899,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Set survey language properties.
+     * Set survey language properties (RPC function)
      *
      * @see \SurveyLanguageSetting for available properties.
      *
@@ -946,7 +950,7 @@ class remotecontrol_handle
                                     return array('status' => 'No valid Data');
                 }
 
-                foreach ($aSurveyLocaleData as $sFieldName=>$sValue) {
+                foreach ($aSurveyLocaleData as $sFieldName => $sValue) {
                     $oSurveyLocale->$sFieldName = $sValue;
                     try {
                         // save the change to database - Every single change alone - to allow for validation to work
@@ -973,7 +977,8 @@ class remotecontrol_handle
     /* Group specific functions */
 
     /**
-     * Add an empty group with minimum details to a chosen survey.
+     * Add empty group with minimum details (RPC function)
+     *
      * Used as a placeholder for importing questions.
      * Returns the groupid of the created group.
      *
@@ -994,17 +999,24 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid survey ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
+                if ($oSurvey->isActive) {
                                     return array('status' => 'Error:Survey is active and not editable');
                 }
 
-                $oGroup = new QuestionGroup;
+                $oGroup = new QuestionGroup();
                 $oGroup->sid = $iSurveyID;
-                $oGroup->group_name = $sGroupTitle;
-                $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
-                if ($oGroup->save()) {
+                if (!$oGroup->save()) {
+                    return array('status' => 'Creation Failed');
+                }
+
+                $oQuestionGroupL10n = new QuestionGroupL10n();
+                $oQuestionGroupL10n->group_name = $sGroupTitle;
+                $oQuestionGroupL10n->description = $sGroupDescription;
+                $oQuestionGroupL10n->language = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestionGroupL10n->gid = $oGroup->gid;
+
+                if ($oQuestionGroupL10n->save()) {
                                     return (int) $oGroup->gid;
                 } else {
                                     return array('status' => 'Creation Failed');
@@ -1018,7 +1030,8 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a group from a chosen survey .
+     * Delete a group from a chosen survey (RPC function)
+     *
      * Returns the id of the deleted group.
      *
      * @access public
@@ -1043,8 +1056,8 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid group ID');
                 }
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 $depented_on = getGroupDepsForConditions($oGroup->sid, "all", $iGroupID, "by-targgid");
@@ -1055,7 +1068,7 @@ class remotecontrol_handle
                 $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupID, $iSurveyID);
 
                 if ($iGroupsDeleted === 1) {
-                    fixSortOrderGroups($iSurveyID);
+                    QuestionGroup::model()->updateGroupOrder($iSurveyID);
                     return (int) $iGroupID;
                 } else {
                                     return array('status' => 'Group deletion failed');
@@ -1069,7 +1082,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Import a group and add to a chosen survey - imports lsg,csv
+     * Import a group and add to a survey (RPC function)
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1091,29 +1104,33 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is active and not editable');
                 }
 
                 if (!in_array($sImportDataType, array('csv', 'lsg'))) {
                     return array('status' => 'Invalid extension');
                 }
                 libxml_use_internal_errors(true);
-                Yii::app()->loadHelper('admin/import');
+                Yii::app()->loadHelper('admin.import');
                 // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
                 if (strtolower($sImportDataType) == 'lsg') {
-                    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    if (\PHP_VERSION_ID < 80000) {
+                        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    }
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
                     if (!$xml) {
                         unlink($sFullFilePath);
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        if (\PHP_VERSION_ID < 80000) {
+                            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        }
                         return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
                     }
-                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
+                    $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID, true);
                 } else {
                                     return array('status' => 'Invalid extension');
                 }
@@ -1122,8 +1139,10 @@ class remotecontrol_handle
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    return array('status' => 'Error: '.$aImportResults['fatalerror']);
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
+                    return array('status' => 'Error: ' . $aImportResults['fatalerror']);
                 } else {
                     $iNewgid = $aImportResults['newgid'];
 
@@ -1139,7 +1158,9 @@ class remotecontrol_handle
                     } catch (Exception $e) {
                         // no need to throw exception
                     }
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return (int) $aImportResults['newgid'];
                 }
             } else {
@@ -1151,7 +1172,8 @@ class remotecontrol_handle
     }
 
     /**
-     * Find response IDs given a survey ID and a token.
+     * Find response IDs given a survey ID and a token (RPC function)
+     *
      * @param string $sSessionKey
      * @param int $iSurveyID
      * @param string $sToken
@@ -1170,7 +1192,6 @@ class remotecontrol_handle
         } else {
             return array('status' => 'Invalid Session Key');
         }
-
     }
 
     /**
@@ -1183,19 +1204,31 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iGroupID Id of the group to get properties of
      * @param array  $aGroupSettings The properties to get
+     * @param string $sLanguage Optional parameter language for multilingual groups
      * @return array in case of success the requested values in array
      */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null)
+    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup)) {
-                            return array('status' => 'Error: Invalid group ID');
+                return array('status' => 'Error: Invalid group ID');
             }
 
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read')) {
+                $iSurveyID = $oGroup->sid;
+                if (is_null($sLanguage)) {
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                }
+
+                if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
+                    return array('status' => 'Error: Invalid language');
+                }
+
                 $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
+                array_push($aBasicDestinationFields, 'group_name');
+                array_push($aBasicDestinationFields, 'description');
                 if (!empty($aGroupSettings)) {
                     $aGroupSettings = array_intersect($aGroupSettings, $aBasicDestinationFields);
                 } else {
@@ -1203,24 +1236,31 @@ class remotecontrol_handle
                 }
 
                 if (empty($aGroupSettings)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
 
                 foreach ($aGroupSettings as $sGroupSetting) {
-                    $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
+                    if (isset($oGroup->$sGroupSetting)) {
+                        $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
+                    } elseif (
+                        isset($oGroup->questiongroupl10ns[$sLanguage])
+                        && isset($oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting)
+                    ) {
+                        $aResult[$sGroupSetting] = $oGroup->questiongroupl10ns[$sLanguage]->$sGroupSetting;
+                    }
                 }
                 return $aResult;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
 
     /**
-     * Set group properties.
+     * Set group properties (RPC function)
      *
      * @see \QuestionGroup for available properties and restriction
      *
@@ -1230,7 +1270,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iGroupID  - ID of the Survey
+     * @param integer $iGroupID  - ID of the Group
      * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @return array Of succeeded and failed modifications according to internal validation.
      */
@@ -1238,7 +1278,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
@@ -1247,15 +1287,75 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
+                
+                // Backwards compatibility for L10n data
+                if (!empty($aGroupData['language'])) {
+                    $language = $aGroupData['language'];
+                    $aGroupData['questiongroupl10ns'][$language] = array(
+                        'language' => $language,
+                        'group_name' => !empty($aGroupData['group_name']) ? $aGroupData['group_name'] : '',
+                        'description' => !empty($aGroupData['description']) ? $aGroupData['description'] : '',
+                    );
+                }
+
+                // Process L10n data
+                if (!empty($aGroupData['questiongroupl10ns']) && is_array($aGroupData['questiongroupl10ns'])) {
+                    $aL10nDestinationFields = array_flip(QuestionGroupL10n::model()->tableSchema->columnNames);
+                    foreach ($aGroupData['questiongroupl10ns'] as $language => $aLanguageData) {
+                        // Get existing L10n data or create new
+                        if (isset($oGroup->questiongroupl10ns[$language])) {
+                            $oQuestionGroupL10n = $oGroup->questiongroupl10ns[$language];
+                        } else {
+                            $oQuestionGroupL10n = new QuestionGroupL10n();
+                            $oQuestionGroupL10n->gid = $iGroupID;
+                            $oQuestionGroupL10n->setAttribute('language', $language);
+                            $oQuestionGroupL10n->setAttribute('group_name', '');
+                            $oQuestionGroupL10n->setAttribute('description', '');
+                            if (!$oQuestionGroupL10n->save()) {
+                                $aResult['questiongroupl10ns'][$language] = false;
+                                continue;
+                            }
+                        }
+
+                        // Remove invalid fields
+                        $aGroupL10nData = array_intersect_key($aLanguageData, $aL10nDestinationFields);
+                        if (empty($aGroupL10nData)) {
+                            $aResult['questiongroupl10ns'][$language] = 'Empty group L10n data';
+                            continue;
+                        }
+
+                        $aGroupL10nAttributes = $oQuestionGroupL10n->getAttributes();
+                        foreach ($aGroupL10nData as $sFieldName => $sValue) {
+                            $oQuestionGroupL10n->setAttribute($sFieldName, $sValue);
+                            try {
+                                // save the change to database - one by one to allow for validation to work
+                                $bSaveResult = $oQuestionGroupL10n->save();
+                                $aResult['questiongroupl10ns'][$language][$sFieldName] = $bSaveResult;
+                                //unset failed values
+                                if (!$bSaveResult) {
+                                    $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                                }
+                            } catch (Exception $e) {
+                                //unset values that cause exception
+                                $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                            }
+                        }
+                    }
+                }
+
                 // Remove invalid fields
                 $aDestinationFields = array_flip(QuestionGroup::model()->tableSchema->columnNames);
                 $aGroupData = array_intersect_key($aGroupData, $aDestinationFields);
                 $aGroupAttributes = $oGroup->getAttributes();
                 if (empty($aGroupData)) {
-                                    return array('status' => 'No valid Data');
+                    if (empty($aResult)) {
+                        return array('status' => 'No valid Data');
+                    } else {
+                        return $aResult;
+                    }
                 }
 
-                foreach ($aGroupData as $sFieldName=>$sValue) {
+                foreach ($aGroupData as $sFieldName => $sValue) {
                     //all dependencies this group has
                     $has_dependencies = getGroupDepsForConditions($oGroup->sid, $iGroupID);
                     //all dependencies on this group
@@ -1271,7 +1371,7 @@ class remotecontrol_handle
                     try {
                         // save the change to database - one by one to allow for validation to work
                         $bSaveResult = $oGroup->save();
-                        fixSortOrderGroups($oGroup->sid);
+                        QuestionGroup::model()->updateGroupOrder($oGroup->sid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset failed values
                         if (!$bSaveResult) {
@@ -1295,7 +1395,8 @@ class remotecontrol_handle
 
 
     /**
-     * Delete a question from a survey .
+     * Delete question from a survey (RPC function)
+     *
      * Returns the id of the deleted question.
      *
      * @access public
@@ -1317,8 +1418,8 @@ class remotecontrol_handle
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'delete')) {
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
 
-                if ($oSurvey['active'] == 'Y') {
-                                    return array('status' => 'Survey is active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Survey is active and not editable');
                 }
                 $iGroupID = $oQuestion['gid'];
 
@@ -1334,12 +1435,18 @@ class remotecontrol_handle
                     QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     Answer::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
 
-                    $sCriteria = new CDbCriteria;
+                    $sCriteria = new CDbCriteria();
                     $sCriteria->addCondition('qid = :qid or parent_qid = :qid');
                     $sCriteria->params[':qid'] = $iQuestionID;
                     Question::model()->deleteAll($sCriteria);
 
-                    DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+                    // delete defaultvalues and defaultvalueL10ns
+                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
+                    foreach ($oDefaultValues as $defaultvalue) {
+                        DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                        DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    }
+
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     Question::updateSortOrder($iGroupID, $iSurveyID);
 
@@ -1347,7 +1454,6 @@ class remotecontrol_handle
                 } catch (Exception $e) {
                     return array('status' => 'Error');
                 }
-
             } else {
                             return array('status' => 'No permission');
             }
@@ -1358,6 +1464,8 @@ class remotecontrol_handle
 
 
     /**
+     * Import question (RPC function)
+     *
      * Import a question from lsq file
      *
      * @access public
@@ -1384,8 +1492,8 @@ class remotecontrol_handle
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update')) {
-                if ($oSurvey->getAttribute('active') == 'Y') {
-                                    return array('status' => 'Error:Survey is Active and not editable');
+                if ($oSurvey->isActive) {
+                    return array('status' => 'Error:Survey is Active and not editable');
                 }
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
@@ -1395,7 +1503,7 @@ class remotecontrol_handle
 
                 $sGroupSurveyID = $oGroup['sid'];
                 if ($sGroupSurveyID != $iSurveyID) {
-                                    return array('status' => 'Error: Missmatch in surveyid and groupid');
+                    return array('status' => 'Error: Missmatch in surveyid and groupid');
                 }
 
                 if (!strtolower($sImportDataType) == 'lsq') {
@@ -1404,30 +1512,37 @@ class remotecontrol_handle
                 libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
+                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40) . '.' . $sImportDataType;
                 file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
                 if (strtolower($sImportDataType) == 'lsq') {
-                    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-
+                    if (\PHP_VERSION_ID < 80000) {
+                        $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    }
                     $sXMLdata = file_get_contents($sFullFilePath);
                     $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
                     if (!$xml) {
                         unlink($sFullFilePath);
-                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        if (\PHP_VERSION_ID < 80000) {
+                            libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        }
                         return array('status' => 'Error: Invalid LimeSurvey question structure XML ');
                     }
                     $aImportResults = XMLImportQuestion($sFullFilePath, $iSurveyID, $iGroupID);
                 } else {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
                     return array('status' => 'Really Invalid extension'); //just for symmetry!
                 }
 
                 unlink($sFullFilePath);
 
                 if (isset($aImportResults['fatalerror'])) {
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-                    return array('status' => 'Error: '.$aImportResults['fatalerror']);
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
+                    return array('status' => 'Error: ' . $aImportResults['fatalerror']);
                 } else {
                     fixLanguageConsistency($iSurveyID);
                     $iNewqid = $aImportResults['newqid'];
@@ -1442,14 +1557,15 @@ class remotecontrol_handle
                     if ($sNewQuestionHelp != '') {
                                             $oQuestion->setAttribute('help', $sNewQuestionHelp);
                     }
-                    if (in_array($sMandatory, array('Y', 'N'))) {
+                    if (in_array($sMandatory, array('Y', 'S', 'N'))) {
                                             $oQuestion->setAttribute('mandatory', $sMandatory);
                     } else {
                                         $oQuestion->setAttribute('mandatory', 'N');
                     }
 
-                    libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
-
+                    if (\PHP_VERSION_ID < 80000) {
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                    }
 
                     try {
                         $oQuestion->save();
@@ -1471,7 +1587,7 @@ class remotecontrol_handle
      * Get properties of a question in a survey.
      *
      * @see \Question for available properties.
-     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, defaultvalue
+     * Some more properties are available_answers, subquestions, attributes, attributes_lang, answeroptions, answeroptions_multiscale, defaultvalue
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -1487,23 +1603,27 @@ class remotecontrol_handle
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid questionid');
+                return array('status' => 'Error: Invalid questionid');
             }
 
             $iSurveyID = $oQuestion->sid;
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
                 if (is_null($sLanguage)) {
-                                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+                $oQuestion = Question::model()->with('questionl10ns')
+                    ->find(
+                        't.qid = :qid and questionl10ns.language = :language',
+                        array(':qid' => $iQuestionID, ':language' => $sLanguage)
+                    );
                 if (!isset($oQuestion)) {
-                                    return array('status' => 'Error: Invalid questionid');
+                    return array('status' => 'Error: Invalid questionid');
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
@@ -1520,70 +1640,100 @@ class remotecontrol_handle
                 }
 
                 if (empty($aQuestionSettings)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
 
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionID, 'language'=>$sLanguage), array('order'=>'title'));
+                        $oSubQuestions = Question::model()->with('questionl10ns')
+                            ->findAll(
+                                't.parent_qid = :parent_qid and questionl10ns.language = :language',
+                                array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
+                                array('order' => 'title')
+                            );
+                
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                                                    $aData[$oSubQuestion['title']] = $oSubQuestion['question'];
+                                    $aData[$oSubQuestion['title']] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = $oSubQuestion['question'];
+                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($sLanguage, $oSubQuestion->questionl10ns) ? $oSubQuestion->questionl10ns[$sLanguage]->question : '';
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
-
                             }
 
                             $aResult[$sPropertyName] = $aData;
                         } else {
-                                                    $aResult[$sPropertyName] = 'No available answers';
+                            $aResult[$sPropertyName] = 'No available answers';
                         }
-                    } else if ($sPropertyName == 'attributes') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null), array('order'=>'attribute'));
+                    } elseif ($sPropertyName == 'attributes') {
+                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => null), array('order' => 'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes'] = $aData;
                         } else {
-                                                    $aResult['attributes'] = 'No available attributes';
+                            $aResult['attributes'] = 'No available attributes';
                         }
-                    } else if ($sPropertyName == 'attributes_lang') {
-                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'attribute'));
+                    } elseif ($sPropertyName == 'attributes_lang') {
+                        $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage), array('order' => 'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes_lang'] = $aData;
                         } else {
-                                                    $aResult['attributes_lang'] = 'No available attributes';
+                            $aResult['attributes_lang'] = 'No available attributes';
                         }
-                    } else if ($sPropertyName == 'answeroptions') {
-                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'sortorder'));
+                    } elseif ($sPropertyName == 'answeroptions') {
+                        $oAttributes = Answer::model()->with('answerl10ns')
+                            ->findAll(
+                                't.qid = :qid and answerl10ns.language = :language',
+                                array(':qid' => $iQuestionID, ':language' => $sLanguage),
+                                array('order' => 'sortorder')
+                            );
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = $oAttribute['answer'];
+                                $aData[$oAttribute['code']]['answer'] = array_key_exists($sLanguage, $oAttribute->answerl10ns) ? $oAttribute->answerl10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
                             }
                             $aResult['answeroptions'] = $aData;
                         } else {
-                                                    $aResult['answeroptions'] = 'No available answer options';
+                            $aResult['answeroptions'] = 'No available answer options';
                         }
-                    } else if ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
+                    } elseif ($sPropertyName == 'answeroptions_multiscale') {
+                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage), array('order' => 'sortorder'));
+                        if (count($oAttributes) > 0) {
+                            $aData = array();
+                            foreach ($oAttributes as $oAttribute) {
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['code'] = $oAttribute['code'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['answer'] = $oAttribute['answer'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
+                                $aData[$oAttribute['scale_id']][$oAttribute['code']]['order'] = $oAttribute['sortorder'];
+                            }
+                            $aResult['answeroptions'] = $aData;
+                        } else {
+                            $aResult['answeroptions'] = 'No available answer options';
+                        }
+                    } elseif ($sPropertyName == 'defaultvalue') {
+                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultvaluel10ns')
+                            ->find(
+                                'qid = :qid AND defaultvaluel10ns.language = :language',
+                                array(':qid' => $iQuestionID, ':language' => $sLanguage)
+                            )
+                            ->defaultvalue;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
@@ -1639,7 +1789,7 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage));
                 if (!isset($oQuestion)) {
                                     return array('status' => 'Error: Invalid questionid');
                 }
@@ -1660,7 +1810,7 @@ class remotecontrol_handle
                                     return array('status' => 'No valid Data');
                 }
 
-                foreach ($aQuestionData as $sFieldName=>$sValue) {
+                foreach ($aQuestionData as $sFieldName => $sValue) {
                     //all the dependencies that this question has to other questions
                     $dependencies = getQuestDepsForConditions($oQuestion->sid, $oQuestion->gid, $iQuestionID);
                     //all dependencies by other questions to this question
@@ -1675,7 +1825,7 @@ class remotecontrol_handle
 
                     try {
                         $bSaveResult = $oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+                        Question::model()->updateQuestionOrder($oQuestion->gid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult) {
@@ -1703,7 +1853,7 @@ class remotecontrol_handle
 
 
     /**
-     * Add participants to the tokens collection of the survey.
+     * Add participants to the survey.
      *
      * The parameters $aParticipantData is a 2 dimensionnal array containing needed participant data.
      * @see \Token for all available attribute,
@@ -1740,7 +1890,7 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->save()) {
+                if ($token->encryptSave(true)) {
                     $aParticipant = $token->getAttributes();
                 } else {
                     $aParticipant["errors"] = $token->errors;
@@ -1753,7 +1903,8 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete multiple participants from the survey participants table of a survey.
+     * Delete multiple participants from the survey participants table (RPC function)
+     *
      * Returns the id of the deleted token
      *
      * @access public
@@ -1782,10 +1933,13 @@ class remotecontrol_handle
                     $token = Token::model($iSurveyID)->findByPk($iTokenID);
                     if (!isset($token)) {
                                             $aResult[$iTokenID] = 'Invalid token ID';
-                    } elseif ($token->delete()) {
-                                            $aResult[$iTokenID] = 'Deleted';
                     } else {
-                                            $aResult[$iTokenID] = 'Deletion went wrong';
+                                            $iDel = Token::model($iSurveyID)->deleteByPk($iTokenID);
+                        if ($iDel > 0) {
+                            $aResult[$iTokenID] = 'Deleted';
+                        } else {
+                            $aResult[$iTokenID] = 'Deletion went wrong';
+                        }
                     }
                 }
                 return $aResult;
@@ -1799,7 +1953,7 @@ class remotecontrol_handle
 
 
     /**
-     * Get settings of a token/participant of a survey.
+     * Get settings of a survey participant (RPC function)
      *
      * Allow to request for a specific participant. If more than one participant is returned with specified attribute(s) an error is returned.
      *
@@ -1831,11 +1985,11 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
@@ -1859,7 +2013,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Set properties of a survey participant/token.
+     * Set properties of a survey participant (RPC function)
      *
      * Allow to set properties about a specific participant, only one particpant can be updated.
      * @see \Token for available properties
@@ -1886,20 +2040,22 @@ class remotecontrol_handle
                 }
 
                 if (is_array($aTokenQueryProperties)) {
-            $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
-            if ($tokenCount == 0) {
-            return array('status' => 'Error: No results were found based on your attributes.');
-            } else if ($tokenCount > 1) {
-            return array('status' => 'Error: More than 1 result was found based on your attributes.');
-            }
-            $oToken = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
-        } else {
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
+                    $tokenCount = count($oTokens);
+                    if ($tokenCount == 0) {
+                        return array('status' => 'Error: No results were found based on your attributes.');
+                    } elseif ($tokenCount > 1) {
+                        return array('status' => 'Error: More than 1 result was found based on your attributes.');
+                    }
+                    $oToken = $oTokens[0];
+                    $oToken->decrypt();
+                } else {
                     // If aTokenQueryProperties is not an array but an integer
                     $iTokenID = $aTokenQueryProperties;
-                $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
-        }
+                    $oToken = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                }
                 if (!isset($oToken)) {
-                                    return array('status' => 'Error: Invalid tokenid');
+                    return array('status' => 'Error: Invalid tokenid');
                 }
 
                 // Remove fields that may not be modified
@@ -1909,61 +2065,75 @@ class remotecontrol_handle
                 $aTokenData = array_intersect_key($aTokenData, $aBasicDestinationFields);
 
                 if (empty($aTokenData)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
-
+                
                 $oToken->setAttributes($aTokenData, false);
-                if ($oToken->save()) {
+                if ($oToken->encryptSave(true)) {
                     return $oToken->attributes;
+                } else {
+                    return array('status' => $oToken->getErrors());
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
 
     /**
-     * Return the ids and all attributes of groups belonging to survey.
+     * Get survey groups (RPC function)
+     *
+     * Returns the ids and all attributes of all survey groups
      *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey containing the groups
+     * @param string $sLanguage Optional parameter language for multilingual groups
      * @return array in case of success the list of groups
      */
-    public function list_groups($sSessionKey, $iSurveyID)
+    public function list_groups($sSessionKey, $iSurveyID, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
-                $oGroupList = QuestionGroup::model()->findAllByAttributes(array("sid"=>$iSurveyID));
+                $oGroupList = QuestionGroup::model()->with('questiongroupl10ns')->findAllByAttributes(array("sid" => $iSurveyID));
                 if (count($oGroupList) == 0) {
-                                    return array('status' => 'No groups found');
+                    return array('status' => 'No groups found');
+                }
+
+                if (is_null($sLanguage)) {
+                    $sLanguage = $oSurvey->language;
                 }
 
                 foreach ($oGroupList as $oGroup) {
-                    $aData[] = array('id'=>$oGroup->primaryKey) + $oGroup->attributes;
+                    $L10ns = $oGroup->questiongroupl10ns[$sLanguage];
+                    $tmp = array('id' => $oGroup->primaryKey) + $oGroup->attributes;
+                    $tmp['group_name'] = $L10ns['group_name'];
+                    $tmp['description'] = $L10ns['description'];
+                    $tmp['language'] = $sLanguage;
+                    $aData[] = $tmp;
                 }
                 return $aData;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid S ession Key');
+            return array('status' => 'Invalid S ession Key');
         }
     }
 
     /**
-     * Return the ids and propertries of token/participants of a survey.
+     * Return the IDs and properties of survey participants (RPC function)
      *
-     * if $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
+     * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
      *
      * By default return each participant with basic information
@@ -1979,7 +2149,7 @@ class remotecontrol_handle
      * @param int  $iLimit Number of participants to return
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extented attributes that we want
-     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
+     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com') or array('validuntil' => array('>', '2019-01-01 00:00:00'))
      * @return array The list of tokens
      */
     public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())
@@ -1990,30 +2160,61 @@ class remotecontrol_handle
             $iLimit = (int) $iLimit;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+                return array('status' => 'Error: Invalid survey ID');
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
                 if (!tableExists("{{tokens_$iSurveyID}}")) {
-                                    return array('status' => 'Error: No survey participants table');
+                    return array('status' => 'Error: No survey participants table');
                 }
 
+                /** @var CDbCriteria mixed> Criteria used in final query below. */
+                $oCriteria = new CDbCriteria();
+                $oCriteria->order = 'tid';
+                $oCriteria->limit = $iLimit;
+                $oCriteria->offset = $iStart;
+
                 $aAttributeValues = array();
-                if (count($aConditions)) {
+                if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-                    $aAttributeValues = array_intersect_key($aConditions, $aConditionFields);
+                    // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
+                    foreach ($aConditions as $columnName => $valueOrTuple) {
+                        if (is_array($valueOrTuple)) {
+                            /** @var string[] List of operators allowed in query. */
+                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE'];
+                            /** @var string */
+                            $operator = $valueOrTuple[0];
+                            if (!in_array($operator, $allowedOperators)) {
+                                return array('status' => 'Illegal operator: ' . $operator);
+                            } elseif ($operator === 'LIKE') {
+                                /** @var mixed */
+                                $value = $valueOrTuple[1];
+                                $oCriteria->addSearchCondition($columnName, $value);
+                            } else {
+                                /** @var mixed */
+                                $value = $valueOrTuple[1];
+                                $oCriteria->compare($columnName, $operator . $value);
+                            }
+                        } elseif (is_string($valueOrTuple)) {
+                            if (in_array($columnName, $aConditionFields)) {
+                                $aAttributeValues[$columnName] = $valueOrTuple;
+                            }
+                        } else {
+                            // Silent ignore?
+                        }
+                    }
                 }
 
                 if ($bUnused) {
-                                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, $oCriteria);
                 } else {
-                                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, array('order' => 'tid', 'limit' => $iLimit, 'offset' => $iStart));
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aAttributeValues, $oCriteria);
                 }
 
                 if (count($oTokens) == 0) {
-                                    return array('status' => 'No survey participants found.');
+                    return array('status' => 'No survey participants found.');
                 }
-
+                
                 $extendedAttributes = array();
                 if ($aAttributes) {
                     $aBasicDestinationFields = Token::model($iSurveyID)->tableSchema->columnNames;
@@ -2023,14 +2224,16 @@ class remotecontrol_handle
                 }
 
                 foreach ($oTokens as $token) {
+                    $token->decrypt();
                     $aTempData = array(
-                        'tid'=>$token->primarykey,
-                        'token'=>$token->attributes['token'],
-                        'participant_info'=>array(
-                            'firstname'=>$token->attributes['firstname'],
-                            'lastname'=>$token->attributes['lastname'],
-                            'email'=>$token->attributes['email'],
-                    ));
+                        'tid' => $token->primarykey,
+                        'token' => $token->attributes['token'],
+                        'participant_info' => array(
+                            'firstname' => $token->attributes['firstname'],
+                            'lastname' => $token->attributes['lastname'],
+                            'email' => $token->attributes['email'],
+                        )
+                    );
                     foreach ($extendedAttributes as $sAttribute) {
                         $aTempData[$sAttribute] = $token->attributes[$sAttribute];
                     }
@@ -2038,15 +2241,16 @@ class remotecontrol_handle
                 }
                 return $aData;
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
     /**
-     * Return the ids and info of (sub-)questions of a survey/group.
+     * Return the ids and info of (sub-)questions of a survey/group (RPC function)
+     *
      * Returns array of ids and info.
      *
      * @access public
@@ -2062,51 +2266,65 @@ class remotecontrol_handle
             Yii::app()->loadHelper("surveytranslator");
             $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            if (!isset($oSurvey)) {
-                            return array('status' => 'Error: Invalid survey ID');
+
+            if (empty($oSurvey)) {
+                return ['status' => 'Error: Invalid survey ID'];
             }
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
                 if (is_null($sLanguage)) {
-                                    $sLanguage = $oSurvey->language;
+                    $sLanguage = $oSurvey->language;
                 }
 
-                if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                                    return array('status' => 'Error: Invalid language');
+                if (!array_key_exists($sLanguage, getLanguageDataRestricted()) or !in_array($sLanguage, $oSurvey->allLanguages)) {
+                    return ['status' => 'Error: Invalid language'];
                 }
 
                 if ($iGroupID != null) {
                     $iGroupID = (int) $iGroupID;
-                    $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
-                    $sGroupSurveyID = $oGroup['sid'];
+                    $oGroup = QuestionGroup::model()->findByPk($iGroupID);
 
-                    if ($sGroupSurveyID != $iSurveyID) {
-                                            return array('status' => 'Error: IMissmatch in surveyid and groupid');
+                    if (empty($oGroup)) {
+                        return ['status' => 'Error: group not found'];
+                    }
+
+                    if ($oGroup->sid != $oSurvey->sid) {
+                        return ['status' => 'Error: Mismatch in surveyid and groupid'];
                     } else {
-                                            $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$iGroupID, "language"=>$sLanguage));
+                        $aQuestionList = $oGroup->questions;
                     }
                 } else {
-                                    $aQuestionList = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "language"=>$sLanguage));
+                    $aQuestionList = $oSurvey->baseQuestions;
                 }
 
                 if (count($aQuestionList) == 0) {
-                                    return array('status' => 'No questions found');
+                    return ['status' => 'No questions found'];
                 }
 
                 foreach ($aQuestionList as $oQuestion) {
-                    $aData[] = array('id'=>$oQuestion->primaryKey) + $oQuestion->attributes;
+                    $L10ns = $oQuestion->questionl10ns[$sLanguage];
+                    $aData[] = array_merge(
+                        [
+                        'id' => $oQuestion->primaryKey,
+                        'question' => $L10ns->question,
+                        'help' => $L10ns->help,
+                        'language' => $sLanguage,
+                        ],
+                        $oQuestion->attributes
+                    );
                 }
                 return $aData;
             } else {
-                            return array('status' => 'No permission');
+                return ['status' => 'No permission'];
             }
         } else {
-                    return array('status' => 'Invalid session key');
+            return ['status' => 'Invalid session key'];
         }
     }
 
     /**
-     * Set Quota Attributes
+     * Set quota attributes (RPC function)
+     *
      * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2128,10 +2346,13 @@ class remotecontrol_handle
             }
             $oSurvey = $oQuota->survey;
             if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'quotas', 'update')) {
-
                 // don't accept id & sid
-                if (isset($aQuotaData['id'])) { unset($aQuotaData['id']); };
-                if (isset($aQuotaData['sid'])) { unset($aQuotaData['sid']); };
+                if (isset($aQuotaData['id'])) {
+                    unset($aQuotaData['id']);
+                };
+                if (isset($aQuotaData['sid'])) {
+                    unset($aQuotaData['sid']);
+                };
 
                 // accept boolean input also
                 isset($aQuotaData['active']) ? $aQuotaData['active'] = (int) $aQuotaData['active'] : null;
@@ -2141,18 +2362,18 @@ class remotecontrol_handle
                 if (!$oQuota->save()) {
                     return ['success' => false, 'message' => $oQuota->errors];
                 } else {
-                    return ['success' => true, 'message'=>$oQuota->attributes];
+                    return ['success' => true, 'message' => $oQuota->attributes];
                 }
             } else {
-                return ['success' => false, 'message' =>'Denied!'];
+                return ['success' => false, 'message' => 'Denied!'];
             }
         } else {
-            return ['success' => false, 'message' =>'Invalid session key'];
+            return ['success' => false, 'message' => 'Invalid session key'];
         }
     }
 
     /**
-     * List the survey belonging to a user
+     * List the survey belonging to a user (RPC function)
      *
      * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
      * Else only the surveys belonging to the user requesting will be shown.
@@ -2172,7 +2393,7 @@ class remotecontrol_handle
     public function list_surveys($sSessionKey, $sUsername = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
-            $oSurvey = new Survey;
+            $oSurvey = new Survey();
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && ($sUsername == null)) {
                 $oSurvey->permission(Yii::app()->user->getId());
             } elseif ($sUsername != null) {
@@ -2185,7 +2406,7 @@ class remotecontrol_handle
                 $oSurvey->permission($sUid);
             }
 
-            $aUserSurveys = $oSurvey->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
+            $aUserSurveys = $oSurvey->with(array('languagesettings' => array('condition' => 'surveyls_language=language'), 'owner'))->findAll();
             if (count($aUserSurveys) == 0) {
                             return array('status' => 'No surveys found');
             }
@@ -2197,7 +2418,7 @@ class remotecontrol_handle
                 } else {
                                     $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
                 }
-                $aData[] = array('sid'=>$oSurvey->primaryKey, 'surveyls_title'=>$aSurveyTitle, 'startdate'=>$oSurvey->attributes['startdate'], 'expires'=>$oSurvey->attributes['expires'], 'active'=>$oSurvey->attributes['active']);
+                $aData[] = array('sid' => $oSurvey->primaryKey, 'surveyls_title' => $aSurveyTitle, 'startdate' => $oSurvey->attributes['startdate'], 'expires' => $oSurvey->attributes['expires'], 'active' => $oSurvey->attributes['active']);
             }
             return $aData;
         } else {
@@ -2205,35 +2426,88 @@ class remotecontrol_handle
         }
     }
 
+    /**
+     * List the survey groups belonging to a user
+     *
+     * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
+     * Else only the survey groups belonging to the user requesting will be shown.
+     *
+     * Returns array with survey group attributes
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $sUsername (optional) username to get list of survey groups
+     * @return array In case of success the list of survey groups
+     */
+    public function list_survey_groups($sSessionKey, $sUsername = null)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurveyGroup = new SurveysGroups;
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $sOwner = Yii::app()->user->getId();
+            } elseif ($sUsername != null) {
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
+                if (!isset($aUserData)) {
+                    return array('status' => 'Invalid user');
+                } else {
+                    $sOwner = $aUserData->attributes['uid'];
+                }
+            }
+
+            if (empty($sOwner)) {
+                $aUserSurveyGroups = $oSurveyGroup->findAll();
+            } else {
+                $aUserSurveyGroups = $oSurveyGroup->findAllByAttributes(array('owner_id' => $sOwner));
+            }
+            if (count($aUserSurveyGroups) == 0) {
+                return array('status' => 'No survey groups found');
+            }
+
+            foreach ($aUserSurveyGroups as $oSurveyGroup) {
+                $aData[] = $oSurveyGroup->attributes;
+            }
+            return $aData;
+        } else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
 /**
- * Get list the ids and info of users.
+ * Get list the ids and info of administration user(s) (RPC function)
  *
  * Returns array of ids and info.
  *
- * Failure status : No users found, Invalid session key, No permission (super admin is required)
+ * Failure status : Invalid user id, Invalid username, No users found, Invalid session key, Permission denied (super admin is required)
  *
  * @param string $sSessionKey Auth credentials
- * @param int $uid Optional parameter user id.
+ * @param int $uid Optional; ID of the user
+ * @param string $username Optional; name of the user
  * @return array The list of users in case of success
  */
-    public function list_users($sSessionKey = null, $uid = null)
+    public function list_users($sSessionKey = null, $uid = null, $username = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $users = null;
                 if ($uid) {
-                        $uid = (int) $uid;
-                        $user = User::model()->findByPk($uid);
-                        if (!$user) {
-                                                    return array('status' => 'Invalid user id');
-                        }
-                        $users = array($user);
+                    $uid = (int) $uid;
+                    $user = User::model()->findByPk($uid);
+                    if (!$user) {
+                        return array('status' => 'Invalid user id');
+                    }
+                    $users = array($user);
+                } elseif ($username) {
+                    $user = User::model()->findByUsername($username);
+                    if (!$user) {
+                        return array('status' => 'Invalid username');
+                    }
+                    $users = array($user);
                 } else {
-                        $users = User::model()->findAll();
+                    $users = User::model()->findAll();
                 }
 
                 if (count($users) == 0) {
-                                    return array('status' => 'No users found');
+                    return array('status' => 'No users found');
                 }
 
                 foreach ($users as $user) {
@@ -2255,7 +2529,9 @@ class remotecontrol_handle
     }
 
     /**
-     * Initialise the token system of a survey where new participant tokens may be later added.
+     * Activate survey participants (RPC function)
+     *
+     * Initialise the survey participant table of a survey where new participant tokens may be later added.
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -2277,7 +2553,7 @@ class remotecontrol_handle
             if (is_array($aAttributeFields) && count($aAttributeFields) > 0) {
                 foreach ($aAttributeFields as &$sField) {
                     $sField = intval($sField);
-                    $sField = 'attribute_'.$sField;
+                    $sField = 'attribute_' . $sField;
                 }
                 $aAttributeFields = array_unique($aAttributeFields);
             }
@@ -2293,7 +2569,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Send register mails to participants in a survey
+     * Send e-mails to registered participants in a survey (RPC function)
      *
      * Returns array of results of sending
      *
@@ -2312,7 +2588,7 @@ class remotecontrol_handle
      * @param array $overrideAllConditions replace the default conditions
      * @return array Result of the action
      */
-    public function mail_registered_participants($sSessionKey, $iSurveyID, $overrideAllConditions = Array())
+    public function mail_registered_participants($sSessionKey, $iSurveyID, $overrideAllConditions = array())
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey)) {
@@ -2325,7 +2601,6 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
-
             if (!tableExists("{{tokens_$iSurveyID}}")) {
                             return array('status' => 'Error: No survey participants table');
             }
@@ -2360,7 +2635,8 @@ class remotecontrol_handle
                             return array('status' => 'Error: No candidate tokens');
             }
 
-            foreach ($aResultTokens as $key=>$oToken) {
+            foreach ($aResultTokens as $key => $oToken) {
+                $oToken->decrypt();
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
@@ -2377,7 +2653,7 @@ class remotecontrol_handle
             }
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'register');
             $iLeft = $iAllTokensCount - count($aResultTokens);
-            $aResult['status'] = $iLeft." left to send";
+            $aResult['status'] = $iLeft . " left to send";
 
             return $aResult;
         } else {
@@ -2386,7 +2662,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Invite participants in a survey
+     * Invite participants in a survey (RPC function)
      *
      * Returns array of results of sending
      *
@@ -2406,13 +2682,12 @@ class remotecontrol_handle
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-                    return array('status' => 'Error: Invalid survey ID');
+            return array('status' => 'Error: Invalid survey ID');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
-
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                            return array('status' => 'Error: No survey participants table');
+                return array('status' => 'Error: No survey participants table');
             }
 
             $iMaxEmails = (int) Yii::app()->getConfig("maxemails");
@@ -2424,35 +2699,36 @@ class remotecontrol_handle
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);
             if (empty($aResultTokens)) {
-                            return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens');
             }
 
-            foreach ($aResultTokens as $key=>$oToken) {
+            foreach ($aResultTokens as $key => $oToken) {
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
                 //if(!filter_var($emailaddress, FILTER_VALIDATE_EMAIL))
                 if (preg_match($pattern, $oToken['email']) !== 1) {
-                                    unset($aResultTokens[$key]);
+                    unset($aResultTokens[$key]);
                 }
             }
 
             if (empty($aResultTokens)) {
-                            return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens');
             }
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite');
             $iLeft = $iAllTokensCount - count($aResultTokens);
-            $aResult['status'] = $iLeft." left to send";
+            $aResult['status'] = $iLeft . " left to send";
 
             return $aResult;
         } else {
-                    return array('status' => 'No permission');
+            return array('status' => 'No permission');
         }
     }
 
 
     /**
-     * Send a reminder to participants in a survey
+     * Send a reminder to participants in a survey (RPC function)
+     *
      * Returns array of results of sending
      *
      * @access public
@@ -2490,12 +2766,12 @@ class remotecontrol_handle
             if (!is_null($iMinDaysBetween)) {
                 $iMinDaysBetween = (int) $iMinDaysBetween;
                 $compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
-                $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '".$compareddate."')  OR  (remindersent < '".$compareddate."'))";
+                $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
             }
 
             if (!is_null($iMaxReminders)) {
                 $iMaxReminders = (int) $iMaxReminders;
-                $SQLremindercountcondition = "remindercount < ".$iMaxReminders;
+                $SQLremindercountcondition = "remindercount < " . $iMaxReminders;
             }
 
             $oTokens = TokenDynamic::model($iSurveyID);
@@ -2512,12 +2788,11 @@ class remotecontrol_handle
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'remind');
 
             $iLeft = $iAllTokensCount - count($aResultTokens);
-            $aResult['status'] = $iLeft." left to send";
+            $aResult['status'] = $iLeft . " left to send";
             return $aResult;
         } else {
                     return array('status' => 'No permission');
         }
-
     }
 
 
@@ -2526,6 +2801,7 @@ class remotecontrol_handle
 
     /**
      * Add a response to the survey responses collection.
+     *
      * Returns the id of the inserted survey response
      *
      * @access public
@@ -2579,17 +2855,19 @@ class remotecontrol_handle
             }
 
             SurveyDynamic::sid($iSurveyID);
-            $survey_dynamic = new SurveyDynamic;
+            $survey_dynamic = new SurveyDynamic();
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
-            $result_id = $survey_dynamic->insertRecords($aResponseData);
-
-            if ($result_id) {
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id));
+            $survey_dynamic->setAttributes($aResponseData, false);
+            $survey_dynamic->encryptSave();
+            
+            if ($survey_dynamic->id) {
+                $result_id = $survey_dynamic->id;
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
-                    $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
-                    $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
-                    $sFileTempName = Yii::app()->getConfig('tempdir')."/upload/".$aFile['filename'];
+                    $sUploadPath = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
+                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
+                    $sFileTempName = Yii::app()->getConfig('tempdir') . "/upload/" . $aFile['filename'];
 
                     if (!file_exists($sFileRealName)) {
                         if (!is_dir($sUploadPath)) {
@@ -2598,12 +2876,11 @@ class remotecontrol_handle
 
                         if (!rename($sFileTempName, $sFileRealName)) {
                             return array(
-                                'status'    => 'Unable to move files '.$sFileTempName.' '.$sFileRealName,
+                                'status'    => 'Unable to move files ' . $sFileTempName . ' ' . $sFileRealName,
                                 'result_id' => $result_id
                             );
                         }
                     }
-
                 }
 
                 return $result_id;
@@ -2617,6 +2894,7 @@ class remotecontrol_handle
 
     /**
      * Update a response in a given survey.
+     *
      * Routine supports only single response updates.
      * Response to update will be identified either by the response id, or the token if response id is missing.
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
@@ -2637,11 +2915,11 @@ class remotecontrol_handle
         if (is_null($oSurvey)) {
             return 'Error: Invalid survey ID';
         }
-        if ($oSurvey->getAttribute('active') !== 'Y') {
+        if (!$oSurvey->isActive) {
             return 'Error: Survey is not active.';
         }
 
-        if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
+        if (!$oSurvey->isAllowEditAfterCompletion) {
             return 'Error: Survey does not allow edit after completion.';
         }
 
@@ -2650,13 +2928,15 @@ class remotecontrol_handle
                             return 'Error: No survey response table';
             }
 
-            if (!isset($aResponseData['id'])
-                && !isset($aResponseData['token'])) {
+            if (
+                !isset($aResponseData['id'])
+                && !isset($aResponseData['token'])
+            ) {
                 return 'Error: Missing response identifier (id|token).';
             }
 
             SurveyDynamic::sid($iSurveyID);
-            $oSurveyDynamic = new SurveyDynamic;
+            $oSurveyDynamic = new SurveyDynamic();
 
             if (isset($aResponseData['id'])) {
                 $aResponses = $oSurveyDynamic->findAllByPk((int) $aResponseData['id']);
@@ -2674,7 +2954,7 @@ class remotecontrol_handle
             $aBasicDestinationFields = $oSurveyDynamic->tableSchema->columnNames;
             $aInvalidFields = array_diff_key($aResponseData, array_flip($aBasicDestinationFields));
             if (count($aInvalidFields) > 0) {
-                            return 'Error: Invalid Column names supplied: '.implode(', ', array_keys($aInvalidFields));
+                            return 'Error: Invalid Column names supplied: ' . implode(', ', array_keys($aInvalidFields));
             }
 
             unset($aResponseData['token']);
@@ -2683,7 +2963,7 @@ class remotecontrol_handle
                 $aResponses[0]->setAttribute($sAtributeName, $value);
             }
 
-            $bResult = $aResponses[0]->save(true);
+            $bResult = $aResponses[0]->encryptSave(true);
 
             if ($bResult) {
                 return $bResult;
@@ -2697,6 +2977,7 @@ class remotecontrol_handle
 
     /**
      * Uploads one file to be used later.
+     *
      * Returns the metadata on success.
      *
      * @access public
@@ -2720,7 +3001,7 @@ class remotecontrol_handle
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
-            if (!Yii::app()->db->schema->getTable('{{survey_'.$iSurveyID.'}}')) {
+            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}')) {
                 return array('status' => 'No survey response table');
             }
         } else {
@@ -2729,7 +3010,7 @@ class remotecontrol_handle
 
         $tempdir = Yii::app()->getConfig("tempdir");
 
-        $sTempUploadDir = $tempdir.'/upload/';
+        $sTempUploadDir = $tempdir . '/upload/';
         if (!file_exists($sTempUploadDir)) {
             if (!mkdir($sTempUploadDir)) {
                 return array('status' => 'Can not make temporary upload directory');
@@ -2755,14 +3036,14 @@ class remotecontrol_handle
 
         // check to see that this file type is allowed
         if (!in_array($ext, $valid_extensions_array)) {
-            return array('status' => 'The extension '.$ext.' is not valid. Valid extensions are: '.$allowed_filetypes);
+            return array('status' => 'The extension ' . $ext . ' is not valid. Valid extensions are: ' . $allowed_filetypes);
         }
 
         // This also accounts for BASE64 overhead
         $size = (0.001 * 3 * strlen($sFileContent)) / 4;
 
-        $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
-        $randfileloc = $sTempUploadDir.$randfilename;
+        $randfilename = 'futmp_' . randomChars(15) . '_' . $pathinfo['extension'];
+        $randfileloc = $sTempUploadDir . $randfilename;
 
         if ($size > $maxfilesize) {
             return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
@@ -2863,6 +3144,7 @@ class remotecontrol_handle
 
     /**
      * Export token response in a survey.
+     *
      * Returns the requested file as base64 encoded string
      *
      * @access public
@@ -2922,11 +3204,10 @@ class remotecontrol_handle
 
         $oExport = new ExportSurveyResultsService();
 
-        $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
+        $sTableName = Yii::app()->db->tablePrefix . 'survey_' . $iSurveyID;
 
-        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".App()->db->quoteValue("$sToken"));
+        $sTempFile = $oExport->exportResponses($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=" . App()->db->quoteValue("$sToken"));
         return new BigFile($sTempFile, true, 'base64');
-
     }
 
 
@@ -2937,7 +3218,7 @@ class remotecontrol_handle
      *
      * @param string  $sSessionKey  Auth credentials
      * @param int     $iSurveyID    ID of the Survey
-     * @param int     $sToken       Response token
+     * @param string  $sToken       Response token
      *
      * @return array On success: array containing all uploads of the specified response
      *               On failure: array with error information
@@ -2965,9 +3246,9 @@ class remotecontrol_handle
             if (!($oResponse instanceof Response)) {
                 return array('status' => 'Could not find response for given token');
             }
-            
+
             foreach ($oResponse->getFiles() as $aFile) {
-                $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
+                $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
 
                 if (!file_exists($sFileRealName)) {
                     return array('status' => 'Could not find uploaded files');
@@ -3005,7 +3286,7 @@ class remotecontrol_handle
         $event->set('password', $sPassword);
         App()->getPluginManager()->dispatchEvent($event, array($sPlugin));
         if (!$identity->authenticate()) {
-            if($identity->errorMessage) {
+            if ($identity->errorMessage) {
                 // don't return an empty string
                 return $identity->errorMessage;
             }
@@ -3054,8 +3335,8 @@ class remotecontrol_handle
     protected function _checkSessionKey($sSessionKey)
     {
         $sSessionKey = (string) $sSessionKey;
-        $criteria = new CDbCriteria;
-        $criteria->condition = 'expire < '.time();
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'expire < ' . time();
         Session::model()->deleteAll($criteria);
         $oResult = Session::model()->findByPk($sSessionKey);
 
@@ -3069,113 +3350,110 @@ class remotecontrol_handle
 
 
     /**
-     * Import a participant into the LimeSurvey cpd. It stores attributes as well, if they are registered before within ui
+     * Import a participant into the LimeSurvey CPDB
+     *
+     * It stores attributes as well, if they are registered before within ui
      *
      * Call the function with $response = $myJSONRPCClient->cpd_importParticipants( $sessionKey, $aParticipants);
      *
      * @param int $sSessionKey
      * @param array $aParticipants
      * [[0] => ["email"=>"dummy-02222@limesurvey.com","firstname"=>"max","lastname"=>"mustermann"]]
+     * @param bool $update
      * @return array with status
      */
-    public function cpd_importParticipants($sSessionKey, $aParticipants)
+    public function cpd_importParticipants($sSessionKey, $participants, $update = false)
     {
-
         if (!$this->_checkSessionKey($sSessionKey)) {
             return array('status' => 'Invalid session key');
         }
 
-        $aAttributeData = array();
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
-        $bIsValidEmail = true;
-        $sMandatory = 0;
-        $sAttribCount = 0;
-        $aResponse = array();
-        $aResponse['ImportCount'] = 0;
+        $aResponse = array(
+            'ImportCount' => 0,
+            'UpdateCount' => 0
+        );
 
-        // get all attributes for mapping
-        $oFindCriteria = new CDbCriteria();
-        $oFindCriteria->offset = -1;
-        $oFindCriteria->limit = -1;
-        $aAttributeRecords = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($oFindCriteria);
+        $aAttributeRecords = ParticipantAttributeName::model()
+            ->with('participant_attribute_names_lang')
+            ->findAll();
 
-        foreach ($aParticipants as $sKey => $aParticipantData) {
+        foreach ($participants as $participant) {
+            $model = null;
 
-            $aData = array(
-                'firstname' => $aParticipantData['firstname'],
-                'lastname' => $aParticipantData['lastname'],
-                'email' => $aParticipantData['email'],
-                'owner_uid' => Yii::app()->session['loginID'], // ToDo is this working?
-            );
+            if (isset($participant['id'])) {
+                $participant['participant_id'] = $participant['id'];
+            }
 
-            //Check for duplicate participants
-            $arRecordExists = Participant::model()->exists(
-                'firstname = :firstname AND lastname = :lastname AND email = :email AND owner_uid = :owner_uid',
-                array(
-                    ':firstname' => $aData['firstname'],
-                    ':lastname' => $aData['lastname'],
-                    ':email' => $aData['email'],
-                    ':owner_uid' => $aData['owner_uid'],
+            if (isset($participant['participant_id'])) {
+                $model = Participant::model()->findByPk($participant['participant_id']);
+            } else {
+                $model = Participant::model()->findByAttributes(array(
+                    'firstname' => $participant['firstname'],
+                    'lastname'  => $participant['lastname'],
+                    'email'     => $participant['email'],
+                    'owner_uid' => Yii::app()->session['loginID']
                 ));
+            }
 
-            // check if email is valid
-            $this->_checkEmailFormat($aData['email']);
+            // Participant not found, so we create a new one
+            if (!$model) {
+                $model = new Participant();
+                if (isset($participant['participant_id'])) {
+                    $model->participant_id = $participant['participant_id'];
+                } else {
+                    $model->participant_id = Participant::gen_uuid();
+                }
+            }
 
-            if ($bIsValidEmail == true) {
+            $scenario = $model->getScenario(); // insert or update
+            if ($scenario == 'update' && $update === false) {
+                continue;
+            }
 
-                //First, process the known fields
-                if (!isset($aData['participant_id']) || $aData['participant_id'] == "") {
-                    //  $arParticipantModel = new Participant();
-                    $aData['participant_id'] = Participant::gen_uuid();
-                }
-                if (isset($aData['emailstatus']) && trim($aData['emailstatus'] == '')) {
-                    unset($aData['emailstatus']);
-                }
-                if (!isset($aData['language']) || $aData['language'] == "") {
-                    $aData['language'] = "en";
-                }
-                if (!isset($aData['blacklisted']) || $aData['blacklisted'] == "") {
-                    $aData['blacklisted'] = "N";
-                }
-                $aData['owner_uid'] = Yii::app()->session['loginID'];
-                if (isset($aData['validfrom']) && trim($aData['validfrom'] == '')) {
-                    unset($aData['validfrom']);
-                }
-                if (isset($aData['validuntil']) && trim($aData['validuntil'] == '')) {
-                    unset($aData['validuntil']);
-                }
+            $model->firstname   = $participant['firstname'];
+            $model->lastname    = $participant['lastname'];
+            $model->email       = $participant['email'];
+            $model->language    = isset($participant['language']) ? $participant['language'] : 'en';
+            $model->owner_uid   = Yii::app()->session['loginID'];
+            $model->blacklisted = (isset($participant['blacklisted']) && $participant['blacklisted'] === 'Y') ? 'Y' : 'N';
 
-                if (!empty($aData['email'])) {
-                    //The mandatory fields of email, firstname and lastname
-                    $sMandatory++;
-                }
+            if ($scenario == 'insert') {
+                $model->created = date('Y-m-d H:i:s');
+                $model->created_by = Yii::app()->session['loginID'];
+            } else { // update
+                $model->modified = date('Y-m-d H:i:s');
+            }
 
-                // Write to database if record not exists
-                if (empty($arRecordExists)) {
-                    // save participant to database
-                    Participant::model()->insertParticipantCSV($aData);
-
-                    // Prepare atrribute values to store in db . Iterate through our values
-                    foreach ($aParticipantData as $sLabel => $sAttributeValue) {
-                        // skip default fields
-                        if (!in_array($sLabel, $aDefaultFields)) {
-                            foreach ($aAttributeRecords as $sKey => $arValue) {
-                                $aAttributes = $arValue->getAttributes();
-                                if ($aAttributes['defaultname'] == $sLabel) {
-                                    $aAttributeData['participant_id'] = $aData['participant_id'];
-                                    $aAttributeData['attribute_id'] = $aAttributes['attribute_id'];
-                                    $aAttributeData['value'] = $sAttributeValue;
-                                    $sAttribCount++;
-                                    // save attributes values for participant
+            if ($model->save()) {
+                foreach ($participant as $sLabel => $sAttributeValue) {
+                    if (!in_array($sLabel, $aDefaultFields)) {
+                        foreach ($aAttributeRecords as $sKey => $arValue) {
+                            $aAttributes = $arValue->getAttributes();
+                            if ($aAttributes['defaultname'] == $sLabel) {
+                                $aAttributeData = array(
+                                    'participant_id' => $model->participant_id,
+                                    'attribute_id' => $aAttributes['attribute_id'],
+                                    'value' => $sAttributeValue
+                                );
+                                if ($scenario == 'insert') {
                                     ParticipantAttributeName::model()->saveParticipantAttributeValue($aAttributeData);
+                                } else { // update
+                                    ParticipantAttribute::model()->updateParticipantAttributeValue($aAttributeData);
                                 }
                             }
                         }
                     }
+                }
+
+                if ($scenario == 'insert') {
                     $aResponse['ImportCount']++;
+                } else {
+                    $aResponse['UpdateCount']++;
                 }
             }
         }
+
         return $aResponse;
     }
 

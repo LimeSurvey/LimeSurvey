@@ -35,7 +35,7 @@
 {% endif %}
 
 {# Survey data policy not accepted warning #}
-{% if aSurveyInfo.datasecuritynotaccepted == true %}
+{% if aSurveyInfo.datasecuritynotaccepted == true and aSurveyInfo.move != 'changelang' %}
     <!-- Preview mode warning -->
     <div class="{{ aSurveyInfo.class.activealert }} alert alert-danger alert-dismissible fade in alert-dismissible" {{ aSurveyInfo.attr.activealert }} >
         <button  {{ aSurveyInfo.attr.activealertbutton }} class="{{ aSurveyInfo.class.activealertbutton }} close" ><span aria-hidden="true">×</span></button>
@@ -54,3 +54,5 @@
     {% endfor %}
     </p>
 {% endif %}
+
+{{ makeFlashMessage() }}

@@ -1,0 +1,13 @@
+{
+    "env": {
+        "es6": true
+    },
+    "globals": {
+        "LS" : "writable",
+        "$" : "readonly"
+    },
+    "rules": {
+        "semi": ["warn", "always"],
+        "indent": ["warn", 4]
+    }
+}

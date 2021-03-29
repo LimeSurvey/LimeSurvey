@@ -53,27 +53,27 @@
   }
 
   function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return ArrayFrom(iter);
   }
 
   function _nonIterableSpread() {
     throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
+  function ArrayFrom(enumerable) {
   if (!Array.prototype.from) {
-    Array.prototype.from = function (enumerable) {
       var arr = [];
-
       for (var i = enumerable.length; i--; arr.unshift(enumerable[i])) {
       }
-
       return arr;
-    };
+    } else {
+        return Array.from(enumerable);
+    }
   }
 
   var forEachEls = function forEachEls(els, fn, ctx) {
     if (els instanceof HTMLCollection || els instanceof NodeList || els instanceof Array) {
-      return Array.prototype.from(els).forEach(function (el, i) {
+      return ArrayFrom(els).forEach(function (el, i) {
         return fn.call(ctx, el, i);
       });
     } // assume simple dom element
@@ -201,7 +201,7 @@
           return args;
         }
 
-        return Array.from(arguments);
+        return ArrayFrom(arguments);
       }
     }, {
       key: "setSilent",
@@ -494,7 +494,7 @@
 
 
       switchOptions = switchOptions || {};
-      Array.from(oldEl.childNodes).forEach(function (el) {
+      ArrayFrom(oldEl.childNodes).forEach(function (el) {
         elsToRemove.push(el);
 
         if (el.classList && !el.classList.contains("js-Pjax-remove")) {
@@ -518,7 +518,7 @@
           on(el, animationEventNames, sexyAnimationEnd, true);
         }
       });
-      Array.from(newEl.childNodes).forEach(function (el) {
+      ArrayFrom(newEl.childNodes).forEach(function (el) {
         if (el.classList) {
           var addClasses = "";
 
@@ -732,7 +732,7 @@
             nameList.push(element.name);
 
             if (String(element.nodeName).toLowerCase() === 'select' && element.multiple == true) {
-              var selected = Array.from(element.options).map(function (item) {
+              var selected = ArrayFrom(element.options).map(function (item) {
                 return item.selected ? item.value : null;
               });
               paramObject.push({
@@ -1287,7 +1287,7 @@
       _this.log.log("styleheets new elements", elements);
 
       forEachEls(elements, function (newEl) {
-        var resemblingOld = Array.from(oldElements).reduce(function (acc, oldEl) {
+        var resemblingOld = ArrayFrom(oldElements).reduce(function (acc, oldEl) {
           acc = oldEl.href === newEl.href ? oldEl : acc;
           return acc;
         }, null);
@@ -1767,4 +1767,3 @@
   return index;
 
 }));
-//# sourceMappingURL=pjax.js.map

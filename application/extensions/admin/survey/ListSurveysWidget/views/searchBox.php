@@ -60,7 +60,7 @@
             </div>
 
             <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listsurveys');?>" class="btn btn-warning"><?php eT('Reset');?></a>
+            <a href="<?php echo Yii::app()->createUrl('surveyAdministration/listsurveys');?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
             <?php $this->endWidget(); ?>
         </div>

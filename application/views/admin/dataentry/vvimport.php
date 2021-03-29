@@ -1,7 +1,18 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
+<?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
     <?php if($tableExists):?>
-    <h3><?php eT("Import a VV response data file"); ?></h3>
+        <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6 text-left">
+                <h4>
+                    <?php  eT("Import a VV response data file"); ?>
+                </h4>
+            </div>
+        </div>
+        <h3></h3>
+    </div>
     <?php endif;?>
+    
 
         <div class="row">
             <div class="col-lg-12 content-right">
@@ -9,8 +20,8 @@
 <?php
     if ($tableExists) {
     ?>
-    <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
-
+    
+    
     <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
             <div class="panel-title h4">
@@ -136,7 +147,7 @@
             <?php eT("This survey is not active. You must activate the survey before attempting to import a VVexport file."); ?>
         </p>
         <p>
-            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('admin/survey/sa/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
+            <a class="btn btn-lg btn-default" href='<?php echo $this->createUrl('surveyAdministration/view/'.$surveyid); ?>'><?php eT("Return to survey administration"); ?></a>
         </p>
     </div>
 

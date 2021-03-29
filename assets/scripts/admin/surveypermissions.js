@@ -12,7 +12,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     });
 
 
-    $(".usersurveypermissions").tablesorter({
+    $(".table-permissions-set").tablesorter({
          widgets: ['zebra'],
          headers: { 0: { sorter: false},
                     2: { sorter: false},
@@ -29,11 +29,24 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         function(){
             $(this).removeClass('mixed');
             $(this).closest('tr').find('input').prop('checked',$(this).prop('checked')).prop('indeterminate',false);
+            updateAllCheckboxes();
+        }
+    )
+
+    // mark all checkboxes
+    $(".markall").click(
+        function(){
+            $(this).removeClass('mixed');
+            var checked = $(this).prop('checked');
+            $('.table-permissions-set tbody tr').each(function(){
+                var rowSelector = $(this).find('input');
+                $(rowSelector).prop('checked',checked).prop('indeterminate',false);
+            });
         }
     )
 
     $('.extended input').click(
-     function(){
+        function(){
             if ($(this).closest('tr').find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
                 $(this).closest('tr').find('.markrow').prop('checked',true).removeClass('mixed');
@@ -44,45 +57,48 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             }
             else
             {
-                $(this).closest('tr').find('.markrow').prop('checked',true).addClass('mixed');;
+                $(this).closest('tr').find('.markrow').prop('checked',true).addClass('mixed');
             }
-     }
+            updateAllCheckboxes();
+        }
     )
 
     if (Cookies.get('surveysecurityas')!='true')
     {
-        $('.usersurveypermissions .extended').hide();
+        $('.table-permissions-set .extended').hide();
     }
 
-    $('.usersurveypermissions tr').each(function(){
-            if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
-            {
-                $(this).find('.markrow').prop('checked',true).removeClass('mixed');
-            }
-            else if ($(this).find('.extended input:checked').size()==0)
-            {
-                $(this).find('.markrow').prop('checked',false).removeClass('mixed');
-            }
-            else
-            {
-                $(this).find('.markrow').prop('checked',true).addClass('mixed');
-            }
-    })
-
-    $('#btnToggleAdvanced').click(function(){
-        extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
-        if (extendoptionsvisible==false)
+    $('.table-permissions-set tbody tr').each(function(){
+        if ($(this).find('.extended input:checkbox:checked').length == $(this).find('.extended input:checkbox').length)
         {
-            $('.usersurveypermissions .extended').fadeIn('slow');
+            $(this).find('.markrow').prop('checked',true).removeClass('mixed');
+        }
+        else if (!$(this).find('.extended input:checkbox:checked').length)
+        {
+            $(this).find('.markrow').prop('checked',false).removeClass('mixed');
         }
         else
         {
-            $('.usersurveypermissions .extended').fadeOut();
+            $(this).find('.markrow').prop('checked',true).addClass('mixed');
+        }
+    })
+
+    $('#btnToggleAdvanced').click(function(){
+        extendoptionsvisible=$('.table-permissions-set .extended').is(':visible');
+        if (extendoptionsvisible==false)
+        {
+            $('.table-permissions-set .extended').fadeIn('slow');
+        }
+        else
+        {
+            $('.table-permissions-set .extended').fadeOut();
         }
         updateExtendedButton(!extendoptionsvisible);
         Cookies.set('surveysecurityas',!extendoptionsvisible);
-    })
+    });
     updateExtendedButton(true);
+
+    updateAllCheckboxes();
 });
 
 function updateExtendedButton(bVisible)
@@ -96,4 +112,30 @@ function updateExtendedButton(bVisible)
         $('#btnToggleAdvanced').val('>>');
     }
 
+}
+
+function updateAllCheckboxes(){
+    var iFullCheckedRows = 0;
+    var iHalfCheckedRows = 0;
+    var iNoCheckedRows = 0;
+    $('.table-permissions-set tbody tr').each(function(){
+        var rowSelector = $(this).find('.markrow');
+        if (rowSelector.prop('checked') === true && !rowSelector.hasClass('mixed')){
+            iFullCheckedRows += 1;
+        } else if (rowSelector.prop('checked') === true && rowSelector.hasClass('mixed')){
+            iHalfCheckedRows += 1;
+        } else if (rowSelector.prop('checked') === false){
+            iNoCheckedRows += 1;
+        }
+    });
+
+    var markAllSelector = $('.table-permissions-set thead tr').find('.markall');
+
+    if (iFullCheckedRows > 0 && iHalfCheckedRows == 0 && iNoCheckedRows == 0){
+        markAllSelector.prop('checked',true).removeClass('mixed');
+    } else if (iFullCheckedRows > 0 || iHalfCheckedRows > 0){
+        markAllSelector.prop('checked',true).addClass('mixed');
+    } else {
+        markAllSelector.prop('checked',false).removeClass('mixed');
+    }
 }

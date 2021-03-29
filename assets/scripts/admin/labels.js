@@ -42,11 +42,6 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     $('.codeval').on('keyup change', sync_label);
     $('.assessmentval').on('keyup change', sync_label);
 
-    $('#neweditlblset0 .answertable tbody').sortable({
-        update:sort_complete,
-        distance:2
-    });
-
     $('#btnqareplace').click(quickaddfunction);
     $('#btnqainsert').click(quickaddfunction);
 
@@ -347,17 +342,16 @@ function createNewLabelTR(alternate, first) {
         + "<input type=\"number\" class='assessmentval form-control  ' value=\"###assessmentval###\" name=\"assessmentvalue_###next###\" id=\"assessmentvalue_###next###\" style=\"text-align: right;\" size=\"6\" maxlength=\"5\" >";
     }
 
-    x = x + "<td><div class='input-group'><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
-    "<span class='input-group-addon'><a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<span class=\"btn btn-default btn-xs fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
-    "<span style=\"display: none;\" class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
-    "</a></span></div></td>";
+    x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\" id=\"title_###lang###_###next###\" type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
+    "</td>";
+
+    x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;&nbsp;<a href='#' class='btn btn-default btn-sm htmleditor--openmodal' data-target-field-id='title_###lang###_###next###' data-toggle='tooltip' title='Open editor'><i class='fa fa-edit'></i></a>";
 
     if (first) {
-        x = x + "<td style=\"text-align: center;\">&nbsp;&nbsp;<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button></td>";
+        x = x + "&nbsp<button class='btn btn-default btn-sm btnaddanswer'><i class=\"icon-add text-success\"></i></button> <button class='btn btn-default btn-sm btndelanswer'><i class=\" fa fa-trash  text-warning\"></i></button>";
     }
 
-    x = x + "</tr>";
+    x = x + "</td></tr>";
 
     return x;
 }

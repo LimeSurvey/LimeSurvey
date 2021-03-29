@@ -31,7 +31,6 @@
         public function run()
         {
 
-            $qtproperties = $this->widgetOptions['qtproperties'];
             $questionrow = $this->widgetOptions['questionrow'];
             $langopts = $this->widgetOptions['langopts'];
             $language = $this->widgetOptions['language'];
@@ -54,7 +53,7 @@
             }
             }
 
-            if($questionrow['type'] == 'Y') // do we need this?
+            if($questionrow['type'] == Question::QT_Y_YES_NO_RADIO) // do we need this?
             {
                 $sElement_id = 'defaultanswerscale_0_' . $language;
 

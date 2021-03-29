@@ -84,15 +84,12 @@ return array(
         'basePath' => 'core.questions.upload',
         'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'css/uploader-file.css',
-            'css/uploader.css',
+            'styles/uploader-files.css',
+            'styles/uploader.css',
         ),
         'js'=>array(
-            'scripts/uploadquestion'.$minVersion.'.js',
-        ),
-        'depends' => [
-            'emoji'
-        ]
+            'build/uploadquestion'.$minVersion.'.js',
+        )
     ),
     /* array-numeric question */
     'question-array-numeric'=>array(

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>ComfortUpdateChecker</name>
+        <type>plugin</type>
+        <creationDate>2020-10-12</creationDate>
+        <lastUpdate>2020-10-12</lastUpdate>
+        <author>Eddy Lackmann | LimeSurvey Team</author>
+        <authorUrl>https://limesurvey.org</authorUrl>
+        <email>support@limesurvey.org</email>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Checks if new update is available for comfort update users]]></description>
+        <supportUrl>https://www.limesurvey.org</supportUrl>
+    </metadata>
+    <compatibility>
+        <version>4.0</version>
+ 	    <version>3.0</version>
+    </compatibility>
+    <updaters disabled="disabled">
+        
+    </updaters>
+</config>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -145,7 +146,7 @@ class Zend_XmlRpc_Client_ServerIntrospection
     {
         $signature = $this->_system->methodSignature($method);
         if (!is_array($signature)) {
-            $error = 'Invalid signature for method "'.$method.'"';
+            $error = 'Invalid signature for method "' . $method . '"';
             require_once 'Zend/XmlRpc/Client/IntrospectException.php';
             throw new Zend_XmlRpc_Client_IntrospectException($error);
         }
@@ -161,5 +162,4 @@ class Zend_XmlRpc_Client_ServerIntrospection
     {
         return $this->_system->listMethods();
     }
-
 }

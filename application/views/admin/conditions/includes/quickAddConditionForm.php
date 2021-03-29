@@ -91,7 +91,7 @@
                             <a href='#QUICKADD-PREVQUESTIONS' aria-controls='PREVQUESTIONS' role='tab' data-toggle='tab'><?php eT('Questions'); ?></a>
                         </li>
                         <li role='presentation' class='target-tab'>
-                            <a href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Token fields'); ?></a>
+                            <a href='#QUICKADD-TOKENATTRS' aria-controls='TOKENATTRS' role='tab' data-toggle='tab'><?php eT('Participant fields'); ?></a>
                         </li>
                         <li role='presentation' class='target-tab disabled'>
                             <a href='#QUICKADD-REGEXP' aria-controls='REGEXP' role='tab' data-toggle='tab'><?php eT('RegExp'); ?></a>
@@ -131,7 +131,7 @@
                         <div class='col-sm-10'>
                             <select class='form-control' name='quick-add-prevQuestionSGQA' id='quick-add-prevQuestionSGQA' size='7'>
                                 <?php foreach ($cquestions as $cqn): ?>
-                                    <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
+                                    <?php if ($cqn[2] != Question::QT_M_MULTIPLE_CHOICE && $cqn[2] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS): ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
                                             value='<?php echo '@' . $cqn[3] . '@'; ?>'

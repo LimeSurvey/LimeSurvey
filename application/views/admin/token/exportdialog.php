@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
-                <div class="settings-list">
-
+            <div class="row">
+                <div class="settings-list col-sm-12 col-md-6">
                     <!--Survey status -->
                     <div class=" form-group control-group" data-name="tokenstatus">
                         <label class="default control-label" for="tokenstatus">
@@ -13,7 +13,7 @@
                         </label>
                         <div class="default controls">
                             <select id="tokenstatus" name="tokenstatus" class="form-control">
-                                <option value="0"><?php eT('All tokens'); ?></option>
+                                <option value="0"><?php eT('All participants'); ?></option>
                                 <option value="1"><?php eT('Completed'); ?></option>
                                 <option value="2"><?php eT('Not completed'); ?></option>
                                 <option value="3"><?php eT('Not started'); ?></option>
@@ -70,6 +70,8 @@
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
 
                     <!--Filter by email address -->
                     <div class=" form-group control-group" data-name="filteremail">
@@ -107,7 +109,7 @@
                         </div>
                     </div>
                     <?php } ?>
-<div class="form-group control-group " data-name="maskequations">
+                    <div class="form-group control-group " data-name="maskequations">
                         <label class="default control-label" for="maskequations">
                             <?php eT('Quote equations:'); ?>
                         </label>
@@ -125,7 +127,11 @@
                         </div>
                     </div>                    
                 </div>
-                <div class="buttons control-group hidden"><button class="btn" type="submit" name="submit"><?php eT('Export tokens'); ?></button></div>
+                <button class="btn btn-primary btn-block hidden" type="submit" name="submit">
+                    <i class="fa fa-download"></i>
+                    <?php eT('Export participants'); ?>
+                </button>
+            </div>
             </form>
         </div>
     </div>

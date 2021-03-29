@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <!-- Metadata -->
+    <metadata>
+        <name>arrays/texts</name>
+        <type>question_theme</type>
+        <title>Array (Texts)</title>
+        <creationDate>09/08/2018</creationDate>
+        <author>Dominik Vitt</author>
+        <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Array (Texts) question type configuration</description>
+        <questionType>;</questionType>
+        <group>Arrays</group>
+        <subquestions>2</subquestions>
+        <answerscales>0</answerscales>
+        <hasdefaultvalues>0</hasdefaultvalues>
+        <assessable>0</assessable>
+        <class>array-multi-flexi-text</class>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <!--
+        List of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename></filename>
+        </css>
+        <js>
+            <filename></filename>
+        </js>
+        <preview>
+            <filename></filename>
+        </preview>
+    </files>
+
+    <generalattributes>
+        <attribute>question_template</attribute>
+        <attribute>gid</attribute>
+<!--        <attribute>other</attribute>-->
+        <attribute>mandatory</attribute>
+        <attribute>relevance</attribute>
+        <attribute>encrypted</attribute>
+        <attribute>save_as_default</attribute>
+        <attribute>clear_default</attribute>
+        <attribute>preg</attribute>
+    </generalattributes>
+
+    <!-- Question attributes -->
+    <attributes>
+        <!-- Display Attributes START -->
+        <attribute>
+            <name>repeat_headings</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Repeat headers every n-th subquestions (Set to 0 to deactivate).</help>
+            <caption>Repeat headers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>answer_width</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <min>0</min>
+            <max>100</max>
+            <help>Set the percentage width of the (sub-)question column (1-100)</help>
+            <caption>(Sub-)question width</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>random_order</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Present subquestions/answer options in random order</help>
+            <caption>Random order</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hide_tip</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide the tip that is normally shown with a question</help>
+            <caption>Hide tip</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden</name>
+            <category>Display</category>
+            <sortorder>101</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>cssclass</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
+                may use expressions - remember this part is static.
+            </help>
+            <caption>CSS class(es)</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
+            <caption>Text input box size</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>placeholder</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.</help>
+            <caption>Placeholder answer</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <!-- Display Attributes END -->
+        <!-- Logic Attributes START -->
+        <attribute>
+            <name>min_answers</name>
+            <category>Logic</category>
+            <sortorder>10</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Ensure a minimum number of possible answers (0=No limit)</help>
+            <caption>Minimum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>max_answers</name>
+            <category>Logic</category>
+            <sortorder>11</sortorder>
+            <inputtype>text</inputtype>
+            <expression>2</expression>
+            <help>Limit the number of possible answers</help>
+            <caption>Maximum answers</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>array_filter</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question.</help>
+            <caption>Array filter</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_style</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Hidden</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Disabled</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Specify how array-filtered sub-questions should be displayed</help>
+            <caption>Array filter style</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>array_filter_exclude</name>
+            <category>Logic</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <help>Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question.</help>
+            <caption>Array filter exclusion</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>random_group</name>
+            <category>Logic</category>
+            <sortorder>180</sortorder>
+            <inputtype>text</inputtype>
+            <help>Place questions into a specified randomization group, all questions included in the specified
+                group will appear in a random order
+            </help>
+            <caption>Randomization group name</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>em_validation_q</name>
+            <category>Logic</category>
+            <sortorder>200</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate the whole question.</help>
+            <caption>Question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq</name>
+            <category>Logic</category>
+            <sortorder>220</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>2</expression>
+            <help>Enter a boolean equation to validate each sub-question.</help>
+            <caption>Sub-question validation equation</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_sq_tip</name>
+            <category>Logic</category>
+            <sortorder>230</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
+            <caption>Sub-question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <attribute>
+            <name>em_validation_q_tip</name>
+            <category>Logic</category>
+            <sortorder>210</sortorder>
+            <inputtype>textarea</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>This is a hint text that will be shown to the participant describing the question validation
+                equation.
+            </help>
+            <caption>Question validation tip</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+        </attribute>
+        <!-- Logic Attributes END -->
+        <!-- Other Attributes START -->
+        <attribute>
+            <name>numbers_only</name>
+            <category>Other</category>
+            <sortorder>150</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Allow only numerical input</help>
+            <caption>Numbers only</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>show_grand_total</name>
+            <category>Other</category>
+            <sortorder>152</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Show grand total for either columns or rows</help>
+            <caption>Show grand total</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>show_totals</name>
+            <category>Other</category>
+            <sortorder>151</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <option>
+                    <value>X</value>
+                    <text>Off</text>
+                </option>
+                <option>
+                    <value>R</value>
+                    <text>Rows</text>
+                </option>
+                <option>
+                    <value>C</value>
+                    <text>Columns</text>
+                </option>
+                <option>
+                    <value>B</value>
+                    <text>Rows &amp; columns</text>
+                </option>
+            </options>
+            <default>X</default>
+            <help>Show totals for either rows, columns or both rows and columns</help>
+            <caption>Show totals for</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>page_break</name>
+            <category>Other</category>
+            <sortorder>100</sortorder>
+            <inputtype>switch</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <default>0</default>
+            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <caption>Insert page break in printable view</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Other Attributes END -->
+        <!-- Statistics Attributes START -->
+        <attribute>
+            <name>statistics_showgraph</name>
+            <category>Statistics</category>
+            <inputtype>switch</inputtype>
+            <sortorder>101</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+            </options>
+            <help>Display a chart in the statistics?</help>
+            <caption>Display chart</caption>
+            <default>1</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>statistics_graphtype</name>
+            <category>Statistics</category>
+            <inputtype>singleselect</inputtype>
+            <sortorder>102</sortorder>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>Bar chart</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Pie chart</text>
+                </option>
+                <option>
+                    <value>2</value>
+                    <text>Radar</text>
+                </option>
+                <option>
+                    <value>3</value>
+                    <text>Line</text>
+                </option>
+                <option>
+                    <value>4</value>
+                    <text>PolarArea</text>
+                </option>
+                <option>
+                    <value>5</value>
+                    <text>Doughnut</text>
+                </option>
+            </options>
+            <help>Select the type of chart to be displayed</help>
+            <caption>Chart type</caption>
+            <default>0</default>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Statistics Attributes END -->
+        <!-- Timer Attributes START -->
+        <!-- Timer Attributes END -->
+        <!-- Input Attributes START -->
+        <attribute>
+            <name>maximum_chars</name>
+            <category>Input</category>
+            <sortorder>100</sortorder>
+            <inputtype>integer</inputtype>
+            <default></default>
+            <help>Maximum characters allowed</help>
+            <caption>Maximum characters</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <!-- Input Attributes END -->
+    </attributes>
+
+    <!-- Core question js/css configuration -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

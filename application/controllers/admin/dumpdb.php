@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -36,7 +37,6 @@ class Dumpdb extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }
-            
     }
 
     /**
@@ -49,7 +49,7 @@ class Dumpdb extends Survey_Common_Action
     {
         Yii::app()->loadHelper("admin/backupdb");
         $sDbName = _getDbName();
-        $sFileName = 'LimeSurvey_'.$sDbName.'_dump_'.dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
+        $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
         $this->_outputHeaders($sFileName);
         outputDatabase();
         exit;
@@ -63,9 +63,7 @@ class Dumpdb extends Survey_Common_Action
     private function _outputHeaders($sFileName)
     {
         header('Content-type: application/octet-stream');
-        header('Content-Disposition: attachment; filename='.$sFileName);
+        header('Content-Disposition: attachment; filename=' . $sFileName);
         header("Cache-Control: no-store, no-cache, must-revalidate");  // Don't store in cache because it is sensitive data
-        
     }
-
 }

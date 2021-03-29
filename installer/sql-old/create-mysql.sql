@@ -10,7 +10,7 @@ CREATE TABLE `prefix_answers` (
   `language` varchar(20) default 'en',
   `scale_id` int(11) NOT NULL default '0',
   PRIMARY KEY (`qid`,`code`,`language`,`scale_id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -27,7 +27,7 @@ CREATE TABLE `prefix_assessments` (
   `message` text NOT NULL,
   `language` varchar(20) NOT NULL default 'en',
   PRIMARY KEY (`id`,`language`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `prefix_conditions` (
   `value` varchar(255) NOT NULL default '',
   `scenario` int(11) NOT NULL default '1',
   PRIMARY KEY (`cid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -56,7 +56,7 @@ CREATE TABLE `prefix_defaultvalues` (
   `specialtype` varchar(20) NOT NULL default '',
   `defaultvalue` text,
   PRIMARY KEY (`qid`, `specialtype`, `language`, `scale_id`, `sqid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `prefix_expression_errors` (
   `eqn` text,
   `prettyprint` text,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -86,7 +86,7 @@ CREATE TABLE `prefix_failed_login_attempts` (
   `last_attempt` varchar(20) NOT NULL,
   `number_attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -102,7 +102,7 @@ CREATE TABLE `prefix_groups` (
   `randomization_group` varchar(20) NOT NULL default '',
   `grelevance` text DEFAULT NULL,
   PRIMARY KEY (`gid`,`language`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `prefix_labels` (
   `assessment_value` int(11) NOT NULL default '0',
   PRIMARY KEY (`lid`,`sortorder`,`language`),
   KEY `labels_code_idx` (`code`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `prefix_labelsets` (
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
   PRIMARY KEY (`lid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `prefix_participant_attribute` (
   `attribute_id` int(11) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`participant_id`,`attribute_id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_name` varchar(255) NOT NULL,
   `lang` varchar(20) NOT NULL,
   PRIMARY KEY (`attribute_id`,`lang`)
- ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+ ) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `visible` varchar(5) NOT NULL,
   PRIMARY KEY (`attribute_id`),
   INDEX `idx1_prefix_participant_attribute_names` (`attribute_id`,`attribute_type`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -174,7 +174,7 @@ CREATE TABLE `prefix_participant_attribute_values` (
   `attribute_id` int(11) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`value_id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -186,7 +186,7 @@ CREATE TABLE `prefix_participant_shares` (
   `date_added` datetime NOT NULL,
   `can_edit` varchar(5) NOT NULL,
   PRIMARY KEY (`participant_id`,`share_uid`)
- ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+ ) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -204,7 +204,7 @@ CREATE TABLE `prefix_participants` (
   `created` datetime,
   `modified` datetime,
   PRIMARY KEY (`participant_id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -224,7 +224,7 @@ CREATE TABLE `prefix_permissions` (
   `export_p` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idxPermissions` (`entity_id`,`entity`,`permission`,`uid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -236,7 +236,7 @@ CREATE TABLE `prefix_plugins` (
   `active` int(1) NOT NULL default '0',
   `version` varchar(32) default null,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -250,7 +250,7 @@ CREATE TABLE `prefix_plugin_settings` (
   `key` varchar(50) NOT NULL,
   `value` text NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -263,7 +263,7 @@ CREATE TABLE `prefix_question_attributes` (
   `value` text default NULL,
   `language` varchar(20) default NULL,
   PRIMARY KEY (`qaid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -288,7 +288,7 @@ CREATE TABLE `prefix_questions` (
   `relevance` text,
   `modulename` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`qid`,`language`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -303,7 +303,7 @@ CREATE TABLE `prefix_quota` (
   `active` int(11) NOT NULL default '1',
   `autoload_url` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -318,7 +318,7 @@ CREATE TABLE `prefix_quota_languagesettings` (
   `quotals_url` varchar(255),
   `quotals_urldescrip` varchar(255),
   PRIMARY KEY (`quotals_id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -332,7 +332,7 @@ CREATE TABLE `prefix_quota_members` (
   `code` varchar(11) default NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-)  ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+)  CHARACTER SET utf8mb4 ;
 
 
 --
@@ -351,7 +351,7 @@ CREATE TABLE `prefix_saved_control` (
   `saved_date` datetime NOT NULL,
   `refurl` text,
   PRIMARY KEY (`scid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -362,7 +362,7 @@ CREATE TABLE `prefix_sessions`(
   `expire` int(11) DEFAULT NULL,
   `data` longblob,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -372,7 +372,7 @@ CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` text NOT NULL,
   PRIMARY KEY (`stg_name`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -386,7 +386,7 @@ CREATE TABLE `prefix_survey_links` (
   `date_invited` datetime,
   `date_completed` datetime,
   PRIMARY KEY (`participant_id`,`token_id`,`survey_id`)
- ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+ ) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -399,7 +399,7 @@ CREATE TABLE `prefix_survey_url_parameters` (
   `targetqid` int(11) NULL,
   `targetsqid` int(11) NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 --
 -- Table structure for table surveys
@@ -465,7 +465,7 @@ CREATE TABLE `prefix_surveys` (
   `googleanalyticsstyle` varchar(1) DEFAULT NULL,
   `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
   PRIMARY KEY (`sid`)
-) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 --
 -- Table structure for table surveys_languagesettings
@@ -496,7 +496,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   `attachments` text DEFAULT NULL,
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
-) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 --
 -- Table structure for table user_groups
@@ -508,7 +508,7 @@ CREATE TABLE `prefix_user_groups` (
   `owner_id` int(11) NOT NULL,
   PRIMARY KEY (`ugid`),
   UNIQUE KEY `lug_name` (`name`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -518,7 +518,7 @@ CREATE TABLE `prefix_user_in_groups` (
   `ugid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   PRIMARY KEY (`ugid`,`uid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -541,7 +541,7 @@ CREATE TABLE `prefix_users` (
   `modified` datetime,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `users_name` (`users_name`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 --
@@ -557,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `prefix_boxes` (
   `page` text NOT NULL COMMENT 'Page name where the box should be shown ',
   `usergroup` INT(11) NOT NULL COMMENT  'Those boxes will be shown for that user group',
   PRIMARY KEY (`id`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 
 INSERT INTO `prefix_boxes` (`id`, `position`, `url`, `title`, `ico`, `desc`, `page`,`usergroup` ) VALUES
@@ -603,7 +603,7 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`),
     INDEX(`hash`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 --
 -- Table settings_user 
@@ -616,7 +616,7 @@ CREATE TABLE `prefix_settings_user` (
     `stg_name` VARCHAR(63) NOT NULL,
     `stg_value` TEXT DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
+) CHARACTER SET utf8mb4 ;
 
 --
 -- Surveymenu
@@ -639,7 +639,7 @@ CREATE TABLE `prefix_surveymenu` (
   PRIMARY KEY (`id`),
   KEY `ordering` (`ordering`),
   KEY `title` (`title`(250))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, NOW(),0,NOW(),0);
 INSERT INTO `prefix_surveymenu` VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, NOW(),0,NOW(),0);
@@ -679,7 +679,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   KEY `ordering_index` (`ordering`),
   KEY `title_index` (`title`(191)),
   KEY `menu_title_index` (`menu_title`(191))
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `prefix_surveymenu_entries` VALUES
@@ -739,7 +739,7 @@ CREATE TABLE `prefix_templates` (
   `owner_id` int(11) DEFAULT NULL,
   `extends` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -771,7 +771,7 @@ CREATE TABLE `prefix_template_configuration` (
   `packages_ltr` mediumtext COLLATE utf8mb4_unicode_ci,
   `packages_rtl` mediumtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY(`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `prefix_template_configuration`  VALUES
@@ -798,7 +798,7 @@ CREATE TABLE `prefix_surveys_groups` (
   `modified` datetime DEFAULT NULL,
   `created_by` int(11) NOT NULL,
   PRIMARY KEY (`gsid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `sortorder`, `owner_uid`, `parent_id`, `created`, `modified`, `created_by`) VALUES

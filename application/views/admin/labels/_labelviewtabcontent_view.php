@@ -25,16 +25,16 @@ $codeids = '';
                 <tbody>
                     <?php $position = 0; $alternate = false; ?>
 
-                    <?php foreach ($results[$i] as $row): ?>
+                    <?php foreach ($results as $row): ?>
                         <?php
-                        $sortorderids = $sortorderids . ' ' . $row['language'] . '_' . $row['sortorder'];
+                        $sortorderids = $sortorderids . ' ' . $lslanguage . '_' . $row['sortorder'];
                         if ($first)
                         {
                             $codeids = $codeids . ' ' . $row['sortorder'];
                         }
                         ?>
 
-                        <tr class="labelDatas" style='white-space: nowrap;' id='row_<?php echo $row['language']; ?>_<?php echo $row['sortorder'] ?>'>
+                        <tr class="labelDatas" style='white-space: nowrap;' id='row_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>'>
                             <?php if (!$first):?>
                                 <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
                                 <?php else:?>
@@ -52,21 +52,28 @@ $codeids = '';
                                 </td>
                                 <?php endif;?>
                             <td>
-                            <div class="input-group">
-                                <input type='text' class=" form-control  " name='title_<?php echo $row['language'] ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php echo HTMLEscape($row['title']) ?>" />
-                                <span class="input-group-addon">
-                                    <?php  echo getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[" . gT("Label:", "js") . "](" . $row['language'] . ")", '', '', '', $action); ?>
-                                </span>
-                            </div>
-                                
+                                <input type='text' class=" form-control  " name='title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>' id='title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>' maxlength='3000' size='80' value="<?php
+                                if (array_key_exists($lslanguage, $row->labell10ns)) {
+                                    echo HTMLEscape($row->labell10ns[$lslanguage]->title);
+                                }?>" />
                             </td>
 
                             <td style='text-align:center;'>
                             &nbsp;&nbsp;
-                                <?php if ($first && Permission::model()->hasGlobalPermission('labelsets','update')):?>
+                                <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
+                                    <a
+                                        href='#'
+                                        class="btn btn-default btn-sm htmleditor--openmodal"
+                                        data-target-field-id="title_<?php echo $lslanguage; ?>_<?php echo $row['sortorder'] ?>"
+                                        data-toggle="tooltip"
+                                        title="Open editor">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <?php if ($first): ?>
                                     <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add  text-success"></i> </button> <?php // eT("Insert a new label after this one") ?>
                                     <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash  text-warning "></i> </button> <?php //eT("Delete this label") ?>
                                     <?php endif;?>
+                                <?php endif;?>
                             </td>
                         </tr>
                         <?php  $position++; ?>

@@ -56,7 +56,7 @@
 <!-- Needs to be set by javascript! Because if JavaScript is disabled, ajaxmode will completely fail! -->
 {{
     registerScript("AJAXACTIVATE", "
-    $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"" ~ aSurveyInfo.options.ajaxmode ~ "\" id=\"ajax\" />');
+    $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"off\" id=\"ajax\" />');
     ", "POS_POSTSCRIPT")
 }}
 

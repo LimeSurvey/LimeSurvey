@@ -41,9 +41,9 @@ try {
 }
 
 /* Fix array to string , see #13352 */
-foreach($systemInfos as &$systemInfo) {
+foreach($systemInfos as $key=>$systemInfo) {
     if(is_array($systemInfo)) {
-        $systemInfo = json_encode($systemInfo, JSON_PRETTY_PRINT);
+        $systemInfos[$key] = json_encode($systemInfo, JSON_PRETTY_PRINT);
     }
 }
 ?>
@@ -61,7 +61,7 @@ foreach($systemInfos as &$systemInfo) {
 
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-sm-4 text-center"  >
-                <a href='http://donate.limesurvey.org' target="_blank">
+                <a href='https://account.limesurvey.org/nbill?action=orders&task=order&cid=27' target="_blank">
                     <img alt='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
@@ -215,7 +215,7 @@ foreach($systemInfos as &$systemInfo) {
                 <div class="h3 modal-title">
 			<span class="sr-only"><?php eT("Notifications"); ?></span>
 		</div>
-                <span class='notification-date text-muted'></span>
+                <span class='notification-date'></span>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'></p>
@@ -235,6 +235,10 @@ foreach($systemInfos as &$systemInfo) {
         </div>
     </div>
 </div>
+
+<?php
+    $this->renderPartial('/admin/htmleditor/modal_editor_partial');
+?>
 
 </body>
 </html>

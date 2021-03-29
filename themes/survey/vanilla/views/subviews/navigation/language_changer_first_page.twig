@@ -17,6 +17,24 @@
     @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
 
 #}
-{{ include('./subviews/navigation/language_changer.twig') }}
+{% if aSurveyInfo.alanguageChanger.show == true %}
+    {% set htmlOptions = {
+        'id'          : 'firstpage-changelang',
+        'autocomplete': 'off',
+        'class'       : 'form',
+    } %}
+
+    <!-- Start of language change Form-->
+    {{ C.Html.form(
+        ( aSurveyInfo.surveyUrl ),
+    'post',
+    (htmlOptions)
+    ) }}
+
+
+    {{ include('./subviews/navigation/language_changer.twig') }}
+
+    </form>
+{% endif %}
 
 

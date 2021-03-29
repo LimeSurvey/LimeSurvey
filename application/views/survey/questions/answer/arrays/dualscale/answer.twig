@@ -44,13 +44,13 @@
                 {% if leftheader != '' or rightheader !='' %}
                     <td class="hidden"></td>
                 {% endif %}
-                <th colspan="{{ labelans0|length }}" class="dsheader">{{ leftheader }}</th>
+                <th colspan="{{ labelans0|length }}" class="dsheader">{{ processString(leftheader) }}</th>
                 {% if labelans1|length > 0 %}
                     <td class="header_separator"></td>  <!-- // Separator -->
                     {% if leftheader != '' or rightheader !='' %}
                         <td class="hidden"></td>
                     {% endif %}
-                    <th colspan="{{ labelans1|length }}" class="dsheader">{{ rightheader }}</th>
+                    <th colspan="{{ labelans1|length }}" class="dsheader">{{ processString(rightheader) }}</th>
                 {% endif %}
 
                 {% if shownoanswer or rightexists %}
@@ -139,7 +139,7 @@
                         {{ labelcode0_checked[ansrow.title][ld] }}
                     />
                     <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility">
-                        {{ labelans0[j] }}
+                        {{ processString(labelans0[j]) }}
                     </label>
                 </td>
             {% endfor %}
@@ -160,7 +160,7 @@
                         </label>
                     </div>
                     {% endif %}
-                    {{ ansrow.answertextcenter }}
+                    {{ processString(ansrow.answertextcenter) }}
                 </td>
 
                 <!-- Second label set -->
@@ -177,7 +177,7 @@
                             {{ labelcode1_checked[ansrow.title][ld] }}
                         />
                         <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility">
-                            {{ labelans1[k] }}
+                            {{ processString(labelans1[k]) }}
                         </label>
                     </td>
                 {% endfor %}
@@ -185,7 +185,7 @@
 
             <!-- Separator for no-answer -->
             {% if shownoanswer or rightexists %}
-                <td class="answertextright dual_scale_separator information-item">{{ ansrow.answertextright }}</td>
+                <td class="answertextright dual_scale_separator information-item">{{ processString(ansrow.answertextright) }}</td>
             {% endif %}
 
             <!-- No answer column -->

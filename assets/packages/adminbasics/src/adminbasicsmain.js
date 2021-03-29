@@ -13,6 +13,9 @@
  */
 
 
+//import the ES6 polyfills for IE11
+import 'core-js';
+
 
 //Define LS Namespace
 window.LS = window.LS || {};
@@ -90,10 +93,6 @@ const AdminCore = function(){
             event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
             delay = delay || 0;
-            LOG.log('appendToLoad', {
-                'type' : typeof fn,
-                'fn' : fn
-            })
             eventsBound[root] = eventsBound[root] || [];
 
             if(_.find(eventsBound[root], {fn, event, root, delay}) === undefined) {
@@ -119,7 +118,6 @@ const AdminCore = function(){
                 });
             });
             surveyGrid();
-            LOG.trace("Refreshed Admin core methods");
         },
         addToNamespace = (object, name="globalAddition") => {
             window.LS[name] = window.LS[name] || {};
@@ -148,7 +146,7 @@ const AdminCore = function(){
                 BaseNameSpace, 
                 globalWindowMethods, 
                 parameterGlobals, 
-                AjaxHelper, 
+                {AjaxHelper}, 
                 {notifyFader}, 
                 {createUrl}, 
                 {EventBus},
@@ -172,7 +170,6 @@ const AdminCore = function(){
 
         setNameSpace();
         onLoadRegister();
-        LOG.log("AdminCore", eventsBound);
 }
 
 AdminCore();

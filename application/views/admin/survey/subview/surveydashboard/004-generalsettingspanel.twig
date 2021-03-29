@@ -1,0 +1,61 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{ gT("Survey general settings")}} </strong>
+        <a class="pull-right btn btn-default btn-xs pjax" data-toggle="tooltip" title="{{gT('General survey settings')}}" href="{{createUrl('surveyAdministration/rendersidemenulink', {'subaction':'generalsettings', 'surveyid':surveyid})}}">
+            <i class="fa fa-cogs"></i>
+        </a>
+    </div>
+    <ul class="list-group">
+        <!-- Owner -->
+
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Owner:")}}
+                </div>
+                <div class="col-8">
+                        {{ flattenText(oSurvey.aOptions['owner']['users_name'] ~ ' (' ~ oSurvey.aOptions['owner']['email'] ~ ')') }}
+                </div>
+            </div>
+        </li>
+        <!-- Administrator -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Administrator:")}}
+                </div>
+                <div class="col-8">
+                        {{ flattenText(oSurvey.aOptions['admin'] ~ ' (' ~ oSurvey.aOptions['adminemail'] ~ ')') }}
+                </div>
+            </div>
+        </li>
+        <!-- Theme -->
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{ gT("Theme:") }}
+                </div>
+                <div class="col-8">
+
+                    {% if templateModel is defined %}
+                        {% if checkPermission('templates','read') %}
+                            {% set sTemplateOptionsUrl = createUrl("themeOptions/updateSurvey", {'surveyid' : oSurvey.sid} ) %}
+                            {% set sTemplateEditorUrl = createUrl("admin/themes/sa/view", {'templatename' : oSurvey.aOptions['template'] } ) %}
+                            {{templateModel.title}} ( {{templateModel.name}})
+                            <a href='{{sTemplateOptionsUrl}}' title="{{ gT("Edit theme options")}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-paint-brush"></i></a>
+                            <a href='{{sTemplateEditorUrl}}' title="{{ gT("Open theme editor in new window")}}" target="_blank" class="btn btn-default btn-xs pull-right"><i class="fa fa-object-group"></i></a>
+                            <?php
+                        {% else %}
+                            {{templatename}}
+                        {% endif %}
+                    {% else %}
+                        {% set errorMessage = sprintf( gT('Error: Theme "%s" is not installed.'), oSurvey.aOptions['template']) %}
+                        {{errorMessage}}
+                    {% endif %}
+                    ?>
+                </div>
+
+            </div>
+        </li>
+    </ul>
+</div>

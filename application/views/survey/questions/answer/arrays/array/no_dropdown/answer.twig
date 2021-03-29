@@ -17,17 +17,14 @@
 <table class="{{ coreClass }} table table-bordered table-hover table-array-radio" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <colgroup class="col-responses">
         <col class="col-answers"  style='width: {{ answerwidth }}%;' />
-        
-            {# columns/col.php #}
-            {{sColumns }}
-        
+        {# columns/col.php #}
+        {% for aColumn in aColumns %}
+            <col class="{{ aColumn.class }}" style='width: {{ aColumn.cellwidth }}%'/>
+        {% endfor %}
     </colgroup>
     <thead aria-hidden="true">
         <tr class="ls-heading">
-            
-                {# rows/cell/thead.php #}
-                {{ sHeaders }}
-            
+            {{sHeaders}}
         </tr>
     </thead>
     <tbody>
@@ -39,8 +36,9 @@
             </tr>
          {% endif %}
         
-            {# rows/answer_row.php #}
-            {{ sRows }}
+            {% for aRow in aRows %}
+                {% include aRow.template with aRow.content only %}
+            {% endfor %}
         
     </tbody>
 </table>

@@ -1,5 +1,5 @@
 /**
- * Notifcation system for admin
+ * Notification system for admin
  *
  * @since 2017-08-02
  * @author Olle Haerstedt

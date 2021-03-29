@@ -15,7 +15,7 @@
 <tr id="javatbd{{ myfname }}" class="question-item answer-item dropdown-item {% if odd %} ls-odd {% else %} ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" >
     <th class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
         <label for="answer{{ myfname }}">
-            {{ answertext }}
+            {{ processString(answertext) }}
         </label>
         
         {# Value for expression manager javascript (use id) ; no need to submit #}
@@ -29,12 +29,12 @@
         <select class="form-control" name="{{ myfname }}" id="answer{{ myfname }}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }}>
-                    {{ option.text }}
+                    {{ flatString(processString(option.text,1),1) }}
                 </option>
             {% endfor %}
         </select>
     </td>
     {% if right_exists %}
-        <th class='answertextright information-item'>{{ answertextright }}</th>
+        <th class='answertextright information-item'>{{ processString(answertextright) }}</th>
     {% endif %}
 </tr>

@@ -29,7 +29,7 @@
 
                 <!-- Token length  -->
                 <div class="form-group">
-                    <label  class=" control-label" for='tokenlen'><?php eT("Token length"); ?>:</label>
+                    <label  class=" control-label" for='tokenlen'><?php eT("Access code length"); ?>:</label>
                     <div class="">
                         <input class='form-control' type='text' size='20' id='tokenlen' name='tokenlen' value="<?php echo $tokenlength; ?>" />
                     </div>
@@ -159,11 +159,8 @@
                     </div>
                 <?php endforeach; ?>
 
-                <!-- Buttons  -->
-                <p>
-                    <input type='submit' class="hidden" value='1' />
-                    <input type='hidden' name='sid' value='$surveyid' />
-                </p>
+                <!--Hidden Buttons (default action) -->
+                <input type='submit' class="hidden" value='1' />
             </form>
         </div>
     </div>

@@ -5,7 +5,7 @@ class SurveymenuEntryData extends CFormModel
 
     public $rawData = null;
     public $render = null;
-    public $link = "admin/survey/sa/rendersidemenulink";
+    public $link = "surveyAdministration/rendersidemenulink";
     public $linkData  = array();
     public $linkExternal = false;
     public $surveyid  = 0;
@@ -17,7 +17,7 @@ class SurveymenuEntryData extends CFormModel
     /**
      * @param integer|null $surveyid
      */
-    public function apply($menuEntry, $surveyid)
+    public function apply($menuEntry, $surveyid = null)
     {
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
@@ -67,11 +67,10 @@ class SurveymenuEntryData extends CFormModel
 
     public function linkCreator()
     {
-        if( $this->linkExternal ) {
+        if ($this->linkExternal) {
             return  Yii::app()->getController()->createAbsoluteUrl($this->link, $this->linkData);
         }
         return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
-        
     }
 
     private function _parseDataAttribute()
@@ -100,28 +99,30 @@ class SurveymenuEntryData extends CFormModel
         } else {
             $this->link = $this->menuEntry->menu_link;
         }
-
     }
 
     /**
+     * @param $variable
      * @param string[] $checkArray
+     * @param int $i
+     * @param callable $fallback
+     * @return mixed|null
      */
     private function _recursiveIssetWithDefault($variable, $checkArray, $i = 0, $fallback = null)
     {
         $default = null;
         if (is_array($variable) && array_key_exists($checkArray[$i], $variable)) {
                     $default = $variable[$checkArray[$i]];
-        } else if (is_object($variable) && property_exists($variable, $checkArray[$i])) {
+        } elseif (is_object($variable) && property_exists($variable, $checkArray[$i])) {
                     $default = $variable->{$checkArray[$i]};
         }
         if (!isset($default)) {
                     return $fallback;
-        } else if (count($checkArray) > $i + 1) {
+        } elseif (count($checkArray) > $i + 1) {
                     return $this->_recursiveIssetWithDefault($default, $checkArray, $i + 1, $fallback);
         } else {
                     return $default;
         }
-
     }
 
     private function _getValueForLinkData($getDataPair)
@@ -139,12 +140,12 @@ class SurveymenuEntryData extends CFormModel
                 break;
             case 'questiongroup':
                 if (App()->getRequest()->getParam('gid')) {
-                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('gid'),'language'=>App()->getLanguage()));
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid' => App()->getRequest()->getParam('gid'),'language' => App()->getLanguage()));
                 }
                 break;
             case 'question':
                 if (App()->getRequest()->getParam('qid')) {
-                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid'=>App()->getRequest()->getParam('qid'),'language'=>App()->getLanguage()));
+                    $oTypeObject = QuestionGroup::model()->findByPk(array('gid' => App()->getRequest()->getParam('qid'),'language' => App()->getLanguage()));
                 }
                 break;
             break;
@@ -153,5 +154,4 @@ class SurveymenuEntryData extends CFormModel
         $result = $oTypeObject != null ? $oTypeObject->{$attribute} : null;
         return $result;
     }
-
 }

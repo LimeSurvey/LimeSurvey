@@ -27,7 +27,7 @@
             <!-- Fail -->
             <?php else:?>
                 <div class="jumbotron message-box message-box-error">
-                    <h2 class="text-danger"><?php eT("Add token entry"); ?></h2>
+                    <h2 class="text-danger"><?php eT("Add participant entry"); ?></h2>
                     <p class="lead text-danger"><?php eT("Failed"); ?></p>
                     <?php foreach ($errors as $error): ?>
                         <p class='lead'><?php echo $error[0]; ?></p>

@@ -1,7 +1,5 @@
-<?php 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -16,15 +14,29 @@ if (!defined('BASEPATH')) {
 */
 class SurveyController extends LSYii_Controller
 {
+    /**
+     * @var string|null
+     */
     public $lang = null;
 
-    /* @var string : Default layout when using render : leave at bare actually : just send content */
+    /**
+     * @var string Default layout when using render : leave at bare actually : just send content
+     */
     public $layout = 'bare';
-    /* @var string the template name to be used when using layout */
-    public $sTemplate;
-    /* @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements */
+
+    /**
+     * @var string|null the template name to be used when using layout
+     */
+    public $sTemplate = null;
+
+    /**
+     * @var string[] Replacement data when use templatereplace function in layout, @see templatereplace $replacements
+     */
     public $aReplacementData = array();
-    /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
+
+    /**
+     * @var array Global data when use templatereplace function  in layout, @see templatereplace $redata
+     */
     public $aGlobalData = array();
 
     /**
@@ -39,15 +51,33 @@ class SurveyController extends LSYii_Controller
 
         unset(Yii::app()->session['FileManagerContext']);
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
+        if (!Yii::app()->getConfig("surveyid")) {
+            Yii::app()->setConfig("surveyid", returnGlobal('sid'));
+        }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {
+            Yii::app()->setConfig("ugid", returnGlobal('ugid'));
+        }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {
+            Yii::app()->setConfig("gid", returnGlobal('gid'));
+        }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {
+            Yii::app()->setConfig("qid", returnGlobal('qid'));
+        }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {
+            Yii::app()->setConfig("lid", returnGlobal('lid'));
+        }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {
+            Yii::app()->setConfig("code", returnGlobal('code'));
+        }                // ??
+        if (!Yii::app()->getConfig("action")) {
+            Yii::app()->setConfig("action", returnGlobal('action'));
+        }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {
+            Yii::app()->setConfig("subaction", returnGlobal('subaction'));
+        } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {
+            Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));
+        } // for html editor integration
         Yii::app()->clientScript->registerPackage('decimal'); // decimal
         Yii::app()->clientScript->registerPackage('decimalcustom'); // decimal-customisations
     }
@@ -61,7 +91,7 @@ class SurveyController extends LSYii_Controller
     protected function _sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
-                    Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
@@ -85,9 +115,9 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class'=>'CaptchaExtendedAction',
+                'class' => 'CaptchaExtendedAction',
                 // if needed, modify settings
-                'mode'=>CaptchaExtendedAction::MODE_MATH,
+                'mode' => CaptchaExtendedAction::MODE_MATH,
             )
         );
     }
@@ -101,46 +131,67 @@ class SurveyController extends LSYii_Controller
     //~ }
     /**
      * Show a message and exit
+     * @param int $iSurveyId : type of message
      * @param string $sType : type of message
      * @param string[] $aMessages :  array of message line to be shown
-     * @param string[]|null : $aUrl : if url can/must be set
+     * @param string[]|null $aUrl : if url can/must be set
      * @param string[]|null $aErrors : array of errors to be shown
      * @return void
      **/
-    function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
+    public function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
     {
         $this->layout = 'survey';
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         $this->sTemplate = $oTemplate->sTemplateName;
-        $message = $this->renderPartial("/survey/system/message", array(
-            'aMessage'=>$aMessages
-        ), true);
+        $message = $this->renderPartial(
+            "/survey/system/message",
+            array(
+                'aMessage' => $aMessages
+            ),
+            true
+        );
         if (!empty($aUrl)) {
             $url = $this->renderPartial("/survey/system/url", $aUrl, true);
         } else {
             $url = "";
         }
         if (!empty($aErrors)) {
-            $error = $this->renderPartial("/survey/system/errorWarning", array(
-                'aErrors'=>$aErrors
-            ), true);
+            $error = $this->renderPartial(
+                "/survey/system/errorWarning",
+                array(
+                    'aErrors' => $aErrors
+                ),
+                true
+            );
         } else {
             $error = "";
         }
 
         /* Set the data for templatereplace */
-        $aReplacementData['type'] = $sType; // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData = [];
+
+        // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData['type'] = $sType;
         $aReplacementData['message'] = $message;
         $aReplacementData['URL'] = $url;
-        $aReplacementData['title'] = $error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+
+        // Adding this to replacement data : allow to update title (for example) :
+        // @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        $aReplacementData['title'] = $error;
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTemplate = $oSurvey->templateModel;
 
         $aSurveyInfo = $oSurvey->attributes;
+        $aSurveyInfo['admin'] = $oSurvey->oOptions->admin;
+        $aSurveyInfo['adminemail'] = $oSurvey->oOptions->adminemail;
         $aSurveyInfo['aError'] = $aReplacementData;
 
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo), false);
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_errors.twig",
+            array('aError' => $aReplacementData, 'aSurveyInfo' => $aSurveyInfo),
+            false
+        );
         App()->end();
     }
 }

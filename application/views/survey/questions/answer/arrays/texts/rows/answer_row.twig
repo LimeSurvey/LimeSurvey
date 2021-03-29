@@ -17,7 +17,7 @@
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="{{ coreRowClass }} {% if odd %}ls-odd{% else %}ls-even{% endif %}{% if error %} ls-mandatory-error{% endif %}" role="group" aria-labelledby="answertext{{ myfname }}">
     <th id="answertext{{ myfname }}" class="answertext control-label{% if error %} text-danger{% endif %}{% if answerwidth==0 %} sr-only{% endif %}">
-        {{ answertext }}
+        {{ processString(answertext) }}
         {# Value for expression manager javascript : here ?  #}
         {{ C.Html.hiddenField("java"~myfname,value,({
             'id' : "java"~myfname,
@@ -35,7 +35,7 @@
         {% if rightTdEmpty %}
             <td class="answertextright"></td>
         {% else %}
-            <td class="answertextright">{{ answertext }}</td>
+            <td class="answertextright">{{ processString(answertext) }}</td>
         {% endif %}
     {%  endif %}
 

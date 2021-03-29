@@ -42,7 +42,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSizeAttributes',
-                                    $pageSizeAttributes,
+                                    Yii::app()->user->getState('pageSizeAttributes', Yii::app()->params['defaultPageSize']),
                                     Yii::app()->params['pageSizeOptions'],
                                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
                                 ),

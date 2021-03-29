@@ -8,8 +8,8 @@
 return [
     ['login' ,['route'=>'authentication/sa/login']],
     ['index' ,['route'=>'index']],
-    ['createSurvey' ,['route'=>'survey/sa/newsurvey']],
-    ['listSurveys' ,['route'=>'survey/sa/listsurvey']],
+    ['createSurvey' ,['route'=>'surveyAdministration/newSurvey', 'noAdminInFront' => true]],
+    ['listSurveys' ,['route'=>'surveyAdministration/listsurveys', 'noAdminInFront' => true]],
     ['createSurveyGroups' ,['route'=>'surveysgroups/sa/create']],
     ['globalsettings' ,['route'=>'globalsettings']],
     //['update' ,['route'=>'update']],

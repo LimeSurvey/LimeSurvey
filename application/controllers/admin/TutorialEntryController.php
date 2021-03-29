@@ -1,13 +1,7 @@
 <?php
 
-class TutorialEntryController extends Controller
+class TutorialEntryController extends Survey_Common_Action
 {
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout = '//layouts/column2';
-
     /**
      * @return string[] action filters
      */
@@ -28,21 +22,35 @@ class TutorialEntryController extends Controller
     {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('index', 'view'),
-                'users'=>array('*'),
+                'actions' => array('index', 'view'),
+                'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create', 'update'),
-                'users'=>array('@'),
+                'actions' => array('create', 'update'),
+                'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions'=>array('admin', 'delete'),
-                'users'=>array('admin'),
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
             ),
             array('deny', // deny all users
-                'users'=>array('*'),
+                'users' => array('*'),
             ),
         );
+    }
+
+    public function index()
+    {
+        $this->getController()->redirect(array('admin/tutorialentries/sa/view'));
+    }
+    
+    public function view()
+    {
+        //$this->checkPermission();
+        $data = array();
+        $data['model'] = TutorialEntry::model();
+        //App()->getClientScript()->registerPackage('surveymenufunctions');
+        $this->_renderWrappedTemplate(null, array('tutorialentries/index'), $data);
     }
 
     /**
@@ -52,7 +60,7 @@ class TutorialEntryController extends Controller
     public function actionView($id)
     {
         $this->render('view', array(
-            'model'=>$this->loadModel($id),
+            'model' => $this->loadModel($id),
         ));
     }
 
@@ -62,7 +70,7 @@ class TutorialEntryController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TutorialEntry;
+        $model = new TutorialEntry();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -70,12 +78,12 @@ class TutorialEntryController extends Controller
         if (isset($_POST['TutorialEntry'])) {
             $model->attributes = $_POST['TutorialEntry'];
             if ($model->save()) {
-                            $this->redirect(array('view', 'id'=>$model->teid));
+                            $this->redirect(array('view', 'id' => $model->teid));
             }
         }
 
         $this->render('create', array(
-            'model'=>$model,
+            'model' => $model,
         ));
     }
 
@@ -94,12 +102,12 @@ class TutorialEntryController extends Controller
         if (isset($_POST['TutorialEntry'])) {
             $model->attributes = $_POST['TutorialEntry'];
             if ($model->save()) {
-                            $this->redirect(array('view', 'id'=>$model->teid));
+                            $this->redirect(array('view', 'id' => $model->teid));
             }
         }
 
         $this->render('update', array(
-            'model'=>$model,
+            'model' => $model,
         ));
     }
 
@@ -119,17 +127,6 @@ class TutorialEntryController extends Controller
     }
 
     /**
-     * Lists all models.
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new CActiveDataProvider('TutorialEntry');
-        $this->render('index', array(
-            'dataProvider'=>$dataProvider,
-        ));
-    }
-
-    /**
      * Manages all models.
      */
     public function actionAdmin()
@@ -141,7 +138,7 @@ class TutorialEntryController extends Controller
         }
 
         $this->render('admin', array(
-            'model'=>$model,
+            'model' => $model,
         ));
     }
 

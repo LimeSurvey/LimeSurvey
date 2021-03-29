@@ -8,5 +8,5 @@
  */
 #}
     <option class="{% if classes is not empty %} {{ classes }}  {% endif %}" value="{{ value }}" {{ check_ans }}>
-        {{ option_text }}
+        {{ flatString(processString(option_text,1),1) }}
     </option>

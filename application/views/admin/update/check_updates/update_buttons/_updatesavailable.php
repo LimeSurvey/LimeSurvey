@@ -106,9 +106,9 @@
                     </button>
 
                      <?php if ($aUpdateVersion['branch']!='master'): ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://www.limesurvey.org/unstable-release', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php else: ?>
-                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://www.limesurvey.org/stable-release', '_blank')" value='<?php eT("Download"); ?>' />
+                         <input type='button' class="ajax_button btn btn-default" onclick="window.open('https://community.limesurvey.org/downloads/', '_blank')" value='<?php eT("Download"); ?>' />
                      <?php endif; ?>
 
                  <?php echo CHtml::endForm(); ?>

@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -26,8 +25,8 @@
 class OptinController extends LSYii_Controller
 {
 
-        public $layout = 'bare';
-        public $defaultAction = 'tokens';
+    public $layout = 'bare';
+    public $defaultAction = 'tokens';
 
     function actiontokens($surveyid, $token, $langcode = '')
     {
@@ -35,65 +34,63 @@ class OptinController extends LSYii_Controller
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sToken = $token;
         $sToken = Token::sanitizeToken($sToken);
 
         if (!$iSurveyID) {
             $this->redirect(array('/'));
         }
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = $oSurvey->primaryKey;
 
         //Check that there is a SID
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            $sBaseLanguage = $oSurvey->language;
         } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
 
-        $aSurveyInfo = getSurveyInfo($iSurveyID, $sBaseLanguage);
-
-        if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}")) {
+        if (empty($oSurvey) || !$oSurvey->hasTokensTable) {
             throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
         } else {
-            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $token, false);
-            $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $sToken, false);
+            $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
 
             if (!isset($oToken)) {
-                $sMessage = gT('You are not a participant in this survey.');
+                $sMessage = gT('You are not a participant of this survey.');
             } else {
                 if ($oToken->emailstatus == 'OptOut') {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
                     $sMessage = gT('You have been successfully added back to this survey.');
                 } elseif ($oToken->emailstatus == 'OK') {
-                    $sMessage = gT('You are already a part of this survey.');
+                    $sMessage = gT('You are already a participant of this survey.');
                 } else {
                     $sMessage = gT('You have been already removed from this survey.');
                 }
             }
         }
 
-        $this->renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
+        $this->renderHtml($sMessage, $oSurvey);
     }
 
     /**
      * Render stuff
      *
      * @param string $html
-     * @param array $aSurveyInfo
-     * @param int $iSurveyID
+     * @param Survey $survey
      * @return void
      */
-    private function renderHtml($html, $aSurveyInfo, $iSurveyID)
+    private function renderHtml($html, $survey)
     {
-        $survey = Survey::model()->findByPk($iSurveyID);
+        $aSurveyInfo = getSurveyInfo($survey->primaryKey);
 
         $aSurveyInfo['include_content'] = 'optin';
         $aSurveyInfo['optin_message'] = $html;
-        Template::model()->getInstance('', $iSurveyID);
+        Template::getInstance('', $survey->primaryKey);
 
         Yii::app()->twigRenderer->renderTemplateFromFile(
             "layout_global.twig",

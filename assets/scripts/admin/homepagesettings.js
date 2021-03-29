@@ -149,12 +149,12 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             var fullIconName = $(ev.currentTarget).attr('data-icon');
 
             // Set icon preview and hidden input
-            $('input[name="Boxes[ico]"]').val(fullIconName);
+            $('input[name="Box[ico]"]').val(fullIconName);
             $('#chosen-icon').attr('class', fullIconName + ' text-success');
         });
 
         // Show current icon
-        var currentIcon = $('input[name="Boxes[ico]"]').val();
+        var currentIcon = $('input[name="Box[ico]"]').val();
         if (currentIcon !== '')
         {
             $('#chosen-icon').attr('class', currentIcon + ' text-success');

@@ -2,14 +2,14 @@
     // TODO : move all this to controller
     $okfiles = 0;
     $errfiles = 0;
-    if (count($aErrorFilesInfo) == 0 && count($aImportedFilesInfo) > 0)
+    if (count($aErrorFilesInfo) == 0 && empty($aImportErrors) && count($aImportedFilesInfo) > 0)
     {
         $status = gT("Success");
         $class = '';
         $statusClass = 'text-success';
         $okfiles = count($aImportedFilesInfo);
     }
-    elseif (count($aErrorFilesInfo) > 0 && count($aImportedFilesInfo) > 0)
+    elseif ((count($aErrorFilesInfo) > 0 || !empty($aImportErrors)) && count($aImportedFilesInfo) > 0)
     {
         $status = gT("Partial");
         $class = 'message-box-warning';
@@ -40,49 +40,51 @@
                 <?php echo gT("Files imported:") . " $okfiles" ?><br />
                 <?php echo gT("Files skipped:") . " $errfiles" ?><br />
             </p>
-            <p>
-                <?php
-                    if (count($aImportedFilesInfo) > 0)
-                    {
-                    ?>
-                    <br /><strong><u><?php eT("Imported files:") ?></u></strong><br />
-                    <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
-                        <?php
-                            foreach ($aImportedFilesInfo as $entry)
-                            {
-                                if ($entry['is_folder']){
-                                ?>
-                                <li><?php printf(gT("Folder: %s"),CHtml::encode($entry["filename"])); ?></li>
-                                <?php
-                                }
-                                else
-                                { ?>
-                                <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
-
-
-                                <?php
-                                }
-                            }
-                        }
-                        if (count($aErrorFilesInfo) > 0)
-                        {
-                        ?>
-                    </ul>
-                    <br /><strong><u><?php eT("Skipped files:") ?></u></strong><br />
-                    <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
-                        <?php
-                            foreach ($aErrorFilesInfo as $entry)
-                            {
-                            ?>
+            <?php if (count($aImportedFilesInfo) > 0): ?>
+                <p>
+                    <br><strong><u><?php eT("Imported files:") ?></u></strong><br>
+                </p>
+                <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
+                    <?php foreach ($aImportedFilesInfo as $entry): ?>
+                        <?php if ($entry['is_folder']): ?>
+                            <li><?php printf(gT("Folder: %s"),CHtml::encode($entry["filename"])); ?></li>
+                        <?php else: ?>
                             <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
-                            <?php
-                            }
-                        }
-                    ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </ul>
-            </p>
+            <?php endif; ?>
+            <?php if (count($aErrorFilesInfo) > 0): ?>
+                <p>
+                    <br><strong><u><?php eT("Skipped files:") ?></u></strong><br>
+                </p>
+                <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
+                    <?php foreach ($aErrorFilesInfo as $entry): ?>
+                        <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            <?php if (!empty($aImportErrors)): ?>
+                <p>
+                    <br><strong><u><?php eT("Error details:") ?></u></strong><br>
+                </p>
+                <ul style="max-height: 250px; overflow-y:scroll;" class="list-unstyled">
+                    <?php foreach ($aImportErrors as $sThemeDirectoryName => $error): ?>
+                        <li><?php echo sprintf(gT("Error importing folder: %s"),CHtml::encode($sThemeDirectoryName)) . ": " . CHtml::encode($error); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme" value='<?php eT("Open imported theme") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
+                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme"
+                       value='<?php eT("Open imported theme") ?>'
+                       onclick="window.open('<?php
+                       if ($theme == 'question') {
+                           echo $this->createUrl('themeOptions/index#questionthemes') . '\', ' . '\'_top\'';
+                       } elseif ($theme == 'survey') {
+                           echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) . '\', ' . '\'_top\'';
+                       }
+                       ?>)"
+                />
             </p>
         </div>
     </div>

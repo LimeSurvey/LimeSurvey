@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -36,13 +32,13 @@ class PrintanswersController extends LSYii_Controller
     public $aGlobalData = array();
 
 
-    /**
-     * printanswers::view()
-     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
-     * @param mixed $surveyid
-     * @param bool $printableexport
-     * @return
-     */
+        /**
+         * printanswers::view()
+         * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
+         * @param mixed $surveyid
+         * @param bool $printableexport
+         * @return
+         */
     function actionView($surveyid, $printableexport = false)
     {
         Yii::app()->loadHelper("frontend");
@@ -53,18 +49,20 @@ class PrintanswersController extends LSYii_Controller
 
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION['survey_'.$iSurveyID]['sid'])) {
-            $iSurveyID = $_SESSION['survey_'.$iSurveyID]['sid'];
+        if (isset($_SESSION['survey_' . $iSurveyID]['sid'])) {
+            $iSurveyID = $_SESSION['survey_' . $iSurveyID]['sid'];
         } else {
             //die('Invalid survey/session');
         }
         // Get the survey inforamtion
         // Set the language for dispay
-        if (isset($_SESSION['survey_'.$iSurveyID]['s_lang'])) {
-            $sLanguage = $_SESSION['survey_'.$iSurveyID]['s_lang'];
-        } elseif (Survey::model()->findByPk($iSurveyID)) {
+        if (isset($_SESSION['survey_' . $iSurveyID]['s_lang'])) {
+            $sLanguage = $_SESSION['survey_' . $iSurveyID]['s_lang'];
+        } elseif ($survey) {
             // survey exist
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            {
+            $sLanguage = $survey->language;
+            }
         } else {
             $iSurveyID = 0;
             $sLanguage = Yii::app()->getConfig("defaultlang");
@@ -79,23 +77,22 @@ class PrintanswersController extends LSYii_Controller
         //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
         //Survey is not finished or don't exist
-        if (!isset($_SESSION['survey_'.$iSurveyID]['srid'])) {
-
+        if (!isset($_SESSION['survey_' . $iSurveyID]['srid'])) {
             //display "sorry but your session has expired"
             $this->sTemplate = $oTemplate->sTemplateName;
             $error = $this->renderPartial("/survey/system/errorWarning", array(
-                'aErrors'=>array(
+                'aErrors' => array(
                     gT("We are sorry but your session has expired."),
                 ),
             ), true);
             $message = $this->renderPartial("/survey/system/message", array(
-                'aMessage'=>array(
+                'aMessage' => array(
                     gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
                 ),
             ), true);
             /* Set the data for templatereplace */
             $aReplacementData['title'] = 'session-timeout';
-            $aReplacementData['message'] = $error."<br/>".$message;
+            $aReplacementData['message'] = $error . "<br/>" . $message;
 
             $aData = array();
             $aData['aSurveyInfo'] = getSurveyInfo($iSurveyID);
@@ -107,7 +104,7 @@ class PrintanswersController extends LSYii_Controller
             // App()->end();
         }
         //Fin session time out
-        $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
+        $sSRID = $_SESSION['survey_' . $iSurveyID]['srid']; //I want to see the answers with this id
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
@@ -128,26 +125,25 @@ class PrintanswersController extends LSYii_Controller
         // Remove all <script>...</script> content from result.
         Yii::import('application.helpers.viewHelper');
         foreach ($groupArray as &$group) {
-            $group['description'] = viewHelper::flatEllipsizeText($group['description'], true, 0);
+            $group['description'] = viewHelper::purified($group['description']);
             foreach ($group['answerArray'] as &$answer) {
-                $answer['question'] = viewHelper::flatEllipsizeText($answer['question'], true, 0);
+                $answer['question'] = viewHelper::purified($answer['question']);
             }
         }
 
         $aData['aSurveyInfo'] = $aSurveyInfo;
         $aData['aSurveyInfo']['dateFormat'] = getDateFormatData(Yii::app()->session['dateformat']);
         $aData['aSurveyInfo']['groupArray'] = $groupArray;
-        $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
-        $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
+        $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid' => $iSurveyID, 'printableexport' => 'pdf'));
+        $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/', array('surveyid' => $iSurveyID, 'printableexport' => 'quexmlpdf'));
 
         if (empty($sExportType)) {
             Yii::app()->setLanguage($sLanguage);
             $aData['aSurveyInfo']['include_content'] = 'printanswers';
             Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig', $aData, false);
-
-        } else if ($sExportType == 'pdf') {
+        } elseif ($sExportType == 'pdf') {
             // Get images for TCPDF from template directory
-            define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
+            define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']) . DIRECTORY_SEPARATOR);
 
             Yii::import('application.libraries.admin.pdf', true);
             Yii::import('application.helpers.pdfHelper');
@@ -156,7 +152,7 @@ class PrintanswersController extends LSYii_Controller
             $oPDF = new pdf();
             $oPDF->setCellMargins(1, 1, 1, 1);
             $oPDF->setCellPaddings(1, 1, 1, 1);
-            $sDefaultHeaderString = $sSurveyName." (".gT("ID", 'unescaped').":".$iSurveyID.")";
+            $sDefaultHeaderString = $sSurveyName . " (" . gT("ID", 'unescaped') . ":" . $iSurveyID . ")";
             $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
             LimeExpressionManager::StartProcessingPage(true); // means that all variables are on the same page
             // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
@@ -181,11 +177,10 @@ class PrintanswersController extends LSYii_Controller
             header("Cache-Control: must-revalidate, no-store, no-cache"); // Don't store in cache because it is sensitive data
             
             $sExportFileName = sanitize_filename($sSurveyName);
-            $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf", "D");
+            $oPDF->Output($sExportFileName . "-" . $iSurveyID . ".pdf", "D");
             LimeExpressionManager::FinishProcessingGroup();
             LimeExpressionManager::FinishProcessingPage();
-        } else if ($sExportType == 'quexmlpdf') {
-
+        } elseif ($sExportType == 'quexmlpdf') {
             Yii::import("application.libraries.admin.quexmlpdf", true);
 
             $quexmlpdf = new quexmlpdf();
@@ -204,7 +199,7 @@ class PrintanswersController extends LSYii_Controller
             $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
 
             $sExportFileName = sanitize_filename($sSurveyName);
-            $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf", 'D');
+            $quexmlpdf->Output($sExportFileName . "-" . $iSurveyID . "-queXML.pdf", 'D');
         }
     }
 }

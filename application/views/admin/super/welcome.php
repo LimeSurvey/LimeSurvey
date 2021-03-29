@@ -64,7 +64,11 @@ echo viewHelper::getViewTestTag('index');
                                 </ol>
                             </div>
                             <div class="row"><hr/></div>
-                            <?php if(Permission::model()->hasGlobalPermission('surveys','create')) { ?>
+
+                            <?php 
+                            // Hide this until we have fixed the tutorial
+                            // @TODO FIX TUTORIAL
+                            if(Permission::model()->hasGlobalPermission('surveys','create') && 1==2) { ?>
                                 <div class="row" id="selector__welcome-modal--tutorial">
                                     <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
                                     <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
@@ -74,7 +78,7 @@ echo viewHelper::getViewTestTag('index');
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
-                      <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
+                      <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -117,14 +121,14 @@ echo viewHelper::getViewTestTag('index');
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
                 <?php if($showLastSurvey):?>
-                    <span id="last_survey" class="rotateShown">
+                    <span id="last_survey" class=""> <!-- to enable rotation again set class back to "rotateShown" -->
                     <?php eT("Last visited survey:");?>
                     <a href="<?php echo $surveyUrl;?>" class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60);?></a>
                     </span>
                 <?php endif; ?>
 
                 <?php if($showLastQuestion):?>
-                    <span id="last_question" class="rotateHidden">
+                    <span id="last_question" class=""> <!-- to enable rotation again set class back to "rotateHidden" -->
                     <?php eT("Last visited question:");?>
                     <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                     </span>
@@ -159,16 +163,16 @@ echo viewHelper::getViewTestTag('index');
 
     <!-- Boxes for smartphones -->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
-        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
+        <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/surveyAdministration//listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
                 <div class="panel-title"><?php eT('List surveys');?></div>
             </div>
             <div class="panel-body">
-                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
+                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
             <span class="sr-only"><?php eT('List surveys');?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
+                <a href='<?php echo $this->createUrl("surveyAdministration/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>
         </div>
 

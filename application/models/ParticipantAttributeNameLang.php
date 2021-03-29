@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -55,7 +56,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
             array('attribute_name', 'filter', 'filter' => 'strip_tags'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('attribute_id, attribute_name, lang', 'safe', 'on'=>'search'),
+            array('attribute_id, attribute_name, lang', 'safe', 'on' => 'search'),
         );
     }
 
@@ -65,8 +66,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+            'participant_attribute_name' => array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }
-
 }

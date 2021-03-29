@@ -23,17 +23,20 @@ var onClickListAction =  function () {
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
+    var $grididvalue   = $gridid.attr('id');
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType = $that.data('actionType');
+    var actionType     = $that.data('actionType');   
+    var selectedList   = $(".selected-items-list");
 
-    if( $oCheckedItems == '[]' ) {
+    if ($oCheckedItems == '[]') {
         //If no item selected, the error modal "please select first an item" is shown
         // TODO: add a variable in the widget to replace "item" by the item type (e.g: survey, question, token, etc.)
-        $('#error-first-select').modal();
+        $('#error-first-select' + $grididvalue).modal();
         return;
     }
-
+    
+    
     // TODO : Switch action (post, session, ajax...)
 
     // For actions without modal, doing a redirection
@@ -64,7 +67,10 @@ var onClickListAction =  function () {
     // Using session before redirect rather than form submission
     if(actionType == 'fill-session-and-redirect')
     {
-        // postUrl is defined as a var in the View
+        // postUrl is defined as a var in the View, if not the basic url is used
+        if(postUrl == undefined) {
+            var postUrl = $actionUrl;
+        } 
         $(this).load(postUrl, {
             itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
@@ -92,7 +98,7 @@ var onClickListAction =  function () {
     }
 
     // TODO: switch case "Modal"
-    var $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php $aAction['action'];?>-<?php echo $key; ?>
+    var $modal  = $('#'+$that.data('modal-id'));   // massive-actions-modal-<?php echo $this->gridid;?>-<?php $aAction['action'];?>-<?php echo $key; ?>
 
     // Needed modal elements
     var $modalTitle    = $modal.find('.modal-title');                   // Modal Title
@@ -106,6 +112,31 @@ var onClickListAction =  function () {
     var $oldModalTitle     = $modalTitle.text();
     var $oldModalBody      = $modalBody.html();
     var $oldModalButtons   = $modal.find('.modal-footer-buttons');     // Modal footer with yes/no buttons
+    var $modalShowSelected = $modal.data('show-selected');
+    var $modalSelectedUrl = $modal.data('selected-url');
+    
+    //Display selected data in modals after clicked on action
+    if($modalShowSelected == 'yes' && $modalSelectedUrl ){  
+        
+        //set csrfToken for ajaxpost
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        
+        //clear selected list view 
+        selectedList.empty();
+
+        //ajaxpost to set data in the selected items div 
+        $.ajax({
+            url :$modalSelectedUrl,
+            type : 'POST',
+            data : {$grididvalue, $oCheckedItems,csrfToken},
+            success: function(html, statut){    
+                selectedList.html(html);
+            },
+            error: function(requestObject, error, errorThrown){
+                    console.log(error);
+            }
+        });           
+    }
 
     // When user close the modal, we put it back to its original state
     $modal.on('hidden.bs.modal', function (e) {
@@ -131,7 +162,18 @@ var onClickListAction =  function () {
         var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
-            $postDatas[$(this).attr('name')]=$(this).val();
+            if ($(this).hasClass('btn-group')){ // yiiwheels.widgets.buttongroup.WhButtonGroup
+                $(this).find('input:checked').each(function(i, el)
+                {
+                    $postDatas[$(this).attr('name')]=$(this).val();
+                });
+            } else if ($(this).attr('type') == 'checkbox') {
+                if ($(this).prop('checked')) {
+                    $postDatas[$(this).attr('name')]=$(this).val();
+                }
+            } else {
+                $postDatas[$(this).attr('name')]=$(this).val();
+            }
         });
 
         // Custom attributes to updates (like question attributes)
@@ -141,6 +183,7 @@ var onClickListAction =  function () {
             aAttributesToUpdate.push($(this).attr('name'));
         });
         $postDatas['aAttributesToUpdate'] = JSON.stringify(aAttributesToUpdate);
+        $postDatas['grididvalue'] = $grididvalue;
 
         $modal.find('input.post-value, select.post-value').each(function(i, el) {
             $postDatas[$(el).attr('name')] = $(el).val();
@@ -152,6 +195,7 @@ var onClickListAction =  function () {
         $oldModalButtons.hide();                                    // Hide the 'Yes/No' buttons
         $modalClose.show();                                         // Show the 'close' button
         $ajaxLoader.show();                                         // Show the ajax loader
+        selectedList.empty();                                       //clear selected Item list
 
         // Ajax request
         $.ajax({
@@ -208,7 +252,7 @@ var onClickListAction =  function () {
  *
  * 2. Defining value Type
  * By default, bootstrap switch use boolean values {true,false} for its states.
- * In the PHP code (like in controller questions::setMultipleAttributes()), we want to keep the code as dry as possible.
+ * In the PHP code (like in controller questionEditor::changeMultipleQuestionAttributes()), we want to keep the code as dry as possible.
  * To avoid to create a single method for each action using bootstrap-switch, just to change the boolean value to something else ({1,0} or {Y,N}, etc), we perform it here.
  * e.g: a bootstrap-switch with the class bootstrap-switch-integer will have its value converted to integer.
  *
@@ -269,9 +313,9 @@ function getDefaultDateTimePickerSettings() {
 
     //Switch between path and get based routing
     if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
-        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+        var url = "/index.php?r=surveyAdministration/datetimesettings";
     } else {
-        var url = "/index.php/admin/survey/sa/datetimesettings";
+        var url = "/index.php/surveyAdministration/datetimesettings";
     }
     var mydata = [];
     $.ajaxSetup({

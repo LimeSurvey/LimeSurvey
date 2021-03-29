@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Plugin to redirect old url system (index.php?sid=surveyid) to the new url
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2016 LimeSurvey team <https://www.limesurvey.org>
+ * @copyright 2016-2020 LimeSurvey team <https://www.limesurvey.org>
  * @license GPL v3
- * @version 0.0.1
+ * @version 1.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +20,22 @@
  */
 class oldUrlCompat extends PluginBase
 {
-    static protected $name = 'oldUrlCompat';
-    static protected $description = 'Old url (pre-2.0) compatible system';
+    protected static $name = 'oldUrlCompat';
+    protected static $description = 'Old url (pre-2.0) compatible system';
 
-    /** init broke plugin management */
-    //~ public function init()
-    //~ {
-        //~ $this->subscribe('afterPluginLoad','oldUrlCompat');
-    //~ }
-    public function __construct(\LimeSurvey\PluginManager\PluginManager $manager, $id)
+    /** @inheritdoc, this plugin didn't have any public method */
+    public $allowedPublicMethods = array();
+
+    public function init()
     {
-        parent::__construct($manager, $id);
-        $this->subscribe('afterPluginLoad', 'oldUrlCompat');
+        $this->subscribe('afterPluginLoad', 'setUrlCompat');
     }
+
     /**
      * Forward survey controller if we are in default controller and a sid GET parameters is set
      * @return void
      */
-    public function oldUrlCompat()
+    public function setUrlCompat()
     {
         if (App()->getController() && App()->getController()->getId() === "surveys" && App()->request->getQuery('sid')) {
             Yii::app()->getController()->forward('survey/index');

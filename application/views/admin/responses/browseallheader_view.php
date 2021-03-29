@@ -1,3 +1,12 @@
+<?php
+
+/**Todo
+ * Delete unused view !!!!! 
+ * 
+ */
+
+?>
+
 <script type='text/javascript'>
     var strdeleteconfirm='<?php eT('Do you really want to delete this response?', 'js'); ?>';
     var strDeleteAllConfirm='<?php eT('Do you really want to delete all marked responses?', 'js'); ?>';

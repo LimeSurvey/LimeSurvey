@@ -22,6 +22,7 @@
             {% endif %}
 
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
+            <!-- Row {{loop.index}} -->
             {% include rowTemplate with aRow only %}
 
         {% endfor %}

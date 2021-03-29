@@ -24,7 +24,7 @@
       data-remote-link="<?=App()->createUrl('admin/validate/', ["sa" => 'quota', 'sid'=>$oSurvey->getPrimaryKey(), 'quota'=>$oQuota->getPrimaryKey()])?>"
       class="btn btn-default selector__quota_open_validation"
       data-tooltip="true"
-      title="<?=sprintf(gT("Validation of quota %s"),$oQuota->name)?>"
+      title="<?=sprintf(gT("Validation of quota %s"),htmlentities($oQuota->name))?>"
       data-toggel="modal"
       data-target="quotaValidation"
     >
