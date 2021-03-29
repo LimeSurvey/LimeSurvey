@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.19 (build 210323) to 3.25.20 (build 210330) March 29, 2021
+-Fixed issue: Wrong port and TLS description in bounce email/smtp settings (#1807) (Vilius Šumskas)
+-Fixed issue: RemoteControl add_participants did not return anything (arnaudbore)
+-Fixed issue: RemoteControl add_participants did not return anything (Carsten Schmitz)
+-Fixed issue: Debug mode not working in RemoteControl (arnaudbore)
+-Fixed issue : Unable to upload heic or heiv files (and other) (#1421) (Denis Chenu)
+-Fixed issue #17210: Invalid TSV : OK on mysql/pgsql, broken on MSSQL (#1826) (Denis Chenu)
+-Fixed issue #17190: Update Theme Permission Language (#1812) (Gabriel Jenik)
+-Fixed issue #16871: When displaying assessment messages, empty lines are being displayed (#1817) (Gabriel Jenik)
+-Fixed issue #16870: When saving, an empty rule is being added (#1820) (Gabriel Jenik)
+-Fixed issue #15671: Questiontheme Imageselect missing translation (#1819) (Gabriel Jenik)
+-Fixed issue #15642: Checking data integrity erroneously modifies column names in result tables (Carsten Schmitz)
+#Updated translation: Spanish (Chile) by eskorbutin
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Arabic by KLAwareness
+
+
 Changes from 3.25.18 (build 210316) to 3.25.19 (build 210323) March 22, 2021
 -Fixed issue: Notice when listing CPDB participants (Carsten Schmitz)
 -Fixed issue: Error spam when saving invalid question code in a survey with multiple languages (Carsten Schmitz)
