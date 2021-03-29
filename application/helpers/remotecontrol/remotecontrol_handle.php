@@ -2114,7 +2114,7 @@ class remotecontrol_handle
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
-                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE'];
+                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
                             /** @var string */
                             $operator = $valueOrTuple[0];
                             if (!in_array($operator, $allowedOperators)) {
@@ -2123,6 +2123,10 @@ class remotecontrol_handle
                                 /** @var mixed */
                                 $value = $valueOrTuple[1];
                                 $oCriteria->addSearchCondition($columnName, $value);
+                            } elseif ($operator === 'IN') {
+                                /** @var mixed */
+                                $values = array_slice($valueOrTuple, 1);
+                                $oCriteria->addInCondition($columnName, $values);
                             } else {
                                 /** @var mixed */
                                 $value = $valueOrTuple[1];

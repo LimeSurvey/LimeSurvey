@@ -97,6 +97,59 @@ class RemoteControlListParticipantsTest extends TestBaseClass
         $this->assertEquals($expected, $list);
     }
 
+
+
+    /**
+     * Test so that validuntil works with IN operator.
+     *
+     * @return void
+     */
+    public function testConditionIn()
+    {
+        \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
+        \Yii::import('application.helpers.viewHelper', true);
+        \Yii::import('application.libraries.BigData', true);
+
+        // Create handler.
+        $admin   = new \AdminController('dummyid');
+        $handler = new \remotecontrol_handle($admin);
+
+        // Get session key.
+        $sessionKey = $handler->get_session_key(
+            self::$username,
+            self::$password
+        );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
+
+        /** @var array */
+        $list = $handler->list_participants(
+            $sessionKey,
+            self::$surveyId,
+            0,
+            999,
+            false,
+            ['validuntil', 'validfrom'],
+            ['tid' => ["1","3"]]
+        );
+
+        $expected = [
+            [
+                'tid' => "1",
+                'token' => "c",
+                'participant_info' => [
+                    'firstname' => "a",
+                    'lastname' => "b",
+                    'email' => "a@a.a"
+                ],
+                'validuntil' => "2020-04-01 15:12:00",
+                'validfrom' => "2020-03-18 15:12:00"
+            ]
+        ];
+
+        $this->assertEquals($expected, $list);
+    }
+
+
     /**
      * Test condition with empty return result.
      * 
