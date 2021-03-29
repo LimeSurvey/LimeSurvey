@@ -3524,7 +3524,7 @@ class statistics_helper
         $sOutputHTML .= '</div>';
 
         $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-        if (!empty($sGoogleMapsAPIKey != '')) {
+        if (!empty($sGoogleMapsAPIKey)) {
             $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
 
