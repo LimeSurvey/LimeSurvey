@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.14 (build 210322) to 4.4.15 (build 210329) March 29, 2021
++New feature: Include 2FA Plugin in Core application (Eddy)
+-Fixed issue: Unable to upload heic or heiv files (and other) (#1421) (Carsten Schmitz)
+-Fixed issue: RemoteControl add_participants did not return the actual saved values or errors (Carsten Schmitz)
+-Fixed issue: RemoteControl add_participants did not return anything (arnaudbore)
+-Fixed issue: Google Maps being loaded even though no API key is set (Carsten Schmitz)
+-Fixed issue: CPDB Participant cannot be copied to survey if attributes are encrypted (Patrick Teichmann)
+-Fixed issue: 2FA Plugin scripts are not loading (Eddy)
+-Fixed issue #17198: Update Theme Permission Language (#1812) (Carsten Schmitz)
+-Fixed issue #17144: Can't edit questions after import (Carsten Schmitz)
+-Fixed issue #17139: Invalid URL in Check integrity (Carsten Schmitz)
+-Fixed issue #17121: Custom question preview image not shown (Gabriel Jenik)
+-Fixed issue #16914: Check if localization-related options are correctly imported. (#1818) (Gabriel Jenik)
+-Fixed issue #16904: Check attributes are escaped properly (#1803) (Gabriel Jenik)
+-Fixed issue #16673: afterFindSurvey fired to many times (Patrick Teichmann)
+-Fixed issue #16575: Token not marked as answered if email encryption is turned on (Patrick Teichmann)
+-Fixed issue #16499: CPDB table not accessible after copying unencrypted Participant to CPDB (Patrick Teichmann)
+-Fixed issue #16462: Relavance Equation not in Sync with Condition Designed (#1809) (Gabriel Jenik)
+-Fixed issue #15642: Checking data integrity erroneously modifies column names in result tables (Carsten Schmitz)
+-* Fixed issue #16462: Relavance Equation not in Sync with Condition Designed (Gabriel Jenik)
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by slansky, c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+
+
 Changes from 4.4.13 (build 210315) to 4.4.14 (build 210322) March 22, 2021
 -Fixed issue: Set Create question group and question as default option. (Jessica Höck)
 -Fixed issue: Display issue in question group bar when deletion button is deactivated (Carsten Schmitz)
