@@ -3741,11 +3741,10 @@ class statistics_helper
         }    //end if -> show summary results
 
         $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-        if ($sGoogleMapsAPIKey != '') {
-            $sGoogleMapsAPIKey = '&key=' . $sGoogleMapsAPIKey;
+        if (!empty($sGoogleMapsAPIKey)) {
+            $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
-        $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
-        . "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
+        $sOutputHTML .= "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
 
 
         return $sOutputHTML;
