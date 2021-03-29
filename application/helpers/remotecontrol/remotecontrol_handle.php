@@ -2068,12 +2068,13 @@ class remotecontrol_handle
      *
      * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
-     * Starting With version 4.3.0 it is not possible anymore to query for several IDs by just service them as array - instead use the 'IN' operator
+     * Starting with version 4.3.0 it is not possible anymore to query for several IDs just using
+     * an array of values - instead you have use the 'IN' operator.
      * Examples of conditions:
      *     array ('tid => 'IN','1','3','26')
      *     array('email' => 'info@example.com')
      *     array('validuntil' => array('>', '2019-01-01 00:00:00'))
-     * 
+     *
      * By default return each participant with basic information
      * * tid : the token id
      * * token : the token for this participant
@@ -2088,7 +2089,7 @@ class remotecontrol_handle
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extented attributes that we want
      * @param array $aConditions Optional conditions to limit the list, either as a key=>value array for simple comparisons
-     *              or as key=>array(operator,value[,value[...]]) using an operator. 
+     *              or as key=>array(operator,value[,value[...]]) using an operator.
      *              Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
      *              Only the IN operator allows for several values. The same key can be used several times.
      *              All conditions are connected by AND.
@@ -2119,7 +2120,7 @@ class remotecontrol_handle
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
                     // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
-                    $oCriteria->compare('tid', '>='.$iStart);
+                    $oCriteria->compare('tid', '>=' . $iStart);
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
@@ -2160,7 +2161,7 @@ class remotecontrol_handle
                 if (count($oTokens) == 0) {
                     return array('status' => 'No survey participants found.');
                 }
-                
+
                 $extendedAttributes = array();
                 if ($aAttributes) {
                     $aBasicDestinationFields = Token::model($iSurveyID)->tableSchema->columnNames;
