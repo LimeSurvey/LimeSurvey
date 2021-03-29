@@ -210,7 +210,8 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
-        $iQuestionID = (int) $iQuestionID;
+        static $survey = '';
+        $iQuestionID = (int)$iQuestionID;
         // Limit the size of the attribute cache due to memory usage
         $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
         if (EmCacheHelper::useCache()) {
@@ -219,12 +220,16 @@ class QuestionAttribute extends LSActiveRecord
                 return $value;
             }
         }
-        $oQuestion = Question::model()->with('survey')->find("qid=:qid", array('qid' => $iQuestionID));
+
+        $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
         if ($oQuestion) {
+            if (!$survey) {
+                $survey = Survey::model()->findByPk($oQuestion->sid);
+            }
             if ($sLanguage) {
-                $aLanguages = array($sLanguage);
+                $aLanguages = [$sLanguage];
             } else {
-                $aLanguages = $oQuestion->survey->allLanguages;
+                $aLanguages = $survey->allLanguages;
             }
             // For some reason this happened in bug #10684
             if ($oQuestion->type == null) {

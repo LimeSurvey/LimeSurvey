@@ -422,7 +422,8 @@ function submittokens($quotaexit = false)
         }
         $token->usesleft--;
     }
-    $token->save();
+    $token->decrypt();
+    $token->encryptSave();
 
     if ($quotaexit == false) {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {

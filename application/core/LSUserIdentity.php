@@ -179,7 +179,7 @@ class LSUserIdentity extends CUserIdentity
         }
 
         //At last store the login time in the user table
-        $user->lastLogin = date('Y-m-d H:i:s');
+        $user->last_login = date('Y-m-d H:i:s');
         $user->save();
     }
 
