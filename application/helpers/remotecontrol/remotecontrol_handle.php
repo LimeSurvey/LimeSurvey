@@ -2068,7 +2068,12 @@ class remotecontrol_handle
      *
      * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
-     *
+     * Starting With version 4.3.0 it is not possible anymore to query for several IDs by just service them as array - instead use the 'IN' operator
+     * Examples of conditions:
+     *     array ('tid => 'IN','1','3','26')
+     *     array('email' => 'info@example.com')
+     *     array('validuntil' => array('>', '2019-01-01 00:00:00'))
+     * 
      * By default return each participant with basic information
      * * tid : the token id
      * * token : the token for this participant
@@ -2082,7 +2087,11 @@ class remotecontrol_handle
      * @param int  $iLimit Number of participants to return
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extented attributes that we want
-     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com') or array('validuntil' => array('>', '2019-01-01 00:00:00'))
+     * @param array $aConditions Optional conditions to limit the list, either as a key=>value array for simple comparisons
+     *              or as key=>array(operator,value[,value[...]]) using an operator. 
+     *              Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
+     *              Only the IN operator allows for several values. The same key can be used several times.
+     *              All conditions are connected by AND.
      * @return array The list of tokens
      */
     public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())

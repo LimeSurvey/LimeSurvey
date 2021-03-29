@@ -128,8 +128,8 @@ class RemoteControlListParticipantsTest extends TestBaseClass
             0,
             999,
             false,
-            ['validuntil', 'validfrom'],
-            ['tid' => ["1","3"]]
+            [],
+            ['tid' => ["IN","1","2"]]
         );
 
         $expected = [
@@ -141,9 +141,17 @@ class RemoteControlListParticipantsTest extends TestBaseClass
                     'lastname' => "b",
                     'email' => "a@a.a"
                 ],
-                'validuntil' => "2020-04-01 15:12:00",
-                'validfrom' => "2020-03-18 15:12:00"
+            ],
+            [
+                'tid' => "2",
+                'token' => "e",
+                'participant_info' => [
+                    'firstname' => "q",
+                    'lastname' => "w",
+                    'email' => "q@q.com"
+                ],
             ]
+
         ];
 
         $this->assertEquals($expected, $list);
