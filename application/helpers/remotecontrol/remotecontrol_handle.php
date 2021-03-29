@@ -2105,12 +2105,12 @@ class remotecontrol_handle
                 $oCriteria = new CDbCriteria();
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
-                $oCriteria->offset = $iStart;
 
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
                     // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
+                    $oCriteria->compare('tid', '>='.$iStart);
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
