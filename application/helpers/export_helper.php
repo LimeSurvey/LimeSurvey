@@ -418,11 +418,11 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
             if ($oQuestion->other == 'Y') {
                 $spsstype = 'A';
                 $size = 6;
+                $answers['needsAlterType'] = true;
             }
         }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
-        $answers['needsAlterType'] = true;
         return $answers;
     } else {
         /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
