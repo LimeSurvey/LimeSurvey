@@ -35,9 +35,9 @@
                                 <thead> <tr>
                                     <th><?php eT("Attribute field"); ?></th>
                                     <th><?php eT("Field description"); ?></th>
-                                    <th><?php eT("Mandatory?"); ?></th>
-                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
                                     <th><?php eT("Show during registration?") ?></th>
+                                    <th><?php eT("Mandatory during registration?"); ?></th>
+                                    <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
                                     <th><?php eT("Field caption"); ?></th>
                                     <th><?php eT("CPDB mapping"); ?></th>
                                     <th><?php eT("Example data"); ?></th>
@@ -79,6 +79,20 @@
                                             <?php } ?>
                                         </td>
                                         <td>
+                                            <?php 
+                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                    'name' => "show_register_{$sTokenField}",
+                                                    'id'=>"show_register_{$sTokenField}",
+                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
+                                                    'onLabel'=>gT('On'),
+                                                    'offLabel' => gT('Off'),
+                                                    'htmlOptions'=>array(
+                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
+                                                    )
+                                                ));
+                                            ?>
+                                        </td>
+                                        <td>
                                             <?php
                                                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                     'name' => "mandatory_{$sTokenField}",
@@ -102,20 +116,6 @@
                                                     'offLabel' => gT('Off'),
                                                     'htmlOptions'=>array(
                                                         'disabled' => !$bEncrypted,
-                                                    )
-                                                ));
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php 
-                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                    'name' => "show_register_{$sTokenField}",
-                                                    'id'=>"show_register_{$sTokenField}",
-                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
-                                                    'onLabel'=>gT('On'),
-                                                    'offLabel' => gT('Off'),
-                                                    'htmlOptions'=>array(
-                                                        'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
                                                     )
                                                 ));
                                             ?>
