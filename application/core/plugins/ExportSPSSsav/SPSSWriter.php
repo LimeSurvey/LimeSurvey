@@ -11,6 +11,9 @@
  *  If non-numerical answer codes are used (A=Totally agree), then the complete answer text will be used as answer (eg.: 'Totally agree').
  */
 
+use SPSS\Sav\Variable;
+
+
 class SPSSWriter extends Writer
 {
     private $output;
@@ -31,17 +34,27 @@ class SPSSWriter extends Writer
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
 
+    protected $settings = array(
+        'spssfileversion' => array(
+            'type' => 'select',
+            'label' => 'Export for SPSS',
+            'options' => array('16' => 'versions 14 and above', '13'  => 'version 13 and below (limited string length)'),
+            'default' => '16',
+            'submitonchange'=> false
+            )
+        );
+
+
     function __construct($pluginsettings)
     {
         $this->output          = '';
         $this->separator       = ',';
         $this->hasOutputHeader = false;
-        $this->statafileversion = $pluginsettings['statafileversion']['current'];
-        if ($this->statafileversion >= 117) {
-// 117 is the version number of the .dta/xml format for stata version 13
-            $this->maxStringLength = 2045; // for Stata version 13 and above
+        $this->spssfileversion = $pluginsettings['spssfileversion']['current'];
+        if ($this->spssfileversion >= 13) {
+            $this->maxStringLength = 32767; // for SPSS version 13 and above
         } else {
-            $this->maxStringLength = 244; // for older Stata versions
+            $this->maxStringLength = 255; // for older SPSS versions
         }
     }
 
@@ -49,7 +62,7 @@ class SPSSWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
-            header("Content-Disposition: attachment; filename=survey_".$survey->id."_STATA.xml");
+            header("Content-Disposition: attachment; filename=survey_".$survey->id."_spss.sav");
             header("Content-type: application/download; charset=US-ASCII");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
@@ -59,7 +72,9 @@ class SPSSWriter extends Writer
         $this->headersSGQA       = $oOptions->selectedColumns;
         $oOptions->headingFormat = 'code'; // Always use fieldcodes
 
-        $this->customFieldmap = $this->createStataFieldmap($survey, $sLanguageCode, $oOptions);
+        $this->customFieldmap = $this->createSPSSFieldmap($survey, $sLanguageCode, $oOptions);
+
+//var_dump($this->customFieldmap);
     }
 
 
@@ -73,7 +88,7 @@ class SPSSWriter extends Writer
 
 
     /* Returns an array with vars, labels, survey info
-     * For STATA-XML, we basically need:
+     * For SPSS sav files using, we basically need:
      * Header: Number of Variables, Number of observations, SurveyTitle, Timestamp
      * Typelist: code, STATA_datatype
      * Varlist: code
@@ -93,7 +108,7 @@ class SPSSWriter extends Writer
      * @param FormattingOptions $oOptions
      * @return mixed
      */
-    function createStataFieldmap($survey, $sLanguage, $oOptions)
+    function createSPSSFieldmap($survey, $sLanguage, $oOptions)
     {
         App()->setLanguage($sLanguage);
 
@@ -121,7 +136,7 @@ class SPSSWriter extends Writer
         // add per-survey info
         $aFieldmap['info'] = $survey->info;
 
-        // STATA only uses value labels on numerical variables. If the answer codes are not numerical we later replace them with the text-answer
+        // SPSS can only use value labels on numerical variables. If the answer codes are not numerical we later replace them with the text-answer
         // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
         // so responses can later be set to full answer test of Question or SQ'
         foreach ($aFieldmap['answers'] as $qid => $aScale) {
@@ -134,9 +149,9 @@ class SPSSWriter extends Writer
             }
         }
 
-        // go through the questions array and create/modify vars for STATA-output
+        // go through the questions array and create/modify vars for SPSS-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion) {
-            // STATA does not support attaching value labels to non-numerical values
+            // SPSS does not support attaching value labels to non-numerical values
             // We therefore set a flag in questions array for non-numerical answer codes.
             // The respective codes are later recoded to contain the full answers
             if (array_key_exists($aQuestion['qid'], $this->aQIDnonumericalAnswers)) {
@@ -168,7 +183,7 @@ class SPSSWriter extends Writer
 
 
             //Rename the variables if original name is not STATA-compatible
-            $aQuestion['varname'] = $this->STATAvarname($aQuestion['varname']);
+            $aQuestion['varname'] = $this->SPSSvarname($aQuestion['varname']);
 
             // create variable labels
             $aQuestion['varlabel'] = $aQuestion['question'];
@@ -272,7 +287,7 @@ class SPSSWriter extends Writer
     /*  return a STATA-compatible variable name
      *    strips some special characters and fixes variable names starting with a number
      */
-    protected function STATAvarname($sVarname)
+    protected function SPSSvarname($sVarname)
     {
         if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) {
 //var starting with a number?
@@ -325,7 +340,7 @@ class SPSSWriter extends Writer
         if (empty($this->headers)) {
             $this->headers = $headers;
             foreach ($this->headers as $iKey => &$sVarname) {
-                $this->headers[$iKey] = $this->STATAvarname($sVarname);
+                $this->headers[$iKey] = $this->SPSSvarname($sVarname);
             }
         }
         // gradually fill response array...
@@ -399,12 +414,12 @@ class SPSSWriter extends Writer
                         case "L":
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
-                            foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
-                                if ($answer['answer'] == $response) {
-                                    $response = $answer['code'];
-                                    break;
-                                }
-                            }
+                            //foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
+                           //     if ($answer['answer'] == $response) {
+                           //         $response = $answer['code'];
+                           //         break;
+                           //     }
+                           // }
                             break;
                     }
                     
@@ -480,7 +495,7 @@ class SPSSWriter extends Writer
             }
         }
         
-        // translate coding into STATA datatypes, format and length
+        // translate coding into SPSS datatypes, format and length
         foreach ($aStatatypelist as $variable => $data) {
             switch ($data['type']) {
                 case 7: 
@@ -527,123 +542,47 @@ class SPSSWriter extends Writer
 
         $this->updateCustomresponsemap();
 
-        $xml = new XMLWriter();
-        $xml->openMemory();
-        $xml->setIndent(true);
 
-        //header
-        $xml->startDocument('1.0', 'US-ASCII');
-        $xml->startElement('dta');
-        $xml->startElement('header');
-        $xml->writeElement('ds_format', $this->statafileversion);
-        $xml->writeElement('byteorder', 'LOHI');
-        $xml->writeElement('filetype', 1);
-        $xml->writeElement('nvar', count($this->customFieldmap['questions']));
-        $xml->writeElement('nobs', count($this->customResponsemap));
-        $xml->writeElement('data_label', $this->customFieldmap['info']['surveyls_title'].' (SID: '.$this->customFieldmap['info']['sid'].')');
-        $xml->writeElement('time_stamp', date('d M Y H:i'));
-        $xml->endElement(); // close header
+		include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
 
-        //open descriptors
-        $xml->startElement('descriptors');
+		$variables = array();
 
-
-        //typelist
-        $xml->startElement('typelist');
         foreach ($this->customFieldmap['questions'] as $question) {
-            $xml->startElement('type');
-            $xml->writeAttribute('varname', $question['varname']);
-            $xml->text($question['statatype']);
-            $xml->endElement();
+			$tmpvar = array();
+			$tmpvar['name'] = $question['varname'];		
+            $tmpvar['format'] = Variable::FORMAT_TYPE_A;
+            $tmpvar['width'] = 255; //$question[];		
+//            $tmpvar['decimals'] = $question[];		
+            $tmpvar['label'] = $question['varlabel'];		
+//            $tmpvar['values'] = $question[];		
+            $tmpvar['columns'] = 8;
+            $tmpvar['alignment'] = Variable::ALIGN_LEFT;
+            $tmpvar['measure'] = Variable::MEASURE_NOMINAL;
+            $variables[] = $tmpvar;
         }
-        $xml->endElement(); // close typelist
 
-        //varlist
-        $xml->startElement('varlist');
-        foreach ($this->customFieldmap['questions'] as $question) {
-            $xml->startElement('variable');
-            $xml->writeAttribute('varname', $question['varname']);
-            $xml->endElement(); // close variable
-        }
-        $xml->endElement(); // close varlist
+		$header = array(
+            'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
+            'creationDate' => date('d M y'),
+            'creationTime' => date('H:M:s'),
+            'weightIndex' => 0);
 
-        //fmtlist
-        $xml->startElement('fmtlist');
-        foreach ($this->customFieldmap['questions'] as $question) {
-            $xml->startElement('fmt');
-            $xml->writeAttribute('varname', $question['varname']);
-            $xml->text($question['stataformat']);
-            $xml->endElement(); //close fmt
-        }
-        $xml->endElement(); // close fmtlist
 
-        //lbllist
-        $xml->startElement('lbllist');
-        foreach ($this->customFieldmap['questions'] as $question) {
-            $xml->startElement('lblname');
-            $xml->writeAttribute('varname', $question['varname']);
-            if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['nonnumericanswercodes'] == false) {
-                $iScaleID = isset($question['scale_id']) ? $question['scale_id'] : 0;
-                $xml->text('vall'.$question['qid'].$iScaleID);
-            }
-            $xml->endElement(); //close lblname
-        }
-        $xml->endElement(); // close lbllist
-        $xml->endElement(); // close descriptors
+		$writer = new \SPSS\Sav\Writer(['header' => $header, 'variables' => $variables]);
 
-        //variable labels
-        $xml->startElement('variable_labels');
-        foreach ($this->customFieldmap['questions'] as $question) {
-            $xml->startElement('vlabel');
-            $xml->writeAttribute('varname', $question['varname']);
-            $xml->text($question['varlabel']);
-            $xml->endElement(); //close vlabel
-        }
-        $xml->endElement(); // close variable_labels
-
-        // data
-        $xml->startElement('data');
-        $iObsnumber = 0;
         foreach ($this->customResponsemap as $aResponses) {
-            $xml->startElement('o');
-            $xml->writeAttribute('num', $iObsnumber);
-            $iObsnumber++;
+			$tmpdat = array();
             foreach ($aResponses as $iVarid => $response) {
-                $xml->startElement('v');
-                $xml->writeAttribute('varname', $this->headers[$iVarid]);
-                $xml->text($response);
-                $xml->endElement(); //close v
+				$tmpdat[] = $response;
             }
-            $xml->endElement(); // close o (participant's response array)
+			$writer->writeCase($tmpdat);
         }
-        $xml->endElement(); // close data
 
-        //value labels
-        $xml->startElement('value_labels');
-        foreach ($this->customFieldmap['answers'] as $iQid => $aScales) {
-            foreach ($aScales as $iScaleID => $aAnswercodes) {
-                if (!array_key_exists($iQid, $this->aQIDnonumericalAnswers)) {
-//if QID is not one of those with nonnumeric answers write value label
-                    $xml->startElement('vallab');
-                    $xml->writeAttribute('name', 'vall'.$iQid.$iScaleID);
-                    foreach ($aAnswercodes as $iAnscode => $aAnswer) {
-                        $xml->startElement('label');
-                        $xml->writeAttribute('value', $iAnscode);
-                        $xml->text($aAnswer['answer']);
-                        $xml->endElement(); // close label
-                    }
-                    $xml->endElement(); // close vallab
-                }
 
-            }
+        $writer->save("/tmp/test.sav");
+		$writer->close();
 
-        }
-        $xml->endElement(); // close value_labels
-
-        $xml->endElement(); // close dta
-        $xml->endDocument();
-
-        $this->out($xml->outputMemory());
+		echo(file_get_contents("/tmp/test.sav"));
 
         fclose($this->handle);
     }

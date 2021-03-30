@@ -18,6 +18,18 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('newExport');
     }
     
+    
+    protected $settings = array(
+        'spssfileversion' => array(
+            'type' => 'select',
+            'label' => 'Export for SPSS',
+            'options' => array('16' => 'versions 14 and above', '13'  => 'version 13 and below (limited string length)'),
+            'default' => '16',
+            'submitonchange'=> false
+            )
+        );
+
+
     public function listExportOptions()
     {
         $event = $this->getEvent();
@@ -65,7 +77,8 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
 
-        $writer = new SPSSWriter();
+        $pluginsettings = $this->getPluginSettings(true);
+        $writer = new SPSSWriter($pluginsettings);
         $event->set('writer', $writer);
     }
 }
