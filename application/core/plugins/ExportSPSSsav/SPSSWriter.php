@@ -468,7 +468,13 @@ class SPSSWriter extends Writer
                 $tmpvar['values'] = array();
                 foreach($this->customFieldmap['answers'][$question['qid']] as $aAnswercodes) {
                     foreach($aAnswercodes as $sAnscode => $aAnswer) {
-                        $tmpvar['values'][$sAnscode] = $aAnswer['answer'];
+                        $tmpans = "";
+                        if (is_array($aAnswer) && isset($aAnswer['answer'])) {
+                            $tmpans = $aAnswer['answer'];
+                        } else {
+                            $tmpans = $aAnswer;
+                        }
+                        $tmpvar['values'][$sAnscode] = $tmpans;
                         if(!is_numeric($sAnscode))  {
                             if ($tmpwidth < 28) $tmpwidth = 28; // SPSS wants variable width wide where string data stored
                         }
