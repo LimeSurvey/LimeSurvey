@@ -17,7 +17,7 @@
 
 {# Custom backgroud option #}
 <style>
-    {% if (aSurveyInfo.options.backgroundimage == "on" ) %}
+    {% if (aSurveyInfo.options.backgroundimage == "on" and imageSrc(aSurveyInfo.options.backgroundimagefile )) %}
         body {
             background-image: url({{ imageSrc(aSurveyInfo.options.backgroundimagefile ) }});
             background-attachment: fixed;
