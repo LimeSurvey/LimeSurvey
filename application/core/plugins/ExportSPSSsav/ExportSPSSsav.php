@@ -39,8 +39,8 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
             case 'spsssav':
                 $event->set('label', gT("SPSS (.sav)"));
                 $event->set('onclick', '
-				 document.getElementById("answers-short").checked=true;
-				 document.getElementById("answers-long").disabled=true;
+                 document.getElementById("answers-short").checked=true;
+                 document.getElementById("answers-long").disabled=true;
                      document.getElementById("converty").checked=true;
                      document.getElementById("convertn").checked=true;
                      document.getElementById("convertnto").value=0;
@@ -49,7 +49,7 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
                      document.getElementById("headstyle-abbreviated").disabled=true;
                      document.getElementById("headstyle-full").checked=true;
                      document.getElementById("headstyle-codetext").disabled=true;
-				 ');
+                 ');
                 break;
 
             default:
