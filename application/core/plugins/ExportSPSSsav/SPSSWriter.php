@@ -1,14 +1,10 @@
 <?php
 
 /* Creates a file containing responses in the SAV (native SPSS binary format). Uses: https://github.com/tiamo/spss/ to do so
- * Use STATAs xmluse command to import. eg.: xmluse "\survey_844845_STATA.xml", doctype(dta)
  * In contrast to importing a plain CSV or xls-file, the data is fully labelled with variable- and value labels.
- * Date and time strings are converted to STATAs time format (milliseconds since 1960/01/01), so they can be directly used in calculations
+ * Date and time strings are converted to SPSSs time format (seconds since midnight, 14 October 1582), so they can be directly used in calculations
  * Limitations:
- *  STATA versions 8 through 12? only support strings up to 244 bytes, version 13 up to 2045 bytes.....longer answers (ie. text fields) will be cut.
- *  STATA only supports attaching value labels to numerical values. So to achieve short answers (usually one or two digits) and
- *  have these properly labelled, one should use numerical answer-codes in LimeSurvey (1=Totally agree).
- *  If non-numerical answer codes are used (A=Totally agree), then the complete answer text will be used as answer (eg.: 'Totally agree').
+ *  SPSS versions through 13? only support strings up to 256 bytes, version 14 up to 32767 bytes.....longer answers (ie. text fields) will be cut.
  */
 
 use SPSS\Sav\Variable;
@@ -19,10 +15,6 @@ class SPSSWriter extends Writer
     private $output;
     private $separator;
     private $hasOutputHeader;
-    private $maxByte = 100; // max value of STATA byte var
-    private $minByte = -127; // min value of STATA byte var
-    private $maxInt = 32740; // max value of STATA int var
-    private $minInt = -32767; // min value of STATA int var
 
     /**
      * The open filehandle
@@ -33,17 +25,6 @@ class SPSSWriter extends Writer
     protected $headers = array();
     protected $headersSGQA = array();
     protected $aQIDnonumericalAnswers = array();
-
-    protected $settings = array(
-        'spssfileversion' => array(
-            'type' => 'select',
-            'label' => 'Export for SPSS',
-            'options' => array('16' => 'versions 14 and above', '13'  => 'version 13 and below (limited string length)'),
-            'default' => '16',
-            'submitonchange'=> false
-            )
-        );
-
 
     function __construct($pluginsettings)
     {
@@ -63,7 +44,7 @@ class SPSSWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         if ($oOptions->output == 'display') {
             header("Content-Disposition: attachment; filename=survey_".$survey->id."_spss.sav");
-            header("Content-type: application/download; charset=US-ASCII");
+            header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, no-store, no-cache");
             $this->handle = fopen('php://output', 'w');
         } elseif ($oOptions->output == 'file') {
@@ -71,10 +52,8 @@ class SPSSWriter extends Writer
         }
         $this->headersSGQA       = $oOptions->selectedColumns;
         $oOptions->headingFormat = 'code'; // Always use fieldcodes
-
+        $oOptions->answerFormat = "short"; // force answer codes
         $this->customFieldmap = $this->createSPSSFieldmap($survey, $sLanguageCode, $oOptions);
-
-//var_dump($this->customFieldmap);
     }
 
 
@@ -89,16 +68,7 @@ class SPSSWriter extends Writer
 
     /* Returns an array with vars, labels, survey info
      * For SPSS sav files using, we basically need:
-     * Header: Number of Variables, Number of observations, SurveyTitle, Timestamp
-     * Typelist: code, STATA_datatype
-     * Varlist: code
-     * fmtlist: code, STATA_format
-     * Lbllist: code, setname of valuelabels
-     * variable_labels: code, vardescription (question text)
-     * Data: ObservationNumber(ID), code, value
-     * Valuelabels: Setname, Answercode, Answer
-     *
-     * Some things depending on the responses (eg. STATA data type and format, some reoding),
+     * Some things depending on the responses (eg. SPSS data type and format, some reoding),
      * are done later in updateResponsemap()
      */
 
@@ -112,8 +82,8 @@ class SPSSWriter extends Writer
     {
         App()->setLanguage($sLanguage);
 
-        $yvalue = $oOptions->convertY ? $oOptions->yValue : '1'; // set value for Y if it is set in export settings (needed for correct value label)
-        $nvalue = $oOptions->convertN ? $oOptions->nValue : '2'; // set value for N if it is set in export settings (needed for correct value label)
+        $yvalue = $oOptions->convertY ? $oOptions->yValue : 'Y';
+        $nvalue = $oOptions->convertN ? $oOptions->nValue : 'N';
 
         //create fieldmap only with the columns (variables) selected
         $aFieldmap['questions'] = array_intersect_key($survey->fieldMap, array_flip($oOptions->selectedColumns));
@@ -136,30 +106,8 @@ class SPSSWriter extends Writer
         // add per-survey info
         $aFieldmap['info'] = $survey->info;
 
-        // SPSS can only use value labels on numerical variables. If the answer codes are not numerical we later replace them with the text-answer
-        // here we go through the answers-array and check whether answer-codes are numerical. If they are not, we save the respective QIDs
-        // so responses can later be set to full answer test of Question or SQ'
-        foreach ($aFieldmap['answers'] as $qid => $aScale) {
-            foreach ($aFieldmap['answers'][$qid] as $iScale => $aAnswers) {
-                foreach ($aFieldmap['answers'][$qid][$iScale] as $iAnswercode => $aAnswer) {
-                    if (!is_numeric($aAnswer['code'])) {
-                        $this->aQIDnonumericalAnswers[$aAnswer['qid']] = true;
-                    }
-                }
-            }
-        }
-
         // go through the questions array and create/modify vars for SPSS-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion) {
-            // SPSS does not support attaching value labels to non-numerical values
-            // We therefore set a flag in questions array for non-numerical answer codes.
-            // The respective codes are later recoded to contain the full answers
-            if (array_key_exists($aQuestion['qid'], $this->aQIDnonumericalAnswers)) {
-                $aFieldmap['questions'][$sSGQAkey]['nonnumericanswercodes'] = true;
-            } else {
-                $aFieldmap['questions'][$sSGQAkey]['nonnumericanswercodes'] = false;
-            }
-
 
             // create 'varname' from Question/Subquestiontitles
             $aQuestion['varname'] = viewHelper::getFieldCode($aFieldmap['questions'][$sSGQAkey]);
@@ -182,7 +130,7 @@ class SPSSWriter extends Writer
             }
 
 
-            //Rename the variables if original name is not STATA-compatible
+            //Rename the variables if original name is not SPSS-compatible
             $aQuestion['varname'] = $this->SPSSvarname($aQuestion['varname']);
 
             // create variable labels
@@ -284,7 +232,7 @@ class SPSSWriter extends Writer
     }
 
 
-    /*  return a STATA-compatible variable name
+    /*  return a SPSS-compatible variable name
      *    strips some special characters and fixes variable names starting with a number
      */
     protected function SPSSvarname($sVarname)
@@ -353,140 +301,97 @@ class SPSSWriter extends Writer
     */
     protected function updateCustomresponsemap()
     {
+        include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
+
         //go through each particpants' responses
         foreach ($this->customResponsemap as $iRespId => &$aResponses) {
             // go through variables and response items
+
+
+            //relevant types for SPSS are numeric (need to know largest number and number of decimal places), date and string
             foreach ($aResponses as $iVarid => &$response) {
                 $response = trim($response);
-                //recode answercode=answer if codes are non-numeric (cannot be used with value labels)
-                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['nonnumericanswercodes'] == true
-                    && $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['commentother'] == false) {
-                    // set $iScaleID to the scale_id of the respective question, if it exists...if not set to '0'
-                    $iScaleID = 0;
-                    if (isset($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['scale'])) {
-                        $iScaleID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['scale_id'];
-                    }
-                    $iQID = $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['qid'];
-                    if (isset($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer'])) {
-                        $response = trim($this->customFieldmap['answers'][$iQID][$iScaleID][$response]['answer']); // get answertext instead of answercode
-                    }
-                }
-                
-                
                 if ($response != '') {
-                    // recode some values from letters to numeric, so we can attach value labels and have more time doing statistics
-                    switch ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type']) {
-                        case "G": //GENDER drop-down list
-                            $response = str_replace(array(
-                                'F',
-                                'M'
-                            ), array(
-                                '0',
-                                '1'
-                            ), $response);
-                            break;
-                        case "Y": //YES/NO radio-buttons
-                        case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $response = str_replace(array(
-                                'Y',
-                                'N',
-                                'U'
-                            ), array(
-                                '1',
-                                '0',
-                                '9'
-                            ), $response);
-                            break;
-                        case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $response = str_replace(array(
-                                'I',
-                                'S',
-                                'D'
-                            ), array(
-                                '1',
-                                '0',
-                                '-1'
-                            ), $response);
-                            break;
-                        case "D": //replace in customResponsemap: date/time as string with STATA-timestamp
-                            $response = strtotime($response.' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
-                            break;
-                        case "L":
-                            // For radio lists, user wants code, not label
-                            // TODO: We could skip this loop if we had answer code
-                            //foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
-                           //     if ($answer['answer'] == $response) {
-                           //         $response = $answer['code'];
-                           //         break;
-                           //     }
-                           // }
-                            break;
-                    }
-                    
-                    /* look at each of the responses and determine STATA data type and format of the respective variables
-                       datatypes coded as follows:
-                       1=""
-                       2=byte
-                       3=int
-                       4=long
-                       5=float
-                       6=double
-                       7=string
-                    */
+
                     $numberresponse = trim($response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) {
-// if settings: decimal seperator==','
-                        $numberresponse = str_replace(',', '.', $response); // replace comma with dot so STATA can use float variables
+                        // if settings: decimal seperator==','
+                        $numberresponse = str_replace(',', '.', $response); // replace comma with dot so SPSS can use decimal variables
                     }
 
-                    if (is_numeric($numberresponse)) {
-// deal with numeric responses/variables
+                   if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
+                    $date = new DateTimeImmutable($response.' GMT');
+                    $spssepoch = new DateTimeImmutable('1582-10-14 00:00:00 GMT');
+                    $response = $date->getTimestamp() - $spssepoch->getTimestamp(); //convert to full SPSS date format which is the number of seconds since midnight October 14, 1582
+                    $iDatatype = 3;
+                   } else if (is_numeric($numberresponse)) {
+                        // deal with numeric responses/variables
                         if (ctype_digit($numberresponse)) {
-// if it contains only digits (no dot) --> non-float number
-                            if ($numberresponse >= $this->minByte && $numberresponse <= $this->maxByte) {
-                                $iDatatype = 2; //this response is of STATA type 'byte'
-                            } elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt) {
-                                $iDatatype = 3; // and this is is 'int'
+                            // if it contains only digits (no dot) --> non-float number (set decimal places to 0)
+                                $iDatatype = 2; 
+                                $iDecimalPlaces = 0;
+                                $iNumberWidth = strlen($response);
                             } else {
                                 if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') {
-// if datefield then a 'double' data type is needed
-                                    $iDatatype = 6; // double
-                                } else {
-                                    $iDatatype = 4; //long
-                                }
-                            }
+                                    // if datefield then a date datafiled
+                                    $iDatatype = 3; //date
                         } else {
 //non-integer numeric response
-                            $iDatatype = 5; // float
+                            $iDatatype = 2; // float
+                            $iDecimalPlaces = 1;
                             $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
+                            $tmpdpoint = strpos($response,".");
+                            $iDecimalPlaces = 2;
+                            $iNumberWidth = strlen($repsonse); //just to be safe
+                            if ($tmpdpoint !== false) {
+                                $iNumberWidth = strlen($response);
+                                $iDecimalPlaces = $iNumberWidth - ($tmpdpoint + 1);
+                            }
+                            
+                        }
                         }
                     } else {
 // non-numeric response
-                        $iDatatype = 7; //string
+                        $iDatatype = 1; //string
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
-                } else {
+                }  else {
                     $iDatatype = 1; // response = "" 
+                    $iStringlength = 1;
                 }
                 
                 // initialize format and type (default: empty)
-                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type'])) {
-                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
+                if (!isset($aSPSStypelist[$this->headersSGQA[$iVarid]]['type'])) {
+                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
                 }
-                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['format'])) {
-                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
+                if (!isset($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'])) {
+                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
+                }
+                if (!isset($aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'])) {
+                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = -1;
                 }
                 
                 // Does the variable need a higher datatype because of the current response?
-                if ($aStatatypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype) {
-                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
+                if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype) {
+                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
                 }
                 
                 // if datatype is a string, set needed stringlength
-                if ($iDatatype == 7) {
+                if ($iDatatype == 1) {
                     // Does the variable need a higher stringlength because of the current response?
-                    if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength) {
-                                            $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
+                    if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength) {
+                                            $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
+                    }
+                    
+                }
+                 // if datatype is a numeric, set needed width and decimals
+                if ($iDatatype == 2) {
+                    // Does the variable need a higher length because of the current response?
+                    if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] < $iNumberWidth) {
+                                            $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = $iNumberWidth;
+                    }
+                     if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] < $iDecimalPlaces) {
+                                            $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = $iDecimalPlaces;
                     }
                     
                 }
@@ -496,46 +401,35 @@ class SPSSWriter extends Writer
         }
         
         // translate coding into SPSS datatypes, format and length
-        foreach ($aStatatypelist as $variable => $data) {
+        foreach ($aSPSStypelist as $variable => $data) {
+
             switch ($data['type']) {
-                case 7: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'str'.min($data['format'], $this->maxStringLength);
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%'.min($data['format'], $this->maxStringLength).'s';
-                    break;
-                case 6: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'double';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%tc';
-                    break;
-                case 5: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'float';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
-                    break;
-                case 4: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'long';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
-                    break;
-                case 3: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'int';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                case 1: 
+                    $this->customFieldmap['questions'][$variable]['spsswidth']   = min($data['format'], $this->maxStringLength);
+                    $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_A;
+                    $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
+                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    $this->customFieldmap['questions'][$variable]['spssdecimals'] = -1;
                     break;
                 case 2: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%10.0g';
+                    $this->customFieldmap['questions'][$variable]['spsswidth']   = $data['format'];
+                    $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_F;
+                    $this->customFieldmap['questions'][$variable]['spssdecimals'] = $data['decimals'];
+                    $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
+                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
                     break;
-                case 1: 
-                    $this->customFieldmap['questions'][$variable]['statatype']   = 'byte';
-                    $this->customFieldmap['questions'][$variable]['stataformat'] = '%9.0g';
+                case 3: 
+                    $this->customFieldmap['questions'][$variable]['spsswidth']   = 20;
+                    $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_DATETIME;
+                    $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
+                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    $this->customFieldmap['questions'][$variable]['spssdecimals'] = -1;
                     break;
             }
         }
     }
 
-    /* Utilizes customFieldmap[], customResponsemap[], headers[] and xmlwriter()
-     * to output STATA-xml code in the following order
-     * - headers
-     * - descriptors: data types, list of variables, sorting variable, variable formatting, list of value labels, variable label
-     * - data
-     * - value labels
+    /* Output SPSS sav code using library
      */
     public function close()
     {
@@ -543,46 +437,64 @@ class SPSSWriter extends Writer
         $this->updateCustomresponsemap();
 
 
-		include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
+        include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
 
-		$variables = array();
-
+        $variables = array();
+ 
         foreach ($this->customFieldmap['questions'] as $question) {
-			$tmpvar = array();
-			$tmpvar['name'] = $question['varname'];		
-            $tmpvar['format'] = Variable::FORMAT_TYPE_A;
-            $tmpvar['width'] = 255; //$question[];		
-//            $tmpvar['decimals'] = $question[];		
-            $tmpvar['label'] = $question['varlabel'];		
-//            $tmpvar['values'] = $question[];		
+            $tmpvar = array();
+            $tmpvar['name'] = $question['varname'];        
+            $tmpvar['format'] = $question['spssformat'];
+            $tmpvar['width'] = $question['spsswidth'];
+            if ($question['spssdecimals'] > -1)
+            {
+                $tmpvar['decimals'] = $question['spssdecimals'];        
+            }
+            $tmpvar['label'] = $question['varlabel'];        
+            $tmpwidth = $question['spsswidth'];
+            //export value labels if they exist
+            if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false) {
+                $tmpvar['values'] = array();
+                foreach($this->customFieldmap['answers'][$question['qid']] as $aAnswercodes) {
+                    foreach($aAnswercodes as $sAnscode => $aAnswer) {
+                        $tmpvar['values'][$sAnscode] = $aAnswer['answer'];
+                        if(!is_numeric($sAnscode))  {
+                            if ($tmpwidth < 28) $tmpwidth = 28; // SPSS wants variable width wide where string data stored
+                        }
+                    }
+                }
+            }
+            $tmpvar['width'] = $tmpwidth;
             $tmpvar['columns'] = 8;
-            $tmpvar['alignment'] = Variable::ALIGN_LEFT;
-            $tmpvar['measure'] = Variable::MEASURE_NOMINAL;
+            $tmpvar['alignment'] = $question['spssalignment'];
+            $tmpvar['measure'] = $question['spssmeasure'];
             $variables[] = $tmpvar;
         }
 
-		$header = array(
+        $header = array(
             'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
             'creationDate' => date('d M y'),
             'creationTime' => date('H:M:s'),
             'weightIndex' => 0);
 
 
-		$writer = new \SPSS\Sav\Writer(['header' => $header, 'variables' => $variables]);
+        $writer = new \SPSS\Sav\Writer(['header' => $header, 'variables' => $variables]);
 
         foreach ($this->customResponsemap as $aResponses) {
-			$tmpdat = array();
+            $tmpdat = array();
             foreach ($aResponses as $iVarid => $response) {
-				$tmpdat[] = $response;
+                $tmpdat[] = $response;
             }
-			$writer->writeCase($tmpdat);
+            $writer->writeCase($tmpdat);
         }
 
 
-        $writer->save("/tmp/test.sav");
-		$writer->close();
-
-		echo(file_get_contents("/tmp/test.sav"));
+        //write to temporary file then remove
+		$tmpfile = tempnam(Yii::app()->getConfig("tempdir"), "SPSS");
+        $writer->save($tmpfile);
+        $writer->close();
+        echo(file_get_contents($tmpfile));
+        unlink($tmpfile);
 
         fclose($this->handle);
     }
