@@ -406,7 +406,7 @@ class responses extends Survey_Common_Action
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'listresponse.js', LSYii_ClientScript::POS_BEGIN);
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
-            // Basic datas for the view
+            // Basic data for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;
             $aData['menu']['edition']   = false;

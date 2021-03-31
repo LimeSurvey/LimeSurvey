@@ -742,7 +742,7 @@ class SurveyDynamic extends LSActiveRecord
                 $columnHasValue = !empty($this->$c1);
                 if ($columnHasValue) {
                     $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
-                    if ($column->dbType == 'decimal') {
+                    if ($column->dbType == 'decimal' || substr($column->dbType, 0, 7) == 'numeric') {
                         $this->$c1 = (float) $this->$c1;
                         $criteria->compare(Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                     } else if ($isDatetime) {
