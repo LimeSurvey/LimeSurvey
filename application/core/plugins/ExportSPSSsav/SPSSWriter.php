@@ -314,7 +314,6 @@ class SPSSWriter extends Writer
         foreach ($this->customResponsemap as $iRespId => &$aResponses) {
             // go through variables and response items
 
-
             //relevant types for SPSS are numeric (need to know largest number and number of decimal places), date and string
             foreach ($aResponses as $iVarid => &$response) {
                 $response = trim($response);
@@ -349,7 +348,7 @@ class SPSSWriter extends Writer
                             $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
                             $tmpdpoint = strpos($response,".");
                             $iDecimalPlaces = 2;
-                            $iNumberWidth = strlen($repsonse); //just to be safe
+                            $iNumberWidth = strlen($response); //just to be safe
                             if ($tmpdpoint !== false) {
                                 $iNumberWidth = strlen($response);
                                 $iDecimalPlaces = $iNumberWidth - ($tmpdpoint + 1);
@@ -448,7 +447,6 @@ class SPSSWriter extends Writer
     {
 
         $this->updateCustomresponsemap();
-
 
         include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
 
