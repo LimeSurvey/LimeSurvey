@@ -109,6 +109,13 @@ class SPSSWriter extends Writer
         // go through the questions array and create/modify vars for SPSS-output
         foreach ($aFieldmap['questions'] as $sSGQAkey => $aQuestion) {
 
+            //get SPSS output type if selected
+            $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($aQuestion['qid'],$sLanguage);
+            if (isset($aQuestionAttribs['scale_export'])) {
+                    $export_scale = $aQuestionAttribs['scale_export'];
+                    $aFieldmap['questions'][$sSGQAkey]['spssmeasure'] = $export_scale;
+            }
+
             // create 'varname' from Question/Subquestiontitles
             $aQuestion['varname'] = viewHelper::getFieldCode($aFieldmap['questions'][$sSGQAkey]);
 
@@ -408,7 +415,9 @@ class SPSSWriter extends Writer
                     $this->customFieldmap['questions'][$variable]['spsswidth']   = min($data['format'], $this->maxStringLength);
                     $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_A;
                     $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
-                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    if (!isset($this->customFieldmap['questions'][$variable]['spssmeasure'])) {
+                        $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    }
                     $this->customFieldmap['questions'][$variable]['spssdecimals'] = -1;
                     break;
                 case 2: 
@@ -416,13 +425,17 @@ class SPSSWriter extends Writer
                     $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_F;
                     $this->customFieldmap['questions'][$variable]['spssdecimals'] = $data['decimals'];
                     $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
-                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    if (!isset($this->customFieldmap['questions'][$variable]['spssmeasure'])) {
+                        $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    }
                     break;
                 case 3: 
                     $this->customFieldmap['questions'][$variable]['spsswidth']   = 20;
                     $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_DATETIME;
                     $this->customFieldmap['questions'][$variable]['spssalignment'] = Variable::ALIGN_LEFT;
-                    $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    if (!isset($this->customFieldmap['questions'][$variable]['spssmeasure'])) {
+                        $this->customFieldmap['questions'][$variable]['spssmeasure'] = Variable::MEASURE_NOMINAL;
+                    }
                     $this->customFieldmap['questions'][$variable]['spssdecimals'] = -1;
                     break;
             }
@@ -490,7 +503,7 @@ class SPSSWriter extends Writer
 
 
         //write to temporary file then remove
-		$tmpfile = tempnam(Yii::app()->getConfig("tempdir"), "SPSS");
+        $tmpfile = tempnam(Yii::app()->getConfig("tempdir"), "SPSS");
         $writer->save($tmpfile);
         $writer->close();
         echo(file_get_contents($tmpfile));
