@@ -2867,7 +2867,7 @@ class LsDefaultDataSets
     {
         $default =  [];
         $template = "<p>" . gT("Hello") . " {FULLNAME}, </p>";
-        $template .= "<p>" . gT("this is an automated email to notify that a user has been created for you on the website") . "<strong> '{SITENAME}'</strong>.</p>";
+        $template .= "<p>" . sprintf(gT("This is an automated email notification that a user has been created for you on the website %s."), "<strong>'{SITENAME}'</strong>") . "</p>";
         $template .= "<p></p><p>" . gT("You can use now the following credentials to log in") . ":</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
         $template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";

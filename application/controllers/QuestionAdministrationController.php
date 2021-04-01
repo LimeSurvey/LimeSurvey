@@ -2541,14 +2541,14 @@ class QuestionAdministrationController extends LSBaseController
                     $attributeValue
                 )
             ) {
-                throw new CHttpException(500, gT("Could not store general options"));
+                throw new CHttpException(500, gT("Could not save question attributes"));
             }
         }
 
         if (!$oQuestion->save()) {
             throw new CHttpException(
                 500,
-                gT("Could not store question after general options") . PHP_EOL
+                gT("Could not save question") . PHP_EOL
                 . print_r($oQuestion->getErrors(), true)
             );
         }

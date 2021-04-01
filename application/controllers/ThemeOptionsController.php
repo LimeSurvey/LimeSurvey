@@ -610,7 +610,7 @@ class ThemeOptionsController extends LSBaseController
                 array(":gsid" => $gsid, ":templatename" => $templatename)
             );
             if (empty($oTemplateConfiguration)) {
-                throw new CHttpException(401, gT("Invalid template configuration for this group."));
+                throw new CHttpException(401, gT("Invalid theme configuration for this group."));
             }
             $oTemplateConfiguration->setToInherit();
             if ($oTemplateConfiguration->save()) {
