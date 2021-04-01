@@ -361,19 +361,19 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         $sConfirmationKey = Yii::app()->getRequest()->getPost('confirmationKey', '');
         if ($sConfirmationKey == '') {
-            return $this->createJSONResponse(false, "Please put in a confirmation key");
+            return $this->createJSONResponse(false, gT("Please enter a confirmation key"));
         }
 
         $result = $o2FA->verifyCode($aTFAUserKey['secretKey'], $sConfirmationKey);
         if (!$result) {
-            return $this->createJSONResponse(false, "The confirmation key is not correct.");
+            return $this->createJSONResponse(false, gT("The confirmation key is not correct."));
         }
 
         $oTFAModel = new TFAUserKey();
         $oTFAModel->setAttributes($aTFAUserKey, false);
         $oTFAModel->firstLogin = 0;
         if (!$oTFAModel->save()) {
-            return $this->createJSONResponse(false, "The 2-FActor authentication could not be stored.");
+            return $this->createJSONResponse(false, gt("The two-factor authentication key could not be stored."));
         }
 
         return $this->createJSONResponse(true, "2-Factor Method successfully stored", ['reload' => true]);
@@ -392,11 +392,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $uid = $oRequest->getPost('uid', null);
 
         if (!Permission::model()->hasGlobalPermission('users', 'update') && $uid !== Yii::app()->user->id) {
-            return $this->createJSONResponse(false, gT('You have no permission for this action'));
+            return $this->createJSONResponse(false, gT('No permission'));
         }
         $oTFAModel =  TFAUserKey::model()->findByPk($uid);
         $success = $oTFAModel->delete();
-        return $this->createJSONResponse($success, ($success ? 'Successfully deleted' : 'Deleting failed'));
+        return $this->createJSONResponse($success, ($success ? gT('Successfully deleted') : gT('Deletion failed')));
     }
 
     /**
@@ -412,11 +412,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $uid = (int) $iUserId;
         $oTFAModel =  TFAUserKey::model()->findByPk($uid);
         if ($oTFAModel == null) {
-            echo "No 2FA key set for user " . $iUserId;
+            printf(gT("No 2FA key set for user ID %s"), $iUserId);
             return;
         }
         $success = $oTFAModel->delete();
-        echo ($success ? 'Successfully deleted' : 'Deleting failed');
+        echo ($success ? gT('Successfully deleted') : gT('Deletion failed'));
     }
 
     /**

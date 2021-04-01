@@ -60,11 +60,11 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                     <div class="container-center">
                         <div class="row">
                             <div class="form-group col-md-4 col-sm-6">
-                                <label for="surveyTitle"><?= gt('Survey title')?></label>
+                                <label for="surveyTitle"><?= gT('Survey title')?></label>
                                 <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
                             </div>
                             <div class="form-group col-md-4 col-md-6">
-                                <label for="createsample" class="control-label"><?= gt('Create example question group and question?')?></label>
+                                <label for="createsample" class="control-label"><?= gT('Create example question group and question?')?></label>
                                 <div>
                                     <input type="checkbox" name="createsample" />
                                 </div>
@@ -72,7 +72,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                         </div>
                         <div class="row">
                             <div class="form-group col-md-4 col-md-6" >
-                                <label class="control-label" for="language"><?= gt('Base language')?></label>
+                                <label class="control-label" for="language"><?= gT('Base language')?></label>
                                 <div class="">
                                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                         'asDropDownList' => true,
@@ -111,7 +111,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                             </div>
                             <div id="conditional-administrator-fields" style="display: none;">
                                 <div class="form-group col-md-4 col-md-6">
-                                    <label class="control-label" for="admin"><?= gt("Administrator name")?></label>
+                                    <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
                                     <?php echo CHtml::textField('admin', '', array(
                                         'class' => 'form-control',
                                         'id' => 'admin',

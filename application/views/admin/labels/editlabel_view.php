@@ -65,7 +65,7 @@
                                     'value' => $langidsarray,
                                     'name' => 'languageids',
                                     'pluginOptions' => array(
-                                        'placeholder' => gt('Select languages','unescaped'),
+                                        'placeholder' => gT('Select languages','unescaped'),
                                 )));
                                 ?>
                                 <input type='hidden' name='oldlanguageids' id='oldlanguageids' value='<?php echo $langids; ?>' />

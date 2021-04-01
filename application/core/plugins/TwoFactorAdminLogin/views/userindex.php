@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                 <div class="col-sm-12">
                     <h2>
                     <?=gT("You don't have two-factor authentication (2FA) activated.");?> <br/>
-                        <?=($force2FA == true ? gt("Please activate it now.") : gT("Do you want to activate it now?"))?> 
+                        <?=($force2FA == true ? gT("Please activate it now.") : gT("Do you want to activate it now?"))?> 
                     </h2>
                     <p>
                         <a class="btn btn-default TFA--actionopenmodal TFA--excludefromlock" data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallCreateNewKey")?>" data-toggle="modal" id="TFA--register2fa"><?=gt("Activate 2FA now");?> </a>

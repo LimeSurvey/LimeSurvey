@@ -30,7 +30,7 @@ function dummy_twig_translation_helper()
     gT("Restrict search place to map extent"); // From application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:40 (2021/02/19)
     gT("Latitude:"); // From application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:66 (2021/02/19)
     gT("Longitude:"); // From application/views/survey/questions/answer/shortfreetext/location_mapservice/item_100.twig:80 (2021/02/19)
-    gt("Some example answer option"); // From application/views/questionAdministration/answerOptionRow.twig
+    gT("Some example answer option"); // From application/views/questionAdministration/answerOptionRow.twig
     gT("Drag to sort"); // From application/views/questionAdministration/answerOptionRow.twig
     gT("Insert a new answer option after this"); // From application/views/questionAdministration/answerOptionRow.twig
     gT("Predefined label sets..."); // From application/views/questionAdministration/subquestions.twig

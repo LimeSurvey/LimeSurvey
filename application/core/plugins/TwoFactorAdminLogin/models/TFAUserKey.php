@@ -114,7 +114,7 @@ class TFAUserKey extends LSActiveRecord {
              ),
              array(
                  "name" => 'authType',
-                 "header" => gT("2FA-Method")
+                 "header" => gT("2FA method")
              ),
          );
          return $cols;

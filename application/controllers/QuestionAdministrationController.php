@@ -1036,7 +1036,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['surveybar']['closebutton']['url'] = '/questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyID; // Close button
         $aData['surveybar']['savebutton']['form'] = true;
-        $aData['surveybar']['savebutton']['text'] = gt('Import');
+        $aData['surveybar']['savebutton']['text'] = gT('Import');
         $aData['sid'] = $iSurveyID;
         $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
         $aData['gid'] = $groupid;

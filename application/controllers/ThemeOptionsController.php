@@ -101,7 +101,7 @@ class ThemeOptionsController extends LSBaseController
                 );
             } else {
                 App()->setFlashMessage(
-                    gt("We are sorry but you don't have permissions to do this."),
+                    gT("We are sorry but you don't have permissions to do this."),
                     'error'
                 );
                 $this->redirect(array("themeOptions"));
