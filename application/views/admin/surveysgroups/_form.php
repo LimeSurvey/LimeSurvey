@@ -75,7 +75,7 @@
         <?php echo $form->labelEx($model,'alwaysavailable'); ?>
         <?php echo $form->checkBox($model,'alwaysavailable',array('disabled' => !$updateRigth && $model->gsid == 1)); ?>
         <?php echo $form->error($model,'alwaysavailable', array('errorCssClass' => 'text-danger')); ?>
-        <p class="help-block"><?= gT("When activate public mode : any user can see the surveys group. This allow any user to put survey in this group."); ?></p>
+        <p class="help-block"><?= gT("When public mode is active any user can see the survey group. This allow any user to put surveys in this group."); ?></p>
         <?php if($model->gsid == 1) : ?>
         <p class="help-block"><?= gT("The default group is always public."); ?></p>
         <?php endif; ?>

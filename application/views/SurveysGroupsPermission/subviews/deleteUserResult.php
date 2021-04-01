@@ -3,7 +3,7 @@
     <p class="alert alert-success"><?= printf(gT("User rights deleted for : %s"),CHtml::encode($oUser->users_name)); ?>
     <p><?php
         echo CHtml::link(
-            gT("Continue."),
+            gT("Continue"),
             array( "surveysGroupsPermission/index", 'id'=>$model->gsid),
             array('class' => 'btn btn-default')
         );

@@ -1372,7 +1372,7 @@ class tokens extends Survey_Common_Action
                                 // Add the error when try to save token
                                 $tokenSaveError = CHtml::errorSummary(
                                     $oToken,
-                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error happen when save this survey participant email sent date (id:%s)"), $emrow['tid']))
+                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occured when saving the sent date for this participant(ID: %s)."), $emrow['tid']))
                                 );
                             }
                             // Mark token email as send this session.
