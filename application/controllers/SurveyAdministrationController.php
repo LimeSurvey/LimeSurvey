@@ -289,7 +289,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
+            Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -417,7 +417,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             $user = Yii::app()->user;
-            
+
             // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
             if ($user !== null) {
                 $userid = (int) $user->getId();
@@ -506,10 +506,10 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
                 $redirecturl = $this->createUrl(
-                   'questionGroupsAdministration/add/',
-                   ['surveyid' => $iNewSurveyid]
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
                 );
-           } else {
+            } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
