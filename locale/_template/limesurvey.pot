@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 09:00:17+00:00\n"
+"POT-Creation-Date: 2021-04-01 12:31:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -968,6 +968,7 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:2546
 #: application/controllers/admin/participantsaction.php:2721
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:395
+#: application/core/plugins/TwoFactorAdminLogin/views/index.php:13
 #: application/helpers/admin/ajax_helper.php:176
 msgid "No permission"
 msgstr ""
@@ -1362,7 +1363,8 @@ msgid "You can't update question code for an active survey."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:292
-msgid "Wrong parameter for subaction (straight or bygroup.)"
+#: application/controllers/admin/surveypermission.php:602
+msgid "Invalid parameters."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:325
@@ -5867,10 +5869,6 @@ msgstr ""
 msgid "Could not delete user. User was not supplied."
 msgstr ""
 
-#: application/controllers/admin/surveypermission.php:602
-msgid "Invalid parameters."
-msgstr ""
-
 #: application/controllers/admin/surveypermission.php:609
 #: application/core/LsDefaultDataSets.php:500
 msgid "Edit survey permissions"
@@ -8765,10 +8763,6 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:117
 msgid "2FA method"
-msgstr ""
-
-#: application/core/plugins/TwoFactorAdminLogin/views/index.php:13
-msgid "You don't have permission to enter this page!"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:44
@@ -15373,11 +15367,11 @@ msgid "Delete survey group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:436
-msgid "Permission to update this group name, description of this group. This include deletion of this group. Read permission is used for access to this group."
+msgid "Permission to update name/description of this group or to delete this group. Read permission is used to give access to this group."
 msgstr ""
 
 #: application/models/SurveysGroups.php:447
-msgid "Permission to update survey settings for this group."
+msgid "Permission to update survey settings for this group"
 msgstr ""
 
 #: application/models/SurveysGroups.php:457
@@ -15450,7 +15444,7 @@ msgid "Surveys in this group"
 msgstr ""
 
 #: application/models/SurveysInGroup.php:42
-msgid "Permission on surveys in this group. To see the survey in list : read permission is checked and must be set."
+msgid "Permission to access surveys in this group. To see a survey in the list the read/view permission must be given."
 msgstr ""
 
 #: application/models/Template.php:181
@@ -16026,7 +16020,7 @@ msgid "Set permission for user group : %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:2
-msgid "User listed here can see groups in lists, and view group descriptions & settings. This is the minimal permission - you have to use the delete action to remove this permission."
+msgid "Users listed here can see groups in lists, and view group descriptions & settings. This is the minimal permission - you have to use the delete action to remove this permission."
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:3
