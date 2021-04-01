@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 14:56:09+00:00\n"
+"POT-Creation-Date: 2021-04-01 15:18:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -576,9 +576,6 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:256
 #: application/controllers/LimereplacementfieldsController.php:277
 #: application/controllers/LimereplacementfieldsController.php:297
-#: application/controllers/admin/ExpressionValidate.php:180
-#: application/controllers/admin/ExpressionValidate.php:194
-#: application/controllers/admin/ExpressionValidate.php:206
 msgid "First name of the participant"
 msgstr ""
 
@@ -586,17 +583,11 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:257
 #: application/controllers/LimereplacementfieldsController.php:278
 #: application/controllers/LimereplacementfieldsController.php:298
-#: application/controllers/admin/ExpressionValidate.php:181
-#: application/controllers/admin/ExpressionValidate.php:195
-#: application/controllers/admin/ExpressionValidate.php:207
 msgid "Last name of the participant"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:236
 #: application/controllers/LimereplacementfieldsController.php:258
-#: application/controllers/admin/ExpressionValidate.php:179
-#: application/controllers/admin/ExpressionValidate.php:193
-#: application/controllers/admin/ExpressionValidate.php:205
 msgid "Email address of the participant"
 msgstr ""
 
@@ -633,8 +624,6 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:400
 #: application/controllers/LimereplacementfieldsController.php:415
 #: application/controllers/admin/ExpressionValidate.php:185
-#: application/controllers/admin/ExpressionValidate.php:201
-#: application/controllers/admin/ExpressionValidate.php:210
 msgid "Participant attribute: %s"
 msgstr ""
 
@@ -658,8 +647,6 @@ msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:276
 #: application/controllers/LimereplacementfieldsController.php:296
-#: application/controllers/admin/ExpressionValidate.php:178
-#: application/controllers/admin/ExpressionValidate.php:182
 msgid "Access code for this participant"
 msgstr ""
 
@@ -670,6 +657,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:361
 #: application/controllers/SurveyAdministrationController.php:245
 #: application/controllers/SurveyAdministrationController.php:2930
+#: application/controllers/admin/ExpressionValidate.php:174
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:13
 #: application/views/admin/token/massive_actions/_delete_results.php:11
 #: application/views/admin/token/massive_actions/_export_archive_results.php:13
@@ -698,6 +686,7 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:325
 #: application/controllers/LimereplacementfieldsController.php:344
 #: application/controllers/LimereplacementfieldsController.php:363
+#: application/controllers/admin/ExpressionValidate.php:175
 msgid "Survey description"
 msgstr ""
 
@@ -710,11 +699,16 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:360
 #: application/controllers/LimereplacementfieldsController.php:393
 #: application/controllers/LimereplacementfieldsController.php:408
+#: application/controllers/admin/ExpressionValidate.php:179
+#: application/controllers/admin/ExpressionValidate.php:193
+#: application/controllers/admin/ExpressionValidate.php:205
 msgid "Participant - Email address"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:318
 #: application/controllers/LimereplacementfieldsController.php:357
+#: application/controllers/admin/ExpressionValidate.php:178
+#: application/controllers/admin/ExpressionValidate.php:182
 msgid "Participant - Access code"
 msgstr ""
 
@@ -731,6 +725,9 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:358
 #: application/controllers/LimereplacementfieldsController.php:391
 #: application/controllers/LimereplacementfieldsController.php:406
+#: application/controllers/admin/ExpressionValidate.php:180
+#: application/controllers/admin/ExpressionValidate.php:194
+#: application/controllers/admin/ExpressionValidate.php:207
 msgid "Participant - First name"
 msgstr ""
 
@@ -739,6 +736,9 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:359
 #: application/controllers/LimereplacementfieldsController.php:392
 #: application/controllers/LimereplacementfieldsController.php:407
+#: application/controllers/admin/ExpressionValidate.php:181
+#: application/controllers/admin/ExpressionValidate.php:195
+#: application/controllers/admin/ExpressionValidate.php:206
 msgid "Participant - Last name"
 msgstr ""
 
@@ -757,6 +757,8 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:334
 #: application/controllers/LimereplacementfieldsController.php:353
 #: application/controllers/LimereplacementfieldsController.php:372
+#: application/controllers/admin/ExpressionValidate.php:199
+#: application/controllers/admin/ExpressionValidate.php:208
 msgid "Survey URL"
 msgstr ""
 
@@ -3316,17 +3318,9 @@ msgstr ""
 msgid "Detailed admin notification body"
 msgstr ""
 
-#: application/controllers/admin/ExpressionValidate.php:174
-msgid "Name of the survey"
-msgstr ""
-
-#: application/controllers/admin/ExpressionValidate.php:175
-msgid "Description of the survey"
-msgstr ""
-
 #: application/controllers/admin/ExpressionValidate.php:183
 #: application/controllers/admin/ExpressionValidate.php:196
-msgid "language of participant"
+msgid "Participant - Language"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:197
@@ -3337,9 +3331,9 @@ msgstr ""
 msgid "URL for a respondent to opt-in to this survey"
 msgstr ""
 
-#: application/controllers/admin/ExpressionValidate.php:199
-#: application/controllers/admin/ExpressionValidate.php:208
-msgid "URL of the survey"
+#: application/controllers/admin/ExpressionValidate.php:201
+#: application/controllers/admin/ExpressionValidate.php:210
+msgid "Participant - Attribute: %s"
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:216
@@ -3351,7 +3345,7 @@ msgid "Invalid type."
 msgstr ""
 
 #: application/controllers/admin/ExpressionValidate.php:242
-msgid "Validate expression in email : %s"
+msgid "Validate expressions in email: %s"
 msgstr ""
 
 #: application/controllers/admin/NotificationController.php:35
@@ -15453,19 +15447,19 @@ msgid "No preview available"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:158
-msgid "Templates Name"
+msgid "Template name"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:161
-msgid "Files Css"
+msgid "Files CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:162
-msgid "Files Js"
+msgid "Files JS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:163
-msgid "Files Print Css"
+msgid "Files Print CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:164
@@ -15473,19 +15467,19 @@ msgid "Options"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:165
-msgid "Cssframework Name"
+msgid "CSS framework name"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:166
-msgid "Cssframework Css"
+msgid "CSS framework CSS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:167
-msgid "Cssframework Js"
+msgid "CSS framework JS"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:168
-msgid "Packages To Load"
+msgid "Packages to load"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:688
