@@ -2876,7 +2876,7 @@ class LsDefaultDataSets
         $template .= "<p>" . gT("Thank you") . "!</p>";
 
         $default['sendadmincreationemail'] = 1;
-        $default['admincreationemailsubject'] = gT("User registration at") . " {SITENAME}";
+        $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;
 
         return $default;

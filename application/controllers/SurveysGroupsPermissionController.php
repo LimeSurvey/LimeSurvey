@@ -276,7 +276,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to this user."));
         }
         if ($to == App()->user->getId()) {
-            throw new CHttpException(403, gT("You do not set your own permission."));
+            throw new CHttpException(403, gT("You cannot modify your own permissions."));
         }
         $this->viewUserOrUserGroup($id, $to, 'user');
     }
