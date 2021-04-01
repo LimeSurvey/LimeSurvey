@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 12:50:56+00:00\n"
+"POT-Creation-Date: 2021-04-01 13:31:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5789,6 +5789,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:2467
 #: application/controllers/admin/tokens.php:2508
 #: application/controllers/admin/useraction.php:841
+#: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:6
 #: application/views/admin/authentication/message.php:35
 #: application/views/admin/participants/attributeMapCSV_view.php:80
 #: application/views/admin/participants/attributeMapToken_view.php:100
@@ -6241,7 +6242,7 @@ msgid "Reminder sent to:"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1375
-msgid "An error happen when save this survey participant email sent date (id:%s)"
+msgid "An error occured when saving the sent date for this participant(ID: %s)."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1398
@@ -16004,10 +16005,6 @@ msgstr ""
 msgid "User rights deleted for : %s"
 msgstr ""
 
-#: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:6
-msgid "Continue."
-msgstr ""
-
 #: application/views/SurveysGroupsPermission/subviews/setPermissionForm.php:8
 msgid "Set permission for user : %s"
 msgstr ""
@@ -21087,7 +21084,7 @@ msgid "Permission level?"
 msgstr ""
 
 #: application/views/admin/surveysgroups/_form.php:78
-msgid "When activate public mode : any user can see the surveys group. This allow any user to put survey in this group."
+msgid "When public mode is active any user can see the survey group. This allow any user to put surveys in this group."
 msgstr ""
 
 #: application/views/admin/surveysgroups/_form.php:80
