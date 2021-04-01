@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 08:19:33+00:00\n"
+"POT-Creation-Date: 2021-04-01 09:00:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -707,11 +707,15 @@ msgid "Answers in this response"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:317
-msgid "Participant Email address"
+#: application/controllers/LimereplacementfieldsController.php:360
+#: application/controllers/LimereplacementfieldsController.php:393
+#: application/controllers/LimereplacementfieldsController.php:408
+msgid "Participant - Email address"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:318
-msgid "Participant Access code"
+#: application/controllers/LimereplacementfieldsController.php:357
+msgid "Participant - Access code"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:319
@@ -754,16 +758,6 @@ msgstr ""
 #: application/controllers/LimereplacementfieldsController.php:353
 #: application/controllers/LimereplacementfieldsController.php:372
 msgid "Survey URL"
-msgstr ""
-
-#: application/controllers/LimereplacementfieldsController.php:357
-msgid "Participant - Access code"
-msgstr ""
-
-#: application/controllers/LimereplacementfieldsController.php:360
-#: application/controllers/LimereplacementfieldsController.php:393
-#: application/controllers/LimereplacementfieldsController.php:408
-msgid "Participant - Email address"
 msgstr ""
 
 #: application/controllers/LimereplacementfieldsController.php:395
@@ -2702,7 +2696,7 @@ msgid "You do not have permission to access this user."
 msgstr ""
 
 #: application/controllers/SurveysGroupsPermissionController.php:394
-msgid "You cannot delete your own permissions."
+msgid "You cannot delete your own user."
 msgstr ""
 
 #: application/controllers/ThemeOptionsController.php:70
@@ -8718,7 +8712,7 @@ msgid "Minimum password length"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:165
-msgid "AuthKey (optional)"
+msgid "2FA key (optional)"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/TwoFactorAdminLogin.php:364
@@ -16005,7 +15999,7 @@ msgid "Current permissions:"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:32
-msgid "Are you sure to remove all permissions for this user?"
+msgid "Are you sure you want to remove all permissions for this user?"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:2
@@ -16032,11 +16026,11 @@ msgid "Set permission for user group : %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:2
-msgid "User listed here can see groups in lists and view descriptions and other settings. This is the minimal permission, you have to use delete action to remove this permission."
+msgid "User listed here can see groups in lists, and view group descriptions & settings. This is the minimal permission - you have to use the delete action to remove this permission."
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:3
-msgid "This surveys group are shown in list for user with any permission on survey group, user with any permission on one survey inside this group or if this groups was set as available."
+msgid "This survey group is shown for users with any permission on the survey group, user with any permission on one survey inside this group, or if this group was configured to be available."
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:14
