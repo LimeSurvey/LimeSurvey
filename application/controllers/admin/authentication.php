@@ -193,6 +193,49 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
+     * This action sets a password for new user or resets a password for an existing user.
+     * If validation time is expired, no password will be changed.
+     *
+     * @param $param string the validation key
+     */
+    public function newPassword($param){
+
+        $errorExists = false;
+        $errorMsg = '';
+        $user = User::model()->findByAttributes([],'validation_key=:validation_key', ['validation_key' => $param]);
+        if($user===null){
+            $errorExists = true;
+            $errorMsg = gT('The validation key is invalid. Please contact the administrator.');
+        }else{
+            //check if validation time is expired
+            $dateNow = new DateTime();
+            $expirationDate = new DateTime($user->validation_key_expiration);
+            $dateDiff = $expirationDate->diff($dateNow);
+            $differenceInHours = $dateDiff->format('h');
+            if($differenceInHours > User::MAX_EXPIRATION_TIME){
+                $errorExists = true;
+                $errorMsg = gT('The validation key expired. Please contact the administrator.');
+            }
+        }
+
+        if(!$errorExists){
+            //check if password is set correctly
+            $password = Yii::app()->request->getPost('password');
+            $passwordRepeat = Yii::app()->request->getPost('passwordRepeat');
+            if($password!==null && $passwordRepeat!==null){
+
+            }
+            $randomPassword = $this->getRandomPassword();
+        }
+
+        $this->$this->render('newPassword',[
+            'errorExists' => $errorExists,
+            'errorMasg' => $errorMsg,
+            'randomPassword', $randomPassword
+        ]);
+    }
+
+    /**
      * Logout user
      * @return void
      */

@@ -927,4 +927,30 @@ class User extends LSActiveRecord
             )
         ));
     }
+
+    /**
+     * Creates a validation key and saves it in table user for this user.
+     *
+     * @return bool true if validation_key could be saved in db, false otherwise
+     */
+    public function setValidationKey(){
+        $this->validation_key = randomChars(self::MAX_VALIDATION_KEY_LENGTH);
+
+        return $this->save();
+    }
+
+    /**
+     * Creates the validation key expiration date and save it in db
+     *
+     * @return bool true if datetime could be saved, false otherwise
+     * @throws Exception
+     */
+    public function setValidationExpiration(){
+        $datePlusMaxExpiration = new DateTime();
+        $datePlusMaxExpiration->add(new DateInterval('P'. self::MAX_EXPIRATION_TIME . 'h'));
+
+        $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
+
+        return $this->save();
+    }
 }

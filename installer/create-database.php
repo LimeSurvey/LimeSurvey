@@ -487,6 +487,23 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
 
+        //this part has only been done in update...
+        $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'sendadmincreationemail',
+            "stg_value" => $defaultSetting['sendadmincreationemail'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailsubject',
+            "stg_value" => $defaultSetting['admincreationemailsubject'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailtemplate',
+            "stg_value" => $defaultSetting['admincreationemailtemplate'],
+        ]);
+
 
 
         //settings_user
