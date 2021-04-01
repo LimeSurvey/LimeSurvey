@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 07:46:32+00:00\n"
+"POT-Creation-Date: 2021-04-01 08:07:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1964,6 +1964,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1170
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:133
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:160
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:165
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:44
@@ -2120,6 +2121,7 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:132
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:160
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:164
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:36
@@ -3119,6 +3121,7 @@ msgstr ""
 #: application/models/User.php:112 application/models/User.php:783
 #: application/models/User.php:843
 #: application/views/SurveysGroupsPermission/subviews/currentUsersList.php:7
+#: application/views/admin/authentication/forgotpassword.php:34
 #: application/views/admin/user/modifyuser.php:24
 #: application/views/userGroup/viewUserGroup_view.php:42
 #: application/views/userManagement/partial/createdrandoms.php:26
@@ -5510,7 +5513,6 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:112
 #: application/models/User.php:117 application/models/User.php:787
 #: application/models/User.php:847
-#: application/views/admin/authentication/forgotpassword.php:38
 #: application/views/admin/responses/listResponses_view.php:166
 #: application/views/admin/responses/listResponses_view.php:174
 #: application/views/admin/token/massive_actions/_selector.php:72
@@ -8739,20 +8741,15 @@ msgid "An error has happened, and the token could not be deleted."
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:129
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:117
-msgid "2FA-Method"
-msgstr ""
-
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:134
 msgid "2FA enabled"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:137
-msgid "Has 2FA disabled"
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
+msgid "2FA method"
 msgstr ""
 
-#: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:138
-msgid "Has 2FA enabled"
+#: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:117
+msgid "2FA-Method"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/index.php:13
@@ -8837,6 +8834,10 @@ msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:26
 msgid "Do you want to activate it now?"
+msgstr ""
+
+#: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:29
+msgid "Activate 2FA now"
 msgstr ""
 
 #: application/core/plugins/TwoFactorAdminLogin/views/userindex.php:31
@@ -10764,6 +10765,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:229
 #: application/models/SavedControl.php:185 application/models/Token.php:94
 #: application/models/TokenDynamic.php:681
+#: application/views/admin/authentication/forgotpassword.php:38
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/themes/templateeditor_register_view.php:11
 msgid "Email address"
@@ -16067,10 +16069,6 @@ msgstr ""
 
 #: application/views/admin/authentication/forgotpassword.php:31
 msgid "To receive a new password by email you have to enter your user name and original email address."
-msgstr ""
-
-#: application/views/admin/authentication/forgotpassword.php:34
-msgid "User name"
 msgstr ""
 
 #: application/views/admin/authentication/forgotpassword.php:50
