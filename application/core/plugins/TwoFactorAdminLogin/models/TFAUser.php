@@ -125,20 +125,20 @@ class TFAUser extends User
                  "header" => gT("Email"),
              ),
              array(
-                 "name" => 'userkeys.authType',
-                 "header" => gT("2FA-Method"),
-                 "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge([''=>''], TFAUserKey::$authTypeOptions)),
-             ),
-             array(
                  "name" => 'hasAuthSet',
                  "header" => gT("2FA enabled"),
                  "filter" => TbHtml::dropDownList('userkeys_secretKey', Yii::app()->request->getParam('userkeys_secretKey'), [
                      '' => '',
-                     '0' => gT('Has 2FA disabled'),
-                     '1' => gT('Has 2FA enabled'),
+                     '1' => gT('Yes'),
+                     '0' => gT('No'),
                     ]),
              ),
-         );
+             array(
+                "name" => 'userkeys.authType',
+                "header" => gT("2FA method"),
+                "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge([''=>''], TFAUserKey::$authTypeOptions)),
+            ),
+        );
         return $cols;
     }
  
