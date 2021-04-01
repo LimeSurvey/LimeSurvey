@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 13:31:12+00:00\n"
+"POT-Creation-Date: 2021-04-01 14:01:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5841,7 +5841,7 @@ msgid "You can not set your own permission."
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:449
-msgid "Unknown action."
+msgid "Unknown action"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:457
@@ -16002,15 +16002,15 @@ msgid "Delete user"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:3
-msgid "User rights deleted for : %s"
+msgid "User permissions deleted for : %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/setPermissionForm.php:8
-msgid "Set permission for user : %s"
+msgid "Set permission for user: %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/setPermissionForm.php:10
-msgid "Set permission for user group : %s"
+msgid "Set permission for user group: %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/viewCurrents.php:2
