@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-01 14:01:45+00:00\n"
+"POT-Creation-Date: 2021-04-01 14:21:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6242,7 +6242,7 @@ msgid "Reminder sent to:"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1375
-msgid "An error occured when saving the sent date for this participant(ID: %s)."
+msgid "An error occured when saving the sent date for this participant (ID: %s)."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1398
@@ -16002,7 +16002,7 @@ msgid "Delete user"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/deleteUserResult.php:3
-msgid "User permissions deleted for : %s"
+msgid "User permissions deleted for: %s"
 msgstr ""
 
 #: application/views/SurveysGroupsPermission/subviews/setPermissionForm.php:8
@@ -17418,7 +17418,8 @@ msgstr ""
 
 #: application/views/admin/globalsettings/_bounce.php:63
 #: application/views/admin/globalsettings/_email.php:67
-msgid "Off (insecure)"
+#: application/views/admin/token/bounce.php:101
+msgid "Off (unsafe)"
 msgstr ""
 
 #: application/views/admin/globalsettings/_bounce.php:73
@@ -21424,10 +21425,6 @@ msgstr ""
 
 #: application/views/admin/token/bounce.php:23
 msgid "Used bounce settings:"
-msgstr ""
-
-#: application/views/admin/token/bounce.php:101
-msgid "Off (unsafe)"
 msgstr ""
 
 #: application/views/admin/token/browse.php:20
