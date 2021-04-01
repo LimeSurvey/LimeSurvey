@@ -162,7 +162,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $extraLine = ""
             . "<span>"
-            . "<label for='twofactor'>"  . gT("AuthKey (optional)") . "</label>
+            . "<label for='twofactor'>"  . gT("2FA key (optional)") . "</label>
             <input class='form-control' name='twofactor' id='twofactor' type='text' size='" . $this->get('digits', null, null, 6) . "' maxlength='" . $this->get('digits', null, null, 6) . "' value='' />"
             . "</span>";
 
@@ -373,7 +373,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oTFAModel->setAttributes($aTFAUserKey, false);
         $oTFAModel->firstLogin = 0;
         if (!$oTFAModel->save()) {
-            return $this->createJSONResponse(false, gt("The two-factor authentication key could not be stored."));
+            return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
 
         return $this->createJSONResponse(true, "2-Factor Method successfully stored", ['reload' => true]);

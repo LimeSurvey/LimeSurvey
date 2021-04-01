@@ -391,7 +391,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             throw new CHttpException(403, gT("You do not have permission to access this user."));
         }
         if ($uid == App()->user->getId()) {
-            throw new CHttpException(403, gT("You cannot delete your own permissions."));
+            throw new CHttpException(403, gT("You cannot delete your own user."));
         }
         Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = :entity", array(
             ':uid' => $uid,

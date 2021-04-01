@@ -1,6 +1,6 @@
     <div class="well">
-        <p><?= gT("User listed here can see groups in lists and view descriptions and other settings. This is the minimal permission, you have to use delete action to remove this permission.") ?></p>
-        <p><?= gT("This surveys group are shown in list for user with any permission on survey group, user with any permission on one survey inside this group or if this groups was set as available.") ?></p>
+        <p><?= gT("User listed here can see groups in lists, and view group descriptions & settings. This is the minimal permission - you have to use the delete action to remove this permission.") ?></p>
+        <p><?= gT("This survey group is shown for users with any permission on the survey group, user with any permission on one survey inside this group, or if this group was configured to be available.") ?></p>
     </div>
     <?php if(!empty($oExistingUsers)) {
         $this->renderPartial('/SurveysGroupsPermission/subviews/currentUsersList',array(
