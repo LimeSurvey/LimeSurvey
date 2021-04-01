@@ -1748,6 +1748,7 @@ class LsDefaultDataSets
             $addRow('Authwebserver'),
             $addRow('ExportR', 1),
             $addRow('ExportSTATAxml', 1),
+            $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
             $addRow('expressionQuestionHelp'),
             $addRow('expressionQuestionForAll'),

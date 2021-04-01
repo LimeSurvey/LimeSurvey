@@ -3789,6 +3789,46 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 443), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 444) { //ExportSPSSsav plugin
+            $oTransaction = $oDB->beginTransaction();
+            $installedPlugins = array_map(
+                function ($v) {
+                    return $v['name'];
+                },
+                $oDB->createCommand('SELECT name FROM {{plugins}}')->queryAll()
+            );
+            /**
+             * @param string $name Name of plugin
+             * @param int $active
+             */
+            $insertPlugin = function ($name, $active = 0) use ($installedPlugins, $oDB) {
+                if (!in_array($name, $installedPlugins)) {
+                    $oDB->createCommand()->insert(
+                        "{{plugins}}",
+                        [
+                            'name'               => $name,
+                            'plugin_type'        => 'core',
+                            'active'             => $active,
+                            'version'            => '1.0.0',
+                            'load_error'         => 0,
+                            'load_error_message' => null
+                        ]
+                    );
+                } else {
+                    $oDB->createCommand()->update(
+                        "{{plugins}}",
+                        [
+                            'plugin_type'        => 'core',
+                            'version'            => '1.0.0',
+                        ],
+                        App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
+                    );
+                }
+            };
+            $insertPlugin('ExportSPSSsav', 1);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
