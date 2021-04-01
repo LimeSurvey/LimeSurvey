@@ -785,7 +785,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -821,7 +821,7 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         App()->getController()->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
@@ -920,7 +920,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -975,7 +975,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -1021,7 +1021,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
