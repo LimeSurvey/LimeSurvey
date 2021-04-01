@@ -244,7 +244,7 @@ class UserManagementController extends LSBaseController
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 'data' => [
                     'success' => false,
-                    'message' => gT("you cannot delete yourself.")
+                    'message' => gT("You cannot delete yourself.")
                 ]
             ]);
         }
@@ -827,7 +827,7 @@ class UserManagementController extends LSBaseController
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
             )
         );

@@ -142,7 +142,7 @@ class ThemeOptionsController extends LSBaseController
             }
 
             //set Modal table labels
-            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -201,7 +201,7 @@ class ThemeOptionsController extends LSBaseController
                 }
             }
             //set Modal table labels
-            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -243,7 +243,7 @@ class ThemeOptionsController extends LSBaseController
             $aResults[$template]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+        $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
         $this->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
