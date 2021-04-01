@@ -35,5 +35,5 @@ function dummy_twig_translation_helper()
     gT("Insert a new answer option after this"); // From application/views/questionAdministration/answerOptionRow.twig
     gT("Predefined label sets..."); // From application/views/questionAdministration/subquestions.twig
     gT("Save as label set");  // From application/views/questionAdministration/answerOptions.twig
-    gT("Short Free Text"); // From application/views/survey/questions/answer/shortfreetext/config.xml
+    gT("Short free text"); // From application/views/survey/questions/answer/shortfreetext/config.xml
 }
