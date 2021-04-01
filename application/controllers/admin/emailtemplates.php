@@ -72,7 +72,7 @@ class emailtemplates extends Survey_Common_Action
                 foreach ($attachments as &$template) {
                     foreach ($template as &$attachment) {
                         if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
-                            $attachment['url'] = substr($attachment['url'], strlen($uploadDir));
+                            $attachment['url'] = str_replace('\\', '/', substr($attachment['url'], strlen($uploadDir)));
                         }
                     }
                 }
