@@ -36,6 +36,15 @@
             return parent::create($surveyId, $scenario);
         }
 
+        /** @inheritdoc
+         * Must be set by DB, adding by security here
+         * @see https://bugs.limesurvey.org/view.php?id=17208
+         **/
+        public function primaryKey()
+        {
+            return 'id';
+        }
+
         /**
          * Get all files related to this response and (optionally) question ID.
          *
