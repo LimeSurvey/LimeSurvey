@@ -642,6 +642,7 @@ class SurveyRuntimeHelper
             $this->setPrevStep();
             $this->checkIfFinished();
             $this->setStep();
+            $this->saveStartingValues();
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
@@ -1747,6 +1748,10 @@ class SurveyRuntimeHelper
             $this->aMoveResult = LimeExpressionManager::JumpTo($qSec + 1, 'question', false, true);
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
         }
+        
+        // "Save" starting values to response. 
+        // In the case of preview will not be "saved"", but will be incorporated in the response handled in memory.
+        LimeExpressionManager::SaveStartingValues();
     }
 
 
@@ -1866,5 +1871,16 @@ class SurveyRuntimeHelper
         }
 
         return $aQuestionClass;
+    }
+
+    /**
+     * Saves the starting values, if any is set
+     */
+    private function saveStartingValues()
+    {
+        // Don't save the starting values if on Welcome screen
+        if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0) return;
+
+        LimeExpressionManager::SaveStartingValues();
     }
 }
