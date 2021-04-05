@@ -417,7 +417,7 @@ class UserManagementController extends LSBaseController
         $userId = Yii::app()->request->getPost('userid');
         $aPermissions = Yii::app()->request->getPost('Permission', []);
 
-        $clearUser = Permissiontemplates::model()->clearUser($userId);
+        Permissiontemplates::model()->clearUser($userId);
 
         $results = $this->applyPermissionFromArray($userId, $aPermissions);
 
