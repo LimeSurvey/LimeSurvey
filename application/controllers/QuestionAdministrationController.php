@@ -2278,29 +2278,42 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
-     * @param string $question_template
+     * @param string $sQuestionTheme
      * @return array
      * @throws CException
      * @throws Exception
      */
-    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
+    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
-
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
-        // TODO: Why can empty array be saved as value?
-        foreach ($advancedSettings as &$category) {
-            foreach ($category as &$setting) {
-                if ($setting['value'] === []) {
-                    $setting['value'] = null;
-                }
-            }
-        }
+
+        // Get the advanced settings array
+        $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
+
+        // Group the array in categories
+        $advancedSettings = self::groupAttributesByCategory($advancedSettings);
+
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
 
         return $advancedSettings;
+    }
+
+    /**
+     * Receives an array of question attributes and groups them by category.
+     * Used by advanced settings widget.
+     *
+     * @param array $aAttributes
+     * @return array Grouped question attributes, with category as array key
+     */
+    private static function groupAttributesByCategory($aAttributes)
+    {
+        $aByCategory = [];
+        foreach ($aAttributes as $aAttribute) {
+            $aByCategory[$aAttribute['category']][] = $aAttribute;
+        }
+        return $aByCategory;
     }
 
     /**

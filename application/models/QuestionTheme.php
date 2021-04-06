@@ -1047,6 +1047,9 @@ class QuestionTheme extends LSActiveRecord
                 }
             }
         }
+
+        $additionalAttributes = QuestionAttribute::getSanitizedQuestionAttributes($additionalAttributes);
+
         return $additionalAttributes;
     }
 

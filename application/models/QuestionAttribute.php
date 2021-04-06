@@ -266,6 +266,8 @@ class QuestionAttribute extends LSActiveRecord
     {
         $aQuestionAttributes = array();
         foreach ($aAttributeNames as $aAttribute) {
+            // Initializes expression. This is overwritten if no i18n definition found.
+            // Is that expected?
             $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
             // convert empty array to empty string
@@ -340,8 +342,9 @@ class QuestionAttribute extends LSActiveRecord
             ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
         );
         if ($oAttributeValue !== null) {
-            $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
-            $retAttributeNamesExtended = Question::getQuestionTemplateAttributes($retAttributeNamesExtended, $aAttributeValueQuestionTemplate, $oQuestion);
+            $sQuestionTheme = $oAttributeValue->value;
+            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+            $retAttributeNamesExtended = QuestionAttribute::getMergedQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
 
         return $retAttributeNamesExtended;
@@ -549,13 +552,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        foreach ($aAttributes as $attributeName => $attribute) {
-            foreach ($attribute as $fieldName => $value) {
-                if ($value === []) {
-                    $aAttributes[$attributeName][$fieldName] = null;
-                }
-            }
-        }
+        $aAttributes = self::getSanitizedQuestionAttributes($aAttributes);
 
         return $aAttributes;
     }
@@ -600,6 +597,10 @@ class QuestionAttribute extends LSActiveRecord
                 $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
             }
         }
+
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        $aAttributes = self::getSanitizedQuestionAttributes($aAttributes);
+
         return $aAttributes;
     }
 
@@ -629,5 +630,112 @@ class QuestionAttribute extends LSActiveRecord
         $result = App()->getPluginManager()->dispatchEvent($event);
 
         return (array) $result->get('questionAttributes');
+    }
+
+    /**
+     * Merges the 'base' attributes (ex: core question attributes) with the extended question attributes
+     * (ex: question theme attributes). It also removes all attributes where extended attribute's inputType is
+     * empty.
+     * If an extended attribute's name cannot be determined, it's omitted.
+     *
+     * @param array $aBaseAttributes    the base set of attributes
+     * @param array $aExtendedAttributes    the attributes to merge into the base set
+     *
+     * @return array the merged attributes
+     */
+    public static function getMergedQuestionAttributes($aBaseAttributes, $aExtendedAttributes)
+    {
+        $aAttributes = $aBaseAttributes;
+        foreach ($aExtendedAttributes as $key => $attribute) {
+            // TODO: move to getSanitizedQuestionAttributes()
+            // Determine the attribute name or continue with the next
+            if (!isset($attribute['name'])) {
+                if (!is_numeric($key)) {
+                    $attribute['name'] = $key;
+                } else {
+                    continue;
+                }
+            }
+
+            $sAttributeName = $attribute['name'];
+            $sInputType = $attribute['inputtype'];
+            // remove attribute if inputtype is empty
+            if (empty($sInputType)) {
+                unset($aAttributes[$sAttributeName]);
+            } else {
+                $aCustomAttribute = array_merge(
+                    QuestionAttribute::getDefaultSettings(),
+                    array("category" => gT("Template")),
+                    $attribute
+                );
+                $aAttributes[$sAttributeName] = $aCustomAttribute;
+            }
+        }
+        return $aAttributes;
+    }
+
+    /**
+     * Sanitizes an array of question attributes.
+     * Currently just replaces empty arrays (generally resulting from empty xml nodes) with null.
+     *
+     * @param array $aAttributes the array of attributes to sanitize
+     *
+     * @return array the array of sanitized attributes
+     */
+    public static function getSanitizedQuestionAttributes($aAttributes)
+    {
+        // Replace empty arrays with null
+        foreach ($aAttributes as &$aAttribute) {
+            foreach ($aAttribute as $propertyName => $propertyValue) {
+                if ($propertyValue === []) {
+                    $aAttribute[$propertyName] = null;
+                }
+            }
+        }
+        return $aAttributes;
+    }
+
+    /**
+     * Returns the received array of attributes filled with the values specified, taking into account the
+     * 'i18n' property of the attributes.
+     *
+     * Both this and rewriteQuestionAttributeArray() are helper methods and accomplish quite similar tasks,
+     * but the output is different: rewriteQuestionAttributeArray returns a name -> value array, while here
+     * we return a complete definition map and the value as a piece of information mingled into it.
+     *
+     * @param array $aAttributes the attributes to be filled
+     * @param array $aAttributeValues the values for the attributes
+     * @param array $aLanguages the languages to use for i18n attributes
+     *
+     * @return array the same source attributes with their corresponding values (when available)
+     */
+    public static function fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages = [])
+    {
+        foreach ($aAttributes as $iKey => $aAttribute) {
+            if ($aAttribute['i18n'] == false) {
+                if (isset($aAttributeValues[$aAttribute['name']][''])) {
+                    $aAttributes[$iKey]['value'] = $aAttributeValues[$aAttribute['name']][''];
+                } else {
+                    $aAttributes[$iKey]['value'] = $aAttribute['default'];
+                }
+                // Sanitize value in case it's saved as empty array
+                if ($aAttributes[$iKey]['value'] === []) {
+                    $aAttributes[$iKey]['value'] = null;
+                }
+            } else {
+                foreach ($aLanguages as $sLanguage) {
+                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
+                        $aAttributes[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
+                    } else {
+                        $aAttributes[$iKey][$sLanguage]['value'] = $aAttribute['default'];
+                    }
+                    // Sanitize value in case it's saved as empty array
+                    if ($aAttributes[$iKey][$sLanguage]['value'] === []) {
+                        $aAttributes[$iKey][$sLanguage]['value'] = null;
+                    }
+                }
+            }
+        }
+        return $aAttributes;
     }
 }

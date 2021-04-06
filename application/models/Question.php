@@ -282,67 +282,39 @@ class Question extends LSActiveRecord
      * including their values set in the database
      *
      * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
+     * @param string|null $sQuestionThemeOverride   Name of the question theme to use instead of the question's current theme
      * @return array
      */
-    public function getAdvancedSettingsWithValues($sLanguage = null)
+    public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
     {
         $oSurvey = $this->survey;
         if (empty($oSurvey)) {
             throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
         }
-        if (is_null($sLanguage)) {
-            $aLanguages = array_merge(
-                [$oSurvey->language],
-                $oSurvey->additionalLanguages
-            );
-        } else {
-            $aLanguages = array($sLanguage);
-        }
-        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($this->qid, $sLanguage);
-        // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
+
+        // Get attribute values
+        $aAttributeValues = QuestionAttribute::getAttributesAsArrayFromDB($this->qid);
+
+        // Get question theme name if not specified
+        $sQuestionTheme = !empty($sQuestionThemeOverride) ? $sQuestionThemeOverride : $aAttributeValues['question_template'][''];
+
+        // Get advanced attribute definitions for the question type
         $advancedOnly = true;
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
+        $aQuestionTypeAttributes = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
 
-        // If the question has a custom template, we first check if it provides custom attributes
-        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
+        // Get question theme attribute definitions
+        $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $this->type);
 
-        uasort($aAttributeNames, 'categorySort');
-        foreach ($aAttributeNames as $iKey => $aAttribute) {
-            if ($aAttribute['i18n'] == false) {
-                if (isset($aAttributeValues[$aAttribute['name']])) {
-                    $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
-                } else {
-                    $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
-                }
-            } else {
-                foreach ($aLanguages as $sLanguage) {
-                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
-                        $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                    } else {
-                        $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
-                    }
-                }
-            }
-        }
+        // Merge the attributes with the question theme ones
+        $aAttributes = QuestionAttribute::getMergedQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
 
-        return $aAttributeNames;
-    }
+        uasort($aAttributes, 'categorySort');
 
-    /**
-     * As getAdvancedSettingsWithValues but with category as array key.
-     * Used by advanced settings widget.
-     *
-     * @param string|null $sLanguage
-     * @return array
-     */
-    public function getAdvancedSettingsWithValuesByCategory($sLanguage = null)
-    {
-        $aAttributeNames = $this->getAdvancedSettingsWithValues($sLanguage);
-        $aByCategory = [];
-        foreach ($aAttributeNames as $aAttribute) {
-            $aByCategory[$aAttribute['category']][] = $aAttribute;
-        }
-        return $aByCategory;
+        // Fill attributes with values
+        $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
+        $aAttributes = QuestionAttribute::fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
+
+        return $aAttributes;
     }
 
     /**
@@ -353,6 +325,9 @@ class Question extends LSActiveRecord
      * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
      * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
      * @return mixed  returns the incoming parameter $aAttributeNames or
+     *
+     * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
+     *             QuestionAttribute::getMergedQuestionAttributes() to merge with base attributes.
      */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
