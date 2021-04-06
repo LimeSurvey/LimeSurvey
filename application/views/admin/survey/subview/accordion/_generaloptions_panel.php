@@ -111,7 +111,7 @@
                             'value' =>  $oSurvey->additionalLanguages,
                             'name' => 'additional_languages',
                             'pluginOptions' => array(
-                                'placeholder' => gt('Select additional languages','unescaped'),
+                                'placeholder' => gT('Select additional languages','unescaped'),
                         )));
                         ?>
                         <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>

@@ -31,6 +31,10 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         /** @var self $model */
         $model = parent::model($class);
+        // When running tests this might be empty
+        if (!isset($_SERVER['REMOTE_ADDR'])) {
+            $_SERVER['REMOTE_ADDR'] = '';
+        }
         return $model;
     }
 

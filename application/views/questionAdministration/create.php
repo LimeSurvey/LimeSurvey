@@ -46,7 +46,7 @@
                     name="question-overview-switch"
                     checked="checked"
                 />
-                <?= gt('Question overview'); ?>
+                <?= gT('Question overview'); ?>
             </label>
             <label id="questionEditorButton" class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
                 <input

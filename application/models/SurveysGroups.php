@@ -433,7 +433,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Group"),
-                'description' => gT("Permission to update this group name, description of this group. This include deletion of this group. Read permission is used for access to this group."),
+                'description' => gT("Permission to update name/description of this group or to delete this group. Read permission is used to give access to this group."),
                 'img' => ' fa fa-edit',
             ),
             'surveysettings' => array(
@@ -444,7 +444,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey settings"),
-                'description' => gT("Permission to update survey settings for this group."),
+                'description' => gT("Permission to update survey settings for this group"),
                 'img' => ' fa fa-edit',
             ),
             'permission' => array(

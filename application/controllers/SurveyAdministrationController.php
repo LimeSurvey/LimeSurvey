@@ -289,7 +289,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
+            Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -417,7 +417,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             $user = Yii::app()->user;
-            
+
             // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
             if ($user !== null) {
                 $userid = (int) $user->getId();
@@ -506,10 +506,10 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
                 $redirecturl = $this->createUrl(
-                   'questionGroupsAdministration/add/',
-                   ['surveyid' => $iNewSurveyid]
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
                 );
-           } else {
+            } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
@@ -2615,7 +2615,7 @@ class SurveyAdministrationController extends LSBaseController
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gT('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);
@@ -2644,8 +2644,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
+        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();

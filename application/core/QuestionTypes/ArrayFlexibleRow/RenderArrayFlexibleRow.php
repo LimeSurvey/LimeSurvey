@@ -232,7 +232,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     {
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
-            if ($this->repeatheadings > 0 && ($i - 1) > 0 && ($i - 1) % $this->repeatheadings == 0) {
+            if (($this->repeatheadings > 0) && ($i > 0) && ($i % $this->repeatheadings == 0)) {
                 if (($this->getQuestionCount() - $i + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
                     $aRows[] = [

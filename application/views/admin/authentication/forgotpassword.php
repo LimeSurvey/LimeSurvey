@@ -31,11 +31,11 @@
                                 <?php eT('To receive a new password by email you have to enter your user name and original email address.'); ?>
                             </div>
                             <span>
-                                <label for="user"><?php eT('User name'); ?></label>
+                                <label for="user"><?php eT('Username'); ?></label>
                                 <input name="user" id="user" type="text"  size="40" maxlength="64" class="form-control" value="" />
                             </span>
                             <span>
-                                <label for="email"><?php eT('Email'); ?>
+                                <label for="email"><?php eT('Email address'); ?>
 
                                 </label><input name="email" id="email" type="email"  size="40" maxlength="254" class="form-control" value="" />
                             </span>

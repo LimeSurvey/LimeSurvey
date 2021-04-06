@@ -5,9 +5,9 @@
     array('class'=>'setPermissionsForm', 'id'=> 'permissionsSave')
 ); ?>
     <h2 class="pagetitle h3"><?php if($type == 'user') {
-        printf(gT("Set permission for user : %s"),"<em>".CHtml::encode($oUser->users_name)."</em>");
+        printf(gT("Set permission for user: %s"),"<em>".CHtml::encode($oUser->users_name)."</em>");
     }else {
-        printf(gT("Set permission for user group : %s"),"<em>".CHtml::encode($oUserGroup->name)."</em>");
+        printf(gT("Set permission for user group: %s"),"<em>".CHtml::encode($oUserGroup->name)."</em>");
     } ?></h2>
     <?php $this->widget(
         'ext.UserPermissionsWidget.UserPermissionsWidget',

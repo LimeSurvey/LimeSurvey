@@ -655,7 +655,7 @@ class export extends Survey_Common_Action
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
-            $aData['subaction'] = gt('Export a VV survey file');
+            $aData['subaction'] = gT('Export a VV survey file');
 
             $aData['sidemenu']['state'] = false;
             
@@ -1187,8 +1187,8 @@ class export extends Survey_Common_Action
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
         $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $iSurveyID; // Close button
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['subaction'] = gt('queXML PDF export');
-        $aData['subaction'] = gt('queXML PDF export');
+        $aData['title_bar']['subaction'] = gT('queXML PDF export');
+        $aData['subaction'] = gT('queXML PDF export');
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
         array_unshift($aData['slangs'], $aData['baselang']);
