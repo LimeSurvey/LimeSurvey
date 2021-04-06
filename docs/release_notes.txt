@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.20 (build 210330) to 3.25.21 (build 210407) April 6, 2021
+-Fixed issue: Cannot change page in survey list (Carsten Schmitz)
+-Fixed issue #17219: Filter on numeric fields in response view does not work on Postgres (Carsten Schmitz)
+-Fixed issue #17208: avoid column name must be either a string or an array during survey taking (#1825) (Denis Chenu)
+-Fixed issue #16480: Empty/invalid brand/background logo causes loops on the welcome page (Carsten Schmitz)
+-Fixed issue #16414: Question editor is not loaded when config.xml attribute has empty string as default (#1829) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by myliserta, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by george01
+#Updated translation: German by mariomaurer, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by slansky, jelen1
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+
+
 Changes from 3.25.19 (build 210323) to 3.25.20 (build 210330) March 29, 2021
 -Fixed issue: Wrong port and TLS description in bounce email/smtp settings (#1807) (Vilius Šumskas)
 -Fixed issue: RemoteControl add_participants did not return anything (arnaudbore)
