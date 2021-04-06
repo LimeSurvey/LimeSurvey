@@ -678,6 +678,9 @@ $config['defaultfixedtheme'] = 'vanilla';
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
+// The public URL is the URL that is used for anything that is facing a survey participant.
+// It can be used to have a separation / distinction between a public URL for surveys and a private one for
+// the administration - for example for certain proxy configurations or internal/external domain separation
 if (!isset($argv[0]) && Yii::app() != null) {
     $config['publicurl'] = Yii::app()->baseUrl.'/'; // The public website location (url) of the public survey script
 } else {

@@ -995,9 +995,8 @@ class CheckIntegrity extends Survey_Common_Action
                     $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+                    $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
+                    $sDate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();

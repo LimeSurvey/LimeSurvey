@@ -23,7 +23,7 @@ spl_autoload_register(function ($class_name) {
 
 class TwoFactorAdminLogin extends AuthPluginBase
 {
-    protected static $description = 'Add a two-factor authentication to your admin login';
+    protected static $description = 'Add two-factor authentication to your admin login';
     protected static $name = 'TwoFactorAdminLogin';
 
     private $o2FA = null;
@@ -319,7 +319,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         if (!Permission::model()->hasGlobalPermission('users', 'update') && $iUserId !== Yii::app()->user->id) {
             return $this->renderPartial('_partial.error', [
-                'errors' => ["Keine Berechtigung für diese Aktion"]
+                'errors' => ["No permission"]
             ]);
         }
 
@@ -333,7 +333,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         $oTFAModel->uid = $iUserId;
         $oTFAModel->secretKey = $o2FA->createSecret();
-        $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User id: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
+        $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
             'model' => $oTFAModel,
@@ -354,7 +354,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $aTFAUserKey = Yii::app()->getRequest()->getPost('TFAUserKey', []);
         $uid = $aTFAUserKey['uid'];
         if (!(Permission::model()->hasGlobalPermission('users', 'update') || $uid == Yii::app()->user->id)) {
-            return $this->createJSONResponse(false, "No permission for this");
+            return $this->createJSONResponse(false, "No permission");
         }
 
         $o2FA = $this->get2FAObject();
@@ -376,7 +376,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
 
-        return $this->createJSONResponse(true, "2-Factor Method successfully stored", ['reload' => true]);
+        return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
     }
 
     /**

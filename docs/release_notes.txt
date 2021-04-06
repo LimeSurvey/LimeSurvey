@@ -34,6 +34,43 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.4.15 (build 210329) to 4.4.16 (build 210406) April 6, 2021
+-Fixed issue: Repeat headings count was off by one for first block of subqestions (Carsten Schmitz)
+-Fixed issue #17213: Admin backend: Color of selected options is confusing - Admin Theme Sunset Orange (Jessica Höck)
+-Fixed issue #17219: Filter on numeric fields in response view does not work on Postgres (Carsten Schmitz)
+-Fixed issue #17212: Confusing mandatory property for participant attribute fields (Carsten Schmitz)
+-Fixed issue #17211: list_participants returns by IDs by offset, not by ID as documentation says (Carsten Schmitz)
+-Fixed issue #17202: SPSS Export issues in version 4.4.13 #1827 (Gabriel Jenik)
+-Fixed issue #16621: In RemoteControl the parameter conditions and token for list_participants() do not allow multiple token IDs anymore (#1828) (Carsten Schmitz)
+-Fixed issue #16480: Empty/invalid brand/background logo causes loops on the welcome page (Carsten Schmitz)
+-Fixed issue #15768: After adding new admin users the user it not redirected to setting user rights afterwards (#1824) (Gabriel Jenik)
+-Fixed issue #15740: Update from 3.x.x to 4.0.0 fails if custom uploaddir is set (Carsten Schmitz)
+-Fixed issue #15051: When setting condition on Survey Participant Attributes the expression stored in DB is invalid (#1832) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by batpurev
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by joooo_ah, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by joooo_ah, c_schmitz
+#Updated translation: German (Informal) by eddylackmann, c_schmitz, joooo_ah, Joffm
+#Updated translation: German (Informal) by eddylackmann, c_schmitz, joooo_ah
+#Updated translation: German (Informal) by eddylackmann, c_schmitz
+#Updated translation: German (Informal) by c_schmitz, eddylackmann
+#Updated translation: German (Informal) by c_schmitz, Akaer, actxcellence, eddylackmann, joooo_ah
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Czech by slansky, jelen1
+#Updated translation: Czech by jelen1
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by peterx
+
+
 Changes from 4.4.14 (build 210322) to 4.4.15 (build 210329) March 29, 2021
 +New feature: Include 2FA Plugin in Core application (Eddy)
 -Fixed issue: Unable to upload heic or heiv files (and other) (#1421) (Carsten Schmitz)

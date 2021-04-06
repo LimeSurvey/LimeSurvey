@@ -289,7 +289,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
+            Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -417,7 +417,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             $user = Yii::app()->user;
-            
+
             // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
             if ($user !== null) {
                 $userid = (int) $user->getId();
@@ -506,10 +506,10 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
                 $redirecturl = $this->createUrl(
-                   'questionGroupsAdministration/add/',
-                   ['surveyid' => $iNewSurveyid]
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
                 );
-           } else {
+            } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
@@ -2281,13 +2281,11 @@ class SurveyAdministrationController extends LSBaseController
         $aResults = array();
         $expires = App()->request->getPost('expires');
         $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
-        Yii::import('application.libraries.Date_Time_Converter', true);
         if (trim($expires) == "") {
             $expires = null;
         } else {
-            //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'] . ' H:i');
-            $expires = $datetimeobj->convert("Y-m-d H:i:s");
+            $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $expires);
+            $expires = $datetimeobj->format("Y-m-d H:i:s");
         }
 
         foreach ($aSIDs as $sid) {
@@ -2730,19 +2728,15 @@ class SurveyAdministrationController extends LSBaseController
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($oSurvey->startdate) != '') {
-            Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
-            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->startdate);
+            $aData['startdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
         }
 
         if (trim($oSurvey->expires) != '') {
-            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
-            Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
-            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->expires);
+            $aData['expdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
         }
