@@ -938,11 +938,14 @@ class themes extends Survey_Common_Action
                 break;
         }
 
+        $sFileDisplayName = ltrim(str_replace(Yii::app()->getConfig('rootdir'), '', $editfile), DIRECTORY_SEPARATOR);
+
         $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
         $aData['oEditedTemplate'] = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+        $aData['filedisplayname'] = $sFileDisplayName;
         $aData['relativePathEditfile'] = $relativePathEditfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
