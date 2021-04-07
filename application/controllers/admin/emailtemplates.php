@@ -63,10 +63,21 @@ class emailtemplates extends Survey_Common_Action
         } else {
             $sEscapeMode = 'unescaped';
         }
+        $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         foreach ($grplangs as $key => $grouplang) {
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
+            $attachments = unserialize($aData['attrib'][$key]['attachments']);
+            if (is_array($attachments)) {
+                foreach ($attachments as &$template) {
+                    foreach ($template as &$attachment) {
+                        if (substr($attachment['url'], 0, strlen($uploadDir)) == $uploadDir) {
+                            $attachment['url'] = str_replace('\\', '/', substr($attachment['url'], strlen($uploadDir)));
+                        }
+                    }
+                }
+            }
+            $aData['attrib'][$key]['attachments'] = $attachments;
             $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key], $sEscapeMode);
         }
 
@@ -123,7 +134,7 @@ class emailtemplates extends Survey_Common_Action
                     foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
                         foreach ($attachments as  $index => &$attachment) {
                             // We again take the real path.
-                            $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
+                            $localName = realpath(urldecode($uploadDir . str_replace($uploadUrl, '', $attachment['url'])));
                             if ($localName !== false) {
                                 if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;
