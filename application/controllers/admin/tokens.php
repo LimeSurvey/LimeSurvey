@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 /**
 * Tokens Controller
 *
@@ -1368,7 +1370,7 @@ class tokens extends Survey_Common_Action
                                 // Add the error when try to save token
                                 $tokenSaveError = CHtml::errorSummary(
                                     $oToken,
-                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error happen when save this survey participant email sent date (id:%s)"), $emrow['tid']))
+                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occured when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
                                 );
                             }
                             // Mark token email as send this session.
@@ -1867,12 +1869,13 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
+            $uploadHelper = new UploadHelper();
+            $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
+
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            } elseif (strtolower($oFile->getExtensionName()) != 'csv') {
+            if (strtolower($oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
             } elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');

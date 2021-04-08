@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\FilterImportedResources;
+use LimeSurvey\Models\Services\UploadHelper;
 
 class SurveyAdministrationController extends LSBaseController
 {
@@ -289,7 +290,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
+            Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -417,7 +418,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             $user = Yii::app()->user;
-            
+
             // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
             if ($user !== null) {
                 $userid = (int) $user->getId();
@@ -506,10 +507,10 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
                 $redirecturl = $this->createUrl(
-                   'questionGroupsAdministration/add/',
-                   ['surveyid' => $iNewSurveyid]
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
                 );
-           } else {
+            } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
@@ -1289,27 +1290,13 @@ class SurveyAdministrationController extends LSBaseController
             );
         }
         $debug[] = $_FILES;
-        if (empty($_FILES)) {
-            $uploadresult = gT("No file was uploaded.");
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
-            );
-        }
-        if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-            $uploadresult = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            );
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
-            );
-        }
+
+        // Check file size and render JSON on error.
+        // This is done before checking the survey permissions because, if the max POST size was exceeded,
+        // there is no Survey ID to check for permissions, so the error could be misleading.
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
+
         $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImage['check'] === false) {
             return $this->renderPartial(
@@ -2615,7 +2602,7 @@ class SurveyAdministrationController extends LSBaseController
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gT('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);
@@ -2644,8 +2631,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
+        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();

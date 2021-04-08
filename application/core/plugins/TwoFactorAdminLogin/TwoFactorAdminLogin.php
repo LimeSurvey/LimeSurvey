@@ -23,7 +23,7 @@ spl_autoload_register(function ($class_name) {
 
 class TwoFactorAdminLogin extends AuthPluginBase
 {
-    protected static $description = 'Add a two-factor authentication to your admin login';
+    protected static $description = 'Add two-factor authentication to your admin login';
     protected static $name = 'TwoFactorAdminLogin';
 
     private $o2FA = null;
@@ -162,7 +162,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $oEvent = $this->getEvent();
         $extraLine = ""
             . "<span>"
-            . "<label for='twofactor'>"  . gT("AuthKey (optional)") . "</label>
+            . "<label for='twofactor'>"  . gT("2FA key (optional)") . "</label>
             <input class='form-control' name='twofactor' id='twofactor' type='text' size='" . $this->get('digits', null, null, 6) . "' maxlength='" . $this->get('digits', null, null, 6) . "' value='' />"
             . "</span>";
 
@@ -319,7 +319,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         if (!Permission::model()->hasGlobalPermission('users', 'update') && $iUserId !== Yii::app()->user->id) {
             return $this->renderPartial('_partial.error', [
-                'errors' => ["Keine Berechtigung für diese Aktion"]
+                'errors' => ["No permission"]
             ]);
         }
 
@@ -333,7 +333,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         $oTFAModel->uid = $iUserId;
         $oTFAModel->secretKey = $o2FA->createSecret();
-        $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User id: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
+        $sQRCodeContent = '<img src="' . $o2FA->getQRCodeImageAsDataUri('LimeSurvey - User ID: ' . Yii::app()->user->id, $oTFAModel->secretKey) . '">';
 
         return $this->renderPartial('_partial/create', [
             'model' => $oTFAModel,
@@ -354,29 +354,29 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $aTFAUserKey = Yii::app()->getRequest()->getPost('TFAUserKey', []);
         $uid = $aTFAUserKey['uid'];
         if (!(Permission::model()->hasGlobalPermission('users', 'update') || $uid == Yii::app()->user->id)) {
-            return $this->createJSONResponse(false, "No permission for this");
+            return $this->createJSONResponse(false, "No permission");
         }
 
         $o2FA = $this->get2FAObject();
 
         $sConfirmationKey = Yii::app()->getRequest()->getPost('confirmationKey', '');
         if ($sConfirmationKey == '') {
-            return $this->createJSONResponse(false, "Please put in a confirmation key");
+            return $this->createJSONResponse(false, gT("Please enter a confirmation key"));
         }
 
         $result = $o2FA->verifyCode($aTFAUserKey['secretKey'], $sConfirmationKey);
         if (!$result) {
-            return $this->createJSONResponse(false, "The confirmation key is not correct.");
+            return $this->createJSONResponse(false, gT("The confirmation key is not correct."));
         }
 
         $oTFAModel = new TFAUserKey();
         $oTFAModel->setAttributes($aTFAUserKey, false);
         $oTFAModel->firstLogin = 0;
         if (!$oTFAModel->save()) {
-            return $this->createJSONResponse(false, "The 2-FActor authentication could not be stored.");
+            return $this->createJSONResponse(false, gT("The two-factor authentication key could not be stored."));
         }
 
-        return $this->createJSONResponse(true, "2-Factor Method successfully stored", ['reload' => true]);
+        return $this->createJSONResponse(true, "Two-factor method successfully stored", ['reload' => true]);
     }
 
     /**
@@ -392,11 +392,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $uid = $oRequest->getPost('uid', null);
 
         if (!Permission::model()->hasGlobalPermission('users', 'update') && $uid !== Yii::app()->user->id) {
-            return $this->createJSONResponse(false, gT('You have no permission for this action'));
+            return $this->createJSONResponse(false, gT('No permission'));
         }
         $oTFAModel =  TFAUserKey::model()->findByPk($uid);
         $success = $oTFAModel->delete();
-        return $this->createJSONResponse($success, ($success ? 'Successfully deleted' : 'Deleting failed'));
+        return $this->createJSONResponse($success, ($success ? gT('Successfully deleted') : gT('Deletion failed')));
     }
 
     /**
@@ -412,11 +412,11 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $uid = (int) $iUserId;
         $oTFAModel =  TFAUserKey::model()->findByPk($uid);
         if ($oTFAModel == null) {
-            echo "No 2FA key set for user " . $iUserId;
+            printf(gT("No 2FA key set for user ID %s"), $iUserId);
             return;
         }
         $success = $oTFAModel->delete();
-        echo ($success ? 'Successfully deleted' : 'Deleting failed');
+        echo ($success ? gT('Successfully deleted') : gT('Deletion failed'));
     }
 
     /**

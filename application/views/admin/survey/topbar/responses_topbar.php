@@ -131,7 +131,7 @@ if ($hasResponsesCreatePermission) {
     $buttonsGroup['import'] = [
         'class' => 'btn-group',
         'main_button' => [
-            'name' => gt('Import'),
+            'name' => gT('Import'),
             'datatoggle' => 'dropdown',
             'ariahaspopup' => true,
             'ariaexpanded' => false,
