@@ -3803,7 +3803,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     ) x
                 )";
             $oDB->createCommand($deleteQuery)->execute();
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
             $oTransaction->commit();
         }        
     } catch (Exception $e) {
