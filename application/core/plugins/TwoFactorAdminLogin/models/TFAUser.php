@@ -62,13 +62,13 @@ class TFAUser extends User
         return ''
         .'<button '
             .'class="btn btn-icon btn-danger btn-sm TFA--management--action-deleteToken" '
-            .'title="'.gT("Delete 2FA-token").'" '
+            .'title="'.gT("Delete 2FA key").'" '
             .'data-toggle="tooltip" '
-            .'data-confirmtext="'.gT('Are you sure to delete this 2FA-token?').'" '
-            .'data-buttons="{confirm_cancel: \''.gT('No, cancel').'\', confirm_ok: \''.gT('Yes, i am sure').'\'}" '
+            .'data-confirmtext="'.gT('Are you sure you want to delete this 2FA key?').'" '
+            .'data-buttons="{confirm_cancel: \''.gT('No, cancel').'\', confirm_ok: \''.gT('Yes, I am sure').'\'}" '
             .'data-href="'.Yii::app()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey").'" '
             .'data-uid="'.$this->uid.'" '
-            .'data-errortext="'.gT('An error has happened, and the token could not be deleted.').'" '
+            .'data-errortext="'.gT('An error has happened, and the key could not be deleted.').'" '
         .'>'
             .'<i class="fa fa-trash"></i>'
         .'</button>&nbsp;'
@@ -125,20 +125,20 @@ class TFAUser extends User
                  "header" => gT("Email"),
              ),
              array(
-                 "name" => 'userkeys.authType',
-                 "header" => gT("2FA-Method"),
-                 "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge([''=>''], TFAUserKey::$authTypeOptions)),
-             ),
-             array(
                  "name" => 'hasAuthSet',
                  "header" => gT("2FA enabled"),
                  "filter" => TbHtml::dropDownList('userkeys_secretKey', Yii::app()->request->getParam('userkeys_secretKey'), [
                      '' => '',
-                     '0' => gT('Has 2FA disabled'),
-                     '1' => gT('Has 2FA enabled'),
+                     '1' => gT('Yes'),
+                     '0' => gT('No'),
                     ]),
              ),
-         );
+             array(
+                "name" => 'userkeys.authType',
+                "header" => gT("2FA method"),
+                "filter" => TbHtml::dropDownList('userkeys_authType', Yii::app()->request->getParam('userkeys_authType'), array_merge([''=>''], TFAUserKey::$authTypeOptions)),
+            ),
+        );
         return $cols;
     }
  

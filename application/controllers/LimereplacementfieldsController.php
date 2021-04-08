@@ -314,8 +314,8 @@ class LimeReplacementFieldsController extends LSBaseController
         ) {
             // these 2 fields are supported by email-inv and email-rem
             // but not email-reg for the moment
-            $replFields['EMAIL'] = gT("Participant Email address");
-            $replFields['TOKEN'] = gT("Participant Access code");
+            $replFields['EMAIL'] = gT("Participant - Email address");
+            $replFields['TOKEN'] = gT("Participant - Access code");
             $replFields['OPTOUTURL'] = gT("Participant - Opt-out URL");
             $replFields['OPTINURL'] = gT("Participant - Opt-in URL");
             $replFields['FIRSTNAME'] = gT("Participant - First name");

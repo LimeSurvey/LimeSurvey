@@ -597,13 +597,16 @@ class CheckIntegrity extends Survey_Common_Action
                             // QID field can be more than just QID, like: 886other or 886A1
                             // So we clean it by finding the first alphabetical character
                             $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
                             if (isset($match[0][1])) {
                                 $sQID      =  substr($sDirtyQid, 0, $match[0][1]);
                             } else {
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
+                            }
+                            if ((string) intval($sQID) !== $sQID) {
+                                throw new \Exception('sQID is not an integer: ' . $sQID);
                             }
 
                             // Here, we get the question as defined in backend
@@ -992,9 +995,8 @@ class CheckIntegrity extends Survey_Common_Action
                     $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+                    $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
+                    $sDate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();

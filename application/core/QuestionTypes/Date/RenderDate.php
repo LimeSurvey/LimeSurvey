@@ -314,7 +314,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         $coreClass .= " dropdown-item"; // items ?
         if (!empty($this->mSessionValue) && ($this->mSessionValue != 'INVALID')) {
-            $datetimeobj   = new Date_Time_Converter($this->mSessionValue, "Y-m-d H:i:s");
+            $datetimeobj   = DateTime::createFromFormat("Y-m-d H:i:s", $this->mSessionValue);
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
             $currentday   = $datetimeobj->days;

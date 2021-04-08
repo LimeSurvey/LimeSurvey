@@ -244,6 +244,7 @@ class LSActiveRecord extends CActiveRecord
      * @param int $iSurveyId
      * @param string $sClassName
      * @return array
+     * TODO: Should be split into seperate functions in the appropiate model or helper class
      */
     public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName)
     {
@@ -357,7 +358,7 @@ class LSActiveRecord extends CActiveRecord
 
     /**
      * Enrypt single value
-     * @param string $value String value which needs to be decrypted
+     * @param string $value String value which needs to be encrypted
      */
     public static function encryptSingle($value = '')
     {

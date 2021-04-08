@@ -128,17 +128,19 @@ class TbApi extends CApplicationComponent
      * Registers jQuery and Bootstrap JavaScript.
      * @param string $url the URL to the JavaScript file to register.
      * @param int $position the position of the JavaScript code.
+     * 20210322: GJ - Commenting the whole method implementation. JS and CSS are not needed 
+     * and by commenting them, we don't need to mantain them.
      */
     public function registerCoreScripts($url = null, $position = CClientScript::POS_END)
     {
-        if ($url === null) {
+        /*if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
             $url = $this->getBootstrapUrl() . '/js/' . $fileName;
-        }
+        }*/
         /** @var CClientScript $cs */
-        $cs = Yii::app()->getClientScript();
+        /*$cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');
-        $cs->registerScriptFile($url, $position);
+        $cs->registerScriptFile($url, $position);*/
     }
 
     /**

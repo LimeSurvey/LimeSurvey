@@ -242,7 +242,7 @@ class LS_Twig_Extension extends Twig_Extension
             'captchaAction' => 'captcha',
             'buttonOptions' => array('class' => 'btn btn-xs btn-info'),
             'buttonType' => 'button',
-            'buttonLabel' => gt('Reload image', 'unescaped')
+            'buttonLabel' => gT('Reload image', 'unescaped')
         ));
     }
 

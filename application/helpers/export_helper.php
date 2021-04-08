@@ -418,11 +418,11 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
             if ($oQuestion->other == 'Y') {
                 $spsstype = 'A';
                 $size = 6;
+                $answers['needsAlterType'] = true;
             }
         }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
-        $answers['needsAlterType'] = true;
         return $answers;
     } else {
         /* Not managed (currently): url, IP, ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ */
@@ -2318,19 +2318,18 @@ function tokensExport($iSurveyID)
     $tokenoutput = "";
 
     // Export token line by line and fill $aExportedTokens with token exported
-    Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
     foreach ($bresultAll as $brow) {
         if (Yii::app()->request->getPost('maskequations')) {
             $brow = array_map('MaskFormula', $brow);
         }
         if (trim($brow['validfrom'] != '')) {
-            $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
-            $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
+            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $brow['validfrom']);
+            $brow['validfrom'] = $datetimeobj->format('Y-m-d H:i');
         }
         if (trim($brow['validuntil'] != '')) {
-            $datetimeobj = new Date_Time_Converter($brow['validuntil'], "Y-m-d H:i:s");
-            $brow['validuntil'] = $datetimeobj->convert('Y-m-d H:i');
+            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $brow['validuntil']);
+            $brow['validuntil'] = $datetimeobj->format('Y-m-d H:i');
         }
 
         $tokenoutput .= '"' . trim($brow['tid']) . '",';

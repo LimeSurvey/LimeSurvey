@@ -1036,7 +1036,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['surveybar']['closebutton']['url'] = '/questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyID; // Close button
         $aData['surveybar']['savebutton']['form'] = true;
-        $aData['surveybar']['savebutton']['text'] = gt('Import');
+        $aData['surveybar']['savebutton']['text'] = gT('Import');
         $aData['sid'] = $iSurveyID;
         $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
         $aData['gid'] = $groupid;
@@ -2541,14 +2541,14 @@ class QuestionAdministrationController extends LSBaseController
                     $attributeValue
                 )
             ) {
-                throw new CHttpException(500, gT("Could not store general options"));
+                throw new CHttpException(500, gT("Could not save question attributes"));
             }
         }
 
         if (!$oQuestion->save()) {
             throw new CHttpException(
                 500,
-                gT("Could not store question after general options") . PHP_EOL
+                gT("Could not save question") . PHP_EOL
                 . print_r($oQuestion->getErrors(), true)
             );
         }

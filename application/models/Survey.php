@@ -1083,13 +1083,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
-            // Time comparaison
+            // Time comparison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
+            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
@@ -1805,6 +1805,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
+     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
      * @return double
      */
@@ -1844,6 +1845,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Fix invalid question in this survey
+     * Delete question that don't exist in primary language
      */
     public function fixInvalidQuestions()
     {
@@ -1998,7 +2000,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
-
 
     /**
      * Returns true if this survey has any question of type $type.

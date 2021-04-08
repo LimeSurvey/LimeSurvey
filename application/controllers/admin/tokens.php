@@ -304,7 +304,6 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
-        Yii::import('application.libraries.Date_Time_Converter', true);
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $limit = (int) $limit;
@@ -523,27 +522,26 @@ class tokens extends Survey_Common_Action
         $subAction = $request->getPost('subaction');
         if ($subAction == 'inserttoken') {
             // TODO: This part could be refactored into function like "insertToken()"
-            Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
             if (trim($request->getPost('validfrom')) == '') {
                 $validfrom = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validfrom')),
-                    $dateformatdetails['phpdate'] . ' H:i'
+                $datetimeobj = DateTime::createFromFormat(
+                    $dateformatdetails['phpdate'] . ' H:i',
+                    trim($request->getPost('validfrom'))
                 );
-                $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
+                $validfrom = $datetimeobj->format('Y-m-d H:i:s');
             }
 
             if (trim(App()->request->getPost('validuntil')) == '') {
                 $validuntil = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(
-                    trim($request->getPost('validuntil')),
-                    $dateformatdetails['phpdate'] . ' H:i'
+                $datetimeobj = DateTime::createFromFormat(
+                    $dateformatdetails['phpdate'] . ' H:i',
+                    trim($request->getPost('validuntil'))
                 );
-                $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
+                $validuntil = $datetimeobj->format('Y-m-d H:i:s');
             }
             /** @var string : used to find if token already exist */
             $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
@@ -649,47 +647,46 @@ class tokens extends Survey_Common_Action
 
         if ($request->getPost('subaction')) {
             Yii::import('application.helpers.admin.ajax_helper', true);
-            Yii::import('application.libraries.Date_Time_Converter', true);
             $aTokenData = [];
             
             // validfrom
             if (trim($request->getPost('validfrom')) == '') {
                 $_POST['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('validfrom')));
+                $_POST['validfrom'] = $datetimeobj->format('Y-m-d H:i:s');
             }
 
             // validuntil
             if (trim($request->getPost('validuntil')) == '') {
                 $_POST['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('validuntil')));
+                $_POST['validuntil'] = $datetimeobj->format('Y-m-d H:i:s');
             }
 
             // completed
             if (trim($request->getPost('completed')) == 'N') {
                 $_POST['completed'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('completed')));
+                $_POST['completed'] = $datetimeobj->format('Y-m-d H:i');
             }
 
             //sent
             if (trim($request->getPost('sent')) == 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('sent')));
+                $_POST['sent'] = $datetimeobj->format('Y-m-d H:i');
             }
 
             // remindersent
             if (trim($request->getPost('remindersent')) == 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent')), $dateformatdetails['phpdate'] . ' H:i');
-                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('remindersent')));
+                $_POST['remindersent'] = $datetimeobj->format('Y-m-d H:i');
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
@@ -814,21 +811,20 @@ class tokens extends Survey_Common_Action
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
-            $this->getController()->loadLibrary('Date_Time_Converter');
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
             if (trim(Yii::app()->request->getPost('validfrom')) == '') {
                 $aData['validfrom'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
-                $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim(Yii::app()->request->getPost('validfrom')));
+                $aData['validfrom'] = $datetimeobj->format('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '') {
                 $aData['validuntil'] = null;
             } else {
-                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
-                $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim(Yii::app()->request->getPost('validuntil')));
+                $aData['validuntil'] = $datetimeobj->format('Y-m-d H:i:s');
             }
 
             $aData['firstname'] = App()->request->getPost('firstname');
@@ -1372,7 +1368,7 @@ class tokens extends Survey_Common_Action
                                 // Add the error when try to save token
                                 $tokenSaveError = CHtml::errorSummary(
                                     $oToken,
-                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error happen when save this survey participant email sent date (id:%s)"), $emrow['tid']))
+                                    CHtml::tag("div", array('class' => 'text-warning'), sprintf(gT("An error occured when saving the sent date for this participant (ID: %s)."), $emrow['tid']))
                                 );
                             }
                             // Mark token email as send this session.

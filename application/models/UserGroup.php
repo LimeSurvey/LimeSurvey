@@ -66,8 +66,8 @@ class UserGroup extends LSActiveRecord
                 'length',
                 'min' => 1,
                 'max' => 20,
-                'tooShort' => gt("Name can not be empty."),
-                'tooLong' => gt('Failed to add group! Group name length more than 20 characters.')),
+                'tooShort' => gT("Name can not be empty."),
+                'tooLong' => gT('Failed to add group! Group name length more than 20 characters.')),
         );
     }
 
@@ -506,13 +506,13 @@ class UserGroup extends LSActiveRecord
             $cnt++;
         }
 
-        $msgToUser = gt('Sending emails to users(sucess/errors):') . "<br>";
+        $msgToUser = gT('Sending emails to users(sucess/errors):') . "<br>";
         foreach ($sendEmailSuccessErrors as $emaiLResult) {
             $msgToUser .= $emaiLResult['username'] . ': ';
             if ($emaiLResult['success']) {
-                $msgToUser .= gt('Sending successful') . "<br>";
+                $msgToUser .= gT('Sending successful') . "<br>";
             } else {
-                $msgToUser .= gt('Error: ') . $emaiLResult['msg'] . "<br>";
+                $msgToUser .= gT('Error: ') . $emaiLResult['msg'] . "<br>";
             }
         }
 

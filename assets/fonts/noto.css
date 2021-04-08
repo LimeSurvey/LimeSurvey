@@ -15,14 +15,14 @@
 
 @font-face {
   font-family: 'Noto Sans';
-  font-weight: 300;
+  font-weight: 400;
   font-style: italic;
   src: url('./font-src/Noto/NotoSans-Italic.ttf');
 }
 
 @font-face {
   font-family: 'Noto Sans';
-  font-weight: 400;
+  font-weight: 700;
   font-style: italic;
   src: url('./font-src/Noto/NotoSans-BoldItalic.ttf');
 }
