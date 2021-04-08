@@ -421,7 +421,7 @@ class LSActiveRecord extends CActiveRecord
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
-            $LEM =& LimeExpressionManager::singleton();
+            $LEM = LimeExpressionManager::singleton();
             $updatedValues = $LEM->getUpdatedValues();
             foreach ($attributes as $key => $attribute) {
                 if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
