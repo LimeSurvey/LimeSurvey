@@ -1048,7 +1048,8 @@ class QuestionTheme extends LSActiveRecord
             }
         }
 
-        $additionalAttributes = QuestionAttribute::getSanitizedQuestionAttributes($additionalAttributes);
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $additionalAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($additionalAttributes);
 
         return $additionalAttributes;
     }

@@ -2292,28 +2292,13 @@ class QuestionAdministrationController extends LSBaseController
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
 
         // Group the array in categories
-        $advancedSettings = self::groupAttributesByCategory($advancedSettings);
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $advancedSettings = $questionAttributeHelper->groupAttributesByCategory($advancedSettings);
 
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
 
         return $advancedSettings;
-    }
-
-    /**
-     * Receives an array of question attributes and groups them by category.
-     * Used by advanced settings widget.
-     *
-     * @param array $aAttributes
-     * @return array Grouped question attributes, with category as array key
-     */
-    private static function groupAttributesByCategory($aAttributes)
-    {
-        $aByCategory = [];
-        foreach ($aAttributes as $aAttribute) {
-            $aByCategory[$aAttribute['category']][] = $aAttribute;
-        }
-        return $aByCategory;
     }
 
     /**

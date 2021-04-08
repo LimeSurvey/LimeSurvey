@@ -306,13 +306,14 @@ class Question extends LSActiveRecord
         $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $this->type);
 
         // Merge the attributes with the question theme ones
-        $aAttributes = QuestionAttribute::getMergedQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
 
         uasort($aAttributes, 'categorySort');
 
         // Fill attributes with values
         $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
-        $aAttributes = QuestionAttribute::fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
+        $aAttributes = $questionAttributeHelper->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
 
         return $aAttributes;
     }
@@ -327,7 +328,7 @@ class Question extends LSActiveRecord
      * @return mixed  returns the incoming parameter $aAttributeNames or
      *
      * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
-     *             QuestionAttribute::getMergedQuestionAttributes() to merge with base attributes.
+     *             QuestionAttributeHelper->mergeQuestionAttributes() to merge with base attributes.
      */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
