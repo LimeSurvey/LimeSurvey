@@ -309,6 +309,10 @@ class Question extends LSActiveRecord
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
         $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
 
+        // Get question attributes from plugins ('newQuestionAttributes' event)
+        $aPluginAttributes = $questionAttributeHelper->getAttributesFromPlugin($this->type);
+        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
+
         uasort($aAttributes, 'categorySort');
 
         // Fill attributes with values

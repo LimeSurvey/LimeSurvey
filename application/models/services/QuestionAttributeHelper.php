@@ -19,14 +19,10 @@ class QuestionAttributeHelper
     {
         $aAttributes = $aBaseAttributes;
         foreach ($aExtendedAttributes as $key => $attribute) {
-            // TODO: move to sanitizeQuestionAttributes()
-            // Determine the attribute name or continue with the next
+            // Omit the attribute if it has no name.
+            // This shouldn't happen if sanitizeQuestionAttributes() is used.
             if (!isset($attribute['name'])) {
-                if (!is_numeric($key)) {
-                    $attribute['name'] = $key;
-                } else {
-                    continue;
-                }
+                continue;
             }
 
             $sAttributeName = $attribute['name'];
@@ -48,7 +44,9 @@ class QuestionAttributeHelper
 
     /**
      * Sanitizes an array of question attributes.
-     * Currently just replaces empty arrays (generally resulting from empty xml nodes) with null.
+     * Current tasks:
+     *  - makes sure that attributes have a name (removes them if name cannot be determined)
+     *  - replaces empty arrays (generally resulting from empty xml nodes) with null.
      *
      * @param array $aAttributes the array of attributes to sanitize
      *
@@ -56,8 +54,19 @@ class QuestionAttributeHelper
      */
     public function sanitizeQuestionAttributes($aAttributes)
     {
-        // Replace empty arrays with null
-        foreach ($aAttributes as &$aAttribute) {
+        foreach ($aAttributes as $key => &$aAttribute) {
+            // Make sure the attribute has a name. If it doesn't try to use the array key as name,
+            // or remove the attribute if the key is numeric.
+            if (!isset($aAttribute['name'])) {
+                if (!is_numeric($key)) {
+                    $aAttribute['name'] = $key;
+                } else {
+                    unset($aAttributes[$key]);
+                    continue;
+                }
+            }
+
+            // Replace empty arrays with null
             foreach ($aAttribute as $propertyName => $propertyValue) {
                 if ($propertyValue === []) {
                     $aAttribute[$propertyName] = null;
@@ -125,5 +134,37 @@ class QuestionAttributeHelper
             $aByCategory[$aAttribute['category']][] = $aAttribute;
         }
         return $aByCategory;
+    }
+
+    /**
+     * Returns the question attributes added by plugins ('newQuestionAttributes' event) for
+     * the specified question type.
+     *
+     * @param string $sQuestionType     the question type to retrieve the attributes for.
+     *
+     * @return array    the question attributes added by plugins
+     */
+    public function getAttributesFromPlugin($sQuestionType)
+    {
+        $aAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
+        if (empty($aAttributes)) {
+            return [];
+        }
+
+        /* Filter to get this question type setting */
+        $aQuestionTypeAttributes = array_filter($aAttributes, function ($attribute) use ($sQuestionType) {
+            return stripos($attribute['types'], $sQuestionType) !== false;
+        });
+
+        // Complete category if missing
+        foreach ($aQuestionTypeAttributes as &$aAttribute) {
+            if (!isset($aAttribute['category'])) {
+                $aAttribute['category'] = gT("Plugins");
+            }
+        }
+
+        $aQuestionTypeAttributes = $this->sanitizeQuestionAttributes($aQuestionTypeAttributes);
+
+        return $aQuestionTypeAttributes;
     }
 }
