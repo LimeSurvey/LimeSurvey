@@ -397,7 +397,6 @@ class SurveyRuntimeHelper
             $gid              = $gl['gid'];
             LimeExpressionManager::updateReplacementFields(array(
                 'GID' => $gid,
-                'GROUPNAME' => $gl['group_name'],
             ));
             $aGroup           = array();
             if ($this->sSurveyMode != 'survey') {
@@ -418,6 +417,9 @@ class SurveyRuntimeHelper
             }
 
             $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
+            LimeExpressionManager::updateReplacementFields(array(
+                'GROUPNAME' => $gl['group_name'],
+            ));
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
