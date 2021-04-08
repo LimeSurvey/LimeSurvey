@@ -45,6 +45,13 @@ const SaveController = () => {
             });
             LS.EventBus.$emit('loadingFinished');
         },
+    bindInvalidFormHandler = ($form) => {
+        var $submittableElements = $form.find('button, input, select, textarea');
+        $submittableElements.off('invalid.save').on('invalid.save', function() {
+            stopDisplayLoadingState();
+            $submittableElements.off('invalid.save');
+        });
+    },
     //###########PRIVATE
     checks = () => {
         return {
@@ -78,6 +85,17 @@ const SaveController = () => {
                             CKEDITOR.instances[instanceName].updateElement();
                         }
                     } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
+
+                    // If the form has the 'data-trigger-validation' attribute set, trigger the standard form
+                    // validation and quit if it fails.
+                    if ($form.attr('data-trigger-validation')) {
+                        if (!$form[0].reportValidity()) {
+                            return;
+                        }
+                    }
+
+                    // Attach handler to detect validation errors on the form and re-enable the button
+                    bindInvalidFormHandler($form);
 
                     displayLoadingState(this);
                     $form.find('[type="submit"]').first().trigger('click');

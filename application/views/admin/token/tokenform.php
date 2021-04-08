@@ -26,7 +26,7 @@ foreach ($tokendata as $Key => $Value) {
 
 <div class="row">
   <div class="col-md-12 content-right">
-    <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'')); ?>
+    <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'', 'data-trigger-validation'=>true)); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>
         <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
