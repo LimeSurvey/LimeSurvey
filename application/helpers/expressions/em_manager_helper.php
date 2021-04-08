@@ -6234,7 +6234,14 @@ class LimeExpressionManager
                     }
                     // what about optional vs. mandatory comment and 'other' fields?
                     break;
-                    
+                case Question::QT_O_LIST_WITH_COMMENT:
+                    foreach ($unansweredSQs as $sq) {
+                        if (!preg_match("/comment$/", $sq)) {
+                            $anyUnanswered = true;
+                            break;
+                        }
+                    }
+                    break;
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                     $anyUnanswered = false;
                     $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
