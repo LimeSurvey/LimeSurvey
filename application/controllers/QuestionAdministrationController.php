@@ -1,5 +1,7 @@
 <?php
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 class QuestionAdministrationController extends LSBaseController
 {
 
@@ -1070,16 +1072,20 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
+        try {
+            $uploadHelper = new UploadHelper();
+            $uploadHelper->checkUploadedFileSize('the_file');
+        } catch (Exception $ex) {
+            App()->setFlashMessage($ex->getMessage(), 'error');
+            $this->redirect('importView/surveyid/' . $iSurveyID);
+            return;
+        }
+
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
         $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         $fatalerror = '';
 
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            $fatalerror = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            ) . '<br>';
-        } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+        if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
             $fatalerror = gT(
                 "An error occurred uploading your file."
                     . " This may be caused by incorrect permissions for the application /tmp folder."
@@ -1096,7 +1102,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if ($fatalerror != '') {
-            unlink($sFullFilepath);
+            if (file_exists($sFullFilepath)) {
+                unlink($sFullFilepath);
+            }
             App()->setFlashMessage($fatalerror, 'error');
             $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
             return;

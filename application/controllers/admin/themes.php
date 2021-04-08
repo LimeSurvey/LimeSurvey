@@ -12,6 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 /**
 * templates
 *
@@ -221,8 +223,9 @@ class themes extends Survey_Common_Action
 
         $debug[] = $_FILES;
 
-        // Redirect back at file size error.
-        $this->checkFileSizeError('file');
+        // Check file size and render JSON on error
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImageContent['check'] === false) {
@@ -283,7 +286,8 @@ class themes extends Survey_Common_Action
         $this->checkDemoMode();
 
         // Redirect back at file size error.
-        $this->checkFileSizeError();
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
 
         $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
 
@@ -447,6 +451,20 @@ class themes extends Survey_Common_Action
             $templatename           = returnGlobal('templatename');
             $oEditedTemplate        = Template::getInstance($templatename);
             $screenname             = returnGlobal('screenname');
+
+            // Check file size and redirect on error
+            $uploadHelper = new UploadHelper();
+            $uploadHelper->checkUploadedFileSizeAndRedirect(
+                'upload_file', 
+                array(
+                    'admin/themes',
+                    'sa' => 'view',
+                    'editfile' => $editfile,
+                    'screenname' => $screenname,
+                    'templatename' => $templatename
+                )
+            );
+
             $allowedthemeuploads    = Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
@@ -1304,24 +1322,6 @@ class themes extends Survey_Common_Action
     {
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
-        }
-    }
-
-    /**
-     * Redirect if file size is too big.
-     * @return void
-     */
-    protected function checkFileSizeError($uploadName = 'the_file')
-    {
-        if ($_FILES[$uploadName]['error'] == 1 || $_FILES[$uploadName]['error'] == 2) {
-            Yii::app()->setFlashMessage(
-                sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                ),
-                'error'
-            );
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
     }
