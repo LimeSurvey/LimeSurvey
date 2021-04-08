@@ -244,6 +244,7 @@ class LSActiveRecord extends CActiveRecord
      * @param string $sClassName
      * @return array
      * TODO: Should be split into seperate functions in the appropiate model or helper class
+     * TODO: Make an interface for records that support encryption.
      */
     public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName)
     {
