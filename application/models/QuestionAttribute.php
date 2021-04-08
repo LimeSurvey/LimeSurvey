@@ -266,6 +266,8 @@ class QuestionAttribute extends LSActiveRecord
     {
         $aQuestionAttributes = array();
         foreach ($aAttributeNames as $aAttribute) {
+            // Initializes expression. This is overwritten if no i18n definition found.
+            // Is that expected?
             $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
             // convert empty array to empty string
@@ -340,8 +342,10 @@ class QuestionAttribute extends LSActiveRecord
             ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
         );
         if ($oAttributeValue !== null) {
-            $aAttributeValueQuestionTemplate['question_template'] = $oAttributeValue->value;
-            $retAttributeNamesExtended = Question::getQuestionTemplateAttributes($retAttributeNamesExtended, $aAttributeValueQuestionTemplate, $oQuestion);
+            $sQuestionTheme = $oAttributeValue->value;
+            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+            $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+            $retAttributeNamesExtended = $questionAttributeHelper->mergeQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
 
         return $retAttributeNamesExtended;
@@ -549,13 +553,8 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        foreach ($aAttributes as $attributeName => $attribute) {
-            foreach ($attribute as $fieldName => $value) {
-                if ($value === []) {
-                    $aAttributes[$attributeName][$fieldName] = null;
-                }
-            }
-        }
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
 
         return $aAttributes;
     }
@@ -600,6 +599,11 @@ class QuestionAttribute extends LSActiveRecord
                 $aAttributes[$xmlAttribute]['name'] = $xmlAttribute;
             }
         }
+
+        // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
+
         return $aAttributes;
     }
 
@@ -630,4 +634,5 @@ class QuestionAttribute extends LSActiveRecord
 
         return (array) $result->get('questionAttributes');
     }
+
 }
