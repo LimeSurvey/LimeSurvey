@@ -5176,6 +5176,7 @@ class LimeExpressionManager
                 }
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                     $oResponse->setAttributes($aResponseAttributes, false);
+                    $oResponse->decrypt();
                     if (!$oResponse->encryptSave()) {
                         $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -8321,6 +8322,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
             $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
+            // explode subquestions
             foreach (explode('|', $qinfo['sgqa']) as $sq) {
                 $sqrelevant = true;
                 if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid'])) {
@@ -9812,6 +9814,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         // { and } (after &)
         $string = str_replace(["{","}"], ["&#123;","&#125;"], $string);
         return $string;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUpdatedValues(): array
+    {
+        return $this->updatedValues;
     }
 }
 

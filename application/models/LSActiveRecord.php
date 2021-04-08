@@ -225,7 +225,7 @@ class LSActiveRecord extends CActiveRecord
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findByAttributes($attributes, $condition, $params);
     }
-    
+
     /**
      * Overriding of Yii's findAllByAttributes method to provide encrypted attribute value search
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -239,7 +239,7 @@ class LSActiveRecord extends CActiveRecord
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findAllByAttributes($attributes, $condition, $params);
     }
-    
+
     /**
      * @param int $iSurveyId
      * @param string $sClassName
@@ -287,7 +287,7 @@ class LSActiveRecord extends CActiveRecord
 
         return $aAttributes;
     }
-    
+
     /**
      * Attribute values are encrypted ( if needed )to be used for searching purposes
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -298,7 +298,7 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-        
+
         if (method_exists($this, 'getSurveyId')) {
             $iSurveyId = $this->getSurveyId();
         } else {
@@ -395,7 +395,7 @@ class LSActiveRecord extends CActiveRecord
                 return false;
             }
         }
-        
+
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
 
@@ -421,7 +421,12 @@ class LSActiveRecord extends CActiveRecord
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
+            $LEM =& LimeExpressionManager::singleton();
+            $updatedValues = $LEM->getUpdatedValues();
             foreach ($attributes as $key => $attribute) {
+                if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
+                    continue;
+                }
                 $this->$key = $sodium->$action($attribute);
             }
         }
