@@ -418,7 +418,7 @@ class SurveyRuntimeHelper
 
             $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, null, 3, 1);
             LimeExpressionManager::updateReplacementFields(array(
-                'GROUPNAME' => $gl['group_name'],
+                'GROUPNAME' => $aGroup['name'],
             ));
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
