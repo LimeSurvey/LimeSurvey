@@ -317,9 +317,9 @@ class SurveyRuntimeHelper
             // Set basic replacements to use on group texts
             $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
             $aStandardsReplacementFields['GID'] = $gid;
-            $aStandardsReplacementFields['GROUPNAME'] = $gl['group_name'];
 
             $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, $aStandardsReplacementFields, 3, 1);
+            $aStandardsReplacementFields['GROUPNAME'] = $aGroup['name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
