@@ -410,6 +410,7 @@ class LSActiveRecord extends CActiveRecord
         $sodium = Yii::app()->sodium;
 
         $class = get_class($this);
+        // TODO: Use OOP polymorphism instead of switching on class names.
         if ($class === 'ParticipantAttribute') {
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
             foreach ($aParticipantAttributes as $attribute => $value) {
