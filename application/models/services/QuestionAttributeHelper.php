@@ -33,7 +33,6 @@ class QuestionAttributeHelper
             } else {
                 $aCustomAttribute = array_merge(
                     \QuestionAttribute::getDefaultSettings(),
-                    array("category" => gT("Template")),
                     $attribute
                 );
                 $aAttributes[$sAttributeName] = $aCustomAttribute;
@@ -151,20 +150,63 @@ class QuestionAttributeHelper
             return [];
         }
 
-        /* Filter to get this question type setting */
-        $aQuestionTypeAttributes = array_filter($aAttributes, function ($attribute) use ($sQuestionType) {
-            return stripos($attribute['types'], $sQuestionType) !== false;
-        });
+        // Filter to get this question type setting
+        $aQuestionTypeAttributes = $this->filterAttributesByQuestionType($aAttributes, $sQuestionType);
 
         // Complete category if missing
-        foreach ($aQuestionTypeAttributes as &$aAttribute) {
-            if (!isset($aAttribute['category'])) {
-                $aAttribute['category'] = gT("Plugins");
-            }
-        }
+        $aQuestionTypeAttributes = $this->fillMissingCategory($aQuestionTypeAttributes, gT('Plugin'));
 
         $aQuestionTypeAttributes = $this->sanitizeQuestionAttributes($aQuestionTypeAttributes);
 
         return $aQuestionTypeAttributes;
+    }
+
+    /**
+     * Filters an array of question attribute definitions by question type
+     *
+     * @param array $aAttributes    array of question attribute definitions to filter
+     * @param string $sQuestionType the question type that the attributes should apply to
+     *
+     * @return array    an array containing only the question attributes that match the specified question type
+     */
+    public function filterAttributesByQuestionType($aAttributes, $sQuestionType)
+    {
+        $aQuestionTypeAttributes = array_filter($aAttributes, function ($attribute) use ($sQuestionType) {
+            return $this->attributeAppliesToQuestionType($attribute, $sQuestionType);
+        });
+
+        return $aQuestionTypeAttributes;
+    }
+
+    /**
+     * Check if question attribute applies to a specific question type
+     *
+     * @param array $aAttribute     question attribute definition
+     * @param string $sQuestionType the question type that the attribute should apply to
+     *
+     * @return bool     returns true if the question attribute applies to the specified question type
+     */
+    public function attributeAppliesToQuestionType($aAttribute, $sQuestionType)
+    {
+        return isset($aAttribute['types']) && stripos($aAttribute['types'], $sQuestionType) !== false;
+    }
+
+    /**
+     * Makes sure all the question attributes in an array have a category. If an attribute's
+     * category is missing, it's filled with the specified category name.
+     *
+     * @param array $aAttributes    array of question attribute definitions
+     * @param string $sCategoryName the category name to use if an attribute doesn't have one
+     *
+     * @return array    returns the array attributes with Category field complete
+     */
+    public function fillMissingCategory($aAttributes, $sCategoryName)
+    {
+        foreach ($aAttributes as &$aAttribute) {
+            if (empty($aAttribute['category'])) {
+                $aAttribute['category'] = $sCategoryName;
+            }
+        }
+        return $aAttributes;
     }
 }

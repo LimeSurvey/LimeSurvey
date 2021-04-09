@@ -1049,6 +1049,7 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $additionalAttributes = $questionAttributeHelper->fillMissingCategory($additionalAttributes, gT('Template'));
         $additionalAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($additionalAttributes);
 
         return $additionalAttributes;
