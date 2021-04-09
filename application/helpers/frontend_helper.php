@@ -29,7 +29,7 @@ function loadanswers()
 
 
     $scid = Yii::app()->request->getQuery('scid');
-    if (Yii::app()->request->getParam('loadall') == "reload") {
+    if (Yii::app()->request->getParam('loadall') === "reload") {
         $sLoadName = Yii::app()->request->getParam('loadname');
         $sLoadPass = Yii::app()->request->getParam('loadpass');
         $oCriteria = new CDbCriteria();
@@ -52,78 +52,76 @@ function loadanswers()
         return false;
     }
     $oCriteria->params = $aParams;
-
     $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
-    $saved_control = $oResponses->saved_control;
-    $access_code = $oResponses->saved_control->access_code;
-    $md5_code = md5($sLoadPass);
-    $sha256_code = hash('sha256', $sLoadPass);
 
     if (!$oResponses) {
         return false;
     }
 
-    if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
-        //A match has been found. Let's load the values!
-        //If this is from an email, build surveysession first
-        $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
+    if (isset($oResponses->saved_control) && $oResponses->saved_control) {
+        $saved_control = $oResponses->saved_control;
+        $access_code = $oResponses->saved_control->access_code;
+        $md5_code = md5($sLoadPass);
+        $sha256_code = hash('sha256', $sLoadPass);
+        if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
+            //A match has been found. Let's load the values!
+            //If this is from an email, build surveysession first
+            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
 
-        // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
-        if (Yii::app()->request->getParam('loadall') === "reload") {
-            // We don't need to control if we have one, because we do the test before
-            $_SESSION['survey_' . $surveyid]['scid'] = $saved_control->scid;
-            $_SESSION['survey_' . $surveyid]['step'] = ($saved_control->saved_thisstep > 1) ? $saved_control->saved_thisstep : 1;
-            $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1; // deprecated ?
-            $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
-            $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
-        }
-
-        // Get if survey is been answered
-        $submitdate = $oResponses->submitdate;
-        $aRow = $oResponses->attributes;
-        foreach ($aRow as $column => $value) {
-            if ($column === "token") {
-                $clienttoken = $value;
-                $token = $value;
-            } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
-                if (is_null($submitdate) || $submitdate === "N") {
-                    $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
-                    $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
-                } else {
-                    $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
-                }
-            } elseif ($column === "datestamp") {
-                $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
+            // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
+            if (Yii::app()->request->getParam('loadall') === "reload") {
+                // We don't need to control if we have one, because we do the test before
+                $_SESSION['survey_' . $surveyid]['scid'] = $saved_control->scid;
+                $_SESSION['survey_' . $surveyid]['step'] = ($saved_control->saved_thisstep > 1) ? $saved_control->saved_thisstep : 1;
+                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1; // deprecated ?
+                $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
+                $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
             }
-            if ($column === "startdate") {
-                $_SESSION['survey_' . $surveyid]['startdate'] = $value;
-            } else {
-                //Only make session variables for those in insertarray[]
-                if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
-                    if (
-                        ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                            $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
-                            $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
-                    ) {
-                        // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                        // This is especially important for the deletenonvalue feature,
-                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                        // question types (NKD)
-                        $_SESSION['survey_' . $surveyid][$column] = '';
-                    } else {
-                        $_SESSION['survey_' . $surveyid][$column] = $value;
-                    }
-                    if (isset($token) && !empty($token)) {
-                        $_SESSION['survey_' . $surveyid][$column] = $value;
-                    }
-                }  // if (in_array(
-            }  // else
-        } // foreach
-        return true;
+        }
     }
-
-    return false;
+    // Get if survey is been answered
+    $submitdate = $oResponses->submitdate;
+    $aRow = $oResponses->attributes;
+    foreach ($aRow as $column => $value) {
+        if ($column === "token") {
+            $clienttoken = $value;
+            $token = $value;
+        } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
+            if (is_null($submitdate) || $submitdate === "N") {
+                $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
+                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
+            } else {
+                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+            }
+        } elseif ($column === "datestamp") {
+            $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
+        }
+        if ($column === "startdate") {
+            $_SESSION['survey_' . $surveyid]['startdate'] = $value;
+        } else {
+            //Only make session variables for those in insertarray[]
+            if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
+                if (
+                    ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
+                ) {
+                    // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                    // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
+                    // This is especially important for the deletenonvalue feature,
+                    // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
+                    // question types (NKD)
+                    $_SESSION['survey_' . $surveyid][$column] = '';
+                } else {
+                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                }
+                if (isset($token) && !empty($token)) {
+                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                }
+            }  // if (in_array(
+        }  // else
+    } // foreach
+    return true;
 }
 
 
@@ -1191,7 +1189,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
-            
+
             // Language selector
             if ($aSurveyInfo['alanguageChanger']['show']) {
                 $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
