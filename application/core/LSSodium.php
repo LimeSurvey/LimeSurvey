@@ -9,9 +9,9 @@ class LSSodium
 
     public function init()
     {
-        require_once ROOT . '/third_party/paragonie/sodium_compat/src/Compat.php';
-        require_once ROOT . '/third_party/paragonie/sodium_compat/src/Core/Util.php';
-        require_once ROOT . '/third_party/paragonie/sodium_compat/autoload.php';
+        require_once BASEPATH . '../third_party/paragonie/sodium_compat/src/Compat.php';
+        require_once BASEPATH . '../third_party/paragonie/sodium_compat/src/Core/Util.php';
+        require_once BASEPATH . '../third_party/paragonie/sodium_compat/autoload.php';
 
         $this->checkIfLibraryExists();
 
