@@ -345,7 +345,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         //if a template name is given also check against that
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $sTemplateName  = $oSurvey->template;
+        $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
 
         $criteria = new CDbCriteria();
