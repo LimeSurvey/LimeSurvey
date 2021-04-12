@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.25.21 (build 210407) to 3.25.22 (build 210413) April 12, 2021
+-Fixed issue #17230: Inconsistent 'willRun' state of the survey when Start date is undefined (Carsten Schmitz)
+-Fixed issue #17221: Check data integrity crash with SQL error when # is use in the name of field (Olle Haerstedt)
+-Fixed issue #17204: {GROUPNAME} and other variables not rendered (#1838) (Gabriel Jenik)
+-Fixed issue #17195: When attaching PDF to email invitation, full path is kept as value of a hidden input (#1836) (Gabriel Jenik)
+-Fixed issue #15712: When doing error in token create : unable to submit, need to reload page (#1839) (Gabriel Jenik)
+-Fixed issue # 17207: When attaching using the theme editor, full path is displayed on the screen (#1840) (Gabriel Jenik)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.25.20 (build 210330) to 3.25.21 (build 210407) April 6, 2021
 -Fixed issue: Cannot change page in survey list (Carsten Schmitz)
 -Fixed issue #17219: Filter on numeric fields in response view does not work on Postgres (Carsten Schmitz)
