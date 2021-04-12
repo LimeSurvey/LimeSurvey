@@ -561,13 +561,15 @@ class surveypermission extends Survey_Common_Action
     /**
      * surveypermission::surveyright()
      * Function responsible to process setting of permission of a user/usergroup.
-     * @param mixed $surveyid
+     * @param int $surveyid Survey ID
      * @return void
      */
-    function surveyright($surveyid)
+    function surveyright(int $surveyid)
     {
-        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid;
         $oSurvey = Survey::model()->findByPk($surveyid);
+
         if (!$oSurvey->hasPermission('surveysecurity', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
@@ -586,17 +588,34 @@ class surveypermission extends Survey_Common_Action
             }
             $uids = [$postuserid => $postuserid];
         } elseif ($postusergroupid) {
-            if (!in_array($postusergroupid, getUserGroupList())) {
+            $isInArray = in_array($postusergroupid, getUserGroupList());
+
+            if (!$isInArray) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
-            $oUserInGroups = UserInGroup::model()->findAll(
-                'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
-                array(
-                    ':ugid' => $ugid,
-                    ':currentUserId' => Permission::model()->getUserId(), // Don't need to set to current user
-                    ':surveygroupsOwnerId' => $model->getOwnerId(), // Don't need to set to owner (?) , get from surveyspermission
-                )
-            );
+
+            $permissionUserID = Permission::model()->getUserId();
+            $surveysGroups    = SurveysGroups::model()->findByPk($surveyid);
+            if (!$surveyGroups == null) {
+                $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
+                $oUserInGroups = UserInGroup::model()->findAll(
+                    'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
+                    array(
+                        ':ugid' => $ugid,
+                        ':currentUserId' => $permissionUserID, // Don't need to set to current user
+                        ':surveygroupsOwnerId' => $surveysGroupsOwnerID, // Don't need to set to owner (?) , get from surveyspermission
+                    )
+                );
+            } else {
+                $oUserInGroups = UserInGroup::model()->findAll(
+                    'ugid = :ugid AND uid <> :currentUserId',
+                    array (
+                        ':ugid' => $ugid,
+                        ':currentUserId' => $permissionUserID
+                    )
+                );
+            }
+           
             $uids = CHtml::listData($oUserInGroups, 'uid', 'uid');
         } else {
             throw new CHttpException(400, gT("Invalid parameters."));
