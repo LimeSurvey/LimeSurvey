@@ -559,7 +559,6 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
-
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
             'oSurvey' => Survey::model()->findByPk($this->iSurveyid),
             'aSurveyInfo' => $this->aSurveyInfo,
@@ -1806,6 +1805,8 @@ class SurveyRuntimeHelper
         $event->set('valid_message', $data['valid_message']);
         $event->set('file_valid_message', $data['file_valid_message']);
         $event->set('aHtmlOptions', array()); // Set as empty array, not needed. Before 3.0 usage for EM style
+        $aAttributes = QuestionAttribute::model()->getQuestionAttributes($data['qid']);
+        $event->set('question_template', $aAttributes['question_template']);
         App()->getPluginManager()->dispatchEvent($event);
 
         $data['text']               = $event->get('text');
