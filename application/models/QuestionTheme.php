@@ -691,7 +691,7 @@ class QuestionTheme extends LSActiveRecord
 
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }            
+        }
 
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
@@ -726,7 +726,7 @@ class QuestionTheme extends LSActiveRecord
         }
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
+        }
 
         $baseQuestions = $baseQuestionsModified;
 
@@ -1027,15 +1027,15 @@ class QuestionTheme extends LSActiveRecord
         $additionalAttributes = array();
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(false);
-        }            
-            $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
+        }
+        $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
             $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(true);
-        }            
+        }
 
         if (!empty($attributes)) {
             if (!empty($attributes['attribute']['name'])) {
