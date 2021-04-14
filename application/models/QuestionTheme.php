@@ -375,6 +375,7 @@ class QuestionTheme extends LSActiveRecord
      * @param bool $custom
      * @param bool $user
      * @return array
+     * @todo Move to service class
      */
     public function getAllQuestionMetaData($core = true, $custom = true, $user = true)
     {
@@ -419,7 +420,7 @@ class QuestionTheme extends LSActiveRecord
         $pathToXML = str_replace('\\', '/', $pathToXML);
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }            
+        }
         $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
@@ -495,7 +496,7 @@ class QuestionTheme extends LSActiveRecord
 
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
+        }
 
         return $questionMetaData;
     }
@@ -508,6 +509,7 @@ class QuestionTheme extends LSActiveRecord
      * @param bool $user
      *
      * @return array
+     * @todo Move to service class
      */
     public static function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
     {
@@ -746,6 +748,8 @@ class QuestionTheme extends LSActiveRecord
      * @param array $questionMetaData
      *
      * @return array $questionMetaData
+     * @todo Naming is wrong, it does not "get", it "convertTo"
+     * @todo Possibly make a DTO for question metadata instead, and implement the ArrayAccess interface or "toArray()"
      */
     private function getMetaDataArray($questionMetaData)
     {
