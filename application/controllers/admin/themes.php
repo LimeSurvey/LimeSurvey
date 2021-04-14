@@ -373,7 +373,10 @@ class themes extends Survey_Common_Action
                     if (!is_dir($sPathToThemeDirectory)) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
-                            gT("The ZIP file contains wrong paths"),
+                            sprintf(
+                                gT("The ZIP file contains wrong paths: %s doesn't exist"),
+                                $sPathToThemeDirectory
+                            ),
                             'error'
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
