@@ -596,12 +596,12 @@ class surveypermission extends Survey_Common_Action
 
             $permissionUserID = Permission::model()->getUserId();
             $surveysGroups    = SurveysGroups::model()->findByPk($surveyid);
-            if (!$surveyGroups == null) {
+            if (!$surveysGroups == null) {
                 $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
                 $oUserInGroups = UserInGroup::model()->findAll(
                     'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
                     array(
-                        ':ugid' => $ugid,
+                        ':ugid' => $postusergroupid,
                         ':currentUserId' => $permissionUserID, // Don't need to set to current user
                         ':surveygroupsOwnerId' => $surveysGroupsOwnerID, // Don't need to set to owner (?) , get from surveyspermission
                     )
@@ -610,7 +610,7 @@ class surveypermission extends Survey_Common_Action
                 $oUserInGroups = UserInGroup::model()->findAll(
                     'ugid = :ugid AND uid <> :currentUserId',
                     array (
-                        ':ugid' => $ugid,
+                        ':ugid' => $postusergroupid,
                         ':currentUserId' => $permissionUserID
                     )
                 );
