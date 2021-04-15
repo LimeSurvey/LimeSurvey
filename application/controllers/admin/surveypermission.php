@@ -115,7 +115,7 @@ class surveypermission extends Survey_Common_Action
 
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'update')) {
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-// Can not update own security
+                        // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
                         . "<button type='submit' class='btn btn-default btn-xs'><span class='fa fa-pencil text-success' data-toggle='tooltip' title='" . gT("Edit permissions") . "'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
@@ -663,11 +663,10 @@ class surveypermission extends Survey_Common_Action
         $addsummary .= "</div></div></div>\n";
         $aViewUrls['output'] = $addsummary;
 
-        $aData['sidemenu']['state'] = false;
+        $aData['sidemenu']['state']  = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
-
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     /**
