@@ -61,7 +61,7 @@ class QuestionTheme extends LSActiveRecord
                 ],
             ],
             array('name, title, api_version, question_type', 'required'),
-            array('owner_id, core_theme', 'numerical', 'integerOnly' => true),
+            array('owner_id', 'numerical', 'integerOnly' => true),
             array('name, author, theme_type, question_type, extends, group', 'length', 'max' => 150),
             array('visible', 'length', 'max' => 1),
             array('xml_path, image_path, author_email, author_url', 'length', 'max' => 255),
