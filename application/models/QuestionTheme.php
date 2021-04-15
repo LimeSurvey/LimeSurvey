@@ -62,6 +62,7 @@ class QuestionTheme extends LSActiveRecord
             ],
             array('name, title, api_version, question_type', 'required'),
             array('owner_id', 'numerical', 'integerOnly' => true),
+            array('core_theme', 'boolean'),
             array('name, author, theme_type, question_type, extends, group', 'length', 'max' => 150),
             array('visible', 'length', 'max' => 1),
             array('xml_path, image_path, author_email, author_url', 'length', 'max' => 255),
@@ -153,8 +154,11 @@ class QuestionTheme extends LSActiveRecord
         $criteria->compare('extends', $this->extends, true);
         $criteria->compare('group', $this->group, true);
         $criteria->compare('settings', $this->settings, true);
+        $sort = new CSort();
+        $sort->defaultOrder = 'name';
         return new CActiveDataProvider($this, array(
             'criteria'   => $criteria,
+            'sort'      => $sort,
             'pagination' => array(
                 'pageSize' => $pageSizeTemplateView,
             ),
