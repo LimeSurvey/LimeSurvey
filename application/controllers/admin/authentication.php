@@ -212,7 +212,7 @@ class Authentication extends Survey_Common_Action
             $expirationDate = new DateTime($user->validation_key_expiration);
             $dateDiff = $expirationDate->diff($dateNow);
             $differenceInHours = $dateDiff->format('h');
-            if($differenceInHours > User::MAX_EXPIRATION_TIME){
+            if($differenceInHours > User::MAX_EXPIRATION_TIME_IN_HOURS){
                 $errorExists = true;
                 $errorMsg = gT('The validation key expired. Please contact the administrator.');
             }
@@ -225,14 +225,25 @@ class Authentication extends Survey_Common_Action
             if($password!==null && $passwordRepeat!==null){
 
             }
-            $randomPassword = $this->getRandomPassword();
+            $randomPassword =\LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         }
 
-        $this->$this->render('newPassword',[
+        $aData = [
+            'errorExists' => $errorExists,
+            'errorMasg' => $errorMsg,
+            'randomPassword' => $randomPassword,
+            'validationKey'=> $user->validation_key
+        ];
+
+
+        $this->_renderWrappedTemplate('authentication', 'newPassword', $aData);
+
+        /*
+        $this->getController()->render('newPassword',[
             'errorExists' => $errorExists,
             'errorMasg' => $errorMsg,
             'randomPassword', $randomPassword
-        ]);
+        ]);*/
     }
 
     /**

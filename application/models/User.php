@@ -42,7 +42,10 @@
 class User extends LSActiveRecord
 {
     /** @var int maximum time the validation_key is valid*/
-    const MAX_EXPIRATION_TIME = 48;
+    const MAX_EXPIRATION_TIME_IN_HOURS = 48;
+
+    /** @var int maximum days the validation key is valid */
+    const MAX_EXPIRATION_TIME_IN_DAYS = 2;
 
     /** @var int  maximum length for the validation_key*/
     const MAX_VALIDATION_KEY_LENGTH = 38;
@@ -947,7 +950,9 @@ class User extends LSActiveRecord
      */
     public function setValidationExpiration(){
         $datePlusMaxExpiration = new DateTime();
-        $datePlusMaxExpiration->add(new DateInterval('P'. self::MAX_EXPIRATION_TIME . 'h'));
+        $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
+        $dateInterval = new DateInterval($datePlusString);
+        $datePlusMaxExpiration->add($dateInterval);
 
         $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
 

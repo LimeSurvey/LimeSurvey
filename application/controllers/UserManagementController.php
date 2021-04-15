@@ -1165,7 +1165,7 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * this method creates a new admin user and returns success or error message
+     * This method creates a new admin user and returns success or error message
      *
      * @param array $aUser array with attributes from user model
      * @param boolean $sendEmail true if email should be send, false otherwise
