@@ -1134,7 +1134,7 @@ class LimeExpressionManager
             // array_filter and array_filter_exclude get processed together
             if (!is_null($array_filter) || !is_null($array_filter_exclude)) {
                 if ($hasSubqs) {
-                    [$cascadedAF, $cascadedAFE] = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'], [], []);
+                    list($cascadedAF, $cascadedAFE) = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'], [], []);
 
                     $cascadedAF = array_reverse($cascadedAF);
                     $cascadedAFE = array_reverse($cascadedAFE);
