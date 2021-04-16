@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-16 10:05:30+00:00\n"
+"POT-Creation-Date: 2021-04-16 10:15:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14690,7 +14690,7 @@ msgid "Question summary"
 msgstr ""
 
 #: application/models/Question.php:690
-msgid "Delete Question"
+msgid "Delete question"
 msgstr ""
 
 #: application/models/Question.php:691
@@ -17075,7 +17075,7 @@ msgid "16 or up"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:37
-msgid "version with Python Plugin / Essentials"
+msgid "16 or up with Python Plugin / Essentials"
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:46
@@ -17503,16 +17503,16 @@ msgstr ""
 #: application/views/admin/globalsettings/_email.php:109
 #: application/views/admin/globalsettings/_email.php:114
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:12
-msgid "Send Email"
+msgid "Send email"
 msgstr ""
 
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:3
 #: application/views/admin/globalsettings/_emailTestResults.php:1
-msgid "Test Email Settings"
+msgid "Test email settings"
 msgstr ""
 
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:6
-msgid "Test email will be sent to:"
+msgid "Test email will be sent to: %s"
 msgstr ""
 
 #: application/views/admin/globalsettings/_emailTestConfirmation.php:8
