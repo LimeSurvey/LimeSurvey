@@ -78,35 +78,37 @@
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box">
                     <h2>
-                        <?php eT("Deactivate Survey"); echo " <em>($surveyid)</em>"; ?>
+                        <?php eT("Deactivate Survey");
+                        echo " <em>($surveyid)</em>"; ?>
                     </h2>
                     <p class="lead text-success">
                         <strong>
-                            <?php eT("Survey Has Been Deactivated"); ?>
+                            <?php eT("The survey was deactivated."); ?>
                         </strong>
                     </p>
                     <p class="text-warning">
                         <?php eT("The responses to this survey are no longer available using LimeSurvey."); ?>
                     </p>
                     <p>
-                        <?php echo gT("The responses table has been renamed to: ")." <b>".$sNewSurveyTableName; ?></b>
+                        <?php printf(gT("The responses table has been renamed to: %s"), "<b>" . $sNewSurveyTableName . "</b>"); ?>
                     </p>
                     <p>
-                        <?php if (isset($toldtable) && $toldtable)
-                        {
-                            echo gT("The participant table associated with this survey has been renamed to: ")." $tnewtable";
-                    }?>
-                </p>
-                <p>
-                    <?php if (isset($sNewTimingsTableName)) echo gT("The response timings table has been renamed to: ")." ".$sNewTimingsTableName; ?>
-                </p>
-                <p>
-                <?php eT("You should note the name(s) of the table(s) in case you need to access this information later."); ?><br>
-                <p><?php eT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"); ?>
-                </p>
-                <p>
-                    <a href="<?php echo Yii::app()->createUrl('surveyAdministration/view/surveyid/'.$surveyid);?>" class="btn btn-default btn-lg">
-                        <?php eT('Close');?>
+                        <?php if (isset($toldtable) && $toldtable) {
+                            printf(gT("The participant table associated with this survey has been renamed to: %s "), $tnewtable);
+                        }?>
+                    </p>
+                    <p>
+                        <?php if (isset($sNewTimingsTableName)) {
+                            printf(gT("The response timings table has been renamed to: %s"), $sNewTimingsTableName); ?>
+                        }
+                    </p>
+                    <p>
+                    <?php eT("You should note the name(s) of the table(s) in case you need to access this information later."); ?><br>
+                    <p><?php eT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"); ?>
+                    </p>
+                    <p>
+                    <a href="<?php echo Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $surveyid);?>" class="btn btn-default btn-lg">
+                            <?php eT('Close');?>
                     </a>
                 </p>
             </div>
