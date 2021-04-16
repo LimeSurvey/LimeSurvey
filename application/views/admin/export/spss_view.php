@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('exportSpss');
                 'selectOptions'=>array(
                     "1"=>gT("Prior to 16",'unescaped'),
                     "2"=>gT("16 or up",'unescaped'),
-                    "3"=>gT("version with Python Plugin / Essentials",'unescaped')
+                    "3"=>gT("16 or up with Python Plugin / Essentials",'unescaped')
                 )
             ));?>
         </div>
