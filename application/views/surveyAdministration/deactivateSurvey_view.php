@@ -99,8 +99,8 @@
                     </p>
                     <p>
                         <?php if (isset($sNewTimingsTableName)) {
-                            printf(gT("The response timings table has been renamed to: %s"), $sNewTimingsTableName); ?>
-                        }
+                            printf(gT("The response timings table has been renamed to: %s"), $sNewTimingsTableName); 
+                        }?>
                     </p>
                     <p>
                     <?php eT("You should note the name(s) of the table(s) in case you need to access this information later."); ?><br>
