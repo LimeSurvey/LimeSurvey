@@ -3504,7 +3504,7 @@ function upgradeTokens176()
                     $aAttribute['cpdbmap'] = '';
                 }
             }
-            $oDB->createCommand()->update('{{surveys}}',array('attributedescriptions'=>json_encode($aAttributes)),"sid=".$arSurvey['sid']);
+            $oDB->createCommand()->update('{{surveys}}',array('attributedescriptions'=>serialize($aAttributes)),"sid=".$arSurvey['sid']);
         }
     }
     unset($arSurveys);
