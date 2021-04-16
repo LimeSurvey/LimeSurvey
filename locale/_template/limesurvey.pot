@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-04-16 10:15:15+00:00\n"
+"POT-Creation-Date: 2021-04-16 10:19:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17121,7 +17121,7 @@ msgid "Open the syntax file in SPSS in Unicode mode."
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:107
-msgid "Edit the %s line and complete the filename with a full$ path to the downloaded data file."
+msgid "Edit the line starting with %s and complete the filename with a full path to the downloaded data file."
 msgstr ""
 
 #: application/views/admin/export/spss_view.php:108
