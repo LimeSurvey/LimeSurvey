@@ -106,12 +106,12 @@
             <?php eT("Send test email:"); ?>
             </label>
             <div class="">
-                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send Email");?></a-->
+                <!--a href="<?php echo \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send email");?></a-->
                 <button 
                     id="sendtestemailbutton"
                     class='btn btn-large btn-primary' 
                     data-href='<?= \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmailConfirmation")) ?>'>
-                    <?php eT("Send Email");?>
+                    <?php eT("Send email");?>
                 </button>
             </div>
         </div>

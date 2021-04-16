@@ -3245,7 +3245,7 @@ class LimeExpressionManager
                         continue;
                     }
                     $aflist[] = $_af;
-                    [$aflist, $afelist] = $this->_recursivelyFindAntecdentArrayFilters($_af, $aflist, $afelist);
+                    list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_af, $aflist, $afelist);
                 }
             }
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter_exclude'])) {
@@ -3255,7 +3255,7 @@ class LimeExpressionManager
                         continue;
                     }
                     $afelist[] = $_afe;
-                    [$aflist, $afelist] = $this->_recursivelyFindAntecdentArrayFilters($_afe, $aflist, $afelist);
+                    list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_afe, $aflist, $afelist);
                 }
             }
         }
