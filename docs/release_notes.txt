@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.5.0 (build 210412) to 4.5.1 (build 210420) April 19, 2021
+-Fixed issue: Don't validate boolean attribute as integer for question theme (Olle Haerstedt)
+-Fixed issue: Add missing default sort order for question theme grid view (Olle Haerstedt)
+-Fixed issue #17233: Inheritance broken for some survey properties when using Postgres SQL (Carsten Schmitz)
+-Fixed issue #16669: getQuestionAttributes function don't get the plugins attribute (#1843) (Gabriel Jenik)
+-Fixed issue #14430: Usage of obsolete HTML (Jessica Höck)
+-Fixed issue #14154: List questions - hover over delete button (Jessica Höck)
+#Updated translation: Portuguese (Portugal) by c_schmitz, mauriciofurtado, marcelovincenzi, cassiofs, samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.4.16 (build 210406) to 4.5.0 (build 210412) April 12, 2021
 +New feature: Autodetection of path in SPSS syntax (#1297) (Joost1982)
 +New feature #16832: Add user group functions to LimeSurveyAPI (Florian Döring)
