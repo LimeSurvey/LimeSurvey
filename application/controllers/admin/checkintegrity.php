@@ -1010,7 +1010,6 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-
         /**********************************************************************/
         /*     CHECK OLD TOKEN  TABLES                                        */
         /**********************************************************************/
@@ -1083,6 +1082,14 @@ class CheckIntegrity extends Survey_Common_Action
             }
             if (isset($aOldSurveyTableAsk)) {
                 $aDelete['redundantsurveytables'] = $aOldSurveyTableAsk;
+            }
+        }
+
+        // delete archivedTableSettings without archived table
+        $archivedTableSettings = ArchivedTableSettings::model()->findAll();
+        foreach ($archivedTableSettings as $archivedTableSetting) {
+            if (Yii::app()->db->schema->getTable("{{{$archivedTableSetting->tbl_name}}}") === null) {
+                $archivedTableSetting->delete();
             }
         }
 

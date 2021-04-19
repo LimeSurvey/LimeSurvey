@@ -312,8 +312,15 @@ class dataentry extends Survey_Common_Action
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
             $sourceTable = PluginDynamic::model($_POST['table']);
             $sourceSchema = $sourceTable->getTableSchema();
+            $encryptedAttributes = Response::getEncryptedAttributes($iSurveyId);
+            $tbl_name = $sourceSchema->name;
+            if (strpos($sourceSchema->name, Yii::app()->db->tablePrefix) === 0) {
+                $tbl_name = substr($sourceSchema->name, strlen(Yii::app()->db->tablePrefix));
+            }
+            $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $tbl_name]);
+            $archivedEncryptedAttributes = json_decode($archivedTableSettings->properties);
 
-            $fieldMap = array();
+            $fieldMap = [];
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
             foreach ($sourceSchema->getColumnNames() as $name) {
                 // Skip id field.
@@ -347,6 +354,12 @@ class dataentry extends Survey_Common_Action
 
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
+                    if (in_array($sourceField, $archivedEncryptedAttributes, false) && !in_array($sourceField, $encryptedAttributes, false)) {
+                        $targetResponse[$targetField] = $sourceResponse->decryptSingle($sourceResponse[$sourceField]);
+                    }
+                    if (!in_array($sourceField, $archivedEncryptedAttributes, false) && in_array($sourceField, $encryptedAttributes, false)) {
+                        $targetResponse[$targetField] = $sourceResponse->encryptSingle($sourceResponse[$sourceField]);
+                    }
                 }
 
                 if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])) {

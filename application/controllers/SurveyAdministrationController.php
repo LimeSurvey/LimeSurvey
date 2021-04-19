@@ -1508,7 +1508,10 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $survey = Survey::model()->findByPk($iSurveyID);
-        $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $datestamp = time();
+        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $DBDate = date('Y-m-d H:i:s', $datestamp);
+        $userID = Yii::app()->user->getId();
         $aData = array();
 
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
@@ -1558,6 +1561,15 @@ class SurveyAdministrationController extends LSBaseController
 
                     Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
 
+                    $archivedTokenSettings = new ArchivedTableSettings();
+                    $archivedTokenSettings->survey_id = $iSurveyID;
+                    $archivedTokenSettings->user_id = $userID;
+                    $archivedTokenSettings->tbl_name = "old_tokens_{$iSurveyID}_{$date}";
+                    $archivedTokenSettings->tbl_type = 'token';
+                    $archivedTokenSettings->created = $DBDate;
+                    $archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
+                    $archivedTokenSettings->save();
+
                     $aData['tnewtable'] = $tnewtable;
                     $aData['toldtable'] = $toldtable;
                 }
@@ -1592,6 +1604,15 @@ class SurveyAdministrationController extends LSBaseController
 
                 Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $iSurveyID;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_{$date}";
+                $archivedTokenSettings->tbl_type = 'response';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
+                $archivedTokenSettings->save();
+
                 $survey->active = 'N';
                 $survey->save();
 
@@ -1602,6 +1623,15 @@ class SurveyAdministrationController extends LSBaseController
                     Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                     $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
                 }
+
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $iSurveyID;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_timings_{$date}";
+                $archivedTokenSettings->tbl_type = 'timings';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = '';
+                $archivedTokenSettings->save();
 
                 $event = new PluginEvent('afterSurveyDeactivate');
                 $event->set('surveyId', $iSurveyID);
