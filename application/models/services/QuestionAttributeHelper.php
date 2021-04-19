@@ -247,18 +247,17 @@ class QuestionAttributeHelper
         $aThemeAttributes = \QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
 
         // Merge the attributes with the question theme ones
-        $questionAttributeHelper = new self();
-        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
+        $aAttributes = $this->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
 
         // Get question attributes from plugins ('newQuestionAttributes' event)
-        $aPluginAttributes = $questionAttributeHelper->getAttributesFromPlugin($oQuestion->type);
-        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
+        $aPluginAttributes = $this->getAttributesFromPlugin($oQuestion->type);
+        $aAttributes = $this->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
 
         uasort($aAttributes, 'categorySort');
 
         // Fill attributes with values
         $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
-        $aAttributes = $questionAttributeHelper->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
+        $aAttributes = $this->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
 
         return $aAttributes;
     }
