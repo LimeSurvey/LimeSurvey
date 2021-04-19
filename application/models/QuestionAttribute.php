@@ -222,32 +222,23 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
-        if ($oQuestion) {
-            if (!$survey) {
-                $survey = Survey::model()->findByPk($oQuestion->sid);
-            }
-            if ($sLanguage) {
-                $aLanguages = [$sLanguage];
-            } else {
-                $aLanguages = $survey->allLanguages;
-            }
-            // For some reason this happened in bug #10684
-            if ($oQuestion->type == null) {
-                throw new \CException("Question is corrupt: no type defined for question " . $iQuestionID);
-            }
-            $aAttributeValues = self::getAttributesAsArrayFromDB($iQuestionID);
-            $aAttributeFromXmlOrDefault = self::getQuestionAttributesSettings($oQuestion->type); //from xml files
-            $aAttributeNames = self::addAdditionalAttributesFromExtendedTheme($aAttributeFromXmlOrDefault, $oQuestion);
-            // Fill aQuestionAttributes with default attribute or with aAttributeValues
-            $aQuestionAttributes = self::rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages);
-        } else {
+        if (empty($oQuestion)) {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-        if (EmCacheHelper::useCache()) {
-            EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aQuestionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage);
+
+        $aAttributeValues = [];
+        foreach ($aQuestionAttributes as $aAttribute) {
+            $aAttributeValues[$aAttribute['name']] = $aAttribute['value'];
         }
 
-        return $aQuestionAttributes;
+        if (EmCacheHelper::useCache()) {
+            EmCacheHelper::set($cacheKey, $aAttributeValues);
+        }
+
+        return $aAttributeValues;
     }
 
     /**
