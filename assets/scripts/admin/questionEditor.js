@@ -1514,7 +1514,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       });
       try {
         const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
-        var currentGroup = $('#gid').children("option:selected").val();
+        let currentGroup = $('#gid').children("option:selected").val();
         $('#general-settings').replaceWith(html);
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
