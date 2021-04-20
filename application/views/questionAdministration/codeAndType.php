@@ -46,31 +46,16 @@ $oQuestionSelector = $this->beginWidget(
 <div class="form-group col-sm-6 scoped-responsive-fix-height">
     <label for="questionCode"><?= gT('Code'); ?></label>
     <div class="scoped-keep-in-line">
-        <!-- TODO: Max lenght. -->
-        <?php if ($oSurvey->active !== 'Y'){ ?>
-          <input
-              text="text"
-              class="form-control"
-              id="questionCode"
-              name="question[title]"
-              value="<?= $question->title; ?>"
-              required="true"
-              maxlength="20"
-              onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
-          />
-        <?php
-        }else{ ?>
-            <input
-                    text="text"
-                    class="form-control"
-                    id="questionCode"
-                    name="question[title]"
-                    value="<?= $question->title; ?>"
-                    required="true"
-                    maxlength="20"
-                    readonly
-            />
-        <?php } ?>
+        <input
+            text="text"
+            class="form-control"
+            id="questionCode"
+            name="question[title]"
+            value="<?= $question->title; ?>"
+            required="true"
+            maxlength="20"
+            onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
+        />
 
         <!--
         <type-counter 
