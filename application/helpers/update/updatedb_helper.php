@@ -3478,7 +3478,7 @@ function upgradeTokens176()
         if (tableExists($sTokenTableName))
         {
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
-            $aAttributes = $arSurvey['attributedescriptions'];
+            $aAttributes = decodeTokenAttributes($arSurvey['attributedescriptions']);
             foreach($aColumnNamesIterator as $sColumnName)
             {
                 // Check if an old atttribute_cpdb column exists in that token table
@@ -3496,6 +3496,12 @@ function upgradeTokens176()
                         $aAttributes[$sNewName]['cpdbmap']=substr($sColumnName,15);
                         unset($aAttributes[$sColumnName]);
                     }
+                }
+            }
+            // Add 'cpdbmap' if missing
+            foreach ($aAttributes as &$aAttribute) {
+                if (!isset($aAttribute['cpdbmap'])) {
+                    $aAttribute['cpdbmap'] = '';
                 }
             }
             $oDB->createCommand()->update('{{surveys}}',array('attributedescriptions'=>serialize($aAttributes)),"sid=".$arSurvey['sid']);
