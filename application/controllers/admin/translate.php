@@ -30,7 +30,14 @@ class translate extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
+
         $oSurvey = Survey::model()->findByPk($surveyid);
+
+        //KCFINDER SETTINGS
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->loadHelper('admin.htmleditor');
+        initKcfinder();
+
         $tolang = Yii::app()->getRequest()->getParam('lang');
         if (!empty($tolang) && !in_array($tolang, $oSurvey->getAllLanguages())) {
             Yii::app()->setFlashMessage(gT("Invalid language"), 'warning');
