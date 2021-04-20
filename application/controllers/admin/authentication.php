@@ -303,16 +303,21 @@ class Authentication extends Survey_Common_Action
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
-            $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
+            $user = User::model()->findByAttributes(
+                [],
+                'users_name=:users_name and email=:email',
+                ['users_name' => $sUserName, 'email' => $sEmailAddr]
+            );
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             $aData = [];
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
+            if (($user === null) || ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>' . gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.') . '<br>';
             } else {
-                $aData['message'] = '<br>' . $this->_sendPasswordEmail($aFields[0]) . '</br>';
+                $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
+                $aData['message'] = '<br>' . $passwordManagement->sendForgotPasswordEmailLink() . '</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
@@ -331,39 +336,6 @@ class Authentication extends Survey_Common_Action
                 }
             }
         }
-    }
-
-    /**
-     * Send the forgot password email
-     *
-     * @param CActiveRecord User
-     */
-    private function _sendPasswordEmail($arUser)
-    {
-        $mailer = new \LimeMailer();
-        $mailer->emailType = 'passwordreminderadminuser';
-        $mailer->addAddress($arUser->email, $arUser->full_name);
-        $mailer->Subject = gT('User data');
-        /* Body construct */
-        $sNewPass = createPassword();
-        $username = sprintf(gT('Username: %s'), $arUser['users_name']);
-        $password = sprintf(gT('New password: %s'), $sNewPass);
-        $body   = array();
-        $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
-        $body[] = $username;
-        $body[] = $password;
-        $body   = implode("\n", $body);
-        $mailer->Body = $body;
-        /* Go to send email and set password */
-        if ($mailer->sendMessage()) {
-            User::updatePassword($arUser['uid'], $sNewPass);
-            // For security reasons, we don't show a successful message
-            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
-        } else {
-            $sMessage = gT('Email failed');
-        }
-
-        return $sMessage;
     }
 
     /**

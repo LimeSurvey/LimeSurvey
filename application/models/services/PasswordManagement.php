@@ -40,7 +40,6 @@ class PasswordManagement
     {
         $aAdminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        //todo instead of login url it should be link for setting a password
         $loginUrl = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
         $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
@@ -73,9 +72,11 @@ class PasswordManagement
 
 
     /**
+     * Sets the validationKey and the validationKey expiration and
+     * sends email to the user, containing the link to set/reset password.
      *
+     * @return array message if sending email to user was successful
      *
-     * @return array
      * @throws \PHPMailer\PHPMailer\Exception
      */
     public function sendPasswordLinkViaEmail(){
@@ -103,6 +104,42 @@ class PasswordManagement
             'success' => $success,
             'sReturnMessage' => $sReturnMessage
         ];
+    }
+
+    /**
+     * Send a link for the user to set a new password (forgot password functionality)
+     *
+     * @return string message for user
+     */
+    public function sendForgotPasswordEmailLink()
+    {
+        $mailer = new \LimeMailer();
+        $mailer->emailType = 'passwordreminderadminuser';
+        $mailer->addAddress($this->user->email, $this->user->full_name);
+        $mailer->Subject = gT('User data');
+
+        /* Body construct */
+        $this->user->setValidationKey();
+        $this->user->setValidationExpiration();
+        $username = sprintf(gT('Username: %s'), $this->user->users_name);
+
+        $linkToResetPage = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
+        $linkText = gT("Click here to set your password: ") . $linkToResetPage;
+        $body   = array();
+        $body[] = sprintf(gT('Your link to reset password %s'), \Yii::app()->getConfig('sitename'));
+        $body[] = $username;
+        $body[] = $linkText;
+        $body   = implode("\n", $body);
+        $mailer->Body = $body;
+        /* Go to send email and set password*/
+        if ($mailer->sendMessage()) {
+            // For security reasons, we don't show a successful message
+            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
+        } else {
+            $sMessage = gT('Email failed');
+        }
+
+        return $sMessage;
     }
 
     /**
@@ -146,8 +183,6 @@ class PasswordManagement
 
     /**
      * Send the registration email to a new survey administrator
-     *
-     * @TODO: make this user configurable by TWIG, or similar
      *
      * @param string $type   two types are available 'resetPassword' or 'registration', default is 'registration'
      * @param null $newPassword
