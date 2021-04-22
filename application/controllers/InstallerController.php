@@ -619,15 +619,15 @@ class InstallerController extends CController
     }
 
     /**
-     * Check for a specific PHP Function or class, return HTML image
+     * Check for a specific PHP Function or class, updates HTML image
      *
      * @param string $sFunctionName Function or class name
-     * @param string $sImage return
-     * @return bool result
+     * @param string $sImage HTML string for related image to show
+     * @return bool True if exists, otherwise false
      */
     public function checkPHPFunctionOrClass($sFunctionName, &$sImage)
     {
-        $bExists = function_exists($sFunctionName) || class_exists(sFunctionName);
+        $bExists = function_exists($sFunctionName) || class_exists($sFunctionName);
         $sImage = $this->check_HTML_image($bExists);
         return $bExists;
     }
