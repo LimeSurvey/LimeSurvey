@@ -115,7 +115,7 @@ class surveypermission extends Survey_Common_Action
 
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'update')) {
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-// Can not update own security
+                        // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
                         . "<button type='submit' class='btn btn-default btn-xs'><span class='fa fa-pencil text-success' data-toggle='tooltip' title='" . gT("Edit permissions") . "'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
@@ -561,13 +561,15 @@ class surveypermission extends Survey_Common_Action
     /**
      * surveypermission::surveyright()
      * Function responsible to process setting of permission of a user/usergroup.
-     * @param mixed $surveyid
+     * @param int $surveyid Survey ID
      * @return void
      */
-    function surveyright($surveyid)
+    function surveyright(int $surveyid)
     {
-        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid;
         $oSurvey = Survey::model()->findByPk($surveyid);
+
         if (!$oSurvey->hasPermission('surveysecurity', 'update')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
@@ -586,17 +588,34 @@ class surveypermission extends Survey_Common_Action
             }
             $uids = [$postuserid => $postuserid];
         } elseif ($postusergroupid) {
-            if (!in_array($postusergroupid, getUserGroupList())) {
+            $isInArray = in_array($postusergroupid, getUserGroupList());
+
+            if (!$isInArray) {
                 throw new CHttpException(403, gT("You do not have permission to this user group."));
             }
-            $oUserInGroups = UserInGroup::model()->findAll(
-                'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
-                array(
-                    ':ugid' => $ugid,
-                    ':currentUserId' => Permission::model()->getUserId(), // Don't need to set to current user
-                    ':surveygroupsOwnerId' => $model->getOwnerId(), // Don't need to set to owner (?) , get from surveyspermission
-                )
-            );
+
+            $permissionUserID = Permission::model()->getUserId();
+            $surveysGroups    = SurveysGroups::model()->findByPk($surveyid);
+            if (!$surveysGroups == null) {
+                $surveysGroupsOwnerID = $surveysGroups->getOwnerId();
+                $oUserInGroups = UserInGroup::model()->findAll(
+                    'ugid = :ugid AND uid <> :currentUserId AND uid <> :surveygroupsOwnerId',
+                    array(
+                        ':ugid' => $postusergroupid,
+                        ':currentUserId' => $permissionUserID, // Don't need to set to current user
+                        ':surveygroupsOwnerId' => $surveysGroupsOwnerID, // Don't need to set to owner (?) , get from surveyspermission
+                    )
+                );
+            } else {
+                $oUserInGroups = UserInGroup::model()->findAll(
+                    'ugid = :ugid AND uid <> :currentUserId',
+                    array (
+                        ':ugid' => $postusergroupid,
+                        ':currentUserId' => $permissionUserID
+                    )
+                );
+            }
+           
             $uids = CHtml::listData($oUserInGroups, 'uid', 'uid');
         } else {
             throw new CHttpException(400, gT("Invalid parameters."));
@@ -640,15 +659,14 @@ class surveypermission extends Survey_Common_Action
         } else {
             $addsummary .= "<div class=\"errorheader\">" . gT("Failed to update permissions for all users in this group.") . "</div>\n";
         }
-        $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
-        $addsummary .= "</div></div></div>\n";
+        $addsummary .= "<br/><input class='btn btn-default' type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
+        $addsummary .= "</div></div></div></div>\n";
         $aViewUrls['output'] = $addsummary;
-
-        $aData['sidemenu']['state'] = false;
+        
+        $aData['sidemenu']['state']  = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
-
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     /**

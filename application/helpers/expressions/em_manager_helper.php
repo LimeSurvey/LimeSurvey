@@ -1134,7 +1134,7 @@ class LimeExpressionManager
             // array_filter and array_filter_exclude get processed together
             if (!is_null($array_filter) || !is_null($array_filter_exclude)) {
                 if ($hasSubqs) {
-                    [$cascadedAF, $cascadedAFE] = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'], [], []);
+                    list($cascadedAF, $cascadedAFE) = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'], [], []);
 
                     $cascadedAF = array_reverse($cascadedAF);
                     $cascadedAFE = array_reverse($cascadedAFE);
@@ -3245,7 +3245,7 @@ class LimeExpressionManager
                         continue;
                     }
                     $aflist[] = $_af;
-                    [$aflist, $afelist] = $this->_recursivelyFindAntecdentArrayFilters($_af, $aflist, $afelist);
+                    list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_af, $aflist, $afelist);
                 }
             }
             if (isset($this->qrootVarName2arrayFilter[$qroot]['array_filter_exclude'])) {
@@ -3255,7 +3255,7 @@ class LimeExpressionManager
                         continue;
                     }
                     $afelist[] = $_afe;
-                    [$aflist, $afelist] = $this->_recursivelyFindAntecdentArrayFilters($_afe, $aflist, $afelist);
+                    list($aflist, $afelist) = $this->_recursivelyFindAntecdentArrayFilters($_afe, $aflist, $afelist);
                 }
             }
         }
@@ -8430,7 +8430,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if (!preg_match('/_filecount$/', $sq)) {
                                 $json = $value;
                                 $aFiles = json_decode($json);
-                                $iSize = @count($aFiles);
+                                $iSize = (is_null($aFiles)) ? 0 : @count($aFiles);
                                 // if the files have not been saved already,
                                 // move the files from tmp to the files folder
 

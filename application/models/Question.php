@@ -287,34 +287,8 @@ class Question extends LSActiveRecord
      */
     public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
     {
-        $oSurvey = $this->survey;
-        if (empty($oSurvey)) {
-            throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
-        }
-
-        // Get attribute values
-        $aAttributeValues = QuestionAttribute::getAttributesAsArrayFromDB($this->qid);
-
-        // Get question theme name if not specified
-        $sQuestionTheme = !empty($sQuestionThemeOverride) ? $sQuestionThemeOverride : $aAttributeValues['question_template'][''];
-
-        // Get advanced attribute definitions for the question type
-        $advancedOnly = true;
-        $aQuestionTypeAttributes = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
-
-        // Get question theme attribute definitions
-        $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $this->type);
-
-        // Merge the attributes with the question theme ones
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
-
-        uasort($aAttributes, 'categorySort');
-
-        // Fill attributes with values
-        $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
-        $aAttributes = $questionAttributeHelper->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
-
+        $aAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($this, $sLanguage, $sQuestionThemeOverride, true);
         return $aAttributes;
     }
 
@@ -683,7 +657,7 @@ class Question extends LSActiveRecord
         $gid_search = $this->gid;
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete") . '" href="#" role="button"'
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
                 . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
