@@ -619,18 +619,19 @@ class InstallerController extends CController
     }
 
     /**
-     * check for a specific PHPFunction, return HTML image
+     * Check for a specific PHP Function or class, return HTML image
      *
-     * @param string $sFunctionName
+     * @param string $sFunctionName Function or class name
      * @param string $sImage return
      * @return bool result
      */
-    public function checkPHPFunction($sFunctionName, &$sImage)
+    public function checkPHPFunctionOrClass($sFunctionName, &$sImage)
     {
-        $bExists = function_exists($sFunctionName);
+        $bExists = function_exists($sFunctionName) || class_exists(sFunctionName);
         $sImage = $this->check_HTML_image($bExists);
         return $bExists;
     }
+    
 
     /**
      * check if file or directory exists and is writeable, returns via parameters by reference
@@ -721,17 +722,17 @@ class InstallerController extends CController
 
 
         // mbstring library check
-        if (!$this->checkPHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('mb_convert_encoding', $aData['mbstringPresent'])) {
                     $bProceed = false;
         }
 
         // zlib library check
-        if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent'])) {
             $bProceed = false;
         }
 
         // JSON library check
-        if (!$this->checkPHPFunction('json_encode', $aData['bJSONPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('json_encode', $aData['bJSONPresent'])) {
                     $bProceed = false;
         }
 
@@ -772,19 +773,19 @@ class InstallerController extends CController
             $aData['gdPresent'] = $this->check_HTML_image(false);
         }
         // ldap library check
-        $this->checkPHPFunction('ldap_connect', $aData['ldapPresent']);
+        $this->checkPHPFunctionOrClass('ldap_connect', $aData['ldapPresent']);
 
         // php zip library check
-        $this->checkPHPFunction('zip_open', $aData['zipPresent']);
+        $this->checkPHPFunctionOrClass('ZipArchive', $aData['zipPresent']);
 
         // zlib php library check
-        $this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
+        $this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent']);
 
         // imap php library check
-        $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
+        $this->checkPHPFunctionOrClass('imap_open', $aData['bIMAPPresent']);
 
         // Sodium php check
-        $this->checkPHPFunction('sodium_crypto_sign_open', $aData['sodiumPresent']);
+        $this->checkPHPFunctionOrClass('sodium_crypto_sign_open', $aData['sodiumPresent']);
 
         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();

@@ -2351,7 +2351,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
-        if (!function_exists("zip_open")) {
+        if (!class_exists('ZipArchive')) {
             $ZIPimportAction = " onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'";
         }
 
