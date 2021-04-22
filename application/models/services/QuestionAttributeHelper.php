@@ -271,7 +271,7 @@ class QuestionAttributeHelper
      *               array(attributeName => array(languageCode => value, ...), ...)
      *               where languageCode is '' if no language is specified.
      */
-    private function getAttributesValuesFromDB($questionId)
+    public function getAttributesValuesFromDB($questionId)
     {
         return \QuestionAttribute::model()->getAttributesAsArrayFromDB($questionId);
     }
@@ -283,7 +283,7 @@ class QuestionAttributeHelper
      * @param string $questionType     the base question type
      * @return array    all question attribute definitions provided by the question theme
      */
-    private function getAttributesFromQuestionTheme($questionTheme, $questionType)
+    public function getAttributesFromQuestionTheme($questionTheme, $questionType)
     {
         return \QuestionTheme::getAdditionalAttrFromExtendedTheme($questionTheme, $questionType);
     }
@@ -295,7 +295,7 @@ class QuestionAttributeHelper
      * @param boolean $advancedOnly     if true, general attributes ('question_template', 'gid', ...) are excluded
      * @return array    all question attribute definitions provided by the question type
      */
-    private function getAttributesFromQuestionType($questionType, $advancedOnly = false)
+    public function getAttributesFromQuestionType($questionType, $advancedOnly = false)
     {
         return \QuestionAttribute::getQuestionAttributesSettings($questionType, $advancedOnly);
     }
