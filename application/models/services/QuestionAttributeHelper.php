@@ -10,35 +10,35 @@ class QuestionAttributeHelper
      * empty.
      * If an extended attribute's name cannot be determined, it's omitted.
      *
-     * @param array $aBaseAttributes    the base set of attributes
-     * @param array $aExtendedAttributes    the attributes to merge into the base set
+     * @param array $baseAttributes    the base set of attributes
+     * @param array $extendedAttributes    the attributes to merge into the base set
      *
      * @return array the merged attributes
      */
-    public function mergeQuestionAttributes($aBaseAttributes, $aExtendedAttributes)
+    public function mergeQuestionAttributes($baseAttributes, $extendedAttributes)
     {
-        $aAttributes = $aBaseAttributes;
-        foreach ($aExtendedAttributes as $key => $attribute) {
+        $attributes = $baseAttributes;
+        foreach ($extendedAttributes as $attribute) {
             // Omit the attribute if it has no name.
             // This shouldn't happen if sanitizeQuestionAttributes() is used.
             if (!isset($attribute['name'])) {
                 continue;
             }
 
-            $sAttributeName = $attribute['name'];
-            $sInputType = $attribute['inputtype'];
+            $attributeName = $attribute['name'];
+            $inputType = $attribute['inputtype'];
             // remove attribute if inputtype is empty
-            if (empty($sInputType)) {
-                unset($aAttributes[$sAttributeName]);
+            if (empty($inputType)) {
+                unset($attributes[$attributeName]);
             } else {
-                $aCustomAttribute = array_merge(
+                $customAttribute = array_merge(
                     \QuestionAttribute::getDefaultSettings(),
                     $attribute
                 );
-                $aAttributes[$sAttributeName] = $aCustomAttribute;
+                $attributes[$attributeName] = $customAttribute;
             }
         }
-        return $aAttributes;
+        return $attributes;
     }
 
     /**
@@ -47,38 +47,39 @@ class QuestionAttributeHelper
      *  - makes sure that attributes have a name (removes them if name cannot be determined)
      *  - replaces empty arrays (generally resulting from empty xml nodes) with null.
      *
-     * @param array $aAttributes the array of attributes to sanitize
+     * @param array $attributes the array of attributes to sanitize
      *
-     * @return array the array of sanitized attributes
+     * @return array<string,array> the array of sanitized attributes
      */
-    public function sanitizeQuestionAttributes($aAttributes)
+    public function sanitizeQuestionAttributes($attributes)
     {
-        $aSanitizedAttributes = [];
-        foreach ($aAttributes as $key => $aAttribute) {
+        /** @var array<string,array> An array of sanitized question attributes */
+        $sanitizedAttributes = [];
+        foreach ($attributes as $key => $attribute) {
             // Make sure the attribute has a name.
             if (!is_numeric($key)) {
-                $aAttribute['name'] = $key;
+                $attribute['name'] = $key;
             } else {
-                if (!isset($aAttribute['name'])) {
+                if (!isset($attribute['name'])) {
                     continue;
                 }
             }
 
             // Replace empty arrays with null
-            foreach ($aAttribute as $propertyName => $propertyValue) {
+            foreach ($attribute as $propertyName => $propertyValue) {
                 if ($propertyValue === []) {
-                    $aAttribute[$propertyName] = null;
+                    $attribute[$propertyName] = null;
                 }
             }
 
             // Make sure "options" have the expected structure
-            if (isset($aAttribute['options']['option']) && is_array($aAttribute['options']['option'])) {
-                $aAttribute['options'] = $aAttribute['options']['option'];
+            if (isset($attribute['options']['option']) && is_array($attribute['options']['option'])) {
+                $attribute['options'] = $attribute['options']['option'];
             }
 
-            $aSanitizedAttributes[$aAttribute['name']] = $aAttribute;
+            $sanitizedAttributes[$attribute['name']] = $attribute;
         }
-        return $aSanitizedAttributes;
+        return $sanitizedAttributes;
     }
 
     /**
@@ -89,176 +90,213 @@ class QuestionAttributeHelper
      * but the output is different: rewriteQuestionAttributeArray returns a name -> value array, while here
      * we return a complete definition map and the value as a piece of information mingled into it.
      *
-     * @param array $aAttributes the attributes to be filled
-     * @param array $aAttributeValues the values for the attributes
-     * @param array $aLanguages the languages to use for i18n attributes
+     * @param array $attributes the attributes to be filled
+     * @param array $attributeValues the values for the attributes
+     * @param array $languages the languages to use for i18n attributes
      *
      * @return array the same source attributes with their corresponding values (when available)
      */
-    public function fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages = [])
+    public function fillAttributesWithValues($attributes, $attributeValues, $languages = [])
     {
-        foreach ($aAttributes as $iKey => $aAttribute) {
-            if ($aAttribute['i18n'] == false) {
-                if (isset($aAttributeValues[$aAttribute['name']][''])) {
-                    $aAttributes[$iKey]['value'] = $aAttributeValues[$aAttribute['name']][''];
+        foreach ($attributes as $key => $attribute) {
+            if ($attribute['i18n'] == false) {
+                if (isset($attributeValues[$attribute['name']][''])) {
+                    $attributes[$key]['value'] = $attributeValues[$attribute['name']][''];
                 } else {
-                    $aAttributes[$iKey]['value'] = $aAttribute['default'];
+                    $attributes[$key]['value'] = $attribute['default'];
                 }
                 // Sanitize value in case it's saved as empty array
-                if ($aAttributes[$iKey]['value'] === []) {
-                    $aAttributes[$iKey]['value'] = null;
+                if ($attributes[$key]['value'] === []) {
+                    $attributes[$key]['value'] = null;
                 }
             } else {
-                foreach ($aLanguages as $sLanguage) {
-                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
-                        $aAttributes[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
+                foreach ($languages as $language) {
+                    if (isset($attributeValues[$attribute['name']][$language])) {
+                        $attributes[$key][$language]['value'] = $attributeValues[$attribute['name']][$language];
                     } else {
-                        $aAttributes[$iKey][$sLanguage]['value'] = $aAttribute['default'];
+                        $attributes[$key][$language]['value'] = $attribute['default'];
                     }
                     // Sanitize value in case it's saved as empty array
-                    if ($aAttributes[$iKey][$sLanguage]['value'] === []) {
-                        $aAttributes[$iKey][$sLanguage]['value'] = null;
+                    if ($attributes[$key][$language]['value'] === []) {
+                        $attributes[$key][$language]['value'] = null;
                     }
                 }
             }
         }
-        return $aAttributes;
+        return $attributes;
     }
 
     /**
      * Receives an array of question attributes and groups them by category.
      * Used by advanced settings widget.
      *
-     * @param array $aAttributes
+     * @param array $attributes
      * @return array Grouped question attributes, with category as array key
      */
-    public function groupAttributesByCategory($aAttributes)
+    public function groupAttributesByCategory($attributes)
     {
-        $aByCategory = [];
-        foreach ($aAttributes as $aAttribute) {
-            $aByCategory[$aAttribute['category']][] = $aAttribute;
+        $attributesByCategory = [];
+        foreach ($attributes as $attribute) {
+            $attributesByCategory[$attribute['category']][] = $attribute;
         }
-        return $aByCategory;
+        return $attributesByCategory;
     }
 
     /**
      * Returns the question attributes added by plugins ('newQuestionAttributes' event) for
      * the specified question type.
      *
-     * @param string $sQuestionType     the question type to retrieve the attributes for.
+     * @param string $questionType     the question type to retrieve the attributes for.
      *
      * @return array    the question attributes added by plugins
      */
-    public function getAttributesFromPlugin($sQuestionType)
+    public function getAttributesFromPlugin($questionType)
     {
-        $aAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
-        if (empty($aAttributes)) {
+        $allPluginAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
+        if (empty($allPluginAttributes)) {
             return [];
         }
 
         // Filter to get this question type setting
-        $aQuestionTypeAttributes = $this->filterAttributesByQuestionType($aAttributes, $sQuestionType);
+        $questionTypeAttributes = $this->filterAttributesByQuestionType($allPluginAttributes, $questionType);
 
         // Complete category if missing
-        $aQuestionTypeAttributes = $this->fillMissingCategory($aQuestionTypeAttributes, gT('Plugin'));
+        $questionTypeAttributes = $this->fillMissingCategory($questionTypeAttributes, gT('Plugin'));
 
-        $aQuestionTypeAttributes = $this->sanitizeQuestionAttributes($aQuestionTypeAttributes);
+        $questionTypeAttributes = $this->sanitizeQuestionAttributes($questionTypeAttributes);
 
-        return $aQuestionTypeAttributes;
+        return $questionTypeAttributes;
     }
 
     /**
      * Filters an array of question attribute definitions by question type
      *
-     * @param array $aAttributes    array of question attribute definitions to filter
-     * @param string $sQuestionType the question type that the attributes should apply to
+     * @param array $attributes    array of question attribute definitions to filter
+     * @param string $questionType the question type that the attributes should apply to
      *
      * @return array    an array containing only the question attributes that match the specified question type
      */
-    public function filterAttributesByQuestionType($aAttributes, $sQuestionType)
+    public function filterAttributesByQuestionType($attributes, $questionType)
     {
-        $aQuestionTypeAttributes = array_filter($aAttributes, function ($attribute) use ($sQuestionType) {
-            return $this->attributeAppliesToQuestionType($attribute, $sQuestionType);
+        $questionTypeAttributes = array_filter($attributes, function ($attribute) use ($questionType) {
+            return $this->attributeAppliesToQuestionType($attribute, $questionType);
         });
 
-        return $aQuestionTypeAttributes;
+        return $questionTypeAttributes;
     }
 
     /**
      * Check if question attribute applies to a specific question type
      *
-     * @param array $aAttribute     question attribute definition
-     * @param string $sQuestionType the question type that the attribute should apply to
+     * @param array $attribute     question attribute definition
+     * @param string $questionType the question type that the attribute should apply to
      *
      * @return bool     returns true if the question attribute applies to the specified question type
      */
-    public function attributeAppliesToQuestionType($aAttribute, $sQuestionType)
+    public function attributeAppliesToQuestionType($attribute, $questionType)
     {
-        return isset($aAttribute['types']) && stripos($aAttribute['types'], $sQuestionType) !== false;
+        return isset($attribute['types']) && stripos($attribute['types'], $questionType) !== false;
     }
 
     /**
      * Makes sure all the question attributes in an array have a category. If an attribute's
      * category is missing, it's filled with the specified category name.
      *
-     * @param array $aAttributes    array of question attribute definitions
+     * @param array $attributes    array of question attribute definitions
      * @param string $sCategoryName the category name to use if an attribute doesn't have one
      *
      * @return array    returns the array attributes with Category field complete
      */
-    public function fillMissingCategory($aAttributes, $sCategoryName)
+    public function fillMissingCategory($attributes, $categoryName)
     {
-        foreach ($aAttributes as &$aAttribute) {
-            if (empty($aAttribute['category'])) {
-                $aAttribute['category'] = $sCategoryName;
+        foreach ($attributes as &$attribute) {
+            if (empty($attribute['category'])) {
+                $attribute['category'] = $categoryName;
             }
         }
-        return $aAttributes;
+        return $attributes;
     }
 
     /**
      * This function returns an array of the attributes for the particular question
      * including their values set in the database
      *
-     * @param \Question $oQuestion  The question object
-     * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
-     * @param string|null $sQuestionThemeOverride   Name of the question theme to use instead of the question's current theme
+     * @param \Question $question  The question object
+     * @param string|null $language If you give a language then only the attributes for that language are returned
+     * @param string|null $questionThemeOverride   Name of the question theme to use instead of the question's current theme
      * @param boolean $advancedOnly If set to true, only the advanced attributes will be returned
      * @return array
      */
-    public function getQuestionAttributesWithValues($oQuestion, $sLanguage = null, $sQuestionThemeOverride = null, $advancedOnly = false)
+    public function getQuestionAttributesWithValues($question, $language = null, $questionThemeOverride = null, $advancedOnly = false)
     {
-        $oSurvey = $oQuestion->survey;
-        if (empty($oSurvey)) {
-            throw new \Exception('This question has no survey - qid = ' . json_encode($oQuestion->qid));
+        $survey = $question->survey;
+        if (empty($survey)) {
+            throw new \Exception('This question has no survey - qid = ' . json_encode($question->qid));
         }
 
         // Get attribute values
-        $aAttributeValues = \QuestionAttribute::getAttributesAsArrayFromDB($oQuestion->qid);
+        $attributeValues = $this->getAttributesValuesFromDB($question->qid);
 
         // Get question theme name if not specified
-        $sQuestionTheme = !empty($aAttributeValues['question_template']['']) ? $aAttributeValues['question_template'][''] : 'core';
-        $sQuestionTheme = !empty($sQuestionThemeOverride) ? $sQuestionThemeOverride : $sQuestionTheme;
+        $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
+        $questionTheme = !empty($questionThemeOverride) ? $questionThemeOverride : $questionTheme;
 
         // Get advanced attribute definitions for the question type
-        $aQuestionTypeAttributes = \QuestionAttribute::getQuestionAttributesSettings($oQuestion->type, $advancedOnly);
+        $questionTypeAttributes = $this->getAttributesFromQuestionType($question->type, $advancedOnly);
 
         // Get question theme attribute definitions
-        $aThemeAttributes = \QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+        $questionThemeAttributes = $this->getAttributesFromQuestionTheme($questionTheme, $question->type);
 
         // Merge the attributes with the question theme ones
-        $aAttributes = $this->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
+        $attributes = $this->mergeQuestionAttributes($questionTypeAttributes, $questionThemeAttributes);
 
         // Get question attributes from plugins ('newQuestionAttributes' event)
-        $aPluginAttributes = $this->getAttributesFromPlugin($oQuestion->type);
-        $aAttributes = $this->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
+        $pluginAttributes = $this->getAttributesFromPlugin($question->type);
+        $attributes = $this->mergeQuestionAttributes($attributes, $pluginAttributes);
 
-        uasort($aAttributes, 'categorySort');
+        uasort($attributes, 'categorySort');
 
         // Fill attributes with values
-        $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
-        $aAttributes = $this->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
+        $languages = is_null($language) ? $survey->allLanguages : [$language];
+        $attributes = $this->fillAttributesWithValues($attributes, $attributeValues, $languages);
 
-        return $aAttributes;
+        return $attributes;
+    }
+
+    /**
+     * Get all saved attribute values for one question as array
+     *
+     * @param int $questionId  the question id
+     * @return array the returning array structure will be like
+     *               array(attributeName => array(languageCode => value, ...), ...)
+     *               where languageCode is '' if no language is specified.
+     */
+    private function getAttributesValuesFromDB($questionId)
+    {
+        return \QuestionAttribute::model()->getAttributesAsArrayFromDB($questionId);
+    }
+
+    /**
+     * Get the definitions of question attributes from Question Theme
+     *
+     * @param string $questionTheme    the name of the question theme
+     * @param string $questionType     the base question type
+     * @return array    all question attribute definitions provided by the question theme
+     */
+    private function getAttributesFromQuestionTheme($questionTheme, $questionType)
+    {
+        return \QuestionTheme::getAdditionalAttrFromExtendedTheme($questionTheme, $questionType);
+    }
+
+    /**
+     * Get the definitions of question attributes from base question type
+     *
+     * @param string $questionType     the base question type
+     * @param boolean $advancedOnly     if true, general attributes ('question_template', 'gid', ...) are excluded
+     * @return array    all question attribute definitions provided by the question type
+     */
+    private function getAttributesFromQuestionType($questionType, $advancedOnly = false)
+    {
+        return \QuestionAttribute::getQuestionAttributesSettings($questionType, $advancedOnly);
     }
 }
