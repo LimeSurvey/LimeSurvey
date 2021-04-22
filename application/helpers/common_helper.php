@@ -4935,7 +4935,7 @@ function isZipBomb($zip_filename)
  * @param string $filename
  * @return int
  */
-public function get_zip_originalsize($filename)
+function get_zip_originalsize($filename)
 {
 
     if (class_exists('ZipArchive')) {
