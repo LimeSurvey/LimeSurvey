@@ -287,38 +287,8 @@ class Question extends LSActiveRecord
      */
     public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
     {
-        $oSurvey = $this->survey;
-        if (empty($oSurvey)) {
-            throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
-        }
-
-        // Get attribute values
-        $aAttributeValues = QuestionAttribute::getAttributesAsArrayFromDB($this->qid);
-
-        // Get question theme name if not specified
-        $sQuestionTheme = !empty($sQuestionThemeOverride) ? $sQuestionThemeOverride : $aAttributeValues['question_template'][''];
-
-        // Get advanced attribute definitions for the question type
-        $advancedOnly = true;
-        $aQuestionTypeAttributes = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
-
-        // Get question theme attribute definitions
-        $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $this->type);
-
-        // Merge the attributes with the question theme ones
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
-        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
-
-        // Get question attributes from plugins ('newQuestionAttributes' event)
-        $aPluginAttributes = $questionAttributeHelper->getAttributesFromPlugin($this->type);
-        $aAttributes = $questionAttributeHelper->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
-
-        uasort($aAttributes, 'categorySort');
-
-        // Fill attributes with values
-        $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
-        $aAttributes = $questionAttributeHelper->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
-
+        $aAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($this, $sLanguage, $sQuestionThemeOverride, true);
         return $aAttributes;
     }
 
