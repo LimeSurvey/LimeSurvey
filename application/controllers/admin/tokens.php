@@ -666,27 +666,24 @@ class tokens extends Survey_Common_Action
             }
 
             // completed
-            if (trim($request->getPost('completed')) == 'N') {
+            if (trim($request->getPost('completed')) === 'N') {
                 $_POST['completed'] = 'N';
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('completed')));
-                $_POST['completed'] = $datetimeobj->format('Y-m-d H:i');
+                $_POST['completed'] = 'Y';
             }
 
             //sent
-            if (trim($request->getPost('sent')) == 'N') {
+            if (trim($request->getPost('sent')) === 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('sent')));
-                $_POST['sent'] = $datetimeobj->format('Y-m-d H:i');
+                $_POST['completed'] = 'Y';
             }
 
             // remindersent
-            if (trim($request->getPost('remindersent')) == 'N') {
+            if (trim($request->getPost('remindersent')) === 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('remindersent')));
-                $_POST['remindersent'] = $datetimeobj->format('Y-m-d H:i');
+                $_POST['completed'] = 'Y';
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
