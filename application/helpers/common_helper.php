@@ -4327,7 +4327,7 @@ function doFooter()
 * @param int $surveyid
 * @return string
 */
-function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
+function getSurveyUserList($bIncludeSuperAdmins, $surveyid)
 {
 
     $surveyid = (int) $surveyid;
@@ -4373,11 +4373,11 @@ function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
 
 /**
  * Return HTML <option> list of user groups
- * @param string $outputformat
+ * @param string $outputformat 'htmloptions' or 'simpleugidarray' (todo: check if this is correct)
  * @param int $surveyid
  * @return string|array
  */
-function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
+function getSurveyUserGroupList($outputformat, $surveyid)
 {
 
     $surveyid = sanitize_int($surveyid);

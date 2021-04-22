@@ -1297,7 +1297,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 /**
  * @param string $sTemplateViewPath
  */
-function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
+function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath)
 {
     // Template settings
     $surveyid = $thissurvey['sid'];
@@ -1305,7 +1305,7 @@ function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
     //$oTemplate->registerAssets();
 
     $aError = array();
-    $aError['title']      = ($sTitle != '') ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
+    $aError['title']      = (!empty(trim($sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
