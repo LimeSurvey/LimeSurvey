@@ -204,7 +204,7 @@ class InstallerConfigForm extends CFormModel
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
         $this->isPhpLdapPresent = function_exists('ldap_connect');
         $this->isPhpImapPresent = function_exists('imap_open');
-        $this->isPhpZipPresent = function_exists('zip_open');
+        $this->isPhpZipPresent = class_exists('ZipArchive');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
 
         if (function_exists('gd_info')) {
