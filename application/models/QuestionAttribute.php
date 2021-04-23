@@ -222,84 +222,34 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         $oQuestion = Question::model()->find("qid=:qid", ['qid' => $iQuestionID]);
-        if ($oQuestion) {
-            if (!$survey) {
-                $survey = Survey::model()->findByPk($oQuestion->sid);
-            }
-            if ($sLanguage) {
-                $aLanguages = [$sLanguage];
-            } else {
-                $aLanguages = $survey->allLanguages;
-            }
-            // For some reason this happened in bug #10684
-            if ($oQuestion->type == null) {
-                throw new \CException("Question is corrupt: no type defined for question " . $iQuestionID);
-            }
-            $aAttributeValues = self::getAttributesAsArrayFromDB($iQuestionID);
-            $aAttributeFromXmlOrDefault = self::getQuestionAttributesSettings($oQuestion->type); //from xml files
-            $aAttributeNames = self::addAdditionalAttributesFromExtendedTheme($aAttributeFromXmlOrDefault, $oQuestion);
-            // Fill aQuestionAttributes with default attribute or with aAttributeValues
-            $aQuestionAttributes = self::rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages);
-        } else {
+        if (empty($oQuestion)) {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-        if (EmCacheHelper::useCache()) {
-            EmCacheHelper::set($cacheKey, $aQuestionAttributes);
-        }
 
-        return $aQuestionAttributes;
-    }
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aQuestionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage);
 
-    /**
-     * Returns an array with attributes like
-     *   $aQuestionAttributes[$aAttribute['name']]['expression'] this will be overwritten if there are no languages and
-     *   will be set to the default value of the attribute if there is any --> e.g. $aQuestionAttributes["question_template"] = "core"
-     *   If there are languages the next array element will be appended to the result array
-     *   $aQuestionAttributes[$aAttribute['name']][$sLanguage]
-     *
-     * @param array $aAttributeNames array of attributes (see addAdditionalAttributesFromExtendedTheme())
-     * @param array $aAttributeValues array of attribute values (see getAttributesAsArrayFromDB())
-     * @param array $aLanguages  like $aLanguages[0] = 'en'
-     * @return array
-     */
-    private static function rewriteQuestionAttributeArray($aAttributeNames, $aAttributeValues, $aLanguages)
-    {
-        $aQuestionAttributes = array();
-        foreach ($aAttributeNames as $aAttribute) {
-            // Initializes expression. This is overwritten if no i18n definition found.
-            // Is that expected?
-            $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
+        $aLanguages = empty($sLanguage) ? $oQuestion->survey->allLanguages : [$sLanguage];
 
-            // convert empty array to empty string
-            if (empty($aAttribute['default']) && is_array($aAttribute['default'])) {
-                $aAttribute['default'] = '';
-            }
-
+        $aAttributeValues = [];
+        foreach ($aQuestionAttributes as $aAttribute) {
             if ($aAttribute['i18n'] == false) {
-                if (isset($aAttributeValues[$aAttribute['name']][''])) {
-                    $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
-                } elseif (isset($aAttributeValues[$aAttribute['name']])) {
-                    /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
-                    $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
-                } else {
-                    $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];
-                }
+                $aAttributeValues[$aAttribute['name']] = $aAttribute['value'];
             } else {
-                foreach ($aLanguages as $sLanguage) {
-                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
-                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                    } elseif (isset($aAttributeValues[$aAttribute['name']][''])) {
-                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttributeValues[$aAttribute['name']][''];
-                    } else {
-                        $aQuestionAttributes[$aAttribute['name']][$sLanguage] = $aAttribute['default'];
+                foreach ($aLanguages as $language) {
+                    if (isset($aAttribute[$language]['value'])) {
+                        $aAttributeValues[$aAttribute['name']][$language] = $aAttribute[$language]['value'];
                     }
                 }
             }
         }
 
-        return $aQuestionAttributes;
-    }
+        if (EmCacheHelper::useCache()) {
+            EmCacheHelper::set($cacheKey, $aAttributeValues);
+        }
 
+        return $aAttributeValues;
+    }
 
     /**
      * Get whole existing attribute for one question as array

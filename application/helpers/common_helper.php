@@ -18,7 +18,8 @@ Yii::import('application.helpers.sanitize_helper', true);
 
 
 /**
- * Translation helper function
+ * Returns $sToTranslate translated to $sLanguage (defaults to lang set in session) escaped with $sEscapeMode
+ *
  * @param string $sToTranslate
  * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
  * @param string $sLanguage
@@ -30,7 +31,8 @@ function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 }
 
 /**
- * Translation helper function which outputs right away.
+ * As gT(), but echoes directly
+ *
  * @param string $sToTranslate
  * @param string $sEscapeMode
  * @return void

@@ -53,14 +53,13 @@ class QuestionAttributeHelper
      */
     public function sanitizeQuestionAttributes($aAttributes)
     {
-        foreach ($aAttributes as $key => &$aAttribute) {
-            // Make sure the attribute has a name. If it doesn't try to use the array key as name,
-            // or remove the attribute if the key is numeric.
-            if (!isset($aAttribute['name'])) {
-                if (!is_numeric($key)) {
-                    $aAttribute['name'] = $key;
-                } else {
-                    unset($aAttributes[$key]);
+        $aSanitizedAttributes = [];
+        foreach ($aAttributes as $key => $aAttribute) {
+            // Make sure the attribute has a name.
+            if (!is_numeric($key)) {
+                $aAttribute['name'] = $key;
+            } else {
+                if (!isset($aAttribute['name'])) {
                     continue;
                 }
             }
@@ -71,8 +70,15 @@ class QuestionAttributeHelper
                     $aAttribute[$propertyName] = null;
                 }
             }
+
+            // Make sure "options" have the expected structure
+            if (isset($aAttribute['options']['option']) && is_array($aAttribute['options']['option'])) {
+                $aAttribute['options'] = $aAttribute['options']['option'];
+            }
+
+            $aSanitizedAttributes[$aAttribute['name']] = $aAttribute;
         }
-        return $aAttributes;
+        return $aSanitizedAttributes;
     }
 
     /**
@@ -207,6 +213,52 @@ class QuestionAttributeHelper
                 $aAttribute['category'] = $sCategoryName;
             }
         }
+        return $aAttributes;
+    }
+
+    /**
+     * This function returns an array of the attributes for the particular question
+     * including their values set in the database
+     *
+     * @param \Question $oQuestion  The question object
+     * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
+     * @param string|null $sQuestionThemeOverride   Name of the question theme to use instead of the question's current theme
+     * @param boolean $advancedOnly If set to true, only the advanced attributes will be returned
+     * @return array
+     */
+    public function getQuestionAttributesWithValues($oQuestion, $sLanguage = null, $sQuestionThemeOverride = null, $advancedOnly = false)
+    {
+        $oSurvey = $oQuestion->survey;
+        if (empty($oSurvey)) {
+            throw new \Exception('This question has no survey - qid = ' . json_encode($oQuestion->qid));
+        }
+
+        // Get attribute values
+        $aAttributeValues = \QuestionAttribute::getAttributesAsArrayFromDB($oQuestion->qid);
+
+        // Get question theme name if not specified
+        $sQuestionTheme = !empty($aAttributeValues['question_template']['']) ? $aAttributeValues['question_template'][''] : 'core';
+        $sQuestionTheme = !empty($sQuestionThemeOverride) ? $sQuestionThemeOverride : $sQuestionTheme;
+
+        // Get advanced attribute definitions for the question type
+        $aQuestionTypeAttributes = \QuestionAttribute::getQuestionAttributesSettings($oQuestion->type, $advancedOnly);
+
+        // Get question theme attribute definitions
+        $aThemeAttributes = \QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+
+        // Merge the attributes with the question theme ones
+        $aAttributes = $this->mergeQuestionAttributes($aQuestionTypeAttributes, $aThemeAttributes);
+
+        // Get question attributes from plugins ('newQuestionAttributes' event)
+        $aPluginAttributes = $this->getAttributesFromPlugin($oQuestion->type);
+        $aAttributes = $this->mergeQuestionAttributes($aAttributes, $aPluginAttributes);
+
+        uasort($aAttributes, 'categorySort');
+
+        // Fill attributes with values
+        $aLanguages = is_null($sLanguage) ? $oSurvey->allLanguages : [$sLanguage];
+        $aAttributes = $this->fillAttributesWithValues($aAttributes, $aAttributeValues, $aLanguages);
+
         return $aAttributes;
     }
 }
