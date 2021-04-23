@@ -1,11 +1,30 @@
 <?php
 
-use Twig\Util\TemplateDirIterator;
+/*
+ * This file is part of Twig.
+ *
+ * (c) Fabien Potencier
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-class_exists('Twig\Util\TemplateDirIterator');
+namespace Twig\Util;
 
-if (\false) {
-    class Twig_Util_TemplateDirIterator extends TemplateDirIterator
+/**
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
+class TemplateDirIterator extends \IteratorIterator
+{
+    public function current()
     {
+        return file_get_contents(parent::current());
+    }
+
+    public function key()
+    {
+        return (string) parent::key();
     }
 }
+
+class_alias('Twig\Util\TemplateDirIterator', 'Twig_Util_TemplateDirIterator');

@@ -1,11 +1,25 @@
 <?php
 
-use Twig\Sandbox\SecurityError;
+/*
+ * This file is part of Twig.
+ *
+ * (c) Fabien Potencier
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-class_exists('Twig\Sandbox\SecurityError');
+namespace Twig\Sandbox;
 
-if (\false) {
-    class Twig_Sandbox_SecurityError extends SecurityError
-    {
-    }
+use Twig\Error\Error;
+
+/**
+ * Exception thrown when a security error occurs at runtime.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
+class SecurityError extends Error
+{
 }
+
+class_alias('Twig\Sandbox\SecurityError', 'Twig_Sandbox_SecurityError');
