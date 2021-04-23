@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitddb1a145e450f862353420acc5153e40
 {
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Twig\\' => 5,
+        ),
         'L' => 
         array (
             'LimeSurvey\\PluginManager\\' => 25,
@@ -16,6 +20,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     );
 
     public static $prefixDirsPsr4 = array (
+        'Twig\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/third_party/Twig',
+        ),
         'LimeSurvey\\PluginManager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
