@@ -99,7 +99,7 @@ $this->renderPartial('super/fullpagebar_view', array(
                                                 <td class="col-md-1">
 
                                                     <!-- Export -->
-                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
+                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && class_exists('ZipArchive')):?>
                                                         <a class="btn btn-default  btn-block" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
@@ -155,7 +155,7 @@ $this->renderPartial('super/fullpagebar_view', array(
                                             <tr class="odd">
                                                 <td class="col-md-10"><?php echo $aDeprecatedTheme['name']; ?></td>
                                                 <td class="col-md-2">
-                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
+                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && class_exists('ZipArchive')):?>
                                                         <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
