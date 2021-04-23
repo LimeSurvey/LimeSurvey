@@ -65,7 +65,7 @@ abstract class AbstractExtension implements ExtensionInterface
      */
     public function getName()
     {
-        return static::class;
+        return \get_class($this);
     }
 }
 
