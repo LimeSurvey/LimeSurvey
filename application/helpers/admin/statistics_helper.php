@@ -487,22 +487,22 @@ function buildSelects($allfields, $surveyid, $language)
                 //timestamp equals
                 $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                    $sDateValue = $datetimeobj->convert("Y-m-d");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                    $sDateValue = $datetimeobj->format("Y-m-d");
 
                     $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
                 } else {
                     //timestamp less than
                     if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
                     }
 
                     //timestamp greater than
                     if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
-                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
+                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
+                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }
@@ -3524,15 +3524,11 @@ class statistics_helper
         $sOutputHTML .= '</div>';
 
         $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-        if ($sGoogleMapsAPIKey != '') {
-            $sGoogleMapsAPIKey = '&key=' . $sGoogleMapsAPIKey;
+        if (!empty($sGoogleMapsAPIKey)) {
+            $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
-        $sSSL = '';
-        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-            $sSSL = 's';
-        }
-        $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
-        . "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
+
+        $sOutputHTML .= "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
 
 
         return $sOutputHTML;
@@ -3745,15 +3741,10 @@ class statistics_helper
         }    //end if -> show summary results
 
         $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-        if ($sGoogleMapsAPIKey != '') {
-            $sGoogleMapsAPIKey = '&key=' . $sGoogleMapsAPIKey;
+        if (!empty($sGoogleMapsAPIKey)) {
+            $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
         }
-        $sSSL = '';
-        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-            $sSSL = 's';
-        }
-        $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
-        . "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
+        $sOutputHTML .= "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
 
 
         return $sOutputHTML;
@@ -4087,15 +4078,11 @@ class statistics_helper
                 break;
             case 'html':
                 $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-                if ($sGoogleMapsAPIKey != '') {
-                    $sGoogleMapsAPIKey = '&key=' . $sGoogleMapsAPIKey;
+                if (!empty($sGoogleMapsAPIKey)) {
+                    $sOutputHTML .= "<script type=\"text/javascript\" src=\"//maps.googleapis.com/maps/api/js?sensor=false&key={$sGoogleMapsAPIKey}\"></script>\n";
                 }
-                $sSSL = '';
-                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-                    $sSSL = 's';
-                }
-                $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
-                . "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
+
+                $sOutputHTML .= "<script type=\"text/javascript\">var site_url='" . Yii::app()->baseUrl . "';var temppath='" . Yii::app()->getConfig("tempurl") . "';var imgpath='" . Yii::app()->getConfig('adminimageurl') . "';var aStatData=" . ls_json_encode($aStatisticsData) . "</script>";
                 return $sOutputHTML;
 
                 break;

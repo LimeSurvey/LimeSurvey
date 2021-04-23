@@ -42,14 +42,14 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" control-label"  for='tokenlength'><?php  eT("Set access code length to:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength === '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength === '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $tokenlength == '-1' ? 'hide' : 'show'); ?>" type='text' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $tokenlength == '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
                         <label class=" control-label content-center col-sm-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'tokenlengthbutton',
-                            'value'=> ($bShowInherited && $tokenlength === '-1' ? 'Y' : 'N'),
+                            'value'=> ($bShowInherited && $tokenlength == '-1' ? 'Y' : 'N'),
                             'selectOptions'=>$optionsOnOff,
                             'htmlOptions' => array(
                                 'class' => 'text-option-inherit'
@@ -108,7 +108,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                     ));
                     /*$this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'tokenanswerspersistenceModal',
-                        'header' => gt('Error','unescaped'),
+                        'header' => gT('Error','unescaped'),
                         'content' => '<p>'.gT("This option can't be used if the -Anonymized responses- option is active.").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));*/
@@ -161,7 +161,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                     ));
                     $this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'htmlemailModal',
-                        'header' => gt('Error','unescaped'),
+                        'header' => gT('Error','unescaped'),
                         'content' => '<p>'.gT("If you change the email format, you'll have to review your email templates to fit the new format").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));
@@ -188,13 +188,13 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
     <?php
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
-        'header' => gt('Warning','unescaped'),                    
+        'header' => gT('Warning','unescaped'),                    
         'content' => '<p>'.gT("You can't use 'Anonymized responses' when participant-based response persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
-        'header' => gt('Warning','unescaped'),
+        'header' => gT('Warning','unescaped'),
         'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));

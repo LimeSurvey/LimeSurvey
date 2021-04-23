@@ -85,6 +85,8 @@ class Question extends LSActiveRecord
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
     public $gid;
+    /** Set defaut relevance **/
+    public $relevance ='';
 
     /**
      * @inheritdoc
@@ -280,67 +282,14 @@ class Question extends LSActiveRecord
      * including their values set in the database
      *
      * @param string|null $sLanguage If you give a language then only the attributes for that language are returned
+     * @param string|null $sQuestionThemeOverride   Name of the question theme to use instead of the question's current theme
      * @return array
      */
-    public function getAdvancedSettingsWithValues($sLanguage = null)
+    public function getAdvancedSettingsWithValues($sLanguage = null, $sQuestionThemeOverride = null)
     {
-        $oSurvey = $this->survey;
-        if (empty($oSurvey)) {
-            throw new Exception('This question has no survey - qid = ' . json_encode($this->qid));
-        }
-        if (is_null($sLanguage)) {
-            $aLanguages = array_merge(
-                [$oSurvey->language],
-                $oSurvey->additionalLanguages
-            );
-        } else {
-            $aLanguages = array($sLanguage);
-        }
-        $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($this->qid, $sLanguage);
-        // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $advancedOnly = true;
-        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($this->type, $advancedOnly);
-
-        // If the question has a custom template, we first check if it provides custom attributes
-        $aAttributeNames = self::getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $this);
-
-        uasort($aAttributeNames, 'categorySort');
-        foreach ($aAttributeNames as $iKey => $aAttribute) {
-            if ($aAttribute['i18n'] == false) {
-                if (isset($aAttributeValues[$aAttribute['name']])) {
-                    $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
-                } else {
-                    $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
-                }
-            } else {
-                foreach ($aLanguages as $sLanguage) {
-                    if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
-                        $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                    } else {
-                        $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
-                    }
-                }
-            }
-        }
-
-        return $aAttributeNames;
-    }
-
-    /**
-     * As getAdvancedSettingsWithValues but with category as array key.
-     * Used by advanced settings widget.
-     *
-     * @param string|null $sLanguage
-     * @return array
-     */
-    public function getAdvancedSettingsWithValuesByCategory($sLanguage = null)
-    {
-        $aAttributeNames = $this->getAdvancedSettingsWithValues($sLanguage);
-        $aByCategory = [];
-        foreach ($aAttributeNames as $aAttribute) {
-            $aByCategory[$aAttribute['category']][] = $aAttribute;
-        }
-        return $aByCategory;
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $aAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($this, $sLanguage, $sQuestionThemeOverride, true);
+        return $aAttributes;
     }
 
     /**
@@ -351,6 +300,9 @@ class Question extends LSActiveRecord
      * @param array $aAttributeValues  $attributeValues['question_template'] != 'core', only if this is true the function changes something
      * @param Question $oQuestion      this is needed to check if a questionTemplate has custom attributes
      * @return mixed  returns the incoming parameter $aAttributeNames or
+     *
+     * @deprecated use QuestionTheme::getAdditionalAttrFromExtendedTheme() to retrieve question theme attributes and
+     *             QuestionAttributeHelper->mergeQuestionAttributes() to merge with base attributes.
      */
     public static function getQuestionTemplateAttributes($aAttributeNames, $aAttributeValues, $oQuestion)
     {
@@ -705,7 +657,7 @@ class Question extends LSActiveRecord
         $gid_search = $this->gid;
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete") . '" href="#" role="button"'
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
                 . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))

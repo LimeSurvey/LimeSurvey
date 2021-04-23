@@ -134,7 +134,7 @@ class User extends LSActiveRecord
             'dateformat' => gT('Date format'),
             'created' => gT('Created at'),
             'modified' => gT('Modified at'),
-            'lastLogin' => gT('Last recorded login'),
+            'last_login' => gT('Last recorded login'),
         ];
     }
 
@@ -613,7 +613,7 @@ class User extends LSActiveRecord
                 data-user='" . $this->full_name . "' 
                 data-action='deluser' 
                 data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--takeown-" . $this->uid . "\")' 
-                data-message='" . gt('Do you want to take ownerschip of this user?') . "'>
+                data-message='" . gT('Do you want to take ownerschip of this user?') . "'>
                 <span data-toggle='tooltip' title='" . gT("Take ownership") . "'>
                     <i class='fa fa-hand-rock-o'></i>
                 </span>    
@@ -753,7 +753,7 @@ class User extends LSActiveRecord
     public function getLastloginFormatted()
     {
         
-        $lastLogin = $this->lastLogin;
+        $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
         }

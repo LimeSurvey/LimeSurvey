@@ -34,6 +34,136 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.5.0 (build 210412) to 4.5.1 (build 210420) April 19, 2021
+-Fixed issue: Don't validate boolean attribute as integer for question theme (Olle Haerstedt)
+-Fixed issue: Add missing default sort order for question theme grid view (Olle Haerstedt)
+-Fixed issue #17233: Inheritance broken for some survey properties when using Postgres SQL (Carsten Schmitz)
+-Fixed issue #16669: getQuestionAttributes function don't get the plugins attribute (#1843) (Gabriel Jenik)
+-Fixed issue #14430: Usage of obsolete HTML (Jessica Höck)
+-Fixed issue #14154: List questions - hover over delete button (Jessica Höck)
+#Updated translation: Portuguese (Portugal) by c_schmitz, mauriciofurtado, marcelovincenzi, cassiofs, samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 4.4.16 (build 210406) to 4.5.0 (build 210412) April 12, 2021
++New feature: Autodetection of path in SPSS syntax (#1297) (Joost1982)
++New feature #16832: Add user group functions to LimeSurveyAPI (Florian Döring)
++New feature #16777: Add list_survey_groups to RemoteControl API (#1660) (Gabriel Jenik)
++New feature #13853: Allow test & basic feedback of the email functionality. (#1769) (Gabriel Jenik)
+-Fixed issue: Stata export now properly supports UTF-8 charset (小白)
+-Fixed issue #17230: Inconsistent 'willRun' state of the survey when Start date is undefined (Carsten Schmitz)
+-Fixed issue #17221: Check data integrity crash with SQL error when # is use in the name of field (Olle Haerstedt)
+-Fixed issue #17195: When attaching PDF to email invitation, full path  is kept as value of a hidden input (#1816) (Gabriel Jenik)
+-Fixed issue #17191: Remove unsused libraries (#1814) (Gabriel Jenik)
+-Fixed issue #17188: {GROUPNAME} and other variables not rendered (#1821) (Gabriel Jenik)
+-Fixed issue #17158: Question type: List (Radio) does not save state (Olle Haerstedt)
+-Fixed issue #17126: encrypted question causes error when multiple groups are used or question by question mode is activated (Patrick Teichmann)
+-Fixed issue #17120: After picking a new question theme, the settings are not properly updated (#1842) (Gabriel Jenik)
+-Fixed issue #17093: Unable to fix invalid survey after import bad TSV (#1774) (Denis Chenu)
+-Fixed issue #17082: text display in plain italics not possible (#1787) (Gabriel Jenik)
+-Fixed issue #16958: User with roles can not have more rights (#1835) (Gabriel Jenik)
+-Fixed issue #16782: Survey groups : theme options: same theme name appear multiple time in list (#1823) (Gabriel Jenik)
+-Fixed issue #15892: "List with comment" appears as unanswered in question index if comment is not given (Fabian Lehner)
+-Fixed issue #15819: Missing localization for group_name in add_group, set_group_properties, import_group (#1793) (Gabriel Jenik)
+-Fixed issue # 17207: When attaching using the theme editor, full path is displayed on the screen (#1841) (Gabriel Jenik)
+-Fixed issue #17093: Unable to fix invalid survey after import bad TSV (Denis Chenu)
+
+
+Changes from 4.4.15 (build 210329) to 4.4.16 (build 210406) April 6, 2021
+-Fixed issue: Repeat headings count was off by one for first block of subqestions (Carsten Schmitz)
+-Fixed issue #17213: Admin backend: Color of selected options is confusing - Admin Theme Sunset Orange (Jessica Höck)
+-Fixed issue #17219: Filter on numeric fields in response view does not work on Postgres (Carsten Schmitz)
+-Fixed issue #17212: Confusing mandatory property for participant attribute fields (Carsten Schmitz)
+-Fixed issue #17211: list_participants returns by IDs by offset, not by ID as documentation says (Carsten Schmitz)
+-Fixed issue #17202: SPSS Export issues in version 4.4.13 #1827 (Gabriel Jenik)
+-Fixed issue #16621: In RemoteControl the parameter conditions and token for list_participants() do not allow multiple token IDs anymore (#1828) (Carsten Schmitz)
+-Fixed issue #16480: Empty/invalid brand/background logo causes loops on the welcome page (Carsten Schmitz)
+-Fixed issue #15768: After adding new admin users the user it not redirected to setting user rights afterwards (#1824) (Gabriel Jenik)
+-Fixed issue #15740: Update from 3.x.x to 4.0.0 fails if custom uploaddir is set (Carsten Schmitz)
+-Fixed issue #15051: When setting condition on Survey Participant Attributes the expression stored in DB is invalid (#1832) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Mongolian by batpurev
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by joooo_ah, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by joooo_ah, c_schmitz
+#Updated translation: German (Informal) by eddylackmann, c_schmitz, joooo_ah, Joffm
+#Updated translation: German (Informal) by eddylackmann, c_schmitz, joooo_ah
+#Updated translation: German (Informal) by eddylackmann, c_schmitz
+#Updated translation: German (Informal) by c_schmitz, eddylackmann
+#Updated translation: German (Informal) by c_schmitz, Akaer, actxcellence, eddylackmann, joooo_ah
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Czech by slansky, jelen1
+#Updated translation: Czech by jelen1
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, VBraun, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Bulgarian by peterx
+
+
+Changes from 4.4.14 (build 210322) to 4.4.15 (build 210329) March 29, 2021
++New feature: Include 2FA Plugin in Core application (Eddy)
+-Fixed issue: Unable to upload heic or heiv files (and other) (#1421) (Carsten Schmitz)
+-Fixed issue: RemoteControl add_participants did not return the actual saved values or errors (Carsten Schmitz)
+-Fixed issue: RemoteControl add_participants did not return anything (arnaudbore)
+-Fixed issue: Google Maps being loaded even though no API key is set (Carsten Schmitz)
+-Fixed issue: CPDB Participant cannot be copied to survey if attributes are encrypted (Patrick Teichmann)
+-Fixed issue: 2FA Plugin scripts are not loading (Eddy)
+-Fixed issue #17198: Update Theme Permission Language (#1812) (Carsten Schmitz)
+-Fixed issue #17144: Can't edit questions after import (Carsten Schmitz)
+-Fixed issue #17139: Invalid URL in Check integrity (Carsten Schmitz)
+-Fixed issue #17121: Custom question preview image not shown (Gabriel Jenik)
+-Fixed issue #16914: Check if localization-related options are correctly imported. (#1818) (Gabriel Jenik)
+-Fixed issue #16904: Check attributes are escaped properly (#1803) (Gabriel Jenik)
+-Fixed issue #16673: afterFindSurvey fired to many times (Patrick Teichmann)
+-Fixed issue #16575: Token not marked as answered if email encryption is turned on (Patrick Teichmann)
+-Fixed issue #16499: CPDB table not accessible after copying unencrypted Participant to CPDB (Patrick Teichmann)
+-Fixed issue #16462: Relavance Equation not in Sync with Condition Designed (#1809) (Gabriel Jenik)
+-Fixed issue #15642: Checking data integrity erroneously modifies column names in result tables (Carsten Schmitz)
+-* Fixed issue #16462: Relavance Equation not in Sync with Condition Designed (Gabriel Jenik)
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by slansky, c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+
+
+Changes from 4.4.13 (build 210315) to 4.4.14 (build 210322) March 22, 2021
+-Fixed issue: Set Create question group and question as default option. (Jessica Höck)
+-Fixed issue: Display issue in question group bar when deletion button is deactivated (Carsten Schmitz)
+-Fixed issue #17197: Cannot open file browser on new surveys (Carsten Schmitz)
+-Fixed issue #17194: Wrong error message in EM about parenthesis count (Carsten Schmitz)
+-Fixed issue #17193: Auto-mapped participant attributes are not copied to CPDB (Carsten Schmitz)
+-Fixed issue #17189: Wrong field size in SPSS syntax export when using Postgres (Carsten Schmitz)
+-Fixed issue #17185: Template permissions deleted when editing global permissions (Denis Chenu)
+-Fixed issue #17181: User group deletion not working (Carsten Schmitz)
+-Fixed issue #17180: Bad HTML page after importing bad label set with invalid extension (Carsten Schmitz)
+-Fixed issue #17153: [security] Brute-force attack with tokens to enter survey is possible (#1802) (Gabriel Jenik)
+-Fixed issue #17078: checkbox layout (ARRAY(numbers)) now shown in question overview (Patricia Stelling)
+-Fixed issue #16999: Plugin description missing at plugin overview (Carsten Schmitz)
+-Fixed issue #16920: LimeReplacement Fields not working (#1739) (Gabriel Jenik)
+-Fixed issue #16320: Error exporting survey to TXT format when debug=2 (Carsten Schmitz)
+-Fixed issue #14952: Check integrity does not delete orphaned localizations (Carsten Schmitz)
+-Fixed issue #14777: For "Numerical input" question type sometimes the first number is erased when beginning to type (Carsten Schmitz)
+-Fixed issue #14153: Wrong text on quick action buttons when using question group list (Carsten Schmitz)
+
+
 Changes from 4.4.12 (build 210308) to 4.4.13 (build 210315) March 15, 2021
 -Fixed issue #17179: Translations not available in GlotPress (Olle Haerstedt)
 -Fixed issue #17172: Question type: List (Radio) does not save state (Olle Harstedt)

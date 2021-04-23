@@ -35,7 +35,7 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('surveytranslator');
     }
-                                                                             
+
     public function index()
     {
         $aData = $this->_checkintegrity();
@@ -93,55 +93,67 @@ class CheckIntegrity extends Survey_Common_Action
         ]);
         // TMSW Condition->Relevance:  Update this to process relevance instead
         if (isset($aDelete['conditions'])) {
-            $aData = $this->_deleteConditions($aDelete['conditions'], $aData);
+            $aData = $this->deleteConditions($aDelete['conditions'], $aData);
         }
 
         if (isset($aDelete['questionattributes'])) {
-            $aData = $this->_deleteQuestionAttributes($aDelete['questionattributes'], $aData);
+            $aData = $this->deleteQuestionAttributes($aDelete['questionattributes'], $aData);
         }
 
         if ($aDelete['defaultvalues']) {
-            $aData = $this->_deleteDefaultValues($aData);
+            $aData = $this->deleteDefaultValues($aData);
         }
 
         if ($aDelete['quotas']) {
-            $aData = $this->_deleteQuotas($aData);
+            $aData = $this->deleteQuotas($aData);
         }
 
         if ($aDelete['quotals']) {
-            $aData = $this->_deleteQuotaLanguageSettings($aData);
+            $aData = $this->deleteQuotaLanguageSettings($aData);
         }
 
         if ($aDelete['quotamembers']) {
-            $aData = $this->_deleteQuotaMembers($aData);
+            $aData = $this->deleteQuotaMembers($aData);
         }
 
         if (isset($aDelete['assessments'])) {
-            $aData = $this->_deleteAssessments($aDelete['assessments'], $aData);
+            $aData = $this->deleteAssessments($aDelete['assessments'], $aData);
         }
 
         if (isset($aDelete['answers'])) {
-            $aData = $this->_deleteAnswers($aDelete['answers'], $aData);
+            $aData = $this->deleteAnswers($aDelete['answers'], $aData);
+        }
+
+        if (isset($aDelete['answer_l10ns'])) {
+            $aData = $this->deleteAnswerL10ns($aDelete['answer_l10ns'], $aData);
         }
 
         if (isset($aDelete['surveys'])) {
-            $aData = $this->_deleteSurveys($aDelete['surveys'], $aData);
+            $aData = $this->deleteSurveys($aDelete['surveys'], $aData);
         }
 
         if (isset($aDelete['surveylanguagesettings'])) {
-            $aData = $this->_deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
+            $aData = $this->deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
         }
 
         if (isset($aDelete['questions'])) {
-            $aData = $this->_deleteQuestions($aDelete['questions'], $aData);
+            $aData = $this->deleteQuestions($aDelete['questions'], $aData);
+        }
+
+        if (isset($aDelete['question_l10ns'])) {
+            $aData = $this->deleteQuestionL10ns($aDelete['question_l10ns'], $aData);
         }
 
         if (isset($aDelete['groups'])) {
-            $aData = $this->_deleteGroups($aDelete['groups'], $aData);
+            $aData = $this->deleteGroups($aDelete['groups'], $aData);
+        }
+
+        if (isset($aDelete['group_l10ns'])) {
+            $aData = $this->deleteGroupL10ns($aDelete['group_l10ns'], $aData);
         }
 
         if (isset($aDelete['user_in_groups'])) {
-            $aData = $this->_deleteUserInGroups($aDelete['user_in_groups'], $aData);
+            $aData = $this->deleteUserInGroups($aDelete['user_in_groups'], $aData);
         }
 
         if (isset($aDelete['orphansurveytables'])) {
@@ -149,13 +161,13 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         if (isset($aDelete['orphantokentables'])) {
-            $aData = $this->_deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
+            $aData = $this->deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
         }
 
         $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
     }
 
-    private function _deleteOrphanTokenTables(array $tokenTables, array $aData)
+    private function deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
@@ -179,7 +191,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteGroups(array $groups, array $aData)
+    private function deleteGroups(array $groups, array $aData)
     {
         $gids = array_unique(array_column($groups, 'gid'));
         $count = 0;
@@ -196,12 +208,36 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
+     * This function deletes group localizations
+     * @param array[] $groupLocalizations to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
+    private function deleteGroupL10ns(array $groupLocalizations, array $aData)
+    {
+        $groupsDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
+        $count = 0;
+        foreach ($groupLocalizations as $group) {
+            $deleted = QuestionGroupL10n::model()->deleteAll('gid=:gid AND id=:id', array(':gid' => $group['gid'], ':id' => $group['id']));
+            if ($deleted) {
+                $count += $deleted;
+                $groupL10nsDeleted[] = array($group['gid'],$group['id']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete groups text %s, code %s'), $group['gid'], $group['id']);
+            }
+        }
+        $aData['messages'][] = sprintf(gT('Deleting group texts: %u entries deleted'), $count);
+        return $aData;
+    }
+
+
+    /**
      * This function deletes UserInGroup
      * @param array[] $UserInGroup to be deleted
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteUserInGroups(array $userInGroups, array $aData)
+    private function deleteUserInGroups(array $userInGroups, array $aData)
     {
         $ugids = array();
         foreach ($userInGroups as $group) {
@@ -223,7 +259,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteQuestions(array $questions, array $aData)
+    private function deleteQuestions(array $questions, array $aData)
     {
         $qids = array_unique(array_column($questions, 'qid'));
         $count = 0;
@@ -240,12 +276,35 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
+     * This function deletes question localizations
+     * @param array[] $questionLocalizations to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
+    private function deleteQuestionL10ns(array $questionLocalizations, array $aData)
+    {
+        $questionL10nsDeleted = array();
+        $count = 0;
+        foreach ($questionLocalizations as $question) {
+            $deleted = QuestionL10n::model()->deleteAll('qid=:qid AND id=:id', array(':qid' => $question['qid'], ':id' => $question['id']));
+            if ($deleted) {
+                $count += $deleted;
+                $questionL10nsDeleted[] = array($question['qid'],$question['id']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete question text %s, code %s'), $question['qid'], $question['id']);
+            }
+        }
+        $aData['messages'][] = sprintf(gT('Deleting question texts: %u entries deleted'), $count);
+        return $aData;
+    }
+
+    /**
      * This function deletes surveyLanguageSettings
      * @param array[] $surveyLanguageSettings to be deleted
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
+    private function deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
         $slids = array_unique(array_column($surveyLanguageSettings, 'slid'));
         $count = 0;
@@ -267,7 +326,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteSurveys(array $surveys, array $aData)
+    private function deleteSurveys(array $surveys, array $aData)
     {
         $count = 0;
         foreach ($surveys as $survey) {
@@ -283,12 +342,12 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
-     * This function Deletes answers
+     * This function deletes answers
      * @param array[] $answers to be deleted
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteAnswers(array $answers, array $aData)
+    private function deleteAnswers(array $answers, array $aData)
     {
         $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
         $count = 0;
@@ -308,12 +367,35 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
+     * This function deletes answers localizations
+     * @param array[] $answers localizations to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
+    private function deleteAnswerL10ns(array $answers, array $aData)
+    {
+        $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
+        $count = 0;
+        foreach ($answers as $answer) {
+            $deleted = AnswerL10n::model()->deleteAll('aid=:aid AND id=:id', array(':aid' => $answer['aid'], ':id' => $answer['id']));
+            if ($deleted) {
+                $count += $deleted;
+                $answerL10nsDeleted[] = array($answer['aid'],$answer['id']);
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['aid'], $answer['id']);
+            }
+        }
+        $aData['messages'][] = sprintf(gT('Deleting answer localizations: %u entries deleted'), $count);
+        return $aData;
+    }
+
+    /**
      * This function deletes Assessments
      * @param array[] $Assessments to be deleted
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteAssessments(array $assessments, array $aData)
+    private function deleteAssessments(array $assessments, array $aData)
     {
         $assessmentids = array_unique(array_column($assessments, 'id'));
         $count = 0;
@@ -334,7 +416,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteQuotaMembers(array $aData)
+    private function deleteQuotaMembers(array $aData)
     {
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid LEFT JOIN {{surveys}} s ON t.sid=s.sid';
@@ -350,11 +432,11 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
-     * This function Deletes quota language settings without related main entries
+     * This function deletes quota language settings without related main entries
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteQuotaLanguageSettings(array $aData)
+    private function deleteQuotaLanguageSettings(array $aData)
     {
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
@@ -369,7 +451,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteQuotas(array $aData)
+    private function deleteQuotas(array $aData)
     {
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
@@ -384,7 +466,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteDefaultValues(array $aData)
+    private function deleteDefaultValues(array $aData)
     {
         $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
@@ -407,7 +489,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteQuestionAttributes(array $questionAttributes, array $aData)
+    private function deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
         $qids = array_unique(array_column($questionAttributes, 'qid'));
         $count = 0;
@@ -429,7 +511,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData for view generation
      * @return array
      */
-    private function _deleteConditions(array $conditions, array $aData)
+    private function deleteConditions(array $conditions, array $aData)
     {
         $cids = array_unique(array_column($conditions, 'cid'));
         $count = 0;
@@ -481,7 +563,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         // Deactivate surveys that have a missing response table
-        $oSurveys = Survey::model()->findAll();
+        $oSurveys = Survey::model()->findAll(array('order'=>'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
         Yii::app()->setConfig('Updating', true);
@@ -515,7 +597,7 @@ class CheckIntegrity extends Survey_Common_Action
                             // QID field can be more than just QID, like: 886other or 886A1
                             // So we clean it by finding the first alphabetical character
                             $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
                             if (isset($match[0][1])) {
                                 $sQID      =  substr($sDirtyQid, 0, $match[0][1]);
@@ -523,9 +605,12 @@ class CheckIntegrity extends Survey_Common_Action
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
                             }
+                            if ((string) intval($sQID) !== $sQID) {
+                                throw new \Exception('sQID is not an integer: ' . $sQID);
+                            }
 
                             // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByPk([ 'qid' => $sQID , 'language' => $oSurvey->language]);
+                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'sid' => $oSurvey->sid ]);
                             if (is_a($oQuestion, 'Question')) {
                                 // We check if its GID is the same as the one defined in the column name
                                 if ($oQuestion->gid != $sGid) {
@@ -544,8 +629,10 @@ class CheckIntegrity extends Survey_Common_Action
                                     }
                                 }
                             } else {
-                                // QID not found: we should do something...
-                                // $aUnfoundQIDs[] = $sQID;
+                                // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
+                                // So for certain question types (for example Text Array) the field name cannot be properly derived
+                                // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
+                                // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
                             }
                         }
                     }
@@ -740,7 +827,18 @@ class CheckIntegrity extends Survey_Common_Action
 
         $answers = Answer::model()->findAll($oCriteria);
         foreach ($answers as $answer) {
-            $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => gT('No matching question'));
+            $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => gT('No parent question'));
+        }
+        /**********************************************************************/
+        /*     Check answers localizations
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{answers}} a ON t.aid=a.aid';
+        $oCriteria->condition = '(a.aid IS NULL)';
+
+        $answers = AnswerL10n::model()->resetScope()->findAll($oCriteria);
+        foreach ($answers as $answer) {
+            $aDelete['answer_l10ns'][] = array('id' => $answer['id'], 'aid' => $answer['aid'], 'reason' => gT('No parent answer'));
         }
         /***************************************************************************/
         /*   Check survey languagesettings and restore them if they don't exist    */
@@ -795,6 +893,20 @@ class CheckIntegrity extends Survey_Common_Action
             $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group') . " ({$question['gid']})");
         }
 
+
+        /**********************************************************************/
+        /*     Check question localizations
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{questions}} q ON t.qid=q.qid';
+        $oCriteria->condition = '(q.qid IS NULL)';
+
+        $questions = QuestionL10n::model()->resetScope()->findAll($oCriteria);
+        foreach ($questions as $question) {
+            $aDelete['question_l10ns'][] = array('id' => $question['id'], 'qid' => $question['qid'], 'reason' => gT('No parent question'));
+        }
+
+
         /**********************************************************************/
         /*     Check groups                                                   */
         /**********************************************************************/
@@ -805,6 +917,18 @@ class CheckIntegrity extends Survey_Common_Action
         /** @var QuestionGroup $group */
         foreach ($groups as $group) {
             $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.') . ' SID:' . $group['sid']);
+        }
+
+        /**********************************************************************/
+        /*     Check group localizations
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->join = 'LEFT JOIN {{groups}} g ON t.gid=g.gid';
+        $oCriteria->condition = '(g.gid IS NULL)';
+
+        $groups = QuestionGroupL10n::model()->resetScope()->findAll($oCriteria);
+        foreach ($groups as $group) {
+            $aDelete['group_l10ns'][] = array('id' => $group['id'], 'gid' => $group['gid'], 'reason' => gT('No parent group'));
         }
 
         /**********************************************************************/
@@ -871,9 +995,8 @@ class CheckIntegrity extends Survey_Common_Action
                     $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
-                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
+                    $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
+                    $sDate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
@@ -1048,16 +1171,14 @@ class CheckIntegrity extends Survey_Common_Action
         if (!empty($result)) {
             foreach ($result as &$info) {
                 $info['viewSurveyLink'] = Yii::app()->getController()->createUrl(
-                    'admin/survey',
+                    'surveyAdministration/view',
                     [
-                        'sa' => 'view',
-                        'surveyid' => $info['sid'],
+                        'iSurveyID' => $info['sid']
                     ]
                 );
                 $info['viewGroupLink'] = Yii::app()->getController()->createUrl(
-                    'admin/questiongroups',
+                    'questionGroupsAdministration/view',
                     [
-                        'sa' => 'view',
                         'surveyid' => $info['sid'],
                         'gid' => $info['gid']
                     ]

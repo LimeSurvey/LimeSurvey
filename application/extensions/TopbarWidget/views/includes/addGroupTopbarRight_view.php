@@ -7,13 +7,13 @@
 <!-- Save and new group -->
 <a class="btn btn-default" id='save-and-new-button' role="button">
     <span class="fa fa-plus-square"></span>
-    <?php eT("Save and new group"); ?>
+    <?php eT("Save & add new group"); ?>
 </a>
 
 <!-- Save and add question -->
 <a class="btn btn-default" id='save-and-new-question-button' role="button">
     <span class="fa fa-plus"></span>
-    <?php eT("Save and add question"); ?>
+    <?php eT("Save & add new question"); ?>
 </a>
 
 <!-- Close -->

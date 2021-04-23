@@ -1036,7 +1036,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['questiongroups'] = true;
         $aData['surveybar']['closebutton']['url'] = '/questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyID; // Close button
         $aData['surveybar']['savebutton']['form'] = true;
-        $aData['surveybar']['savebutton']['text'] = gt('Import');
+        $aData['surveybar']['savebutton']['text'] = gT('Import');
         $aData['sid'] = $iSurveyID;
         $aData['surveyid'] = $iSurveyID; // todo duplication needed for survey_common_action
         $aData['gid'] = $groupid;
@@ -2278,25 +2278,23 @@ class QuestionAdministrationController extends LSBaseController
      *
      * @param int $iQuestionId
      * @param string $sQuestionType
-     * @param string $question_template
+     * @param string $sQuestionTheme
      * @return array
      * @throws CException
      * @throws Exception
      */
-    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $question_template = 'core')
+    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = 'core')
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
-
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $advancedSettings = $oQuestion->getAdvancedSettingsWithValuesByCategory(null);
-        // TODO: Why can empty array be saved as value?
-        foreach ($advancedSettings as &$category) {
-            foreach ($category as &$setting) {
-                if ($setting['value'] === []) {
-                    $setting['value'] = null;
-                }
-            }
-        }
+
+        // Get the advanced settings array
+        $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
+
+        // Group the array in categories
+        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $advancedSettings = $questionAttributeHelper->groupAttributesByCategory($advancedSettings);
+
         // This category is "general setting".
         unset($advancedSettings['Attribute']);
 
@@ -2541,14 +2539,14 @@ class QuestionAdministrationController extends LSBaseController
                     $attributeValue
                 )
             ) {
-                throw new CHttpException(500, gT("Could not store general options"));
+                throw new CHttpException(500, gT("Could not save question attributes"));
             }
         }
 
         if (!$oQuestion->save()) {
             throw new CHttpException(
                 500,
-                gT("Could not store question after general options") . PHP_EOL
+                gT("Could not save question") . PHP_EOL
                 . print_r($oQuestion->getErrors(), true)
             );
         }

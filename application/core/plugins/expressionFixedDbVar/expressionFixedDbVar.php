@@ -157,7 +157,7 @@ class expressionFixedDbVar extends PluginBase
         $newSettings = array();
         foreach ($this->settings as $var => $params) {
             if (isset($this->settings[$var]['column'])) {
-                $inherited = $this->get($var, null, null, $params['default']) ? gt("Yes") : gT("No");
+                $inherited = $this->get($var, null, null, $params['default']) ? gT("Yes") : gT("No");
                 $newSettings[$var] = array(
                     'type' => 'select',
                     'options' => array(

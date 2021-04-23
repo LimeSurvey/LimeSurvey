@@ -2869,8 +2869,8 @@ class LsDefaultDataSets
     {
         $default =  [];
         $template = "<p>" . gT("Hello") . " {FULLNAME}, </p>";
-        $template .= "<p>" . gT("this is an automated email to notify that a user has been created for you on the website") . "<strong> '{SITENAME}'</strong>.</p>";
-        $template .= "<p></p><p>" . gT("You can use now the following link to create your own password") . ":</p>";
+        $template .= "<p>" . sprintf(gT("This is an automated email notification that a user has been created for you on the website %s."), "<strong>'{SITENAME}'</strong>") . "</p>";
+        $template .= "<p></p><p>" . gT("You can use now the following credentials to log in:") . "</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
         //don't send password anymore, just send a link for the new admin to generate his own password
         //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
@@ -2879,7 +2879,7 @@ class LsDefaultDataSets
         $template .= "<p>" . gT("Thank you") . "!</p>";
 
         $default['sendadmincreationemail'] = 1;
-        $default['admincreationemailsubject'] = gT("User registration at") . " {SITENAME}";
+        $default['admincreationemailsubject']  = sprintf(gT("User registration at '%s'", "unescaped"), "{SITENAME}");
         $default['admincreationemailtemplate'] = $template;
 
         return $default;

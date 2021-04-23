@@ -64,7 +64,7 @@ class Answer extends LSActiveRecord
                 'on' => "$alias.qid = question.qid",
             ),
             'group' => array(self::BELONGS_TO, 'QuestionGroup', '', 'through' => 'question',
-                'on' => 'question.gid = group.gid'
+                'on' => 'question.gid = ' . Yii::app()->db->quoteTableName('group') . '.gid'
             ),
             'answerl10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)

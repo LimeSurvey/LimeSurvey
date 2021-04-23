@@ -1005,11 +1005,18 @@ class remotecontrol_handle
 
                 $oGroup = new QuestionGroup();
                 $oGroup->sid = $iSurveyID;
-                $oGroup->group_name = $sGroupTitle;
-                $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
-                if ($oGroup->save()) {
+                if (!$oGroup->save()) {
+                    return array('status' => 'Creation Failed');
+                }
+
+                $oQuestionGroupL10n = new QuestionGroupL10n();
+                $oQuestionGroupL10n->group_name = $sGroupTitle;
+                $oQuestionGroupL10n->description = $sGroupDescription;
+                $oQuestionGroupL10n->language = Survey::model()->findByPk($iSurveyID)->language;
+                $oQuestionGroupL10n->gid = $oGroup->gid;
+
+                if ($oQuestionGroupL10n->save()) {
                                     return (int) $oGroup->gid;
                 } else {
                                     return array('status' => 'Creation Failed');
@@ -1263,7 +1270,7 @@ class remotecontrol_handle
      *
      * @access public
      * @param string $sSessionKey Auth credentials
-     * @param integer $iGroupID  - ID of the Survey
+     * @param integer $iGroupID  - ID of the Group
      * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
      * @return array Of succeeded and failed modifications according to internal validation.
      */
@@ -1271,7 +1278,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             $iGroupID = (int) $iGroupID;
-            $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
+            $oGroup = QuestionGroup::model()->with('questiongroupl10ns')->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup)) {
                 return array('status' => 'Error: Invalid group ID');
             }
@@ -1280,12 +1287,72 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
+                
+                // Backwards compatibility for L10n data
+                if (!empty($aGroupData['language'])) {
+                    $language = $aGroupData['language'];
+                    $aGroupData['questiongroupl10ns'][$language] = array(
+                        'language' => $language,
+                        'group_name' => !empty($aGroupData['group_name']) ? $aGroupData['group_name'] : '',
+                        'description' => !empty($aGroupData['description']) ? $aGroupData['description'] : '',
+                    );
+                }
+
+                // Process L10n data
+                if (!empty($aGroupData['questiongroupl10ns']) && is_array($aGroupData['questiongroupl10ns'])) {
+                    $aL10nDestinationFields = array_flip(QuestionGroupL10n::model()->tableSchema->columnNames);
+                    foreach ($aGroupData['questiongroupl10ns'] as $language => $aLanguageData) {
+                        // Get existing L10n data or create new
+                        if (isset($oGroup->questiongroupl10ns[$language])) {
+                            $oQuestionGroupL10n = $oGroup->questiongroupl10ns[$language];
+                        } else {
+                            $oQuestionGroupL10n = new QuestionGroupL10n();
+                            $oQuestionGroupL10n->gid = $iGroupID;
+                            $oQuestionGroupL10n->setAttribute('language', $language);
+                            $oQuestionGroupL10n->setAttribute('group_name', '');
+                            $oQuestionGroupL10n->setAttribute('description', '');
+                            if (!$oQuestionGroupL10n->save()) {
+                                $aResult['questiongroupl10ns'][$language] = false;
+                                continue;
+                            }
+                        }
+
+                        // Remove invalid fields
+                        $aGroupL10nData = array_intersect_key($aLanguageData, $aL10nDestinationFields);
+                        if (empty($aGroupL10nData)) {
+                            $aResult['questiongroupl10ns'][$language] = 'Empty group L10n data';
+                            continue;
+                        }
+
+                        $aGroupL10nAttributes = $oQuestionGroupL10n->getAttributes();
+                        foreach ($aGroupL10nData as $sFieldName => $sValue) {
+                            $oQuestionGroupL10n->setAttribute($sFieldName, $sValue);
+                            try {
+                                // save the change to database - one by one to allow for validation to work
+                                $bSaveResult = $oQuestionGroupL10n->save();
+                                $aResult['questiongroupl10ns'][$language][$sFieldName] = $bSaveResult;
+                                //unset failed values
+                                if (!$bSaveResult) {
+                                    $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                                }
+                            } catch (Exception $e) {
+                                //unset values that cause exception
+                                $oQuestionGroupL10n->$sFieldName = $aGroupL10nAttributes[$sFieldName];
+                            }
+                        }
+                    }
+                }
+
                 // Remove invalid fields
                 $aDestinationFields = array_flip(QuestionGroup::model()->tableSchema->columnNames);
                 $aGroupData = array_intersect_key($aGroupData, $aDestinationFields);
                 $aGroupAttributes = $oGroup->getAttributes();
                 if (empty($aGroupData)) {
-                                    return array('status' => 'No valid Data');
+                    if (empty($aResult)) {
+                        return array('status' => 'No valid Data');
+                    } else {
+                        return $aResult;
+                    }
                 }
 
                 foreach ($aGroupData as $sFieldName => $sValue) {
@@ -2068,6 +2135,12 @@ class remotecontrol_handle
      *
      * If $bUnused is true, user will get the list of uncompleted tokens (token_return functionality).
      * Parameters iStart and iLimit are used to limit the number of results of this call.
+     * Starting with version 4.3.0 it is not possible anymore to query for several IDs just using
+     * an array of values - instead you have use the 'IN' operator.
+     * Examples of conditions:
+     *     array ('tid => 'IN','1','3','26')
+     *     array('email' => 'info@example.com')
+     *     array('validuntil' => array('>', '2019-01-01 00:00:00'))
      *
      * By default return each participant with basic information
      * * tid : the token id
@@ -2082,7 +2155,11 @@ class remotecontrol_handle
      * @param int  $iLimit Number of participants to return
      * @param bool $bUnused If you want unused tokens, set true
      * @param bool|array $aAttributes The extented attributes that we want
-     * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com') or array('validuntil' => array('>', '2019-01-01 00:00:00'))
+     * @param array $aConditions Optional conditions to limit the list, either as a key=>value array for simple comparisons
+     *              or as key=>array(operator,value[,value[...]]) using an operator.
+     *              Valid operators are  ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN']
+     *              Only the IN operator allows for several values. The same key can be used several times.
+     *              All conditions are connected by AND.
      * @return array The list of tokens
      */
     public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())
@@ -2105,16 +2182,16 @@ class remotecontrol_handle
                 $oCriteria = new CDbCriteria();
                 $oCriteria->order = 'tid';
                 $oCriteria->limit = $iLimit;
-                $oCriteria->offset = $iStart;
 
                 $aAttributeValues = array();
                 if (count($aConditions) > 0) {
                     $aConditionFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
                     // NB: $valueOrTuple is either a value or tuple like [$operator, $value].
+                    $oCriteria->compare('tid', '>=' . $iStart);
                     foreach ($aConditions as $columnName => $valueOrTuple) {
                         if (is_array($valueOrTuple)) {
                             /** @var string[] List of operators allowed in query. */
-                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE'];
+                            $allowedOperators = ['<', '>', '>=', '<=', '=', '<>', 'LIKE', 'IN'];
                             /** @var string */
                             $operator = $valueOrTuple[0];
                             if (!in_array($operator, $allowedOperators)) {
@@ -2123,6 +2200,10 @@ class remotecontrol_handle
                                 /** @var mixed */
                                 $value = $valueOrTuple[1];
                                 $oCriteria->addSearchCondition($columnName, $value);
+                            } elseif ($operator === 'IN') {
+                                /** @var mixed */
+                                $values = array_slice($valueOrTuple, 1);
+                                $oCriteria->addInCondition($columnName, $values);
                             } else {
                                 /** @var mixed */
                                 $value = $valueOrTuple[1];
@@ -2147,7 +2228,7 @@ class remotecontrol_handle
                 if (count($oTokens) == 0) {
                     return array('status' => 'No survey participants found.');
                 }
-                
+
                 $extendedAttributes = array();
                 if ($aAttributes) {
                     $aBasicDestinationFields = Token::model($iSurveyID)->tableSchema->columnNames;
@@ -2356,6 +2437,52 @@ class remotecontrol_handle
             return $aData;
         } else {
                     return array('status' => 'Invalid session key');
+        }
+    }
+
+    /**
+     * List the survey groups belonging to a user
+     *
+     * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
+     * Else only the survey groups belonging to the user requesting will be shown.
+     *
+     * Returns array with survey group attributes
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $sUsername (optional) username to get list of survey groups
+     * @return array In case of success the list of survey groups
+     */
+    public function list_survey_groups($sSessionKey, $sUsername = null)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurveyGroup = new SurveysGroups;
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $sOwner = Yii::app()->user->getId();
+            } elseif ($sUsername != null) {
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
+                if (!isset($aUserData)) {
+                    return array('status' => 'Invalid user');
+                } else {
+                    $sOwner = $aUserData->attributes['uid'];
+                }
+            }
+
+            if (empty($sOwner)) {
+                $aUserSurveyGroups = $oSurveyGroup->findAll();
+            } else {
+                $aUserSurveyGroups = $oSurveyGroup->findAllByAttributes(array('owner_id' => $sOwner));
+            }
+            if (count($aUserSurveyGroups) == 0) {
+                return array('status' => 'No survey groups found');
+            }
+
+            foreach ($aUserSurveyGroups as $oSurveyGroup) {
+                $aData[] = $oSurveyGroup->attributes;
+            }
+            return $aData;
+        } else {
+            return array('status' => 'Invalid session key');
         }
     }
 

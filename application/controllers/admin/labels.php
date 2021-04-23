@@ -149,11 +149,8 @@ class labels extends Survey_Common_Action
             if ($_POST['checkforduplicates'] == 1) {
                 $options['checkforduplicates'] = 'on';
             }
-            if (strtolower($sExtension) == 'lsl') {
-                            $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
-            } else {
-                            $this->getController()->error(gT("Uploaded label set file needs to have an .lsl extension."));
-            }
+
+            $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
 
             unlink($sFullFilepath);
 

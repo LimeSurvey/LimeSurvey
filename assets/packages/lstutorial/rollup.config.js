@@ -18,7 +18,7 @@ if( ENVIRONEMENT=='production' ) {
     output = {
       file: 'build/lstutorial.min.js',
       format: 'umd',
-      sourcemap: true,
+      sourcemap: false,
     };
     plugins = [
         replace({

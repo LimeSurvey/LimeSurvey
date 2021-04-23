@@ -65,7 +65,7 @@
                                     'value' => $langidsarray,
                                     'name' => 'languageids',
                                     'pluginOptions' => array(
-                                        'placeholder' => gt('Select languages','unescaped'),
+                                        'placeholder' => gT('Select languages','unescaped'),
                                 )));
                                 ?>
                                 <input type='hidden' name='oldlanguageids' id='oldlanguageids' value='<?php echo $langids; ?>' />
@@ -93,7 +93,7 @@
                                     <label  class="control-label" for='the_file'>
                                     <?php echo gT("Select label set file (*.lsl):").'<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                                     </label>
-                                    <input id='the_file' name='the_file' type='file'/>
+                                    <input id='the_file' name='the_file' type='file' accept=".lsl"/>
                                 </div>
                                 <div class="form-group">
                                     <label  class=" control-label" for='checkforduplicates'>

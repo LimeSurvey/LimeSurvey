@@ -1675,6 +1675,7 @@ class Participant extends LSActiveRecord
                 $blacklistSkipped++;
                 continue;
             }
+            $oParticipant->decrypt();
             $isDuplicate = array_reduce($oTokens, function ($carry, $oToken) use ($oParticipant) {
                 return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
@@ -1723,7 +1724,7 @@ class Participant extends LSActiveRecord
                 $oToken->lastname = $oParticipant->lastname;
                 $oToken->email = $oParticipant->email;
                 $oToken->language = $oParticipant->language;
-                if (!$oToken->save()) {
+                if (!$oToken->encryptSave(true)) {
                     throw new Exception(CHtml::errorSummary($oToken));
                 }
                 $insertedtokenid = $oToken->tid;
@@ -1809,10 +1810,10 @@ class Participant extends LSActiveRecord
         $this->checkColumnDuplicates($surveyId, $newAttributes);
 
         // TODO: Why use two variables for this?
-        list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
+        [$addedAttributes, $addedAttributeIds] = $this->createColumnsInTokenTable($surveyId, $newAttributes);
 
         //Write each participant to the survey survey participants table
-        list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
+        [$successful, $duplicate, $blacklistSkipped] = $this->writeParticipantsToTokenTable(
             $surveyId,
             $participantIds,
             $mappedAttributes,
@@ -1822,13 +1823,13 @@ class Participant extends LSActiveRecord
             $options
         );
 
-        $returndata = array(
-            'success' => $successful,
-            'duplicate' => $duplicate,
+        $returndata = [
+            'success'          => $successful,
+            'duplicate'        => $duplicate,
             'blacklistskipped' => $blacklistSkipped,
-            'overwriteauto' => $options['overwriteauto'],
-            'overwriteman' => $options['overwriteman']
-        );
+            'overwriteauto'    => $options['overwriteauto'],
+            'overwriteman'     => $options['overwriteman']
+        ];
         return $returndata;
     }
 
@@ -1940,9 +1941,10 @@ class Participant extends LSActiveRecord
         $tokenids = json_decode($tokenid_string, true);
         $duplicate = 0;
         $sucessfull = 0;
-        $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
+        $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
+        $aAutoMapped=$survey->getCPDBMappings();
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
@@ -1951,22 +1953,22 @@ class Participant extends LSActiveRecord
                 /* $key is the fieldname from the survey participants table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
-                $insertnames = array(
+                $insertnames = [
                     'attribute_type' => 'TB',
-                    'visible' => 'Y',
-                    'encrypted' => $aTokenAttributes[$key]['encrypted'],
-                    'defaultname' => $value
-                );
+                    'visible'        => 'Y',
+                    'encrypted'      => $aTokenAttributes[$key]['encrypted'],
+                    'defaultname'    => $value
+                ];
                 $oParticipantAttributeNames = new ParticipantAttributeName();
                 $oParticipantAttributeNames->setAttributes($insertnames, false);
                 $oParticipantAttributeNames->save(false);
                 $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
 
-                $insertnameslang = array(
-                    'attribute_id' => $attid[$key],
+                $insertnameslang = [
+                    'attribute_id'   => $attid[$key],
                     'attribute_name' => urldecode($value),
-                    'lang' => Yii::app()->session['adminlang']
-                );
+                    'lang'           => Yii::app()->session['adminlang']
+                ];
                 $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
                 $oParticipantAttributeNamesLang->setAttributes($insertnameslang, false);
                 $oParticipantAttributeNamesLang->save(false);
@@ -1975,12 +1977,15 @@ class Participant extends LSActiveRecord
 
         /* Add the participants to the CPDB = Iterate through each $tokenid and create the new CPDB id*/
         if (!is_array($tokenids)) {
-            $tokenids = (array) $tokenids;
+            $tokenids = (array)$tokenids;
         }
         foreach ($tokenids as $tid) {
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
                 $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
+                if (isset($oTokenDynamic) && $oTokenDynamic) {
+                    $oTokenDynamic->decrypt();
+                }
 
                 /* See if there are any existing CPDB entries that match on firstname,lastname and email */
                 $participantCriteria = new CDbCriteria();
@@ -1989,42 +1994,46 @@ class Participant extends LSActiveRecord
                 $participantCriteria->addCondition('email = :email');
                 $participantCriteria->params = [
                     ":firstname" => $oTokenDynamic->firstname,
-                    ":lastname" => $oTokenDynamic->lastname,
-                    ":email" => $oTokenDynamic->email,
+                    ":lastname"  => $oTokenDynamic->lastname,
+                    ":email"     => $oTokenDynamic->email,
                 ];
                 $existing = Participant::model()->find($participantCriteria);
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman == "true" && !empty($aMapped)) {
+                    if ($overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
-                }
-                /* If there isn't an existing entry, create one! */ else {
+                    if ($overwriteauto && !empty($aAutoMapped)) {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        }
+                    }
+                } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participants table */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
                     $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->gen_uuid();
 
-                    $writearray = array(
+                    $writearray = [
                         'participant_id' => $pid,
-                        'firstname' => $oTokenDynamic->firstname,
-                        'lastname' => $oTokenDynamic->lastname,
-                        'email' => $oTokenDynamic->email,
-                        'language' => $oTokenDynamic->language,
-                        'blacklisted' => $black,
-                        'owner_uid' => Yii::app()->session['loginID'],
-                        'created_by' => Yii::app()->session['loginID'],
-                        'created' => date('Y-m-d H:i:s', time())
-                    );
+                        'firstname'      => $oTokenDynamic->firstname,
+                        'lastname'       => $oTokenDynamic->lastname,
+                        'email'          => $oTokenDynamic->email,
+                        'language'       => $oTokenDynamic->language,
+                        'blacklisted'    => $black,
+                        'owner_uid'      => Yii::app()->session['loginID'],
+                        'created_by'     => Yii::app()->session['loginID'],
+                        'created'        => date('Y-m-d H:i:s', time())
+                    ];
                     $oParticipant = new Participant();
                     $oParticipant->setAttributes($writearray, false);
-                    $oParticipant->save(false);
+                    $oParticipant->encryptSave();
 
                     //Update survey participants table and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
-                    $oTokenDynamic->save(false);
+                    $oTokenDynamic->encryptSave();
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
@@ -2042,12 +2051,12 @@ class Participant extends LSActiveRecord
 
                     /* Create a survey_link */
                     $oSurveyLink = new SurveyLink();
-                    $data = array(
+                    $data = [
                         'participant_id' => $pid,
-                        'token_id' => $tid,
-                        'survey_id' => $surveyid,
-                        'date_created' => date('Y-m-d H:i:s', time())
-                    );
+                        'token_id'       => $tid,
+                        'survey_id'      => $surveyid,
+                        'date_created'   => date('Y-m-d H:i:s', time())
+                    ];
                     $oSurveyLink->setAttributes($data, false);
                     $oSurveyLink->save(false);
                 }
@@ -2063,7 +2072,7 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = ' . $surveyid);
+                    ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
             if (!empty($aMapped)) {
                 foreach ($aMapped as $cpdbatt => $tatt) {
@@ -2072,10 +2081,10 @@ class Participant extends LSActiveRecord
                 }
                 Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = ' . $surveyid);
+                    ->update('{{surveys}}', ["attributedescriptions" => json_encode($aAttributes)], 'sid = ' . $surveyid);
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman);
+        $returndata = ['success' => $sucessfull, 'duplicate' => $duplicate, 'overwriteauto' => $overwriteauto, 'overwriteman' => $overwriteman];
         return $returndata;
     }
 
@@ -2224,13 +2233,13 @@ class Participant extends LSActiveRecord
         if (empty($aOptions)) {
             $aOptions = Participant::getDefaultEncryptionOptions();
             return $aOptions;
-        } else {
-            $aOptionReturn['enabled'] = 'Y';
-            foreach ($aOptions as $key => $value) {
-                $aOptionReturn['columns'][$value['defaultname']] = $value['encrypted'];
-            }
-            return $aOptionReturn;
         }
+
+        $aOptionReturn['enabled'] = 'Y';
+        foreach ($aOptions as $key => $value) {
+            $aOptionReturn['columns'][$value['defaultname']] = $value['encrypted'];
+        }
+        return $aOptionReturn;
     }
 
     public static function getDefaultEncryptionOptions()

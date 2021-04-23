@@ -2444,8 +2444,8 @@ class participantsaction extends Survey_Common_Action
     {
         $newarr = Yii::app()->request->getPost('newarr');
         $mapped = Yii::app()->request->getPost('mapped');
-        $overwriteauto = Yii::app()->request->getPost('overwriteauto');
-        $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $overwriteauto = Yii::app()->request->getPost('overwriteauto', false);
+        $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);
@@ -2486,28 +2486,19 @@ class participantsaction extends Survey_Common_Action
          *   mapped[attribute_38] = 39
          * meaning that an attribute is mapped onto another.
          */
-        $mappedAttributes = Yii::app()->request->getPost('mapped');
+        $mappedAttributes = Yii::app()->request->getPost('mapped', []);
 
         /**
          * newarr takes values like
          *   newarr[] = 39
          */
-        $newAttributes = Yii::app()->request->getPost('newarr');
+        $newAttributes = Yii::app()->request->getPost('newarr', []);
 
         $options = array();
         $options['overwriteauto'] = Yii::app()->request->getPost('overwrite') === 'true';
         $options['overwriteman'] = Yii::app()->request->getPost('overwriteman') === 'true';
         $options['overwritest'] = Yii::app()->request->getPost('overwritest') === 'true';
         $options['createautomap'] = Yii::app()->request->getPost('createautomap') === 'true';
-
-        // TODO: Why?
-        if (empty($newAttributes[0])) {
-            $newAttributes = array();
-        }
-
-        if (empty($mappedAttributes)) {
-            $mappedAttributes = array();
-        }
 
         try {
             $response = Participant::model()->copyCPDBAttributesToTokens($surveyId, $participantIds, $mappedAttributes, $newAttributes, $options);

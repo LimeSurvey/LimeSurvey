@@ -501,7 +501,7 @@ class responses extends Survey_Common_Action
                 LSYii_ClientScript::POS_BEGIN
             );
 
-            // Basic datas for the view
+            // Basic data for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;
             $aData['sidemenu']['state'] = false;

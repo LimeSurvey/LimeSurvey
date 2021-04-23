@@ -24,7 +24,6 @@ class themes extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-
         $sTemplateName = Yii::app()->request->getPost('templatename', '');
         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
@@ -285,7 +284,7 @@ class themes extends Survey_Common_Action
         // Redirect back at file size error.
         $this->checkFileSizeError();
 
-        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+        $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'question') {
             $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
@@ -368,27 +367,51 @@ class themes extends Survey_Common_Action
                     TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
                 if ($themeType == 'question') {
-                    $questionTheme = new QuestionTheme();
                     $sPathToThemeDirectory = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
                     // check if the required path is right and existing
                     if (!is_dir($sPathToThemeDirectory)) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
-                            gT("The ZIP file contains wrong paths"),
+                            sprintf(
+                                gT("The ZIP file contains wrong paths: %s doesn't exist"),
+                                $sPathToThemeDirectory
+                            ),
                             'error'
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
                     }
-                    $sThemeDirectory = scandir($sPathToThemeDirectory)[2];
-                    // install the Question Theme
-                    $sQuestionThemeTitle = $questionTheme->importManifest($sPathToThemeDirectory . DIRECTORY_SEPARATOR . $sThemeDirectory);
-                    if (empty($sQuestionThemeTitle)) {
+                    // Question themes that apply to more than one question type, are technically different themes but can be distributed
+                    // in the same ZIP. So we must try to install all the available themes in the folder.
+                    $importedThemes = 0;
+                    $directory = new RecursiveDirectoryIterator($sPathToThemeDirectory);
+                    $iterator = new RecursiveIteratorIterator($directory);
+                    $aImportErrors = [];
+                    foreach ($iterator as $info) {
+                        if ($info->isFile() && $info->getBasename() == 'config.xml') {
+                            $questionConfigFilePath = dirname($info->getPathname());
+                            $sQuestionThemeTitle = null;
+                            try {
+                                $questionTheme = new QuestionTheme();
+                                $sQuestionThemeTitle = $questionTheme->importManifest($questionConfigFilePath, false, true);
+                            } catch (Throwable $t) {
+                                $sThemeDirectoryName = $questionTheme->getThemeDirectoryPath($questionConfigFilePath . "/config.xml");
+                                $aImportErrors[$sThemeDirectoryName] = $t->getMessage();
+                            }
+                            if (!empty($sQuestionThemeTitle)) {
+                                $importedThemes++;
+                            }
+                        }
+                    }
+                    if ($importedThemes == 0) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
                             gT("An error occured while generating the Question theme"),
                             'error'
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
+                    }
+                    if (count($aImportErrors) > 0) {
+                        Yii::app()->setFlashMessage(gT("Some of the themes couldn't be imported."), 'error');
                     }
                 }
             }
@@ -405,6 +428,7 @@ class themes extends Survey_Common_Action
         return array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
+            'aImportErrors' => $aImportErrors,
             'lid' => $lid,
             'newdir' => $sNewDirectoryName,
             'theme' => $themeType
@@ -967,11 +991,14 @@ class themes extends Survey_Common_Action
                 break;
         }
 
+        $sFileDisplayName = ltrim(str_replace(Yii::app()->getConfig('rootdir'), '', $editfile), DIRECTORY_SEPARATOR);
+
         $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
         $aData['oEditedTemplate'] = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+        $aData['filedisplayname'] = $sFileDisplayName;
         $aData['relativePathEditfile'] = $relativePathEditfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
@@ -1330,5 +1357,65 @@ class themes extends Survey_Common_Action
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
             $this->getController()->redirect(array($redirectUrl));
         }
+    }
+
+    /**
+     * Get directory name for $themeType in zip file $src based on <metadata><name> tag
+     *
+     * @param string $themeType 'question' or 'survey'
+     * @param string $src
+     * @return string
+     * @throws Exception
+     * @todo Move to service class
+     * @todo Same logic for survey theme
+     */
+    protected function getNewDirectoryName($themeType, $src)
+    {
+        if ($themeType === 'question') {
+            $zip = new ZipArchive();
+            $err = $zip->open($src);
+            if ($err !== true) {
+                throw new Exception('Could not open zip file');
+            }
+            /** @var string */
+            $configFilename = $this->findConfigXml($zip);
+            $configString = $zip->getFromName($configFilename);
+            $zip->close();
+            if ($configString === null) {
+                throw new Exception('Config file is empty');
+            }
+            $dom = new DOMDocument();
+            $dom->loadXML($configString);
+            $metadata = $dom->getElementsByTagName('metadata');
+            if (count($metadata) !== 1) {
+                throw new Exception('Did not find exactly one <metadata> tag');
+            }
+            $nameTags = $metadata[0]->getElementsByTagName('name');
+            if (count($nameTags) !== 1) {
+                throw new Exception('Did not find exactly one <name> tag in config.xml');
+            }
+            $nameFromConfig = $nameTags[0]->nodeValue;
+            if (empty($nameFromConfig)) {
+                throw new Exception('<name> tag is empty in config.xml');
+            }
+            return $nameFromConfig;
+        } else {
+            return sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+        }
+    }
+
+    /**
+     * @param ZipArchive $zip
+     * @return string|null
+     */
+    public function findConfigXml(ZipArchive $zip)
+    {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if (strpos($filename, 'config.xml') !== false) {
+                return $filename;
+            }
+        }
+        return null;
     }
 }

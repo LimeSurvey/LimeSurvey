@@ -53,6 +53,8 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             $('a[data-toggle=\'tab\']').first().attr('href');
         $('a[href=\'' + anchor + '\']').tab('show');
     });
+
+    bindSendTestEmail();
 });
 
 // Add a language to available languages if it was selected as default language
@@ -125,4 +127,23 @@ function BounceChange(ui,evt)
     $("#bounceaccountuser").prop('disabled',bounce_disabled);
     $("#bounceaccountpass").prop('disabled',bounce_disabled);
     $("#bounceaccountmailbox").prop('disabled',bounce_disabled);
+}
+
+function bindSendTestEmail() {
+    // Bind "Send Test Email" action
+    $(document).on('click', '#sendtestemailbutton', function (event) {
+        event.preventDefault();
+        var modal = $('#sendtestemail-confirmation-modal');
+        var href = $(this).data('href');
+        modal.find('.ajaxloader').show();
+        modal.find('.modal-content').html('');
+        modal.modal('show');
+        $.ajax({
+            url: href,
+            success: function (html) {
+                modal.find('.ajaxloader').hide();
+                modal.find('.modal-content').html(html);
+            }
+        });
+    });
 }

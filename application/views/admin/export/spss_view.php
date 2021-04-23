@@ -32,8 +32,9 @@ echo viewHelper::getViewTestTag('exportSpss');
                 'name' => 'spssver',
                 'value'=> $spssver ,
                 'selectOptions'=>array(
-                    "1"=>gT("SPSS prior to 16 / PSPP",'unescaped'),
-                    "2"=>gT("SPSS v16 or newer",'unescaped')
+                    "1"=>gT("Prior to 16",'unescaped'),
+                    "2"=>gT("16 or up",'unescaped'),
+                    "3"=>gT("16 or up with Python Plugin / Essentials",'unescaped')
                 )
             ));?>
         </div>
@@ -101,8 +102,9 @@ echo viewHelper::getViewTestTag('exportSpss');
         <br/><br/>
         <ol>
             <li><?php eT("Download the data and the syntax file.");?></li>
-            <li><?php eT("Open the syntax file in SPSS in Unicode mode.");?></li>
-            <li><?php echo sprintf(gT("Edit the %s line and complete the filename with a full path to the downloaded data file."),"'FILE='");?></li>
+	    <li><?php eT("Open the syntax file in SPSS in Unicode mode.");?></li>
+<em>The next step (editing the 'FILE=' line) is only necessary when you have selected a SPSS version without Python. If you selected the version for SPSS with the Python plugin / Essentials, just save the syntax and the data file in the same folder. The full path will be automatically detected when you run the syntax.</em>
+            <li><?php echo sprintf(gT("Edit the line starting with %s and complete the filename with a full path to the downloaded data file."),"'FILE='");?></li>
             <li><?php eT("Choose 'Run/All' from the menu to run the import.");?></li>
         </ol>
     <?php eT("Your data should be imported now.");?></div>

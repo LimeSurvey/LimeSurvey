@@ -14,7 +14,7 @@
                           <?php $this->widget('CCaptcha',array(
                               'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                               'buttonType' => 'button',
-                              'buttonLabel' => gt('Reload image','unescaped')
+                              'buttonLabel' => gT('Reload image','unescaped')
                           )); ?>
                     </div>
                     <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>

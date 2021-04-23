@@ -177,7 +177,7 @@ class Permissiontemplates extends CActiveRecord
                 data-ptid='" . $this->ptid . "'
                 data-action='delrole' 
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
-                data-message='" . gt('Do you want to delete this role?') . "'>
+                data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>
               </button>";
 

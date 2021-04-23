@@ -494,7 +494,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
             /*$aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
-            $aData['surveybar']['savebutton']['text'] = gt('Import');*/
+            $aData['surveybar']['savebutton']['text'] = gT('Import');*/
             $aData['surveyid'] = $surveyid;
             /*$aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;

@@ -255,7 +255,7 @@ class UserManagementController extends LSBaseController
             return App()->getController()->renderPartial('/admin/super/_renderJson', [
                 'data' => [
                     'success' => false,
-                    'message' => gT("you cannot delete yourself.")
+                    'message' => gT("You cannot delete yourself.")
                 ]
             ]);
         }
@@ -427,6 +427,9 @@ class UserManagementController extends LSBaseController
         }
         $userId = Yii::app()->request->getPost('userid');
         $aPermissions = Yii::app()->request->getPost('Permission', []);
+
+        Permissiontemplates::model()->clearUser($userId);
+
         $results = $this->applyPermissionFromArray($userId, $aPermissions);
 
         $oUser = User::model()->findByPk($userId);
@@ -796,7 +799,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -832,13 +835,13 @@ class UserManagementController extends LSBaseController
             $aResults[$user]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         App()->getController()->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
                 'aResults'     => $aResults,
-                'successLabel' => gT('Seleted'),
+                'successLabel' => gT('Selected'),
                 'tableLabels'  => $tableLabels,
             )
         );
@@ -930,7 +933,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -985,7 +988,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -1031,7 +1034,7 @@ class UserManagementController extends LSBaseController
             }
         }
 
-        $tableLabels = array(gT('User id'), gT('Username'), gT('Status'));
+        $tableLabels = array(gT('User ID'), gT('Username'), gT('Status'));
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -1175,7 +1178,8 @@ class UserManagementController extends LSBaseController
             if ($success) {
                 $data = [
                     'success' => $success,
-                    'message' => $sReturnMessage
+                    'message' => $sReturnMessage,
+                    'href' => Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $newUser['uid']]),
                 ];
             } else {
                 $data = [

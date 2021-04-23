@@ -1078,7 +1078,7 @@ function populateDatabase($oDB)
             'questionselectormode' => "string(7) NOT NULL default 'default'",
             'one_time_pw' => "text",
             'dateformat' => "integer NOT NULL DEFAULT 1",
-            'lastLogin' => "datetime NULL",
+            'last_login' => "datetime NULL",
             'created' => "datetime",
             'modified' => "datetime",
             'validation_key' => 'string(38)',

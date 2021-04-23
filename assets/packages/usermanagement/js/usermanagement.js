@@ -83,6 +83,11 @@ var UserManagement = function () {
                         if (!result.hasOwnProperty('html')) {
                             triggerModalClose();
                             window.LS.notifyFader(result.message, 'well-lg text-center ' + (result.success ? 'bg-primary' : 'bg-danger'));
+                            if (result.hasOwnProperty('href')) {
+                                setTimeout(function() {
+                                    openModal(result.href);
+                                }, 500);
+                            }
                             return;
                         }
                         $('#exitForm').on('click.USERMANAGERMODAL', function (e) {
@@ -265,14 +270,7 @@ var UserManagement = function () {
         });
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            startModalLoader();
-            $.ajax({
-                url: href,
-                success: function (html) {
-                    applyModalHtml(html);
-                }
-            });
-
+            openModal(href);
         });
         bindListItemclick();
     };
@@ -284,6 +282,16 @@ var UserManagement = function () {
 
         $(document).on('shown.bs.modal', '#massive-actions-modal-usermanagement--identity-gridPanel-batchPermissions-2', function () {
             wireMassPermissions();
+        });
+    };
+
+    var openModal = function(href) {
+        startModalLoader();
+        $.ajax({
+            url: href,
+            success: function (html) {
+                applyModalHtml(html);
+            }
         });
     };
 

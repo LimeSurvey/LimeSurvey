@@ -473,7 +473,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('sid', 'numerical', 'integerOnly' => true,'min' => 1), // max ?
             array('sid', 'unique'),// Not in pk
             array('gsid', 'numerical', 'integerOnly' => true),
-            array('datecreated', 'default', 'value' => date("Y-m-d")),
+            array('datecreated', 'default', 'value' => date("Y-m-d H:m:s")),
             array('startdate', 'default', 'value' => null),
             array('expires', 'default', 'value' => null),
             array('admin,faxto', 'LSYii_Validators'),
@@ -529,10 +529,9 @@ class Survey extends LSActiveRecord implements PermissionInterface
             array('additional_languages', 'filter', 'filter' => 'trim'),
             array('additional_languages', 'LSYii_Validators', 'isLanguageMulti' => true),
             array('running', 'safe', 'on' => 'search'),
-            // Date rules currently don't work properly with MSSQL, deactivating for now
-            //  array('expires','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            //  array('startdate','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
-            //  array('datecreated','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+            array('expires', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('startdate', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true),
+            array('datecreated', 'date','format' => ['yyyy-M-d H:m:s.???','yyyy-M-d H:m:s','yyyy-M-d H:m'],'allowEmpty' => true)
         );
     }
 
@@ -645,10 +644,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
-        // checked for invalid data
-        if ($attdescriptiondata == null) {
-            return array();
-        }
 
         // Catches malformed data
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
@@ -709,6 +704,25 @@ class Survey extends LSActiveRecord implements PermissionInterface
             }
         }
         return $aCompleteData;
+    }
+
+    /**
+     * This function returns any valid mappings from the survey participants tables to the CPDB
+     * in the form of an array [<cpdb_attribute_id>=><participant_table_attribute_name>]
+     *
+     * @return array Array of mappings
+     */
+    public function getCPDBMappings()
+    {
+        $mappings = [];
+        foreach ($this->getTokenAttributes() as $name => $attribute) {
+            if ($attribute['cpdbmap'] != '') {
+                if (ParticipantAttributeName::model()->findByPk($attribute['cpdbmap'])){
+                    $mappings[$attribute['cpdbmap']] = $name;
+                }
+            }
+        }
+        return $mappings;
     }
 
     /**
@@ -1065,13 +1079,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
-            // Time comparaison
+            // Time comparison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
+            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
@@ -1787,6 +1801,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Method to make an approximation on how long a survey will last
+     * @deprecated, unused since 3.X
      * Approx is 3 questions each minute.
      * @return double
      */
@@ -1826,6 +1841,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
 
     /**
      * Fix invalid question in this survey
+     * Delete question that don't exist in primary language
      */
     public function fixInvalidQuestions()
     {
@@ -1980,7 +1996,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     {
         return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
-
 
     /**
      * Returns true if this survey has any question of type $type.

@@ -14,10 +14,9 @@
   *     Extensions to the CActiveRecord class
  */
 
- /**
-  * @method PluginEvent dispatchPluginModelEvent(string $sEventName,CDbCriteria $criteria = null,array $eventParams = array())
-  */
-
+/**
+ * @method PluginEvent dispatchPluginModelEvent(string $sEventName, CDbCriteria $criteria = null, array $eventParams = [])
+ */
 class LSActiveRecord extends CActiveRecord
 {
     public $bEncryption = false;
@@ -26,13 +25,13 @@ class LSActiveRecord extends CActiveRecord
      * Lists the behaviors of this model
      *
      * Below is a list of all behaviors we register:
-     * @see CTimestampBehavior
-     * @see PluginEventBehavior
      * @return array
+     * @see PluginEventBehavior
+     * @see CTimestampBehavior
      */
     public function behaviors()
     {
-        $aBehaviors = array();
+        $aBehaviors = [];
         $sCreateFieldName = ($this->hasAttribute('created') ? 'created' : null);
         $sUpdateFieldName = ($this->hasAttribute('modified') ? 'modified' : null);
         $sDriverName = Yii::app()->db->getDriverName();
@@ -41,17 +40,17 @@ class LSActiveRecord extends CActiveRecord
         } else {
             $sTimestampExpression = new CDbExpression('NOW()');
         }
-        $aBehaviors['CTimestampBehavior'] = array(
-            'class' => 'zii.behaviors.CTimestampBehavior',
-            'createAttribute' => $sCreateFieldName,
-            'updateAttribute' => $sUpdateFieldName,
-            'timestampExpression' =>  $sTimestampExpression
-        );
+        $aBehaviors['CTimestampBehavior'] = [
+            'class'               => 'zii.behaviors.CTimestampBehavior',
+            'createAttribute'     => $sCreateFieldName,
+            'updateAttribute'     => $sUpdateFieldName,
+            'timestampExpression' => $sTimestampExpression
+        ];
         // Some tables might not exist/not be up to date during a database upgrade so in that case disconnect plugin events
         if (!Yii::app()->getConfig('Updating')) {
-            $aBehaviors['PluginEventBehavior'] = array(
+            $aBehaviors['PluginEventBehavior'] = [
                 'class' => 'application.models.behaviors.PluginEventBehavior'
-            );
+            ];
         }
         return $aBehaviors;
     }
@@ -96,7 +95,7 @@ class LSActiveRecord extends CActiveRecord
      * @param array $params parameters to be bound to an SQL statement.
      * @return array list of active records satisfying the specified condition. An empty array is returned if none is found.
      */
-    public function findAllAsArray($condition = '', $params = array())
+    public function findAllAsArray($condition = '', $params = [])
     {
         Yii::trace(get_class($this) . '.findAll()', 'system.db.ar.CActiveRecord');
         $criteria = $this->getCommandBuilder()->createCriteria($condition, $params);
@@ -117,7 +116,7 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMaxId($field = null, $forceRefresh = false)
     {
-        static $maxIds = array();
+        static $maxIds = [];
 
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
@@ -131,9 +130,9 @@ class LSActiveRecord extends CActiveRecord
 
         if ($forceRefresh || !array_key_exists($field, $maxIds)) {
             $maxId = $this->dbConnection->createCommand()
-                    ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
-                    ->from($this->tableName())
-                    ->queryScalar();
+                ->select('MAX(' . $this->dbConnection->quoteColumnName($field) . ')')
+                ->from($this->tableName())
+                ->queryScalar();
 
             // Save so we can reuse in the same request
             $maxIds[$field] = $maxId;
@@ -155,7 +154,7 @@ class LSActiveRecord extends CActiveRecord
      */
     public function getMinId($field = null, $forceRefresh = false)
     {
-        static $minIds = array();
+        static $minIds = [];
 
         if (is_null($field)) {
             $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
@@ -169,9 +168,9 @@ class LSActiveRecord extends CActiveRecord
 
         if ($forceRefresh || !array_key_exists($field, $minIds)) {
             $minId = $this->dbConnection->createCommand()
-                    ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
-                    ->from($this->tableName())
-                    ->queryScalar();
+                ->select('MIN(' . $this->dbConnection->quoteColumnName($field) . ')')
+                ->from($this->tableName())
+                ->queryScalar();
 
             // Save so we can reuse in the same request
             $minIds[$field] = $minId;
@@ -181,6 +180,11 @@ class LSActiveRecord extends CActiveRecord
     }
 
     /**
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * An attribute value can be an array which will be used to generate an IN condition.
+     * @param string $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return integer number of rows affected by the execution.
      * @todo This should also be moved to the behavior at some point.
      * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
      *
@@ -189,19 +193,14 @@ class LSActiveRecord extends CActiveRecord
      * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
      *
      * See {@link find()} for detailed explanation about $condition and $params.
-     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-     * An attribute value can be an array which will be used to generate an IN condition.
-     * @param string $condition query condition or criteria.
-     * @param array $params parameters to be bound to an SQL statement.
-     * @return integer number of rows affected by the execution.
      */
-    public function deleteAllByAttributes($attributes, $condition = '', $params = array())
+    public function deleteAllByAttributes($attributes, $condition = '', $params = [])
     {
         $builder = $this->getCommandBuilder();
         $table = $this->getTableSchema();
         $criteria = $builder->createColumnCriteria($table, $attributes, $condition, $params);
         $modelEventName = get_class($this);
-        $eventParams = array();
+        $eventParams = [];
         if (is_subclass_of($this, 'Dynamic')) {
             /** @scrutinizer ignore-call since we test if exist by subclass */
             $eventParams['dynamicId'] = $this->getDynamicId();
@@ -209,7 +208,7 @@ class LSActiveRecord extends CActiveRecord
         }
         $this->dispatchPluginModelEvent('before' . $modelEventName . 'DeleteMany', $criteria, $eventParams);
         $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria, $eventParams);
-        return parent::deleteAllByAttributes(array(), $criteria, array());
+        return parent::deleteAllByAttributes([], $criteria, []);
     }
 
     /**
@@ -220,12 +219,12 @@ class LSActiveRecord extends CActiveRecord
      * @param array $params parameters to be bound to an SQL statement.
      * @return static|null the record found. Null if none is found.
      */
-    public function findByAttributes($attributes, $condition = '', $params = array())
+    public function findByAttributes($attributes, $condition = '', $params = [])
     {
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findByAttributes($attributes, $condition, $params);
     }
-    
+
     /**
      * Overriding of Yii's findAllByAttributes method to provide encrypted attribute value search
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -234,23 +233,25 @@ class LSActiveRecord extends CActiveRecord
      * @param array $params parameters to be bound to an SQL statement.
      * @return static[] the records found. An empty array is returned if none is found.
      */
-    public function findAllByAttributes($attributes, $condition = '', $params = array())
+    public function findAllByAttributes($attributes, $condition = '', $params = [])
     {
         $attributes = $this->encryptAttributeValues($attributes);
         return parent::findAllByAttributes($attributes, $condition, $params);
     }
-    
+
     /**
      * @param int $iSurveyId
      * @param string $sClassName
      * @return array
+     * TODO: Should be split into seperate functions in the appropiate model or helper class
+     * TODO: Make an interface for records that support encryption.
      */
     public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName)
     {
-        $aAttributes = array();
+        $aAttributes = [];
         if ($sClassName == 'ParticipantAttribute') {
             // participants attributes
-                $aAttributes[] = 'value';
+            $aAttributes[] = 'value';
         } elseif ($sClassName == 'Participant') {
             // participants
             $aTokenAttributes = Participant::getParticipantsEncryptionOptions();
@@ -286,7 +287,7 @@ class LSActiveRecord extends CActiveRecord
 
         return $aAttributes;
     }
-    
+
     /**
      * Attribute values are encrypted ( if needed )to be used for searching purposes
      * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
@@ -297,7 +298,7 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-        
+
         if (method_exists($this, 'getSurveyId')) {
             $iSurveyId = $this->getSurveyId();
         } else {
@@ -357,7 +358,7 @@ class LSActiveRecord extends CActiveRecord
 
     /**
      * Enrypt single value
-     * @param string $value String value which needs to be decrypted
+     * @param string $value String value which needs to be encrypted
      */
     public static function encryptSingle($value = '')
     {
@@ -375,7 +376,6 @@ class LSActiveRecord extends CActiveRecord
      */
     public function encrypt()
     {
-
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
 
@@ -394,7 +394,7 @@ class LSActiveRecord extends CActiveRecord
                 return false;
             }
         }
-        
+
         // encrypt attributes
         $this->decryptEncryptAttributes('encrypt');
 
@@ -411,8 +411,9 @@ class LSActiveRecord extends CActiveRecord
         $sodium = Yii::app()->sodium;
 
         $class = get_class($this);
+        // TODO: Use OOP polymorphism instead of switching on class names.
         if ($class === 'ParticipantAttribute') {
-            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
+            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
             foreach ($aParticipantAttributes as $attribute => $value) {
                 if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
                     $this->value = $sodium->$action($this->value);
@@ -420,11 +421,17 @@ class LSActiveRecord extends CActiveRecord
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
+            $LEM = LimeExpressionManager::singleton();
+            $updatedValues = $LEM->getUpdatedValues();
             foreach ($attributes as $key => $attribute) {
+                if ($action === 'decrypt' && array_key_exists($key, $updatedValues)) {
+                    continue;
+                }
                 $this->$key = $sodium->$action($attribute);
             }
         }
     }
+
     /**
      * Function to show encryption symbol in gridview attribute header if value ois encrypted
      * @param int $surveyId

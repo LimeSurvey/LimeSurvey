@@ -19,13 +19,13 @@
                             array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
                         ); ?>
                         <?= getEditor(
-                            "question_" . $lang,
+                            'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
                             "question_" . $lang,
                             "[".gT("Question:","js")."](".$lang.")",
                             $oSurvey->sid,
                             $question->gid ?? 0,
                             $question->qid ?? 0,
-                            $action = '');
+                            'editquestion');
                         ?>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                             ]
                         ); ?>
                         <p class="alert well">
-                            <?= gt("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                            <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
                         </p>
                     </div>
                 <?php endif; ?>
