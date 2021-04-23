@@ -3,13 +3,13 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2012 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-@trigger_error('The Twig_Test class is deprecated since version 1.12 and will be removed in 2.0. Use Twig_SimpleTest instead.', E_USER_DEPRECATED);
+@trigger_error('The Twig_Test class is deprecated since version 1.12 and will be removed in 2.0. Use \Twig\TwigTest instead.', E_USER_DEPRECATED);
 
 /**
  * Represents a template test.
@@ -21,13 +21,13 @@
 abstract class Twig_Test implements Twig_TestInterface, Twig_TestCallableInterface
 {
     protected $options;
-    protected $arguments = array();
+    protected $arguments = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'callable' => null,
-        ), $options);
+        ], $options);
     }
 
     public function getCallable()

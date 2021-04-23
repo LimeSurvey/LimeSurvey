@@ -3,17 +3,19 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2010 Fabien Potencier
- * (c) 2010 Arnaud Le Blanc
+ * (c) Fabien Potencier
+ * (c) Arnaud Le Blanc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
+use Twig\Node\Node;
+
 /**
  * Represents a template function.
  *
- * Use Twig_SimpleFunction instead.
+ * Use \Twig\TwigFunction instead.
  *
  * @author Arnaud Le Blanc <arnaud.lb@gmail.com>
  *
@@ -32,7 +34,7 @@ interface Twig_FunctionInterface
 
     public function needsContext();
 
-    public function getSafe(Twig_Node $filterArgs);
+    public function getSafe(Node $filterArgs);
 
     public function setArguments($arguments);
 

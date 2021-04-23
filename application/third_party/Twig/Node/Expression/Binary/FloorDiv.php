@@ -1,24 +1,11 @@
 <?php
 
-/*
- * This file is part of Twig.
- *
- * (c) 2009 Fabien Potencier
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-class Twig_Node_Expression_Binary_FloorDiv extends Twig_Node_Expression_Binary
-{
-    public function compile(Twig_Compiler $compiler)
-    {
-        $compiler->raw('(int) floor(');
-        parent::compile($compiler);
-        $compiler->raw(')');
-    }
+use Twig\Node\Expression\Binary\FloorDivBinary;
 
-    public function operator(Twig_Compiler $compiler)
+class_exists('Twig\Node\Expression\Binary\FloorDivBinary');
+
+if (\false) {
+    class Twig_Node_Expression_Binary_FloorDiv extends FloorDivBinary
     {
-        return $compiler->raw('/');
     }
 }
