@@ -5,7 +5,7 @@ namespace LimeSurvey\Models\Services;
 
 /**
  * This class contains all functions for the process of password reset and creating new administration users
- * and sending email to those.
+ * and sending email to those with a link to set the password.
  *
  * All this functions were implemented in UserManagementController before.
  *
@@ -75,16 +75,18 @@ class PasswordManagement
      * Sets the validationKey and the validationKey expiration and
      * sends email to the user, containing the link to set/reset password.
      *
+     * @param string $emailType this could be 'registration' or 'resetPassword' (see const in this class)
+     *
      * @return array message if sending email to user was successful
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function sendPasswordLinkViaEmail(){
+    public function sendPasswordLinkViaEmail($emailType){
 
         $success = true;
         $this->user->setValidationKey();
         $this->user->setValidationExpiration();
-        $mailer = $this->sendAdminMail('registration');
+        $mailer = $this->sendAdminMail($emailType);
 
         if ($mailer->getError()) {
             $sReturnMessage = \CHtml::tag("h4", array(), gT("Error"));
@@ -107,7 +109,7 @@ class PasswordManagement
     }
 
     /**
-     * Send a link for the user to set a new password (forgot password functionality)
+     * Send a link to email of the user to set a new password (forgot password functionality)
      *
      * @return string message for user
      */
@@ -145,6 +147,8 @@ class PasswordManagement
     /**
      * Creates a random password through the core plugin
      *
+     * @todo it's fine to use static functions, until it is used only in controllers ...
+     *
      * @param int $length Length of the password
      * @return string
      */
@@ -158,35 +162,12 @@ class PasswordManagement
     }
 
     /**
-     * Resets the password for one user
-     *
-     * @param User $oUser User model
-     * @param bool $sendMail Send a mail to the user
-     * @return array [success, uid, username, password]
-     * @throws CException
-     * @throws \PHPMailer\PHPMailer\Exception
-     */
-    public function resetLoginData(&$oUser, $sendMail = false)
-    {
-        $newPassword = $this->getRandomPassword(8);
-        $oUser->setPassword($newPassword);
-        $success = true;
-        if ($sendMail === true) {
-            $aUser = $oUser->attributes;
-            $aUser['rawPassword'] = $newPassword;
-            $success = $this->sendAdminMail($aUser, 'resetPassword');
-        }
-        return [
-            'success' => $success, 'uid' => $oUser->uid, 'username' => $oUser->users_name, 'password' => $newPassword,
-        ];
-    }
-
-    /**
      * Send the registration email to a new survey administrator
      *
      * @param string $type   two types are available 'resetPassword' or 'registration', default is 'registration'
-     * @param null $newPassword
+     *
      * @return \LimeMailer if send is successfull
+     *
      * @throws \PHPMailer\PHPMailer\Exception
      */
     private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION)
@@ -203,7 +184,7 @@ class PasswordManagement
                     'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $absolutUrl,
                     'username' => $this->user->users_name,
-                    //'password' => $this->user->ra$aUser['rawPassword'],
+                    'password' => gT('Click the following link to reset your password') . ': ' . \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key),
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
                     'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),

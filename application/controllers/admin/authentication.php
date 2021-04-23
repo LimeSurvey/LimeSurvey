@@ -195,6 +195,7 @@ class Authentication extends Survey_Common_Action
     /**
      * This action sets a password for new user or resets a password for an existing user.
      * If validation time is expired, no password will be changed.
+     * After password has been changed successfully it redirects to LogIn-Page.
      *
      */
     public function newPassword(){
@@ -258,15 +259,7 @@ class Authentication extends Survey_Common_Action
             'validationKey'=> $user->validation_key
         ];
 
-
         $this->_renderWrappedTemplate('authentication', 'newPassword', $aData);
-
-        /*
-        $this->getController()->render('newPassword',[
-            'errorExists' => $errorExists,
-            'errorMasg' => $errorMsg,
-            'randomPassword', $randomPassword
-        ]);*/
     }
 
     /**
