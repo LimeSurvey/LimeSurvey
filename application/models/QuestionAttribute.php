@@ -1,18 +1,20 @@
 <?php
 
-/*
-   * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
-   * All rights reserved.
-   * License: GNU/GPL License v2 or later, see LICENSE.php
-   * LimeSurvey is free software. This version may have been modified pursuant
-   * to the GNU General Public License, and as distributed it includes or
-   * is derivative of works licensed under the GNU General Public License or
-   * other free or open source software licenses.
-   * See COPYRIGHT.php for copyright notices and details.
-   *
-   * Files Purpose: lots of common functions
-*/
+/**
+ * LimeSurvey
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * Files Purpose: lots of common functions
+ */
+
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
 /**
  * Class QuestionAttribute
@@ -226,7 +228,7 @@ class QuestionAttribute extends LSActiveRecord
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
 
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aQuestionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage);
 
         $aLanguages = empty($sLanguage) ? $oQuestion->survey->allLanguages : [$sLanguage];
@@ -294,7 +296,7 @@ class QuestionAttribute extends LSActiveRecord
         if ($oAttributeValue !== null) {
             $sQuestionTheme = $oAttributeValue->value;
             $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
-            $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+            $questionAttributeHelper = new QuestionAttributeHelper();
             $retAttributeNamesExtended = $questionAttributeHelper->mergeQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
 
@@ -318,7 +320,7 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * @param string $fields
      * @param mixed $condition
-     * @param string $orderby
+     * @param string|false $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
@@ -327,7 +329,7 @@ class QuestionAttribute extends LSActiveRecord
             ->select($fields)
             ->from($this->tableName())
             ->where($condition);
-        if ($orderby != false) {
+        if ($orderby !== false) {
             $command->order($orderby);
         }
         return $command->queryAll();
@@ -360,7 +362,9 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Get default settings for an attribute, return an array of string|null
-     * @return (string|bool|null)[]
+     *
+     * @todo Move to static property?
+     * @return array<string, mixed>
      */
     public static function getDefaultSettings()
     {
@@ -465,7 +469,7 @@ class QuestionAttribute extends LSActiveRecord
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
@@ -503,7 +507,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
 
         return $aAttributes;
@@ -514,7 +518,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return array The general attribute settings for this question type
+     * @return ?array The general attribute settings for this question type
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
@@ -528,7 +532,7 @@ class QuestionAttribute extends LSActiveRecord
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
@@ -551,7 +555,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
 
         return $aAttributes;
