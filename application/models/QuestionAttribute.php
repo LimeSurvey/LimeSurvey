@@ -305,20 +305,6 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public static function insertRecords($data)
-    {
-        $attrib = new self();
-        foreach ($data as $k => $v) {
-            $attrib->$k = $v;
-        }
-        return $attrib->save();
-    }
-
-    /**
      * @param string $fields
      * @param mixed $condition
      * @param string|false $orderby
