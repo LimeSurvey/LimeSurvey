@@ -14,10 +14,10 @@ namespace LimeSurvey\Models\Services;
 class PasswordManagement
 {
 
-    const MIN_PASSWORD_LENGTH = 8;
+    public const MIN_PASSWORD_LENGTH = 8;
 
-    const EMAIL_TYPE_REGISTRATION = 'registration';
-    const EMAIL_TYPE_RESET_PW = 'resetPassword';
+    public const EMAIL_TYPE_REGISTRATION = 'registration';
+    public const EMAIL_TYPE_RESET_PW = 'resetPassword';
 
     /** @var $user \User */
     private $user;
@@ -26,7 +26,7 @@ class PasswordManagement
      * PasswordManagement constructor.
      * @param $user \User
      */
-    public function __construct($user){
+    public function __construct(\User $user){
         $this->user = $user;
     }
 
@@ -38,7 +38,7 @@ class PasswordManagement
      */
     public function generateAdminCreationEmail()
     {
-        $aAdminEmail = [];
+        $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
         $loginUrl = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
@@ -64,10 +64,10 @@ class PasswordManagement
         $emailTemplate = str_replace("{USERNAME}", $this->user->users_name, $emailTemplate);
         $emailTemplate = str_replace("{LOGINURL}", $loginUrl, $emailTemplate);
 
-        $aAdminEmail['subject'] = $emailSubject;
-        $aAdminEmail['body'] = $emailTemplate;
+        $adminEmail['subject'] = $emailSubject;
+        $adminEmail['body'] = $emailTemplate;
 
-        return $aAdminEmail;
+        return $adminEmail;
     }
 
 
@@ -81,7 +81,8 @@ class PasswordManagement
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function sendPasswordLinkViaEmail($emailType){
+    public function sendPasswordLinkViaEmail(string $emailType): array
+    {
 
         $success = true;
         $this->user->setValidationKey();
@@ -113,7 +114,7 @@ class PasswordManagement
      *
      * @return string message for user
      */
-    public function sendForgotPasswordEmailLink()
+    public function sendForgotPasswordEmailLink(): string
     {
         $mailer = new \LimeMailer();
         $mailer->emailType = 'passwordreminderadminuser';
@@ -152,7 +153,7 @@ class PasswordManagement
      * @param int $length Length of the password
      * @return string
      */
-    public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH)
+    public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH): string
     {
         $oGetPasswordEvent = new \PluginEvent('createRandomPassword');
         $oGetPasswordEvent->set('targetSize', $length);
@@ -170,7 +171,7 @@ class PasswordManagement
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION)
+    private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION): \LimeMailer
     {
         $absolutUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
 
