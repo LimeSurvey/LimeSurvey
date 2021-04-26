@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.26.0 (build 210419) to 3.26.1 (build 210427) April 26, 2021
+-Fixed issue #15653: Dark Sky admin theme : Item texts hardly visible in hover (Jessica Höck)
+-Fixed issue #17264: Validuntil and validfrom fields don't allow just date (without time) aynmore (Carsten Schmitz)
+-Fixed issue #17235: Token additional attributes are blank after editing (#1846) (Gabriel Jenik)
+-Fixed issue #17112: Uploading files at quick translation feature using integrated editor fails with permission error (Olle Haerstedt)
+#Updated translation: Amharic by c_schmitz
+
+
 Changes from 3.25.22 (build 210413) to 3.26.0 (build 210419) April 19, 2021
 +New feature #16832: Add user group functions to LimeSurveyAPI (Olle Härstedt)
 #Updated translation: Japanese by nomoto
