@@ -2,6 +2,8 @@
 <ruleset name="PSR2R">
     <rule ref="PSR12">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
+        <!-- TODO: This rule should be disabled when support for PHP 7.0 is dropped -->
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
         <exclude name="Generic.Files.LineLength"/>
     </rule>
 </ruleset>
