@@ -238,7 +238,7 @@ class QuestionAttributeHelper
         }
 
         // Get attribute values
-        $attributeValues = $this->getAttributesValuesFromDB($question->qid);
+        $attributeValues = $this->getAttributeValuesFromDB($question->qid);
 
         // Get question theme name if not specified
         $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
@@ -274,7 +274,7 @@ class QuestionAttributeHelper
      *               array(attributeName => array(languageCode => value, ...), ...)
      *               where languageCode is '' if no language is specified.
      */
-    public function getAttributesValuesFromDB($questionId)
+    public function getAttributeValuesFromDB($questionId)
     {
         return \QuestionAttribute::model()->getAttributesAsArrayFromDB($questionId);
     }
