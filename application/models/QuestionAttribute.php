@@ -36,8 +36,7 @@ class QuestionAttribute extends LSActiveRecord
     protected static $questionAttributesSettings = array();
 
     /**
-     * @inheritdoc
-     * @return QuestionAttribute
+     * @return static
      */
     public static function model($class = __CLASS__)
     {
@@ -454,7 +453,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return array The advanced attribute settings for this question type
+     * @return ?array The advanced attribute settings for this question type
      */
     protected static function getAdvancedAttributesFromXml($sXmlFilePath)
     {
