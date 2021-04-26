@@ -593,15 +593,15 @@ class QuestionTheme extends LSActiveRecord
         );
         foreach ($aQuestions as $oQuestion) {
             if (isset($oQuestion['questionattributes']['question_template'])) {
-                if ($sThemeName == $oQuestion['questionattributes']['question_template']) {
+                if ($sThemeName === $oQuestion['questionattributes']['question_template']['value']) {
                     $bDeleteTheme = false;
                     break;
-                };
+                }
             } else {
-                if ($sThemeName == 'core') {
+                if ($sThemeName === 'core') {
                     $bDeleteTheme = false;
                     break;
-                };
+                }
             }
         }
         // if this questiontheme is used, it cannot be deleted
