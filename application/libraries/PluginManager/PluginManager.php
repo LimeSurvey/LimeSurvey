@@ -358,11 +358,6 @@ class PluginManager extends \CApplicationComponent
 
         if (!class_exists($class, false)) {
             $found = false;
-            if (!is_null($pluginDir)) {
-                $dirs = array($pluginDir);
-            } else {
-                $dirs = $this->pluginDirs;
-            }
 
             foreach ($this->pluginDirs as $type => $pluginDir) {
                 $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
