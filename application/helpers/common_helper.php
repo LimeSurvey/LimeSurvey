@@ -1274,7 +1274,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 *
 * @param Survey $survey Survey ActiveRecord model
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
-* @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param ?boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sLanguage The language to use
 * @param array $aDuplicateQIDs

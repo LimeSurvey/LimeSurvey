@@ -210,7 +210,7 @@ class QuestionAttribute extends LSActiveRecord
      * @access public
      * @param int $iQuestionID
      * @param string $sLanguage restrict to this language (if null $oQuestion->survey->allLanguages will be used)
-     * @return array|boolean
+     * @return array|false
      *
      * @throws CException throws exception if questiontype is null
      */
