@@ -94,6 +94,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sValue
      * @param string $sLanguage
      * @return CDbDataReader
+     * @todo A function should not both set and get something; split into two functions
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
     {
@@ -122,6 +123,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sAttributeName
      * @param string $sValue
      * @return CDbDataReader|boolean
+     * @todo A function should not both set and get something; split into two functions
      */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
@@ -154,6 +156,7 @@ class QuestionAttribute extends LSActiveRecord
      * @var array $aQids                    an array containing the list of primary keys for questions
      * @var array $aAttributesToUpdate    array continaing the list of attributes to update
      * @var array $aValidQuestionTypes    the question types we can update for those attributes
+     * @todo Missign noun in function name - set multiple what?
      */
     public function setMultiple($iSid, $aQids, $aAttributesToUpdate, $aValidQuestionTypes)
     {
@@ -207,7 +210,6 @@ class QuestionAttribute extends LSActiveRecord
      * @return array|boolean
      *
      * @throws CException throws exception if questiontype is null
-     * @todo this function is doing to much things to prepare just an array. Find a better solution (maybe service class)
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
