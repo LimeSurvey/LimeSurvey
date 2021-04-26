@@ -1169,7 +1169,7 @@ class UserManagementController extends LSBaseController
             if (Yii::app()->getConfig("sendadmincreationemail") && $sendEmail) {
                 $user = User::model()->findByPk($newUser['uid']);
                 $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
-                $successData = $passwordManagement->sendPasswordLinkViaEmail();
+                $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_REGISTRATION);
 
                 $sReturnMessage = $successData['sReturnMessage'];
                 $success = $successData['success'];
