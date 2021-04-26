@@ -50,6 +50,7 @@ class QuestionAttributeHelper
      * @param array $attributes the array of attributes to sanitize
      *
      * @return array<string,array> the array of sanitized attributes
+     * @todo Pure function - move outside class?
      */
     public function sanitizeQuestionAttributes($attributes)
     {
@@ -95,6 +96,7 @@ class QuestionAttributeHelper
      * @param array $languages the languages to use for i18n attributes
      *
      * @return array the same source attributes with their corresponding values (when available)
+     * @todo Pure function - move outside class?
      */
     public function fillAttributesWithValues($attributes, $attributeValues, $languages = [])
     {
@@ -132,6 +134,7 @@ class QuestionAttributeHelper
      *
      * @param array $attributes
      * @return array Grouped question attributes, with category as array key
+     * @todo Pure function - move outside class?
      */
     public function groupAttributesByCategory($attributes)
     {
