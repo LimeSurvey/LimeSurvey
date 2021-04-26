@@ -57,7 +57,10 @@ class QuestionAttribute extends LSActiveRecord
         return 'qaid';
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @todo Remove?
+     */
     public function relations()
     {
         return array(
@@ -506,6 +509,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sXmlFilePath Path to XML
      *
      * @return ?array The general attribute settings for this question type
+     * @todo What's the opposite of a "general" attribute? How many types of attributes are there?
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
