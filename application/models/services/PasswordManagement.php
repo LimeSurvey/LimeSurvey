@@ -10,11 +10,10 @@ namespace LimeSurvey\Models\Services;
  */
 class PasswordManagement
 {
-
-    public const MIN_PASSWORD_LENGTH = 8;
-
-    public const EMAIL_TYPE_REGISTRATION = 'registration';
-    public const EMAIL_TYPE_RESET_PW = 'resetPassword';
+    // NB: PHP 7.0 does not support class constant visibility
+    const MIN_PASSWORD_LENGTH = 8;
+    const EMAIL_TYPE_REGISTRATION = 'registration';
+    const EMAIL_TYPE_RESET_PW = 'resetPassword';
 
     /** @var $user \User */
     private $user;
