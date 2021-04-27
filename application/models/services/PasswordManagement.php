@@ -1,6 +1,4 @@
 <?php
-
-
 namespace LimeSurvey\Models\Services;
 
 /**
@@ -26,7 +24,8 @@ class PasswordManagement
      * PasswordManagement constructor.
      * @param $user \User
      */
-    public function __construct(\User $user){
+    public function __construct(\User $user)
+    {
         $this->user = $user;
     }
 
@@ -40,18 +39,11 @@ class PasswordManagement
     {
         $adminEmail = [];
         $siteName = \Yii::app()->getConfig("sitename");
-        $loginUrl = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
+        $url = 'admin/authentication/sa/newPassword/param/' . $this->user->validation_key;
+        $loginUrl = \Yii::app()->getController()->createAbsoluteUrl($url);
         $siteAdminEmail = \Yii::app()->getConfig("siteadminemail");
         $emailSubject = \Yii::app()->getConfig("admincreationemailsubject");
         $emailTemplate = \Yii::app()->getConfig("admincreationemailtemplate");
-
-        // authent is not delegated to web server or LDAP server
-        if (\Yii::app()->getConfig("auth_webserver") === false && \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid)) {
-            // send password (if authorized by config)
-            if (!\Yii::app()->getConfig("display_user_password_in_email") === true) {
-                $password = "<p>" . gT("Please contact your LimeSurvey administrator for your password.") . "</p>";
-            }
-        }
 
         //Replace placeholder in Email subject
         $emailSubject = str_replace("{SITENAME}", $siteName, $emailSubject);
@@ -91,15 +83,21 @@ class PasswordManagement
 
         if ($mailer->getError()) {
             $sReturnMessage = \CHtml::tag("h4", array(), gT("Error"));
-            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."),
-                "<strong>" . $this->user->users_name . "</strong>", $this->user->email));
+            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(
+                gT("Email to %s (%s) failed."),
+                "<strong>" . $this->user->users_name . "</strong>",
+                $this->user->email
+            ));
             $sReturnMessage .= \CHtml::tag("p", array(), $mailer->getError());
             $success = false;
         } else {
             // has to be sent again or no other way
             $sReturnMessage = \CHtml::tag("h4", array(), gT("Success"));
-            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."),
-                $this->user->users_name, $this->user->email));
+            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(
+                gT("Username : %s - Email : %s."),
+                $this->user->users_name,
+                $this->user->email
+            ));
             $sReturnMessage .= \CHtml::tag("p", array(), gT("An email with a generated link was sent to the user."));
         }
 
@@ -167,7 +165,7 @@ class PasswordManagement
      *
      * @param string $type   two types are available 'resetPassword' or 'registration', default is 'registration'
      *
-     * @return \LimeMailer if send is successfull
+     * @return \LimeMailer if send is successful
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
@@ -216,5 +214,4 @@ class PasswordManagement
         $mailer->sendMessage();
         return $mailer;
     }
-
 }
