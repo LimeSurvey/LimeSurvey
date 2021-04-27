@@ -1,4 +1,5 @@
 <?php
+
 namespace LimeSurvey\Models\Services;
 
 /**
@@ -6,8 +7,6 @@ namespace LimeSurvey\Models\Services;
  * and sending email to those with a link to set the password.
  *
  * All this functions were implemented in UserManagementController before.
- *
- *
  */
 class PasswordManagement
 {
