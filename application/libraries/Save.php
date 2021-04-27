@@ -245,7 +245,7 @@ class Save
             $saved_control->sid            = $surveyid;
             $saved_control->srid           = $_SESSION['survey_'.$surveyid]['srid'];
             $saved_control->identifier     = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
-            $saved_control->access_code    = hash('sha256', $_POST['savepass']);
+            $saved_control->access_code    = password_hash($_POST['savepass'], PASSWORD_DEFAULT);
             $saved_control->email          = $_POST['saveemail'];
             $saved_control->ip             = ($thissurvey['ipaddr'] == 'Y') ?getIPAddress() : '';
             $saved_control->saved_thisstep = $thisstep;
