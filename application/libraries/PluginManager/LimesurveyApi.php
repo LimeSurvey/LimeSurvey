@@ -604,4 +604,25 @@ class LimesurveyApi
             }
         }
     }
+
+    /**
+     * Returns an array of all the question attributes and their values for the
+     * specified question.
+     *
+     * @param int $questionId   the ID of the question
+     * @param string|null $language     restrict to this language
+     * @return array<string,mixed>    array of question attributes and values (name=>value)
+     * @throws \InvalidArgumentException
+     */
+    public function getQuestionAttributes($questionId, $language = null)
+    {
+        /** @var array<string,mixed>|boolean Array of question attributes or false if the question can't be found */
+        $questionAttributes = \QuestionAttribute::model()->getQuestionAttributes($questionId, $language);
+
+        if ($questionAttributes === false) {
+            throw new \InvalidArgumentException(gT("Question does not exist."));
+        }
+
+        return $questionAttributes;
+    }
 }
