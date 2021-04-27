@@ -185,7 +185,7 @@ echo viewHelper::getViewTestTag('index');
             </div>
         </div>
 
-    </>
+    </div>
 </div>
 
 <!-- Notification setting -->
