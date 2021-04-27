@@ -14,7 +14,6 @@ abstract class QuestionBaseDataSet extends StaticModel
     private $sQuestionType;
     private $sLanguage;
     private $oQuestion;
-    private $aQuestionAttributes;
 
     public function __construct($iQuestionId)
     {
