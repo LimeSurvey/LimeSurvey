@@ -24,7 +24,7 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
-			"LimeSurvey\\Helpers\\": "application/helpers",
+			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
 	},
 	"config": {
