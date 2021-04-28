@@ -32,6 +32,7 @@
 	},
 	"require": {
         "paragonie/sodium_compat": "^1.14"
+		"twig/twig": "1.42.5"
 	},
     "config": {
         "vendor-dir": "third_party",
