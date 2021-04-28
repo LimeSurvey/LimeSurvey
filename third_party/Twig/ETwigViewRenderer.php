@@ -14,7 +14,7 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
     /**
      * @var string Path alias to Twig
      */
-    public $twigPathAlias = 'application.vendor.Twig';
+    public $twigPathAlias = 'webroot.third_party.Twig.twig.lib.Twig';
     /**
      * @var string Twig template files extension
      */

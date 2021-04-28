@@ -25,12 +25,9 @@
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
-            "Twig\\": "application/third_party/Twig"
 		}
 	},
-	"require": {
-	},
-    "config": {
+	"config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
@@ -38,5 +35,8 @@
 		"facebook/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "5.7.*"
+	},
+	"require": {
+		"twig/twig": "1.42.5"
 	}
 }
