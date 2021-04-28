@@ -726,9 +726,8 @@ $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'th
 $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
 $config['usertwigextensionrootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR."twig".DIRECTORY_SEPARATOR."extensions"; // The directory path of the user custom twig extensions
-// TODO: userquestionthemedir should be renamed to customquestionthemedir. Only userquestionthemerootdir is for user uploads.
-$config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
+$config['customquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
+$config['userquestionthemerootdir'] = "upload".DIRECTORY_SEPARATOR.$config['customquestionthemedir']; // The directory containing the user's question themes.
 $config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
 $config['lsadminmodulesrootdir']    = $config['rootdir'].DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR."admin";

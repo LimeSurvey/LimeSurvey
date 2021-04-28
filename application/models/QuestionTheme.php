@@ -739,7 +739,7 @@ class QuestionTheme extends LSActiveRecord
     public static function getQuestionThemeDirectories()
     {
         $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('userquestionthemedir');
+        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('customquestionthemedir');
         $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
 
         return $questionThemeDirectories;
