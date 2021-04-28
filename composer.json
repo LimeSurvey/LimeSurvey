@@ -52,10 +52,12 @@
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfig.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/ArchivedTableSettings.php",
             "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/psalm"
         ]
     }
