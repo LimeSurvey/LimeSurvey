@@ -57,7 +57,7 @@ $internalConfig = array(
         // we use 'third_party' instead of 'vendor'
         // This line just point vendor.Twig to third_party/Twig
         // @see: ETwigViewRenderer::$twigPathAlias
-        'application.vendor.Twig'=>'webroot.third_party.Twig.twig.lib.Twig',
+        'application.vendor.Twig' => 'third_party.Twig.twig.lib.Twig'
         // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
