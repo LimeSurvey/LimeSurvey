@@ -426,12 +426,11 @@ class QuestionTheme extends LSActiveRecord
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         }
         $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
-        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
-
-        if (!$sQuestionConfigFile) {
+        if (!file_exists($sQuestionConfigFilePath)) {
             throw new Exception(gT('Extension configuration file is not valid or missing.'));
         }
+        $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
 
         // TODO: Copied from PluginManager - remake to extension manager.
         $extensionConfig = new ExtensionConfig($oQuestionConfig);
@@ -740,7 +739,7 @@ class QuestionTheme extends LSActiveRecord
     public static function getQuestionThemeDirectories()
     {
         $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
-        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('userquestionthemedir');
+        $questionThemeDirectories['customCoreTheme'] = App()->getConfig('customquestionthemedir');
         $questionThemeDirectories['customUserTheme'] = App()->getConfig('userquestionthemerootdir');
 
         return $questionThemeDirectories;
@@ -882,7 +881,6 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function convertLS3toLS4($sXMLDirectoryPath)
     {
-
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
         if (\PHP_VERSION_ID < 80000) {

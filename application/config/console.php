@@ -40,7 +40,7 @@ $config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$co
 $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
 $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey";
-$config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
-$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir'];
+$config['customquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
+$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['customquestionthemedir'];
 
 return $config;
