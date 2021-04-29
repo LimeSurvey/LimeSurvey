@@ -3,11 +3,15 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+use Twig\Error\SyntaxError;
+use Twig\Source;
+use Twig\TokenStream;
 
 /**
  * Interface implemented by lexer classes.
@@ -21,12 +25,12 @@ interface Twig_LexerInterface
     /**
      * Tokenizes a source code.
      *
-     * @param string|Twig_Source $code The source code
-     * @param string             $name A unique identifier for the source code
+     * @param string|Source $code The source code
+     * @param string        $name A unique identifier for the source code
      *
-     * @return Twig_TokenStream
+     * @return TokenStream
      *
-     * @throws Twig_Error_Syntax When the code is syntactically wrong
+     * @throws SyntaxError When the code is syntactically wrong
      */
     public function tokenize($code, $name = null);
 }

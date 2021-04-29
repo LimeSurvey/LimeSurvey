@@ -28,7 +28,7 @@ class ComposerAutoloaderInitddb1a145e450f862353420acc5153e40
 
         $useStaticLoader = PHP_VERSION_ID >= 50600 && !defined('HHVM_VERSION') && (!function_exists('zend_loader_file_encoded') || !zend_loader_file_encoded());
         if ($useStaticLoader) {
-            require __DIR__ . '/autoload_static.php';
+            require_once __DIR__ . '/autoload_static.php';
 
             call_user_func(\Composer\Autoload\ComposerStaticInitddb1a145e450f862353420acc5153e40::getInitializer($loader));
         } else {

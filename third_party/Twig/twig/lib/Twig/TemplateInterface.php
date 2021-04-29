@@ -3,11 +3,13 @@
 /*
  * This file is part of Twig.
  *
- * (c) 2009 Fabien Potencier
+ * (c) Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+use Twig\Environment;
 
 /**
  * Interface implemented by all compiled templates.
@@ -37,12 +39,12 @@ interface Twig_TemplateInterface
      * @param array $context An array of parameters to pass to the template
      * @param array $blocks  An array of blocks to pass to the template
      */
-    public function display(array $context, array $blocks = array());
+    public function display(array $context, array $blocks = []);
 
     /**
      * Returns the bound environment for this template.
      *
-     * @return Twig_Environment
+     * @return Environment
      */
     public function getEnvironment();
 }

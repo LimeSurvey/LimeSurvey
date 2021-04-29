@@ -35,7 +35,6 @@ class TwigTest
             'node_class' => '\Twig\Node\Expression\TestExpression',
             'deprecated' => false,
             'alternative' => null,
-            'one_mandatory_argument' => false,
         ], $options);
     }
 
@@ -82,11 +81,6 @@ class TwigTest
     public function getArguments()
     {
         return $this->arguments;
-    }
-
-    public function hasOneMandatoryArgument(): bool
-    {
-        return (bool) $this->options['one_mandatory_argument'];
     }
 }
 
