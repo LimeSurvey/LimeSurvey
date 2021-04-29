@@ -36,7 +36,10 @@
 	},
     "config": {
         "vendor-dir": "third_party",
-        "bin-dir": "third_party/bin"
+        "bin-dir": "third_party/bin",
+		"platform": {
+			"php": "7.0.33"
+		}
     },
     "require-dev": {
         "facebook/webdriver": "^1.4",
