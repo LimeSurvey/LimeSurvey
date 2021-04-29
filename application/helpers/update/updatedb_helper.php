@@ -3805,7 +3805,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand($deleteQuery)->execute();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
             $oTransaction->commit();
-        }        
+        }
+
+        if ($iOldDBVersion < 445) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $table = '{{surveymenu_entries}}';
+            $data_to_be_updated = [
+                'data' => '{"render": {"isActive": false, "link": {"data": {"iSurveyID": ["survey","sid"]}}}}',
+            ];
+            $where = "name = 'activateSurvey'";
+            $oDB->createCommand()->update(
+                $table,
+                $data_to_be_updated,
+                $where
+            );
+
+            // Increase Database version
+            $oDB->createCommand()->update(
+                '{{settings_global}}',
+                array('stg_value' => 445),
+                "stg_name = 'DBVersion'"
+            );
+
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
