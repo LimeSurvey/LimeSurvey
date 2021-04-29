@@ -31,10 +31,6 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         /** @var self $model */
         $model = parent::model($class);
-        // When running tests this might be empty
-        if (!isset($_SERVER['REMOTE_ADDR'])) {
-            $_SERVER['REMOTE_ADDR'] = '';
-        }
         return $model;
     }
 
@@ -58,7 +54,7 @@ class FailedLoginAttempt extends LSActiveRecord
      */
     public function deleteAttempts()
     {
-        $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
+        $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
         $this->deleteAllByAttributes(array('ip' => $ip));
     }
 
@@ -70,8 +66,8 @@ class FailedLoginAttempt extends LSActiveRecord
     public function isLockedOut()
     {
         $isLockedOut = false;
-        $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
-        $criteria = new CDbCriteria();
+        $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
+        $criteria = new CDbCriteria;
         $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
         $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
 
@@ -109,7 +105,7 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         if (!$this->isLockedOut()) {
             $timestamp = date("Y-m-d H:i:s");
-            $ip = substr($_SERVER['REMOTE_ADDR'], 0, 40);
+            $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
             $row = $this->findByAttributes(array('ip' => $ip));
     
             if ($row !== null) {
