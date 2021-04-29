@@ -49,6 +49,9 @@
         -->
 
         <RedundantCast errorLevel="info" />
+        <UnnecessaryVarAnnotation errorLevel="suppress" />
+        <UnusedVariable errorLevel="info" />
+        <UnusedFunctionCall errorLevel="info" />
 
     </issueHandlers>
 </psalm>

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '638ac3f0c1fdd5d4b236f2697a3c207ef1378a3f',
+    'reference' => '56a346bc76c518a95699125cf490f39a7c56517f',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,25 @@
       'aliases' => 
       array (
       ),
-      'reference' => '638ac3f0c1fdd5d4b236f2697a3c207ef1378a3f',
+      'reference' => '56a346bc76c518a95699125cf490f39a7c56517f',
+    ),
+    'paragonie/random_compat' => 
+    array (
+      'pretty_version' => 'v9.99.100',
+      'version' => '9.99.100.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+    ),
+    'paragonie/sodium_compat' => 
+    array (
+      'pretty_version' => 'v1.15.4',
+      'version' => '1.15.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8a93bfe047c7f699f819459de8ddda144cd636a4',
     ),
     'symfony/polyfill-ctype' => 
     array (

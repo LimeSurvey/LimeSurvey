@@ -61,5 +61,8 @@ if (PHP_VERSION_ID < 70200 || !extension_loaded('sodium')) {
     } else {
         assert(class_exists('ParagonIE_Sodium_Compat'));
     }
-    require_once (dirname(__FILE__) . '/lib/php72compat.php');
+    require_once(dirname(__FILE__) . '/lib/php72compat.php');
+} elseif (!function_exists('sodium_crypto_stream_xchacha20_xor')) {
+    // Older versions of {PHP, ext/sodium} will not define these
+    require_once(dirname(__FILE__) . '/lib/php72compat.php');
 }
