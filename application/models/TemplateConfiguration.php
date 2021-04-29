@@ -970,7 +970,7 @@ class TemplateConfiguration extends TemplateConfig
 
 
         $files = $oTemplate->$sField;
-
+        $oFiles = [];
         if (!empty($files)) {
             $oFiles = json_decode($files, true);
             if ($oFiles === null) {
