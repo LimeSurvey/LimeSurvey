@@ -31,7 +31,7 @@
 		}
 	},
 	"require": {
-        "paragonie/sodium_compat": "^1.14"
+        "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "1.42.5"
 	},
     "config": {
