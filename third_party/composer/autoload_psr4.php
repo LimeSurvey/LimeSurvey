@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Twig\\' => array($baseDir . '/application/third_party/Twig', $vendorDir . '/twig/twig/src'),
+    'Twig\\' => array( $vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'LimeSurvey\\PluginManager\\' => array($baseDir . '/application/libraries/PluginManager', $baseDir . '/application/libraries/PluginManager/Storage'),
     'LimeSurvey\\Models\\Services\\' => array($baseDir . '/application/models/services'),
