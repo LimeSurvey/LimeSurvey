@@ -54,15 +54,7 @@ $internalConfig = array(
         'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
-        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes'),
-        // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
-        // However, LimeSurvey directory tree is not a standard Yii Application tree.
-        // we use 'third_party' instead of 'vendor'
-        // This line just point vendor.Twig to third_party/Twig
-        // @see: ETwigViewRenderer::$twigPathAlias
-        'application.vendor.Twig'=>'webroot.third_party.Twig.twig.lib.Twig',
-        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
-        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
+        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes')
     ),
 
     /*
