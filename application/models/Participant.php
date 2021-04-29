@@ -803,7 +803,7 @@ class Participant extends LSActiveRecord
      * @param string|null $order
      * @return CDbCommand
      */
-    private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
+    private function getParticipantsSelectCommand($count, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
         $joinValue = array();
