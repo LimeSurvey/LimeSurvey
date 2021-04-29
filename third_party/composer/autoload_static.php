@@ -30,8 +30,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
     public static $prefixDirsPsr4 = array (
         'Twig\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/application/third_party/Twig',
-            1 => __DIR__ . '/..' . '/twig/twig/src',
+            0 => __DIR__ . '/..' . '/twig/twig/src',
         ),
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
