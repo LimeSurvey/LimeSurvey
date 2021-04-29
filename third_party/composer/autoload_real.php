@@ -22,8 +22,6 @@ class ComposerAutoloaderInitddb1a145e450f862353420acc5153e40
             return self::$loader;
         }
 
-        require __DIR__ . '/platform_check.php';
-
         spl_autoload_register(array('ComposerAutoloaderInitddb1a145e450f862353420acc5153e40', 'loadClassLoader'), true, true);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
         spl_autoload_unregister(array('ComposerAutoloaderInitddb1a145e450f862353420acc5153e40', 'loadClassLoader'));
