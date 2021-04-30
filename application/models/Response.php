@@ -60,11 +60,15 @@ abstract class Response extends Dynamic
         $files = array();
         foreach ($questions as $question) {
             $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
-            $data = json_decode(urldecode($this->getAttribute($field)), true);
-            if (is_array($data)) {
+            $fieldDataJson = $this->getAttribute($field);
+            if ($question->encrypted === 'Y') {
+                $fieldDataJson = self::decryptSingle($fieldDataJson);
+            }
+            $fieldData = json_decode(urldecode($fieldDataJson), true);
+            if (is_array($fieldData)) {
                 /* adding the title and qid to fileinfo , see #14659 */
                 $index = 0;
-                $data = array_map(function ($fileInfo) use (&$index, $question) {
+                $fieldData = array_map(function ($fileInfo) use (&$index, $question) {
                     return array_merge($fileInfo, array(
                         'question' => array(
                             'title' => $question->title,
@@ -72,8 +76,8 @@ abstract class Response extends Dynamic
                         ),
                         'index' => $index++,
                     ));
-                }, $data);
-                $files = array_merge($files, $data);
+                }, $fieldData);
+                $files = array_merge($files, $fieldData);
             }
         }
         return $files;
@@ -96,9 +100,13 @@ abstract class Response extends Dynamic
         $files = array();
         foreach ($aQuestions as $question) {
             $field = $question->sid . 'X' . $question->gid . 'X' . $question->qid;
-            $data = json_decode(stripslashes($this->getAttribute($field)), true);
-            if (is_array($data)) {
-                $files[$field] = $data;
+            $fieldDataJson = $this->getAttribute($field);
+            if ($question->encrypted === 'Y') {
+                $fieldDataJson = self::decryptSingle($fieldDataJson);
+            }
+            $fieldData = json_decode(stripslashes($fieldDataJson), true);
+            if (is_array($fieldData)) {
+                $files[$field] = $fieldData;
             }
         }
         return $files;
