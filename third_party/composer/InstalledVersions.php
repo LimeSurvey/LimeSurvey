@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '8c8e8f6a8992bc718149e0d070ac5532bd6eb25d',
+    'reference' => '2a6da4ac8b6fa5ef3348b1386ae3c32f4ed922e0',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -44,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '8c8e8f6a8992bc718149e0d070ac5532bd6eb25d',
+      'reference' => '2a6da4ac8b6fa5ef3348b1386ae3c32f4ed922e0',
     ),
     'paragonie/random_compat' => 
     array (
