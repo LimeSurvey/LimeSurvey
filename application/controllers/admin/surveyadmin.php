@@ -191,7 +191,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo Document me
+     * Creates an alert that a survey needs to exist before uploading content (used when initialising getEditor)
      */
     public function fakebrowser()
     {
