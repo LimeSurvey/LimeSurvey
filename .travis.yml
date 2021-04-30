@@ -22,6 +22,9 @@ notifications:
     on_failure: always 
 
 before_script:
+    # Revert to composer 1
+    - composer self-update --1
+
     # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
     - php tests/check_autoloader.php
 
