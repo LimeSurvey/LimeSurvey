@@ -40,7 +40,7 @@ before_script:
     - sudo service mysql status
     - touch enabletests
     # NB: PHPUnit 6.5.* is installed with composer.
-    - composer install
+    - composer install -vvv
     - ./third_party/bin/phpunit --version
 
     - chmod -R 777 tmp
