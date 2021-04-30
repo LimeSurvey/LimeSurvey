@@ -42,12 +42,9 @@
                     <?php if (count($aImportResults['importwarnings'])>0): ?>
                         <h2 class="warning"><?php eT("Warnings");?>:</h2>
                         <ul  class="list-unstyled">
-                            <?php
-                                foreach ($aImportResults['importwarnings'] as $warning)
-                                { ?>
+                            <?php foreach ($aImportResults['importwarnings'] as $warning): ?>
                                 <li><?php echo $warning; ?></li>
-                                <?php
-                            } ?>
+                            <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
 
