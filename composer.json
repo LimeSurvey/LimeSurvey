@@ -51,8 +51,8 @@
     },
     "scripts": {
         "test": [
-            "! find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
-            "! find tests/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
