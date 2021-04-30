@@ -261,7 +261,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
 * @param string $language
 * @return array|bool
 */
-function SPSSGetValues($field = array(), $qidattributes = null, $language)
+function SPSSGetValues($field, $qidattributes, $language)
 {
     $language = sanitize_languagecode($language);
 
