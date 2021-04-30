@@ -38,5 +38,12 @@
 	},
 	"require": {
 		"twig/twig": "1.42.5"
-	}
+	},
+    "scripts": {
+        "test": [
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application"
+        ]
+    }
+
 }
