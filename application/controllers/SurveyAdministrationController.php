@@ -2728,14 +2728,14 @@ class SurveyAdministrationController extends LSBaseController
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($oSurvey->startdate) != '') {
-            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s.v', $oSurvey->startdate);
+            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->startdate);
             $aData['startdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
         }
 
         if (trim($oSurvey->expires) != '') {
-            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s.v', $oSurvey->expires);
+            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->expires);
             $aData['expdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";

@@ -2324,11 +2324,11 @@ function tokensExport($iSurveyID)
             $brow = array_map('MaskFormula', $brow);
         }
         if (trim($brow['validfrom'] != '')) {
-            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.v", $brow['validfrom']);
+            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $brow['validfrom']);
             $brow['validfrom'] = $datetimeobj->format('Y-m-d H:i');
         }
         if (trim($brow['validuntil'] != '')) {
-            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.v", $brow['validuntil']);
+            $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $brow['validuntil']);
             $brow['validuntil'] = $datetimeobj->format('Y-m-d H:i');
         }
 
