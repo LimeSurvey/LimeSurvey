@@ -195,6 +195,10 @@ class LSYii_Application extends CWebApplication
      */
     public function loadHelper($helper)
     {
+        if (strpos($helper, "/")) {
+            Yii::log("Invalid helper string " . $helper, \CLogger::LEVEL_WARNING, 'application.loadHelper');
+            $helper = str_replace("/", ".", $helper);
+        }
         Yii::import('application.helpers.'.$helper.'_helper', true);
     }
 
@@ -207,6 +211,10 @@ class LSYii_Application extends CWebApplication
      */
     public function loadLibrary($library)
     {
+        if (strpos($library, "/")) {
+            Yii::log("Invalid helper string " . $library, \CLogger::LEVEL_WARNING, 'application.loadLibrary');
+            $library = str_replace("/", ".", $loadLibrary);
+        }
         Yii::import('application.libraries.'.$library, true);
     }
 
