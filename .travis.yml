@@ -48,6 +48,7 @@ before_script:
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
+    - chmod +x ./test/bin/lint-*
 
     # InnoDb needs large_file_prefix & Barracuda file format
     # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
