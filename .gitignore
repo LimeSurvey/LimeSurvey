@@ -115,7 +115,6 @@ third_party/bin/phpcbf
 third_party/bin/phpcs
 third_party/squizlabs/**/*
 third_party/facebook/**/*
-third_party/symfony/**/*
 third_party/composer/installed\.json
 
 
