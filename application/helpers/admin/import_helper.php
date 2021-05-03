@@ -587,6 +587,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 
+    if (count($aQuestionCodeReplacements)) {
+        array_unshift(
+            $results['importwarnings'],
+            "<span class='warningtitle'>"
+            . gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.')
+            . '</span>'
+        );
+    }
+
     $results['newgid'] = $newgid;
     $results['labelsets'] = 0;
     $results['labels'] = 0;
