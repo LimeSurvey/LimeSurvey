@@ -703,7 +703,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     // TODO: Send as input, not in DOM.
-    $('body').append(`<input type="hidde" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
+    $('body').append(`<input type="hidden" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
