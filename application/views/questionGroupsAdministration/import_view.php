@@ -37,6 +37,17 @@
                             <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
                          </ul>                        
                     </p>
+
+                    <!-- Warnings -->
+                    <?php if (count($aImportResults['importwarnings'])>0): ?>
+                        <h2 class="warning"><?php eT("Warnings");?>:</h2>
+                        <ul  class="list-unstyled">
+                            <?php foreach ($aImportResults['importwarnings'] as $warning): ?>
+                                <li><?php echo $warning; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+
                     <p class="text-info"><?php eT("Question group import is complete.") ?></p>
                     
                     <!-- button -->

@@ -34,6 +34,25 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.5.2 (build 210426) to 4.6.0 (build 210504) May 3, 2021
++New feature #17262: Create new getQuestionAttributes() endpoint for Limesurvey API (#1857) (Gabriel Jenik)
+-Fixed issue: Remove logo from survey list breadcrumb and replace with naming "List Surveys" (Jessica Höck)
+-Fixed issue #17276: Error with survey expiration date and using MSSQL (Carsten Schmitz)
+-Fixed issue #17237: Zip attachments on email templates are not attached to the email (#1856) (Gabriel Jenik)
+-Fixed issue #17205: When displaying assessment messages, empty lines are being displayed (#1855) (Gabriel Jenik)
+-Fixed issue #16677: Group relevance condition dissapears after importing group (#1854) (Gabriel Jenik)
+-Fixed issue #16638: EXPIRY keyword does not work in survey description (#1853) (Gabriel Jenik)
+-Fixed issue #16339: pluginhelper fullpagewrapper doesnt show content (#1860) (Gabriel Jenik)
+-Fixed issue #15196: Passwords of participants who saved their survey progress are stored without salt (Patrick Teichmann)
+#Updated translation: Turkish by kayazeren, bulent
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, soniagouveia, pmduque, lucaspcs, marcelovincenzi, marciojv, jbfloripa, cassiofs, samarta
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by c_schmitz, slansky, VBraun, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.5.1 (build 210420) to 4.5.2 (build 210426) April 26, 2021
 -Fixed issue: Question theme should not be deletable if it is used in a survey (Patrick Teichmann)
 -Fixed issue: Group table name is not escaped for PostgreSQL in quick translation view (Olle Haerstedt)

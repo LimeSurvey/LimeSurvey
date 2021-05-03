@@ -3,10 +3,9 @@
 The newly added service classes are expected to have a higher quality than older code in LimeSurvey. Especially:
 
 * PSR-12 compliant
-* Don't use Hungarian notation, but instead proper docblocks and @var annotations
+* Don't use Hungarian notation, but instead proper docblocks and @var annotations that can be checked by Psalm
 * All methods are expected to be testable with unit-tests, which means that all dependencies should be injected _or_ side-effects isolated in small, mockable methods
 * Don't use static methods unless you can prove that they don't need to be mocked. Maybe a separate function outside a class would be better?
-* Eventually, Psalm will be used to validate that docblocks are correct
 * MessDetector might be used to enforce maximum class and method length
 * A [dependency injection container](https://www.yiiframework.com/doc/guide/2.0/en/concept-di-container) will be used to coordinate dependencies in the future
 
