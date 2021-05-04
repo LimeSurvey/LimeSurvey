@@ -815,7 +815,7 @@ class InstallerController extends CController
         }
 
         //  version check for maximum version
-        if (version_compare(PHP_VERSION, '8.0', '>')) {
+        if (version_compare(PHP_VERSION, '8.0', '>=')) {
             $aData['versions_status'] = 'warning';
         }
 
