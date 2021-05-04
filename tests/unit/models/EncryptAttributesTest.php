@@ -11,7 +11,7 @@ class EncryptAttributesTest extends TestBaseClass
     /**
      * Setup before class.
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.globalsettings_helper', true);
         parent::setUpBeforeClass();
