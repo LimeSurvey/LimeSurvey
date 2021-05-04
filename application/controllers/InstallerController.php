@@ -598,7 +598,7 @@ class InstallerController extends CController
     /**
      * @param string $sDirectory
      */
-    public function is_writable_recursive($sDirectory)
+    public function isWritableRecursive($sDirectory)
     {
         $sFolder = opendir($sDirectory);
         if ($sFolder === false) {
@@ -608,7 +608,7 @@ class InstallerController extends CController
             if (
                 $sFile != '.' && $sFile != '..' &&
                 (!is_writable($sDirectory . "/" . $sFile) ||
-                (is_dir($sDirectory . "/" . $sFile) && !$this->is_writable_recursive($sDirectory . "/" . $sFile)))
+                (is_dir($sDirectory . "/" . $sFile) && !$this->isWritableRecursive($sDirectory . "/" . $sFile)))
             ) {
                 closedir($sFolder);
                 return false;
@@ -660,7 +660,7 @@ class InstallerController extends CController
         }
         if ($exists) {
             $aData[$base . 'Present'] = 'Found';
-            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->is_writable_recursive($path))) {
+            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->isWritableRecursive($path))) {
                 $aData[$base . 'Writable'] = 'Writable';
                 $bResult = true;
             } else {

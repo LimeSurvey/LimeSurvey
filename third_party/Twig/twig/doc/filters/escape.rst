@@ -2,10 +2,12 @@
 ==========
 
 .. versionadded:: 1.9.0
+
     The ``css``, ``url``, and ``html_attr`` strategies were added in Twig
     1.9.0.
 
 .. versionadded:: 1.14.0
+
     The ability to define custom escapers was added in Twig 1.14.0.
 
 The ``escape`` filter escapes a string using strategies that depend on the
@@ -102,9 +104,7 @@ Custom Escapers
 
 You can define custom escapers by calling the ``setEscaper()`` method on the
 ``core`` extension instance. The first argument is the escaper name (to be
-used in the ``escape`` call) and the second one must be a valid PHP callable:
-
-.. code-block:: php
+used in the ``escape`` call) and the second one must be a valid PHP callable::
 
     $twig = new \Twig\Environment($loader);
     $twig->getExtension('\Twig\Extension\CoreExtension')->setEscaper('csv', 'csv_escaper');

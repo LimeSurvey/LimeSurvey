@@ -7,6 +7,7 @@ Displaying Deprecation Notices
 ------------------------------
 
 .. versionadded:: 1.21
+
     This works as of Twig 1.21.
 
 Deprecated features generate deprecation notices (via a call to the
@@ -302,7 +303,7 @@ Validating the Template Syntax
 
 When template code is provided by a third-party (through a web interface for
 instance), it might be interesting to validate the template syntax before
-saving it. If the template code is stored in a `$template` variable, here is
+saving it. If the template code is stored in a ``$template`` variable, here is
 how you can do it::
 
     try {
@@ -327,6 +328,7 @@ If you iterate over a set of files, you can pass the filename to the
     }
 
 .. versionadded:: 1.27
+
     ``\Twig\Source`` was introduced in version 1.27, pass the source and the
     identifier directly on previous versions.
 
@@ -557,9 +559,7 @@ include in your templates:
             $interpolateProvider.startSymbol('{[').endSymbol(']}');
         });
 
-  * For Twig, change the delimiters via the ``tag_variable`` Lexer option:
-
-    ..  code-block:: php
+  * For Twig, change the delimiters via the ``tag_variable`` Lexer option::
 
         $env->setLexer(new \Twig\Lexer($env, [
             'tag_variable' => ['{[', ']}'],

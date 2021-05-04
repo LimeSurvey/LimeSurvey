@@ -2,6 +2,7 @@
 =================
 
 .. versionadded:: 1.5
+
     The ``number_format`` filter was added in Twig 1.5
 
 The ``number_format`` filter formats numbers.  It is a wrapper around PHP's
@@ -33,9 +34,7 @@ options of:
 * ``.`` as the decimal point.
 * ``,`` as the thousands separator.
 
-These defaults can be changed through the core extension:
-
-.. code-block:: php
+These defaults can be changed through the core extension::
 
     $twig = new \Twig\Environment($loader);
     $twig->getExtension('\Twig\Extension\CoreExtension')->setNumberFormat(3, '.', ',');

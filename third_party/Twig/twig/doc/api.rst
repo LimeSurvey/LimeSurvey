@@ -66,6 +66,7 @@ You can also load and render the template in one fell swoop::
     echo $twig->render('index.html', ['the' => 'variables', 'go' => 'here']);
 
 .. versionadded:: 1.28
+
     The possibility to render blocks from the API was added in Twig 1.28.
 
 If a template defines blocks, they can be rendered individually via the
@@ -153,10 +154,7 @@ Compilation Cache
 ~~~~~~~~~~~~~~~~~
 
 All template loaders can cache the compiled templates on the filesystem for
-future reuse. It speeds up Twig a lot as templates are only compiled once; and
-the performance boost is even larger if you use a PHP accelerator such as
-OPCache. See the ``cache`` and ``auto_reload`` options of ``\Twig\Environment``
-above for more information.
+future reuse. It speeds up Twig a lot as templates are only compiled once.
 
 Built-in Loaders
 ~~~~~~~~~~~~~~~~
@@ -167,9 +165,11 @@ Here is a list of the built-in loaders:
 .................................
 
 .. versionadded:: 1.10
+
     The ``prependPath()`` and support for namespaces were added in Twig 1.10.
 
 .. versionadded:: 1.27
+
     Relative paths support was added in Twig 1.27.
 
 ``\Twig\Loader\FilesystemLoader`` loads templates from the file system. This loader
@@ -338,13 +338,13 @@ Twig comes bundled with the following extensions:
 * *Twig\Extension\SandboxExtension*: Adds a sandbox mode to the default Twig
   environment, making it safe to evaluate untrusted code.
 
-* *Twig\Extension\ProfilerExtension*: Enabled the built-in Twig profiler (as of
+* *Twig\Extension\ProfilerExtension*: Enables the built-in Twig profiler (as of
   Twig 1.18).
 
 * *Twig\Extension\OptimizerExtension*: Optimizes the node tree before
   compilation.
 
-* *Twig\Extension\StringLoaderExtension*: Defined the ``template_from_string``
+* *Twig\Extension\StringLoaderExtension*: Defines the ``template_from_string``
    function to allow loading templates from string in a template.
 
 The Core, Escaper, and Optimizer extensions are registered by default.
@@ -409,26 +409,26 @@ The escaping rules are implemented as follows:
 * Literals (integers, booleans, arrays, ...) used in the template directly as
   variables or filter arguments are never automatically escaped:
 
-  .. code-block:: twig
+  .. code-block:: html+twig
 
-        {{ "Twig<br />" }} {# won't be escaped #}
+        {{ "Twig<br/>" }} {# won't be escaped #}
 
-        {% set text = "Twig<br />" %}
+        {% set text = "Twig<br/>" %}
         {{ text }} {# will be escaped #}
 
 * Expressions which the result is a literal or a variable marked safe
   are never automatically escaped:
 
-  .. code-block:: twig
+  .. code-block:: html+twig
 
-        {{ foo ? "Twig<br />" : "<br />Twig" }} {# won't be escaped #}
+        {{ foo ? "Twig<br/>" : "<br/>Twig" }} {# won't be escaped #}
 
-        {% set text = "Twig<br />" %}
-        {{ true ? text : "<br />Twig" }} {# will be escaped #}
-        {{ false ? text : "<br />Twig" }} {# won't be escaped #}
+        {% set text = "Twig<br/>" %}
+        {{ true ? text : "<br/>Twig" }} {# will be escaped #}
+        {{ false ? text : "<br/>Twig" }} {# won't be escaped #}
 
-        {% set text = "Twig<br />" %}
-        {{ foo ? text|raw : "<br />Twig" }} {# won't be escaped #}
+        {% set text = "Twig<br/>" %}
+        {{ foo ? text|raw : "<br/>Twig" }} {# won't be escaped #}
 
 * Escaping is applied before printing, after any other filter is applied:
 
@@ -514,6 +514,7 @@ Profiler Extension
 ~~~~~~~~~~~~~~~~~~
 
 .. versionadded:: 1.18
+
     The Profile extension was added in Twig 1.18.
 
 The ``profiler`` extension enables a profiler for Twig templates; it should

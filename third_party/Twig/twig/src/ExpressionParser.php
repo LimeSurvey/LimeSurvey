@@ -376,7 +376,16 @@ class ExpressionParser
             //  * a string -- 'a'
             //  * a name, which is equivalent to a string -- a
             //  * an expression, which must be enclosed in parentheses -- (1 + 2)
-            if (($token = $stream->nextIf(Token::STRING_TYPE)) || ($token = $stream->nextIf(Token::NAME_TYPE)) || $token = $stream->nextIf(Token::NUMBER_TYPE)) {
+            if ($token = $stream->nextIf(Token::NAME_TYPE)) {
+                $key = new ConstantExpression($token->getValue(), $token->getLine());
+
+                // {a} is a shortcut for {a:a}
+                if ($stream->test(Token::PUNCTUATION_TYPE, [',', '}'])) {
+                    $value = new NameExpression($key->getAttribute('value'), $key->getTemplateLine());
+                    $node->addElement($value, $key);
+                    continue;
+                }
+            } elseif (($token = $stream->nextIf(Token::STRING_TYPE)) || $token = $stream->nextIf(Token::NUMBER_TYPE)) {
                 $key = new ConstantExpression($token->getValue(), $token->getLine());
             } elseif ($stream->test(Token::PUNCTUATION_TYPE, '(')) {
                 $key = $this->parseExpression();
@@ -598,6 +607,11 @@ class ExpressionParser
         while (!$stream->test(Token::PUNCTUATION_TYPE, ')')) {
             if (!empty($args)) {
                 $stream->expect(Token::PUNCTUATION_TYPE, ',', 'Arguments must be separated by a comma');
+
+                // if the comma above was a trailing comma, early exit the argument parse loop
+                if ($stream->test(Token::PUNCTUATION_TYPE, ')')) {
+                    break;
+                }
             }
 
             if ($definition) {
@@ -697,6 +711,8 @@ class ExpressionParser
         $arguments = null;
         if ($stream->test(Token::PUNCTUATION_TYPE, '(')) {
             $arguments = $this->parseArguments(true);
+        } elseif ($test->hasOneMandatoryArgument()) {
+            $arguments = new Node([0 => $this->parsePrimaryExpression()]);
         }
 
         return new $class($node, $name, $arguments, $this->parser->getCurrentToken()->getLine());
@@ -740,7 +756,7 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $test->getAlternative());
             }
             $src = $stream->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $stream->getCurrent()->getLine());
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $stream->getCurrent()->getLine());
 
             @trigger_error($message, E_USER_DEPRECATED);
         }
@@ -770,7 +786,7 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $function->getAlternative());
             }
             $src = $this->parser->getStream()->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $line);
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $line);
 
             @trigger_error($message, E_USER_DEPRECATED);
         }
@@ -800,7 +816,7 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $filter->getAlternative());
             }
             $src = $this->parser->getStream()->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $line);
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $line);
 
             @trigger_error($message, E_USER_DEPRECATED);
         }

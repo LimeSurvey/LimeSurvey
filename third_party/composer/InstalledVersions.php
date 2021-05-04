@@ -27,24 +27,24 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => '1.0.0+no-version-set',
+    'version' => '1.0.0.0',
     'aliases' => 
     array (
     ),
-    'reference' => 'e31fdc4d8c07ce827836d76502413922544a39f2',
+    'reference' => NULL,
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => '1.0.0+no-version-set',
+      'version' => '1.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'e31fdc4d8c07ce827836d76502413922544a39f2',
+      'reference' => NULL,
     ),
     'paragonie/random_compat' => 
     array (
@@ -75,12 +75,12 @@ private static $installed = array (
     ),
     'twig/twig' => 
     array (
-      'pretty_version' => 'v1.42.5',
-      'version' => '1.42.5.0',
+      'pretty_version' => 'v1.44.2',
+      'version' => '1.44.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e',
+      'reference' => '138c493c5b8ee7cff3821f80b8896d371366b5fe',
     ),
   ),
 );

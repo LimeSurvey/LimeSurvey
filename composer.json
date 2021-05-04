@@ -32,13 +32,13 @@
 	},
 	"require": {
         "paragonie/sodium_compat": "^1.14",
-		"twig/twig": "1.42.5"
+		"twig/twig": "1.44.2"
 	},
     "config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin",
 		"platform": {
-			"php": "7.1.0"
+			"php": "7.2.5"
 		}
     },
     "require-dev": {
