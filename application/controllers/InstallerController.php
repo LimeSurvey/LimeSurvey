@@ -809,16 +809,19 @@ class InstallerController extends CController
         // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
         $bProceed = true; //lets be optimistic!
 
-
-        //  version check
+        //  version check for minimum
         if (version_compare(PHP_VERSION, '5.5.9', '<')) {
-                    $bProceed = !$aData['verror'] = true;
+            $bProceed = !$aData['versions_status'] = 'error';
+        }
+
+        //  version check for maximum version
+        if (version_compare(PHP_VERSION, '8.0', '>')) {
+            $aData['versions_status'] = 'warning';
         }
 
         if (convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024 < 128 && ini_get('memory_limit') != -1) {
                     $bProceed = !$aData['bMemoryError'] = true;
         }
-
 
         // mbstring library check
         if (!$this->checkPHPFunctionOrClass('mb_convert_encoding', $aData['mbstringPresent'])) {
