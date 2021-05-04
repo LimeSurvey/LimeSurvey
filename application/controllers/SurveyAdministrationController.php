@@ -2409,7 +2409,8 @@ class SurveyAdministrationController extends LSBaseController
      * @param int $iSurveyID Given Survey ID
      *
      * @return array
-     * @todo   Change function name to _showOrganizeGroupsAndQuestions?
+     * @todo Change function name to _showOrganizeGroupsAndQuestions?
+     * @todo Does actually not show anything, but gets data. So getReorderFormData()?
      */
     private function showReorderForm($iSurveyID)
     {
@@ -2423,7 +2424,8 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $iSurveyID]);
+        $groups = $survey->groups;
+        $groupData = [];
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
@@ -2433,31 +2435,38 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
         $aData['topBar']['showSaveButton'] = true;
 
-        foreach ($aGrouplist as $iGID => $aGroup) {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
+        foreach ($groups as $iGID => $oGroup) {
+            $groupData[$iGID]['gid'] = $oGroup->gid;
+            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
+            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid']);
-
             $qs = array();
 
-            foreach ($oQuestionData->readAll() as $q) {
-                $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
-                $question = '[{' . $relevance . '}] ' . $q['title'];
-                LimeExpressionManager::ProcessString($question, $q['qid']);
-                $q['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                $q['gid'] = $aGroup['gid'];
-                $qs[] = $q;
+            foreach ($oGroup->questions as $question) {
+                $relevance = $question->relevance == '' ? 1 : $question->relevance;
+                $questionText = sprintf(
+                    '[{%s}] %s % s',
+                    $relevance,
+                    $question->title,
+                    $question->questionl10ns[$sBaseLanguage]->question
+                );
+                LimeExpressionManager::ProcessString($questionText, $question->qid);
+                $questionData['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                $questionData['gid'] = $oGroup->gid;
+                $questionData['qid'] = $question->qid;
+                $questionData['title'] = $question->title;
+                $qs[] = $questionData;
             }
-            $aGrouplist[$iGID]['questions'] = $qs;
+            $groupData[$iGID]['questions'] = $qs;
             LimeExpressionManager::FinishProcessingGroup();
         }
         LimeExpressionManager::FinishProcessingPage();
 
-        $aData['aGroupsAndQuestions'] = $aGrouplist;
+        $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
 
         return $aData;
