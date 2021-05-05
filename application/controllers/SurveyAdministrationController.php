@@ -3008,10 +3008,10 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabPresentationNavigation($esrow)
+    private function tabPresentationNavigation($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3045,7 +3045,7 @@ class SurveyAdministrationController extends LSBaseController
     private function tabNotificationDataManagement($esrow)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3058,10 +3058,10 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabTokens($esrow)
+    private function tabTokens($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
