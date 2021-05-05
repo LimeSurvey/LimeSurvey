@@ -25,7 +25,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     public function testDefaultAnswerExpressionFill()
     {
         global $thissurvey;
-        $thissurvey = self::$surveyId;
+        $thissurvey['sid'] = self::$surveyId;
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
 
@@ -57,6 +57,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         // Qanda needs this.
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+        $_SESSION['survey_' . self::$surveyId]['s_lang'] = 'pt';        
 
         // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();

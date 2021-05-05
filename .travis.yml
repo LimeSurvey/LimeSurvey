@@ -8,10 +8,10 @@ language: php
 services:
     - mysql
 php:
-    - 7.2
-    - 7.3
-    - 7.4
     - 8.0
+    - 7.4
+    - 7.3
+    - 7.2
 env:
     - DBENGINE=MYISAM
     - DBENGINE=INNODB
@@ -116,5 +116,5 @@ before_script:
 
 script:
     # Run tests.
-    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure --testdox
+    - DOMAIN=localhost ./third_party/bin/phpunit --testdox
     - yarn --cwd ./assets/packages/adminbasics run test
