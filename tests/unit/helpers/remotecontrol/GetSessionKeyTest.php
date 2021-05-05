@@ -7,7 +7,7 @@ class GetSessionKeyTest extends BaseTest
     public function testSessionKeyIsValid()
     {
         $result = $this->handler->get_session_key($this->getUsername(), $this->getPassword());
-        $this->assertInternalType('string', $result);
+        $this->assertIsString($result, 'result from get_session_key was invalid');
         $this->assertEquals(32, strlen($result));
     }
 
