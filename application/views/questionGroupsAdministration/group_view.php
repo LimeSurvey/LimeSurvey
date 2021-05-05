@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-lg-12 content-right">
 
-                <table id='groupdetails' class="table table-bordered">
+                <table id='groupdetails'>
                 <tr ><td ><strong>
                             <?php eT("Title"); ?>:</strong></td>
                     <td>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td><strong>
-                        <?php eT("Description:"); ?></strong>
+                        <?php eT("Description:"); ?></strong>&nbsp;&nbsp;&nbsp;
                     </td>
                     <td>
                         <?php if (trim($grow['description'])!='') {
