@@ -240,7 +240,9 @@ $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 // Enable if phpunit fails.
 // error_reporting(E_ALL);
 
-@copy($configFile, $configBackupFile);
+if (file_exists($configFile)) {
+    copy($configFile, $configBackupFile);
+}
 
 register_shutdown_function(
     function () {
