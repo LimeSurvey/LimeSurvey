@@ -89,7 +89,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     public function testCorrectDefaultAnswerExpression()
     {
         global $thissurvey;
-        $thissurvey = self::$surveyId;
+        $thissurvey['sid'] = self::$surveyId;
         $survey = \Survey::model()->findByPk(self::$surveyId);
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
@@ -150,7 +150,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     public function testWrongDefaultAnswerExpression()
     {
         global $thissurvey;
-        $thissurvey = self::$surveyId;
+        $thissurvey['sid'] = self::$surveyId;
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q3', self::$surveyId);
 
