@@ -3814,7 +3814,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key_expiration', 'datetime');
 
             //override existing email text (take out password there)
-            $sqlGetAdminCreationEmailTemplat = 'SELECT stg_value FROM {{settings_global}} WHERE stg_name="admincreationemailtemplate"';
+            $sqlGetAdminCreationEmailTemplat = "SELECT stg_value FROM {{settings_global}} WHERE stg_name='admincreationemailtemplate'";
             $adminCreationEmailTemplateValue = $oDB->createCommand($sqlGetAdminCreationEmailTemplat)->queryAll();
             if($adminCreationEmailTemplateValue){
                 if($adminCreationEmailTemplateValue[0]['stg_value'] === null || $adminCreationEmailTemplateValue[0]['stg_value']===''){
