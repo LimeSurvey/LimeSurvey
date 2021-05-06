@@ -231,18 +231,9 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
     </div>
 </div>
 
-
-
-
 <script>
     $('#themelist a').click(function (e) {
-        window.location.hash = $(this).attr('href');
         e.preventDefault();
         $(this).tab('show');
     });
-    $(document).on('ready pjax:scriptcomplete', function(){
-        if(window.location.hash){
-            $('#themelist').find('a[href='+window.location.hash+']').trigger('click');
-        }
-    })
 </script>

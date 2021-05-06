@@ -703,7 +703,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     // TODO: Send as input, not in DOM.
-    $('body').append(`<input type="hidde" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
+    if ($('#current_scale_id').length === 0) {
+        $('body').append(`<input type="hidden" id="current_scale_id" value="${scaleId}" name="current_scale_id" />`);
+    } else {
+        $('#current_scale_id').val(scaleId);
+    }
 
     $('#labelsets').select2();
     $('#labelsetpreview').html('');
@@ -755,7 +759,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
       // Awkward solution to the problem with looping through langs.
       const langIds = {};
 
-      $.each(result, (lang, row) => {
+      const arr = Object.entries(result);
+      arr.forEach(function(entry) {
+        const lang = entry[0];
+        const row = entry[1];
         if (lang.length !== 2) {
           alert('Internal error: lang must have exactly two characters, but is ' + lang);
           throw 'abort';
@@ -844,12 +851,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
           }
         });
 
-        $('.answertable tbody').sortable('refresh');
-        updateRowProperties();
-        $('#labelsetbrowserModal').modal('hide');
-        $('#current_scale_id').remove();
       });
-    });
+
+      // NB: Fails with Error: cannot call methods on sortable prior to initialization; attempted to call method 'refresh'
+      // Not needed?
+      //$('.answertable tbody').sortable('refresh');
+
+      updateRowProperties();
+      $('#labelsetbrowserModal').modal('hide');
+      $('#current_scale_id').remove();
+    }).catch(error => console.error(error));
   }
 
   /**

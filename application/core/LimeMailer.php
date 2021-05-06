@@ -703,14 +703,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $this->surveyId, 'surveyls_language' => $this->mailLanguage));
         if (!empty($oSurveyLanguageSetting->attachments)) {
-            $aAttachments = json_decode($oSurveyLanguageSetting->attachments, true);
+            $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
             if (!empty($aAttachments[$attachementType])) {
                 if ($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
                     if ($this->attachementExists($aAttachment)) {
-                        $this->addAttachment($aAttachment['path']);
+                        $this->addAttachment($aAttachment['url']);
                     }
                 }
             }
@@ -722,13 +722,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId, 'surveylocale', 'update'));
 
         $isInSurvey = Yii::app()->is_file(
-            $aAttachment['path'],
+            $aAttachment['url'],
             Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "surveys" . DIRECTORY_SEPARATOR . $this->surveyId,
             false
         );
 
         $isInGlobal = Yii::app()->is_file(
-            $aAttachment['path'],
+            $aAttachment['url'],
             Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR . "global",
             false
         );
@@ -738,11 +738,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
 
         if ($throwError && !($isInSurvey || $isInGlobal)) {
-            throw new CErrorEvent(
-                $this,
-                "FILE_NOT_FOUND",
-                gT("An attachment could not be found: " . json_encode($aAttachment))
-            );
+            throw new \CException(sprintf(gT("File not found: %s"), $aAttachment['url']));
         }
 
         return false;
