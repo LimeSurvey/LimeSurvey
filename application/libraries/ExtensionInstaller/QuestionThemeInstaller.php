@@ -7,21 +7,36 @@ namespace LimeSurvey\ExtensionInstaller;
 class QuestionThemeInstaller extends ExtensionInstaller
 {
     /**
-     * @return void
-     * @todo Code duplication?
+     * @return SimpleXMLElement
+     * @todo Move to parent class?
      */
-    public function fetchFiles()
+    public function getConfig()
     {
-        if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException('fileFetcher is not set');
+        if ($this->fileFetcher) {
+            return $this->fileFetcher->getConfig();
+        } else {
+            return null;
         }
-
-        $this->fileFetcher->fetch();
     }
 
+    /**
+     * @return void
+     */
     public function install()
     {
         $config = $this->getConfig();
     }
 
+    public function update()
+    {
+        throw new Exception('Not implemented');
+    }
+
+    /**
+     * @todo
+     */
+    public function uninstall()
+    {
+        throw new \Exception('Not implemented');
+    }
 }

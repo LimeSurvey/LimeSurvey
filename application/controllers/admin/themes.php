@@ -12,6 +12,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
+use LimeSurvey\ExtensionInstaller\QuestionThemeInstaller;
+
 /**
 * templates
 *
@@ -284,11 +287,15 @@ class themes extends Survey_Common_Action
                 $config = $installer->getConfig();
                 if (!$config->isCompatible()) {
                     $installer->abort();
-                    $this->errorAndRedirect(gT('The question theme is not compatible with your version of LimeSurvey.'));
+                    throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
+                $installer->fetchFiles();
                 $installer->install();
             } catch (Throwable $t) {
+                Yii::app()->setFlashMessage($t->getMessage(), 'error');
+                $this->getController()->redirect(["/themeOptions#questionthemes"]);
             }
+            return;
         }
 
         // Redirect back if demo mode is set.
@@ -1392,10 +1399,13 @@ class themes extends Survey_Common_Action
         }
     }
 
+    /**
+     * @return QuestionThemeInstaller
+     */
     private function getQuestionThemeInstaller()
     {
         $fileFetcher = new FileFetcherUploadZip();
-        $fileFetcher->setUnzipFilter('pluginExtractFilter');
+        $fileFetcher->setUnzipFilter('templateExtractFilter');
         $installer = new QuestionThemeInstaller();
         $installer->setFileFetcher($fileFetcher);
         return $installer;

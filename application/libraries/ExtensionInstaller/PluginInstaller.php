@@ -20,18 +20,6 @@ class PluginInstaller extends ExtensionInstaller
     protected $pluginType;
 
     /**
-     * @return void
-     */
-    public function fetchFiles()
-    {
-        if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException('fileFetcher is not set');
-        }
-
-        $this->fileFetcher->fetch();
-    }
-
-    /**
      * Install unzipped package into correct folder.
      * Assumes file fetcher and config is set.
      * @return void
@@ -95,29 +83,6 @@ class PluginInstaller extends ExtensionInstaller
     public function uninstall()
     {
         throw new \Exception('Not implemented');
-    }
-
-    /**
-     * @return SimpleXMLElement
-     * @todo Move to parent class?
-     */
-    public function getConfig()
-    {
-        if ($this->fileFetcher) {
-            return $this->fileFetcher->getConfig();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function abort()
-    {
-        if ($this->fileFetcher) {
-            $this->fileFetcher->abort();
-        }
     }
 
     /**
