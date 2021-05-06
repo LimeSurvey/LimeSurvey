@@ -115,7 +115,7 @@ class SurveyDynamic extends LSActiveRecord
         foreach ($data as $k => $v) {
             $search = array('`', "'");
             $k = str_replace($search, '', $k);
-            $v = str_replace($search, '', $v);
+            $v = $v == null ? null : str_replace($search, '', $v);
             $record->$k = $v;
         }
 
