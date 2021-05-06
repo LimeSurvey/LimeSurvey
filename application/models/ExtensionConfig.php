@@ -146,7 +146,7 @@ class ExtensionConfig
      * @param string $file Full file path.
      * @return ExtensionConfig
      */
-    public static function loadConfigFromFile($file)
+    public static function loadFromFile($file)
     {
         if (!file_exists($file)) {
             return null;

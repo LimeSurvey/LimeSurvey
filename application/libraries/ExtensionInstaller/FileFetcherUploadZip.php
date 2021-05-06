@@ -110,7 +110,7 @@ class FileFetcherUploadZip extends FileFetcher
             }
         }
 
-        $config = \ExtensionConfig::loadConfigFromFile($configFile);
+        $config = \ExtensionConfig::loadFromFile($configFile);
 
         if (empty($config)) {
             throw new Exception(gT('Could not parse config.xml file.'));
