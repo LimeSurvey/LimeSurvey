@@ -650,7 +650,7 @@ class LsDefaultDataSets
                 '',
                 'surveyactivation',
                 'update',
-                '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+                '{"render": {"isActive": false, "link": {"data": {"iSurveyID": ["survey","sid"]}}}}',
                 '',
                 'en-GB',
                 1,
