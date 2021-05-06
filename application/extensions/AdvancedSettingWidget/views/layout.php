@@ -20,7 +20,7 @@
         ></i>
         <?= $content ?>
         <div
-            id="general-setting-help-<?= $this->setting['name']; ?>"
+            id="general-setting-help-<?= $this->setting['name'] ?>"
             class="question-option-help well"
             >
             <?= gT($this->setting['help']) ?>
