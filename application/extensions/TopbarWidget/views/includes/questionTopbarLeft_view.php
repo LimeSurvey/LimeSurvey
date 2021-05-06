@@ -68,7 +68,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 <?php endif; ?>
 
 <!-- Copy -->
-<?php if($hasSurveyContentCreatePermission):?>
+<?php if($hasSurveyContentCreatePermission && ($oSurvey->active!='Y')):?>
     <a class="btn btn-default" id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
         <span class="icon-copy icon"></span>
         <?php eT("Copy"); ?>

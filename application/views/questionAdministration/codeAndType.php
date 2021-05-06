@@ -19,6 +19,7 @@ $oQuestionSelector = $this->beginWidget(
         'renderType'    => isset($selectormodeclass) && $selectormodeclass == "none" ? "group-simple" : "group-modal",
         'modalTitle'    => gT("Select question type"),
         'groupTitleKey' => "questionGroupName",
+        'survey_active' => $question->survey->active,
         'groupItemsKey' => "questionTypes",
         'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => gT("Preview question type"),
