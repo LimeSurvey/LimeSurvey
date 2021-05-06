@@ -291,6 +291,7 @@ class themes extends Survey_Common_Action
                 }
                 $installer->fetchFiles();
                 $installer->install();
+                // TODO: Show success message.
             } catch (Throwable $t) {
                 Yii::app()->setFlashMessage($t->getMessage(), 'error');
                 $this->getController()->redirect(["/themeOptions#questionthemes"]);
