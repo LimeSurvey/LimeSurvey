@@ -99,6 +99,7 @@ class PluginInstaller extends ExtensionInstaller
 
     /**
      * @return SimpleXMLElement
+     * @todo Move to parent class?
      */
     public function getConfig()
     {

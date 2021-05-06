@@ -277,6 +277,19 @@ class themes extends Survey_Common_Action
         // TODO: Don't branch on $_POST, but on config.xml <type> tag.
         /** @var string */
         $themeType = returnGlobal('theme');
+        if ($themeType === 'question') {
+            try {
+                $installer = $this->getQuestionThemeInstaller();
+                /** @var ExtensionConfig */
+                $config = $installer->getConfig();
+                if (!$config->isCompatible()) {
+                    $installer->abort();
+                    $this->errorAndRedirect(gT('The question theme is not compatible with your version of LimeSurvey.'));
+                }
+                $installer->install();
+            } catch (Throwable $t) {
+            }
+        }
 
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
@@ -1377,6 +1390,15 @@ class themes extends Survey_Common_Action
         } else {
             return sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
         }
+    }
+
+    private function getQuestionThemeInstaller()
+    {
+        $fileFetcher = new FileFetcherUploadZip();
+        $fileFetcher->setUnzipFilter('pluginExtractFilter');
+        $installer = new QuestionThemeInstaller();
+        $installer->setFileFetcher($fileFetcher);
+        return $installer;
     }
 
     /**
