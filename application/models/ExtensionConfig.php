@@ -164,6 +164,51 @@ class ExtensionConfig
     }
 
     /**
+     * Create an ExtensionConfig from config.xml inside zip $filePath
+     *
+     * @param string $filePath Full file path.
+     * @return ExtensionConfig
+     * @throws Exception at error
+     */
+    public static function loadFromZip($filePath)
+    {
+        $zip = new ZipArchive();
+        $err = $zip->open($filePath);
+        if ($err !== true) {
+            throw new Exception('Could not open zip file');
+        }
+        $configFilename = self::findConfigXml($zip);
+        $configString = $zip->getFromName($configFilename);
+        $zip->close();
+        if ($configString === null) {
+            throw new Exception('Config file is empty');
+        }
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
+        $xml = simplexml_load_string($configString);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
+        return new self($xml);
+    }
+
+    /**
+     * @param ZipArchive $zip
+     * @return string|null
+     */
+    private static function findConfigXml(ZipArchive $zip)
+    {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if (strpos($filename, 'config.xml') !== false) {
+                return $filename;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Create a version fetcher for every <updater> tag in config.xml.
      * @return array VersionFetcher[]
      */

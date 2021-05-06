@@ -1372,33 +1372,8 @@ class themes extends Survey_Common_Action
     protected function getNewDirectoryName($themeType, $src)
     {
         if ($themeType === 'question') {
-            $zip = new ZipArchive();
-            $err = $zip->open($src);
-            if ($err !== true) {
-                throw new Exception('Could not open zip file');
-            }
-            /** @var string */
-            $configFilename = $this->findConfigXml($zip);
-            $configString = $zip->getFromName($configFilename);
-            $zip->close();
-            if ($configString === null) {
-                throw new Exception('Config file is empty');
-            }
-            $dom = new DOMDocument();
-            $dom->loadXML($configString);
-            $metadata = $dom->getElementsByTagName('metadata');
-            if (count($metadata) !== 1) {
-                throw new Exception('Did not find exactly one <metadata> tag');
-            }
-            $nameTags = $metadata[0]->getElementsByTagName('name');
-            if (count($nameTags) !== 1) {
-                throw new Exception('Did not find exactly one <name> tag in config.xml');
-            }
-            $nameFromConfig = $nameTags[0]->nodeValue;
-            if (empty($nameFromConfig)) {
-                throw new Exception('<name> tag is empty in config.xml');
-            }
-            return $nameFromConfig;
+            $extConfig = ExtensionConfig::loadFromZip($src);
+            return $extConfig->getName();
         } else {
             return sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
         }
