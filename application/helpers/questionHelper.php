@@ -94,6 +94,7 @@ class questionHelper
             "types" => Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_1_ARRAY_MULTISCALE . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
+            'min' => '0',
             'inputtype' => 'integer',
             'default' => '',
             "help" => gT('Repeat headers every n-th subquestions (Set to 0 to deactivate).'),
