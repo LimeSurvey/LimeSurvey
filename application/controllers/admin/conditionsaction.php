@@ -364,7 +364,9 @@ class conditionsaction extends Survey_Common_Action
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
             //$aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
-            $aViewUrls['conditionslist_view'][] = $aData;
+            if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
+                $aViewUrls['conditionslist_view'][] = $aData;
+            }
 
             if ($scenariocount > 0) {
                 App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
@@ -600,6 +602,8 @@ class conditionsaction extends Survey_Common_Action
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+            } elseif(!empty(trim($oQuestion->relevance))) {
+                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
                 // no_conditions

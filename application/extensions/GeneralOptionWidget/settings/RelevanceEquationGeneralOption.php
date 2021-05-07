@@ -12,7 +12,7 @@ class RelevanceEquationGeneralOption extends GeneralOption
     {
         if (count($question->conditions) > 0) {
             $inputType = 'text';
-            $help = gT("Note: You can't edit the condition because there are currently conditions set for this question by the condition designer.");
+            $help = gT("Note: If you customize & save this condition you will not be able to use the condition editor for this, anymore.");
         } else {
             $inputType = 'textarea';
             $help = gT("A condition can be used to add branching logic using ExpressionScript. Either edit it directly here or use the Condition designer.");
@@ -30,7 +30,7 @@ class RelevanceEquationGeneralOption extends GeneralOption
                 'classes' => ['form-control'],
                 'attributes' => [
                     'rows' => 1,
-                    'readonly' => count($question->conditions) > 0
+                    'data-has-conditions' => count($question->conditions) > 0
                 ],
                 'inputGroup' => [
                     'prefix' => '{',
