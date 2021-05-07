@@ -105,14 +105,6 @@ echo $oQuestionSelector->getModal();
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
-                                    <?php echo TbHtml::label(gT("Email:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo TbHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
                                     <?php echo TbHtml::label(gT("Full name:"), 'lang', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php echo TbHtml::textField('fullname', $sFullname ,array('class'=>'form-control','maxlength'=>50)); ?>
@@ -125,9 +117,9 @@ echo $oQuestionSelector->getModal();
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <button class="btn btn-default btn-warning" id="selector__showChangePassword" style="color: white; outline: none;">
+                                <button class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
                                     <i class="fa fa-lock"></i>
-                                    <?=gT("Change password")?>
+                                    <?=gT("Change password and/or Email")?>
                                 </button>
                                 
                                 <br/>
@@ -137,7 +129,10 @@ echo $oQuestionSelector->getModal();
                             <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <?php echo TbHtml::label(gT("Current password:"), 'lang', array('class'=>"control-label")); ?>
+                                    <label for="oldpassword" class="control-label">
+                                        <?php echo gT("Current password:"); ?>
+                                        <span class="required">*</span>
+                                    </label>
                                     <div class="">
                                         <?php echo TbHtml::passwordField('oldpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                                     </div>
@@ -161,6 +156,14 @@ echo $oQuestionSelector->getModal();
                                     <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php echo TbHtml::passwordField('repeatpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <?php echo TbHtml::label(gT("Email:"), 'lang', array('class'=>" control-label")); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
                                     </div>
                                 </div>
                             </div>

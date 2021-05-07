@@ -3830,6 +3830,25 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 446) {
+            $oTransaction = $oDB->beginTransaction();
+            // archived_table_settings
+            $oDB->createCommand()->createTable('{{archived_table_settings}}', [
+                'id' => "pk",
+                'survey_id' => "int NOT NULL",
+                'user_id' => "int NOT NULL",
+                'tbl_name' => "string(255) NOT NULL",
+                'tbl_type' => "string(10) NOT NULL",
+                'created' => "datetime NOT NULL",
+                'properties' => "text NOT NULL",
+            ], $options);
+            upgradeArchivedTableSettings446();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -3899,6 +3918,60 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+
+/**
+ * Import previously archived tables to ArchivedTableSettings
+ *
+ * @return void
+ * @throws CException
+ */
+function upgradeArchivedTableSettings446()
+{
+    $db = Yii::app()->db;
+    $DBPrefix = Yii::app()->db->tablePrefix;
+    $datestamp = time();
+    $DBDate = date('Y-m-d H:i:s', $datestamp);
+    $userID = Yii::app()->user->getId();
+    $query = dbSelectTablesLike('{{old_}}%');
+    $archivedTables = Yii::app()->db->createCommand($query)->queryColumn();
+    $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
+    foreach ($archivedTables as $archivedTable) {
+        $tableName = substr($archivedTable, strlen($DBPrefix));
+        $tableNameParts = explode('_', $tableName);
+        $type = $tableNameParts[1] ?? '';
+        $surveyID = $tableNameParts[2] ?? '';
+        $typeExtended = $tableNameParts[3] ?? '';
+        // skip if table entry allready exists
+        foreach ($archivedTableSettings as $archivedTableSetting) {
+            if ($archivedTableSetting['tbl_name'] === $tableName) {
+                continue 2;
+            }
+        }
+        $newArchivedTableSettings = [
+            'survey_id'  => (int)$surveyID,
+            'user_id'    => $userID ?? 1,
+            'tbl_name'   => $tableName,
+            'created'    => $DBDate,
+            'properties' => json_encode(['unknown'])
+        ];
+        if ($type === 'survey') {
+            $newArchivedTableSettings['tbl_type'] = 'response';
+            if ($typeExtended === 'timings') {
+                $newArchivedTableSettings['tbl_type'] = 'timings';
+                $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+                continue;
+            }
+            $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+            continue;
+        }
+        if ($type === 'tokens') {
+            $newArchivedTableSettings['tbl_type'] = 'token';
+            $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+            continue;
+        }
+    }
 }
 
 function extendDatafields429($oDB)

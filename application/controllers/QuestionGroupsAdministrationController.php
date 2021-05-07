@@ -728,6 +728,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if ($oQuestionGroup == null) {
+            $isNewGroup = true;
             $oQuestionGroup = $this->newQuestionGroup($iSurveyId, $questionGroup);
         } else {
             $oQuestionGroup = $this->editQuestionGroup($oQuestionGroup, $questionGroup);
@@ -741,6 +742,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 $sScenario = 'save-and-new';
             } elseif (App()->request->getPost('saveandnewquestion', '')) {
                 $sScenario = 'save-and-new-question';
+            } elseif (!empty($isNewGroup)) {
+                $sScenario = 'save-and-close';
             }
         }
         switch ($sScenario) {
