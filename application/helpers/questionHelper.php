@@ -86,6 +86,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
+            'min'=>'0',
             'default'=>'',
             "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
             "caption"=>gT('Repeat answer options')
