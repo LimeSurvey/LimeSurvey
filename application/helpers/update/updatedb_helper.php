@@ -3951,7 +3951,7 @@ function upgradeArchivedTableSettings446()
         }
         $newArchivedTableSettings = [
             'survey_id'  => (int)$surveyID,
-            'user_id'    => $userID,
+            'user_id'    => $userID ?? 1,
             'tbl_name'   => $tableName,
             'created'    => $DBDate,
             'properties' => json_encode(['unknown'])
