@@ -782,7 +782,7 @@ class participantsaction extends Survey_Common_Action
 
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
+        $uploadValidator->redirectOnError('the_file', array('admin/participants/sa/importCSV'));
 
         if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');

@@ -222,7 +222,7 @@ class themes extends Survey_Common_Action
 
         // Return json at file size error.
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRenderJson('file', $debug);
+        $uploadValidator->renderJsonOnError('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImageContent['check'] === false) {
@@ -456,7 +456,7 @@ class themes extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             // Check file size and redirect on error
             $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-            $uploadValidator->checkUploadedFileSizeAndRedirect('upload_file', $redirectUrl);
+            $uploadValidator->redirectOnError('upload_file', $redirectUrl);
 
             $action                 = returnGlobal('action');
             $oEditedTemplate        = Template::getInstance($templatename);
@@ -1331,7 +1331,7 @@ class themes extends Survey_Common_Action
     protected function checkFileSizeError($uploadName = 'the_file')
     {
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRedirect($uploadName, array("admin/themes/sa/upload"));
+        $uploadValidator->redirectOnError($uploadName, array("admin/themes/sa/upload"));
     }
 
     /**

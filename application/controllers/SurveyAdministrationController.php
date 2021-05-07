@@ -1276,7 +1276,7 @@ class SurveyAdministrationController extends LSBaseController
         // This is done before checking the survey permissions because, if the max POST size was exceeded,
         // there is no Survey ID to check for permissions, so the error could be misleading.
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRenderJson('file', $debug);
+        $uploadValidator->renderJsonOnError('file', $debug);
 
         $iSurveyID = Yii::app()->request->getPost('surveyid');
         $success = false;

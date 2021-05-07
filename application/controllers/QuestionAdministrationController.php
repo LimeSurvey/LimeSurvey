@@ -1075,7 +1075,7 @@ class QuestionAdministrationController extends LSBaseController
         
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
 
         $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {

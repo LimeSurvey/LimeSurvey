@@ -130,7 +130,7 @@ class labels extends Survey_Common_Action
 
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
-        $uploadValidator->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
 
         if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');
