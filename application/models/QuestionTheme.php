@@ -888,6 +888,9 @@ class QuestionTheme extends LSActiveRecord
         }            
 
         $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sConfigPath;
+        if (!file_exists($sQuestionConfigFilePath)) {
+            throw new Exception('Found no config.xml file at ' . $sQuestionConfigFilePath);
+        }
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
 
         if (!$sQuestionConfigFile) {

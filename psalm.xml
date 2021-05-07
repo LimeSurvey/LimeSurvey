@@ -12,6 +12,7 @@
         <directory name="application/models/services" />
         <file name="application/models/QuestionAttribute.php" />
         <file name="application/libraries/PluginManager/LimesurveyApi.php" />
+        <file name="application/models/ArchivedTableSettings.php" />
         <ignoreFiles>
             <directory name="third_party" />
             <directory name="framework" />
