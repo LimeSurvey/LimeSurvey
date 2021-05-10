@@ -34,6 +34,35 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 4.6.1 (build 210510) to 4.6.2 (build 210512) May 10, 2021
+Fixed issue: Not possible to choose question type
+
+Changes from 4.6.0 (build 210504) to 4.6.1 (build 210510) May 10, 2021
+-Fixed issue: Settings for questions that should not be possible to manipulate during survey runtime are changeable (Patrick Teichmann)
+-Fixed issue: Date format used for 'Y' 'N' values in token fields (Patrick Teichmann)
+-Fixed issue: When you navigate between the tabs from themes the screen jumps down (Jessica Höck)
+-Fixed issue: When user clicks on Activate Survey from the left side navigation loop appears (Jessica Höck)
+-Fixed issue: Incorrect date time value when calling remote control_handle/add_response (小白)
+-Fixed issue: Assessment filter scope does not work for selection 'All' (Patricia Stelling)
+-Fixed issue #17283: "Repeat answer options" option does not accept value 0 (Carsten Schmitz)
+-Fixed issue #17282: Missing text in question organizer (Olle Haerstedt)
+-Fixed issue #17280: Can’t import a predefined bilingual label set when creating a single or a multiple choice question (Olle Haerstedt)
+-Fixed issue #17256: No warning about adjusted question codes is shown when importing a group which holds questions with already used question codes (#1859) (Gabriel Jenik)
+-Fixed issue #17166: Survey participants button missing for View Participants permission (#1867) (Gabriel Jenik)
+-Fixed issue #17145: File Upload encryption fails to decrypt properly (Patrick Teichmann)
+-Fixed issue #17123: Store missing state of encrypted fields for archived tables (Patrick Teichmann)
+-Fixed issue #14771: Users email address could only be changed if he also enters current password (Patricia Stelling)
+#Updated translation: Portuguese (Portugal) by c_schmitz, algarvio, nostradumusfdx, samarta, femariso, lucaspcs, marcelovincenzi, marciojv, jbfloripa, cassiofs, pmduque
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 4.5.2 (build 210426) to 4.6.0 (build 210504) May 3, 2021
 +New feature #17262: Create new getQuestionAttributes() endpoint for Limesurvey API (#1857) (Gabriel Jenik)
 -Fixed issue: Remove logo from survey list breadcrumb and replace with naming "List Surveys" (Jessica Höck)

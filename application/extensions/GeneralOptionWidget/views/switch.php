@@ -1,43 +1,39 @@
 <div class="btn-group col-12" role="group" data-toggle="buttons">
-    <?php if ($this->generalOption->formElement->value === 'Y') : ?>
-        <label class="btn btn-default active <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>">
+    <?php if ($this->generalOption->formElement->value == 'Y') : ?>
+        <label class="btn btn-default active">
             <input
                 type="radio"
-                name="question[<?= $this->generalOption->name ?>]"
+                name="question[<?= $this->generalOption->name; ?>]"
                 value="Y"
-                <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>
                 checked
                 />
-            <?= gT('On') ?>
+            <?= gT('On'); ?>
         </label>
-        <label class="btn btn-default <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>">
+        <label class="btn btn-default">
             <input
                 type="radio"
-                name="question[<?= $this->generalOption->name ?>]"
+                name="question[<?= $this->generalOption->name; ?>]"
                 value="N"
-                <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>
                 />
-            <?= gT('Off') ?>
+            <?= gT('Off'); ?>
         </label>
     <?php else : ?>
-        <label class="btn btn-default <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>">
+        <label class="btn btn-default">
             <input
                 type="radio"
-                name="question[<?= $this->generalOption->name ?>]"
+                name="question[<?= $this->generalOption->name; ?>]"
                 value="Y"
-                <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>
                 />
-            <?= gT('On') ?>
+            <?= gT('On'); ?>
         </label>
-        <label class="btn btn-default active <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>">
+        <label class="btn btn-default active">
             <input
                 type="radio"
-                name="question[<?= $this->generalOption->name ?>]"
+                name="question[<?= $this->generalOption->name; ?>]"
                 value="N"
-                <?= $this->generalOption->disableInActive ? 'disabled' : '' ?>
                 checked
                 />
-            <?= gT('Off') ?>
+            <?= gT('Off'); ?>
         </label>
     <?php endif; ?>
 </div> 

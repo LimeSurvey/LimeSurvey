@@ -394,15 +394,6 @@ class QuestionAdministrationController extends LSBaseController
         // Rollback at failure.
         $transaction = Yii::app()->db->beginTransaction();
         try {
-            $survey = Survey::model()->findByPk($iSurveyId);
-            $isSurveyActive = $survey->getIsActive();
-            // settings that should not be changed during a running survey
-            if ($isSurveyActive) {
-                unset($questionData['question']['encrypted']);
-                unset($questionData['question']['gid']);
-                unset($questionData['question']['other']);
-                unset($questionData['question']['save_as_default']);
-            }
             if ($questionData['question']['qid'] == 0) {
                 $questionData['question']['qid'] = null;
                 $question = $this->storeNewQuestionData($questionData['question']);
