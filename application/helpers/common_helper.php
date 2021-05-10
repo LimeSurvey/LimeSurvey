@@ -3327,7 +3327,7 @@ function includeKeypad()
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
     uksort($fieldnames, function ($a, $b) {
-        return strlen($a) < strlen($b);
+        return strlen($b)-strlen($a);
     });
 
     Yii::app()->loadHelper('database');
@@ -4327,7 +4327,7 @@ function doFooter()
 * @param int $surveyid
 * @return string
 */
-function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
+function getSurveyUserList($bIncludeSuperAdmins, $surveyid)
 {
 
     $surveyid = (int) $surveyid;
@@ -4373,11 +4373,11 @@ function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
 
 /**
  * Return HTML <option> list of user groups
- * @param string $outputformat
+ * @param string $outputformat 'htmloptions' or 'simpleugidarray' (todo: check if this is correct)
  * @param int $surveyid
  * @return string|array
  */
-function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
+function getSurveyUserGroupList($outputformat, $surveyid)
 {
 
     $surveyid = sanitize_int($surveyid);
@@ -4940,17 +4940,16 @@ function isZipBomb($zip_filename)
 function get_zip_originalsize($filename)
 {
 
-    if (function_exists('zip_entry_filesize')) {
+    if (class_exists('ZipArchive')) {
         $size = 0;
-        $resource = zip_open($filename);
+        $zip = new ZipArchive;
+        $zip->open($filename);
 
-        if (! is_int($resource)) {
-            while ($dir_resource = zip_read($resource)) {
-                $size += zip_entry_filesize($dir_resource);
-            }
-            zip_close($resource);
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+                $aEntry = $zip->statIndex($i);
+                $size += $aEntry['size'];
         }
-
+        $zip->close();
         return $size;
     } else {
         if (YII_DEBUG) {

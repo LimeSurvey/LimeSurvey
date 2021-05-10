@@ -348,11 +348,9 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
-        $esrow = $this->fetchSurveyInfo('newsurvey');
-
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] =  $this->fetchSurveyInfo('newsurvey');
 
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
@@ -2368,7 +2366,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
-        if (!function_exists("zip_open")) {
+        if (!class_exists('ZipArchive')) {
             $ZIPimportAction = " onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'";
         }
 
@@ -3030,14 +3028,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabPresentationNavigation($esrow)
+    private function tabPresentationNavigation($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3064,14 +3062,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabNotificationDataManagement($esrow)
+    private function tabNotificationDataManagement($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3080,14 +3078,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabTokens()
      * Load "Tokens" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabTokens($esrow)
+    private function tabTokens($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 

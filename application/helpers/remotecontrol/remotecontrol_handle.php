@@ -2210,7 +2210,7 @@ class remotecontrol_handle
                                 $oCriteria->compare($columnName, $operator . $value);
                             }
                         } elseif (is_string($valueOrTuple)) {
-                            if (in_array($columnName, $aConditionFields)) {
+                            if (array_key_exists($columnName, $aConditionFields)) {
                                 $aAttributeValues[$columnName] = $valueOrTuple;
                             }
                         } else {
@@ -2218,7 +2218,6 @@ class remotecontrol_handle
                         }
                     }
                 }
-
                 if ($bUnused) {
                     $oTokens = Token::model($iSurveyID)->incomplete()->findAllByAttributes($aAttributeValues, $oCriteria);
                 } else {

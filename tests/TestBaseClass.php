@@ -32,7 +32,7 @@ class TestBaseClass extends TestCase
     /** @var  integer */
     protected static $surveyId;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -49,11 +49,11 @@ class TestBaseClass extends TestCase
 
         self::$testHelper = new TestHelper();
 
-        self::$dataFolder = __DIR__.'/data';
-        self::$viewsFolder = self::$dataFolder."/views";
-        self::$surveysFolder = self::$dataFolder.'/surveys';
-        self::$tempFolder = __DIR__.'/tmp';
-        self::$screenshotsFolder = self::$tempFolder.'/screenshots';
+        self::$dataFolder = __DIR__ . '/data';
+        self::$viewsFolder = self::$dataFolder . "/views";
+        self::$surveysFolder = self::$dataFolder . '/surveys';
+        self::$tempFolder = __DIR__ . '/tmp';
+        self::$screenshotsFolder = self::$tempFolder . '/screenshots';
         self::$testHelper->importAll();
 
         \Yii::import('application.helpers.globalsettings_helper', true);
@@ -68,7 +68,7 @@ class TestBaseClass extends TestCase
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {
-            throw new \Exception(sprintf('Survey file %s not found',$surveyFile));
+            throw new \Exception(sprintf('Survey file %s not found', $surveyFile));
         }
 
         $translateLinksFields = false;
@@ -84,7 +84,7 @@ class TestBaseClass extends TestCase
             self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
-            throw new \Exception(sprintf('Failed to import survey file %s',$surveyFile));
+            throw new \Exception(sprintf('Failed to import survey file %s', $surveyFile));
         }
     }
 
@@ -94,15 +94,15 @@ class TestBaseClass extends TestCase
      */
     public function getAllSurveyQuestions()
     {
-        if(empty(self::$surveyId)) {
+        if (empty(self::$surveyId)) {
             throw new \Exception('getAllSurveyQuestions call without survey.');
         }
         $survey = \Survey::model()->findByPk(self::$surveyId);
-        if(empty($survey)) {
+        if (empty($survey)) {
             throw new \Exception('getAllSurveyQuestions call with an invalid survey.');
         }
         $questions = [];
-        foreach($survey->groups as $group) {
+        foreach ($survey->groups as $group) {
             $questionObjects = $group->questions;
             foreach ($questionObjects as $q) {
                 $questions[$q->title] = $q;
@@ -114,7 +114,7 @@ class TestBaseClass extends TestCase
     /**
      * @return void
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
@@ -142,7 +142,7 @@ class TestBaseClass extends TestCase
      */
     public static function installAndActivatePlugin($pluginName)
     {
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>$pluginName));
+        $plugin = \Plugin::model()->findByAttributes(array('name' => $pluginName));
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = $pluginName;
@@ -161,7 +161,7 @@ class TestBaseClass extends TestCase
      */
     public static function deActivatePlugin($pluginName)
     {
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>$pluginName));
+        $plugin = \Plugin::model()->findByAttributes(array('name' => $pluginName));
         if ($plugin) {
             $plugin->active = 0;
             $plugin->save();

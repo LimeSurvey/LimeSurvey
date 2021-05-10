@@ -246,7 +246,7 @@ class LSActiveRecord extends CActiveRecord
      * TODO: Should be split into seperate functions in the appropiate model or helper class
      * TODO: Make an interface for records that support encryption.
      */
-    public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName)
+    public function getAllEncryptedAttributes($iSurveyId, $sClassName)
     {
         $aAttributes = [];
         if ($sClassName == 'ParticipantAttribute') {
@@ -440,7 +440,7 @@ class LSActiveRecord extends CActiveRecord
      * @return string
      * @throws CException
      */
-    public function setEncryptedAttributeLabel(int $surveyId = 0, string $className, string $attributeName)
+    public function setEncryptedAttributeLabel(int $surveyId, string $className, string $attributeName)
     {
         $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<psalm
+    useDocblockTypes="true"
+    totallyTyped="true"
+>
+    <projectFiles>
+        <directory name="src" />
+    </projectFiles>
+    <issueHandlers>
+        <InvalidFunctionCall errorLevel="suppress" />
+        <!--
+            Previous issue type is suppressed because we have to use a string
+            as a function name for PHP 5.2 compatibility. When testing, be sure
+            to change this to "info".
+         -->
+
+        <UndefinedFunction errorLevel="info" />
+        <!--
+            Inconsistently erroneous.
+        -->
+
+        <DuplicateClass errorLevel="info" />
+        <!--
+            Psalm isn't correctly identifying the guard conditions that return
+            early if a class already exists.
+        -->
+        <RedundantConditionGivenDocblockType errorLevel="suppress" />
+
+        <TooFewArguments errorLevel="info" />
+
+        <DocblockTypeContradiction errorLevel="info" />
+        <RedundantCondition errorLevel="info" />
+        <!--
+            Redundancy is good for PHP <7
+        -->
+
+        <TypeDoesNotContainType errorLevel="info" />
+        <!--
+            This mostly fails on `PHP_INT_SIZE === 4`
+        -->
+
+    </issueHandlers>
+</psalm>
