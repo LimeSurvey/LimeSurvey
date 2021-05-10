@@ -3762,15 +3762,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
             foreach ($questionsMetaData as $questionMetaData) {
-                $oQuestionTheme = QuestionTheme::model()->findByAttributes([
-                    "name" => $questionMetaData['name'],
-                    "extends" => $questionMetaData['questionType'],
-                    "theme_type" => $questionMetaData['type']
-                ]);
-                if (!empty($oQuestionTheme) && $oQuestionTheme->image_path != $questionMetaData['image_path']) {
-                    $oQuestionTheme->image_path = $questionMetaData['image_path'];
-                    $oQuestionTheme->save();
-                }
+                $oDB->createCommand()->update(
+                    '{{question_themes}}',
+                    ['image_path' => $questionMetaData['image_path']],
+                    "name = :name AND extends = :extends AND theme_type = :type",
+                    [
+                        "name" => $questionMetaData['name'],
+                        "extends" => $questionMetaData['questionType'],
+                        "type" => $questionMetaData['type']
+                    ]
+                );
             }
             $oDB->createCommand()->insert("{{plugins}}", [
                 'name'               => 'TwoFactorAdminLogin',
