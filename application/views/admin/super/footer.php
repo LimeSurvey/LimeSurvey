@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Footer view
  * Inserted in all pages
  */
+
 $systemInfos = [
     gT('LimeSurvey version') => Yii::app()->getConfig('versionnumber'),
     gT('LimeSurvey build') => Yii::app()->getConfig('buildnumber') == '' ? 'github' : Yii::app()->getConfig('buildnumber'),
@@ -41,8 +43,8 @@ try {
 }
 
 /* Fix array to string , see #13352 */
-foreach($systemInfos as $key=>$systemInfo) {
-    if(is_array($systemInfo)) {
+foreach ($systemInfos as $key => $systemInfo) {
+    if (is_array($systemInfo)) {
         $systemInfos[$key] = json_encode($systemInfo, JSON_PRETTY_PRINT);
     }
 }
@@ -55,25 +57,25 @@ foreach($systemInfos as $key=>$systemInfo) {
             <div class="col-xs-6 col-sm-4 ">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="fa fa-question-circle" id="info-footer"></span>
-		    <span class="sr-only"><?php eT('Limesurvey online manual'); ?></span>
+            <span class="sr-only"><?php eT('Limesurvey online manual'); ?></span>
                 </a>
             </div>
 
             <!-- Support / Donate -->
-            <div  class="col-xs-6 col-sm-4 text-center"  >
-                <a href='https://account.limesurvey.org/nbill?action=orders&task=order&cid=27' target="_blank">
-                    <img alt='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"),'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
+            <div  class="col-xs-6 col-sm-4 text-center" >
+                <a href='https://donate.limesurvey.org' target="_blank">
+                    <img alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
             <div class="col-xs-12 col-sm-4 text-right">
                 <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?> 
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?> 
                     <a href="#modalSystemInformation" data-toggle="modal" title="<?=gT("Get system information")?>"> 
                 <?php } ?>
-                <?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                <?php echo $versiontitle . "  " . $versionnumber . $buildtext;?>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
                     </a> 
                 <?php } ?>
             </div>
@@ -95,10 +97,10 @@ foreach($systemInfos as $key=>$systemInfo) {
                 <div class="h3 modal-title"><?php eT("System information"); ?></div>
             </div>
             <div class="modal-body">
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')) { ?>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>
                     <h4><?php eT("Your system configuration:")?></h4>
                     <ul class="list-group">
-                        <?php foreach($systemInfos as $name => $systemInfo){ ?>
+                        <?php foreach ($systemInfos as $name => $systemInfo) { ?>
                             <li class="list-group-item">
                                 <div class="ls-flex-row">
                                     <div class="col-4"><?php echo $name ?></div>
@@ -121,11 +123,11 @@ foreach($systemInfos as $key=>$systemInfo) {
 
     Example of use:
 
-    <button 
+    <button
         data-toggle='modal'
         data-target='#confirmation-modal'
         data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
-        class='btn btn-warning btn-sm' 
+        class='btn btn-warning btn-sm'
     >
 
  */
@@ -213,8 +215,8 @@ foreach($systemInfos as $key=>$systemInfo) {
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <div class="h3 modal-title">
-			<span class="sr-only"><?php eT("Notifications"); ?></span>
-		</div>
+            <span class="sr-only"><?php eT("Notifications"); ?></span>
+        </div>
                 <span class='notification-date'></span>
             </div>
             <div class="modal-body">
