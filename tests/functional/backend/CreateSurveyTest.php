@@ -106,7 +106,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $survey = \Survey::model()
                 ->with(['defaultlanguage' => ['condition' => 'surveyls_title=' . \Yii::app()->db->quoteValue($title)]])
                 ->findAll();
-            $this->assertNotEmpty($survey);
+            $this->assertCount(1, $survey);
         } catch (\Throwable $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
