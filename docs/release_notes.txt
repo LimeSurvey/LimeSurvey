@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.26.2 (build 210503) to 3.26.3 (build 210511) May 10, 2021
+-Fixed issue: Assessment filter scope does not work for selection 'All' (Patricia Stelling)
+-Fixed issue #17283: "Repeat answer options" option does not accept value 0 (Carsten Schmitz)
+
+
 Changes from 3.26.1 (build 210427) to 3.26.2 (build 210503) May 3, 2021
 -Fixed issue #17277: Quick-translation opens blank page (Olle Haerstedt)
 -Fixed issue #16339: Plugin helper fullpagewrapper doesnt show content (#1858) (Gabriel Jenik)
