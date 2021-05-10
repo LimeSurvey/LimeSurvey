@@ -2,6 +2,8 @@
 
 namespace ls\tests;
 
+use QuestionCreate;
+
 /**
  * @group questionattribute
  */
@@ -101,6 +103,26 @@ class QuestionAttributeTest extends TestBaseClassWeb
             }
         }
         $this->assertNotEmpty($aAttribute);
+    }
+
+    public function testFetcher()
+    {
+        // Import survey
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss';
+        self::importSurvey($surveyFile);
+
+        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+
+        $question = QuestionCreate::getInstance(self::$surveyId, 'L');
+
+        $questionAttributeFetcher->setQuestion($question);
+        $questionAttributeFetcher->setTheme('bootstrap_buttons');
+
+        $questionAttributes = $questionAttributeFetcher->fetch();
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertNotEmpty($questionAttributes['dummyCoreAttribute']);
+        $this->assertNotEmpty($questionAttributes['dummyThemeAttribute']);
+        $this->assertNotEmpty($questionAttributes['dummyPluginAttribute']);
     }
 
     /**
