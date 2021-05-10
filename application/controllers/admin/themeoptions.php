@@ -152,7 +152,7 @@ class themeoptions  extends Survey_Common_Action
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function updatesurveygroup($id = null, $gsid, $l = null)
+    public function updatesurveygroup($id, $gsid, $l = null)
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             // @todo : review permission : template permission or group permission ?

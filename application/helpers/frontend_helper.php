@@ -760,9 +760,8 @@ function buildsurveysession($surveyid, $preview = false)
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang       = $_SESSION['survey_'.$surveyid]['s_lang'];
-    if (empty($lang)){
-
+    $lang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : '';
+    if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
            if (returnGlobal('lang', true)) {
@@ -1424,7 +1423,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 /**
  * @param string $sTemplateViewPath
  */
-function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
+function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath)
 {
     // Template settings
     $surveyid = $thissurvey['sid'];
@@ -1432,7 +1431,7 @@ function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
     //$oTemplate->registerAssets();
 
     $aError = array();
-    $aError['title']      = ($sTitle != '') ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
+    $aError['title']      = (!empty(trim($sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 

@@ -1808,10 +1808,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
-     * @param mixed $esrow
+     * @param mixed $survey
      * @return array
      */
-    private function _tabPresentationNavigation($esrow)
+    private function _tabPresentationNavigation($survey)
     {
         global $showxquestions, $showgroupinfo, $showqnumcode;
 
@@ -1820,7 +1820,7 @@ class SurveyAdmin extends Survey_Common_Action
         $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
 
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         $aData['shownoanswer'] = $shownoanswer;
         $aData['showxquestions'] = $showxquestions;
         $aData['showgroupinfo'] = $showgroupinfo;
@@ -1846,26 +1846,26 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
-     * @param mixed $esrow
+     * @param mixed $survey
      * @return array
      */
-    private function _tabNotificationDataManagement($esrow)
+    private function _tabNotificationDataManagement($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
     /**
      * survey::_tabTokens()
      * Load "Tokens" tab.
-     * @param mixed $esrow
+     * @param mixed $survey
      * @return array
      */
-    private function _tabTokens($esrow)
+    private function _tabTokens($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -1915,13 +1915,12 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
-     * @param Survey $survey survey
+     * @param Survey $survey survey 
      * @return mixed
      */
-    private function _tabResourceManagement($oSurvey)
+    private function _tabResourceManagement($survey)
     {
         global $sCKEditorURL;
-
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'";
         if (!function_exists("zip_open")) {
@@ -1929,7 +1928,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $disabledIfNoResources = '';
-        if (hasResources($oSurvey->sid, 'survey') === false) {
+        if (hasResources($survey->sid, 'survey') === false) {
             $disabledIfNoResources = " disabled='disabled'";
         }
         $aData = [];
@@ -1939,7 +1938,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['noform'] = true;
 
         //KCFINDER SETTINGS
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$survey->sid}";
         Yii::app()->loadHelper('admin.htmleditor');
         initKcfinder();
 

@@ -122,17 +122,16 @@ class LSYii_SecurityManager extends CSecurityManager
     public function get_zip_originalsize($filename)
     {
 
-        if ( function_exists ('zip_entry_filesize') ){
+        if (class_exists('ZipArchive')) {
             $size = 0;
-            $resource = zip_open($filename);
+            $zip = new ZipArchive;
+            $zip->open($filename);
 
-            if ( ! is_int($resource) ) {
-                while ($dir_resource = zip_read($resource)) {
-                    $size += zip_entry_filesize($dir_resource);
-                }
-                zip_close($resource);
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $aEntry = $zip->statIndex($i);
+                    $size += $aEntry['size'];
             }
-
+            $zip->close();
             return $size;
         }else{
             if ( YII_DEBUG ){

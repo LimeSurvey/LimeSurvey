@@ -138,7 +138,7 @@ class questions extends Survey_Common_Action
     /**
      * Display import view
      */
-    public function importView($groupid = null, $surveyid)
+    public function importView($groupid , $surveyid)
     {
         $iSurveyID = (int) $surveyid;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {

@@ -217,17 +217,17 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'])
+                "filter" => TbHtml::textField("Participant[lastname]", isset($participantFilter['lastname'])?$participantFilter['lastname']:'')
             ),
             array(
                 "name" => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'])
+                "filter" => TbHtml::textField("Participant[firstname]", isset($participantFilter['firstname'])?$participantFilter['firstname']:'')
             ),
             array(
                 "name" => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'])
+                "filter" => TbHtml::textField("Participant[email]", isset($participantFilter['email'])?$participantFilter['email']:'')
             ),
             array(
                 "name" => 'share_uid',
@@ -305,9 +305,11 @@ class ParticipantShare extends LSActiveRecord
         $criteria->compare('share_uid', $this->share_uid);
         $criteria->compare('date_added', $this->date_added, true);
         $criteria->compare('can_edit', $this->can_edit, true);
-        $criteria->compare('participant.lastname', $participantFilter['lastname'], true);
-        $criteria->compare('participant.firstname', $participantFilter['firstname'], true);
-        $criteria->compare('participant.email', $participantFilter['email'], true);
+        if (!empty($participantFilter)){
+            $criteria->compare('participant.lastname', $participantFilter['lastname'], true);
+            $criteria->compare('participant.firstname', $participantFilter['firstname'], true);
+            $criteria->compare('participant.email', $participantFilter['email'], true);
+        }
 
         $pageSize = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
         return new CActiveDataProvider($this, array(

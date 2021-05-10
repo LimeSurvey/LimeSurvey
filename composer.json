@@ -27,15 +27,23 @@
 			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
 	},
-	"require": {
-		"facebook/webdriver": "^1.4"
-	},
-    "config": {
+	"config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
 	"require-dev": {
+		"facebook/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "5.7.*"
-	}
+	},
+	"require": {
+		"twig/twig": "1.42.5"
+	},
+    "scripts": {
+        "test": [
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application"
+        ]
+    }
+
 }

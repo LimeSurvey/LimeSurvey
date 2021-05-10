@@ -677,7 +677,7 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 * @param string $rowname
 * @param string $valuename
 */
-function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc = '', $valuename, $method = "tbody", $class = null)
+function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method = "tbody", $class = null)
 {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'" : "";
