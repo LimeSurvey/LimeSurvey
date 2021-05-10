@@ -110,11 +110,6 @@ class PreviewModalWidget extends CWidget
     public $debug = false;
 
     /**
-     * @var bool true if survey is active, in this case questiontype should not be changed (button disabled)
-     */
-    public $survey_active = false;
-
-    /**
      * @return void
      */
     public function run()
