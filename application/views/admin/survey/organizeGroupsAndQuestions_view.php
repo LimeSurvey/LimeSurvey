@@ -30,7 +30,7 @@
                     <div class="panel-heading">
                         <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
-                        <?php echo flattenText($aGroupAndQuestions['gid'],true);?>
+                        <?php echo ellipsize($aGroupAndQuestions['group_text'], 80);?>
                     </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>
