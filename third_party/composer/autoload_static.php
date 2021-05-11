@@ -31,6 +31,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/twig/twig/src',
+            1 => __DIR__ . '/..' . '/twig/twig/src',
         ),
         'Symfony\\Polyfill\\Ctype\\' => 
         array (

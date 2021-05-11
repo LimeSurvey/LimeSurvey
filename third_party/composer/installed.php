@@ -1,24 +1,24 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => '1.0.0+no-version-set',
-    'version' => '1.0.0.0',
+    'pretty_version' => 'dev-3.x-LTS',
+    'version' => 'dev-3.x-LTS',
     'aliases' => 
     array (
     ),
-    'reference' => NULL,
+    'reference' => '50613da33b7a3d2f1a12c74bb7a275fbd50ecc05',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => '1.0.0+no-version-set',
-      'version' => '1.0.0.0',
+      'pretty_version' => 'dev-3.x-LTS',
+      'version' => 'dev-3.x-LTS',
       'aliases' => 
       array (
       ),
-      'reference' => NULL,
+      'reference' => '50613da33b7a3d2f1a12c74bb7a275fbd50ecc05',
     ),
     'symfony/polyfill-ctype' => 
     array (
@@ -37,6 +37,16 @@
       array (
       ),
       'reference' => '87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e',
+    ),
+    'yiiext/twig-renderer' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '9999999-dev',
+      ),
+      'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
     ),
   ),
 );
