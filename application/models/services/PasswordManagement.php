@@ -182,7 +182,7 @@ class PasswordManagement
                     'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $absolutUrl,
                     'username' => $this->user->users_name,
-                    'password' => '<a href="' . $passwordResetUrl . ">".gT('Click here to reset your password') . "</a>",
+                    'password' => '<a href="' . $passwordResetUrl . ">" . gT('Click here to reset your password') . "</a>",
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
                     'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),
