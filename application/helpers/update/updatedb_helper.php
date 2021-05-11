@@ -3807,7 +3807,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 445) {
+        if ($iOldDBVersion < 447) {
             $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key', 'string(38)');
@@ -3831,7 +3831,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 );
             }
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 445), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 447), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
