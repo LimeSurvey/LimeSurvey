@@ -24,7 +24,8 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
-			"LimeSurvey\\Helpers\\": "application/helpers"
+			"LimeSurvey\\Helpers\\": "application/helpers",
+            "Twig\\": "third_party/twig/twig/src"
 		}
 	},
 	"config": {
@@ -37,7 +38,8 @@
         "phpunit/phpunit": "5.7.*"
 	},
 	"require": {
-		"twig/twig": "1.42.5"
+		"twig/twig": "1.42.5",
+        "yiiext/twig-renderer":"dev-master"
 	},
     "scripts": {
         "test": [
