@@ -173,6 +173,7 @@ class PasswordManagement
 
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
+                $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
                 $renderArray = [
                     'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
@@ -181,7 +182,7 @@ class PasswordManagement
                     'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $absolutUrl,
                     'username' => $this->user->users_name,
-                    'password' => gT('Click the following link to reset your password') . ': ' . \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key),
+                    'password' => '<a href="' . $passwordResetUrl . ">".gT('Click here to reset your password') . "</a>",
                     'mainLogoFile' => LOGO_URL,
                     'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
                     'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),
