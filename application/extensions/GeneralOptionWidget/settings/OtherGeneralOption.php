@@ -14,7 +14,7 @@ class OtherGeneralOption extends GeneralOption
         $this->name = 'other';
         $this->title = gT('Other');
         $this->inputType = 'switch';
-        $this->disableInActive = true;
+        $this->setDisableInActive($question->survey);
         $this->formElement = new FormElement(
             'other',
             null,
