@@ -85,7 +85,7 @@ $internalConfig = array(
         'ext.captchaExtended.CaptchaExtendedValidator'
 
     ),
-    'preload' => array('log'),
+    'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
         // yiistrap configuration
         'bootstrap' => array(
@@ -184,9 +184,14 @@ $internalConfig = array(
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
         ),
+        'ETwigViewRenderer' => array(
+            'class' => 'third_party.yiiext.twig-renderer.ETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig'
+        ),
 
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
