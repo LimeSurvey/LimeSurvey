@@ -59,26 +59,6 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     <?php endif; ?>
 <?php endif; ?>
 
-<!-- Delete -->
-<?php if($hasSurveyContentDeletePermission):?>
-    <?php if($oSurvey->active!='Y'): ?>
-        <button class="btn btn-danger"
-            data-toggle="modal"
-            data-target="#confirmation-modal"
-            data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
-            data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
-            >
-            <span class="fa fa-trash text-danger"></span>
-            <?php eT("Delete"); ?>
-        </button>
-    <?php else: ?>
-        <button class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
-            <span class="fa fa-trash text-danger"></span>
-            <?php eT("Delete"); ?>
-        </button>
-    <?php endif; ?>
-<?php endif; ?>
-
 <!-- Export -->
 <?php if($hasSurveyContentExportPermission):?>
     <a class="btn btn-default " href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>" role="button">
@@ -125,3 +105,23 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
         </button>
     <?php endif; ?>
 <?php endif;?>
+
+<!-- Delete -->
+<?php if($hasSurveyContentDeletePermission):?>
+    <?php if($oSurvey->active!='Y'): ?>
+        <button class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#confirmation-modal"
+                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
+                data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
+        >
+            <span class="fa fa-trash text-danger"></span>
+            <?php eT("Delete"); ?>
+        </button>
+    <?php else: ?>
+        <button class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
+            <span class="fa fa-trash text-danger"></span>
+            <?php eT("Delete"); ?>
+        </button>
+    <?php endif; ?>
+<?php endif; ?>

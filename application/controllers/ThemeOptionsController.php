@@ -101,7 +101,7 @@ class ThemeOptionsController extends LSBaseController
                 );
             } else {
                 App()->setFlashMessage(
-                    gt("We are sorry but you don't have permissions to do this."),
+                    gT("We are sorry but you don't have permissions to do this."),
                     'error'
                 );
                 $this->redirect(array("themeOptions"));
@@ -142,7 +142,7 @@ class ThemeOptionsController extends LSBaseController
             }
 
             //set Modal table labels
-            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -201,7 +201,7 @@ class ThemeOptionsController extends LSBaseController
                 }
             }
             //set Modal table labels
-            $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+            $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
             $this->renderPartial(
                 'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
@@ -243,7 +243,7 @@ class ThemeOptionsController extends LSBaseController
             $aResults[$template]['result'] = gT('Selected');
         }
         //set Modal table labels
-        $tableLabels = array(gT('Template id'),gT('Template name') ,gT('Status'));
+        $tableLabels = array(gT('Theme ID'),gT('Theme name') ,gT('Status'));
 
         $this->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
@@ -426,7 +426,7 @@ class ThemeOptionsController extends LSBaseController
         } elseif (!is_writable(App()->getConfig('userthemerootdir'))) {
             $canImport = false;
             $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-        } elseif (!function_exists("zip_open")) {
+        } elseif (!class_exists('ZipArchive')) {
             $canImport = false;
             $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
         }
@@ -610,7 +610,7 @@ class ThemeOptionsController extends LSBaseController
                 array(":gsid" => $gsid, ":templatename" => $templatename)
             );
             if (empty($oTemplateConfiguration)) {
-                throw new CHttpException(401, gT("Invalid template configuration for this group."));
+                throw new CHttpException(401, gT("Invalid theme configuration for this group."));
             }
             $oTemplateConfiguration->setToInherit();
             if ($oTemplateConfiguration->save()) {

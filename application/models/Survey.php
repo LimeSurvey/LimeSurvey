@@ -644,10 +644,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
-        // checked for invalid data
-        if ($attdescriptiondata == null) {
-            return array();
-        }
 
         // Catches malformed data
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
@@ -1083,13 +1079,13 @@ class Survey extends LSActiveRecord implements PermissionInterface
             $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
             $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
-            // Time comparaison
+            // Time comparison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
             $bExpired = (!is_null($sStop) && $oStop < $oNow);
-            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
+            $bWillRun = (!is_null($sStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';

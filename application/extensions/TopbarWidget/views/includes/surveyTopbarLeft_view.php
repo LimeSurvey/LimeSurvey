@@ -219,7 +219,7 @@
 <?php endif; ?>
 
 <!-- Token -->
-<?php if($hasSurveyTokensPermission):?>
+<?php if($hasSurveyTokensPermission || $hasSurveyTokensReadPermission):?>
     <a class="btn btn-default pjax btntooltip hidden-xs" href="<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/$sid"); ?>" role="button">
         <span class="fa fa-user"></span>
         <?php eT("Survey participants"); ?>

@@ -40,6 +40,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $aQuestionCodeReplacements = array();
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
     $results['question_attributes'] = 0;
@@ -88,7 +89,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $aDataL10n['group_name'] = $insertdata['group_name'];
             $aDataL10n['description'] = $insertdata['description'];
             $aDataL10n['language'] = $insertdata['language'];
-            $aDataL10n['grelevance'] = $insertdata['grelevance'];
             unset($insertdata['group_name']);
             unset($insertdata['description']);
             unset($insertdata['language']);
@@ -98,6 +98,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->sid = $insertdata['sid'];
             $questionGroup->group_order = $insertdata['group_order'];
             $questionGroup->randomization_group = $insertdata['randomization_group'];
+            $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
                 safeDie(gT("Error") . ": Failed to insert data [3]<br />");
             }
@@ -586,6 +587,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
+
+    if (count($aQuestionCodeReplacements)) {
+        array_unshift(
+            $results['importwarnings'],
+            "<span class='warningtitle'>"
+            . gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.')
+            . '</span>'
+        );
+    }
 
     $results['newgid'] = $newgid;
     $results['labelsets'] = 0;

@@ -8,7 +8,7 @@
   border: 1px solid #adadad; }
 
 .active.btn-default, .open .active.dropdown-toggle.btn-default {
-  background-color: white; }
+  background-color: #ffd7cd; }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
   color: #ffffff;

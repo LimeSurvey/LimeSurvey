@@ -10,7 +10,7 @@
 <?php if(!empty($showSaveAndNewGroupButton)): ?>
     <a class="btn btn-default" id='save-and-new-button' role="button">
         <span class="fa fa-plus-square"></span>
-        <?php eT("Save and new group"); ?>
+        <?php eT("Save & add new group"); ?>
     </a>
 <?php endif; ?>
 
@@ -18,7 +18,7 @@
 <?php if(!empty($showSaveAndNewQuestionButton)): ?>
     <a class="btn btn-default" id='save-and-new-question-button' role="button">
         <span class="fa fa-plus"></span>
-        <?php eT("Save and add question"); ?>
+        <?php eT("Save & add new question"); ?>
     </a>
 <?php endif; ?>
 

@@ -12,6 +12,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use LimeSurvey\Models\Services\UploadHelper;
+
 /**
 * templates
 *
@@ -24,7 +26,6 @@ class themes extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-
         $sTemplateName = Yii::app()->request->getPost('templatename', '');
         if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
@@ -221,8 +222,9 @@ class themes extends Survey_Common_Action
 
         $debug[] = $_FILES;
 
-        // Redirect back at file size error.
-        $this->checkFileSizeError('file');
+        // Check file size and render JSON on error
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImageContent['check'] === false) {
@@ -283,9 +285,10 @@ class themes extends Survey_Common_Action
         $this->checkDemoMode();
 
         // Redirect back at file size error.
-        $this->checkFileSizeError();
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array("admin/themes/sa/upload"));
 
-        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+        $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
         if ($themeType == 'question') {
             $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
@@ -373,7 +376,10 @@ class themes extends Survey_Common_Action
                     if (!is_dir($sPathToThemeDirectory)) {
                         rmdirr($destdir);
                         App()->setFlashMessage(
-                            gT("The ZIP file contains wrong paths"),
+                            sprintf(
+                                gT("The ZIP file contains wrong paths: %s doesn't exist"),
+                                $sPathToThemeDirectory
+                            ),
                             'error'
                         );
                         $this->getController()->redirect(array("themeOptions/index#questionthemes"));
@@ -447,6 +453,20 @@ class themes extends Survey_Common_Action
             $templatename           = returnGlobal('templatename');
             $oEditedTemplate        = Template::getInstance($templatename);
             $screenname             = returnGlobal('screenname');
+
+            // Check file size and redirect on error
+            $uploadHelper = new UploadHelper();
+            $uploadHelper->checkUploadedFileSizeAndRedirect(
+                'upload_file', 
+                array(
+                    'admin/themes',
+                    'sa' => 'view',
+                    'editfile' => $editfile,
+                    'screenname' => $screenname,
+                    'templatename' => $templatename
+                )
+            );
+
             $allowedthemeuploads    = Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
@@ -989,11 +1009,14 @@ class themes extends Survey_Common_Action
                 break;
         }
 
+        $sFileDisplayName = ltrim(str_replace(Yii::app()->getConfig('rootdir'), '', $editfile), DIRECTORY_SEPARATOR);
+
         $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
         $aData['oEditedTemplate'] = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+        $aData['filedisplayname'] = $sFileDisplayName;
         $aData['relativePathEditfile'] = $relativePathEditfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
@@ -1309,24 +1332,6 @@ class themes extends Survey_Common_Action
     }
 
     /**
-     * Redirect if file size is too big.
-     * @return void
-     */
-    protected function checkFileSizeError($uploadName = 'the_file')
-    {
-        if ($_FILES[$uploadName]['error'] == 1 || $_FILES[$uploadName]['error'] == 2) {
-            Yii::app()->setFlashMessage(
-                sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                ),
-                'error'
-            );
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
-        }
-    }
-
-    /**
      * Redirect back if $destdir is not writable or already exists.
      *
      * @param string $destdir
@@ -1352,5 +1357,65 @@ class themes extends Survey_Common_Action
             Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
             $this->getController()->redirect(array($redirectUrl));
         }
+    }
+
+    /**
+     * Get directory name for $themeType in zip file $src based on <metadata><name> tag
+     *
+     * @param string $themeType 'question' or 'survey'
+     * @param string $src
+     * @return string
+     * @throws Exception
+     * @todo Move to service class
+     * @todo Same logic for survey theme
+     */
+    protected function getNewDirectoryName($themeType, $src)
+    {
+        if ($themeType === 'question') {
+            $zip = new ZipArchive();
+            $err = $zip->open($src);
+            if ($err !== true) {
+                throw new Exception('Could not open zip file');
+            }
+            /** @var string */
+            $configFilename = $this->findConfigXml($zip);
+            $configString = $zip->getFromName($configFilename);
+            $zip->close();
+            if ($configString === null) {
+                throw new Exception('Config file is empty');
+            }
+            $dom = new DOMDocument();
+            $dom->loadXML($configString);
+            $metadata = $dom->getElementsByTagName('metadata');
+            if (count($metadata) !== 1) {
+                throw new Exception('Did not find exactly one <metadata> tag');
+            }
+            $nameTags = $metadata[0]->getElementsByTagName('name');
+            if (count($nameTags) !== 1) {
+                throw new Exception('Did not find exactly one <name> tag in config.xml');
+            }
+            $nameFromConfig = $nameTags[0]->nodeValue;
+            if (empty($nameFromConfig)) {
+                throw new Exception('<name> tag is empty in config.xml');
+            }
+            return $nameFromConfig;
+        } else {
+            return sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
+        }
+    }
+
+    /**
+     * @param ZipArchive $zip
+     * @return string|null
+     */
+    public function findConfigXml(ZipArchive $zip)
+    {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if (strpos($filename, 'config.xml') !== false) {
+                return $filename;
+            }
+        }
+        return null;
     }
 }

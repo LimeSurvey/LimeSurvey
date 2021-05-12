@@ -1,6 +1,7 @@
 <?php
 
 use LimeSurvey\Models\Services\FilterImportedResources;
+use LimeSurvey\Models\Services\UploadHelper;
 
 class SurveyAdministrationController extends LSBaseController
 {
@@ -289,7 +290,7 @@ class SurveyAdministrationController extends LSBaseController
 
         //check subaction
         if (!($sSubAction === 'straight' || $sSubAction === 'bygroup')) {
-            Yii::app()->setFlashMessage(gT("Wrong parameter for subaction (straight or bygroup.)"), 'error');
+            Yii::app()->setFlashMessage(gT("Invalid parameters."), 'error');
             $this->redirect(array('surveyAdministration/view', 'surveyid' => $iSurveyID));
         }
 
@@ -347,11 +348,9 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
-        $esrow = $this->fetchSurveyInfo('newsurvey');
-
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] =  $this->fetchSurveyInfo('newsurvey');
 
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
@@ -417,7 +416,7 @@ class SurveyAdministrationController extends LSBaseController
     {
         if (Permission::model()->hasGlobalPermission('surveys', 'create')) {
             $user = Yii::app()->user;
-            
+
             // CHECK IF USER OWNS PREVIOUS SURVEYS BEGIN
             if ($user !== null) {
                 $userid = (int) $user->getId();
@@ -506,10 +505,10 @@ class SurveyAdministrationController extends LSBaseController
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
                 $redirecturl = $this->createUrl(
-                   'questionGroupsAdministration/add/',
-                   ['surveyid' => $iNewSurveyid]
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
                 );
-           } else {
+            } else {
                 $redirecturl = $this->createUrl(
                     'surveyAdministration/view/',
                     ['iSurveyID' => $iNewSurveyid]
@@ -1289,27 +1288,13 @@ class SurveyAdministrationController extends LSBaseController
             );
         }
         $debug[] = $_FILES;
-        if (empty($_FILES)) {
-            $uploadresult = gT("No file was uploaded.");
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
-            );
-        }
-        if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-            $uploadresult = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            );
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
-            );
-        }
+
+        // Check file size and render JSON on error.
+        // This is done before checking the survey permissions because, if the max POST size was exceeded,
+        // there is no Survey ID to check for permissions, so the error could be misleading.
+        $uploadHelper = new UploadHelper();
+        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
+
         $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImage['check'] === false) {
             return $this->renderPartial(
@@ -1508,7 +1493,10 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $survey = Survey::model()->findByPk($iSurveyID);
-        $date = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $datestamp = time();
+        $date = date('YmdHis', $datestamp); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
+        $DBDate = date('Y-m-d H:i:s', $datestamp);
+        $userID = Yii::app()->user->getId();
         $aData = array();
 
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
@@ -1558,6 +1546,15 @@ class SurveyAdministrationController extends LSBaseController
 
                     Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
 
+                    $archivedTokenSettings = new ArchivedTableSettings();
+                    $archivedTokenSettings->survey_id = $iSurveyID;
+                    $archivedTokenSettings->user_id = $userID;
+                    $archivedTokenSettings->tbl_name = "old_tokens_{$iSurveyID}_{$date}";
+                    $archivedTokenSettings->tbl_type = 'token';
+                    $archivedTokenSettings->created = $DBDate;
+                    $archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
+                    $archivedTokenSettings->save();
+
                     $aData['tnewtable'] = $tnewtable;
                     $aData['toldtable'] = $toldtable;
                 }
@@ -1592,6 +1589,15 @@ class SurveyAdministrationController extends LSBaseController
 
                 Yii::app()->db->createCommand()->renameTable($sOldSurveyTableName, $sNewSurveyTableName);
 
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $iSurveyID;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_{$date}";
+                $archivedTokenSettings->tbl_type = 'response';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = json_encode(Response::getEncryptedAttributes($iSurveyID));
+                $archivedTokenSettings->save();
+
                 $survey->active = 'N';
                 $survey->save();
 
@@ -1602,6 +1608,15 @@ class SurveyAdministrationController extends LSBaseController
                     Yii::app()->db->createCommand()->renameTable($sOldTimingsTableName, $sNewTimingsTableName);
                     $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
                 }
+
+                $archivedTokenSettings = new ArchivedTableSettings();
+                $archivedTokenSettings->survey_id = $iSurveyID;
+                $archivedTokenSettings->user_id = $userID;
+                $archivedTokenSettings->tbl_name = "old_survey_{$iSurveyID}_timings_{$date}";
+                $archivedTokenSettings->tbl_type = 'timings';
+                $archivedTokenSettings->created = $DBDate;
+                $archivedTokenSettings->properties = '';
+                $archivedTokenSettings->save();
 
                 $event = new PluginEvent('afterSurveyDeactivate');
                 $event->set('surveyId', $iSurveyID);
@@ -2351,7 +2366,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
-        if (!function_exists("zip_open")) {
+        if (!class_exists('ZipArchive')) {
             $ZIPimportAction = " onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'";
         }
 
@@ -2379,7 +2394,8 @@ class SurveyAdministrationController extends LSBaseController
      * @param int $iSurveyID Given Survey ID
      *
      * @return array
-     * @todo   Change function name to _showOrganizeGroupsAndQuestions?
+     * @todo Change function name to _showOrganizeGroupsAndQuestions?
+     * @todo Does actually not show anything, but gets data. So getReorderFormData()?
      */
     private function showReorderForm($iSurveyID)
     {
@@ -2393,7 +2409,8 @@ class SurveyAdministrationController extends LSBaseController
         LimeExpressionManager::StartSurvey($iSurveyID, 'survey');
         LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
-        $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $iSurveyID]);
+        $groups = $survey->groups;
+        $groupData = [];
         $initializedReplacementFields = false;
 
         $aData['organizebar']['savebuttonright'] = true;
@@ -2403,31 +2420,38 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
         $aData['topBar']['showSaveButton'] = true;
 
-        foreach ($aGrouplist as $iGID => $aGroup) {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
+        foreach ($groups as $iGID => $oGroup) {
+            $groupData[$iGID]['gid'] = $oGroup->gid;
+            $groupData[$iGID]['group_text'] = $oGroup->gid . ' ' . $oGroup->questiongroupl10ns[$sBaseLanguage]->group_name;
+            LimeExpressionManager::StartProcessingGroup($oGroup->gid, false, $iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Question::model()->getQuestions($iSurveyID, $aGroup['gid']);
-
             $qs = array();
 
-            foreach ($oQuestionData->readAll() as $q) {
-                $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
-                $question = '[{' . $relevance . '}] ' . $q['title'];
-                LimeExpressionManager::ProcessString($question, $q['qid']);
-                $q['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
-                $q['gid'] = $aGroup['gid'];
-                $qs[] = $q;
+            foreach ($oGroup->questions as $question) {
+                $relevance = $question->relevance == '' ? 1 : $question->relevance;
+                $questionText = sprintf(
+                    '[{%s}] %s % s',
+                    $relevance,
+                    $question->title,
+                    $question->questionl10ns[$sBaseLanguage]->question
+                );
+                LimeExpressionManager::ProcessString($questionText, $question->qid);
+                $questionData['question'] = viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                $questionData['gid'] = $oGroup->gid;
+                $questionData['qid'] = $question->qid;
+                $questionData['title'] = $question->title;
+                $qs[] = $questionData;
             }
-            $aGrouplist[$iGID]['questions'] = $qs;
+            $groupData[$iGID]['questions'] = $qs;
             LimeExpressionManager::FinishProcessingGroup();
         }
         LimeExpressionManager::FinishProcessingPage();
 
-        $aData['aGroupsAndQuestions'] = $aGrouplist;
+        $aData['aGroupsAndQuestions'] = $groupData;
         $aData['surveyid'] = $iSurveyID;
 
         return $aData;
@@ -2615,7 +2639,7 @@ class SurveyAdministrationController extends LSBaseController
         $oGroup->save();
         $oGroupL10ns = new QuestionGroupL10n();
         $oGroupL10ns->gid = $oGroup->gid;
-        $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
+        $oGroupL10ns->group_name = gT('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
         LimeExpressionManager::SetEMLanguage($sLanguage);
@@ -2644,8 +2668,8 @@ class SurveyAdministrationController extends LSBaseController
         $oQuestion->question_order = 1;
         $oQuestion->save();
         $oQuestionLS = new QuestionL10n();
-        $oQuestionLS->question = gt('A first example question. Please answer this question:', 'html', $sLanguage);
-        $oQuestionLS->help = gt('This is a question help text.', 'html', $sLanguage);
+        $oQuestionLS->question = gT('A first example question. Please answer this question:', 'html', $sLanguage);
+        $oQuestionLS->help = gT('This is a question help text.', 'html', $sLanguage);
         $oQuestionLS->language = $sLanguage;
         $oQuestionLS->qid = $oQuestion->qid;
         $oQuestionLS->save();
@@ -3004,14 +3028,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabPresentationNavigation($esrow)
+    private function tabPresentationNavigation($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3038,14 +3062,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabNotificationDataManagement($esrow)
+    private function tabNotificationDataManagement($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3054,14 +3078,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabTokens()
      * Load "Tokens" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabTokens($esrow)
+    private function tabTokens($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 

@@ -30,7 +30,14 @@ class translate extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
+
         $oSurvey = Survey::model()->findByPk($surveyid);
+
+        //KCFINDER SETTINGS
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->loadHelper('admin.htmleditor');
+        initKcfinder();
+
         $tolang = Yii::app()->getRequest()->getParam('lang');
         if (!empty($tolang) && !in_array($tolang, $oSurvey->getAllLanguages())) {
             Yii::app()->setFlashMessage(gT("Invalid language"), 'warning');
@@ -859,19 +866,19 @@ class translate extends Survey_Common_Action
                         return QuestionGroup::model()->with('questiongroupl10ns', array('condition' => 'language = ' . $baselang))->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 't.gid'));
                     case 'question':
                     case 'question_help':
-                        return Question::model()->with('questionl10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group.group_order, t.question_order, t.scale_id'));
+                        return Question::model()->with('questionl10ns', array('condition' => 'language = ' . $baselang))->with('parent', 'group')->findAllByAttributes(array('sid' => $iSurveyID, 'parent_qid' => 0), array('order' => 'group_order, t.question_order, t.scale_id'));
                     case 'subquestion':
                         return Question::model()
                         ->with('questionl10ns', array('condition' => 'language = ' . $baselang))
                         ->with('parent', array('condition' => 'language = ' . $baselang))
                         ->with('group', array('condition' => 'language = ' . $baselang))
-                        ->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group.group_order, parent.question_order, t.scale_id, t.question_order', 'condition' => 't.parent_qid>0', 'params' => array()));
+                        ->findAllByAttributes(array('sid' => $iSurveyID), array('order' => 'group_order, parent.question_order, t.scale_id, t.question_order', 'condition' => 't.parent_qid>0', 'params' => array()));
                     case 'answer':
                         return Answer::model()
                         ->with('answerl10ns', array('condition' => 'language = ' . $baselang))
                         ->with('question')
                         ->with('group')
-                        ->findAllByAttributes(array(), array('order' => 'group.group_order, question.question_order, t.scale_id, t.sortorder', 'condition' => 'question.sid=:sid', 'params' => array(':sid' => $iSurveyID)));
+                        ->findAllByAttributes(array(), array('order' => 'group_order, question.question_order, t.scale_id, t.sortorder', 'condition' => 'question.sid=:sid', 'params' => array(':sid' => $iSurveyID)));
                 }
             case "queryupdate":
                 switch ($type) {

@@ -1087,6 +1087,17 @@ function populateDatabase($oDB)
             'version' => 'integer NOT NULL',
         ), $options);
 
+        // archived_table_settings
+        $oDB->createCommand()->createTable('{{archived_table_settings}}', [
+            'id' => "pk",
+            'survey_id' => "int NOT NULL",
+            'user_id' => "int NOT NULL",
+            'tbl_name' => "string(255) NOT NULL",
+            'tbl_type' => "string(10) NOT NULL",
+            'created' => "datetime NOT NULL",
+            'properties' => "text NOT NULL",
+        ], $options);
+
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
             unset($plugin['id']);
@@ -1095,9 +1106,14 @@ function populateDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
-        $oTransaction->commit();
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
+    // Some database (like MySQl) do not support table creation in transaction and will auto-commit
+    // Any error in the transaction commit should not be propagated
+    try {
+        $oTransaction->commit();
+    } catch (Exception $e) {
+    };
 }

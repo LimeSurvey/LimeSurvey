@@ -1,4 +1,4 @@
-<div class="pagetitle h3"><?php eT("Test Email Settings");?></div>
+<div class="pagetitle h3"><?php eT("Test email settings");?></div>
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">

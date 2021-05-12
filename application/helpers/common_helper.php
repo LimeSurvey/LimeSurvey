@@ -18,7 +18,8 @@ Yii::import('application.helpers.sanitize_helper', true);
 
 
 /**
- * Translation helper function
+ * Returns $sToTranslate translated to $sLanguage (defaults to lang set in session) escaped with $sEscapeMode
+ *
  * @param string $sToTranslate
  * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
  * @param string $sLanguage
@@ -30,7 +31,8 @@ function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
 }
 
 /**
- * Translation helper function which outputs right away.
+ * As gT(), but echoes directly
+ *
  * @param string $sToTranslate
  * @param string $sEscapeMode
  * @return void
@@ -1272,7 +1274,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 *
 * @param Survey $survey Survey ActiveRecord model
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
-* @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param ?boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sLanguage The language to use
 * @param array $aDuplicateQIDs
@@ -3325,7 +3327,7 @@ function includeKeypad()
 function translateInsertansTags($newsid, $oldsid, $fieldnames)
 {
     uksort($fieldnames, function ($a, $b) {
-        return strlen($a) < strlen($b);
+        return strlen($b)-strlen($a);
     });
 
     Yii::app()->loadHelper('database');
@@ -4325,7 +4327,7 @@ function doFooter()
 * @param int $surveyid
 * @return string
 */
-function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
+function getSurveyUserList($bIncludeSuperAdmins, $surveyid)
 {
 
     $surveyid = (int) $surveyid;
@@ -4371,11 +4373,11 @@ function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
 
 /**
  * Return HTML <option> list of user groups
- * @param string $outputformat
+ * @param string $outputformat 'htmloptions' or 'simpleugidarray' (todo: check if this is correct)
  * @param int $surveyid
  * @return string|array
  */
-function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
+function getSurveyUserGroupList($outputformat, $surveyid)
 {
 
     $surveyid = sanitize_int($surveyid);
@@ -4938,17 +4940,16 @@ function isZipBomb($zip_filename)
 function get_zip_originalsize($filename)
 {
 
-    if (function_exists('zip_entry_filesize')) {
+    if (class_exists('ZipArchive')) {
         $size = 0;
-        $resource = zip_open($filename);
+        $zip = new ZipArchive;
+        $zip->open($filename);
 
-        if (! is_int($resource)) {
-            while ($dir_resource = zip_read($resource)) {
-                $size += zip_entry_filesize($dir_resource);
-            }
-            zip_close($resource);
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+                $aEntry = $zip->statIndex($i);
+                $size += $aEntry['size'];
         }
-
+        $zip->close();
         return $size;
     } else {
         if (YII_DEBUG) {

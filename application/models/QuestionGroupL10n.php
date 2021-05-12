@@ -79,8 +79,8 @@ class QuestionGroupL10n extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'language' => gt('Language'),
-            'group_name' => gt('Group name'),
+            'language' => gT('Language'),
+            'group_name' => gT('Group name'),
         );
     }
 }

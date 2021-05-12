@@ -494,7 +494,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
             /*$aData['surveybar']['closebutton']['url'] = 'questionGroupsAdministration/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
-            $aData['surveybar']['savebutton']['text'] = gt('Import');*/
+            $aData['surveybar']['savebutton']['text'] = gT('Import');*/
             $aData['surveyid'] = $surveyid;
             /*$aData['sid'] = $surveyid;
             $aData['topBar']['sid'] = $iSurveyID;
@@ -728,6 +728,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if ($oQuestionGroup == null) {
+            $isNewGroup = true;
             $oQuestionGroup = $this->newQuestionGroup($iSurveyId, $questionGroup);
         } else {
             $oQuestionGroup = $this->editQuestionGroup($oQuestionGroup, $questionGroup);
@@ -741,6 +742,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 $sScenario = 'save-and-new';
             } elseif (App()->request->getPost('saveandnewquestion', '')) {
                 $sScenario = 'save-and-new-question';
+            } elseif (!empty($isNewGroup)) {
+                $sScenario = 'save-and-close';
             }
         }
         switch ($sScenario) {

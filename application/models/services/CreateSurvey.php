@@ -16,22 +16,22 @@ use LimeSurvey\Datavalueobjects\SimpleSurveyValues;
 class CreateSurvey
 {
     /** @var int number of attempts to find a valid survey id */
-    private const ATTEMPTS_CREATE_SURVEY_ID = 50;
+    const ATTEMPTS_CREATE_SURVEY_ID = 50;
 
     /** @var string all attributes that have the value "NO" */
-    private const STRING_VALUE_FOR_NO_FALSE = 'N';
+    const STRING_VALUE_FOR_NO_FALSE = 'N';
 
     /** @var string all attributes that have the value "YES" */
-    private const STRING_VALUE_FOR_YES_TRUE = 'Y';
+    const STRING_VALUE_FOR_YES_TRUE = 'Y';
 
     /** @var string value to set attribute to inherit */
-    private const STRING_SHORT_VALUE_INHERIT = 'I';
+    const STRING_SHORT_VALUE_INHERIT = 'I';
 
     /** @var int */
-    private const INTEGER_VALUE_FOR_INHERIT = -1;
+    const INTEGER_VALUE_FOR_INHERIT = -1;
 
     /** @var int this is the default value for DB table (it corresponds to ) */
-    private const DEFAULT_DATE_FORMAT = 1;
+    const DEFAULT_DATE_FORMAT = 1;
 
     /** @var Survey the survey */
     private $survey;

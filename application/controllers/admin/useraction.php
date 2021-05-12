@@ -619,13 +619,7 @@ class UserAction extends Survey_Common_Action
         // Save Data
         if (Yii::app()->request->getPost("action")) {
             $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
-            $oUserModel->lang                 = Yii::app()->request->getPost('lang');
-            $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
-            $oUserModel->htmleditormode       = Yii::app()->request->getPost('htmleditormode');
-            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
-            $oUserModel->templateeditormode   = Yii::app()->request->getPost('templateeditormode');
-            $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
-            $oUserModel->email                = Yii::app()->request->getPost('email');
+            $uresult = true;
 
             if (Yii::app()->request->getPost('newpasswordshown') == "1") {
                 if (Yii::app()->getConfig('demoMode')) {
@@ -634,21 +628,40 @@ class UserAction extends Survey_Common_Action
                 }
 
                 $oldPassword = Yii::app()->request->getPost('oldpassword');
+
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
+                $oUserModel->email                = Yii::app()->request->getPost('email');
 
-                $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
-
-                if ($error !== '') {
-                    Yii::app()->setFlashMessage(gT($error), 'error');
-                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                //if only email should be changed, then just check the current password
+                $currentPasswordOk = $oUserModel->checkPassword($oldPassword);
+                if ($currentPasswordOk) {
+                    $uresult = $oUserModel->save();
                 } else {
-                    // We can update
-                    $oUserModel->setPassword($newPassword);
+                    Yii::app()->setFlashMessage(gT('The current password you entered is wrong!'), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+
+                if ($newPassword !== '' && $repeatPassword!=='') {
+                    $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
+
+                    if ($error !== '') {
+                        Yii::app()->setFlashMessage(gT($error), 'error');
+                        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                    } else {
+                        // We can update
+                        $oUserModel->setPassword($newPassword);
+                    }
                 }
             }
 
-            $uresult = $oUserModel->save();
+            $oUserModel->lang                 = Yii::app()->request->getPost('lang');
+            $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
+            $oUserModel->htmleditormode       = Yii::app()->request->getPost('htmleditormode');
+            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
+            $oUserModel->templateeditormode   = Yii::app()->request->getPost('templateeditormode');
+            $oUserModel->full_name            = Yii::app()->request->getPost('fullname');
+            $uresult = $uresult && $oUserModel->save();
             if ($uresult) {
                 if (Yii::app()->request->getPost('lang') == 'auto') {
                     $sLanguage = getBrowserLanguage();

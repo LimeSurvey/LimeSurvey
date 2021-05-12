@@ -155,17 +155,17 @@ class TemplateConfiguration extends TemplateConfig
     {
         return array(
             'id' => 'ID',
-            'template_name' => gT('Templates Name'),
+            'template_name' => gT('Template name'),
             'sid' => 'Sid',
             'gsid' => 'Gsid',
-            'files_css' => gT('Files Css'),
-            'files_js' => gT('Files Js'),
-            'files_print_css' => gT('Files Print Css'),
+            'files_css' => gT('Files CSS'),
+            'files_js' => gT('Files JS'),
+            'files_print_css' => gT('Files Print CSS'),
             'options' => gT('Options'),
-            'cssframework_name' => gT('Cssframework Name'),
-            'cssframework_css' => gT('Cssframework Css'),
-            'cssframework_js' => gT('Cssframework Js'),
-            'packages_to_load' => gT('Packages To Load'),
+            'cssframework_name' => gT('CSS framework name'),
+            'cssframework_css' => gT('CSS framework CSS'),
+            'cssframework_js' => gT('CSS framework JS'),
+            'packages_to_load' => gT('Packages to load'),
         );
     }
 
@@ -345,7 +345,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         //if a template name is given also check against that
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $sTemplateName  = $oSurvey->template;
+        $sTemplateName  = $oSurvey->oOptions->template;
         $iSurveyGroupId = $oSurvey->gsid;
 
         $criteria = new CDbCriteria();
@@ -1119,7 +1119,7 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $files = $oTemplate->$sField;
-
+        $oFiles = [];
         if (!empty($files)) {
             $oFiles = json_decode($files, true);
             if ($oFiles === null) {

@@ -29,7 +29,7 @@
                         <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
                         <a
                             data-target='#confirmation-modal' data-toggle='modal'
-                            data-message='<?= gT("Are you sure to remove all permissions for this user") ?>'
+                            data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                             data-href='<?= $deleteUrl ?>'
                         ><span class="fa fa-trash text-warning" aria-hidden="true" title="<?= gT("Delete") ?>"><span>
                             <span class="sr-only"><?= gT("Delete") ?></span>

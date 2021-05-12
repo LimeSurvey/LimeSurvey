@@ -86,10 +86,13 @@ class SurveyDynamic extends LSActiveRecord
             TokenDynamic::sid(self::$sid);
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition' => ('sid = ' . self::$sid)),
-                'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token'))
+                'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token')),
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
             );
         } else {
-            return array();
+            return array(
+                'saved_control'   => array(self::HAS_ONE, 'SavedControl', array('srid' => 'id'))
+            );
         }
     }
 
@@ -112,7 +115,7 @@ class SurveyDynamic extends LSActiveRecord
         foreach ($data as $k => $v) {
             $search = array('`', "'");
             $k = str_replace($search, '', $k);
-            $v = str_replace($search, '', $v);
+            $v = $v == null ? null : str_replace($search, '', $v);
             $record->$k = $v;
         }
 
@@ -745,7 +748,7 @@ class SurveyDynamic extends LSActiveRecord
                 $columnHasValue = !empty($this->$c1);
                 if ($columnHasValue) {
                     $isDatetime = strpos($column->dbType, 'timestamp') !== false || strpos($column->dbType, 'datetime') !== false;
-                    if ($column->dbType == 'decimal') {
+                    if ($column->dbType == 'decimal' || substr($column->dbType, 0, 7) == 'numeric') {
                         $this->$c1 = (float) $this->$c1;
                         $criteria->compare(Yii::app()->db->quoteColumnName($c1), $this->$c1, false);
                     } elseif ($isDatetime) {

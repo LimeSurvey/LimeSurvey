@@ -135,6 +135,15 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     }
 
     /**
+     * @param string $text
+     * @return \Facebook\WebDriver\Remote\RemoteWebElement
+     */
+    public function findByLinkText($text)
+    {
+        return $this->findElement(WebDriverBy::linkText($text));
+    }
+
+    /**
      * Click "Close" on notification modal.
      *
      * @return void

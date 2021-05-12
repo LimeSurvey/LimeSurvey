@@ -3762,15 +3762,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
             foreach ($questionsMetaData as $questionMetaData) {
-                $oQuestionTheme = QuestionTheme::model()->findByAttributes([
-                    "name" => $questionMetaData['name'],
-                    "extends" => $questionMetaData['questionType'],
-                    "theme_type" => $questionMetaData['type']
-                ]);
-                if (!empty($oQuestionTheme) && $oQuestionTheme->image_path != $questionMetaData['image_path']) {
-                    $oQuestionTheme->image_path = $questionMetaData['image_path'];
-                    $oQuestionTheme->save();
-                }
+                $oDB->createCommand()->update(
+                    '{{question_themes}}',
+                    ['image_path' => $questionMetaData['image_path']],
+                    "name = :name AND extends = :extends AND theme_type = :type",
+                    [
+                        "name" => $questionMetaData['name'],
+                        "extends" => $questionMetaData['questionType'],
+                        "type" => $questionMetaData['type']
+                    ]
+                );
             }
             $oDB->createCommand()->insert("{{plugins}}", [
                 'name'               => 'TwoFactorAdminLogin',
@@ -3783,13 +3784,74 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 443) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->renameColumn('{{users}}', 'lastLogin', 'last_login');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 443), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ($iOldDBVersion < 444) { //ExportSPSSsav plugin
+
+        if ($iOldDBVersion < 444) {
+            $oTransaction = $oDB->beginTransaction();
+            // Delete duplicate template configurations
+            $deleteQuery = "DELETE FROM {{template_configuration}}
+                WHERE id NOT IN (
+                    SELECT id FROM (
+                        SELECT MIN(id) as id
+                            FROM {{template_configuration}} t 
+                            GROUP BY t.template_name, t.sid, t.gsid, t.uid
+                    ) x
+                )";
+            $oDB->createCommand($deleteQuery)->execute();
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 445) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $table = '{{surveymenu_entries}}';
+            $data_to_be_updated = [
+                'data' => '{"render": {"isActive": false, "link": {"data": {"iSurveyID": ["survey","sid"]}}}}',
+            ];
+            $where = "name = 'activateSurvey'";
+            $oDB->createCommand()->update(
+                $table,
+                $data_to_be_updated,
+                $where
+            );
+
+            // Increase Database version
+            $oDB->createCommand()->update(
+                '{{settings_global}}',
+                array('stg_value' => 445),
+                "stg_name = 'DBVersion'"
+            );
+
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 446) {
+            $oTransaction = $oDB->beginTransaction();
+            // archived_table_settings
+            $oDB->createCommand()->createTable('{{archived_table_settings}}', [
+                'id' => "pk",
+                'survey_id' => "int NOT NULL",
+                'user_id' => "int NOT NULL",
+                'tbl_name' => "string(255) NOT NULL",
+                'tbl_type' => "string(10) NOT NULL",
+                'created' => "datetime NOT NULL",
+                'properties' => "text NOT NULL",
+            ], $options);
+            upgradeArchivedTableSettings446();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 447) { //ExportSPSSsav plugin
             $oTransaction = $oDB->beginTransaction();
             $installedPlugins = array_map(
                 function ($v) {
@@ -3826,9 +3888,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 }
             };
             $insertPlugin('ExportSPSSsav', 1);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 447), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+    
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -3898,6 +3961,60 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->setConfig('Updating', false);
     return true;
+}
+
+
+/**
+ * Import previously archived tables to ArchivedTableSettings
+ *
+ * @return void
+ * @throws CException
+ */
+function upgradeArchivedTableSettings446()
+{
+    $db = Yii::app()->db;
+    $DBPrefix = Yii::app()->db->tablePrefix;
+    $datestamp = time();
+    $DBDate = date('Y-m-d H:i:s', $datestamp);
+    $userID = Yii::app()->user->getId();
+    $query = dbSelectTablesLike('{{old_}}%');
+    $archivedTables = Yii::app()->db->createCommand($query)->queryColumn();
+    $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
+    foreach ($archivedTables as $archivedTable) {
+        $tableName = substr($archivedTable, strlen($DBPrefix));
+        $tableNameParts = explode('_', $tableName);
+        $type = $tableNameParts[1] ?? '';
+        $surveyID = $tableNameParts[2] ?? '';
+        $typeExtended = $tableNameParts[3] ?? '';
+        // skip if table entry allready exists
+        foreach ($archivedTableSettings as $archivedTableSetting) {
+            if ($archivedTableSetting['tbl_name'] === $tableName) {
+                continue 2;
+            }
+        }
+        $newArchivedTableSettings = [
+            'survey_id'  => (int)$surveyID,
+            'user_id'    => $userID ?? 1,
+            'tbl_name'   => $tableName,
+            'created'    => $DBDate,
+            'properties' => json_encode(['unknown'])
+        ];
+        if ($type === 'survey') {
+            $newArchivedTableSettings['tbl_type'] = 'response';
+            if ($typeExtended === 'timings') {
+                $newArchivedTableSettings['tbl_type'] = 'timings';
+                $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+                continue;
+            }
+            $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+            continue;
+        }
+        if ($type === 'tokens') {
+            $newArchivedTableSettings['tbl_type'] = 'token';
+            $db->createCommand()->insert('{{archived_table_settings}}', $newArchivedTableSettings);
+            continue;
+        }
+    }
 }
 
 function extendDatafields429($oDB)
@@ -5086,7 +5203,7 @@ function upgradeTokens176()
         $sTokenTableName = 'tokens_' . $arSurvey['sid'];
         if (tableExists($sTokenTableName)) {
             $aColumnNames = $aColumnNamesIterator = $oDB->schema->getTable('{{' . $sTokenTableName . '}}')->columnNames;
-            $aAttributes = $arSurvey['attributedescriptions'];
+            $aAttributes = decodeTokenAttributes($arSurvey['attributedescriptions']);
             foreach ($aColumnNamesIterator as $sColumnName) {
                 // Check if an old atttribute_cpdb column exists in that token table
                 if (strpos($sColumnName, 'attribute_cpdb') !== false) {
@@ -5103,6 +5220,12 @@ function upgradeTokens176()
                         $aAttributes[$sNewName]['cpdbmap'] = substr($sColumnName, 15);
                         unset($aAttributes[$sColumnName]);
                     }
+                }
+            }
+            // Add 'cpdbmap' if missing
+            foreach ($aAttributes as &$aAttribute) {
+                if (!isset($aAttribute['cpdbmap'])) {
+                    $aAttribute['cpdbmap'] = '';
                 }
             }
             $oDB->createCommand()->update('{{surveys}}', array('attributedescriptions' => serialize($aAttributes)), "sid=" . $arSurvey['sid']);

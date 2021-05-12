@@ -67,6 +67,13 @@
 
                 </table>
             <div class="row ls-space margin top-25">
+                <?php if (safecount(Permission::model()->getUserRole($oUser->uid)) > 0 ): ?>
+                    <div class="col-xs-12 alert alert-warning">
+                        <?= gT("Warning: The user has at least one role assigned. Setting individual user permissions will remove all roles from this user!") ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="row ls-space margin top-25">
                 <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1 selector--submitForm" id="permission-modal-submitForm"><?=gT('Save')?></button>
                 <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1 selector--exitForm" id="permission-modal-exitForm"><?=gT('Cancel')?></button>
             </div>

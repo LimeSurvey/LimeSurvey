@@ -172,7 +172,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
 
                 <?php if (isset($questionOrderDuplicates) && !empty($questionOrderDuplicates)) : ?>
-                    <li><?php eT("The following surveys have an errorneous question order. Please go to each question and group respectively, check the question order and save it."); ?>
+                    <li><?php eT("The following surveys have an erroneous question order. That could lead to errors during the design and/or processing of the survey. Please go to each question and group respectively, check the question order and save it."); ?>
                         <ul>
                             <?php foreach ($questionOrderDuplicates as $info) : ?>
                             <li>

@@ -17,7 +17,7 @@ class RemoteControlListSurveyGroupsTest extends TestBaseClass
      */
     protected static $password = null;
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
 

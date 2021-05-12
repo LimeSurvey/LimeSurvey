@@ -190,7 +190,7 @@ class Surveymenu extends LSActiveRecord
 
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "id" => $oSurveyMenuObject->id,
-                "title" => gt($oSurveyMenuObject->title),
+                "title" => gT($oSurveyMenuObject->title),
                 "name" => $oSurveyMenuObject->name,
                 "ordering" => $oSurveyMenuObject->ordering,
                 "level" => $oSurveyMenuObject->level,

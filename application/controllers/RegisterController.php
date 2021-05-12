@@ -421,7 +421,7 @@ class RegisterController extends LSYii_Controller
      * @param $iSurveyId
      * @param string $registerContent
      */
-    private function display($iSurveyId, $iTokenId = null, $registerContent)
+    private function display($iSurveyId, $iTokenId, $registerContent)
     {
         $sLanguage = Yii::app()->language;
         $this->aGlobalData['surveyid'] = $surveyid = $iSurveyId;

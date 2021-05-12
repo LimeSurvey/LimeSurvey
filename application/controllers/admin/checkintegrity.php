@@ -597,13 +597,16 @@ class CheckIntegrity extends Survey_Common_Action
                             // QID field can be more than just QID, like: 886other or 886A1
                             // So we clean it by finding the first alphabetical character
                             $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
                             if (isset($match[0][1])) {
                                 $sQID      =  substr($sDirtyQid, 0, $match[0][1]);
                             } else {
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
+                            }
+                            if ((string) intval($sQID) !== $sQID) {
+                                throw new \Exception('sQID is not an integer: ' . $sQID);
                             }
 
                             // Here, we get the question as defined in backend
@@ -1007,7 +1010,6 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
 
-
         /**********************************************************************/
         /*     CHECK OLD TOKEN  TABLES                                        */
         /**********************************************************************/
@@ -1080,6 +1082,14 @@ class CheckIntegrity extends Survey_Common_Action
             }
             if (isset($aOldSurveyTableAsk)) {
                 $aDelete['redundantsurveytables'] = $aOldSurveyTableAsk;
+            }
+        }
+
+        // delete archivedTableSettings without archived table
+        $archivedTableSettings = ArchivedTableSettings::model()->findAll();
+        foreach ($archivedTableSettings as $archivedTableSetting) {
+            if (Yii::app()->db->schema->getTable("{{{$archivedTableSetting->tbl_name}}}") === null) {
+                $archivedTableSetting->delete();
             }
         }
 

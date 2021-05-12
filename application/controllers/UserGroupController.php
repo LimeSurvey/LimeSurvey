@@ -339,9 +339,9 @@ class UserGroupController extends LSBaseController
         $newEntryUserInGroup->uid = $uid;
         $newEntryUserInGroup->ugid = $ugid;
         if ($newEntryUserInGroup->save()) {
-            Yii::app()->user->setFlash('success', gt('User added.'));
+            Yii::app()->user->setFlash('success', gT('User added.'));
         } else {
-            Yii::app()->user->setFlash('error', gt('User could not be added.'));
+            Yii::app()->user->setFlash('error', gT('User could not be added.'));
         }
         $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
     }
@@ -364,7 +364,7 @@ class UserGroupController extends LSBaseController
         $aRet = [];
 
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
-            $aRet['errorMsg'] = gt('Access denied');
+            $aRet['errorMsg'] = gT('Access denied');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
@@ -378,20 +378,20 @@ class UserGroupController extends LSBaseController
         }
 
         if (empty($group)) {
-            $aRet['errorMsg'] = gt('Group not found.');
+            $aRet['errorMsg'] = gT('Group not found.');
             $aRet['redirectPath'] = 'userGroup/index';
             return $aRet;
         }
 
         if ($group->owner_id == $uid) {
-            $aRet['errorMsg'] = gt('You can not add or remove the group owner from the group.');
+            $aRet['errorMsg'] = gT('You can not add or remove the group owner from the group.');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
             return $aRet;
         }
 
         $userToAdd = User::model()->findByPk($uid);
         if ($userToAdd === null) {
-            $aRet['errorMsg'] = gt('Unknown user. You have to select a user.');
+            $aRet['errorMsg'] = gT('Unknown user. You have to select a user.');
             $aRet['redirectPath'] = 'userGroup/viewGroup/ugid/' . $userGroupId;
         }
 
@@ -417,9 +417,9 @@ class UserGroupController extends LSBaseController
         $deleteUser = UserInGroup::model()->findByAttributes(['uid' => $uid, 'ugid' => $ugid]);
 
         if ($deleteUser->delete()) {
-            Yii::app()->user->setFlash('success', gt('User removed.'));
+            Yii::app()->user->setFlash('success', gT('User removed.'));
         } else {
-            Yii::app()->user->setFlash('error', gt('Failed to remove user.'));
+            Yii::app()->user->setFlash('error', gT('Failed to remove user.'));
         }
         $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
     }
@@ -455,11 +455,11 @@ class UserGroupController extends LSBaseController
                     $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
                 } catch (Exception $e) {
                     // TODO: Show error message?
-                    Yii::app()->user->setFlash('error', gt("Error: no email has been send."));
+                    Yii::app()->user->setFlash('error', gT("Error: no email has been send."));
                     $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
                 }
             } else {
-                Yii::app()->user->setFlash('error', gt("You do not have permission to send emails to all users. "));
+                Yii::app()->user->setFlash('error', gT("You do not have permission to send emails to all users. "));
                 $this->redirect(array('userGroup/viewGroup/ugid/' . $ugid));
             }
         } else {
