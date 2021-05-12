@@ -1,24 +1,24 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => 'dev-develop',
+    'version' => 'dev-develop',
     'aliases' => 
     array (
     ),
-    'reference' => 'd9206291509848acc817880d7ee150abdee11895',
+    'reference' => '3708321c0c0147e99e7a2b842c3f27f963cd62c0',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
   array (
     'limesurvey/limesurvey' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => 'dev-develop',
+      'version' => 'dev-develop',
       'aliases' => 
       array (
       ),
-      'reference' => 'd9206291509848acc817880d7ee150abdee11895',
+      'reference' => '3708321c0c0147e99e7a2b842c3f27f963cd62c0',
     ),
     'paragonie/random_compat' => 
     array (
