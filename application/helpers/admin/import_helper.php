@@ -1016,7 +1016,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 switchMSSQLIdentityInsert('groups', true);
                 $insertdata['gid'] = $aGIDReplacements[$oldgid];
             }
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");// This thrown safedie …
+            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert question group data<br />");// This thrown safedie …
             if (!isset($aGIDReplacements[$oldgid])) {
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
