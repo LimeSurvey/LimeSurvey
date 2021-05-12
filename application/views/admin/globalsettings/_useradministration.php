@@ -50,7 +50,7 @@
             <!-- admin default email template -->
             <div class="form-group">
                 <label class=" control-label" for='admincreationemailtemplate'><?php eT("Admin creation email template"); ?>: </label><br>
-                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {PASSWORD}, {LOGINURL} </small>
+                <small id="template help" class="form-text text-muted"><?php eT("Available placeholders") ?>: {SITENAME}, {SITEADMINEMAIL}, {USERNAME}, {FULLNAME}, {LOGINURL} </small>
                 <div class="top-15">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("admincreationemailtemplate", $sAdminCreationEmailTemplate, ['class' => 'form-control', 'cols' => '80', 'rows' => '20', 'id' => "admincreationemailtemplate"]); ?>

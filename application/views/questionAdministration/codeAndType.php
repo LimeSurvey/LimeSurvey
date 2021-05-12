@@ -23,6 +23,7 @@ $oQuestionSelector = $this->beginWidget(
         'debugKeyCheck' => gT("Type:") . " ",
         'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
+        'survey_active' => $question->survey->active=='Y',
         'value' => $question->type,
         'theme' => $questionThemeName,
         'debug' => YII_DEBUG,
