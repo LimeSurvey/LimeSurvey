@@ -7,6 +7,11 @@
         data-toggle="modal"
         aria-haspopup="true"
         aria-expanded="false"
+        <?php
+        if ($this->survey_active) {
+            echo 'disabled';
+        }
+        ?>
         >
         <?php if ($this->iconPosition === 'front') : ?>
             <i class="fa fa-folder-open"></i>&nbsp;&nbsp;

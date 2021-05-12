@@ -27,6 +27,6 @@ class EncryptionGeneralOption extends GeneralOption
                 ]
             ]
         );
-        $this->setDisableInActive();
+        $this->setDisableInActive($question->survey);
     }
 }

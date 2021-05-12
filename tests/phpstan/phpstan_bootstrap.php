@@ -53,3 +53,7 @@ $pluginManager = Yii::app()->getComponent('pluginManager');
 $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
+
+// Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
+$adminTheme = new AdminTheme();
+$adminTheme->setAdminTheme();

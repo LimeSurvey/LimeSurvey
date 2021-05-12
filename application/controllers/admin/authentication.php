@@ -193,6 +193,76 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
+     * This action sets a password for new user or resets a password for an existing user.
+     * If validation time is expired, no password will be changed.
+     * After password has been changed successfully it redirects to LogIn-Page.
+     *
+     */
+    public function newPassword(){
+
+        //validation key could be a GET- or a POST-PARAM
+        $validation_key = Yii::app()->request->getParam('param'); //as link from email
+        if($validation_key === null){
+            $usedLink = false;
+            $validation_key = Yii::app()->request->getPost('validation_key'); //coming from form (user set password)
+        }else{
+            $usedLink = true;
+        }
+
+        $errorExists = false;
+        $errorMsg = '';
+        $user = User::model()->findByAttributes([],'validation_key=:validation_key', ['validation_key' => $validation_key]);
+        if($user===null){
+            $errorExists = true;
+            $errorMsg = gT('The validation key is invalid. Please contact the administrator.');
+        }else{
+            //check if validation time is expired
+            $dateNow = new DateTime();
+            $expirationDate = new DateTime($user->validation_key_expiration);
+            $dateDiff = $expirationDate->diff($dateNow);
+            $differenceDays = $dateDiff->format('%d');
+            $differenceHours = $dateDiff->format('%h');
+            $differenceCompleteInHours = ((int)$differenceDays * 24) + (int)$differenceHours;
+            if($differenceCompleteInHours > User::MAX_EXPIRATION_TIME_IN_HOURS){
+                $errorExists = true;
+                $errorMsg = gT("The validation key expired. Please contact the administrator.");
+            }
+        }
+
+        if(!$errorExists && !$usedLink){
+            //check if password is set correctly
+            $password = Yii::app()->request->getPost('password');
+            $passwordRepeat = Yii::app()->request->getPost('password_repeat');
+
+            $oPasswordTestEvent = new PluginEvent('checkPasswordRequirement');
+            $oPasswordTestEvent->set('password', $password);
+            $oPasswordTestEvent->set('passwordOk', true);
+            $oPasswordTestEvent->set('passwordError', '');
+            Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
+            $passwordError = $oPasswordTestEvent->get('passwordError');
+            if(($password!==null && $passwordRepeat!==null) && ($password===$passwordRepeat) && $oPasswordTestEvent->get('passwordOk')){
+                //now everything is ok, save password
+                $user->setPassword($password,true);
+                App()->getController()->redirect(array('/admin/authentication/sa/login'));
+            }else{
+                Yii::app()->setFlashMessage(gT('Password cannot be blank and must fulfill minimum requirement: ') . $passwordError , 'error');
+            }
+
+        }
+
+        $randomPassword =\LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+
+        $aData = [
+            'errorExists' => $errorExists,
+            'errorMsg' => $errorMsg,
+            'randomPassword' => $randomPassword,
+            'validationKey'=> $user->validation_key
+        ];
+
+        $this->_renderWrappedTemplate('authentication', 'newPassword', $aData);
+    }
+
+    /**
      * Logout user
      * @return void
      */
@@ -226,16 +296,21 @@ class Authentication extends Survey_Common_Action
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
-            $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
+            $user = User::model()->findByAttributes(
+                [],
+                'users_name=:users_name and email=:email',
+                ['users_name' => $sUserName, 'email' => $sEmailAddr]
+            );
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
             $aData = [];
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
+            if (($user === null) || ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>' . gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.') . '<br>';
             } else {
-                $aData['message'] = '<br>' . $this->_sendPasswordEmail($aFields[0]) . '</br>';
+                $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
+                $aData['message'] = '<br>' . $passwordManagement->sendForgotPasswordEmailLink() . '</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
@@ -254,39 +329,6 @@ class Authentication extends Survey_Common_Action
                 }
             }
         }
-    }
-
-    /**
-     * Send the forgot password email
-     *
-     * @param CActiveRecord User
-     */
-    private function _sendPasswordEmail($arUser)
-    {
-        $mailer = new \LimeMailer();
-        $mailer->emailType = 'passwordreminderadminuser';
-        $mailer->addAddress($arUser->email, $arUser->full_name);
-        $mailer->Subject = gT('User data');
-        /* Body construct */
-        $sNewPass = createPassword();
-        $username = sprintf(gT('Username: %s'), $arUser['users_name']);
-        $password = sprintf(gT('New password: %s'), $sNewPass);
-        $body   = array();
-        $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
-        $body[] = $username;
-        $body[] = $password;
-        $body   = implode("\n", $body);
-        $mailer->Body = $body;
-        /* Go to send email and set password */
-        if ($mailer->sendMessage()) {
-            User::updatePassword($arUser['uid'], $sNewPass);
-            // For security reasons, we don't show a successful message
-            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
-        } else {
-            $sMessage = gT('Email failed');
-        }
-
-        return $sMessage;
     }
 
     /**

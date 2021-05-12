@@ -30,6 +30,9 @@
  * @property integer $dateformat Date format type 1-12
  * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
  * @property string $modified Time modified Time created Time user was modified as 'YYYY-MM-DD hh:mm:ss'
+ * @property string $validation_key  used for email link to reset or create a password for a survey participant
+ *                                   Link is send when user is created or password has been reset
+ * @property string $validation_key_expiration datetime when the validation key expires
  *
  * @property Permission[] $permissions
  * @property User $parentUser Parent user
@@ -38,6 +41,15 @@
 
 class User extends LSActiveRecord
 {
+    /** @var int maximum time the validation_key is valid*/
+    const MAX_EXPIRATION_TIME_IN_HOURS = 48;
+
+    /** @var int maximum days the validation key is valid */
+    const MAX_EXPIRATION_TIME_IN_DAYS = 2;
+
+    /** @var int  maximum length for the validation_key*/
+    const MAX_VALIDATION_KEY_LENGTH = 38;
+
     /**
      * @var string $lang Default value for user language
      */
@@ -98,10 +110,10 @@ class User extends LSActiveRecord
             array('questionselectormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
-            //array('dateformat', 'default','value'=>????), // What is the default ?
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
+            array('validation_key', 'length','max' => self::MAX_VALIDATION_KEY_LENGTH),
         );
     }
 
@@ -917,5 +929,33 @@ class User extends LSActiveRecord
                 'pageSize' => $pageSize
             )
         ));
+    }
+
+    /**
+     * Creates a validation key and saves it in table user for this user.
+     *
+     * @return bool true if validation_key could be saved in db, false otherwise
+     */
+    public function setValidationKey(){
+        $this->validation_key = randomChars(self::MAX_VALIDATION_KEY_LENGTH);
+
+        return $this->save();
+    }
+
+    /**
+     * Creates the validation key expiration date and save it in db
+     *
+     * @return bool true if datetime could be saved, false otherwise
+     * @throws Exception
+     */
+    public function setValidationExpiration(){
+        $datePlusMaxExpiration = new DateTime();
+        $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
+        $dateInterval = new DateInterval($datePlusString);
+        $datePlusMaxExpiration->add($dateInterval);
+
+        $this->validation_key_expiration = $datePlusMaxExpiration->format('Y-m-d H:i:s');
+
+        return $this->save();
     }
 }
