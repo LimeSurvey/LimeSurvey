@@ -308,8 +308,6 @@ class SPSSWriter extends Writer
     */
     protected function updateCustomresponsemap()
     {
-        include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
-
         //go through each particpants' responses
         foreach ($this->customResponsemap as $iRespId => &$aResponses) {
             // go through variables and response items
@@ -447,8 +445,6 @@ class SPSSWriter extends Writer
     {
 
         $this->updateCustomresponsemap();
-
-        include_once(dirname(__FILE__) . "/helpers/spss/vendor/autoload.php");
 
         $variables = array();
  

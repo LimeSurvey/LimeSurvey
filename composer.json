@@ -32,7 +32,9 @@
 	},
 	"require": {
         "paragonie/sodium_compat": "^1.14",
-		"twig/twig": "1.44.2"
+		"twig/twig": "1.44.2",
+		"phpseclib/bcmath_compat": "1.0.4",
+		"tiamo/spss": "^2.2"
 	},
     "config": {
         "vendor-dir": "third_party",
