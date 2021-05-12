@@ -754,6 +754,13 @@ function LEMval(alias)
     }
 
     jsName = LEMalias2varName[varName];
+    // @todo Hack fix
+    // @see https://bugs.limesurvey.org/view.php?id=17291
+    // @see https://bugs.limesurvey.org/view.php?id=14817
+    if (jsName === undefined) {
+        console.error('jsName is undefined');
+        return;
+    }
     attr = LEMvarNameAttr[jsName];
     if ((suffix.match(/^code|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
         if (!LEMval(varName + '.relevanceStatus')) {
