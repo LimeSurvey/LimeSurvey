@@ -11,6 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
+$config['versionnumber'] = '4.5.2';
+$config['dbversionnumber'] = 447;
 $config['versionnumber'] = '4.6.2';
 $config['dbversionnumber'] = 446;
 $config['buildnumber'] = '';

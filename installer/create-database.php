@@ -487,6 +487,23 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
 
+        //this part has only been done in update...
+        $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'sendadmincreationemail',
+            "stg_value" => $defaultSetting['sendadmincreationemail'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailsubject',
+            "stg_value" => $defaultSetting['admincreationemailsubject'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailtemplate',
+            "stg_value" => $defaultSetting['admincreationemailtemplate'],
+        ]);
+
 
 
         //settings_user
@@ -1064,6 +1081,8 @@ function populateDatabase($oDB)
             'last_login' => "datetime NULL",
             'created' => "datetime",
             'modified' => "datetime",
+            'validation_key' => 'string(38)',
+            'validation_key_expiration' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
