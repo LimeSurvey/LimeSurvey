@@ -1758,8 +1758,14 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
 
+                        $sqllength = "CHAR_LENGTH";
+                        $platform = Yii::app()->db->getDriverName();
+                        if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
+                            $sqllength = "LEN";
+                        }
+
                         $QROW = Yii::app()->db->createCommand()
-                            ->select('MAX(CHAR_LENGTH(code)) as sc')
+                            ->select('MAX(' . $sqllength . '(code)) as sc')
                             ->from("{{answers}}")
                             ->where(" qid=:qid AND  language=:language", array(':qid'=>$qid, ':language'=>$quexmllang))
                             ->queryRow();
