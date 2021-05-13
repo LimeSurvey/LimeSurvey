@@ -113,16 +113,17 @@ class QuestionAttributeTest extends TestBaseClassWeb
 
         $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
 
-        $question = QuestionCreate::getInstance(self::$surveyId, 'L');
+        $question = QuestionCreate::getInstance(self::$surveyId, 'S');
 
         $questionAttributeFetcher->setQuestion($question);
-        $questionAttributeFetcher->setTheme('bootstrap_buttons');
+        $questionAttributeFetcher->setTheme('browserdetect');
+        $questionAttributeFetcher->setFilter('advancedOnly', true);
 
         $questionAttributes = $questionAttributeFetcher->fetch();
         $this->assertNotEmpty($questionAttributes);
-        $this->assertNotEmpty($questionAttributes['dummyCoreAttribute']);
-        $this->assertNotEmpty($questionAttributes['dummyThemeAttribute']);
-        $this->assertNotEmpty($questionAttributes['dummyPluginAttribute']);
+        $this->assertArrayHasKey('hide_tip', $questionAttributes);          // Core attribute
+        $this->assertArrayHasKey('add_platform_info', $questionAttributes); // Theme attribute
+        $this->assertArrayHasKey('testAttribute', $questionAttributes);     // Plugin attribute
     }
 
     /**
