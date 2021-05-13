@@ -1,15 +1,14 @@
 <?php
 class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
 {
-    
+
     protected $storage = 'DbStorage';
-       
+
     static protected $description = 'Core: Export survey results to an SPSS sav file';
     static protected $name = 'SPSS Export';
-    
+
     public function init()
     {
-        
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
@@ -17,8 +16,7 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
         $this->subscribe('listExportOptions');
         $this->subscribe('newExport');
     }
-    
-    
+
     protected $settings = array(
         'spssfileversion' => array(
             'type' => 'select',
@@ -29,12 +27,11 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
             )
         );
 
-
     public function listExportOptions()
     {
         $event = $this->getEvent();
         $type = $event->get('type');
-        
+
         switch ($type) {
             case 'spsssav':
                 $event->set('label', gT("SPSS (.sav)"));
@@ -55,8 +52,8 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
             default:
                 break;
         }
-    }   
-    
+    }
+
     /**
      * Registers this export type
      */
@@ -64,12 +61,12 @@ class ExportSPSSsav extends \LimeSurvey\PluginManager\PluginBase
     {
         $event = $this->getEvent();
         $exports = $event->get('exportplugins');
-        
+
         // Yes we overwrite existing classes if available
         $exports['spsssav'] = get_class();
         $event->set('exportplugins', $exports);
     }
-    
+
     /**
      * Returns the required IWriter
      */

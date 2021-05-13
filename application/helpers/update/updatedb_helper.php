@@ -3851,7 +3851,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-   
         if ($iOldDBVersion < 447) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -3920,7 +3919,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 448), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
- 
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
