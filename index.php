@@ -148,6 +148,13 @@ if (isset($aSettings['config']['debug'])) {
         define('YII_DEBUG', true);
         if ($aSettings['config']['debug']>1) {
             error_reporting(E_ALL);
+            assert_options(ASSERT_ACTIVE, true);
+            assert_options(ASSERT_BAIL, true);
+            assert_options(ASSERT_WARNING, false);
+            assert_options(ASSERT_CALLBACK, function($file, $line, $assertion, $message) {
+                echo "The assertion $assertion in $file on line $line has failed: $message";
+            });
+
         } else {
             error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
         }
