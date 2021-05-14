@@ -3762,15 +3762,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
             foreach ($questionsMetaData as $questionMetaData) {
-                $oQuestionTheme = QuestionTheme::model()->findByAttributes([
-                    "name" => $questionMetaData['name'],
-                    "extends" => $questionMetaData['questionType'],
-                    "theme_type" => $questionMetaData['type']
-                ]);
-                if (!empty($oQuestionTheme) && $oQuestionTheme->image_path != $questionMetaData['image_path']) {
-                    $oQuestionTheme->image_path = $questionMetaData['image_path'];
-                    $oQuestionTheme->save();
-                }
+                $oDB->createCommand()->update(
+                    '{{question_themes}}',
+                    ['image_path' => $questionMetaData['image_path']],
+                    "name = :name AND extends = :extends AND theme_type = :type",
+                    [
+                        "name" => $questionMetaData['name'],
+                        "extends" => $questionMetaData['questionType'],
+                        "type" => $questionMetaData['type']
+                    ]
+                );
             }
             $oDB->createCommand()->insert("{{plugins}}", [
                 'name'               => 'TwoFactorAdminLogin',
@@ -3847,6 +3848,34 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
 
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 447) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{users}}', 'validation_key', 'string(38)');
+            $oDB->createCommand()->addColumn('{{users}}', 'validation_key_expiration', 'datetime');
+
+            //override existing email text (take out password there)
+            $sqlGetAdminCreationEmailTemplat = "SELECT stg_value FROM {{settings_global}} WHERE stg_name='admincreationemailtemplate'";
+            $adminCreationEmailTemplateValue = $oDB->createCommand($sqlGetAdminCreationEmailTemplat)->queryAll();
+            if($adminCreationEmailTemplateValue){
+                if($adminCreationEmailTemplateValue[0]['stg_value'] === null || $adminCreationEmailTemplateValue[0]['stg_value']===''){
+                    // if text in admincreationemailtemplate is empty use the default from LsDafaultDataSets
+                    $defaultCreationEmailContent = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+                    $replaceValue = $defaultCreationEmailContent['admincreationemailtemplate'];
+                }else{ // if not empty replace PASSWORD with *** and write it back to DB
+                    $replaceValue = str_replace('PASSWORD','***',$adminCreationEmailTemplateValue[0]['stg_value']);
+                }
+                $oDB->createCommand()->update(
+                    '{{settings_global}}',
+                    array('stg_value' => $replaceValue),
+                    "stg_name='admincreationemailtemplate'"
+                );
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 447), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
@@ -3934,6 +3963,12 @@ function upgradeArchivedTableSettings446()
     $datestamp = time();
     $DBDate = date('Y-m-d H:i:s', $datestamp);
     $userID = Yii::app()->user->getId();
+    $forcedSuperadmin = Yii::app()->getConfig('forcedsuperadmin');
+    $adminUserId = 1;
+
+    if ($forcedSuperadmin && is_array($forcedSuperadmin)) {
+        $adminUserId = $forcedSuperadmin[0];
+    }
     $query = dbSelectTablesLike('{{old_}}%');
     $archivedTables = Yii::app()->db->createCommand($query)->queryColumn();
     $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
@@ -3949,9 +3984,10 @@ function upgradeArchivedTableSettings446()
                 continue 2;
             }
         }
+
         $newArchivedTableSettings = [
             'survey_id'  => (int)$surveyID,
-            'user_id'    => $userID ?? 1,
+            'user_id'    => (int)($userID ?? $adminUserId),
             'tbl_name'   => $tableName,
             'created'    => $DBDate,
             'properties' => json_encode(['unknown'])
@@ -5160,7 +5196,7 @@ function upgradeTokens176()
         $sTokenTableName = 'tokens_' . $arSurvey['sid'];
         if (tableExists($sTokenTableName)) {
             $aColumnNames = $aColumnNamesIterator = $oDB->schema->getTable('{{' . $sTokenTableName . '}}')->columnNames;
-            $aAttributes = decodeTokenAttributes($arSurvey['attributedescriptions']);
+            $aAttributes = $arSurvey['attributedescriptions'];
             foreach ($aColumnNamesIterator as $sColumnName) {
                 // Check if an old atttribute_cpdb column exists in that token table
                 if (strpos($sColumnName, 'attribute_cpdb') !== false) {

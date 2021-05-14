@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Datavalueobjects;
 
+use Survey;
+
 /**
  * Wrapper class for question general option.
  */
@@ -19,8 +21,11 @@ class GeneralOption
     /** @var FormElement */
     public $formElement;
 
-    /** @var bool */
+    /** @var bool If the Option should be disabled when the survey is active*/
     public $disableInActive = false;
+
+    /** @var bool If the Option should be disabled*/
+    public $disabled = false;
 
     public function __construct(
         $name,
@@ -35,10 +40,14 @@ class GeneralOption
     }
 
     /**
+     * @param Survey $survey
      * @return void
      */
-    public function setDisableInActive()
+    public function setDisableInActive(Survey $survey)
     {
         $this->disableInActive = true;
+        if ($survey->active === 'Y') {
+            $this->disabled = true;
+        }
     }
 }
