@@ -3963,6 +3963,12 @@ function upgradeArchivedTableSettings446()
     $datestamp = time();
     $DBDate = date('Y-m-d H:i:s', $datestamp);
     $userID = Yii::app()->user->getId();
+    $forcedSuperadmin = Yii::app()->getConfig('forcedsuperadmin');
+    $adminUserId = 1;
+
+    if ($forcedSuperadmin && is_array($forcedSuperadmin)) {
+        $adminUserId = $forcedSuperadmin[0];
+    }
     $query = dbSelectTablesLike('{{old_}}%');
     $archivedTables = Yii::app()->db->createCommand($query)->queryColumn();
     $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
@@ -3978,9 +3984,10 @@ function upgradeArchivedTableSettings446()
                 continue 2;
             }
         }
+
         $newArchivedTableSettings = [
             'survey_id'  => (int)$surveyID,
-            'user_id'    => $userID ?? 1,
+            'user_id'    => (int)($userID ?? $adminUserId),
             'tbl_name'   => $tableName,
             'created'    => $DBDate,
             'properties' => json_encode(['unknown'])
