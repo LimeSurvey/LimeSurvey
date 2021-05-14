@@ -24,7 +24,7 @@ class PluginUpdater extends ExtensionUpdater
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
-    public static function createUpdaters() : array
+    public static function createUpdaters(): array
     {
         // Get all installed plugins (both active and non-active).
         $plugins = \Plugin::model()->findAll();

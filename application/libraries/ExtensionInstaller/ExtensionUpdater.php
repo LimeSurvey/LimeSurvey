@@ -133,7 +133,7 @@ abstract class ExtensionUpdater
         $extensionName = $this->getExtensionName();
         $extensionType = $this->getExtensionType();
         if ($this->foundSecurityVersion($versions)) {
-            $message = '<b>'.gT('There are security updates available for %s (type: %s).', 'js').'</b>';
+            $message = '<b>' . gT('There are security updates available for %s (type: %s).', 'js') . '</b>';
         } else {
             $message = gT('There are updates available for %s (type: %s).', 'js');
         }
@@ -154,7 +154,7 @@ abstract class ExtensionUpdater
         if (!empty($latestVersion['manualUpdateUrl'])) {
             $message .= ' ' . sprintf(
                 gT('Please visit %s to download the update.', 'js'),
-                '<a href="'.$latestVersion['manualUpdateUrl'].'">'.$latestVersion['manualUpdateUrl'].'</a>'
+                '<a href="' . $latestVersion['manualUpdateUrl'] . '">' . $latestVersion['manualUpdateUrl'] . '</a>'
             );
         }
 
@@ -198,7 +198,6 @@ abstract class ExtensionUpdater
 
         $versions = [];
         foreach ($versionFetchers as $fetcher) {
-
             // Setup fetcher.
             $fetcher->setExtensionName($this->getExtensionName());
             $fetcher->setExtensionType($this->getExtensionType());

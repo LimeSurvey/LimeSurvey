@@ -18,7 +18,7 @@ class GitVersionFetcher extends VersionFetcher
     }
 
     /**
-     * 
+     *
      */
     public function getLatestSecurityVersion()
     {

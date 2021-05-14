@@ -58,7 +58,7 @@ class PluginInstaller extends ExtensionInstaller
         if (empty($this->fileFetcher)) {
             throw new \InvalidArgumentException('fileFetcher is not set');
         }
-        
+
         $config = $this->getConfig();
         $plugin = \Plugin::model()->find('name = :name', [':name' => $config->getName()]);
 
