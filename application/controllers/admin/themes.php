@@ -283,13 +283,13 @@ class themes extends Survey_Common_Action
         if ($themeType === 'question') {
             try {
                 $installer = $this->getQuestionThemeInstaller();
+                $installer->fetchFiles();
                 /** @var ExtensionConfig */
                 $config = $installer->getConfig();
                 if (!$config->isCompatible()) {
                     $installer->abort();
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
-                $installer->fetchFiles();
                 $installer->install();
                 // TODO: Show success message.
             } catch (Throwable $t) {

@@ -15,11 +15,9 @@ class QuestionThemeInstaller extends ExtensionInstaller
      */
     public function getConfig()
     {
-        if ($this->fileFetcher) {
-            return $this->fileFetcher->getConfig();
-        } else {
-            return null;
-        }
+        assert(!empty($this->fileFetcher), 'File fetcher must be set');
+
+        return $this->fileFetcher->getConfig();
     }
 
     /**

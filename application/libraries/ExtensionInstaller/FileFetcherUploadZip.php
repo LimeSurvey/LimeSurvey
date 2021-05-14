@@ -3,6 +3,7 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
+use ExtensionConfig;
 
 /**
  * Extension file fetcher for upload ZIP file.
@@ -76,7 +77,9 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * @return \ExtensionConfig
+     * Get config from unzipped zip file. fetch() must be called before this.
+     *
+     * @return ExtensionConfig
      * @throws Exception
      */
     public function getConfig()
@@ -106,11 +109,11 @@ class FileFetcherUploadZip extends FileFetcher
                     throw new Exception(gT('Configuration file config.xml does not exist.'));
                 }
             } else {
-                throw new Exception(gT('Configuration file config.xml does not exist.'));
+                throw new Exception(gT('Configuration file config.xml does not exist (found no subfolders).'));
             }
         }
 
-        $config = \ExtensionConfig::loadFromFile($configFile);
+        $config = ExtensionConfig::loadFromFile($configFile);
 
         if (empty($config)) {
             throw new Exception(gT('Could not parse config.xml file.'));

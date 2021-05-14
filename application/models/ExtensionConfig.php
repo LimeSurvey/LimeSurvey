@@ -158,7 +158,7 @@ class ExtensionConfig
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
             }
-            $config = new \ExtensionConfig($xml);
+            $config = new self($xml);
             return $config;
         }
     }
