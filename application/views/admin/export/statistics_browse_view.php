@@ -46,7 +46,7 @@
 
     <?php $sort=(isset($sortby) && $sortby==$column && $sortmethod=='asc') ? 'desc' : 'asc'; ?>
     <?php if(!$disabled): ?>
-        <a href="#" class='sortorder' id='sortorder_<?php echo $column ?>_<?php echo $column ?>_<?php echo $sort ?>_<?php echo $sorttype ?>'>
+        <a href="#" class='sortorder hidden-print' id='sortorder_<?php echo $column ?>_<?php echo $column ?>_<?php echo $sort ?>_<?php echo $sorttype ?>'>
                 <span class="<?php echo $iconClass?>"></span>
         </a>
     <?php endif;?>
@@ -57,7 +57,7 @@ foreach ($data as $row) {
 ?>
 <?php if(Permission::model()->hasSurveyPermission($surveyid,'responses','read')){ ?>
     <div class='statisticscolumnid col-sm-1'>
-        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank' title='<?php eT("View response"); ?>' data-toggle="tooltip" data-placement="top">
+        <a href='<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/view/surveyid/".$surveyid."/id/".$row['id']); ?>' target='_blank' title='<?php eT("View response"); ?>' data-toggle="tooltip" data-placement="top" class="hidden-print">
             <span class="fa fa-search"></span>
         </a>
     </div>
