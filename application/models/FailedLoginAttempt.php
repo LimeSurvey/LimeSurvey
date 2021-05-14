@@ -74,13 +74,9 @@ class FailedLoginAttempt extends LSActiveRecord
         $isLockedOut = false;
         $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
 
-        // If a valid 'attempt type' is specified, check the white list
-        if ($attemptType == self::TYPE_LOGIN || $attemptType == self::TYPE_TOKEN) {
-            $whiteList = Yii::app()->getConfig($attemptType . 'IpWhitelist');
-            if (!empty($whiteList) && preg_match('/' . str_replace('/', '\/', $whiteList) . '/', $ip, $m)) {
-                // The IP is whitelisted, so we return false
-                return false;
-            }
+        // Return false if IP is whitelisted
+        if ($this->isWhitelisted($ip, $attemptType)) {
+            return false;
         }
 
         $criteria = new CDbCriteria;
@@ -137,5 +133,36 @@ class FailedLoginAttempt extends LSActiveRecord
             }
         }
         return true;
+    }
+
+    /**
+     * Returns true if the specified IP is whitelisted
+     *
+     * @param string $ip
+     * @param string $attemptType   'login' or 'token'
+     *
+     * @return boolean
+     */
+    private function isWhitelisted($ip, $attemptType)
+    {
+        if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {
+            return false;
+        }
+
+        $whiteList = Yii::app()->getConfig($attemptType . 'IpWhitelist');
+        if (empty($whiteList)) {
+            return false;
+        }
+        if (!is_array($whiteList)) {
+            $whiteList = [$whiteList];
+        }
+        foreach ($whiteList as $whiteListEntry) {
+            if (!empty($whiteListEntry) && preg_match('/' . str_replace('/', '\/', $whiteListEntry) . '/', $ip, $m)) {
+                // The IP is whitelisted
+                return true;
+            }
+        }
+
+        return false;
     }
 }
