@@ -27,7 +27,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
      */
     public function install()
     {
-        $config = $this->getConfig();
+        //$config = $this->getConfig();
         // todo
     }
 
