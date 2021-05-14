@@ -55,7 +55,7 @@ class LSUserIdentity extends CUserIdentity
         $result = new LSAuthResult(self::ERROR_NONE);
 
         // Check if the ip is locked out
-        if (FailedLoginAttempt::model()->isLockedOut()) {
+        if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_LOGIN)) {
             $message = sprintf(gT('You have exceeded the number of maximum login attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
             $result->setError(self::ERROR_IP_LOCKED_OUT, $message);
         }

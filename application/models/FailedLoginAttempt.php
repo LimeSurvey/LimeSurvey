@@ -24,6 +24,9 @@
  */
 class FailedLoginAttempt extends LSActiveRecord
 {
+    const TYPE_LOGIN = 'login';
+    const TYPE_TOKEN = 'token';
+
     /**
      * @inheritdoc
      * @return FailedLoginAttempt
@@ -62,12 +65,24 @@ class FailedLoginAttempt extends LSActiveRecord
     /**
      * Check if an IP address is allowed to login or not
      *
+     * @param string $attemptType  The attempt type ('login' or 'token'). Used to check the white lists.
+     *
      * @return boolean Returns true if the user is blocked
      */
-    public function isLockedOut()
+    public function isLockedOut($attemptType = '')
     {
         $isLockedOut = false;
         $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
+
+        // If a valid 'attempt type' is specified, check the white list
+        if ($attemptType == self::TYPE_LOGIN || $attemptType == self::TYPE_TOKEN) {
+            $whiteList = Yii::app()->getConfig($attemptType . 'IpWhitelist');
+            if (!empty($whiteList) && preg_match('/' . str_replace('/', '\/', $whiteList) . '/', $ip, $m)) {
+                // The IP is whitelisted, so we return false
+                return false;
+            }
+        }
+
         $criteria = new CDbCriteria;
         $criteria->condition = 'number_attempts > :attempts AND ip = :ip';
         $criteria->params = array(':attempts' => Yii::app()->getConfig('maxLoginAttempt'), ':ip' => $ip);
