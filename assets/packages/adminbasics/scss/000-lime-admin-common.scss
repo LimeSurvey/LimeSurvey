@@ -2317,7 +2317,6 @@ input[type="file"].form-control {
     float:none;width:auto;
     display: block;
   }
-  /* @todo : fix it, Nothing on page-break seems to work …  */
   .statisticstable{
     break-inside: avoid;
     page-break-inside: avoid;
@@ -2327,6 +2326,8 @@ input[type="file"].form-control {
   .canvas-chart{
     break-inside: avoid;
     page-break-inside: avoid;
+    max-width:100%;
+    height:auto;
   }
   /* Only for stat ? */
   .statisticsbrowsebutton{display:none}
