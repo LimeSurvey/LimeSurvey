@@ -678,7 +678,7 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
-     * Returns true if the language uses RTL writing system
+     * Returns true if the language uses RTL writing system.
      */
     public static function getLanguageRTL($sLanguageCode)
     {
