@@ -426,20 +426,20 @@ class GlobalSettings extends Survey_Common_Action
     {
         $bRedirect = 0;
         $gsid = 0; // global setting in SurveysGroupsettings model
-        $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
-        $oSurvey->setOptions();
+        $oSurveyGroupSetting = SurveysGroupsettings::model()->findByPk($gsid);
+        $oSurveyGroupSetting->setOptions();
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (isset($_POST)) {
-            $oSurvey->attributes = $_POST;
-            $oSurvey->gsid = 0;
-            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+            $oSurveyGroupSetting->attributes = $_POST;
+            $oSurveyGroupSetting->gsid = 0;
+            $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();
 
             //todo: when changing ipanonymiez from "N" to "Y", call the function that anonymizes the ip-addresses
 
 
-            if ($oSurvey->save()) {
+            if ($oSurveyGroupSetting->save()) {
                 $bRedirect = 1;
             }
         }
@@ -452,7 +452,7 @@ class GlobalSettings extends Survey_Common_Action
         // Sort users by name
         asort($aData['users']);
 
-        $aData['oSurvey'] = $oSurvey;
+        $aData['oSurvey'] = $oSurveyGroupSetting;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/index'));
