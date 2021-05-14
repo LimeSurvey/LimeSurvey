@@ -14,6 +14,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use ExtensionConfig;
+
 /**
  * @since 2018-09-26
  * @author Olle Haerstedt
@@ -22,7 +25,7 @@ abstract class ExtensionUpdater
 {
     /**
      * Extension model, e.g. Theme or Plugin class.
-     * @todo Create super class ExtensionModel that all extension model classes inherit from.
+     * @todo Create interface ExtensionModelInterface that all extension model classes implement
      * @var mixed
      */
     protected $model = null;
@@ -56,13 +59,14 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Returns true if this extension update version is higher than $currentVersion.
-     * @param string $currentVersion
-     * @return int
+     * Returns true if $newVersion is strictly higher than currently installed version
+     *
+     * @param string $newVersion
+     * @return bool
      */
-    public function versionHigherThan($currentVersion)
+    public function versionHigherThan($newVersion)
     {
-        return version_compare($this->version, $currentVersion, '>');
+        return version_compare($newVersion, $this->getCurrentVersion(), '>');
     }
 
     /**
@@ -251,7 +255,7 @@ abstract class ExtensionUpdater
             case 'q':
                 return gT('Question template');
             default:
-                throw new \Exception();
+                throw new Exception();
         }
     }
 
@@ -280,4 +284,10 @@ abstract class ExtensionUpdater
      * @return ExtensionConfig
      */
     abstract public function getExtensionConfig();
+
+    /**
+     * Returns currently installed version of this extension
+     * @return string
+     */
+    abstract public function getCurrentVersion();
 }

@@ -14,6 +14,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use ExtensionConfig;
+
 /**
  * @since 2018-09-26
  * @author Olle Haerstedt
@@ -34,7 +37,7 @@ class PluginUpdater extends ExtensionUpdater
         foreach ($plugins as $plugin) {
             try {
                 $updaters[] = new PluginUpdater($plugin);
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 $errors[] = $ex->getMessage();
             }
         }

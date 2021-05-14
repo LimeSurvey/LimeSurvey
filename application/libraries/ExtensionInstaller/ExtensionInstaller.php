@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use InvalidArgumentException;
+use ExtensionConfig;
+
 /**
  * Base class for different extension installers.
  *
@@ -41,7 +45,7 @@ abstract class ExtensionInstaller
     public function fetchFiles()
     {
         if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException('fileFetcher is not set');
+            throw new InvalidArgumentException('fileFetcher is not set');
         }
 
         $this->fileFetcher->fetch();

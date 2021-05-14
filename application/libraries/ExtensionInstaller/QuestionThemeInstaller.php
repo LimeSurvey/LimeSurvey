@@ -2,12 +2,15 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use ExtensionConfig;
+
 /**
  */
 class QuestionThemeInstaller extends ExtensionInstaller
 {
     /**
-     * @return SimpleXMLElement
+     * @return ExtensionConfig
      * @todo Move to parent class?
      */
     public function getConfig()
@@ -25,6 +28,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
     public function install()
     {
         $config = $this->getConfig();
+        // todo
     }
 
     public function update()
@@ -37,6 +41,6 @@ class QuestionThemeInstaller extends ExtensionInstaller
      */
     public function uninstall()
     {
-        throw new \Exception('Not implemented');
+        throw new Exception('Not implemented');
     }
 }
