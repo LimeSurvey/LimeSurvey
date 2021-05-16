@@ -827,7 +827,8 @@ class statistics_helper
                     . gT("Calculation") . "</strong></th>\n"
                     . "\t\t<th width='50%' align='right' ><strong>"
                     . gT("Result") . "</strong></th>\n"
-                    . "\t</tr></thead>\n";
+                    . "\t</tr></thead>\n"
+                    ."<tbody>\n";
 
                     foreach ($showem as $res) {
                         $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
@@ -903,7 +904,8 @@ class statistics_helper
                         . gT("Calculation") . "</strong></th>\n"
                         . "\t\t<th width='50%' align='right' ><strong>"
                         . gT("Result") . "</strong></th>\n"
-                        . "\t</tr></thead>\n";
+                        . "\t</tr></thead>\n"
+                        ."<tbody>\n";
 
                         break;
                     default:
@@ -1075,7 +1077,7 @@ class statistics_helper
                             $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
                         }
-                        $statisticsoutput .= "</table>\n";
+                        $statisticsoutput .= "</tbody></table>\n";
 
                         break;
                     default:
@@ -3430,7 +3432,7 @@ class statistics_helper
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
                 $statisticsoutput_footer .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_footer', $aData, true);
             }
-            $statisticsoutput .= "</table></div><!-- in statistics helper --> \n";
+            $statisticsoutput .= "</tbody></table></div><!-- in statistics helper --> \n";
         }
         $statisticsoutput = $statisticsoutput . $statisticsoutput_footer . "</script>";
         return array("statisticsoutput" => $statisticsoutput, "pdf" => $this->pdf, "astatdata" => $astatdata);

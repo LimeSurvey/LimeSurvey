@@ -16,7 +16,7 @@
  $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 <tr>
-    <td colspan='4' style=\"text-align:center\" id='statzone_<?php echo $rt;?>'>
+    <td colspan='4' style="text-align:center" id='statzone_<?php echo $rt;?>'>
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
@@ -59,7 +59,7 @@
 </tr>
 
 <!-- Buttons to change graph type -->
-<tr>
+<tr class="hidden-print">
     <td colspan='4'>
         <div class="chartjs-buttons" style="text-align:center">
 
