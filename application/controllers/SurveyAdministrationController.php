@@ -486,18 +486,34 @@ class SurveyAdministrationController extends LSBaseController
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
 
-            // Create sample group and question
-            $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
-            $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
+            $createSample = Yii::app()->getConfig('createsample');
 
-            Yii::app()->setFlashMessage(gT("Your new survey was created. 
-            We also created a first question group and an example question for you."), 'info');
-            $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
-                $iNewSurveyid,
-                $iNewGroupID,
-                $iNewQuestionID,
-                'structure'
-            );
+            // Figure out destination
+            if ($createSample) {
+                $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
+                $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
+
+                Yii::app()->setFlashMessage(gT("Your new survey was created. 
+                We also created a first question group and an example question for you."), 'info');
+                $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
+                    $iNewSurveyid,
+                    $iNewGroupID,
+                    $iNewQuestionID,
+                    'structure'
+                );
+            } elseif (!$ownsPreviousSurveys) {
+                // SET create question and create question group as default view.
+                $redirecturl = $this->createUrl(
+                    'questionGroupsAdministration/add/',
+                    ['surveyid' => $iNewSurveyid]
+                );
+            } else {
+                $redirecturl = $this->createUrl(
+                    'surveyAdministration/view/',
+                    ['iSurveyID' => $iNewSurveyid]
+                );
+                Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
+            }
 
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
