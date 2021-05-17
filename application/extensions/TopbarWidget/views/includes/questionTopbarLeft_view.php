@@ -32,32 +32,71 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     <?php endif; ?>
 <?php endif; ?>
 
-<?php if($hasSurveyContentReadPermission): ?>
-    <?php if (count($surveyLanguages) > 1): ?>
-        <!-- Check survey logic multilanguage -->
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="icon-expressionmanagercheck"></span>
-            <?php eT("Check logic"); ?> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" style="min-width : 252px;">
+<!-- Edit button -->
+<?php if($hasSurveyContentUpdatePermission): ?>
+    <a id="questionEditorButton" class="btn btn-primary pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
+        <span class="icon-edit"></span>
+        <?php eT("Edit");?>
+    </a>
+<?php endif; ?>
+
+<!-- Tools  -->
+<div class="btn-group hidden-xs">
+
+    <!-- Main button dropdown -->
+    <button id="ls-question-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="icon-tools" ></span>
+        <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
+    </button>
+
+    <!-- dropdown -->
+    <ul class="dropdown-menu">
+        <!-- conditions -->
+        <?php if($hasSurveyContentUpdatePermission):?>
+            <li>
+                <a id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
+                    <span class="icon-conditions icon"></span>
+                    <?php eT("Condition designer"); ?>
+                </a>
+            </li>
+        <?php endif;?>
+
+        <!-- Default Values -->
+        <?php if($hasSurveyContentUpdatePermission && $hasdefaultvalues > 0):?>
+            <li>
+                <a id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
+                    <span class="icon-defaultanswers icon"></span>
+                    <?php eT("Edit default answers"); ?>
+                </a>
+            </li>
+        <?php endif;?>
+
+        <?php if($hasSurveyContentReadPermission): ?>
+            <?php if (count($surveyLanguages) > 1): ?>
+                <!-- Check survey logic multilanguage -->
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header"><?php eT("Survey logic file"); ?></li>
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
                     <li>
                         <a href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/lang/" . $languageCode); ?>" >
+                            <span class="icon-expressionmanagercheck"></span>
                             <?php echo $languageName; ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php else:?>
-        <!-- Check survey logic -->
-        <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}"); ?>" role="button">
-            <span class="icon-expressionmanagercheck"></span>
-            <?php eT("Check logic"); ?>
-        </a>
-    <?php endif; ?>
-<?php endif; ?>
+            <?php else:?>
+                <!-- Check survey logic -->
+                <li>
+                    <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}"); ?>">
+                        <span class="icon-expressionmanagercheck"></span>
+                        <?php eT("Check logic"); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+
+    </ul>
+</div>
 
 <!-- Export -->
 <?php if($hasSurveyContentExportPermission):?>
@@ -74,22 +113,6 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
         <?php eT("Copy"); ?>
     </a>
 <?php endif; ?>
-
-<!-- conditions -->
-<?php if($hasSurveyContentUpdatePermission):?>
-    <a class="btn btn-default" id="conditions_button" href="<?php echo Yii::App()->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-        <span class="icon-conditions icon"></span>
-        <?php eT("Condition designer"); ?>
-    </a>
-<?php endif;?>
-
-<!-- Default Values -->
-<?php if($hasSurveyContentUpdatePermission && $hasdefaultvalues > 0):?>
-    <a class="btn btn-default" id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-        <span class="icon-defaultanswers icon"></span>
-        <?php eT("Edit default answers"); ?>
-    </a>
-<?php endif;?>
 
 <!-- Import -->
 <?php if($hasSurveyContentCreatePermission):?>

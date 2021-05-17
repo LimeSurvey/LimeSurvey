@@ -20,42 +20,16 @@
 <!-- Create form for question -->
 <div class="side-body">
 
-    <!-- Question overview switch (no summary on create, so hide then) -->
     <?php if ($oQuestion->qid !== 0): ?>
-        <div
-            class="btn-group pull-right clear"
-            role="group"
-            data-toggle="buttons"
-        >
-            <?php
+        <?php
             if ($this->aData['tabOverviewEditor'] === 'overview') {
-                $activeOverview = 'active';
-                $activeEditor = '';
                 $visibilityOverview = ''; //should be displayed
                 $visibilityEditor = 'style="display:none;"';
             } else {
-                $activeOverview = '';
-                $activeEditor = 'active';
                 $visibilityOverview = 'style="display:none;"';
                 $visibilityEditor = '';
             }
-            ?>
-            <label class="btn btn-default <?= $activeOverview?>" onclick="LS.questionEditor.showOverview();">
-                <input 
-                    type="radio" 
-                    name="question-overview-switch"
-                    checked="checked"
-                />
-                <?= gT('Question overview'); ?>
-            </label>
-            <label id="questionEditorButton" class="btn btn-default <?= $activeEditor?>" onclick="LS.questionEditor.showEditor();">
-                <input
-                    type="radio"
-                    name="question-overview-switch"
-                />
-                <?= gT('Question editor'); ?>
-            </label>
-        </div>
+        ?>
     <?php endif; ?>
 
     <div class="container-fluid">
@@ -157,7 +131,7 @@
             <form>
             <!-- Question summary -->
             <div class="container-center scoped-new-questioneditor">
-                <div class="pagetitle h3" style="padding-top: 0; margin-top: 0;">
+                <div class="pagetitle h3">
                     <?php eT('Question summary'); ?>&nbsp;
                     <small>
                         <em><?= $oQuestion->title; ?></em>&nbsp;
