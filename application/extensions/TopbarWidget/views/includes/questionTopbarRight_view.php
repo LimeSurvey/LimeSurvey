@@ -1,3 +1,31 @@
+<!-- Edit button -->
+<?php if(!empty($showEditButton) && $hasSurveyContentUpdatePermission): ?>
+    <a id="questionEditorButton" class="btn btn-primary pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
+        <span class="icon-edit"></span>
+        <?php eT("Edit");?>
+    </a>
+<?php endif; ?>
+
+<!-- Delete -->
+<?php if(!empty($showDeleteButton) && $hasSurveyContentDeletePermission):?>
+    <?php if($oSurvey->active!='Y'): ?>
+        <button class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#confirmation-modal"
+                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
+                data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
+        >
+            <span class="fa fa-trash text-danger"></span>
+            <?php eT("Delete"); ?>
+        </button>
+    <?php else: ?>
+        <button class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
+            <span class="fa fa-trash text-danger"></span>
+            <?php eT("Delete"); ?>
+        </button>
+    <?php endif; ?>
+<?php endif; ?>
+
 <!-- Save -->
 <?php if(!empty($showSaveButton)): ?>
     <a id="save-button" class="btn btn-success" role="button">

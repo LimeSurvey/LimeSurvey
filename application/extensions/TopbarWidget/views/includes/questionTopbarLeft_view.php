@@ -32,14 +32,6 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     <?php endif; ?>
 <?php endif; ?>
 
-<!-- Edit button -->
-<?php if($hasSurveyContentUpdatePermission): ?>
-    <a id="questionEditorButton" class="btn btn-primary pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
-        <span class="icon-edit"></span>
-        <?php eT("Edit");?>
-    </a>
-<?php endif; ?>
-
 <!-- Tools  -->
 <div class="btn-group hidden-xs">
 
@@ -114,37 +106,3 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     </a>
 <?php endif; ?>
 
-<!-- Import -->
-<?php if($hasSurveyContentCreatePermission):?>
-    <?php if($oSurvey->active!='Y'): ?>
-        <a class="btn btn-default" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/$surveyid"); ?>" role="button">
-            <span class="icon-import icon"></span>
-            <?php eT("Import question"); ?>
-        </a>
-    <?php else: ?>
-        <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can not import questions because the survey is currently active."); ?>">
-            <span class="icon-import icon"></span>
-            <?php eT("Import question"); ?>
-        </button>
-    <?php endif; ?>
-<?php endif;?>
-
-<!-- Delete -->
-<?php if($hasSurveyContentDeletePermission):?>
-    <?php if($oSurvey->active!='Y'): ?>
-        <button class="btn btn-danger"
-                data-toggle="modal"
-                data-target="#confirmation-modal"
-                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $qid, "redirectTo" => "groupoverview"])); ?>})'
-                data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
-        >
-            <span class="fa fa-trash text-danger"></span>
-            <?php eT("Delete"); ?>
-        </button>
-    <?php else: ?>
-        <button class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
-            <span class="fa fa-trash text-danger"></span>
-            <?php eT("Delete"); ?>
-        </button>
-    <?php endif; ?>
-<?php endif; ?>
