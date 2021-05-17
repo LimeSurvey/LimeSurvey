@@ -42,13 +42,45 @@ class QuestionAttributeFetcher
 
         /** @var array<string,array> retrieved attribute definitions*/
         $allAttributes = [];
+
+        // We retrieve the attributes from each provider, sanitize them, and merge them.
         foreach ($this->providers as $provider) {
             $attributes = $provider->getDefinitions($this->question, $this->filters);
             $sanitizedAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
             $allAttributes = $questionAttributeHelper->mergeQuestionAttributes($allAttributes, $sanitizedAttributes);
         }
 
+        // Sort by category
+        uasort($allAttributes, 'categorySort');
+
         return $allAttributes;
+    }
+
+    public function populateValues($attributeDefinitions, $language = null)
+    {
+        if (empty($attributeDefinitions)) {
+            return [];
+        }
+
+        if (empty($this->question)) {
+            return $attributeDefinitions;
+        }
+
+        $survey = $this->question->survey;
+        if (empty($survey)) {
+            throw new \Exception(gT(sprintf('This question has no survey - qid = %s', json_encode($this->question->qid))));
+        }
+
+        $questionAttributeHelper = new QuestionAttributeHelper();
+
+        // Get attribute values
+        $attributeValues = $questionAttributeHelper->getAttributesValuesFromDB($this->question->qid);
+
+        // Fill attributes with values
+        $languages = is_null($language) ? $survey->allLanguages : [$language];
+        $attributesWithValues = $questionAttributeHelper->fillAttributesWithValues($attributeDefinitions, $attributeValues, $languages);
+
+        return $attributesWithValues;
     }
 
     /**
@@ -88,5 +120,15 @@ class QuestionAttributeFetcher
     public function setTheme($questionTheme)
     {
         $this->setFilter('questionTheme', $questionTheme);
+    }
+
+    /**
+     * Convenience method to add the 'advancedOnly' filter
+     *
+     * @param boolean $advancedOnly
+     */
+    public function setAdvancedOnly($advancedOnly)
+    {
+        $this->setFilter('advancedOnly', $advancedOnly);
     }
 }

@@ -229,38 +229,24 @@ class QuestionAttributeHelper
      */
     public function getQuestionAttributesWithValues($question, $language = null, $questionThemeOverride = null, $advancedOnly = false)
     {
-        $survey = $question->survey;
-        if (empty($survey)) {
-            throw new \Exception('This question has no survey - qid = ' . json_encode($question->qid));
+        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+        $questionAttributeFetcher->setQuestion($question);
+        $questionAttributeFetcher->setAdvancedOnly($advancedOnly);
+
+        if (!empty($questionThemeOverride)) {
+            $questionTheme = $questionThemeOverride;
+        } else {
+            $questionTheme = $question->getQuestionAttribute('question_template');
+            if (empty($questionTheme)) {
+                $questionTheme = 'core';
+            }
         }
+        $questionAttributeFetcher->setTheme($questionTheme);
 
-        // Get attribute values
-        $attributeValues = $this->getAttributesValuesFromDB($question->qid);
+        $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
+        $questionAttributesWithValues = $questionAttributeFetcher->populateValues($questionAttributeDefinitions, $language);
 
-        // Get question theme name if not specified
-        $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
-        $questionTheme = !empty($questionThemeOverride) ? $questionThemeOverride : $questionTheme;
-
-        // Get advanced attribute definitions for the question type
-        $questionTypeAttributes = $this->getAttributesFromQuestionType($question->type, $advancedOnly);
-
-        // Get question theme attribute definitions
-        $questionThemeAttributes = $this->getAttributesFromQuestionTheme($questionTheme, $question->type);
-
-        // Merge the attributes with the question theme ones
-        $attributes = $this->mergeQuestionAttributes($questionTypeAttributes, $questionThemeAttributes);
-
-        // Get question attributes from plugins ('newQuestionAttributes' event)
-        $pluginAttributes = $this->getAttributesFromPlugin($question->type);
-        $attributes = $this->mergeQuestionAttributes($attributes, $pluginAttributes);
-
-        uasort($attributes, 'categorySort');
-
-        // Fill attributes with values
-        $languages = is_null($language) ? $survey->allLanguages : [$language];
-        $attributes = $this->fillAttributesWithValues($attributes, $attributeValues, $languages);
-
-        return $attributes;
+        return $questionAttributesWithValues;
     }
 
     /**

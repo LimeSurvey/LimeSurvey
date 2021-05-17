@@ -11,7 +11,7 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
     /** @inheritdoc */
     public function getDefinitions($question, $filters = [])
     {
-        if (empty($filters['questionTheme'])) {
+        if (empty($filters['questionTheme']) || $filters['questionTheme'] == 'core') {
             return [];
         }
 
