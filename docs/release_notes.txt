@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.26.3 (build 210511) to 3.26.4 (build 210517) May 17, 2021
+-Fixed issue #17291: Condition for multiple choice with comments question shows JS error (Olle Haerstedt)
+-Fixed issue #17236: PHP 8 not supported (Carsten Schmitz)
+
 Changes from 3.26.2 (build 210503) to 3.26.3 (build 210511) May 10, 2021
 -Fixed issue: Assessment filter scope does not work for selection 'All' (Patricia Stelling)
 -Fixed issue #17283: "Repeat answer options" option does not accept value 0 (Carsten Schmitz)
