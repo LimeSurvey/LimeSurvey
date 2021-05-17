@@ -4,6 +4,8 @@ namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
 use ExtensionConfig;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Extension file fetcher for upload ZIP file.
@@ -89,37 +91,40 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
-        $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
-
-        if (!file_exists($configFile)) {
-            //Check if zip file was unzipped in subfolder
-            $subdirs = preg_grep('/^([^.])/', scandir($tempdir));
-            if (count($subdirs) == 1) {
-                $configXml = '';
-                foreach ($subdirs as $dir) {
-                    $tempdir = $tempdir . DIRECTORY_SEPARATOR . $dir;
-                    $configXml = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
-                }
-                if (file_exists($configXml)) {
-                    //save new tempDir in the user session
-                    App()->user->setState('filefetcheruploadzip_tmpdir', $tempdir);
-                    //set new config file
-                    $configFile = $configXml;
-                } else {
-                    throw new Exception(gT('Configuration file config.xml does not exist.'));
-                }
-            } else {
-                throw new Exception(gT('Configuration file config.xml does not exist (found no subfolders).'));
-            }
-        }
-
-        $config = ExtensionConfig::loadFromFile($configFile);
+        $config = $this->getConfigFromTempdir($tempdir);
 
         if (empty($config)) {
             throw new Exception(gT('Could not parse config.xml file.'));
         }
 
         return $config;
+    }
+
+    /**
+     * Look for config.xml in $tempdir
+     * Recursively searches the folders if config.xml is not in root folder.
+     *
+     * @param string $tempdir
+     * @return ExtensionConfig|null
+     */
+    private function getConfigFromTempdir(string $tempdir)
+    {
+        $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
+
+        if (file_exists($configFile)) {
+             return ExtensionConfig::loadFromFile($configFile);
+        } else {
+            $it = new RecursiveDirectoryIterator($tempdir);
+            // @see https://stackoverflow.com/questions/1860393/recursive-file-search-php
+            foreach(new RecursiveIteratorIterator($it) as $file)
+            {
+                // @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string?lq=1
+                if (stripos(strrev($file), strrev('config.xml')) === 0) {
+                    return ExtensionConfig::loadFromFile($file);
+                }
+            }
+        }
+        throw new Exception(gT('Configuration file config.xml does not exist.'));
     }
 
     /**
