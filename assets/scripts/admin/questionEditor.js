@@ -1789,6 +1789,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  function showConditionsWarning(e) {
+    if (!$(this).data('hasConditions')) {
+      return;
+    }
+    $('#general-setting-help-relevance').show();
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
     $('.answertable tbody').sortable({
@@ -1888,4 +1895,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       alert('Internal error: qidInput is not an HTMLInputElement');
       throw 'abort';
     }
+
+    $('#relevance').on('keyup', showConditionsWarning);
 });
