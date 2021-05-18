@@ -325,7 +325,7 @@ class QuestionTemplate extends CFormModel
                 } else {
                     $templateurl = $this->getTemplateUrl();
                     foreach ($aCssFiles as $sCssFile) {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile", LSYii_ClientScript::POS_BEGIN);
                     }
                     foreach ($aJsFiles as $sJsFile) {
                         Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile", LSYii_ClientScript::POS_BEGIN);
