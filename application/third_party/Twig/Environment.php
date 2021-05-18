@@ -1558,7 +1558,6 @@ class Environment
         foreach ($extension->getFunctions() as $name => $function) {
             if ($function instanceof TwigFunction) {
                 $name = $function->getName();
-                if ($name == 'gT') xdebug_break();
             } else {
                 @trigger_error(sprintf('Using an instance of "%s" for function "%s" is deprecated since version 1.21. Use \Twig_SimpleFunction instead.', \get_class($function), $name), E_USER_DEPRECATED);
             }
