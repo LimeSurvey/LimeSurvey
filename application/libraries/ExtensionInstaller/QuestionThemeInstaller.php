@@ -3,6 +3,7 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
+use Throwable;
 use ExtensionConfig;
 use QuestionTheme;
 use RecursiveDirectoryIterator;
