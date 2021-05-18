@@ -59,6 +59,8 @@ $config['adminthemeiconsize'] = 32; // This settings describes the icon size for
 // If the user enters password incorrectly
 $config['maxLoginAttempt']    = 3; // Lock them out after 3 attempts
 $config['timeOutTime']        = 60 * 10; // Lock them out for 10 minutes.
+$config['loginIpWhitelist']   = []; // Array of regular expressions for IPs that should be excluded from the max login attemps check. Ex: '192.168.0.5|192.168.0.6' or '192.168.0.\d+'
+$config['tokenIpWhitelist']   = []; // Array of regular expressions for IPs that should be excluded from the max token validation attemps check. Ex: '192.168.0.5|192.168.0.6' or '192.168.0.\d+'
 
 // Site Settings
 $config['printanswershonorsconditions'] = 1; // If set to 1, only relevant answers to questions can be printed by user. If set to 0, also questions not shown are printed

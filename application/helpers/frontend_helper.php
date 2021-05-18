@@ -1233,7 +1233,7 @@ function finalizeRandomization($fieldmap)
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
     $FlashError = '';
-    if (FailedLoginAttempt::model()->isLockedOut()) {
+    if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
         $FlashError = sprintf(gT('You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
         $renderToken = 'main';
     } else {
