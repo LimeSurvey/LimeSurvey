@@ -2458,6 +2458,8 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        $originalRelevance = $oQuestion->relevance;
+
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new LSJsonException(
@@ -2480,6 +2482,12 @@ class QuestionAdministrationController extends LSBaseController
                 true
             );
         }
+
+        // If relevance equation was manually edited, existing conditions must be cleared
+        if ($oQuestion->relevance != $originalRelevance && !empty($oQuestion->conditions)) {
+            Condition::model()->deleteAllByAttributes(['qid' => $oQuestion->qid]);
+        }
+
         return $oQuestion;
     }
 
