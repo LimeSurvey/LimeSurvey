@@ -282,6 +282,9 @@ class themes extends Survey_Common_Action
         $themeType = returnGlobal('theme');
         if ($themeType === 'question') {
             try {
+                $src = $_FILES['the_file']['tmp_name'];
+                $extConfig = ExtensionConfig::loadFromZip($src);
+                $destdir = $extConfig->getName();
                 $installer = $this->getQuestionThemeInstaller();
                 $installer->fetchFiles();
                 /** @var ExtensionConfig */
@@ -388,52 +391,6 @@ class themes extends Survey_Common_Action
                     TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
                 if ($themeType == 'question') {
-                    $sPathToThemeDirectory = $destdir . DIRECTORY_SEPARATOR . 'survey' . DIRECTORY_SEPARATOR . 'questions' . DIRECTORY_SEPARATOR . 'answer';
-                    // check if the required path is right and existing
-                    if (!is_dir($sPathToThemeDirectory)) {
-                        rmdirr($destdir);
-                        App()->setFlashMessage(
-                            sprintf(
-                                gT("The ZIP file contains wrong paths: %s doesn't exist"),
-                                $sPathToThemeDirectory
-                            ),
-                            'error'
-                        );
-                        $this->getController()->redirect(array("themeOptions/index#questionthemes"));
-                    }
-                    // Question themes that apply to more than one question type, are technically different themes but can be distributed
-                    // in the same ZIP. So we must try to install all the available themes in the folder.
-                    $importedThemes = 0;
-                    $directory = new RecursiveDirectoryIterator($sPathToThemeDirectory);
-                    $iterator = new RecursiveIteratorIterator($directory);
-                    $aImportErrors = [];
-                    foreach ($iterator as $info) {
-                        if ($info->isFile() && $info->getBasename() == 'config.xml') {
-                            $questionConfigFilePath = dirname($info->getPathname());
-                            $sQuestionThemeTitle = null;
-                            try {
-                                $questionTheme = new QuestionTheme();
-                                $sQuestionThemeTitle = $questionTheme->importManifest($questionConfigFilePath, false, true);
-                            } catch (Throwable $t) {
-                                $sThemeDirectoryName = $questionTheme->getThemeDirectoryPath($questionConfigFilePath . "/config.xml");
-                                $aImportErrors[$sThemeDirectoryName] = $t->getMessage();
-                            }
-                            if (!empty($sQuestionThemeTitle)) {
-                                $importedThemes++;
-                            }
-                        }
-                    }
-                    if ($importedThemes == 0) {
-                        rmdirr($destdir);
-                        App()->setFlashMessage(
-                            gT("An error occured while generating the Question theme"),
-                            'error'
-                        );
-                        $this->getController()->redirect(array("themeOptions/index#questionthemes"));
-                    }
-                    if (count($aImportErrors) > 0) {
-                        Yii::app()->setFlashMessage(gT("Some of the themes couldn't be imported."), 'error');
-                    }
                 }
             }
         } else {
