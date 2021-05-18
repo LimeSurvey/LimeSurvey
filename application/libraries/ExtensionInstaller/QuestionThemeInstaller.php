@@ -40,6 +40,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
                 throw new Exception('Found no xml folder for question theme');
             }
             $questionTheme->importManifest($xmlFolder, false, true);
+            $this->fileFetcher->clearTmpdir();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -101,6 +102,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
                 throw new Exception('Found no xml folder for question theme');
             }
             $questionTheme->importManifest($xmlFolder, false, true);
+            $this->fileFetcher->clearTmpdir();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -115,7 +117,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
     }
 
     /**
-     * Returns absolute path of folder inside $destdir that has config.xml
+     * Returns absolute path of folder inside $destdir that has config.xml in it.
      *
      * @param $dir Root dir of question theme
      * @return string|null Folder as string if config.xml is found; otherwise null

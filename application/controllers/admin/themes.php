@@ -294,11 +294,16 @@ class themes extends Survey_Common_Action
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
                 $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $config->getName()]);
-                if (empty($questionTheme)) {
-                    $installer->install();
-                } else {
-                    $installer->update();
+                try {
+                    if (empty($questionTheme)) {
+                        $installer->install();
+                    } else {
+                        $installer->update();
+                    }
+                } catch (Throwable $ex) {
+                    $installer->abort();
                 }
+
                 return [
                     'aImportedFilesInfo' => [],
                     'aErrorFilesInfo' => [],
