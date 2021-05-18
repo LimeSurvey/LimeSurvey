@@ -40,7 +40,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
                 throw new Exception('Found no xml folder for question theme');
             }
             $questionTheme->importManifest($xmlFolder, false, true);
-            $this->fileFetcher->clearTmpdir();
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }
@@ -102,7 +102,7 @@ class QuestionThemeInstaller extends ExtensionInstaller
                 throw new Exception('Found no xml folder for question theme');
             }
             $questionTheme->importManifest($xmlFolder, false, true);
-            $this->fileFetcher->clearTmpdir();
+            $this->fileFetcher->abort();
         } else {
             throw new Exception('Could not move files.');
         }
