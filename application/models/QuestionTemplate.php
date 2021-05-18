@@ -353,7 +353,7 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/upload/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;

@@ -259,20 +259,29 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $dest
      * @return boolean
      * @see https://stackoverflow.com/questions/2050859/copy-entire-contents-of-a-directory-to-another-using-php
+     * @todo Inject FileIO wrapper and add unit-test
      */
-    protected function recurseCopy($src, $dest)
+    public function recurseCopy($src, $dest)
     {
         $dir = opendir($src);
-        mkdir($dest);
+        if (!file_exists($dest)) {
+            if (!mkdir($dest)) {
+                throw new Exception('Could not create folder ' . $dest);
+            }
+        }
         while (false !== ($file = readdir($dir))) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($src . '/' . $file)) {
-                    //if ($file === $this->getConfig()->getName()) {
-                        //continue;
-                    //}
-                    $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                    // If folder name === extension name, skip one folder level to avoid duplicates.
+                    if ($file === $this->getConfig()->getName()) {
+                        $this->recurseCopy($src . '/' . $file, $dest . '/../' . $file);
+                    } else {
+                        $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                    }
                 } else {
-                    copy($src . '/' . $file, $dest . '/' . $file);
+                    if (!copy($src . '/' . $file, $dest . '/' . $file)) {
+                        throw new Exception('Could not copy to ' . $file);
+                    }
                 }
             }
         }
