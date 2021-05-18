@@ -80,7 +80,7 @@ class ExtensionConfig
      */
     public function getName()
     {
-        return $this->xml->metadata->name;
+        return (string) $this->xml->metadata->name;
     }
 
     /**
@@ -88,7 +88,7 @@ class ExtensionConfig
      */
     public function getDescription()
     {
-        return $this->xml->metadata->description;
+        return (string) $this->xml->metadata->description;
     }
 
     /**
@@ -96,7 +96,7 @@ class ExtensionConfig
      */
     public function getAuthor()
     {
-        return $this->xml->metadata->author;
+        return (string) $this->xml->metadata->author;
     }
 
     /**
@@ -104,16 +104,17 @@ class ExtensionConfig
      */
     public function getLicense()
     {
-        return $this->xml->metadata->license;
+        return (string) $this->xml->metadata->license;
     }
 
     /**
      * Version is a string, not number, due to semantic versioning.
+     *
      * @return string
      */
     public function getVersion()
     {
-        return $this->xml->metadata->version;
+        return (string) $this->xml->metadata->version;
     }
 
     /**
@@ -165,6 +166,7 @@ class ExtensionConfig
 
     /**
      * Create an ExtensionConfig from config.xml inside zip $filePath
+     * config.xml can be in a subfolder.
      *
      * @param string $filePath Full file path.
      * @return ExtensionConfig

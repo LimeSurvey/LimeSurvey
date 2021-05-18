@@ -34,6 +34,7 @@ class FileFetcherUploadZip extends FileFetcher
     /**
      * Fetch files, meaning grab uploaded ZIP file and
      * unzip it in system tmp folder.
+     *
      * @return void
      */
     public function fetch()
@@ -44,6 +45,7 @@ class FileFetcherUploadZip extends FileFetcher
 
     /**
      * Move files from tempdir to final destdir.
+     *
      * @param string $destdir
      * @return boolean
      */
@@ -79,7 +81,7 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * Get config from unzipped zip file. fetch() must be called before this.
+     * Get config from unzipped zip file, but in temp dir. fetch() must be called before this.
      *
      * @return ExtensionConfig
      * @throws Exception
@@ -91,7 +93,7 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
-        $config = $this->getConfigFromTempdir($tempdir);
+        $config = $this->getConfigFromDir($tempdir);
 
         if (empty($config)) {
             throw new Exception(gT('Could not parse config.xml file.'));
@@ -107,7 +109,7 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $tempdir
      * @return ExtensionConfig|null
      */
-    private function getConfigFromTempdir(string $tempdir)
+    public function getConfigFromDir(string $tempdir)
     {
         $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
 
@@ -265,6 +267,9 @@ class FileFetcherUploadZip extends FileFetcher
         while (false !== ($file = readdir($dir))) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($src . '/' . $file)) {
+                    //if ($file === $this->getConfig()->getName()) {
+                        //continue;
+                    //}
                     $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
                 } else {
                     copy($src . '/' . $file, $dest . '/' . $file);

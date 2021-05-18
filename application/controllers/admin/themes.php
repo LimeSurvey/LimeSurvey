@@ -293,13 +293,24 @@ class themes extends Survey_Common_Action
                     $installer->abort();
                     throw new Exception(gT('The question theme is not compatible with your version of LimeSurvey.'));
                 }
-                $installer->install();
-                // TODO: Show success message.
+                $questionTheme = QuestionTheme::model()->findByAttributes(['name' => $config->getName()]);
+                if (empty($questionTheme)) {
+                    $installer->install();
+                } else {
+                    $installer->update();
+                }
+                return [
+                    'aImportedFilesInfo' => [],
+                    'aErrorFilesInfo' => [],
+                    'aImportErrors' => [],
+                    'lid' => null,
+                    'newdir' => 'newdir',
+                    'theme' => 'question'
+                ];
             } catch (Throwable $t) {
                 Yii::app()->setFlashMessage($t->getMessage(), 'error');
                 $this->getController()->redirect(["/themeOptions#questionthemes"]);
             }
-            return;
         }
 
         // Redirect back if demo mode is set.
