@@ -393,67 +393,8 @@ class QuestionTemplate extends CFormModel
                 ];
             }
         }
-//        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
 //        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
 //        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
-        return $aQuestionTemplates;
-    }
-
-    /**
-     * @param string $type
-     * @return array
-     * @deprecated
-     */
-    public static function getQuestionTemplateUserList($type)
-    {
-        $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
-        $aQuestionTemplates     = array();
-
-        $aQuestionTemplates['core']['title'] = gT('Default');
-        $aQuestionTemplates['core']['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
-
-        $sFolderName = self::getFolderName($type);
-
-        if ($sUserQTemplateRootDir && is_dir($sUserQTemplateRootDir)) {
-            $handle = opendir($sUserQTemplateRootDir);
-            while (false !== ($file = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserQTemplateRootDir/$file") && $file != "." && $file != ".." && $file != ".svn") {
-                    $sFullPathToQuestionTemplate = "$sUserQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
-                    if (is_dir($sFullPathToQuestionTemplate)) {
-                        // Get the config file and check if template is available
-                        $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-                        if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                            if (!empty($oConfig->metadata->title)) {
-                                $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), true)[0];
-                            } else {
-                                $templateName = $file;
-                                $aQuestionTemplates[$file]['title'] = $templateName;
-                            }
-                            if (!empty($oConfig->files->preview->filename)) {
-                                $fileName = json_decode(json_encode($oConfig->files->preview->filename), true)[0];
-                                $previewPath = $sFullPathToQuestionTemplate . "/assets/" . $fileName;
-                                if (is_file($previewPath)) {
-                                    $check = LSYii_ImageValidator::validateImage($previewPath);
-                                    if ($check['check']) {
-                                        $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
-                                    } else {
-                                        /* Log it a theme.question.$oConfig->name as error, review ? */
-                                        Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/", 'error', 'theme.question.' . $oConfig->metadata->name);
-                                    }
-                                } else {
-                                        /* Log it a theme.question.$oConfig->name as error, review ? */
-                                        Yii::log("Unable to find $fileName for preview in $sFullPathToQuestionTemplate/assets/", 'error', 'theme.question.' . $oConfig->metadata->name);
-                                }
-                            }
-                            if (empty($aQuestionTemplates[$file]['preview'])) {
-                                $aQuestionTemplates[$file]['preview'] = $aQuestionTemplates['core']['preview'];
-                            }
-                        }
-                    }
-                }
-            }
-        }
         return $aQuestionTemplates;
     }
 

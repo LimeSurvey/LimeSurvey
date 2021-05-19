@@ -584,5 +584,4 @@ class QuestionAttribute extends LSActiveRecord
 
         return (array) $result->get('questionAttributes');
     }
-
 }
