@@ -921,50 +921,6 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Return the question theme custom attributes values
-     * -- gets coreAttributes from xml-file
-     * -- gets additional attributes from extended theme (if theme is extended)
-     * -- gets "own" attributes via plugin
-     *
-     * @param string  $type question type (this is the attribute 'question_type' in table question_theme)
-     * @param string  $sQuestionThemeName : question theme name
-     *
-     * @return array : the attribute settings for this question type
-     * @throws Exception when question type attributes are not available
-     */
-    public static function getQuestionThemeAttributeValues($type, $sQuestionThemeName = null)
-    {
-        $aQuestionAttributes = array();
-        $xmlConfigPath = self::getQuestionXMLPathForBaseType($type);
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
-        $oCoreConfig = simplexml_load_file($xmlConfigPath);
-        $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
-        }
-        if (!isset($aCoreAttributes['attributes']['attribute'])) {
-            throw new Exception("Question type attributes not available!");
-        }
-        foreach ($aCoreAttributes['attributes']['attribute'] as $aCoreAttribute) {
-            $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
-        }
-
-        $additionalAttributes = array();
-        if ($sQuestionThemeName !== null) {
-            $additionalAttributes = self::getAdditionalAttrFromExtendedTheme($sQuestionThemeName, $type);
-        }
-
-        return array_merge(
-            $aQuestionAttributes,
-            $additionalAttributes,
-            QuestionAttribute::getOwnQuestionAttributesViaPlugin()
-        );
-    }
-
-    /**
      * Gets the additional attributes for an extended theme from xml file.
      * If there are no attributes, an empty array is returned
      *
