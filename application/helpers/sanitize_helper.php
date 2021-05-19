@@ -503,7 +503,14 @@ function sanitize_signedint($integer, $min = '', $max = '')
     return $int;
 };
 
-// sanitize ip address
+/**
+ * Sanitize an IPv4 address
+ *
+ * @param string $string to sanitize
+ * @param boolean $allowWildcards whether to accept octect wildcards as valid or not
+ *
+ * @return string the IP address if it's valid, or an empty string
+ */
 function sanitize_ip_address($string, $allowWildcards = true)
 {
     if ($allowWildcards) {
@@ -514,6 +521,14 @@ function sanitize_ip_address($string, $allowWildcards = true)
     return preg_match($regex, $string, $m) ? $string : '';
 }
 
+/**
+ * Checks the validity of an IPv4 address
+ *
+ * @param string $input to check
+ * @param boolean $allowWildcards whether to accept octect wildcards as valid or not
+ *
+ * @return boolean true if the $input is a valid IP address
+ */
 function check_ip_address($input, $allowWildcards = true)
 {
     if ($input != sanitize_ip_address($input, $allowWildcards)) {
