@@ -553,20 +553,20 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns all question types with metadata as an array indexed by type.
+     * Returns all base question themes as an array indexed by question type
      * (all entries in table question_themes extends='')
      *
-     * @return array
+     * @return array<string, QuestionTheme>
      */
     public static function findQuestionMetaDataForAllTypes()
     {
-        //getting all question_types which are NOT extended
+        // Getting all question_types which are NOT extended
+        /** @var QuestionTheme[] $baseQuestions */
         $baseQuestions = self::model()->findAllByAttributes(['extends' => '']);
         $aQuestionsIndexedByType = [];
 
         foreach ($baseQuestions as $baseQuestion) {
-            /**@var QuestionTheme $baseQuestion */
-            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+            $baseQuestion->settings = json_decode($baseQuestion['settings']);
             $aQuestionsIndexedByType[$baseQuestion->question_type] = $baseQuestion;
         }
 
