@@ -1,4 +1,5 @@
-<div class="col-xs-12" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
+<div class="form-group col-sm-6 text-right" <?= count($oSurvey->allLanguages)==1?'style="display:none"':'';?>>
+    <label>&nbsp;</label>
     <div class="button-toolbar">
         <div class="btn-group" role="group" data-toggle="buttons">
             <?php foreach($oSurvey->allLanguages as $lang): ?>
@@ -50,5 +51,4 @@
             -->
         </div>
     </div>
-    <hr/>
 </div>

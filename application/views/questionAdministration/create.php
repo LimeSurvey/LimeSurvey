@@ -50,84 +50,101 @@
                 id = 'submit-create-question'
                 name="savecreate"
             />
-            <div id="advanced-question-editor" <?= $visibilityEditor?>>
-                <div class="container-center scoped-new-questioneditor">
-                    <div class="pagetitle h3 scoped-unset-pointer-events">
-                        <x-test id="action::addQuestion"></x-test>
-                        <?php if ($oQuestion->qid === 0): ?>
-                            <?= gT('Create question'); ?>
-                        <?php else: ?>
-                            <?= gT('Edit question'); ?>
-                        <?php endif; ?>
-                    </div>
+            <div id="advanced-question-editor" class="row" <?= $visibilityEditor?>>
+                <div class="col-lg-7">
+                    <div class="container-center scoped-new-questioneditor">
+                        <div class="pagetitle h3 scoped-unset-pointer-events">
+                            <x-test id="action::addQuestion"></x-test>
+                            <?php if ($oQuestion->qid === 0): ?>
+                                <?= gT('Create question'); ?>
+                            <?php else: ?>
+                                <?= gT('Edit question'); ?>
+                            <?php endif; ?>
+                        </div>
 
-                    <!-- Question code and question type selector -->
-                    <div class="row">
-                        <?php
-                        $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
-                        $this->renderPartial(
-                            "codeAndType",
-                            [
-                                'oSurvey'             => $oSurvey,
-                                'question'            => $oQuestion,
-                                'aQuestionTypeGroups' => $aQuestionTypeGroups,
-                                'questionThemeTitle'  => $questionTheme['title'],
-                                'questionThemeName'   => $questionTheme['name'],
-                                'questionThemeClass'  => ($questionTheme['settings'])->class,
-                                'selectormodeclass'   => $selectormodeclass,
-                            ]
-                        ); ?>
-                    </div>
-
-                    <!-- Language selector -->
-                    <div class="row">
-                        <?php $this->renderPartial(
-                            "languageselector",
-                            ['oSurvey' => $oSurvey]
-                        ); ?>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <!-- Text elements -->
+                        <div class="row">
+                            <!-- Question code -->
+                            <?php
+                            $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
+                            $this->renderPartial(
+                                "questionCode",
+                                ['question' => $oQuestion]
+                            ); ?>
+                            <!-- Language selector -->
                             <?php $this->renderPartial(
-                                "textElements",
-                                [
-                                    'oSurvey'         => $oSurvey,
-                                    'question'        => $oQuestion,
-                                    'aStructureArray' => $aQuestionTypeGroups,
-                                    'showScriptField' => $showScriptField,
-                                ]
+                                "languageselector",
+                                ['oSurvey' => $oSurvey]
                             ); ?>
                         </div>
 
-                        <div class="col-lg-5" id="accordion-container">
-                            <div class="panel-group" id="accordion" role="tablist">
-                                <!-- General settings -->
-                                <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
-
-                                <!-- Advanced settings -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- Text elements -->
                                 <?php $this->renderPartial(
-                                    "advancedSettings",
+                                    "textElements",
                                     [
-                                        'oSurvey'          => $oSurvey,
-                                        'advancedSettings' => $advancedSettings,
+                                        'oSurvey'         => $oSurvey,
+                                        'question'        => $oQuestion,
+                                        'aStructureArray' => $aQuestionTypeGroups,
+                                        'showScriptField' => $showScriptField,
                                     ]
                                 ); ?>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="ls-flex ls-flex-row">
-                        <?php $this->renderPartial(
-                            "extraOptions",
-                            [
-                                'question'        => $oQuestion,
-                                'oSurvey'          => $oSurvey,
-                            ]
-                        ); ?>
-                    </div>
+                        <!-- Question type selector -->
+                        <div class="row">
+                            <?php
+                            $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
+                            $this->renderPartial(
+                                "typeSelector",
+                                [
+                                    'oSurvey'             => $oSurvey,
+                                    'question'            => $oQuestion,
+                                    'aQuestionTypeGroups' => $aQuestionTypeGroups,
+                                    'questionThemeTitle'  => $questionTheme['title'],
+                                    'questionThemeName'   => $questionTheme['name'],
+                                    'questionThemeClass'  => ($questionTheme['settings'])->class,
+                                    'selectormodeclass'   => $selectormodeclass,
+                                ]
+                            ); ?>
+                        </div>
 
+                        <div class="ls-flex ls-flex-row">
+                            <?php $this->renderPartial(
+                                "extraOptions",
+                                [
+                                    'question'        => $oQuestion,
+                                    'oSurvey'          => $oSurvey,
+                                ]
+                            ); ?>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="container-center">
+                        <div class="pagetitle h3">
+                            <?= gT('Settings'); ?>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" id="accordion-container">
+                                <div class="panel-group" id="accordion" role="tablist">
+                                    <!-- General settings -->
+                                    <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
+
+                                    <!-- Advanced settings -->
+                                    <?php $this->renderPartial(
+                                        "advancedSettings",
+                                        [
+                                            'oSurvey'          => $oSurvey,
+                                            'advancedSettings' => $advancedSettings,
+                                        ]
+                                    ); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
