@@ -190,66 +190,6 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Import all Questiontypes and Themes to the {{questions_themes}} table
-     *
-     * @param bool $bUseTransaction
-     *
-     * @throws CException
-     */
-    public function loadAllQuestionXMLConfigurationsIntoDatabase($bUseTransaction = true)
-    {
-        $missingQuestionThemeAttributes = [];
-        $questionThemeDirectories = $this->getQuestionThemeDirectories();
-
-        // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }
-
-        // Process XML Question Files
-        if (isset($questionThemeDirectories)) {
-            try {
-                if ($bUseTransaction) {
-                    $transaction = App()->db->beginTransaction();
-                }
-                $questionsMetaData = self::getAllQuestionMetaData()['available_themes'];
-                foreach ($questionsMetaData as $questionMetaData) {
-                    // test xml for required metaData
-                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'question_type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
-                    foreach ($requiredMetaDataArray as $requiredMetaData) {
-                        if (!array_key_exists($requiredMetaData, $questionMetaData)) {
-                            $missingQuestionThemeAttributes[$questionMetaData['xml_path']][] = $requiredMetaData;
-                        }
-                    }
-                    $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $questionMetaData['extends']]);
-                    if ($questionTheme == null) {
-                        $questionTheme = new QuestionTheme();
-                    }
-                    $metaDataArray = self::getMetaDataArray($questionMetaData);
-                    $questionTheme->setAttributes($metaDataArray, false);
-                    $questionTheme->save();
-                }
-                if ($bUseTransaction) {
-                    $transaction->commit();
-                }
-            } catch (Exception $e) {
-                //TODO: flashmessage for users
-                echo $e->getMessage();
-                // var_dump($e->getTrace());
-                // var_dump($missingQuestionThemeAttributes);
-                if ($bUseTransaction) {
-                    $transaction->rollback();
-                }
-            }
-        }
-
-        // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
-    }
-
-    /**
      * Returns visibility button.
      *
      * @return string|array
