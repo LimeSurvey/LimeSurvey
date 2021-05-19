@@ -485,3 +485,23 @@ function sanitize_signedint($integer, $min = '', $max = '')
 
     return $int;
 };
+
+
+// sanitize ip address
+function sanitize_ip_address($string, $allowWildcards = true)
+{
+    if ($allowWildcards) {
+        $regex = '/^((([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\*)\.){3}(([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\*)$/';
+    } else {
+        $regex = '/^((([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5]))$/';
+    }
+    return preg_match($regex, $string, $m) ? $string : '';
+}
+
+function check_ip_address($input, $allowWildcards = true)
+{
+    if ($input != sanitize_ip_address($input, $allowWildcards)) {
+        return false;
+    }
+    return true;
+}

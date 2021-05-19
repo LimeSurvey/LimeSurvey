@@ -92,8 +92,21 @@ $warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if th
     <span style='font-size:0.7em;'><?php echo $warning_force_ssl; ?></span>
 </div>
 
+<div class="form-group">
+    <label class="control-label" for='loginIpWhitelist'>
+        <?php eT("IP whitelist for login:"); ?>
+    </label>
+    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
+    <span class='hint'><?php eT("List of IP address to exclude from the max login attemps check. Octet wildcards are allowed (e.g. 192.168.0.*). Separate each IP address with a comma or new line."); ?></span>
+</div>
 
-
+<div class="form-group">
+    <label class="control-label" for='tokenIpWhitelist'>
+        <?php eT("IP whitelist for token access:"); ?>
+    </label>
+    <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
+    <span class='hint'><?php eT("List of IP address to exclude from the max token validation attemps check. Octet wildcards are allowed (e.g. 192.168.0.*). Separate each IP address with a comma or new line."); ?></span>
+</div>
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
