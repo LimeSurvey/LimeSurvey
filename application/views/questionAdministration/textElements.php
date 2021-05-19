@@ -1,105 +1,114 @@
-<?php foreach($oSurvey->allLanguages as $lang): ?>
-    <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
-        <!-- Text element tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#question-tab-<?= $lang; ?>" aria-controls="question-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
-                    <?= gT('Question'); ?>
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#question-help-tab-<?= $lang; ?>" aria-controls="question-help-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
-                    <?= gT('Help'); ?>
-                </a>
-            </li>
-            <?php if ($showScriptField): ?>
-                <li role="presentation">
-                    <a href="#script-field-tab-<?= $lang; ?>" aria-controls="script-field-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
-                        <?= gT('Script'); ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-        <div class="tab-content">
-            <!-- Question text tab content -->
-            <div role="tabpanel" class="tab-pane active" id="question-tab-<?= $lang; ?>">
-                <div class="form-group scope-contains-ckeditor">
-                    <div class="htmleditor input-group">
-                        <?= CHtml::textArea(
-                            "questionI10N[$lang][question]",
-                            $question->questionl10ns[$lang]->question ?? '',
-                            array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
-                        ); ?>
-                        <?= getEditor(
-                            'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
-                            "question_" . $lang,
-                            "[".gT("Question:","js")."](".$lang.")",
-                            $oSurvey->sid,
-                            $question->gid ?? 0,
-                            $question->qid ?? 0,
-                            'editquestion');
-                        ?>
-                    </div>
+<!-- Text element tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#question-tab" aria-controls="question-tab" role="tab" data-toggle="tab">
+            <?= gT('Question'); ?>
+        </a>
+    </li>
+    <li role="presentation">
+        <a href="#question-help-tab" aria-controls="question-help-tab" role="tab" data-toggle="tab">
+            <?= gT('Help'); ?>
+        </a>
+    </li>
+    <?php if ($showScriptField): ?>
+        <li role="presentation">
+            <a href="#script-field-tab" aria-controls="script-field-tab" role="tab" data-toggle="tab">
+                <?= gT('Script'); ?>
+            </a>
+        </li>
+    <?php endif; ?>
+</ul>
+<div class="tab-content">
+    <!-- Question text tab content -->
+    <div role="tabpanel" class="tab-pane active" id="question-tab">
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+        <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+            <div class="form-group scope-contains-ckeditor">
+                <div class="htmleditor input-group">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][question]",
+                        $question->questionl10ns[$lang]->question ?? '',
+                        array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
+                    ); ?>
+                    <?= getEditor(
+                        'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
+                        "question_" . $lang,
+                        "[".gT("Question:","js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        'editquestion');
+                    ?>
                 </div>
             </div>
-            <!-- Question help tab content -->
-            <div role="tabpanel" class="tab-pane" id="question-help-tab-<?= $lang; ?>">
-                <div class="form-group scope-contains-ckeditor">
-                    <div class="htmleditor input-group">
-                        <?= CHtml::textArea(
-                            "questionI10N[$lang][help]",
-                            $question->questionl10ns[$lang]->help ?? '',
-                            array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$lang}")
-                        ); ?>
-                        <?= getEditor(
-                            "help_".$lang,
-                            "help_".$lang,
-                            "[".gT("Help:", "js")."](".$lang.")",
-                            $oSurvey->sid,
-                            $question->gid ?? 0,
-                            $question->qid ?? 0,
-                            $action = ''
-                        ); ?>
-                    </div>
-                </div>
-            </div>
-            <?php if ($showScriptField): ?>
-                <!-- Script tab content -->
-                <div role="tabpanel" class="tab-pane" id="script-field-tab-<?= $lang; ?>">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-12 text-right">
-                                <input 
-                                    type="checkbox" 
-                                    name="scriptForAllLanguages"
-                                    id="selector--scriptForAllLanguages"
-                                    v-model="scriptForAllLanugages"
-                                />&nbsp;
-                                <label for="selector--scriptForAllLanguages">
-                                    <?= gT('Set for all languages'); ?>
-                                </label>
-                            </div>
-                        </div> 
-
-                        <?= CHtml::textArea(
-                            "questionI10N[$lang][script]",
-                            $question->questionl10ns[$lang]->script,
-                            [
-                                'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
-                                'rows' => '10',
-                                'cols' => '20',
-                                'data-filetype' => 'javascript',
-                                'class' => 'ace form-control',
-                                'style' => 'width: 100%',
-                                'data-lang' => "$lang"
-                            ]
-                        ); ?>
-                        <p class="alert well">
-                            <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
-                        </p>
-                    </div>
-                </div>
-            <?php endif; ?>
         </div>
+        <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
+
+    <!-- Question help tab content -->
+    <div role="tabpanel" class="tab-pane" id="question-help-tab">
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+        <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+            <div class="form-group scope-contains-ckeditor">
+                <div class="htmleditor input-group">
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][help]",
+                        $question->questionl10ns[$lang]->help ?? '',
+                        array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$lang}")
+                    ); ?>
+                    <?= getEditor(
+                        "help_".$lang,
+                        "help_".$lang,
+                        "[".gT("Help:", "js")."](".$lang.")",
+                        $oSurvey->sid,
+                        $question->gid ?? 0,
+                        $question->qid ?? 0,
+                        $action = ''
+                    ); ?>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php if ($showScriptField): ?>
+        <!-- Script tab content -->
+        <div role="tabpanel" class="tab-pane" id="script-field-tab">
+            <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <input 
+                                type="checkbox" 
+                                name="scriptForAllLanguages"
+                                id="selector--scriptForAllLanguages"
+                                v-model="scriptForAllLanugages"
+                            />&nbsp;
+                            <label for="selector--scriptForAllLanguages">
+                                <?= gT('Set for all languages'); ?>
+                            </label>
+                        </div>
+                    </div> 
+
+                    <?= CHtml::textArea(
+                        "questionI10N[$lang][script]",
+                        $question->questionl10ns[$lang]->script,
+                        [
+                            'id' => CHtml::getIdByName("questionI10N[{$lang}][script]"),
+                            'rows' => '10',
+                            'cols' => '20',
+                            'data-filetype' => 'javascript',
+                            'class' => 'ace form-control',
+                            'style' => 'width: 100%',
+                            'data-lang' => "$lang"
+                        ]
+                    ); ?>
+                    <p class="alert well">
+                        <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
+                    </p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+</div>
