@@ -393,55 +393,7 @@ class QuestionTemplate extends CFormModel
                 ];
             }
         }
-//        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
 //        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
-        return $aQuestionTemplates;
-    }
-
-    // TODO: code duplication
-    /**
-     * @param string $type
-     * @return array
-     * @deprecated
-     */
-    public static function getQuestionTemplateCoreList($type)
-    {
-        $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestionthemerootdir");
-        $sCoreQTemplateRootUrl  = Yii::app()->getConfig("publicurl") . 'themes/question';
-        $aQuestionTemplates     = array();
-
-        $sFolderName = self::getFolderName($type);
-
-        if ($sCoreQTemplateRootDir && is_dir($sCoreQTemplateRootDir)) {
-            $handle = opendir($sCoreQTemplateRootDir);
-            while (false !== ($file = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sCoreQTemplateRootDir/$file") && $file != "." && $file != ".." && $file != ".svn") {
-                        $sFullPathToQuestionTemplate = "$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
-
-
-                    if (is_dir($sFullPathToQuestionTemplate)) {
-                        // Get the config file and check if template is available
-                        $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-
-                        if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                            if (!empty($oConfig->metadata->title)) {
-                                $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), true)[0];
-                            } else {
-                                $templateName = $file;
-                                $aQuestionTemplates[$file]['title'] = $templateName;
-                            }
-
-                            if (!empty($oConfig->files->preview->filename)) {
-                                $aQuestionTemplates[$file]['preview'] = "$sCoreQTemplateRootUrl/$file/survey/questions/answer/$sFolderName/assets/" . json_decode(json_encode($oConfig->files->preview->filename), true)[0];
-                            } else {
-                                $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
-                            }
-                        }
-                    }
-                }
-            }
-        }
         return $aQuestionTemplates;
     }
 
