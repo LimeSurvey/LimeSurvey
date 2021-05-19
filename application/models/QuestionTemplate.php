@@ -403,22 +403,6 @@ class QuestionTemplate extends CFormModel
     }
 
     /**
-     * Retrieve the config of the question template
-     * @param string $sFullPathToQuestionTemplate
-     * @return bool|SimpleXMLElement
-     */
-    public static function getTemplateConfig($sFullPathToQuestionTemplate)
-    {
-        $xmlFile = $sFullPathToQuestionTemplate . '/config.xml';
-        if (is_file($xmlFile)) {
-            $sXMLConfigFile  = file_get_contents(realpath($xmlFile)); // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $oConfig         = simplexml_load_string($sXMLConfigFile);
-            return $oConfig;
-        }
-        return false;
-    }
-
-    /**
      * @param string $type
      * @return string|null
      * @deprecated use QuestionTheme::getQuestionXMLPathForBaseType
