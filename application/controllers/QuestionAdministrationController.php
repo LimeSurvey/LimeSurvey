@@ -2945,20 +2945,21 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * @param array $aQuestionTypeList Question Type List as Array
      * @return array
+     * @todo Don't add data to question theme object, used a separate DTO instead.
      */
-    private function getQuestionTypeGroups($aQuestionTypeList)
+    private function getQuestionTypeGroups($questionThemes)
     {
         $aQuestionTypeGroups = [];
 
-        uasort($aQuestionTypeList, "questionTitleSort");
-        foreach ($aQuestionTypeList as $questionType) {
-            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+        uasort($questionThemes, "questionTitleSort");
+        foreach ($questionThemes as $questionTheme) {
+            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
             if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
                 $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                    'questionGroupName' => $questionType['group']
+                    'questionGroupName' => $questionTheme->group
                 );
             }
-            $imageName = $questionType['question_type'];
+            $imageName = $questionTheme->question_type;
             if ($imageName == ":") {
                 $imageName = "COLON";
             } elseif ($imageName == "|") {
@@ -2966,19 +2967,19 @@ class QuestionAdministrationController extends LSBaseController
             } elseif ($imageName == "*") {
                 $imageName = "EQUATION";
             }
-            $questionType['type'] = $questionType['question_type'];
-            $questionType['detailpage'] = '
+            $questionTheme->type = $questionTheme->question_type;
+            $questionTheme->detailpage = '
                 <div class="col-sm-12 currentImageContainer">
-                <img src="' . $questionType['image_path'] . '" />
+                <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
-                $questionType['detailpage'] = '
+                $questionTheme->detailpage = '
                     <div class="col-sm-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';
             }
-            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionTheme;
         }
         return $aQuestionTypeGroups;
     }

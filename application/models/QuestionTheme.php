@@ -34,6 +34,27 @@ use LimeSurvey\Helpers\questionHelper;
 class QuestionTheme extends LSActiveRecord
 {
     /**
+     * @var string Alias to question_type, used in view.
+     * @todo All these attributes should be moved to a DTO
+     */
+    public $type;
+
+    /**
+     * @var string Used in view
+     */
+    public $detailpage;
+
+    /**
+     * @var string Used in view
+     */
+    public $htmlclasses;
+
+    /**
+     * @var string Used in view
+     */
+    public $extraAttributes;
+
+    /**
      * @return string the associated database table name
      */
     public function tableName()
@@ -594,14 +615,15 @@ class QuestionTheme extends LSActiveRecord
             $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
         }
 
-        $baseQuestion = self::model()->query($criteria, false, false);
+        // todo: object or array?
+        $baseQuestion = self::model()->query($criteria, false);
 
         // language settings
-        $baseQuestion['title'] = gT($baseQuestion['title'], "html", $language);
-        $baseQuestion['group'] = gT($baseQuestion['group'], "html", $language);
+        $baseQuestion->title = gT($baseQuestion->title, "html", $language);
+        $baseQuestion->group = gT($baseQuestion->group, "html", $language);
 
         // decode settings json
-        $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+        $baseQuestion->settings = json_decode($baseQuestion->settings);
 
         return $baseQuestion;
     }
@@ -619,7 +641,7 @@ class QuestionTheme extends LSActiveRecord
         $criteria->params = [':visible' => 'Y'];
 
         /** @var QuestionTheme[] */
-        $baseQuestions = self::model()->query($criteria, true, false);
+        $baseQuestions = self::model()->query($criteria, true);
 
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
