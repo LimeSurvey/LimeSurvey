@@ -1,5 +1,4 @@
-    <div class="form-row">
-<div class="col-lg-5">
+<div class="form-row">
     <div class="list-group-item question-option-general-setting-block">
         <i
             role="button"
@@ -27,5 +26,4 @@
             <?= gT($this->setting['help']); ?>
         </div>
     </div>
-</div>
 </div>

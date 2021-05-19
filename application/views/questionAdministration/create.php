@@ -101,21 +101,29 @@
                             ); ?>
                         </div>
 
-                        <!-- General settings -->
-                        <div class="col-lg-5">
-                            <div class="ls-flex scope-set-min-height scoped-general-settings">
+                        <div class="col-lg-5" id="accordion-container">
+                            <div class="panel-group" id="accordion" role="tablist">
+                                <!-- General settings -->
                                 <?php $this->renderPartial("generalSettings", ['generalSettings'  => $generalSettings]); ?>
+
+                                <!-- Advanced settings -->
+                                <?php $this->renderPartial(
+                                    "advancedSettings",
+                                    [
+                                        'oSurvey'          => $oSurvey,
+                                        'advancedSettings' => $advancedSettings,
+                                    ]
+                                ); ?>
                             </div>
                         </div>
                     </div>
 
-                    <div class="ls-flex ls-flex-row scoped-advanced-settings-block">
+                    <div class="ls-flex ls-flex-row">
                         <?php $this->renderPartial(
-                            "advancedSettings",
+                            "extraOptions",
                             [
                                 'question'        => $oQuestion,
                                 'oSurvey'          => $oSurvey,
-                                'advancedSettings' => $advancedSettings,
                             ]
                         ); ?>
                     </div>

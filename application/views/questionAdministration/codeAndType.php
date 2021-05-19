@@ -12,6 +12,10 @@ $advancedSettingsUrl = $this->createUrl(
     'questionAdministration/getAdvancedSettingsHTML',
     ['surveyId' => $question->sid, 'questionId' => $question->qid]
 );
+$extraOptionsUrl = $this->createUrl(
+    'questionAdministration/getExtraOptionsHTML',
+    ['surveyId' => $question->sid, 'questionId' => $question->qid]
+);
 $oQuestionSelector = $this->beginWidget(
     'ext.admin.PreviewModalWidget.PreviewModalWidget',
     [
@@ -36,7 +40,7 @@ $oQuestionSelector = $this->beginWidget(
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
                 "$('#question_type').val(value);
                  $('#question_template').val(theme); 
-                LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl');"
+                LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl', '$extraOptionsUrl');"
             ]
         ]
     ]
