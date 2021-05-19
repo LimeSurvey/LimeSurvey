@@ -377,22 +377,6 @@ class QuestionTheme extends LSActiveRecord
             libxml_disable_entity_loader($bOldEntityLoaderState);
         }
 
-        // TODO: Copied from PluginManager - remake to extension manager.
-        /*
-        $extensionConfig = new ExtensionConfig($oQuestionConfig);
-        if (!$extensionConfig->validate()) {
-            throw new Exception(gT('Extension configuration file is not valid.'));
-        }
-        if (!$extensionConfig->isCompatible()) {
-            throw new Exception(
-                sprintf(
-                    gT('Extension "%s" is not compatible with your LimeSurvey version.'),
-                    $extensionConfig->getName()
-                )
-            );
-        }
-         */
-
         // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
