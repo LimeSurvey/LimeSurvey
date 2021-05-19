@@ -1,17 +1,29 @@
-<div class="col-12">
-    <div class="panel panel-default col-12 question-option-general-container">
-        <div class="panel-heading">Text elements</div>
-
-        <?php foreach($oSurvey->allLanguages as $lang): ?>
-        <div class="lang-hide lang-<?= $lang; ?>">
-
-            <div class="panel-body">
+<?php foreach($oSurvey->allLanguages as $lang): ?>
+    <div class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+        <!-- Text element tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#question-tab-<?= $lang; ?>" aria-controls="question-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
+                    <?= gT('Question'); ?>
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#question-help-tab-<?= $lang; ?>" aria-controls="question-help-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
+                    <?= gT('Help'); ?>
+                </a>
+            </li>
+            <?php if ($showScriptField): ?>
+                <li role="presentation">
+                    <a href="#script-field-tab-<?= $lang; ?>" aria-controls="script-field-tab-<?= $lang; ?>" role="tab" data-toggle="tab">
+                        <?= gT('Script'); ?>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
+        <div class="tab-content">
+            <!-- Question text tab content -->
+            <div role="tabpanel" class="tab-pane active" id="question-tab-<?= $lang; ?>">
                 <div class="form-group scope-contains-ckeditor">
-                    <div class="ls-flex-row">
-                        <div class="ls-flex-item grow-2 text-left">
-                            <label for="<?= "question_{$lang}" ?>" class="col-sm-12"><?= gT('Question'); ?></label>
-                        </div>
-                    </div>
                     <div class="htmleditor input-group">
                         <?= CHtml::textArea(
                             "questionI10N[$lang][question]",
@@ -29,12 +41,10 @@
                         ?>
                     </div>
                 </div>
+            </div>
+            <!-- Question help tab content -->
+            <div role="tabpanel" class="tab-pane" id="question-help-tab-<?= $lang; ?>">
                 <div class="form-group scope-contains-ckeditor">
-                    <div class="ls-flex-row">
-                        <div class="ls-flex-item grow-2 text-left">
-                            <label for="<?= "help_{$lang}" ?>" class="col-sm-12"><?= gT('Help:'); ?></label>
-                        </div>
-                    </div>
                     <div class="htmleditor input-group">
                         <?= CHtml::textArea(
                             "questionI10N[$lang][help]",
@@ -52,13 +62,13 @@
                         ); ?>
                     </div>
                 </div>
-                <?php if ($showScriptField): ?>
+            </div>
+            <?php if ($showScriptField): ?>
+                <!-- Script tab content -->
+                <div role="tabpanel" class="tab-pane" id="script-field-tab-<?= $lang; ?>">
                     <div class="form-group">
                         <div class="row">
-                            <label for="<?= CHtml::getIdByName("questionI10N[{$lang}][script]") ?>" class="col-sm-6">
-                                <?= gT('Script'); ?>
-                            </label>
-                            <div class="col-sm-6 text-right">
+                            <div class="col-sm-12 text-right">
                                 <input 
                                     type="checkbox" 
                                     name="scriptForAllLanguages"
@@ -80,16 +90,16 @@
                                 'cols' => '20',
                                 'data-filetype' => 'javascript',
                                 'class' => 'ace form-control',
-                                'style' => 'width: 100%'
+                                'style' => 'width: 100%',
+                                'data-lang' => "$lang"
                             ]
                         ); ?>
                         <p class="alert well">
                             <?= gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored"); ?>
                         </p>
                     </div>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
         </div>
-        <?php endforeach; ?>
     </div>
-</div> 
+<?php endforeach; ?>

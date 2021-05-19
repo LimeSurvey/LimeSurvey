@@ -1904,4 +1904,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
       alert('Internal error: qidInput is not an HTMLInputElement');
       throw 'abort';
     }
+
+    // Fix ace editor size for script fields
+    $('textarea.ace:not(.none)').each(function() {
+      var id = $(this).attr('id') + '__ace';
+      var width = '100%';
+      var height = 225;
+      $('#' + id).width(width).height(height);
+      $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
+    });
 });
