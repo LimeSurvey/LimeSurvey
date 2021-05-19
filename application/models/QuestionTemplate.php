@@ -374,26 +374,31 @@ class QuestionTemplate extends CFormModel
      * Called from admin, to generate the template list for a given question type
      * @param string $type
      * @return array
+     * @todo Move to QuestionTheme?
      */
     public static function getQuestionTemplateList($type)
     {
-        $aQuestionTemplateList = QuestionTheme::model()->findAllByAttributes([], 'question_type = :question_type', ['question_type' => $type]);
+        /** @var QuestionTheme[] */
+        $questionThemes = QuestionTheme::model()->findAllByAttributes(
+            [],
+            'question_type = :question_type',
+            ['question_type' => $type]
+        );
         $aQuestionTemplates = [];
 
-        foreach ($aQuestionTemplateList as $aQuestionTemplate) {
-            if ($aQuestionTemplate['core_theme'] == true && empty($aQuestionTemplate['extends'])) {
+        foreach ($questionThemes as $questionTheme) {
+            if ($questionTheme->core_theme == true && empty($questionTheme->extends)) {
                 $aQuestionTemplates['core'] = [
                     'title' => gT('Default'),
-                    'preview' => $aQuestionTemplate['image_path']
+                    'preview' => $questionTheme->image_path
                 ];
             } else {
-                $aQuestionTemplates[$aQuestionTemplate['name']] = [
-                    'title' => $aQuestionTemplate['title'],
-                    'preview' => $aQuestionTemplate['image_path']
+                $aQuestionTemplates[$questionTheme->name] = [
+                    'title' => $questionTheme->title,
+                    'preview' => $questionTheme->image_path
                 ];
             }
         }
-//        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
         return $aQuestionTemplates;
     }
 
