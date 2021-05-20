@@ -22,7 +22,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
             <button type="button" class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Cannot delete this group because it's the only group in the survey."); ?>" >
                 <span class="fa fa-trash"></span>
                 <?php eT("Delete group"); ?>
-            </a>
+            </button>
         <?php elseif(is_null($condarray)):?>
             <!-- can delete group and question -->
             <button
