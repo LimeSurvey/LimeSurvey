@@ -45,22 +45,31 @@ var ModalEditor = function () {
         settings = ckSettings || {}; 
 
         CKEDITOR.on('instanceReady',CKeditor_OnComplete);
+
+        ckeConfig = {
+            height: '200',
+            width:  '98%',
+            toolbarStartupExpanded: true,
+            ToolbarCanCollapse: false,
+            toolbar: settings.toolbar || 'inline',
+            LimeReplacementFieldsSID : settings.sid,
+            LimeReplacementFieldsGID : settings.gid,
+            LimeReplacementFieldsQID : settings.qid,
+            //LimeReplacementFieldsType: "",
+            //LimeReplacementFieldsAction: "",
+            LimeReplacementFieldsPath : settings.replacementFieldsPath,
+            language : settings.language,
+        };
+
+        // Override language direction if 'data-contents-dir' attribute is set in the target field
+        if ($(targetField).get(0).hasAttribute('data-contents-dir')) {
+            var inputLangDirection = $(targetField).attr('data-contents-dir');
+            ckeConfig.contentsLangDirection = inputLangDirection ? inputLangDirection : '';
+        }
+
         oCKeditor = CKEDITOR.replace(
             'htmleditor-modal-textarea',
-            {
-                height: '200',
-                width:  '98%',
-                toolbarStartupExpanded: true,
-                ToolbarCanCollapse: false,
-                toolbar: settings.toolbar || 'inline',
-                LimeReplacementFieldsSID : settings.sid,
-                LimeReplacementFieldsGID : settings.gid,
-                LimeReplacementFieldsQID : settings.qid,
-                //LimeReplacementFieldsType: "",
-                //LimeReplacementFieldsAction: "",
-                LimeReplacementFieldsPath : settings.replacementFieldsPath,
-                language : settings.language,
-            }
+            ckeConfig
         );
     };
 
