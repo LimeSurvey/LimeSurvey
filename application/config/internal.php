@@ -267,6 +267,7 @@ $internalConfig = array(
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
+                'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -352,6 +353,7 @@ $internalConfig = array(
                 ),
                 'functions' => array(
                     'getLanguageData',
+                    'getLanguageRTL',
                     'array_flip',
                     'array_intersect_key',
 
