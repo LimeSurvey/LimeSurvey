@@ -2360,7 +2360,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabResourceManagement($oSurvey)
+    private function tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
@@ -2381,7 +2381,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['noform'] = true;
 
         //KCFINDER SETTINGS
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$survey->sid}";
         Yii::app()->loadHelper('admin.htmleditor');
         initKcfinder();
 
