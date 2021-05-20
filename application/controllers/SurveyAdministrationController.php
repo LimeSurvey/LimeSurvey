@@ -655,10 +655,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = true;
 
             $this->aData = $aData;
-            $this->render('importSurveyResources_view', [
-                'aErrorFilesInfo' => $this->aData['aErrorFilesInfo'],
-                'aImportedFilesInfo' => $this->aData['aImportedFilesInfo'],
-            ]);
+            $this->render('importSurveyResources_view', $this->aData);
         }
     }
 
