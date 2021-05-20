@@ -340,7 +340,10 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('timeadjust', $savetime);
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
 
-        Yii::app()->session['flashmessage'] = $warning.gT("Global settings were saved.");
+        if (!empty($warning)) {
+            Yii::app()->setFlashMessage($warning, 'warning');
+        }
+        Yii::app()->setFlashMessage(gT("Global settings were saved."), 'success');
 
         // Redirect if user clicked save-and-close-button
         if (Yii::app()->getRequest()->getPost('saveandclose')) {
