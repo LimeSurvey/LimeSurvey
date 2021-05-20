@@ -9594,14 +9594,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $standard = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
         if ($lang == 'ar') {
-            $eastern_arabic_symbols = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+            $eastern_arabic_symbols = ["\u{0660}","\u{0661}","\u{0662}","\u{0663}","\u{0664}","\u{0665}","\u{0666}","\u{0667}","\u{0668}","\u{0669}"];
             $result = str_replace($eastern_arabic_symbols, $standard, $str);
         } elseif ($lang == 'fa') {
             // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-            $extended_arabic_indic = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+            $extended_arabic_indic = ["\u{06F0}","\u{06F1}","\u{06F2}","\u{06F3}","\u{06F4}","\u{06F5}","\u{06F6}","\u{06F7}","\u{06F8}","\u{06F9}"];
             $result = str_replace($extended_arabic_indic, $standard, $str);
         } elseif ($lang == 'hi') {
-            $hindi_symbols = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
+            $hindi_symbols = ["\u{0966}","\u{0967}","\u{0968}","\u{0969}","\u{096A}","\u{096B}","\u{096C}","\u{096D}","\u{096E}","\u{096F}"];
             $result = str_replace($hindi_symbols, $standard, $str);
         }
 
