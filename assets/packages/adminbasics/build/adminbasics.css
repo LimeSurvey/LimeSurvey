@@ -1069,7 +1069,7 @@ div.panel.disabled a {
   padding-left: 30px;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .side-menu {
     position: relative;
     width: 100%;
@@ -1389,7 +1389,7 @@ fieldset[disabled] .checkbox label {
   color: #e51c23;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .form-inline .radio,
   .form-inline .checkbox {
     display: inline-block;
@@ -2807,7 +2807,7 @@ input[type="file"].form-control {
   .surveymanagerbar {
     display: none;
   }
-  #vue-sidebar-container {
+  #vue-apps-main-container #vue-sidebar-container {
     display: none;
   }
   #statisticsview .col-lg-12 {
@@ -2851,10 +2851,28 @@ input[type="file"].form-control {
   body.onStatistics .btn {
     display: none;
   }
-  body.onStatistics .legend {
-    display: none;
+  /* Chartjs and legend width */
+  body.onStatistics .chartjs-container {
+    width: 70%;
+    float: left;
   }
-  /* Relaced in adminsidepanel */
+  body.onStatistics .legend {
+    width: 30%;
+    float: left;
+  }
+  body.onStatistics .legend .col-sm-1 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
+    padding-right: 3pt;
+    padding-left: 3pt;
+  }
+  body.onStatistics .legend .col-sm-10 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
+  }
+  /* Replaced in adminsidepanel */
   body.onStatistics .ls-flex,
   body.onStatistics .ls-flex-column,
   body.onStatistics .ls-flex-row {
