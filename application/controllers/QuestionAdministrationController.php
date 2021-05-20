@@ -2945,9 +2945,8 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @param array $aQuestionTypeList Question Type List as Array
+     * @param QuestionTheme[] $questionThemes Question theme List
      * @return array
-     * @todo Don't add data to question theme object, used a separate DTO instead.
      */
     private function getQuestionTypeGroups($questionThemes)
     {
@@ -2969,19 +2968,21 @@ class QuestionAdministrationController extends LSBaseController
             } elseif ($imageName == "*") {
                 $imageName = "EQUATION";
             }
-            $questionTheme->type = $questionTheme->question_type;
-            $questionTheme->detailpage = '
+            $questionThemeData = [];
+            $questionThemeData['title'] = $questionTheme->title;
+            $questionThemeData['type'] = $questionTheme->question_type;
+            $questionThemeData['detailpage'] = '
                 <div class="col-sm-12 currentImageContainer">
                 <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
-                $questionTheme->detailpage = '
+                $questionThemeData['detailpage'] = '
                     <div class="col-sm-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';
             }
-            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionTheme;
+            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;
     }

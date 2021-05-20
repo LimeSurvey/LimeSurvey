@@ -34,27 +34,6 @@ use LimeSurvey\Helpers\questionHelper;
 class QuestionTheme extends LSActiveRecord
 {
     /**
-     * @var string Alias to question_type, used in view.
-     * @todo All these attributes should be moved to a DTO
-     */
-    public $type;
-
-    /**
-     * @var string Used in view
-     */
-    public $detailpage;
-
-    /**
-     * @var string Used in view
-     */
-    public $htmlclasses;
-
-    /**
-     * @var string Used in view
-     */
-    public $extraAttributes;
-
-    /**
      * @return string the associated database table name
      */
     public function tableName()
