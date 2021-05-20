@@ -9,17 +9,19 @@ namespace LimeSurvey\Models\Services;
 class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
-    public function getDefinitions($question, $filters = [])
+    public function getDefinitions($options = [])
     {
         /** @var string question theme from the filter or, if not set, from the question */
-        $questionTheme = !empty($filters['questionTheme']) ? $filters['questionTheme'] : $question->questionTheme;
-
+        $questionTheme = self::getQuestionTheme($options);
         if (empty($questionTheme) || $questionTheme == \Question::DEFAULT_QUESTION_THEME) {
             return [];
         }
 
         /** @var string question type */
-        $questionType = $question->type;
+        $questionType = self::getQuestionType($options);
+        if (empty($questionType)) {
+            return [];
+        }
 
         return $this->getAttributesFromQuestionTheme($questionTheme, $questionType);
     }
@@ -57,11 +59,30 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
             // Create array of attribute with name as key
             foreach ($xmlAttributes['attribute'] as $attribute) {
                 if (!empty($attribute['name'])) {
-                    $attributes[$attribute['name']] = array_merge($this->getBaseDefinition(), $attribute);
+                    $attributes[$attribute['name']] = array_merge(self::getBaseDefinition(), $attribute);
                 }
             }
         }
 
         return $attributes;
+    }
+
+    /**
+     * Extracts the question theme from the $options.
+     * If it's not explicitly set, it tries to use a question object.
+     *
+     * @param array<string,mixed> $options
+     *
+     * @return
+     */
+    private static function getQuestionTheme($options)
+    {
+        if (!empty($options['questionTheme'])) {
+            return $options['questionTheme'];
+        }
+        if (!empty($options['question'])) {
+            return $options['question']->questionTheme;
+        }
+        return '';
     }
 }

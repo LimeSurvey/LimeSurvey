@@ -9,13 +9,16 @@ namespace LimeSurvey\Models\Services;
 class CoreQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
-    public function getDefinitions($question, $filters = [])
+    public function getDefinitions($options = [])
     {
         /** @var string question type */
-        $questionType = $question->type;
+        $questionType = self::getQuestionType($options);
+        if (empty($questionType)) {
+            return [];
+        }
 
         /** @var boolean */
-        $advancedOnly = !empty($filters['advancedOnly']);
+        $advancedOnly = !empty($options['advancedOnly']);
 
         return $this->getQuestionAttributes($questionType, $advancedOnly);
     }
@@ -84,7 +87,7 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         if (!empty($xmlAttributes['attribute'])) {
             foreach ($xmlAttributes['attribute'] as $xmlAttribute) {
                 /* settings the default value */
-                $attributes[$xmlAttribute] = $this->getBaseDefinition();
+                $attributes[$xmlAttribute] = self::getBaseDefinition();
                 /* settings the xml value */
                 $attributes[$xmlAttribute]['name'] = $xmlAttribute;
             }
@@ -133,7 +136,7 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
                     continue;
                 }
                 /* settings the default value */
-                $attributes[$attribute['name']] = $this->getBaseDefinition();
+                $attributes[$attribute['name']] = self::getBaseDefinition();
                 /* settings the xml value */
                 foreach ($attribute as $property => $propertyValue) {
                     if ($property === 'options' && !empty($propertyValue)) {

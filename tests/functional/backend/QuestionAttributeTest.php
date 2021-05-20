@@ -36,10 +36,11 @@ class QuestionAttributeTest extends TestBaseClassWeb
 
     public function testPluginQuestionAttributeProvider()
     {
+        // Test PluginQuestionAttributeProvider with a question object
         $question = new \Question();
         $question->type = 'S';
         $provider = new \LimeSurvey\Models\Services\PluginQuestionAttributeProvider();
-        $questionAttributes = $provider->getDefinitions($question, []);
+        $questionAttributes = $provider->getDefinitions(['question' => $question]);
 
         $this->assertNotEmpty($questionAttributes);
 
@@ -48,31 +49,48 @@ class QuestionAttributeTest extends TestBaseClassWeb
 
         // The test plugin provides a 'testAttributeForArray' for question type 'F'. It should not be present.
         $this->assertArrayNotHasKey('testAttributeForArray', $questionAttributes);
+
+        // Test again but passing only a question type
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'F']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('testAttributeForArray', $questionAttributes);
     }
 
     public function testCoreQuestionAttributeProvider()
     {
+        // Test CoreQuestionAttributeProvider with a question object
         $question = new \Question();
         $question->type = 'S';
         $provider = new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider();
-        $questionAttributes = $provider->getDefinitions($question, []);
+        $questionAttributes = $provider->getDefinitions(['question' => $question]);
 
         $this->assertNotEmpty($questionAttributes);
         $this->assertArrayHasKey('hide_tip', $questionAttributes);
+
+        // Test again but passing only a question type
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'M']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('max_answers', $questionAttributes);
     }
 
     public function testThemeQuestionAttributeProvider()
     {
+        // Test ThemeQuestionAttributeProvider with a question object
         $question = new \Question();
         $question->type = 'S';
         $provider = new \LimeSurvey\Models\Services\ThemeQuestionAttributeProvider();
-        $questionAttributes = $provider->getDefinitions($question, ['questionTheme' => 'browserdetect']);
+        $questionAttributes = $provider->getDefinitions(['question' => $question, 'questionTheme' => 'browserdetect']);
 
         $this->assertNotEmpty($questionAttributes);
         $this->assertArrayHasKey('add_platform_info', $questionAttributes);
 
         $questionAttributes = $provider->getDefinitions($question, []);
         $this->assertEmpty($questionAttributes);
+
+        // Test again but passing only a question type and theme
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'L', 'questionTheme' => 'bootstrap_buttons']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('button_size', $questionAttributes);
     }
 
     public function testFetcher()
@@ -87,7 +105,7 @@ class QuestionAttributeTest extends TestBaseClassWeb
 
         $questionAttributeFetcher->setQuestion($question);
         $questionAttributeFetcher->setTheme('browserdetect');
-        $questionAttributeFetcher->setFilter('advancedOnly', true);
+        $questionAttributeFetcher->setAdvancedOnly(true);
 
         $questionAttributes = $questionAttributeFetcher->fetch();
         $this->assertNotEmpty($questionAttributes);

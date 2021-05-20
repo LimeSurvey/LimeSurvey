@@ -11,8 +11,8 @@ class QuestionAttributeFetcher
     /** @var \Question the question where the attributes should apply */
     private $question;
 
-    /** @var array<string,mixed> array of filters to pass to the providers */
-    private $filters = [];
+    /** @var array<string,mixed> array of options to pass to the providers */
+    private $options = [];
 
     /** @var array<QuestionAttributeProvider> array of question attribute providers */
     private $providers = [];
@@ -45,7 +45,8 @@ class QuestionAttributeFetcher
 
         // We retrieve the attributes from each provider, sanitize them, and merge them.
         foreach ($this->providers as $provider) {
-            $attributes = $provider->getDefinitions($this->question, $this->filters);
+            $options = array_merge($this->options, ['question' => $this->question]);
+            $attributes = $provider->getDefinitions($options);
             $sanitizedAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($attributes);
             $allAttributes = $questionAttributeHelper->mergeQuestionAttributes($allAttributes, $sanitizedAttributes);
         }
@@ -56,6 +57,19 @@ class QuestionAttributeFetcher
         return $allAttributes;
     }
 
+    /**
+     * Populates the $attributeDefinitions with their corresponding values.
+     * If no $language is specified, the values for all survey languages are retrieved.
+     * A question must be set with QuestionAttributeFetcher::setQuestion() before calling this method.
+     *
+     * @param array<string,array> $attributeDefinitions the array of attribute definitions that will be filled with values
+     * @param string|null $language the language to use for i18n enabled attributes. If null, all survey languages are considered.
+     *
+     * @return array<string,array>  the attributes from $attributeDefinitions, with their values.
+     * @throws \Exception if the question ()
+     *
+     * TODO: Move to QuestionAttributeHelper? Not sure if it belongs here.
+     */
     public function populateValues($attributeDefinitions, $language = null)
     {
         if (empty($attributeDefinitions)) {
@@ -96,9 +110,9 @@ class QuestionAttributeFetcher
     /**
      * Clears the filters
      */
-    public function resetFilters()
+    public function resetOptions()
     {
-        $this->filters = [];
+        $this->options = [];
     }
 
     /**
@@ -107,9 +121,19 @@ class QuestionAttributeFetcher
      * @param string $key   the name of the filter
      * @param mixed $value
      */
-    public function setFilter($key, $value)
+    public function setOption($key, $value)
     {
-        $this->filters[$key] = $value;
+        $this->options[$key] = $value;
+    }
+
+    /**
+     * Convenience method to add a question type filter
+     *
+     * @param string $questionType the name of the question theme
+     */
+    public function setQuestionType($questionType)
+    {
+        $this->setOption('questionType', $questionType);
     }
 
     /**
@@ -119,7 +143,7 @@ class QuestionAttributeFetcher
      */
     public function setTheme($questionTheme)
     {
-        $this->setFilter('questionTheme', $questionTheme);
+        $this->setOption('questionTheme', $questionTheme);
     }
 
     /**
@@ -129,6 +153,6 @@ class QuestionAttributeFetcher
      */
     public function setAdvancedOnly($advancedOnly)
     {
-        $this->setFilter('advancedOnly', $advancedOnly);
+        $this->setOption('advancedOnly', $advancedOnly);
     }
 }

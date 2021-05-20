@@ -9,10 +9,13 @@ namespace LimeSurvey\Models\Services;
 class PluginQuestionAttributeProvider extends QuestionAttributeProvider
 {
     /** @inheritdoc */
-    public function getDefinitions($question, $filters = [])
+    public function getDefinitions($options = [])
     {
         /** @var string question type */
-        $questionType = $question->type;
+        $questionType = self::getQuestionType($options);
+        if (empty($questionType)) {
+            return [];
+        }
 
         return $this->getAttributesFromPlugin($questionType);
     }
