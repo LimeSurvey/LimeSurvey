@@ -11,15 +11,15 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
     /** @inheritdoc */
     public function getDefinitions($question, $filters = [])
     {
-        if (empty($filters['questionTheme']) || $filters['questionTheme'] == 'core') {
+        /** @var string question theme from the filter or, if not set, from the question */
+        $questionTheme = !empty($filters['questionTheme']) ? $filters['questionTheme'] : $question->questionTheme;
+
+        if (empty($questionTheme) || $questionTheme == \Question::DEFAULT_QUESTION_THEME) {
             return [];
         }
 
         /** @var string question type */
         $questionType = $question->type;
-
-        /** @var string question theme */
-        $questionTheme = $filters['questionTheme'];
 
         return $this->getAttributesFromQuestionTheme($questionTheme, $questionType);
     }

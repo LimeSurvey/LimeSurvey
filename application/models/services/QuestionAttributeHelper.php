@@ -232,16 +232,9 @@ class QuestionAttributeHelper
         $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
         $questionAttributeFetcher->setQuestion($question);
         $questionAttributeFetcher->setAdvancedOnly($advancedOnly);
-
         if (!empty($questionThemeOverride)) {
-            $questionTheme = $questionThemeOverride;
-        } else {
-            $questionTheme = $question->getQuestionAttribute('question_template');
-            if (empty($questionTheme)) {
-                $questionTheme = 'core';
-            }
+            $questionAttributeFetcher->setTheme($questionThemeOverride);
         }
-        $questionAttributeFetcher->setTheme($questionTheme);
 
         $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
         $questionAttributesWithValues = $questionAttributeFetcher->populateValues($questionAttributeDefinitions, $language);
