@@ -1868,11 +1868,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
      });
 
     // Hide all language except the selected one.
-    $('.lang-switch-button').on('click', function langSwitchOnClick() {
+    $('.lang-switch-button').on('click', function langSwitchOnClick(e) {
+      e.preventDefault();
       const lang = $(this).data('lang');
       const langClass = `.lang-${lang}`;
       $('.lang-hide').hide();
       $(langClass).show();
+      $('#language-dropdown-text').text($(this).text());
     });
 
     // Hide all languages except main.

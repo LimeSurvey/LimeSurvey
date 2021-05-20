@@ -4345,3 +4345,9 @@ table.dataTable thead .sorting_desc:after {
   content: "\f0dd" !important;
   /* sort-by-attributes-alt */
 }
+
+/* Reduce margins for question editor */
+#edit-question-form {
+    margin-left: -15px;
+    margin-right: -15px;
+}
