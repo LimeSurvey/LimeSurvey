@@ -1108,7 +1108,7 @@ div.panel.disabled a {
   max-height: initial;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .main-content-container {
     max-width: 100%;
   }
@@ -1438,7 +1438,7 @@ fieldset[disabled] .checkbox label {
   color: #e51c23;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .form-inline .radio,
   .form-inline .checkbox {
     display: inline-block;
@@ -2920,7 +2920,7 @@ input[type="file"].form-control {
   .surveymanagerbar {
     display: none;
   }
-  #vue-sidebar-container {
+  #vue-apps-main-container #vue-sidebar-container {
     display: none;
   }
   #statisticsview .col-lg-12 {
@@ -2964,8 +2964,26 @@ input[type="file"].form-control {
   body.onStatistics .btn {
     display: none;
   }
+  /* Chartjs and legend width */
+  body.onStatistics .chartjs-container {
+    width: 70%;
+    float: right;
+  }
   body.onStatistics .legend {
-    display: none;
+    width: 30%;
+    float: right;
+  }
+  body.onStatistics .legend .col-sm-1 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
+    padding-left: 3pt;
+    padding-right: 3pt;
+  }
+  body.onStatistics .legend .col-sm-10 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
   }
   /* Relaced in adminsidepanel */
   body.onStatistics .ls-flex,
@@ -4272,6 +4290,70 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
 #responses-column-filter-modal .checkbox label {
   vertical-align: text-bottom;
   white-space: nowrap;
@@ -4389,68 +4471,4 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   margin: 0;
   border: none;
   display: inline-block;
-}
-
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-.ui-icon.exporticon {
-  background-image: url("images/export.gif");
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1 em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
 }
