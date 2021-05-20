@@ -74,7 +74,7 @@ class QuestionAttributeFetcher
         $questionAttributeHelper = new QuestionAttributeHelper();
 
         // Get attribute values
-        $attributeValues = $questionAttributeHelper->getAttributesValuesFromDB($this->question->qid);
+        $attributeValues = \QuestionAttribute::model()->getAttributesAsArrayFromDB($this->question->qid);
 
         // Fill attributes with values
         $languages = is_null($language) ? $survey->allLanguages : [$language];

@@ -45,24 +45,6 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         /** @var array<string,array> An array of question attributes */
         $attributes = array_merge($generalAttributes, $advancedAttributes);
 
-        // if empty, fall back to getting attributes from questionHelper
-        // TODO: maybe we should drop this?
-        if (empty($attributes)) {
-            $attributes = [];
-            $questionHelperAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter($questionHelperAttributes, function ($attribute) use ($questionType) {
-                return stripos($attribute['types'], $questionType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute => $settings) {
-                  $attributes[$attribute] = array_merge(
-                      \QuestionAttribute::getDefaultSettings(),
-                      array("category" => gT("Plugins")),
-                      $settings,
-                      array("name" => $attribute)
-                  );
-            }
-        }
         return $attributes;
     }
 
