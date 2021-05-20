@@ -884,7 +884,7 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType()=='GET') {
+    if (in_array(Yii::app()->getRequest()->getRequestType(), ['GET', 'POST'])) {
         $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
         if(!empty($getValues)) {
             $qcode2sgqa = array();
@@ -1320,7 +1320,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters()));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
@@ -2213,4 +2213,30 @@ function cookieConsentLocalization()
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')
     );
+}
+
+/**
+ * Returns an array of URL parameters that can be forwarded
+ *
+ * @return array<string,mixed>
+ */
+function getForwardParameters()
+{
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed',
+        'index.php',
+    );
+
+    $parameters = [];
+    if (Yii::app()->getRequest()->getRequestType() == 'GET') {
+        $parameters = array_diff_key($_GET,array_flip($reservedGetValues));
+    }
+    return $parameters;
 }
