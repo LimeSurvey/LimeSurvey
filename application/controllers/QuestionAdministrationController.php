@@ -117,7 +117,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId, $tabOverviewEditor = 'overview')
+    public function actionEdit($questionId, $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
 
@@ -133,7 +133,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // "Directly show edit mode" personal setting
-        $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : $tabOverviewEditor;
+        if (is_null($tabOverviewEditor)) {
+            $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : 'overview';
+        }
 
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
