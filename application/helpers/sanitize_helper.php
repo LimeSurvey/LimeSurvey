@@ -504,35 +504,14 @@ function sanitize_signedint($integer, $min = '', $max = '')
 };
 
 /**
- * Sanitize IPv4 address $string, accepting octet wildcards if $allowWildcards is true.
+ * Checks the validity of IP address $ip
  *
- * @param string $string to sanitize
- * @param boolean $allowWildcards whether to accept octect wildcards as valid or not
+ * @param string $ip to check
  *
- * @return string the IP address if it's valid, or an empty string
+ * @return boolean true if the $ip is a valid IP address
  */
-function sanitize_ip_address($string, $allowWildcards = false)
+function check_ip_address($ip)
 {
-    if ($allowWildcards) {
-        $regex = '/^((([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\*)\.){3}(([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5])|\*)$/';
-    } else {
-        $regex = '/^((([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5]))\.){3}(([0-9]{1,2})|(1[0-9]{2,2})|(2[0-4][0-9])|(25[0-5]))$/';
-    }
-    return preg_match($regex, $string, $m) ? $string : '';
-}
-
-/**
- * Checks the validity of IPv4 address $input, accepting octet wildcards if $allowWildcards is true.
- *
- * @param string $input to check
- * @param boolean $allowWildcards whether to accept octect wildcards as valid or not
- *
- * @return boolean true if the $input is a valid IP address
- */
-function check_ip_address($input, $allowWildcards = false)
-{
-    if ($input != sanitize_ip_address($input, $allowWildcards)) {
-        return false;
-    }
-    return true;
+    // Leave the wrapper in case we need to enhance the checks later
+    return filter_var($ip, FILTER_VALIDATE_IP);
 }
