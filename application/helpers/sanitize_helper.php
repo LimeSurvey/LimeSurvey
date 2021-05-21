@@ -490,7 +490,7 @@ function sanitize_signedint($integer, $min = '', $max = '')
 /**
   * Checks the validity of IP address $ip
   *
-  * @param string $input to check
+  * @param string $ip to check
   *
   * @return boolean true if the $ip is a valid IP address
   */
