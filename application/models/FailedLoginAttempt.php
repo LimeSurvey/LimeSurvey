@@ -141,7 +141,7 @@ class FailedLoginAttempt extends LSActiveRecord
      * @param string $ip
      * @param string $attemptType   'login' or 'token'
      *
-     * @throws InvalidArgumentException if an invalid attempt type is specified or $ip is empty
+     * @throws InvalidArgumentException if an invalid attempt type is specified
      * @return boolean
      */
     private function isWhitelisted($ip, $attemptType)
@@ -151,7 +151,7 @@ class FailedLoginAttempt extends LSActiveRecord
             throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
         if (empty($ip)) {
-            throw new InvalidArgumentException(sprintf("IP address cannot be empty."));
+            return false;
         }
         $binaryIP = inet_pton($ip);
 
