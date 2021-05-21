@@ -20,10 +20,14 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     centralattribute.css({'min-height': windowHeight * 0.5});
     newcreated.css({'min-height': windowHeight * 0.5});
     tokenattribute.css({'min-height': windowHeight * 0.5});
-    var ncHeadingHeight = $('#newcreated .heading').outerHeight();
+    var ncHeadingHeight = $('#newcreated .panel-heading').outerHeight();
     $('.newcreate').css({
         'padding-bottom': 0,
-        'min-height': newcreated.height() - ncHeadingHeight - 5
+        'min-height': (windowHeight * 0.5) - ncHeadingHeight - 30
+    });
+    $('#cpdbatt').css({
+        'padding-bottom': 0,
+        'min-height': (windowHeight * 0.5) - ncHeadingHeight - 30
     });
 
     $("#overwrite").click(function (){
