@@ -141,27 +141,45 @@ class FailedLoginAttempt extends LSActiveRecord
      * @param string $ip
      * @param string $attemptType   'login' or 'token'
      *
-     * @throws InvalidArgumentException if an invalid attempt type is specified
+     * @throws InvalidArgumentException if an invalid attempt type is specified or $ip is empty
      * @return boolean
      */
     private function isWhitelisted($ip, $attemptType)
     {
+        // Init
         if ($attemptType != self::TYPE_LOGIN && $attemptType != self::TYPE_TOKEN) {
             throw new InvalidArgumentException(sprintf("Invalid attempt type: %s", $attemptType));
         }
+        if (empty($ip)) {
+            throw new InvalidArgumentException(sprintf("IP address cannot be empty."));
+        }
+        $binaryIP = inet_pton($ip);
 
         $whiteList = Yii::app()->getConfig($attemptType . 'IpWhitelist');
         if (empty($whiteList)) {
             return false;
         }
+
+        // Validating
         $whiteListEntries = preg_split('/\n|,/', $whiteList);
         foreach ($whiteListEntries as $whiteListEntry) {
-            if (!empty($whiteListEntry) && $whiteListEntry == $ip) {
+            if (empty($whiteListEntry)) {
+                continue;
+            }
+            // Compare directly
+            if ($whiteListEntry == $ip) {
+                // The IP is whitelisted
+                return true;
+            }
+            // Compare binary representations
+            $binaryWhiteListEntry = inet_pton($whiteListEntry);
+            if ($binaryWhiteListEntry !== false && $binaryWhiteListEntry == $binaryIP) {
                 // The IP is whitelisted
                 return true;
             }
         }
 
+        // Not whitelisted
         return false;
     }
 }
