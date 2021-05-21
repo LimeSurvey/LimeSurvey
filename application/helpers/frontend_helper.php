@@ -53,10 +53,10 @@ function loadanswers()
     }
     $oCriteria->params = $aParams;
     $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
-
     if (!$oResponses) {
         return false;
     }
+    $oResponses->decrypt();
 
     if (isset($oResponses->saved_control) && $oResponses->saved_control) {
         $saved_control = $oResponses->saved_control;
