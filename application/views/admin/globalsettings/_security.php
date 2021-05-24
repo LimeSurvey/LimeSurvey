@@ -111,7 +111,21 @@ $warning_force_ssl = sprintf(gT('Before turning on HTTPS,%s check this link.%s')
     <span style='font-size:1em;'><b><?php echo $warning_double_point; ?></b><?php echo $warning_force_ssl; ?></span>
 </div>
 
-
+<div class="form-group">
+    <label class="control-label" for='loginIpWhitelist'>
+        <?php eT("IP whitelist for login:"); ?>
+    </label>
+    <textarea class="form-control" id='loginIpWhitelist' name='loginIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('loginIpWhitelist')); ?></textarea>
+    <span class='hint'><?php eT("List of IP address to exclude from the max login attemps check. Separate each IP address with a comma or new line."); ?></span>
+</div>
+ 
+<div class="form-group">
+    <label class="control-label" for='tokenIpWhitelist'>
+        <?php eT("IP whitelist for token access:"); ?>
+    </label>
+    <textarea class="form-control" id='tokenIpWhitelist' name='tokenIpWhitelist'><?php echo htmlspecialchars(Yii::app()->getConfig('tokenIpWhitelist')); ?></textarea>
+    <span class='hint'><?php eT("List of IP address to exclude from the max token validation attemps check. Separate each IP address with a comma or new line."); ?></span>
+</div>
 
 
 <?php if (Yii::app()->getConfig("demoMode")==true):?>
