@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-05-24 18:29:52+00:00\n"
+"POT-Creation-Date: 2021-05-24 18:52:09+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1404,11 +1404,11 @@ msgstr ""
 #: application/views/admin/globalsettings/_presentation.php:97
 #: application/views/admin/globalsettings/_presentation.php:110
 #: application/views/admin/globalsettings/_presentation.php:123
-#: application/views/admin/globalsettings/_security.php:15
-#: application/views/admin/globalsettings/_security.php:28
-#: application/views/admin/globalsettings/_security.php:45
-#: application/views/admin/globalsettings/_security.php:63
-#: application/views/admin/globalsettings/_security.php:98
+#: application/views/admin/globalsettings/_security.php:17
+#: application/views/admin/globalsettings/_security.php:31
+#: application/views/admin/globalsettings/_security.php:48
+#: application/views/admin/globalsettings/_security.php:66
+#: application/views/admin/globalsettings/_security.php:103
 #: application/views/admin/globalsettings/_storage.php:33
 #: application/views/admin/globalsettings/_useradministration.php:29
 #: application/views/admin/globalsettings/surveySettings.php:12
@@ -1500,11 +1500,11 @@ msgstr ""
 #: application/views/admin/globalsettings/_presentation.php:98
 #: application/views/admin/globalsettings/_presentation.php:111
 #: application/views/admin/globalsettings/_presentation.php:124
-#: application/views/admin/globalsettings/_security.php:16
-#: application/views/admin/globalsettings/_security.php:29
-#: application/views/admin/globalsettings/_security.php:46
-#: application/views/admin/globalsettings/_security.php:64
-#: application/views/admin/globalsettings/_security.php:99
+#: application/views/admin/globalsettings/_security.php:18
+#: application/views/admin/globalsettings/_security.php:32
+#: application/views/admin/globalsettings/_security.php:49
+#: application/views/admin/globalsettings/_security.php:67
+#: application/views/admin/globalsettings/_security.php:104
 #: application/views/admin/globalsettings/_storage.php:34
 #: application/views/admin/globalsettings/_useradministration.php:30
 #: application/views/admin/globalsettings/surveySettings.php:13
@@ -17492,7 +17492,7 @@ msgstr ""
 #: application/views/admin/globalsettings/_interfaces.php:58
 #: application/views/admin/globalsettings/_language.php:71
 #: application/views/admin/globalsettings/_presentation.php:134
-#: application/views/admin/globalsettings/_security.php:132
+#: application/views/admin/globalsettings/_security.php:133
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
 msgstr ""
 
@@ -17838,72 +17838,72 @@ msgstr ""
 msgid "Borders around responses in PDF:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:9
+#: application/views/admin/globalsettings/_security.php:11
 msgid "Survey preview only for administration users:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:22
+#: application/views/admin/globalsettings/_security.php:24
 msgid "Filter HTML for XSS:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:34
+#: application/views/admin/globalsettings/_security.php:37
 msgid "Note: XSS filtering is always disabled for the superadministrator."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:39
+#: application/views/admin/globalsettings/_security.php:42
 msgid "Disable question script for XSS restricted user:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:51
+#: application/views/admin/globalsettings/_security.php:54
 msgid "If you disable this option : user with XSS restriction still can add script. This allows user to add cross-site scripting javascript system."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:57
+#: application/views/admin/globalsettings/_security.php:60
 msgid "Group member can only see own group:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:74
+#: application/views/admin/globalsettings/_security.php:77
 msgid "IFrame embedding allowed:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:80
+#: application/views/admin/globalsettings/_security.php:84
 msgid "Allow"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:81
+#: application/views/admin/globalsettings/_security.php:85
 msgid "Same origin"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:92
+#: application/views/admin/globalsettings/_security.php:96
 msgid "Force HTTPS:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:106
-msgid "Before turning on HTTPS,%s check this link.%s"
+#: application/views/admin/globalsettings/_security.php:110
+msgid "%sWarning:%s Before turning on HTTPS,%s check this link.%s"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:106
+#: application/views/admin/globalsettings/_security.php:110
 msgid "Test if your server has SSL enabled by clicking on this link."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:108
+#: application/views/admin/globalsettings/_security.php:112
 msgid "If the link does not work and you turn on HTTPS, you will not be able to access and use your LimeSurvey application!"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:116
+#: application/views/admin/globalsettings/_security.php:117
 msgid "IP whitelist for login:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:119
-msgid "List of IP address to exclude from the max login attemps check. Separate each IP address with a comma or new line."
+#: application/views/admin/globalsettings/_security.php:120
+msgid "List of IP addresses to exclude from the maximum login attempts check. Separate each IP address with a comma or a new line."
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:124
+#: application/views/admin/globalsettings/_security.php:125
 msgid "IP whitelist for token access:"
 msgstr ""
 
-#: application/views/admin/globalsettings/_security.php:127
-msgid "List of IP address to exclude from the max token validation attemps check. Separate each IP address with a comma or new line."
+#: application/views/admin/globalsettings/_security.php:128
+msgid "List of IP addresses to exclude from the maximum token validation attempts check. Separate each IP address with a comma or a new line."
 msgstr ""
 
 #: application/views/admin/globalsettings/_storage.php:13
