@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-05-24 18:52:09+00:00\n"
+"POT-Creation-Date: 2021-05-24 19:06:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3171,7 +3171,7 @@ msgid "User successfully created"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1196
-msgid "Error: no user was created"
+msgid "Error: User was not created"
 msgstr ""
 
 #: application/controllers/UserManagementController.php:1213
@@ -3683,16 +3683,16 @@ msgstr ""
 msgid "Incorrect username and/or password!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:217
+#: application/controllers/admin/authentication.php:218
 msgid "The validation key is invalid. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:228
+#: application/controllers/admin/authentication.php:229
 msgid "The validation key expired. Please contact the administrator."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:248
-msgid "Password cannot be blank and must fulfill minimum requirement: "
+#: application/controllers/admin/authentication.php:249
+msgid "Password cannot be blank and must fulfill minimum requirements: %s"
 msgstr ""
 
 #: application/controllers/admin/authentication.php:276
@@ -6736,7 +6736,7 @@ msgid "You can't change password if demo mode is active."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:641
-msgid "The current password you entered is wrong!"
+msgid "The current password is not correct."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:686
@@ -7359,6 +7359,7 @@ msgstr ""
 #: application/views/admin/super/welcome.php:168
 #: application/views/admin/super/welcome.php:173
 #: application/views/admin/super/welcome.php:175
+#: application/views/admin/survey/breadcrumb.php:12
 #: application/views/layouts/adminmenu.php:44
 msgid "List surveys"
 msgstr ""
@@ -16116,7 +16117,7 @@ msgid "Set password"
 msgstr ""
 
 #: application/views/admin/authentication/newPassword.php:45
-msgid "Password repeat"
+msgid "Repeat password"
 msgstr ""
 
 #: application/views/admin/authentication/newPassword.php:50
@@ -20076,10 +20077,6 @@ msgstr ""
 
 #: application/views/admin/survey/Question/yesNo_defaultvalue_widget.php:63
 msgid "EM value"
-msgstr ""
-
-#: application/views/admin/survey/breadcrumb.php:12
-msgid "List Surveys"
 msgstr ""
 
 #: application/views/admin/survey/breadcrumb.php:60
@@ -24527,7 +24524,7 @@ msgid "Set password now?"
 msgstr ""
 
 #: application/views/userManagement/partial/addedituser.php:67
-msgid "If you set a password here, no email will be send to the new user"
+msgid "If you set a password here, no email will be sent to the new user."
 msgstr ""
 
 #: application/views/userManagement/partial/addedituser.php:80
