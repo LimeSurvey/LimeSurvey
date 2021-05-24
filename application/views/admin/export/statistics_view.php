@@ -14,21 +14,21 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage' => $sStatisticsLanguage, 'surveyid' => $surveyid, 'showtextinline' => $showtextinline)); ?>
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="row">
+    <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
+    <div class="row hidden-print">
         <div class="col-md-12">
             <div class="col-md-3 text-left">
-                <h4>
+                <h4 class="hidden-print">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
             </div>
         </div>
-        <h3></h3>
     </div>
 
 
     <!-- General filters -->
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-sm-12 content-right">
 
             <!-- Header -->
@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     </div>
 
     <!-- Response filter -->
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-lg-12 content-right">
             <div style='clear: both'></div>
 
@@ -143,7 +143,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-lg-12 content-left">
             <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?= gT('Export images') ?></button>
             <p><?php eT('Make sure all images on this screen are loaded before clicking on the button.'); ?></p>

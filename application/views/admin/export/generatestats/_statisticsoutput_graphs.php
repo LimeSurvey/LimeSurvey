@@ -16,11 +16,11 @@
  $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 <tr>
-    <td colspan='4' style=\"text-align:center\" id='statzone_<?php echo $rt;?>'>
+    <td colspan='4 id='statzone_<?php echo $rt;?>'>
     <?php if(count($labels) < 70): ?>
         <!-- Charts -->
         <div class="row">
-            <div class="col-lg-8 col-md-12 chartjs-container" id="chartjs-container-<?php echo $qqid; ?>"
+            <div class="col-lg-8 col-md-12 chartjs-container text-center" id="chartjs-container-<?php echo $qqid; ?>"
                 data-chartname="<?php echo $sChartname; // The name of the jschart object ?>"
                 data-qid="<?php echo $qqid; // the question id ?>"
                 data-type="<?php echo $charttype; // the chart start type (bar, donut, etc.) ?>"
@@ -59,7 +59,7 @@
 </tr>
 
 <!-- Buttons to change graph type -->
-<tr>
+<tr class="hidden-print">
     <td colspan='4'>
         <div class="chartjs-buttons" style="text-align:center">
 
