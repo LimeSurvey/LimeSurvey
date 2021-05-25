@@ -14,7 +14,6 @@
 */
 
 use ls\ajax\AjaxHelper;
-use LimeSurvey\Models\Services\UploadHelper;
 
 /**
  * @param array $a
@@ -781,8 +780,9 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('import');
 
-        $uploadHelper = new UploadHelper();
-        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', array('admin/participants/sa/importCSV'));
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', array('admin/participants/sa/importCSV'));
 
         if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');

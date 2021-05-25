@@ -34,7 +34,8 @@
         "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "1.44.2",
 		"phpseclib/bcmath_compat": "1.0.4",
-		"tiamo/spss": "^2.2"
+		"tiamo/spss": "^2.2",
+        "yiiext/twig-renderer":"dev-master"
 	},
     "config": {
         "vendor-dir": "third_party",

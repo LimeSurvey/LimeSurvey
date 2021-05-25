@@ -1084,7 +1084,7 @@ function getJSDateFromDateFormat($sDateformat)
      * @returns array
      *
      */
-function getDateFormatDataForQID($aQidAttributes, $mThisSurvey)
+function getDateFormatDataForQID($aQidAttributes, $mThisSurvey, $language = '')
 {
     if (isset($aQidAttributes['date_format']) && trim($aQidAttributes['date_format']) != '') {
         $aDateFormatDetails = array();
@@ -1094,7 +1094,7 @@ function getDateFormatDataForQID($aQidAttributes, $mThisSurvey)
         $aDateFormatDetails['jsdate_original'] = $aDateFormatDetails['dateformat']; // In dropdown, this is fed to Date in Javascript, not Bootstrap
     } else {
         if (!is_array($mThisSurvey)) {
-            $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($mThisSurvey));
+            $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($mThisSurvey, $language));
         }
         $aDateFormatDetails = getDateFormatData($mThisSurvey['surveyls_dateformat']);
     }

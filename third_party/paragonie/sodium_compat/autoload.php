@@ -66,3 +66,4 @@ if (PHP_VERSION_ID < 70200 || !extension_loaded('sodium')) {
     // Older versions of {PHP, ext/sodium} will not define these
     require_once(dirname(__FILE__) . '/lib/php72compat.php');
 }
+require_once(dirname(__FILE__) . '/lib/ristretto255.php');

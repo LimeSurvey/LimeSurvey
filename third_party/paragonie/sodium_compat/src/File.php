@@ -1557,20 +1557,4 @@ class ParagonIE_Sodium_File extends ParagonIE_Sodium_Core_Util
         }
         return (int) $return;
     }
-
-    /**
-     * Catch hash_update() failures and throw instead of silently proceding
-     *
-     * @param HashContext|resource &$hs
-     * @param string $data
-     * @return void
-     * @throws SodiumException
-     * @psalm-suppress PossiblyInvalidArgument
-     */
-    private static function hash_update(&$hs, $data)
-    {
-        if (!hash_update($hs, $data)) {
-            throw new SodiumException('hash_update() failed');
-        }
-    }
 }

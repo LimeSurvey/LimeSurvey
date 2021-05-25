@@ -80,6 +80,10 @@ class ParagonIE_Sodium_Compat
     const CRYPTO_BOX_MACBYTES = 16;
     const CRYPTO_BOX_NONCEBYTES = 24;
     const CRYPTO_BOX_SEEDBYTES = 32;
+    const CRYPTO_CORE_RISTRETTO255_BYTES = 32;
+    const CRYPTO_CORE_RISTRETTO255_SCALARBYTES = 32;
+    const CRYPTO_CORE_RISTRETTO255_HASHBYTES = 64;
+    const CRYPTO_CORE_RISTRETTO255_NONREDUCEDSCALARBYTES = 64;
     const CRYPTO_KDF_BYTES_MIN = 16;
     const CRYPTO_KDF_BYTES_MAX = 64;
     const CRYPTO_KDF_CONTEXTBYTES = 8;
@@ -115,6 +119,8 @@ class ParagonIE_Sodium_Compat
     const CRYPTO_PWHASH_SCRYPTSALSA208SHA256_MEMLIMIT_SENSITIVE = 1073741824;
     const CRYPTO_SCALARMULT_BYTES = 32;
     const CRYPTO_SCALARMULT_SCALARBYTES = 32;
+    const CRYPTO_SCALARMULT_RISTRETTO255_BYTES = 32;
+    const CRYPTO_SCALARMULT_RISTRETTO255_SCALARBYTES = 32;
     const CRYPTO_SHORTHASH_BYTES = 8;
     const CRYPTO_SHORTHASH_KEYBYTES = 16;
     const CRYPTO_SECRETBOX_KEYBYTES = 32;
@@ -3225,6 +3231,21 @@ class ParagonIE_Sodium_Compat
     }
 
     /**
+     * @param string $str
+     * @return bool
+     *
+     * @throws SodiumException
+     */
+    public static function is_zero($str)
+    {
+        $d = 0;
+        for ($i = 0; $i < 32; ++$i) {
+            $d |= ParagonIE_Sodium_Core_Util::chrToInt($str[$i]);
+        }
+        return ((($d - 1) >> 31) & 1) === 1;
+    }
+
+    /**
      * The equivalent to the libsodium minor version we aim to be compatible
      * with (sans pwhash and memzero).
      *
@@ -3562,6 +3583,232 @@ class ParagonIE_Sodium_Compat
     }
 
     /**
+     * @param string $p
+     * @param bool $dontFallback
+     * @return bool
+     * @throws SodiumException
+     */
+    public static function ristretto255_is_valid_point($p, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_is_valid_point($p);
+        }
+        try {
+            $r = ParagonIE_Sodium_Core_Ristretto255::ristretto255_frombytes($p);
+            return $r['res'] === 0 &&
+                ParagonIE_Sodium_Core_Ristretto255::ristretto255_point_is_canonical($p) === 1;
+        } catch (SodiumException $ex) {
+            if ($ex->getMessage() === 'S is not canonical') {
+                return false;
+            }
+            throw $ex;
+        }
+    }
+
+    /**
+     * @param string $p
+     * @param string $q
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_add($p, $q, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_add($p, $q);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_add($p, $q);
+    }
+
+    /**
+     * @param string $p
+     * @param string $q
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_sub($p, $q, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_sub($p, $q);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_sub($p, $q);
+    }
+
+    /**
+     * @param string $r
+     * @param bool $dontFallback
+     * @return string
+     *
+     * @throws SodiumException
+     */
+    public static function ristretto255_from_hash($r, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_from_hash($r);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_from_hash($r);
+    }
+
+    /**
+     * @param bool $dontFallback
+     * @return string
+     *
+     * @throws SodiumException
+     */
+    public static function ristretto255_random($dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_random();
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_random();
+    }
+
+    /**
+     * @param bool $dontFallback
+     * @return string
+     *
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_random($dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_random();
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_random();
+    }
+
+    /**
+     * @param string $s
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_invert($s, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_invert($s);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_invert($s);
+    }
+    /**
+     * @param string $s
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_negate($s, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_negate($s);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_negate($s);
+    }
+
+    /**
+     * @param string $s
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_complement($s, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_complement($s);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_complement($s);
+    }
+
+    /**
+     * @param string $x
+     * @param string $y
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_add($x, $y, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_add($x, $y);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_add($x, $y);
+    }
+
+    /**
+     * @param string $x
+     * @param string $y
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_sub($x, $y, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_sub($x, $y);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_sub($x, $y);
+    }
+
+    /**
+     * @param string $x
+     * @param string $y
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_mul($x, $y, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_mul($x, $y);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::ristretto255_scalar_mul($x, $y);
+    }
+
+    /**
+     * @param string $n
+     * @param string $p
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function scalarmult_ristretto255($n, $p, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_scalarmult_ristretto255($n, $p);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::scalarmult_ristretto255($n, $p);
+    }
+
+    /**
+     * @param string $n
+     * @param string $p
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function scalarmult_ristretto255_base($n, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_scalarmult_ristretto255_base($n);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::scalarmult_ristretto255_base($n);
+    }
+
+    /**
+     * @param string $s
+     * @param bool $dontFallback
+     * @return string
+     * @throws SodiumException
+     */
+    public static function ristretto255_scalar_reduce($s, $dontFallback = false)
+    {
+        if (self::useNewSodiumAPI() && !$dontFallback) {
+            return sodium_crypto_core_ristretto255_scalar_reduce($s);
+        }
+        return ParagonIE_Sodium_Core_Ristretto255::sc_reduce($s);
+    }
+
+    /**
      * Runtime testing method for 32-bit platforms.
      *
      * Usage: If runtime_speed_test() returns FALSE, then our 32-bit
@@ -3595,6 +3842,36 @@ class ParagonIE_Sodium_Compat
         /** @var int $diff */
         $diff = (int) ceil(($end - $start) * 1000);
         return $diff < $maxTimeout;
+    }
+
+    /**
+     * Add two numbers (little-endian unsigned), storing the value in the first
+     * parameter.
+     *
+     * This mutates $val.
+     *
+     * @param string $val
+     * @param string $addv
+     * @return void
+     * @throws SodiumException
+     */
+    public static function sub(&$val, $addv)
+    {
+        $val_len = ParagonIE_Sodium_Core_Util::strlen($val);
+        $addv_len = ParagonIE_Sodium_Core_Util::strlen($addv);
+        if ($val_len !== $addv_len) {
+            throw new SodiumException('values must have the same length');
+        }
+        $A = ParagonIE_Sodium_Core_Util::stringToIntArray($val);
+        $B = ParagonIE_Sodium_Core_Util::stringToIntArray($addv);
+
+        $c = 0;
+        for ($i = 0; $i < $val_len; $i++) {
+            $c = ($A[$i] - $B[$i] - $c);
+            $A[$i] = ($c & 0xff);
+            $c = ($c >> 8) & 1;
+        }
+        $val = ParagonIE_Sodium_Core_Util::intArrayToString($A);
     }
 
     /**

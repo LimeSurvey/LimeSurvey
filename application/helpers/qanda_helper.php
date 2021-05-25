@@ -172,7 +172,7 @@ function retrieveAnswers($ia)
     //show or hide tip
     $_vshow = false;
     if(isset($aQuestionAttributes['hide_tip'])){
-        $_vshow = $aQuestionAttributes['hide_tip'] == 'N'; //hide_tip=no means: show the tip
+        $_vshow = $aQuestionAttributes['hide_tip'] == 0; //hide_tip=0 means: show the tip
     }
 
     list($validation_msg, $isValid) = validation_message($ia, $_vshow);

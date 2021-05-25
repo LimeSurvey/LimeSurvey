@@ -105,7 +105,7 @@ $internalConfig = array(
         'ext.captchaExtended.CaptchaExtendedValidator',
         'questiontypes.*'
     ),
-    'preload' => array('log'),
+    'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
         // yiistrap configuration
         'bootstrap' => array(
@@ -217,8 +217,13 @@ $internalConfig = array(
             /* This allow update LimeMailer in config, but no namespace in this condition … */
             'class' => 'application.core.LimeMailer',
         ),
+        'ETwigViewRenderer' => array(
+            'class' => 'third_party.yiiext.twig-renderer.ETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig'
+        ),
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
@@ -267,6 +272,7 @@ $internalConfig = array(
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
+                'getLanguageRTL'          => 'LS_Twig_Extension::getLanguageRTL',
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -352,6 +358,7 @@ $internalConfig = array(
                 ),
                 'functions' => array(
                     'getLanguageData',
+                    'getLanguageRTL',
                     'array_flip',
                     'array_intersect_key',
 

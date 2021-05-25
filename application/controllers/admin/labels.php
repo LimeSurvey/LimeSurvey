@@ -12,8 +12,6 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-use LimeSurvey\Models\Services\UploadHelper;
-
 /**
 * labels
 *
@@ -130,8 +128,9 @@ class labels extends Survey_Common_Action
         $action = returnGlobal('action');
         $aViewUrls = array();
 
-        $uploadHelper = new UploadHelper();
-        $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
 
         if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');

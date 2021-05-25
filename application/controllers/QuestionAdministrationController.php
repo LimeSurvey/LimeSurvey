@@ -1,7 +1,5 @@
 <?php
 
-use LimeSurvey\Models\Services\UploadHelper;
-
 class QuestionAdministrationController extends LSBaseController
 {
 
@@ -117,7 +115,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId, $tabOverviewEditor = 'overview')
+    public function actionEdit($questionId, $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
 
@@ -133,7 +131,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // "Directly show edit mode" personal setting
-        $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : $tabOverviewEditor;
+        if (is_null($tabOverviewEditor)) {
+            $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : 'overview';
+        }
 
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
@@ -1072,19 +1072,14 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
-        try {
-            $uploadHelper = new UploadHelper();
-            $uploadHelper->checkUploadedFileSize('the_file');
-        } catch (Exception $ex) {
-            App()->setFlashMessage($ex->getMessage(), 'error');
-            $this->redirect('importView/surveyid/' . $iSurveyID);
-            return;
-        }
-
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         $fatalerror = '';
+        
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
 
+        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
             $fatalerror = gT(
                 "An error occurred uploading your file."
@@ -1102,9 +1097,7 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         if ($fatalerror != '') {
-            if (file_exists($sFullFilepath)) {
-                unlink($sFullFilepath);
-            }
+            unlink($sFullFilepath);
             App()->setFlashMessage($fatalerror, 'error');
             $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
             return;
@@ -2466,6 +2459,8 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        $originalRelevance = $oQuestion->relevance;
+
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new LSJsonException(
@@ -2488,6 +2483,12 @@ class QuestionAdministrationController extends LSBaseController
                 true
             );
         }
+
+        // If relevance equation was manually edited, existing conditions must be cleared
+        if ($oQuestion->relevance != $originalRelevance && !empty($oQuestion->conditions)) {
+            Condition::model()->deleteAllByAttributes(['qid' => $oQuestion->qid]);
+        }
+
         return $oQuestion;
     }
 

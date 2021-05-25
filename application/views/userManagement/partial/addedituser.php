@@ -64,7 +64,7 @@
 
         <div class="row ls-space margin top-5 hidden" id="utility_change_password_container">
             <div class="row ls-space margin top-5">
-                <span class="text-warning"><?= gT('If you set a password here, no email will be send to the new user')?></span><br><br>
+                <span class="text-warning"><?= gT('If you set a password here, no email will be sent to the new user.')?></span><br><br>
                 <?php echo $form->labelEx($oUser,'password', ['for'=>'User_Form_password']); ?>
                 <?php echo $form->passwordField(
                     $oUser,

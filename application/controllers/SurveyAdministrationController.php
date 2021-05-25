@@ -1,7 +1,6 @@
 <?php
 
 use LimeSurvey\Models\Services\FilterImportedResources;
-use LimeSurvey\Models\Services\UploadHelper;
 
 class SurveyAdministrationController extends LSBaseController
 {
@@ -1270,6 +1269,13 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionUploadimagefile()
     {
+        $debug = [$_FILES];
+        // Check file size and render JSON on error.
+        // This is done before checking the survey permissions because, if the max POST size was exceeded,
+        // there is no Survey ID to check for permissions, so the error could be misleading.
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->renderJsonOnError('file', $debug);
+
         $iSurveyID = Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
@@ -1287,14 +1293,6 @@ class SurveyAdministrationController extends LSBaseController
                 false
             );
         }
-        $debug[] = $_FILES;
-
-        // Check file size and render JSON on error.
-        // This is done before checking the survey permissions because, if the max POST size was exceeded,
-        // there is no Survey ID to check for permissions, so the error could be misleading.
-        $uploadHelper = new UploadHelper();
-        $uploadHelper->checkUploadedFileSizeAndRenderJson('file', $debug);
-
         $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImage['check'] === false) {
             return $this->renderPartial(
@@ -2360,7 +2358,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabResourceManagement($oSurvey)
+    private function tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
@@ -2381,7 +2379,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['noform'] = true;
 
         //KCFINDER SETTINGS
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$survey->sid}";
         Yii::app()->loadHelper('admin.htmleditor');
         initKcfinder();
 

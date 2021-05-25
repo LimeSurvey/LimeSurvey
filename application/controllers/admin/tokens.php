@@ -13,8 +13,6 @@
 *
 */
 
-use LimeSurvey\Models\Services\UploadHelper;
-
 /**
 * Tokens Controller
 *
@@ -1909,8 +1907,9 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
-            $uploadHelper = new UploadHelper();
-            $uploadHelper->checkUploadedFileSizeAndRedirect('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
+            // Check file size and redirect on error
+            $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+            $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
 
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');

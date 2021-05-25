@@ -638,7 +638,7 @@ class UserAction extends Survey_Common_Action
                 if ($currentPasswordOk) {
                     $uresult = $oUserModel->save();
                 } else {
-                    Yii::app()->setFlashMessage(gT('The current password you entered is wrong!'), 'error');
+                    Yii::app()->setFlashMessage(gT('The current password is not correct.'), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
