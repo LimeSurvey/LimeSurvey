@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.26.5 (build 210519) to 3.27.0 (build 210525) May 25, 2021
++New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Gabriel Jenik)
++New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Carsten Schmitz)
+-Fixed issue #17309: Date question always shows error when using AR language - can't proceed at survey (#1888) (Gabriel Jenik)
+-Fixed issue #17270: Print statistics take a lot of page (#1880) (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.26.4 (build 210517) to 3.26.5 (build 210519) May 19, 2021
 -Fixed issue #17303: ZipArchive error when exporting theme and debug mode is active (Carsten Schmitz)
 -Fixed issue #17250: Unable to upload image with extension in uppercase in Theme option (#1883) (Gabriel Jenik)
