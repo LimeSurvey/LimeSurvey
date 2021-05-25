@@ -1193,7 +1193,7 @@ class UserManagementController extends LSBaseController
 
         return [
             'success' => false,
-            'errors' => CHtml::tag("p", array(), gT("Error: no user was created"))
+            'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
         ];
     }
 
