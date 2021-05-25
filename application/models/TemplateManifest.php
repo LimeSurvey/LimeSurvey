@@ -1012,8 +1012,11 @@ class TemplateManifest extends TemplateConfiguration
                 $oComment->parentNode->removeChild($oComment);
             }
             $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            foreach ($oXMLConfig->config->xpath("//file") as $oFileName) {
-                        $oFileName[0] = get_absolute_path($oFileName[0]);
+            $filenames = $oXMLConfig->config->xpath("//file");
+            if ($filenames) {
+                foreach ($filenames as $oFileName) {
+                    $oFileName[0] = get_absolute_path($oFileName[0]);
+                }
             }
 
             $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example

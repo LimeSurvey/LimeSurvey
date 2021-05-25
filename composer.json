@@ -31,23 +31,28 @@
 		}
 	},
 	"require": {
+        "paragonie/sodium_compat": "^1.14",
+		"twig/twig": "1.44.2"
 	},
     "config": {
         "vendor-dir": "third_party",
-        "bin-dir": "third_party/bin"
+        "bin-dir": "third_party/bin",
+		"platform": {
+			"php": "7.2.5"
+		}
     },
     "require-dev": {
-        "facebook/webdriver": "^1.4",
-        "phpunit/dbunit": "^4.0",
+        "php-webdriver/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "^3.5",
         "phpmd/phpmd" : "^2.8",
-        "phpunit/phpunit": "7.5.*",
-        "vimeo/psalm": "^4.6"
+        "phpunit/phpunit": "^8.0",
+        "vimeo/psalm": "^4.6",
+		"misantron/dbunit": "^5.1"
     },
     "scripts": {
         "test": [
-            "! find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
-            "! find tests/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -l {} | grep -v 'No syntax error'",
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
@@ -57,6 +62,7 @@
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/psalm"
         ]

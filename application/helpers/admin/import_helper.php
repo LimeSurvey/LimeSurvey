@@ -40,6 +40,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $aQuestionCodeReplacements = array();
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
     $results['question_attributes'] = 0;

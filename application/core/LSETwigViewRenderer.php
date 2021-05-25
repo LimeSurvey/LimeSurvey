@@ -35,7 +35,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Main method to render a survey.
      * @param string $sLayout the name of the layout to render
-     * @param array $aDatas the datas needed to fill the layout
+     * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without
      *                         rendering the whole page. Usefull for debuging, and used for Print Answers
      * @return mixed|string
@@ -45,13 +45,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
+    public function renderTemplateFromFile($sLayout, $aData, $bReturn)
     {
         $oTemplate = Template::getLastInstance();
         $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
         if ($oLayoutTemplate) {
             $line       = file_get_contents($oLayoutTemplate->viewPath . $sLayout);
-            $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+            $sHtml      = $this->convertTwigToHtml($line, $aData, $oTemplate);
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
                 $sHtml = str_replace(
@@ -94,7 +94,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Main method to render a question in the question editor preview.
      * @param string $sLayout the name of the layout to render
-     * @param array $aDatas the datas needed to fill the layout
+     * @param array $aData the datas needed to fill the layout
      * @param bool $root
      * @param boolean $bReturn if true, it will return the html string without
      *                         rendering the whole page. Usefull for debuging, and used for Print Answers
@@ -105,11 +105,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @throws Twig_Error_Syntax
      * @throws WrongTemplateVersionException
      */
-    public function renderTemplateForQuestionEditPreview($sLayout, $aDatas, $root = false, $bReturn = false)
+    public function renderTemplateForQuestionEditPreview($sLayout, $aData, $root = false, $bReturn = false)
     {
         $root = (bool) $root;
         $oTemplate = Template::getInstance(
-            $aDatas['aSurveyInfo']['template'],
+            $aData['aSurveyInfo']['template'],
             null,
             null,
             null,
@@ -155,7 +155,7 @@ window.addEventListener('message', function(event) {
                 $line .= '</html>';
             }
 
-            $sHtml     = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+            $sHtml     = $this->convertTwigToHtml($line, $aData, $oTemplate);
             
             $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if ($sEmHiddenInputs) {
@@ -201,7 +201,7 @@ window.addEventListener('message', function(event) {
      * Main method to render an admin page or block.
      * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
      * @param $sLayoutFilePath
-     * @param array $aDatas the datas needed to fill the layout
+     * @param array $aData the datas needed to fill the layout
      * @param boolean $bReturn if true, it will return the html string without rendering the whole page.
      *                         Usefull for debuging, and used for Print Answers
      * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
@@ -212,7 +212,7 @@ window.addEventListener('message', function(event) {
      * @throws Twig_Error_Syntax
      * @todo missing return statement (php warning)
      */
-    public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false, $bUseRootDir = true)
+    public function renderViewFromFile($sLayoutFilePath, $aData, $bReturn = false, $bUseRootDir = true)
     {
         if ($bUseRootDir) {
             $viewFile = App()->getConfig('rootdir') . $sLayoutFilePath;
@@ -222,7 +222,7 @@ window.addEventListener('message', function(event) {
 
         if (file_exists($viewFile)) {
             $line       = file_get_contents($viewFile);
-            $sHtml      = $this->convertTwigToHtml($line, $aDatas);
+            $sHtml      = $this->convertTwigToHtml($line, $aData);
 
             if ($bReturn) {
                 return $sHtml;
@@ -368,7 +368,7 @@ window.addEventListener('message', function(event) {
      * This method is called from Template Editor.
      * It returns the HTML string needed for the tmp file using the template twig file.
      * @param string $sView the view (layout) to render
-     * @param array $aDatas the datas needed for the view rendering
+     * @param array $aData the datas needed for the view rendering
      * @param Template $oEditedTemplate the template to use
      *
      * @return  string the generated html
@@ -377,12 +377,12 @@ window.addEventListener('message', function(event) {
      * @throws Twig_Error_Syntax
      * @todo missing return statement (php warning)
      */
-    public function renderTemplateForTemplateEditor($sView, $aDatas, $oEditedTemplate)
+    public function renderTemplateForTemplateEditor($sView, $aData, $oEditedTemplate)
     {
         $oTemplate = $this->getTemplateForView($sView, $oEditedTemplate);
         if ($oTemplate) {
             $line      = file_get_contents($oTemplate->viewPath . $sView);
-            $result    = $this->convertTwigToHtml($line, $aDatas, $oEditedTemplate);
+            $result    = $this->convertTwigToHtml($line, $aData, $oEditedTemplate);
             return $result;
         } else {
             trigger_error("Can't find a theme for view: " . $sView, E_USER_ERROR);
@@ -470,14 +470,14 @@ window.addEventListener('message', function(event) {
      * Convert a string containing twig tags to an HTML string.
      *
      * @param string $sString The string of HTML/Twig to convert
-     * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
+     * @param array $aData Array containing the datas needed to render the view ($thissurvey)
      * @param TemplateConfiguration|null $oTemplate
      * @return string
      * @throws Throwable
      * @throws Twig_Error_Loader
      * @throws Twig_Error_Syntax
      */
-    public function convertTwigToHtml($sString, $aDatas = array(), $oTemplate = null)
+    public function convertTwigToHtml($sString, $aData = array(), $oTemplate = null)
     {
 
         // Twig init
@@ -486,18 +486,18 @@ window.addEventListener('message', function(event) {
         //Run theme related things only if a theme is provided!
         if ($oTemplate !== null) {
             // Get the additional infos for the view, such as language, direction, etc
-            $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+            $aData = $this->getAdditionalInfos($aData, $oTemplate);
 
             // Add to the loader the path of the template and its parents.
             $this->addRecursiveTemplatesPath($oTemplate);
 
             // Plugin for blocks replacement
-            list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+            list($sString, $aData) = $this->getPluginsData($sString, $aData);
         }
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($sString);
-        $sHtml         = $oTwigTemplate->render($aDatas, false);
+        $sHtml         = $oTwigTemplate->render($aData, false);
 
         return $sHtml;
     }
@@ -596,27 +596,27 @@ window.addEventListener('message', function(event) {
     /**
      * Plugin event, should be replaced by Question Template
      * @param string $sString
-     * @param array $aDatas
+     * @param array $aData
      * @return array
      */
-    private function getPluginsData($sString, $aDatas)
+    private function getPluginsData($sString, $aData)
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
 
-        if (!empty($aDatas['aSurveyInfo']['sid'])) {
-            $surveyid = $aDatas['aSurveyInfo']['sid'];
-            $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
+        if (!empty($aData['aSurveyInfo']['sid'])) {
+            $surveyid = $aData['aSurveyInfo']['sid'];
+            $event->set('surveyId', $aData['aSurveyInfo']['sid']);
 
             // show "Exit and clear survey" button whenever there is 'srid' key set,
             // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             // additionally checks for submit page to compensate when srid is needed to render other views
             if (
                 isset($_SESSION['survey_' . $surveyid]['srid'])
-                && isset($aDatas['aSurveyInfo']['active']) && $aDatas['aSurveyInfo']['active'] == 'Y'
-                && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit'
-                && isset($aDatas['aSurveyInfo']['include_content']) && $aDatas['aSurveyInfo']['include_content'] !== 'submit_preview'
+                && isset($aData['aSurveyInfo']['active']) && $aData['aSurveyInfo']['active'] == 'Y'
+                && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit'
+                && isset($aData['aSurveyInfo']['include_content']) && $aData['aSurveyInfo']['include_content'] !== 'submit_preview'
             ) {
-                $aDatas['aSurveyInfo']['bShowClearAll'] = true;
+                $aData['aSurveyInfo']['bShowClearAll'] = true;
             }
         }
 
@@ -628,7 +628,7 @@ window.addEventListener('message', function(event) {
             }
         }
 
-        return array($sString, $aDatas);
+        return array($sString, $aData);
     }
 
     /**
@@ -641,45 +641,45 @@ window.addEventListener('message', function(event) {
      * @param TemplateConfiguration $oTemplate
      * @return
      */
-    private function getAdditionalInfos($aDatas, $oTemplate)
+    private function getAdditionalInfos($aData, $oTemplate)
     {
         /* get minimal surveyInfo if we can have a sid, used in ExpressionManager for example */
-        if (empty($aDatas["aSurveyInfo"])) {
-            $aDatas["aSurveyInfo"] = array();
-            if (!empty($aDatas["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
-                $sid = empty($aDatas["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aDatas["sid"];
-                $language = empty($aDatas["language"]) ? App()->getLanguage() : $aDatas["language"];
-                $aDatas["aSurveyInfo"] = getSurveyInfo($sid, $language);
+        if (empty($aData["aSurveyInfo"])) {
+            $aData["aSurveyInfo"] = array();
+            if (!empty($aData["sid"]) || LimeExpressionManager::getLEMsurveyId()) {
+                $sid = empty($aData["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aData["sid"];
+                $language = empty($aData["language"]) ? App()->getLanguage() : $aData["language"];
+                $aData["aSurveyInfo"] = getSurveyInfo($sid, $language);
             }
         }
         // We retreive the definition of the core class and attributes
         // (in the future, should be template dependant done via XML file)
-        $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
+        $aData["aSurveyInfo"] = array_merge($aData["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
         $languagecode = App()->getLanguage();
-        if (!empty($aDatas['aSurveyInfo']['sid']) && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
-            if (!in_array($languagecode, Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->getAllLanguages())) {
-                $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
+        if (!empty($aData['aSurveyInfo']['sid']) && Survey::model()->findByPk($aData['aSurveyInfo']['sid'])) {
+            if (!in_array($languagecode, Survey::model()->findByPk($aData['aSurveyInfo']['sid'])->getAllLanguages())) {
+                $languagecode = Survey::model()->findByPk($aData['aSurveyInfo']['sid'])->language;
             }
         }
 
-        $aDatas["aSurveyInfo"]['languagecode']     = $languagecode;
-        $aDatas["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
+        $aData["aSurveyInfo"]['languagecode']     = $languagecode;
+        $aData["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
-        if (!empty($aDatas['aSurveyInfo']['sid'])) {
+        if (!empty($aData['aSurveyInfo']['sid'])) {
             $showxquestions                            = App()->getConfig('showxquestions');
-            $aDatas["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' ||
-                ($showxquestions == 'choose' && !isset($aDatas['aSurveyInfo']['showxquestions'])) ||
-                ($showxquestions == 'choose' && $aDatas['aSurveyInfo']['showxquestions'] == 'Y'));
+            $aData["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' ||
+                ($showxquestions == 'choose' && !isset($aData['aSurveyInfo']['showxquestions'])) ||
+                ($showxquestions == 'choose' && $aData['aSurveyInfo']['showxquestions'] == 'Y'));
 
 
             // NB: Session is flushed at submit, so sid is not defined here.
             if (
-                isset($_SESSION['survey_' . $aDatas['aSurveyInfo']['sid']]) &&
-                isset($_SESSION['survey_' . $aDatas['aSurveyInfo']['sid']]['totalquestions'])
+                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]) &&
+                isset($_SESSION['survey_' . $aData['aSurveyInfo']['sid']]['totalquestions'])
             ) {
-                $aDatas["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
-                $aDatas['aSurveyInfo']['sid']]['totalquestions'];
+                $aData["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_' .
+                $aData['aSurveyInfo']['sid']]['totalquestions'];
             }
 
             // Add the survey theme options
@@ -690,20 +690,20 @@ window.addEventListener('message', function(event) {
                     if ($value instanceof stdClass) {
                         $value = 'N/A';
                     }
-                    $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+                    $aData["aSurveyInfo"]["options"][$key] = (string) $value;
                 }
             }
         } else {
             // Add the global theme options
             $oTemplateConfigurationCurrent = Template::getInstance($oTemplate->sTemplateName);
-            $aDatas["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
+            $aData["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])
                 ? (array) json_decode($oTemplateConfigurationCurrent['options'])
                 : $oTemplateConfigurationCurrent['options'];
         }
 
-        $aDatas = $this->fixDataCoherence($aDatas);
+        $aData = $this->fixDataCoherence($aData);
 
-        return $aDatas;
+        return $aData;
     }
 
 
@@ -712,24 +712,26 @@ window.addEventListener('message', function(event) {
      * With some server configuration, it can lead to critical errors : empty values in image src or url()
      * can block submition
      * This function will check thoses cases. It can be used in the future for further checks
-     * @param array $aDatas
+     * @param array $aData
      * @return array
      *
      */
-    private function fixDataCoherence($aDatas)
+    private function fixDataCoherence($aData)
     {
         // Clean option with files
         $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
 
         foreach ($aFilesOptions as $sOption => $sFileOption) {
-            if (array_key_exists($sFileOption, $aDatas["aSurveyInfo"]["options"])) {
-                if (empty($aDatas["aSurveyInfo"]["options"][$sFileOption])) {
-                    $aDatas["aSurveyInfo"]["options"][$sOption] = "false";
+            if ($aData["aSurveyInfo"]["options"] !== null) {
+                if (array_key_exists($sFileOption, $aData["aSurveyInfo"]["options"])) {
+                    if (empty($aData["aSurveyInfo"]["options"][$sFileOption])) {
+                        $aData["aSurveyInfo"]["options"][$sOption] = "false";
+                    }
                 }
             }
         }
 
-        return $aDatas;
+        return $aData;
     }
 
 

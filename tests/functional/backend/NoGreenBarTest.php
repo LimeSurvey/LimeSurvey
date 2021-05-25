@@ -14,7 +14,7 @@ class NoGreenBarTest extends TestBaseClassWeb
     /**
      * Setup green bar test.
      */
-    public function setup()
+    public function setUp(): void
     {
         // Import suprvey.
         $surveyFile =  'tests/data/surveys/survey_archive_358746_no_green_bar.lsa';

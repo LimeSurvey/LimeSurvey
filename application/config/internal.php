@@ -54,15 +54,7 @@ $internalConfig = array(
         'vendor.twbs.bootstrap.dist',
 
         //Basic questiontype objects
-        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes'),
-        // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
-        // However, LimeSurvey directory tree is not a standard Yii Application tree.
-        // we use 'third_party' instead of 'vendor'
-        // This line just point application.vendor.Twig to application/third_party/Twig
-        // @see: ETwigViewRenderer::$twigPathAlias
-        'application.vendor.Twig'=>'application.third_party.Twig',
-        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
-        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
+        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes')
     ),
 
     /*
@@ -350,13 +342,13 @@ $internalConfig = array(
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
                 ),
-                'properties' => array(
+                'properties' =>  array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
                     'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions'),
                     'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label'),
-                    'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
+                    'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'relevance', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
                 'functions' => array(
