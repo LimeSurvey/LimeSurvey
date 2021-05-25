@@ -11,10 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] = '5.1.0-dev';
+$config['versionnumber'] = '5.0.0';
 $config['dbversionnumber'] = 447;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['templateapiversion']  = 3;
-$config['assetsversionnumber'] = '30206';
+$config['assetsversionnumber'] = '30207';
 return $config;
