@@ -24,7 +24,7 @@ class SurveyActivatorTest extends TestBaseClass
     public static $surveyWithoutTimingsID = '143933';
     public static $surveyWithFileUploadID = '561859';
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
     }

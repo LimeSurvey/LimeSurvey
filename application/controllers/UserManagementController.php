@@ -91,7 +91,7 @@ class UserManagementController extends LSBaseController
             );
         }
         $oUser = $userid === null ? new User() : User::model()->findByPk($userid);
-        $randomPassword = $this->getRandomPassword();
+        $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
         return $this->renderPartial('partial/addedituser', ['oUser' => $oUser, 'randomPassword' => $randomPassword]);
     }
 
@@ -158,15 +158,26 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
+
             //generate random password when password is empty
             if (empty($aUser['password'])) {
-                $newPassword = $this->getRandomPassword(8);
+                $newPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $aUser['password'] =  $newPassword;
             }
             
-            //retrive the raw password to show up in registration email
+            //retrive the raw password
             $aUser['rawPassword'] = $aUser['password'];
-            $this->createAdminUser($aUser);
+
+            $passwordSetByUser = Yii::app()->request->getParam('preset_password');
+            if($passwordSetByUser == 0){ //in this case admin has not set a password, email with link will be sent
+                $data = $this->createAdminUser($aUser);
+            }else{ //in this case admin has set a password, no email will be send ...just create user with given credentials
+                $data = $this->createAdminUser($aUser, false);
+            }
+
+            return App()->getController()->renderPartial('/admin/super/_renderJson', [
+                "data" => $data
+            ]);
         }
     }
 
@@ -655,7 +666,7 @@ class UserManagementController extends LSBaseController
                     }
                 }
             } else {
-                $password = $this->getRandomPassword(8);
+                $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $passwordText = $password;
                 if ($aNewUser['password'] != ' ') {
                     $password = password_hash($aNewUser['password'], PASSWORD_DEFAULT);
@@ -867,11 +878,10 @@ class UserManagementController extends LSBaseController
                 if ($oUser->uid == 1) {
                     $aResults[$user]['error'] = gT("Error! You do not have the permission to edit this user.");
                 } else {
-                    $success = $this->resetLoginData($oUser, true)['success'];
-                    if ($success) {
-                        $oUser->modified = date('Y-m-d H:i:s');
-                        $aResults[$user]['result'] = $oUser->save();
-                    }
+                    $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
+                    $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
+                    $success = $successData['success'];
+                    $aResults[$user]['result'] = $success;
                 }
             }
         }
@@ -1105,21 +1115,6 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Creates a random password through the core plugin
-     *
-     * @param int $length Length of the password
-     * @return string
-     */
-    protected function getRandomPassword($length = 8)
-    {
-        $oGetPasswordEvent = new PluginEvent('createRandomPassword');
-        $oGetPasswordEvent->set('targetSize', $length);
-        Yii::app()->getPluginManager()->dispatchEvent($oGetPasswordEvent);
-
-        return $oGetPasswordEvent->get('password');
-    }
-
-    /**
      * Update admin-user
      *
      * REFACTORED (in UserManagementController)
@@ -1154,34 +1149,30 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * this method creates a new admin user
+     * This method creates a new admin user and returns success or error message
      *
-     * @param array $aUser
-     * @return string
+     * @param array $aUser array with attributes from user model
+     * @param boolean $sendEmail true if email should be send, false otherwise
+     *
+     * @return array
+     *
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function createAdminUser($aUser)
+    private function createAdminUser($aUser, $sendEmail=true)
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
-            $sReturnMessage = gT('User successfully created');
             $success = true;
+            $sReturnMessage = gT('User successfully created');
 
-            if (Yii::app()->getConfig("sendadmincreationemail")) {
-                $mailer = $this->sendAdminMail($aUser, 'registration');
+            if (Yii::app()->getConfig("sendadmincreationemail") && $sendEmail) {
+                $user = User::model()->findByPk($newUser['uid']);
+                $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
+                $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_REGISTRATION);
 
-                if ($mailer->getError()) {
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Error"));
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Email to %s (%s) failed."), "<strong>" . $newUser['users_name'] . "</strong>", $newUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array(), $mailer->getError());
-                    $success = false;
-                } else {
-                    // has to be sent again or no other way
-                    $sReturnMessage = CHtml::tag("h4", array(), gT("Success"));
-                    $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $newUser['users_name'], $newUser['email']));
-                    $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
-                }
+                $sReturnMessage = $successData['sReturnMessage'];
+                $success = $successData['success'];
             }
 
             if ($success) {
@@ -1197,10 +1188,13 @@ class UserManagementController extends LSBaseController
                 ];
             }
 
-            return App()->getController()->renderPartial('/admin/super/_renderJson', [
-                "data" => $data
-            ]);
+            return $data;
         }
+
+        return [
+            'success' => false,
+            'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
+        ];
     }
 
     /**
@@ -1268,87 +1262,6 @@ class UserManagementController extends LSBaseController
     }
 
     /**
-     * Send the registration email to a new survey administrator
-     * @TODO: make this user configurable by TWIG, or similar
-     *
-     * @param string $type   two types are available 'resetPassword' or 'registration', default is 'registration'
-     * @param array $aUser
-     * @param null $newPassword
-     * @return LimeMailer if send is successfull
-     * @throws \PHPMailer\PHPMailer\Exception
-     */
-    public function sendAdminMail($aUser, $type = 'registration')
-    {
-        //Get email template from globalSettings
-        $aAdminEmail = $this->generateAdminCreationEmail($aUser['full_name'], $aUser['users_name'], $aUser['password'], $aUser['uid']);
-
-        $body = "";
-        switch ($type) {
-            case "resetPassword":
-                $renderArray = [
-                    'surveyapplicationname' => Yii::app()->getConfig("sitename"),
-                    'emailMessage' => sprintf(gT("Hello %s,"), $aUser['full_name']) . "<br />"
-                        . sprintf(gT("This is an automated email to notify you that your login credentials for '%s' have been reset."), Yii::app()->getConfig("sitename")),
-                    'credentialsText' => gT("Here are your new credentials."),
-                    'siteadminemail' => Yii::app()->getConfig("siteadminemail"),
-                    'linkToAdminpanel' => $this->createAbsoluteUrl("/admin"),
-                    'username' => $aUser['users_name'],
-                    'password' => $aUser['rawPassword'],
-                    'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $aUser['uid']),
-                    'showPassword' => (Yii::app()->getConfig("display_user_password_in_email") === true),
-                ];
-                $subject = "[" . Yii::app()->getConfig("sitename") . "] " . gT("Your login credentials have been reset");
-                $emailType = "addadminuser";
-                $body = Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
-                break;
-            case 'registration':
-            default:
-                $subject = $aAdminEmail["subject"];
-                $body = $aAdminEmail["body"];
-                $emailType = "addadminuser";
-                break;
-        }
-
-
-        $oCurrentlyLoggedInUser = User::model()->findByPk(Yii::app()->user->id);
-
-        $mailer = new LimeMailer();
-        $mailer->addAddress($aUser['email'], $aUser['full_name']);
-        $mailer->Subject = $subject;
-        $mailer->setFrom($oCurrentlyLoggedInUser->email, $oCurrentlyLoggedInUser->users_name);
-        $mailer->Body = $body;
-        $mailer->isHtml(true);
-        $mailer->emailType = $emailType;
-        $mailer->sendMessage();
-        return $mailer;
-    }
-
-    /**
-     * Resets the password for one user
-     *
-     * @param User $oUser User model
-     * @param bool $sendMail Send a mail to the user
-     * @return array [success, uid, username, password]
-     * @throws CException
-     * @throws \PHPMailer\PHPMailer\Exception
-     */
-    public function resetLoginData(&$oUser, $sendMail = false)
-    {
-        $newPassword = $this->getRandomPassword(8);
-        $oUser->setPassword($newPassword);
-        $success = true;
-        if ($sendMail === true) {
-            $aUser = $oUser->attributes;
-            $aUser['rawPassword'] = $newPassword;
-            $success = $this->sendAdminMail($aUser, 'resetPassword');
-        }
-        return [
-            'success' => $success, 'uid' => $oUser->uid, 'username' => $oUser->users_name, 'password' => $newPassword,
-        ];
-    }
-
-    /**
      * todo this should not be in a controller, find a better place for it (view)
      *
      *
@@ -1401,50 +1314,6 @@ class UserManagementController extends LSBaseController
             $uiq = decbin(rand(1000000, 9999999) * (rand(100, 999) . rand(100, 999) . rand(100, 999) . rand(100, 999)));
         }
         return hash('sha256', bin2hex($uiq));
-    }
-
-
-    /**
-     *
-     * This function prepare the email template to send to the new created user
-     * @param string $fullname
-     * @param string $username
-     * @param string $password
-     * @return mixed $aAdminEmail array with subject and email nody
-     */
-    public function generateAdminCreationEmail($fullname, $username, $password, $iNewUID)
-    {
-        $aAdminEmail = [];
-        $siteName = Yii::app()->getConfig("sitename");
-        $loginUrl = $this->createAbsoluteUrl("/admin");
-        $siteAdminEmail = Yii::app()->getConfig("siteadminemail");
-        $emailSubject = Yii::app()->getConfig("admincreationemailsubject");
-        $emailTemplate = Yii::app()->getConfig("admincreationemailtemplate");
-
-        // authent is not delegated to web server or LDAP server
-        if (Yii::app()->getConfig("auth_webserver") === false && Permission::model()->hasGlobalPermission('auth_db', 'read', $iNewUID)) {
-            // send password (if authorized by config)
-            if (!Yii::app()->getConfig("display_user_password_in_email") === true) {
-                $password = "<p>" . gT("Please contact your LimeSurvey administrator for your password.") . "</p>";
-            }
-        }
-
-        //Replace placeholder in Email subject
-        $emailSubject = str_replace("{SITENAME}", $siteName, $emailSubject);
-        $emailSubject = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailSubject);
-
-        //Replace placeholder in Email body
-        $emailTemplate = str_replace("{SITENAME}", $siteName, $emailTemplate);
-        $emailTemplate = str_replace("{SITEADMINEMAIL}", $siteAdminEmail, $emailTemplate);
-        $emailTemplate = str_replace("{FULLNAME}", $fullname, $emailTemplate);
-        $emailTemplate = str_replace("{USERNAME}", $username, $emailTemplate);
-        $emailTemplate = str_replace("{PASSWORD}", $password, $emailTemplate);
-        $emailTemplate = str_replace("{LOGINURL}", $loginUrl, $emailTemplate);
-
-        $aAdminEmail['subject'] = $emailSubject;
-        $aAdminEmail['body'] = $emailTemplate;
-
-        return $aAdminEmail;
     }
 
     /**

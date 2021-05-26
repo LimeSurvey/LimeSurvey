@@ -1,0 +1,2 @@
+#!/bin/bash
+! find application/ -type f -name '*.php' -print0 | xargs -I {} -0 -P 0 php -d error_reporting=32767 -l {} | grep -v 'No syntax error'

@@ -16,7 +16,7 @@ class NewQuestionAttributesPlugin extends PluginBase
         $questionAttributes = [
             'testAttribute' => [
                 'types'     => 'S',
-                'category'  => gT('Test'),
+                'category'  => 'Test',
                 'sortorder' => 1,
                 'inputtype' => 'text',
                 'default'   => '',

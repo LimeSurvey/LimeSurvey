@@ -46,8 +46,6 @@ Yii::import('application.helpers.replacements_helper', true);
 Yii::import('application.helpers.admin.export.*');
 Yii::import('application.libraries.PluginManager.PluginManager', true);
 Yii::import('application.libraries.MenuObjects.*', true);
-Yii::import('application.third_party.Twig.TemplateInterface', true);
-Yii::import('application.third_party.Twig.*', true);
 Yii::import("application.libraries.admin.pclzip.pclzip", true);
 
 /** @var PluginManager */
@@ -55,3 +53,7 @@ $pluginManager = Yii::app()->getComponent('pluginManager');
 $pluginManager->scanPlugins(true);
 
 error_reporting(E_ALL);
+
+// Needed for LOGO_URL constant. TODO: Why is this defined in a class...? Should be Yii config?
+$adminTheme = new AdminTheme();
+$adminTheme->setAdminTheme();

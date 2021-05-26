@@ -13,7 +13,7 @@ class QuexmlPDFTest extends TestBaseClass
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         $surveyFile = self::$surveysFolder . '/survey_archive_821351.lsa';

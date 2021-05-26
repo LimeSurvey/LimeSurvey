@@ -398,7 +398,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         $answer = '';
         $inputnames = [];
-        $this->aDateformatDetails      = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid);
+        $this->aDateformatDetails      = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid, App()->language);
         $coreClass = "ls-answers answer-item date-item " . $sCoreClasses;
         $this->setMinDate();
         $this->setMaxDate();

@@ -676,4 +676,13 @@ class LS_Twig_Extension extends Twig_Extension
 
         return $aResponses;
     }
+
+    /**
+     * Returns true if the language uses RTL writing system.
+     */
+    public static function getLanguageRTL($sLanguageCode)
+    {
+        Yii::app()->loadHelper('surveytranslator');
+        return getLanguageRTL($sLanguageCode);
+    }
 }

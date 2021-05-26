@@ -18,13 +18,13 @@ class ThemeOptionsControllerTest extends TestCase
      */
     private $templateConfiguration;
 
-    public function setUp()
+    public function setUp(): void
     {
         \Yii::import('application.controllers.ThemeOptionsController', true);
         $this->controller = new ThemeOptionsController('moo');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->controller = null;
     }
