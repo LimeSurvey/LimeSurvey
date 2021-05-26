@@ -15,6 +15,10 @@ php:
 env:
     - DBENGINE=MYISAM
     - DBENGINE=INNODB
+cache:
+    yarn: true
+    directories:
+        - $HOME/.composer/cache/files
 notifications:
     email:
         recipients:
