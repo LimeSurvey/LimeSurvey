@@ -13,15 +13,14 @@ if (App()->session['questionselectormode'] !== 'default') {
 } else {
     $selectormodeclass = App()->getConfig('defaultquestionselectormode');
 }
-uasort($aQuestionTypeList, "questionTitleSort");
-foreach ($aQuestionTypeList as $questionType) {
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+foreach ($aQuestionTypeList as $questionTheme) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
-            'questionGroupName' => $questionType['group']
+            'questionGroupName' => $questionTheme->group
         );
     }
-    $imageName = $questionType['question_type'];
+    $imageName = $questionTheme->question_type;
     if ($imageName == ":") {
         $imageName = "COLON";
     } else {
@@ -34,19 +33,22 @@ foreach ($aQuestionTypeList as $questionType) {
         }
     }
 
-    $questionType['type'] = $questionType['question_type'];
-    $questionType['detailpage'] = '
+    $questionTypeData = [];
+    $questionTypeData['type'] = $questionTheme->question_type;
+    $questionTypeData['name'] = $questionTheme->name;
+    $questionTypeData['title'] = $questionTheme->title;
+    $questionTypeData['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="' . $questionType['image_path'] . '" />
+            <img src="' . $questionTheme->image_path . '" />
         </div>';
     if ($imageName == 'S') {
-        $questionType['detailpage'] = '
+        $questionTypeData['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
     }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionTypeData;
 }
 $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
 $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
