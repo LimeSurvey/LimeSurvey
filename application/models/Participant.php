@@ -356,92 +356,94 @@ class Participant extends LSActiveRecord
      */
     public function getColumns()
     {
-        $cols = array(
-            array(
-                "name" => 'checkbox',
-                "type" => 'raw',
+        $cols = [
+            [
+                "name"   => 'checkbox',
+                "type"   => 'raw',
                 "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
                 "filter" => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
+            ],
+            [
+                "name"   => 'buttons',
+                "type"   => 'raw',
                 "header" => gT("Action"),
                 "filter" => false
-            ),
-            array(
+            ],
+            [
                 "name" => 'lastname'
-            ),
-            array(
+            ],
+            [
                 "name" => 'firstname'
-            ),
-            array(
+            ],
+            [
                 "name" => 'email'
-            ),
-            array(
-                "name" => 'language',
-                "value" => 'getLanguageNameFromCode($data->language, false)',
+            ],
+            [
+                "name"   => 'language',
+                "value"  => 'getLanguageNameFromCode($data->language, false)',
                 'filter' => $this->allUsedLanguagesWithRealName
-            ),
-            array(
-                "name" => 'countActiveSurveys',
-                "value" => '$data->getCountActiveSurveys()',
-                "header" => gT("Active surveys"),
-                "htmlOptions" => array('width' => '80px')
-            ),
-            array(
-                "name" => 'owner.full_name',
+            ],
+            [
+                "name"        => 'countActiveSurveys',
+                "value"       => '$data->getCountActiveSurveys()',
+                "header"      => gT("Active surveys"),
+                "htmlOptions" => ['width' => '80px']
+            ],
+            [
+                "name"   => 'owner.full_name',
                 "header" => gT("Owner"),
                 "filter" => $this->getOwnersList($this->owner_uid)
-            ),
-            array(
-                "name" => 'blacklisted',
-                "value" => '$data->getBlacklistSwitchbutton()',
-                "type" => "raw",
-                "filter" => array('N' => gT("No"), 'Y' => gT('Yes'))
-            ),
-            array(
-                'name' => 'created',
+            ],
+            [
+                "name"   => 'blacklisted',
+                "value"  => '$data->getBlacklistSwitchbutton()',
+                "type"   => "raw",
+                "filter" => ['N' => gT("No"), 'Y' => gT('Yes')]
+            ],
+            [
+                'name'  => 'created',
                 'value' => '$data->createdFormatted',
-                'type' => 'raw',
-            )
-        );
+                'type'  => 'raw',
+            ]
+        ];
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            if ($attribute['visible'] == "FALSE") {
+            if ($attribute['visible'] === "FALSE") {
                 continue;
             }
-            $col_array = array(
-                "value" => '$data->getParticipantAttribute($this->id)',
-                "id" => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
-                "type" => "html",
-            );
-            //textbox
-            if ($attribute['attribute_type'] == "TB") {
-                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+            if (!isset($extraAttributeParams[$name])) {
+                $extraAttributeParams[$name] = '';
             }
-            //dropdown
-            elseif ($attribute['attribute_type'] == "DD") {
+            $col_array = [
+                "value"  => '$data->getParticipantAttribute($this->id)',
+                "id"     => $name,
+                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "type"   => "html",
+            ];
+            //textbox
+            if ($attribute['attribute_type'] === "TB") {
+                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+            } elseif ($attribute['attribute_type'] === "DD") {
+                //dropdown
                 $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
-                $options_array = array(
+                $options_array = [
                     '' => ''
-                );
+                ];
                 foreach ($options_raw as $option) {
                     $options_array[$option['value']] = $option['value'];
                 }
 
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
-            }
-            //date -> still a text field, too many errors with the gridview
-            elseif ($attribute['attribute_type'] == "DP") {
+            } elseif ($attribute['attribute_type'] === "DP") {
+                //date -> still a text field, too many errors with the gridview
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
         }
         return $cols;
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -521,7 +523,7 @@ class Participant extends LSActiveRecord
             // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
 
             // Use "LIKE" for text-box, equal for other types
-            if ($attributeType == 'TB') {
+            if ($attributeType === 'TB') {
                 $bindKey = ':attribute_id' . $attributeId;
                 $callParticipantAttributes->where("attribute_id = " . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
                 $criteria->params[$bindKey] = $attributeId;
@@ -812,7 +814,7 @@ class Participant extends LSActiveRecord
      * @param string|null $order
      * @return CDbCommand
      */
-    private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
+    private function getParticipantsSelectCommand($count, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
         $joinValue = array();

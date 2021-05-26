@@ -45,7 +45,7 @@ tools:
     php_cs_fixer:
         enabled:              true
         config:
-            level:            psr2
+            level:            psr12
             lowercase_keywords: false
         filter:
             excluded_paths:

@@ -50,7 +50,7 @@ class themes extends Survey_Common_Action
 
             $zipfile = "$tempdir/$templatename.zip";
             Yii::app()->loadLibrary('admin.pclzip');
-            $zip = new PclZip($zipfile);
+            $zip = new PclZip($zipfile, false);
             $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
 
             if (is_file($zipfile)) {
@@ -220,8 +220,9 @@ class themes extends Survey_Common_Action
 
         $debug[] = $_FILES;
 
-        // Redirect back at file size error.
-        $this->checkFileSizeError('file');
+        // Return json at file size error.
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->renderJsonOnError('file', $debug);
 
         $checkImageContent = LSYii_ImageValidator::validateImage($_FILES["file"]);
         if ($checkImageContent['check'] === false) {
@@ -443,12 +444,22 @@ class themes extends Survey_Common_Action
      */
     public function uploadfile()
     {
+        $editfile               = App()->request->getPost('editfile');
+        $templatename           = returnGlobal('templatename');
+        $screenname             = returnGlobal('screenname');
+        if (empty($screenname)) {
+            $screenname = 'welcome';
+        }
+
+        $redirectUrl = array('admin/themes', 'sa' => 'view', 'editfile' => $editfile, 'screenname' => $screenname, 'templatename' => $templatename);
+
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+            // Check file size and redirect on error
+            $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+            $uploadValidator->redirectOnError('upload_file', $redirectUrl);
+
             $action                 = returnGlobal('action');
-            $editfile               = App()->request->getPost('editfile');
-            $templatename           = returnGlobal('templatename');
             $oEditedTemplate        = Template::getInstance($templatename);
-            $screenname             = returnGlobal('screenname');
             $allowedthemeuploads    = Yii::app()->getConfig('allowedthemeuploads') . ',' . Yii::app()->getConfig('allowedthemeimageformats');
             $filename               = sanitize_filename($_FILES['upload_file']['name'], false, false, false); // Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
@@ -488,7 +499,7 @@ class themes extends Survey_Common_Action
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-        $this->getController()->redirect(array('admin/themes', 'sa' => 'view', 'editfile' => $editfile, 'screenname' => $screenname, 'templatename' => $templatename));
+        $this->getController()->redirect($redirectUrl);
     }
 
 
@@ -1319,16 +1330,8 @@ class themes extends Survey_Common_Action
      */
     protected function checkFileSizeError($uploadName = 'the_file')
     {
-        if ($_FILES[$uploadName]['error'] == 1 || $_FILES[$uploadName]['error'] == 2) {
-            Yii::app()->setFlashMessage(
-                sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                ),
-                'error'
-            );
-            $this->getController()->redirect(array("admin/themes/sa/upload"));
-        }
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError($uploadName, array("admin/themes/sa/upload"));
     }
 
     /**

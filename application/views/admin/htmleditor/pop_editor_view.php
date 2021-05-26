@@ -41,6 +41,7 @@
                 */
                 if($('textarea').length > 0){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
+                    
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
                         toolbarStartupExpanded : true,
@@ -53,6 +54,7 @@
                         LimeReplacementFieldsAction: "<?php echo $sAction; ?>",
                         LimeReplacementFieldsPath : "<?php echo $this->createUrl("/limereplacementfields/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
+                        <?php echo !is_null($contentsLangDirection) ? ",contentsLangDirection: '{$contentsLangDirection}'" : ''; ?>
                         <?php echo $htmlformatoption; ?> });
                 }
                 });

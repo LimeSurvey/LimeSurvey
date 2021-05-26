@@ -426,7 +426,7 @@ class ThemeOptionsController extends LSBaseController
         } elseif (!is_writable(App()->getConfig('userthemerootdir'))) {
             $canImport = false;
             $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-        } elseif (!function_exists("zip_open")) {
+        } elseif (!class_exists('ZipArchive')) {
             $canImport = false;
             $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
         }

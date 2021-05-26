@@ -29,6 +29,7 @@
         <ul class="nav navbar-nav hidden-sm  hidden-md hidden-lg small-screens-menus">
 
             <li><br/><br/></li>
+
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
@@ -57,11 +58,12 @@
     <div class="collapse navbar-collapse js-navbar-collapse pull-right ls--selector--configuration-menu">
         <ul class="nav navbar-nav navbar-right">
 
-            <!-- Help menu -->
-            <?php $this->renderPartial( "/admin/super/_help_menu", []); ?>
-            
-            <!-- Configuration menu -->
-            <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
+            <li>
+                <a  href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" >
+                    <span class="icon-add" ></span>
+                    <?php eT("Create survey");?>
+                </a>
+            </li>
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
@@ -70,45 +72,13 @@
                     <?php eT("Surveys");?>
                 </a>
             </li>
-            <li class="dropdown dropdown-split-right">
-                <a class="ls-space padding left-5 right-5" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="sr-only">Toggle Dropdown</span>
-                    <span style="margin-left: 0px;" class="caret"></span>
-                </a>
-                <ul class="dropdown-menu" role="menu">
-                         <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
-                         <!-- Create a new survey -->
-                         <li>
-                             <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>">
-                                 <?php eT("Create");?>
-                             </a>
-                         </li>
 
-                         <!-- Import a survey -->
-                         <li>
-                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/import"); ?>">
-                               <?php eT("Import");?>
-                           </a>
-                         </li>
+            <!-- Help menu -->
+            <?php $this->renderPartial( "/admin/super/_help_menu", []); ?>
+            
+            <!-- Configuration menu -->
+            <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
-                         <!-- Import a survey -->
-                         <li>
-                           <a href="<?php echo $this->createUrl("surveyAdministration/newSurvey/tab/copy"); ?>">
-                               <?php eT("Copy");?>
-                           </a>
-                         </li>
-
-                         <li class="divider"></li>
-                        <?php endif;?>
-                         <!-- List surveys -->
-                         <li>
-                             <a href="<?php echo $this->createUrl("surveyAdministration/listsurveys"); ?>">
-                                 <?php eT("List all");?>
-                             </a>
-                         </li>
-
-                       </ul>
-                     </li>
 
             <!-- user menu -->
             <!-- active surveys -->
@@ -155,6 +125,9 @@
                 </li>
             <?php endforeach; ?>
 
+            <!-- Admin notification system -->
+            <?php echo $adminNotifications; ?>
+
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><span class="icon-user" ></span> <?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -172,9 +145,6 @@
                     </li>
                 </ul>
             </li>
-
-            <!-- Admin notification system -->
-            <?php echo $adminNotifications; ?>
 
         </ul>
     </div><!-- /.nav-collapse -->

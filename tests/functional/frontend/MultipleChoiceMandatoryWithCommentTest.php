@@ -15,7 +15,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
     /**
      *
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -27,7 +27,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
     /**
      * Import and activate survey at every test.
      */
-    public function setup()
+    public function setUp(): void
     {
         self::$testHelper->activateSurvey(self::$surveyId);
     }
@@ -35,7 +35,7 @@ class MultipleChoiceMandatoryWithComment extends TestBaseClassWeb
     /**
      * Delete test survey after every test.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         self::$testHelper->deactivateSurvey(self::$surveyId);
 

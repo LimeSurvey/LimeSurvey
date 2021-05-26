@@ -28,7 +28,13 @@
                     <?= CHtml::textArea(
                         "questionI10N[$lang][question]",
                         $question->questionl10ns[$lang]->question ?? '',
-                        array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$lang}")
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '8',
+                            'id' => "question_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr'
+                        ]
                     ); ?>
                     <?= getEditor(
                         'question-text',//"question_" . $lang, //this is important for LimereplacementfieldsController function getReplacementFields(...)!
@@ -54,7 +60,13 @@
                     <?= CHtml::textArea(
                         "questionI10N[$lang][help]",
                         $question->questionl10ns[$lang]->help ?? '',
-                        array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$lang}")
+                        [
+                            'class' => 'form-control',
+                            'cols' => '60',
+                            'rows' => '4',
+                            'id' => "help_{$lang}",
+                            'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr'
+                        ]
                     ); ?>
                     <?= getEditor(
                         "help_".$lang,

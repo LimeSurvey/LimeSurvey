@@ -1805,6 +1805,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  function showConditionsWarning(e) {
+    if (!$(this).data('hasConditions')) {
+      return;
+    }
+    $('#general-setting-help-relevance').show();
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
     $('.answertable tbody').sortable({
@@ -1915,4 +1922,6 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('#' + id).width(width).height(height);
       $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
     });
+    
+    $('#relevance').on('keyup', showConditionsWarning);
 });

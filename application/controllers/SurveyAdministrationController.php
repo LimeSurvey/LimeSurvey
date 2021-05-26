@@ -347,11 +347,9 @@ class SurveyAdministrationController extends LSBaseController
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin.htmleditor');
 
-        $esrow = $this->fetchSurveyInfo('newsurvey');
-
         $aData = $this->generalTabNewSurvey();
         $aData = array_merge($aData, $this->getGeneralTemplateData(0));
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] =  $this->fetchSurveyInfo('newsurvey');
 
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
@@ -1271,6 +1269,13 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionUploadimagefile()
     {
+        $debug = [$_FILES];
+        // Check file size and render JSON on error.
+        // This is done before checking the survey permissions because, if the max POST size was exceeded,
+        // there is no Survey ID to check for permissions, so the error could be misleading.
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->renderJsonOnError('file', $debug);
+
         $iSurveyID = Yii::app()->request->getPost('surveyid');
         $success = false;
         $debug = [];
@@ -1284,28 +1289,6 @@ class SurveyAdministrationController extends LSBaseController
                         'debug' => $debug
                     ]
                 ),
-                false,
-                false
-            );
-        }
-        $debug[] = $_FILES;
-        if (empty($_FILES)) {
-            $uploadresult = gT("No file was uploaded.");
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
-                false,
-                false
-            );
-        }
-        if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
-            $uploadresult = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            );
-            return $this->renderPartial(
-                '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
                 false,
                 false
             );
@@ -2375,13 +2358,13 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabResourceManagement($oSurvey)
+    private function tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'";
-        if (!function_exists("zip_open")) {
+        if (!class_exists('ZipArchive')) {
             $ZIPimportAction = " onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'";
         }
 
@@ -2396,7 +2379,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['noform'] = true;
 
         //KCFINDER SETTINGS
-        Yii::app()->session['FileManagerContext'] = "edit:survey:{$oSurvey->sid}";
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$survey->sid}";
         Yii::app()->loadHelper('admin.htmleditor');
         initKcfinder();
 
@@ -3043,14 +3026,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabPresentationNavigation($esrow)
+    private function tabPresentationNavigation($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3077,14 +3060,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabNotificationDataManagement()
      * Load "Notification & data management" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabNotificationDataManagement($esrow)
+    private function tabNotificationDataManagement($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 
@@ -3093,14 +3076,14 @@ class SurveyAdministrationController extends LSBaseController
      * survey::_tabTokens()
      * Load "Tokens" tab.
      *
-     * @param mixed $esrow ?
+     * @param mixed $survey ?
      *
      * @return array
      */
-    private function tabTokens($esrow)
+    private function tabTokens($survey)
     {
         $aData = [];
-        $aData['esrow'] = $esrow;
+        $aData['esrow'] = $survey;
         return $aData;
     }
 

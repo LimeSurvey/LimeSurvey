@@ -80,9 +80,6 @@ class QuestionL10n extends LSActiveRecord
             array('script', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max' => 20), // in array languages ?
         );
-        if (!Yii::app()->user->isScriptUpdateAllowed()) {
-            $rules[] = array('script', 'LSYii_NoUpdateValidator');
-        }
         return $rules;
     }
 }

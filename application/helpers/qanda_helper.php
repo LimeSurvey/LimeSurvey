@@ -172,7 +172,7 @@ function retrieveAnswers($ia)
     //show or hide tip
     $_vshow = false;
     if(isset($aQuestionAttributes['hide_tip'])){
-        $_vshow = $aQuestionAttributes['hide_tip'] == 'N'; //hide_tip=no means: show the tip
+        $_vshow = $aQuestionAttributes['hide_tip'] == 0; //hide_tip=0 means: show the tip
     }
 
     list($validation_msg, $isValid) = validation_message($ia, $_vshow);
@@ -553,7 +553,7 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 * @param string $rowname
 * @param string $valuename
 */
-function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc = '', $valuename, $method = "tbody", $class = null)
+function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method = "tbody", $class = null)
 {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'" : "";

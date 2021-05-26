@@ -18,7 +18,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
     /**
      *
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
         $username = getenv('ADMINUSERNAME');
@@ -45,7 +45,7 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
     /**
      *
      */
-    public static function teardownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 

@@ -12,7 +12,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * Tear down fixtures.
      */
-    public static function teardownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::$testHelper->teardownDatabase('__test_update_helper_153');
         self::$testHelper->teardownDatabase('__test_update_helper_258');
