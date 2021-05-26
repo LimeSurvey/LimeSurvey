@@ -2235,7 +2235,7 @@ function getForwardParameters()
     );
 
     $parameters = [];
-    if (Yii::app()->getRequest()->getRequestType() == 'GET') {
+    if (in_array(Yii::app()->getRequest()->getRequestType(), ['GET', 'POST'])) {
         $parameters = array_diff_key($_GET,array_flip($reservedGetValues));
     }
     return $parameters;
