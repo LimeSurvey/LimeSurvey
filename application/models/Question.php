@@ -1030,6 +1030,13 @@ class Question extends LSActiveRecord
     {
         if (parent::beforeSave()) {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+            if ($surveyIsActive) {
+                //don't override questiontype when survey is active, set it back to what it was...
+                $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
+                $this->type = $oActualValue->type;
+            }
+
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }
