@@ -42,7 +42,7 @@ echo viewHelper::getViewTestTag('login');
                             <input name="password" placeholder='********' id="password" class="form-control" type="password">
                         </div>
                         <div class="row ls-space margin top-5">
-                            <label for="password_repeat" class="required" required><?=gT("Password repeat")?> <span class="required">*</span></label>
+                            <label for="password_repeat" class="required" required><?=gT("Repeat password")?> <span class="required">*</span></label>
                             <input name="password_repeat" placeholder='********'  id="password_repeat" class="form-control" type="password">
                         </div>
                         <div class="row ls-space margin top-5">

@@ -484,7 +484,7 @@ class ParticipantAttributeName extends LSActiveRecord
             $thisname = '';
             $thislang = '';
             foreach ($row->participant_attribute_names_lang as $names) {
-//Iterate through each language version of this attribute
+                //Iterate through each language version of this attribute
                 if ($thisname == "") {
                     $thisname = $names->attribute_name;
                     $thislang = $names->lang;
@@ -493,6 +493,10 @@ class ParticipantAttributeName extends LSActiveRecord
                     $thisname = $names->attribute_name;
                     $thislang = $names->lang;
                 } //Override the default with the admin language version if found
+            }
+            // user default attribute name if no other has been set
+            if (!$thisname) {
+                $thisname = $row->defaultname;
             }
 
             $output[] = array(

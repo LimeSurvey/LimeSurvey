@@ -13,7 +13,7 @@ class QuestionAttributeTest extends TestBaseClassWeb
      * Activate needed plugins
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -107,7 +107,7 @@ class QuestionAttributeTest extends TestBaseClassWeb
      * @inheritdoc
      * @todo Deactivate and uninstall plugins ?
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::deActivatePlugin('NewQuestionAttributesPlugin');
         parent::tearDownAfterClass();

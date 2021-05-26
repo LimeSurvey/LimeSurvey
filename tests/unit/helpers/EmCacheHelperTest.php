@@ -13,7 +13,7 @@ class EmCacheHelperTest extends TestBaseClass
     /**
      * Setup.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
 
@@ -37,7 +37,7 @@ class EmCacheHelperTest extends TestBaseClass
     /**
      * Flush all when done with tests.
      */
-    public static function teardownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         \Yii::app()->setComponent('emcache', new \CDummyCache());
     }
@@ -45,7 +45,7 @@ class EmCacheHelperTest extends TestBaseClass
     /**
      * Always flush everything before every test.
      */
-    public function setup()
+    public function setUp(): void
     {
         \EmCacheHelper::clearInit();
     }

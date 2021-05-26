@@ -573,7 +573,21 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-        $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if (!empty($survey->groups)) {
+            $this->redirect(
+                Yii::app()->createUrl(
+                    'questionGroupsAdministration/view/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $survey->groups[0]->gid,
+                        'landOnSideMenuTab' => 'structure'
+                    ]
+                )
+            );
+        } else {
+            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+        }
     }
 
     /**

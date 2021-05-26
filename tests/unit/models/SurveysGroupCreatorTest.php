@@ -11,7 +11,7 @@ use SurveysGroupsettings;
 
 class SurveysGroupCreatorTest extends TestCase
 {
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         \Yii::import('application.helpers.common_helper', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
