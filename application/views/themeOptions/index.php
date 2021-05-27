@@ -13,6 +13,8 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
 
+$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Themes'));
+
 $this->renderPartial('../admin/super/fullpagebar_view', array(
 'fullpagebar' => array(
     'returnbutton'=>array(
