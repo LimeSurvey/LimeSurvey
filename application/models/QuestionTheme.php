@@ -171,7 +171,7 @@ class QuestionTheme extends LSActiveRecord
      *
      * @param string $className active record class name.
      *
-     * @return Template the static model class
+     * @return static
      */
     public static function model($className = __CLASS__)
     {
@@ -246,7 +246,7 @@ class QuestionTheme extends LSActiveRecord
 
         // convert Question Theme
         if ($bSkipConversion === false) {
-            $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
+            $aConvertSuccess = self::convertLS3toLS5($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 if ($bThrowConversionException) {
                     throw new Exception($aConvertSuccess['message']);
@@ -277,12 +277,12 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns all Questions that can be installed
+     * Returns question themes available in the filesystem AND installed in the database
      *
-     * @return QuestionTheme[]
+     * @return array
      * @throws Exception
      */
-    public function getAvailableQuestions()
+    public function getAvailableQuestionThemes()
     {
         $aAvailableThemes = [];
         $aThemes = $this->getAllQuestionMetaData();
@@ -296,11 +296,9 @@ class QuestionTheme extends LSActiveRecord
                     }
                 }
             }
-            array_values($aThemes['available_themes']);
             foreach ($aThemes['available_themes'] as $questionMetaData) {
                 // TODO: replace by manifest
                 $questionTheme = new QuestionTheme();
-
                 $metaDataArray = self::getMetaDataArray($questionMetaData);
                 $questionTheme->setAttributes($metaDataArray, false);
                 $aAvailableThemes[] = $questionTheme;
@@ -314,7 +312,7 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns an Array of all questionthemes and their metadata
+     * Returns an array of all question themes and their metadata, split into available_themes and broken_themes
      *
      * @param bool $core
      * @param bool $custom
@@ -439,7 +437,6 @@ class QuestionTheme extends LSActiveRecord
      * @param bool $user
      *
      * @return array
-     * @todo Move to service class
      */
     public static function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
     {
@@ -480,7 +477,7 @@ class QuestionTheme extends LSActiveRecord
     /**
      * @param QuestionTheme $oQuestionTheme
      *
-     * @return array
+     * @return array|false
      * @todo move actions to its controller and split between controller and model, related search for: 1573123789741
      * @todo Move to QuestionThemeInstaller
      */
@@ -635,7 +632,7 @@ class QuestionTheme extends LSActiveRecord
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
 
             // if an extended Question should not be shown as a selectable questiontype skip it
-            if (!empty($baseQuestion['extends'] && !$showAsQuestionType)) {
+            if (!empty($baseQuestion['extends']) && !$showAsQuestionType) {
                 continue;
             }
 
@@ -666,6 +663,9 @@ class QuestionTheme extends LSActiveRecord
         return $baseQuestions;
     }
 
+    /**
+     * @return array
+     */
     public static function getQuestionThemeDirectories()
     {
         $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
@@ -803,13 +803,13 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Converts LS3 Question Theme to LS4
+     * Converts LS3 Question Theme to LS5
      *
      * @param string $sXMLDirectoryPath
      *
      * @return array $success Returns an array with the conversion status
      */
-    public static function convertLS3toLS4($sXMLDirectoryPath)
+    public static function convertLS3toLS5($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
@@ -854,12 +854,17 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (isset($oThemeConfig->compatibility->version)) {
-            $oThemeConfig->compatibility->version = '4.0';
+        if (is_array($oThemeConfig->compatibility->version)) {
+            $length = count($oThemeConfig->compatibility->version);
+            $compatibility = $oThemeConfig->addChild('compatibility');
+            $compatibility->addChild('version');
+            $oThemeConfig->compatibility->version[$length] = '5.0';
+        } elseif (is_object($oThemeConfig->compatibility->version)) {
+            $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version = '4.0';
+            $oThemeConfig->compatibility->version = '5.0';
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
