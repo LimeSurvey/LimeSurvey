@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Menu Bar show for full pages (without sidemenu, inside configuration menus)
  */
+
 ?>
 
 <!-- Full page menu bar -->
@@ -15,7 +17,7 @@
         <div class="col-md-6 text-right">
 
             <!-- Save -->
-            <?php if(isset($fullpagebar['savebutton']['form'])):?>
+            <?php if (isset($fullpagebar['savebutton']['form'])) :?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
@@ -23,7 +25,7 @@
             <?php endif;?>
 
             
-            <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
+            <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
@@ -31,14 +33,14 @@
             <?php endif; ?>
 
             <!-- Close -->
-            <?php if(isset($fullpagebar['closebutton']['url'])):?>
+            <?php if (isset($fullpagebar['closebutton']['url'])) :?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
 
-            <?php if(isset($fullpagebar['boxbuttons'])):?>
+            <?php if (isset($fullpagebar['boxbuttons'])) :?>
                 <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create a new box");?>
@@ -49,7 +51,7 @@
                 </a>
             <?php endif;?>
 
-            <?php if(isset($fullpagebar['update'])):?>
+            <?php if (isset($fullpagebar['update'])) :?>
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
@@ -57,8 +59,8 @@
             <?php endif;?>
 
             <!-- Return -->
-            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
+            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
+                <a class="btn btn-default" style="margin:5px;" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
