@@ -57,7 +57,8 @@ abstract class ExtensionInstaller
      * Before an extension is installed, we need to read the config
      * file. That's why the extension if fetched into a temp folder
      * first.
-     * @return ExtensionConfig
+     *
+     * @return ExtensionConfig|null
      */
     public function getConfig()
     {

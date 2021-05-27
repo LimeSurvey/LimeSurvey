@@ -166,7 +166,8 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * @return array
+     * @param array $versions
+     * @return array|null
      */
     public function getLatestVersion(array $versions)
     {
