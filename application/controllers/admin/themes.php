@@ -275,6 +275,12 @@ class themes extends Survey_Common_Action
     {
         App()->loadLibrary('admin.pclzip');
 
+        // Redirect back if demo mode is set.
+        $this->checkDemoMode();
+
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
         // NB: lid = label id
         $lid = returnGlobal('lid');
 
@@ -282,6 +288,11 @@ class themes extends Survey_Common_Action
         /** @var string */
         $themeType = returnGlobal('theme');
         if ($themeType === 'question') {
+            // Make questiontheme upload folder if it doesnt exist
+            if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
+                mkdir($questionthemerootdir, 0777, true);
+            }
+
             try {
                 $src = $_FILES['the_file']['tmp_name'];
                 $extConfig = ExtensionConfig::loadFromZip($src);
@@ -301,35 +312,38 @@ class themes extends Survey_Common_Action
                     } else {
                         $installer->update();
                     }
+                    // TODO: If you want to do nice file upload summary, you need to define a
+                    // FileFetcherResult and return it from install().
+                    return [
+                        'aImportedFilesInfo' => [],
+                        'aErrorFilesInfo' => [],
+                        'aImportErrors' => [],
+                        'lid' => null,
+                        'newdir' => 'newdir',
+                        'theme' => 'question',
+                        'result' => 'success'
+                    ];
                 } catch (Throwable $ex) {
                     $installer->abort();
+                    return [
+                        'aImportedFilesInfo' => [],
+                        'aErrorFilesInfo' => [],
+                        'aImportErrors' => [],
+                        'lid' => null,
+                        'newdir' => 'newdir',
+                        'theme' => 'question',
+                        'result' => 'error'
+                    ];
                 }
-
-                return [
-                    'aImportedFilesInfo' => [],
-                    'aErrorFilesInfo' => [],
-                    'aImportErrors' => [],
-                    'lid' => null,
-                    'newdir' => 'newdir',
-                    'theme' => 'question'
-                ];
             } catch (Throwable $t) {
                 Yii::app()->setFlashMessage($t->getMessage(), 'error');
                 $this->getController()->redirect(["/themeOptions#questionthemes"]);
             }
         }
 
-        // Redirect back if demo mode is set.
-        $this->checkDemoMode();
-
-        // Redirect back at file size error.
-        $this->checkFileSizeError();
-
         $sNewDirectoryName = $this->getNewDirectoryName($themeType, $_FILES['the_file']['tmp_name']);
 
-        if ($themeType == 'question') {
-            $destdir = App()->getConfig('userquestionthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
-        } elseif ($themeType == 'survey') {
+        if ($themeType == 'survey') {
             $destdir = App()->getConfig('userthemerootdir') . DIRECTORY_SEPARATOR . $sNewDirectoryName;
         } else {
             App()->setFlashMessage(
@@ -342,29 +356,18 @@ class themes extends Survey_Common_Action
             $this->getController()->redirect(array("themeOptions/index"));
         }
 
-        // make questiontheme upload folder if it doesnt exist
-        if ($themeType == 'question') {
-            if (!is_dir($questionthemerootdir = App()->getConfig('userquestionthemerootdir'))) {
-                mkdir($questionthemerootdir);
-            }
-        }
-
         // Redirect back if $destdir is not writable OR if it already exists.
         $this->checkDestDir($destdir, $sNewDirectoryName, $themeType);
 
         // All OK if we're here.
         // TODO: Always check if successful.
-        if ($themeType == 'question') {
-            $extractDir = App()->getConfig('userquestionthemerootdir');
-            mkdir($destdir, 0777, true);
-        } else {
-            $extractDir = $destdir;
-            mkdir($destdir);
-        }
+        $extractDir = $destdir;
+        mkdir($destdir);
 
-        $aImportedFilesInfo = array();
-        $aErrorFilesInfo = array();
+        $aImportedFilesInfo = [];
+        $aErrorFilesInfo = [];
 
+        // TODO: Move all this to new SurveyThemeInstaller class (same as done for QuestionThemeInstaller).
         if (is_file($_FILES['the_file']['tmp_name'])) {
             $zip = new PclZip($_FILES['the_file']['tmp_name']);
             $aExtractResult = $zip->extract(PCLZIP_OPT_PATH, $extractDir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
@@ -381,11 +384,11 @@ class themes extends Survey_Common_Action
                             "filename" => $sFile['stored_filename'],
                         );
                     } else {
-                        $aImportedFilesInfo[] = array(
+                        $aImportedFilesInfo[] = [
                             "filename" => $sFile['stored_filename'],
                             "status" => gT("OK"),
                             'is_folder' => $sFile['folder']
-                        );
+                        ];
                     }
                 }
 
@@ -407,8 +410,6 @@ class themes extends Survey_Common_Action
                 if ($themeType !== 'question') {
                     TemplateManifest::importManifest($sNewDirectoryName, ['extends' => $destdir]);
                 }
-                if ($themeType == 'question') {
-                }
             }
         } else {
             App()->setFlashMessage(
@@ -420,13 +421,23 @@ class themes extends Survey_Common_Action
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
 
+        $aImportErrors = [];
+        if (count($aErrorFilesInfo) == 0 && empty($aImportErrors) && count($aImportedFilesInfo) > 0) {
+            $result = 'success';
+        } elseif ((count($aErrorFilesInfo) > 0 || !empty($aImportErrors)) && count($aImportedFilesInfo) > 0) {
+            $result = 'partial';
+        } else {
+            $result = 'error';
+        }
+
         return array(
             'aImportedFilesInfo' => $aImportedFilesInfo,
             'aErrorFilesInfo' => $aErrorFilesInfo,
             'aImportErrors' => $aImportErrors,
             'lid' => $lid,
             'newdir' => $sNewDirectoryName,
-            'theme' => $themeType
+            'theme' => $themeType,
+            'result' => $result
         );
     }
 

@@ -3,6 +3,7 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
+use InvalidArgumentException;
 use ExtensionConfig;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -52,7 +53,7 @@ class FileFetcherUploadZip extends FileFetcher
     public function move($destdir)
     {
         if (empty($destdir)) {
-            throw new \InvalidArgumentException('Missing destdir argument');
+            throw new InvalidArgumentException('Missing destdir argument');
         }
 
         $tempdir = $this->getTempdir();
