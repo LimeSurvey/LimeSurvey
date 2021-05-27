@@ -854,12 +854,12 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (is_array($oThemeConfig->compatibility->version)) {
+        if (count($oThemeConfig->compatibility->version) > 1) {
             $length = count($oThemeConfig->compatibility->version);
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
             $oThemeConfig->compatibility->version[$length] = '5.0';
-        } elseif (is_object($oThemeConfig->compatibility->version)) {
+        } elseif (count($oThemeConfig->compatibility->version) === 1) {
             $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
