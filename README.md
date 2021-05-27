@@ -33,7 +33,7 @@ Please be advised, that we sometimes push development versions into the reposito
 ### Minimal
 The absolute minimal requirements are:
  - Apache >= 2.4 | nginx >= 1.1 | any other php-ready webserver
- - php >= 7.0
+ - php >= 7.2.5
     - with mbstring and pdo-database drivers
  - mysql >= 5.5.9 | pgsql >= 9 | mariadb >= 5.5  | mssql >= 2005
 
