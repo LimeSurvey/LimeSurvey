@@ -59,6 +59,7 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'previewWindowTitle' => gT("Preview question type"),
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $currentPreselectedQuestiontype,
+    'theme' => 'core',
     'debug' => YII_DEBUG,
     'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'buttonClasses' => ['btn-primary'],

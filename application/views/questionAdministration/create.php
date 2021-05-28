@@ -96,6 +96,9 @@
                         <div class="row">
                             <?php
                             $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
+                            if (empty($questionTheme['extends'])) {
+                                $questionTheme['name'] = 'core';
+                            }
                             $this->renderPartial(
                                 "typeSelector",
                                 [
