@@ -721,7 +721,7 @@ function populateDatabase($oDB)
             'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
             'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
             'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
-            'htmlemail' => "string(1) NOT NULL DEFAULT 'Y'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
             'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
             'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
             'assessments' => "string(1) NOT NULL DEFAULT 'N'",
