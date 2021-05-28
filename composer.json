@@ -65,7 +65,7 @@
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
-            "./third_party/bin/phpmd application/controller/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/psalm"
         ]
     }
