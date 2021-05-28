@@ -2354,7 +2354,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @todo is this new implementation???
      *
-     * @param Survey $oSurvey Given Survey
+     * @param Survey $survey Given Survey
      *
      * @return array
      */
@@ -2369,7 +2369,7 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         $disabledIfNoResources = '';
-        if (hasResources($oSurvey->sid, 'survey') === false) {
+        if (hasResources($survey->sid, 'survey') === false) {
             $disabledIfNoResources = " disabled='disabled'";
         }
         $aData = [];
