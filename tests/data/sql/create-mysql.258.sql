@@ -432,7 +432,7 @@ CREATE TABLE `prefix_surveys` (
   `publicstatistics` varchar(1) NOT NULL default 'N',
   `publicgraphs` varchar(1) NOT NULL default 'N',
   `listpublic` varchar(1) NOT NULL default 'N',
-  `htmlemail` varchar(1) NOT NULL default 'N',
+  `htmlemail` varchar(1) NOT NULL default 'Y',
   `sendconfirmation` varchar(1) NOT NULL default 'Y',
   `tokenanswerspersistence` varchar(1) NOT NULL default 'N',
   `assessments` varchar(1) NOT NULL default 'N',
