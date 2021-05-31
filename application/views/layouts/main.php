@@ -22,24 +22,25 @@ $layoutHelper->renderMenuBar($aData);
 
 echo "<!-- BEGIN LAYOUT_MAIN -->";
 
+// Green Bar with Page Header
+$layoutHelper->surveyManagerBar($aData);
+
+// White Bar with Action Buttons like (Back)
 $layoutHelper->fullpagebar($aData);
 
 $layoutHelper->updatenotification();
 
 $layoutHelper->notifications();
 
-    
-    //The load indicator for pjax
-    echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
+//The load indicator for pjax
+echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
-    echo '<!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
-                <div class="container-fluid full-page-wrapper" id="in_survey_common_action">
-                    ';
+echo '<!-- Full page, started in Survey_Common_Action::render_wrapped_template() -->
+      <div class="container-fluid full-page-wrapper" id="in_survey_common_action">';
 
-    echo $content;
+echo $content;
 
-    echo '</div>';
-
+echo '</div>';
 
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {

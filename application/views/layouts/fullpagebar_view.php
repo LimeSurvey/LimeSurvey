@@ -60,7 +60,7 @@
 
             <!-- Return -->
             <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" style="margin:5px;" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this > createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>

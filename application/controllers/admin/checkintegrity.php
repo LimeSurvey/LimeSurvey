@@ -42,7 +42,7 @@ class CheckIntegrity extends Survey_Common_Action
     public function index()
     {
         $aData = $this->_checkintegrity();
-
+        $aData['pageTitle'] = 'Check data integrity';
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 
@@ -534,6 +534,7 @@ class CheckIntegrity extends Survey_Common_Action
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
      * @return array Array with all found issues.
+     * @throws CDbException
      */
     protected function _checkintegrity()
     {
@@ -663,8 +664,6 @@ class CheckIntegrity extends Survey_Common_Action
 
         unset($oSurveys);
 
-
-
         // Fix subquestions
         fixSubquestions();
 
@@ -759,7 +758,6 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($question_attributes as $question_attribute) {
             $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
         } // foreach
-
 
         /**********************************************************************/
         /*     Check default values                                           */
@@ -895,7 +893,6 @@ class CheckIntegrity extends Survey_Common_Action
             $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group') . " ({$question['gid']})");
         }
 
-
         /**********************************************************************/
         /*     Check question localizations
         /**********************************************************************/
@@ -1020,7 +1017,6 @@ class CheckIntegrity extends Survey_Common_Action
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_token}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
-
 
         $aTokenSIDs = array();
         $aFullOldTokenSIDs = array();
