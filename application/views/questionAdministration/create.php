@@ -97,7 +97,7 @@
                             <?php
                             $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                             if (empty($questionTheme['extends'])) {
-                                $questionTheme['name'] = 'core';
+                                $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
                             }
                             $this->renderPartial(
                                 "typeSelector",
