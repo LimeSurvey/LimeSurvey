@@ -190,65 +190,6 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Import all Questiontypes and Themes to the {{questions_themes}} table
-     *
-     * @param bool $bUseTransaction
-     *
-     * @throws CException
-     */
-    public function loadAllQuestionXMLConfigurationsIntoDatabase($bUseTransaction = true)
-    {
-        $missingQuestionThemeAttributes = [];
-        $questionThemeDirectories = $this->getQuestionThemeDirectories();
-
-        // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        if (\PHP_VERSION_ID < 80000) {
-            $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }            
-    // process XML Question Files
-        if (isset($questionThemeDirectories)) {
-            try {
-                if ($bUseTransaction) {
-                    $transaction = App()->db->beginTransaction();
-                }
-                $questionsMetaData = self::getAllQuestionMetaData()['available_themes'];
-                foreach ($questionsMetaData as $questionMetaData) {
-                    // test xml for required metaData
-                    $requiredMetaDataArray = ['name', 'title', 'creationDate', 'author', 'authorEmail', 'authorUrl', 'copyright', 'copyright', 'license', 'version', 'apiVersion', 'description', 'question_type', 'group', 'subquestions', 'answerscales', 'hasdefaultvalues', 'assessable', 'class'];
-                    foreach ($requiredMetaDataArray as $requiredMetaData) {
-                        if (!array_key_exists($requiredMetaData, $questionMetaData)) {
-                            $missingQuestionThemeAttributes[$questionMetaData['xml_path']][] = $requiredMetaData;
-                        }
-                    }
-                    $questionTheme = QuestionTheme::model()->find('name=:name AND extends=:extends', [':name' => $questionMetaData['name'], ':extends' => $questionMetaData['extends']]);
-                    if ($questionTheme == null) {
-                        $questionTheme = new QuestionTheme();
-                    }
-                    $metaDataArray = $this->getMetaDataArray($questionMetaData);
-                    $questionTheme->setAttributes($metaDataArray, false);
-                    $questionTheme->save();
-                }
-                if ($bUseTransaction) {
-                    $transaction->commit();
-                }
-            } catch (Exception $e) {
-                //TODO: flashmessage for users
-                echo $e->getMessage();
-                // var_dump($e->getTrace());
-                // var_dump($missingQuestionThemeAttributes);
-                if ($bUseTransaction) {
-                    $transaction->rollback();
-                }
-            }
-        }
-
-        // Put back entity loader to its original state, to avoid contagion to other applications on the server
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
-    }
-
-    /**
      * Returns visibility button.
      *
      * @return string|array
@@ -834,8 +775,8 @@ class QuestionTheme extends LSActiveRecord
         if (isset($questionTheme['xml_path'])) {
             if (\PHP_VERSION_ID < 80000) {
                 $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-            }            
-    
+            }
+
 
             $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
@@ -846,7 +787,7 @@ class QuestionTheme extends LSActiveRecord
 
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState);
-            }            
+            }
         }
 
         $cacheMemo[$cacheKey] = $answerColumnDefinition;
@@ -885,7 +826,7 @@ class QuestionTheme extends LSActiveRecord
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }            
+        }
 
         $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sConfigPath;
         if (!file_exists($sQuestionConfigFilePath)) {
@@ -896,7 +837,7 @@ class QuestionTheme extends LSActiveRecord
         if (!$sQuestionConfigFile) {
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader($bOldEntityLoaderState);
-            }            
+            }
             return $aSuccess = [
                 'message' => sprintf(
                     gT('Configuration file %s could not be found or read.'),
@@ -914,7 +855,7 @@ class QuestionTheme extends LSActiveRecord
         $oThemeConfig = simplexml_load_string($sQuestionConfigFile);
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
+        }
 
         // get type from core theme
         if (isset($oThemeConfig->metadata->type)) {
@@ -946,12 +887,12 @@ class QuestionTheme extends LSActiveRecord
         }
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
-        }            
+        }
         $sThemeCoreConfigFile = file_get_contents($sPathToCoreConfigFile);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oThemeCoreConfig = simplexml_load_string($sThemeCoreConfigFile);
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader($bOldEntityLoaderState);
-        }            
+        }
 
         // get questiontype from core if it is missing
         if (!isset($oThemeConfig->metadata->questionType)) {
@@ -994,12 +935,12 @@ class QuestionTheme extends LSActiveRecord
 
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(false);
-        }            
+        }
         $oCoreConfig = simplexml_load_file($xmlConfigPath);
         $aCoreAttributes = json_decode(json_encode((array)$oCoreConfig), true);
         if (\PHP_VERSION_ID < 80000) {
             libxml_disable_entity_loader(true);
-        }            
+        }
         if (!isset($aCoreAttributes['attributes']['attribute'])) {
             throw new Exception("Question type attributes not available!");
         }

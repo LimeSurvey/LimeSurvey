@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.0 (build 210526) to 5.0.1 (build 210532) May 31, 2021
+-Fixed issue #17341: Typo in question class for dual scale array (Carsten Schmitz)
+-Fixed issue #17327: Untranslatable help text in SPSS export (Olle Haerstedt)
+-Fixed issue #17312: Question type can be be updated after activation (selector simple) (Patricia Stelling)
+-Fixed issue #17306: Some update theme can break page in 3.26.4 (#1892) (Gabriel Jenik)
+
+
 Changes from 4.6.3 (build 210518) to 5.0.0 (build 210526) May 25, 2021
 +New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Gabriel Jenik)
 +New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Carsten Schmitz)

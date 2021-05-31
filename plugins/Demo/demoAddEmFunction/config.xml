@@ -14,6 +14,7 @@
 
     <compatibility>
         <version>4.0</version>
+        <version>5.0</version>
     </compatibility>
 
     <updaters disabled="disabled">
