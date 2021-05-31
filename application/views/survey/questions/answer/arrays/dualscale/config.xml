@@ -21,11 +21,11 @@
         <answerscales>2</answerscales>
         <hasdefaultvalues>0</hasdefaultvalues>
         <assessable>1</assessable>
-        <class>array-flexible-duel-scale</class>
+        <class>array-flexible-dual-scale</class>
     </metadata>
 
     <compatibility>
-        <version>4.0</version>
+        <version>5.0</version>
     </compatibility>
 
     <!--

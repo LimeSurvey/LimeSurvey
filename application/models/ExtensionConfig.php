@@ -47,7 +47,7 @@ class ExtensionConfig
                 'version',
                 'type'
             ],
-            'compatibility',
+            'compatibility' => [],
         ];
         foreach ($tags as $key => $value) {
             if (!isset($this->xml->$key)) {
