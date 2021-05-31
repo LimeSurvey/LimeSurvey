@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '50613da33b7a3d2f1a12c74bb7a275fbd50ecc05',
+    'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,16 +18,16 @@
       'aliases' => 
       array (
       ),
-      'reference' => '50613da33b7a3d2f1a12c74bb7a275fbd50ecc05',
+      'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
     ),
     'symfony/polyfill-ctype' => 
     array (
-      'pretty_version' => 'v1.22.1',
-      'version' => '1.22.1.0',
+      'pretty_version' => 'v1.19.0',
+      'version' => '1.19.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c6c942b1ac76c82448322025e084cadc56048b4e',
+      'reference' => 'aed596913b70fae57be53d86faa2e9ef85a2297b',
     ),
     'twig/twig' => 
     array (

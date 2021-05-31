@@ -485,3 +485,17 @@ function sanitize_signedint($integer, $min = '', $max = '')
 
     return $int;
 };
+
+
+/**
+  * Checks the validity of IP address $ip
+  *
+  * @param string $ip to check
+  *
+  * @return boolean true if the $ip is a valid IP address
+  */
+function check_ip_address($ip)
+{
+    // Leave the wrapper in case we need to enhance the checks later
+    return filter_var($ip, FILTER_VALIDATE_IP);
+}

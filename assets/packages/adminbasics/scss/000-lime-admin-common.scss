@@ -764,7 +764,7 @@ div.panel.disabled {
   display: block;
   padding-left: 30px; }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .side-menu {
     position: relative;
     width: 100%;
@@ -1024,7 +1024,7 @@ fieldset[disabled] .checkbox label {
 .has-error.checkbox-inline label {
   color: #e51c23; }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .form-inline .radio,
   .form-inline .checkbox {
     display: inline-block;
@@ -2281,192 +2281,72 @@ input[type="file"].form-control {
 }
 
 
-/* To make Statistics printable really easy */
+/* Some printing optimization */
 
 
 @media print{
-
-  @page {
-    size: A4 portrait;
-    margin-left: 1.0cm;
-    margin-right: 1.5cm;
-    margin-top:1.2cm;
-    margin-bottom: 1cm;
-    overflow: visible;
-  }
-
-  * {
-    overflow: visible !important;
-    }
-
-  html,body {
+  html, body {
     margin: 0;
-    max-width: 0%;
+    padding: 0;
+    max-width: none;
   }
-  body{
+  body {
     text-align: left;
     margin: 0;
-    padding:0;
-    overflow: visible;
-    min-width: 19.0cm !important;
-    min-height: 27.7cm;
-    width: 100% !important;
-    height:100%;
-  }
-
-  body.onStatistics a:not(.printable),
-  body.onStatistics p:not(.printable),
-  body.onStatistics button:not(.printable),
-  body.onStatistics nav:not(.printable),
-  body.onStatistics form:not(.printable),
-  body.onStatistics footer:not(.printable),
-  body.onStatistics h1:not(.printable),
-  body.onStatistics h2:not(.printable),
-  body.onStatistics h3:not(.printable),
-  body.onStatistics h4:not(.printable),
-  body.onStatistics h5:not(.printable),
-  body.onStatistics .jumbotron,
-  body.onStatistics .menubar,
-  body.onStatistics>div:not(#vue-apps-main-container),
-  body.onStatistics div#vue-apps-main-container>div:not(#pjax-content),
-  body.onStatistics div#vue-apps-main-container>div#pjax-content>div:not(#in_survey_common),
-  body.onStatistics div#in_survey_common>div:not(#statisticsview)
-  {
-    display: none !important;
-    visibility: hidden !important;
-    overflow: hidden !important;
     padding: 0;
-    position: absolute;
-    left: -1000px;
-    top: -1000px;
-    margin: 0 !important;
-    width: 0px !important;
-  }
-
-  body.onStatistics div.row {
-    display: block !important;
-    position: static;
-  }
-  body.onStatistics div[class^="col-"] {
-    display: block !important;
-    float: none !important;
-    position: static;
-  }
-
-  body.onStatistics>div#vue-apps-main-container,
-  body.onStatistics div#in_survey_common,
-  body.onStatistics>div#vue-apps-main-container>div#pjax-content,
-  body.onStatistics #statisticsview {
-    display: block;
-    position: static;
-    width: 99% !important;
-    max-width: 95% !important;
-    min-width: 19.6cm !important;
-    min-height: 29.7cm !important;
-    height: 100% !important;
-    overflow: visible;
-    page-break-inside: auto;
-    break-inside: auto;
-  }
-  body.onStatistics #statisticsview div,
-  body.onStatistics #statisticsview table {
-    position: static;
-  }
-
-  /*body.onStatistics td:not(.printable),
-  body.onStatistics th:not(.printable),*/
-  /*body.onStatistics table:not(.printable),*/
-
-  body.onStatistics #statisticsview div:not(#statsContainerLoading) {
-    width: 99% !important;
-    max-width: 100% !important;
-    float: none !important;
-    display: block;
-  }
-
-  body.onStatistics #statisticsview a.printable,
-  body.onStatistics #statisticsview p.printable,
-  body.onStatistics #statisticsview span.printable,
-  body.onStatistics #statisticsview table.printable,
-  body.onStatistics #statisticsview table.statisticstable,
-  body.onStatistics #statisticsview h1.printable,
-  body.onStatistics #statisticsview h2.printable,
-  body.onStatistics #statisticsview h3.printable,
-  body.onStatistics #statisticsview h4.printable,
-  body.onStatistics #statisticsview h5.printable{
-    width: 95% !important;
-    max-width: 100%;
-    float: none;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    position: static;
-
-  }
-
-  body.onStatistics div.printable{
-    position: static;
-    page-break-after  : auto;
-    break-after  : auto;
-    page-break-inside : avoid;
-    break-inside : avoid;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    padding: 0 !important;
-  }
-  body.onStatistics div.printable table{
-    position: static;
-    page-break-inside : avoid;
-    break-inside : avoid;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    padding: 0 !important;
-  }
-
-
-  body.onStatistics table.printable thead,
-  body.onStatistics table.printable tbody,
-  body.onStatistics table.printable tr{
     width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
-
-  body.onStatistics table.printable *{
-    page-break-after  : avoid;
-    break-after  : avoid;
-    page-break-before : avoid;
-    break-before : avoid;
-    page-break-inside : avoid;
-    break-inside : avoid;
+  .side-body{
+    margin: 0;
+    padding: 0;
   }
-
-  body.onStatistics .side-body{
-    max-width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
+  #sidebar{display:none}
+  #browsermenubarid{display:none}
+  .surveymanagerbar{display:none}
+  #vue-apps-main-container #vue-sidebar-container{display:none}
+  #statisticsview .col-lg-12{
+    float:none;width:100%;display:block;
   }
-  body.onStatistics .side-menu{
-    display: none !important;
-    visibility: none !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    margin-left: 0 px !important;
+   #pjax-content .side-body {
+    float:none;width:100%;display:block;
   }
-  body.onStatistics .absolute-wrapper{
-    display: none !important;
-    visibility: none !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  #pjax-content{max-width: none !important;}
+  footer.footer{display:none}
+  /* Some stat specific */
+  .statisticsbloc{
+    float:none;width:auto;
+    display: block;
   }
+  .statisticstable{
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-after: always;
+    page-break-after: always;
+  }
+  .canvas-chart{
+    break-inside: avoid;
+    page-break-inside: avoid;
+    max-width:100%;
+    height:auto;
+  }
+  /* Only for stat ? */
+  .statisticsbrowsebutton{display:none}
+  body.onStatistics .btn{display:none}
+  /* Chartjs and legend width */
+  body.onStatistics .chartjs-container{width:70%;float:left}
+  body.onStatistics .legend{width:30%;float:left}
+  body.onStatistics .legend .col-sm-1{display:inline-block;width:auto;padding:0;padding-right:3pt;padding-left:3pt;}
+  body.onStatistics .legend .col-sm-10{display:inline-block;width:auto;padding:0;}
+  /* Replaced in adminsidepanel */
+  body.onStatistics .ls-flex, 
+  body.onStatistics .ls-flex-column, 
+  body.onStatistics .ls-flex-row{display:block}
+  body.onStatistics #sidebar{display:none;}
+  body.onStatistics .ls-flex-column .col-11,
+  body.onStatistics .ls-flex-row .col-11,
+  body.onStatistics .ls-flex .col-11{width:auto}
 }
+
 
 .currentQuestionTypeImageContainer img {
   max-width: 100%;
