@@ -22,7 +22,7 @@ class CreateSurveyTest extends TestBaseClassWeb
     private const HTTP_STRING = 'http://';
     private const INDEX_SITE = '/index.php';
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
         $username = getenv('ADMINUSERNAME');

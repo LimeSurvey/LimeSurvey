@@ -198,24 +198,25 @@ class Authentication extends Survey_Common_Action
      * After password has been changed successfully it redirects to LogIn-Page.
      *
      */
-    public function newPassword(){
+    public function newPassword()
+    {
 
         //validation key could be a GET- or a POST-PARAM
         $validation_key = Yii::app()->request->getParam('param'); //as link from email
-        if($validation_key === null){
+        if ($validation_key === null) {
             $usedLink = false;
             $validation_key = Yii::app()->request->getPost('validation_key'); //coming from form (user set password)
-        }else{
+        } else {
             $usedLink = true;
         }
 
         $errorExists = false;
         $errorMsg = '';
-        $user = User::model()->findByAttributes([],'validation_key=:validation_key', ['validation_key' => $validation_key]);
-        if($user===null){
+        $user = User::model()->findByAttributes([], 'validation_key=:validation_key', ['validation_key' => $validation_key]);
+        if ($user === null) {
             $errorExists = true;
             $errorMsg = gT('The validation key is invalid. Please contact the administrator.');
-        }else{
+        } else {
             //check if validation time is expired
             $dateNow = new DateTime();
             $expirationDate = new DateTime($user->validation_key_expiration);
@@ -223,13 +224,13 @@ class Authentication extends Survey_Common_Action
             $differenceDays = $dateDiff->format('%d');
             $differenceHours = $dateDiff->format('%h');
             $differenceCompleteInHours = ((int)$differenceDays * 24) + (int)$differenceHours;
-            if($differenceCompleteInHours > User::MAX_EXPIRATION_TIME_IN_HOURS){
+            if ($differenceCompleteInHours > User::MAX_EXPIRATION_TIME_IN_HOURS) {
                 $errorExists = true;
                 $errorMsg = gT("The validation key expired. Please contact the administrator.");
             }
         }
 
-        if(!$errorExists && !$usedLink){
+        if (!$errorExists && !$usedLink) {
             //check if password is set correctly
             $password = Yii::app()->request->getPost('password');
             $passwordRepeat = Yii::app()->request->getPost('password_repeat');
@@ -240,23 +241,22 @@ class Authentication extends Survey_Common_Action
             $oPasswordTestEvent->set('passwordError', '');
             Yii::app()->getPluginManager()->dispatchEvent($oPasswordTestEvent);
             $passwordError = $oPasswordTestEvent->get('passwordError');
-            if(($password!==null && $passwordRepeat!==null) && ($password===$passwordRepeat) && $oPasswordTestEvent->get('passwordOk')){
+            if (($password !== null && $passwordRepeat !== null) && ($password === $passwordRepeat) && $oPasswordTestEvent->get('passwordOk')) {
                 //now everything is ok, save password
-                $user->setPassword($password,true);
+                $user->setPassword($password, true);
                 App()->getController()->redirect(array('/admin/authentication/sa/login'));
-            }else{
-                Yii::app()->setFlashMessage(gT('Password cannot be blank and must fulfill minimum requirement: ') . $passwordError , 'error');
+            } else {
+                Yii::app()->setFlashMessage(sprintf(gT('Password cannot be blank and must fulfill minimum requirements: %s'), $passwordError), 'error');
             }
-
         }
 
-        $randomPassword =\LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
+        $randomPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
 
         $aData = [
             'errorExists' => $errorExists,
             'errorMsg' => $errorMsg,
             'randomPassword' => $randomPassword,
-            'validationKey'=> $user->validation_key
+            'validationKey' => $user->validation_key
         ];
 
         $this->_renderWrappedTemplate('authentication', 'newPassword', $aData);

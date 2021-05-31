@@ -115,7 +115,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId, $tabOverviewEditor = 'overview')
+    public function actionEdit($questionId, $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
 
@@ -131,7 +131,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // "Directly show edit mode" personal setting
-        $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : $tabOverviewEditor;
+        if (is_null($tabOverviewEditor)) {
+            $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : 'overview';
+        }
 
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
@@ -1071,15 +1073,14 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         $fatalerror = '';
+        
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
 
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            $fatalerror = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            ) . '<br>';
-        } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
+        if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
             $fatalerror = gT(
                 "An error occurred uploading your file."
                     . " This may be caused by incorrect permissions for the application /tmp folder."
@@ -2458,6 +2459,8 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        $originalRelevance = $oQuestion->relevance;
+
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new LSJsonException(
@@ -2480,6 +2483,12 @@ class QuestionAdministrationController extends LSBaseController
                 true
             );
         }
+
+        // If relevance equation was manually edited, existing conditions must be cleared
+        if ($oQuestion->relevance != $originalRelevance && !empty($oQuestion->conditions)) {
+            Condition::model()->deleteAllByAttributes(['qid' => $oQuestion->qid]);
+        }
+
         return $oQuestion;
     }
 

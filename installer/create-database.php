@@ -1125,9 +1125,14 @@ function populateDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
-        $oTransaction->commit();
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
+    // Some database (like MySQl) do not support table creation in transaction and will auto-commit
+    // Any error in the transaction commit should not be propagated
+    try {
+        $oTransaction->commit();
+    } catch (Exception $e) {
+    };
 }

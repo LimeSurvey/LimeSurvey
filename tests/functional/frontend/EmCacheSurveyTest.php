@@ -23,7 +23,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
     /**
      * @return void
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         if (YII_DEBUG) {
             self::markTestSkipped("emcache can't be tested in debug mode (always off)");
@@ -64,7 +64,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
     /**
      * @return void
      */
-    public static function teardownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         // Remove emcache setting from config.
         $configdir = \Yii::app()->getConfig('configdir');

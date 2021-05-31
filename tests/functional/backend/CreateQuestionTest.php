@@ -20,7 +20,7 @@ class CreateQuestionTest extends TestBaseClassWeb
     private const HTTP_STRING = 'http://';
     private const INDEX_SITE = '/index.php';
 
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setupBeforeClass();
         $username = getenv('ADMINUSERNAME');

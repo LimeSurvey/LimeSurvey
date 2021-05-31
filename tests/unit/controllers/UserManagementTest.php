@@ -42,7 +42,7 @@ class UserManagementTest extends TestBaseClass
         return $this->createDefaultDBConnection($pdo);
     }
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
         include(ROOT.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'datasets'.DIRECTORY_SEPARATOR.'userdata.php');
@@ -63,7 +63,8 @@ class UserManagementTest extends TestBaseClass
         self::$newUserId = $oUser->uid;
     }
 
-    public function setUp() {
+    public function setUp(): void
+    {
         $oUser = \User::model()->findByPk(self::$newUserId);
         $oUser->setAttributes($this->dataSet['new_user_data']);
         $oUser->save();
@@ -131,7 +132,8 @@ class UserManagementTest extends TestBaseClass
 
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void
+    {
         $oUser = \User::model()->findByPk(self::$newUserId);
         $oUser->delete();
     }

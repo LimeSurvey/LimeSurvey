@@ -26,6 +26,10 @@ class LSYii_NoUpdateValidator extends CValidator
      */
     public function validateAttribute($object, $attribute)
     {
+        if (Yii::app()->user->isScriptUpdateAllowed()) {
+            return;
+        }
+
         if ($object->isNewRecord) {
             $object->$attribute = '';
             return;

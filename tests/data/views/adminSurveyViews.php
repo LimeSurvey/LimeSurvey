@@ -16,6 +16,7 @@ return [
     ['surveyTemplateOptionsUpdate', ['route'=>'themeOptions/updateSurvey/sid/{SID}/gsid/1', 'noAdminInFront' => true]],
     ['surveyPresentationOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/presentation/surveyid/{SID}', 'noAdminInFront' => true]],
 
+    ['surveyResources', ['route'=>'surveyAdministration/rendersidemenulink/subaction/resources/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
     ['surveyParticipantTokenOptions', ['route'=>'surveyAdministration/rendersidemenulink/subaction/tokens/surveyid/{SID}', 'noAdminInFront' => true]],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],

@@ -29,12 +29,12 @@ class LSYii_ImageValidator
     {
         if (is_array($file)) {
             $path = $file['tmp_name'];
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             $type = $file['type'];
         } elseif (is_string($file)) {
             $parts = explode('.', $file);
             $path = $file;
-            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             $type = 'image/' . $extension;
         } else {
             return [
