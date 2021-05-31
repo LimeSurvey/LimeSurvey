@@ -36,13 +36,15 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
     }
 
+    /**
+     * @throws Exception
+     */
     public function index()
     {
         $aData = $this->_checkintegrity();
 
-
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 
         $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
