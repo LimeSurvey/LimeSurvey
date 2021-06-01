@@ -118,7 +118,7 @@
                                 "extraOptions",
                                 [
                                     'question'        => $oQuestion,
-                                    'oSurvey'          => $oSurvey,
+                                    'survey'          => $oSurvey,
                                 ]
                             ); ?>
                         </div>
