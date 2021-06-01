@@ -1761,7 +1761,7 @@ class QuestionAdministrationController extends LSBaseController
             "extraOptions",
             [
                 'question'         => $question,
-                'oSurvey'           => $question->survey,
+                'survey'           => $question->survey,
             ]
         );
     }

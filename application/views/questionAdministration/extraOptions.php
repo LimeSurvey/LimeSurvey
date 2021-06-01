@@ -38,13 +38,13 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/subquestions.twig',
                             [
-                                'activated'    => $oSurvey->active !== 'N',
+                                'activated'    => $survey->active !== 'N',
                                 // NB: questionType->subquestions === subquestion scale count
                                 'scalecount'   => $question->questionType->subquestions,
                                 'subquestions' => $question->getScaledSubquestions(),
                                 'question'     => $question,
-                                'allLanguages' => $oSurvey->allLanguages,
-                                'language'     => $oSurvey->language,
+                                'allLanguages' => $survey->allLanguages,
+                                'language'     => $survey->language,
                                 'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
                             ],
                             true
@@ -58,14 +58,14 @@
                         <?= Yii::app()->twigRenderer->renderViewFromFile(
                             '/application/views/questionAdministration/answerOptions.twig',
                             [
-                                'activated'  => $oSurvey->active !== 'N',
+                                'activated'  => $survey->active !== 'N',
                                 'oldCode'    => true,
                                 'scalecount' => $question->questionType->answerscales,
-                                'assessmentvisible' => $oSurvey->assessments === 'Y', //todo: check also 'I' if inherit...
+                                'assessmentvisible' => $survey->assessments === 'Y', //todo: check also 'I' if inherit...
                                 'answers'    => $question->getScaledAnswerOptions(),
                                 'question'     => $question,
-                                'allLanguages' => $oSurvey->allLanguages,
-                                'language'   => $oSurvey->language,
+                                'allLanguages' => $survey->allLanguages,
+                                'language'   => $survey->language,
                                 'hasLabelSetPermission' => Permission::model()->hasGlobalPermission('labelsets','create'),
                             ],
                             true
