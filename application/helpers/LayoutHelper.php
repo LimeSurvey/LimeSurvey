@@ -30,7 +30,7 @@ class LayoutHelper
      * @param bool $return
      * @return string|null
      */
-    public function getAdminHeader(bool $meta = false, bool $return = false): ?string
+    public function getAdminHeader(bool $meta = false, bool $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -273,7 +273,6 @@ class LayoutHelper
     /**
      *
      * @return bool|string|string[]|null
-     * @throws CException
      */
     public function loadEndScripts()
     {
