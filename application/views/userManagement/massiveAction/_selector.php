@@ -34,7 +34,7 @@ $aActionsArray = array(
             'text'          =>  gT('Resend login data'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-add',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
@@ -74,7 +74,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
-        'modalType'     => 'yes-no-lg',
+        'modalType'     => 'cancel-add',
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
