@@ -4351,3 +4351,19 @@ table.dataTable thead .sorting_desc:after {
     margin-left: -15px;
     margin-right: -15px;
 }
+#advanced-question-editor {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+/* Scrollable subquestion/answer tables*/
+.subquestions-table-wrapper,
+.answeroptions-table-wrapper {
+display: block;
+overflow: auto;
+margin-bottom: 20px;
+}
+.subquestions-table-wrapper > table,
+.answeroptions-table-wrapper > table {
+margin-bottom: 0px;
+}

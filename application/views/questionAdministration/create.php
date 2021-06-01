@@ -77,21 +77,6 @@
                             ); ?>
                         </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <!-- Text elements -->
-                                <?php $this->renderPartial(
-                                    "textElements",
-                                    [
-                                        'oSurvey'         => $oSurvey,
-                                        'question'        => $oQuestion,
-                                        'aStructureArray' => $aQuestionTypeGroups,
-                                        'showScriptField' => $showScriptField,
-                                    ]
-                                ); ?>
-                            </div>
-                        </div>
-
                         <!-- Question type selector -->
                         <div class="row">
                             <?php
@@ -111,6 +96,21 @@
                                     'selectormodeclass'   => $selectormodeclass,
                                 ]
                             ); ?>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- Text elements -->
+                                <?php $this->renderPartial(
+                                    "textElements",
+                                    [
+                                        'oSurvey'         => $oSurvey,
+                                        'question'        => $oQuestion,
+                                        'aStructureArray' => $aQuestionTypeGroups,
+                                        'showScriptField' => $showScriptField,
+                                    ]
+                                ); ?>
+                            </div>
                         </div>
 
                         <div class="ls-flex ls-flex-row">
