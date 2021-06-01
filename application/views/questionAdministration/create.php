@@ -113,7 +113,7 @@
                             </div>
                         </div>
 
-                        <div class="ls-flex ls-flex-row">
+                        <div class="row">
                             <?php $this->renderPartial(
                                 "extraOptions",
                                 [
