@@ -64,20 +64,13 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
-            $xmlConfig = simplexml_load_file($xmlFilePath);
-            $xmlAttributes = json_decode(json_encode((array)$xmlConfig->generalattributes), true);
+            $xmlLoader = new XmlConfigHandler($xmlFilePath);
+            $xmlAttributes = $xmlLoader->getNodeAsArray('generalattributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
                 $temp = $xmlAttributes['attribute'];
                 unset($xmlAttributes);
                 $xmlAttributes['attribute'][0] = $temp;
-            }
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(true);
             }
         } else {
             return [];
@@ -109,12 +102,8 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            // load xml file
-            if (\PHP_VERSION_ID < 80000) {
-                libxml_disable_entity_loader(false);
-            }
-            $xmlConfig = simplexml_load_file($xmlFilePath);
-            $xmlAttributes = json_decode(json_encode((array)$xmlConfig->attributes), true);
+            $xmlLoader = new XmlConfigHandler($xmlFilePath);
+            $xmlAttributes = $xmlLoader->getNodeAsArray('attributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
                 $temp = $xmlAttributes['attribute'];

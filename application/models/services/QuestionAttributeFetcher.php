@@ -17,13 +17,16 @@ class QuestionAttributeFetcher
     /** @var array<QuestionAttributeProvider> array of question attribute providers */
     private $providers = [];
 
-    public function __construct()
+    public function __construct($providers = null)
     {
-        $this->providers = [
-            new CoreQuestionAttributeProvider(),
-            new ThemeQuestionAttributeProvider(),
-            new PluginQuestionAttributeProvider(),
-        ];
+        if (is_null($providers)) {
+            $providers = [
+                new CoreQuestionAttributeProvider(),
+                new ThemeQuestionAttributeProvider(),
+                new PluginQuestionAttributeProvider(),
+            ];
+        }
+        $this->providers = $providers;
     }
 
     /**

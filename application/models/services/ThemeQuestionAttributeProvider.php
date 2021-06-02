@@ -39,16 +39,11 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
         /** @var array<string,array> An array of question attributes */
         $attributes = array();
 
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(false);
-        }
         $questionTheme = \QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $questionThemeName, 'extends' => $questionType]);
         if ($questionTheme !== null) {
-            $xmlConfig = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
-            $xmlAttributes = json_decode(json_encode((array)$xmlConfig->attributes), true);
-        }
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader(true);
+            $xmlFilePath = App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml';
+            $xmlLoader = new XmlConfigHandler($xmlFilePath);
+            $xmlAttributes = $xmlLoader->getNodeAsArray('attributes');
         }
 
         if (!empty($xmlAttributes)) {
@@ -81,7 +76,7 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
             return $options['questionTheme'];
         }
         if (!empty($options['question'])) {
-            return $options['question']->questionTheme;
+            return $options['question']->questionThemeName;
         }
         return '';
     }

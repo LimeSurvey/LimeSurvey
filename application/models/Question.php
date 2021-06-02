@@ -1532,7 +1532,7 @@ class Question extends LSActiveRecord
      *
      * @return string
      */
-    public function getQuestionTheme()
+    public function getQuestionThemeName()
     {
         $questionTheme = $this->getQuestionAttribute('question_template');
         return !empty($questionTheme) ? $questionTheme : self::DEFAULT_QUESTION_THEME;
