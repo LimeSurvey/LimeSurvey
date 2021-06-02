@@ -884,8 +884,9 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-    if (in_array(Yii::app()->getRequest()->getRequestType(), ['GET', 'POST'])) {
-        $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
+    $request = Yii::app()->getRequest();
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
         if(!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
@@ -2234,9 +2235,10 @@ function getForwardParameters()
         'index.php',
     );
 
+    $request = Yii::app()->getRequest();
     $parameters = [];
-    if (in_array(Yii::app()->getRequest()->getRequestType(), ['GET', 'POST'])) {
-        $parameters = array_diff_key($_GET,array_flip($reservedGetValues));
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
     }
     return $parameters;
 }
