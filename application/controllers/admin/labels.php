@@ -225,7 +225,7 @@ class labels extends Survey_Common_Action
      * @param int $lid
      * @return void
      */
-    public function view($lid = 0)
+    public function view(int $lid = 0)
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -248,8 +248,7 @@ class labels extends Survey_Common_Action
         $model = LabelSet::model()->findByPk($lid);
         // If there is label id in the variable $lid and there are labelset records in the database
         $labelset_exists = $model !== null;
-        
-        
+
         if ($lid > 0 && $labelset_exists) {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
@@ -272,7 +271,6 @@ class labels extends Survey_Common_Action
                 },
                 0
             );
-
 
             Yii::app()->loadHelper("surveytranslator");
             $results = $model->labels;
@@ -311,6 +309,9 @@ class labels extends Survey_Common_Action
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
+
+        // Green SurveyManagerBar Page Title
+        $aData['pageTitle'] = 'Label sets list';
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }

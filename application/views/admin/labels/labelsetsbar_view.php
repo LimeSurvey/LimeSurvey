@@ -14,8 +14,8 @@
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','create') || Permission::model()->hasGlobalPermission('labelsets','import')):?>
-                    <!-- Add -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
+                    <!-- Create or Import -->
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button" style="margin-top: 10px;">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create or import new label set(s)"); ?>
                     </a>
@@ -23,7 +23,7 @@
                 <!-- Export Multiple -->
                 <?php if ( count($labelsets) > 0 ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button" style="margin-top: 10px;">
                             <span class="icon-export text-success"></span>
                             <?php eT("Export multiple label sets"); ?>
                         </a>
@@ -31,7 +31,7 @@
                     <?php else:?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                         <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
-                            <a class="btn btn-default disabled" role="button" >
+                            <a class="btn btn-default disabled" role="button" style="margin-top: 10px;">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
@@ -92,10 +92,10 @@
             <?php if (isset($labelbar['buttons']['view'])):?>
 
                 <!-- return to admin panel -->
-                <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
+                <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block; margin-top: 10px;">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
-                    <?php eT('Return to admin home'); ?>
+                    <?php eT('Back'); ?>
                 </a>
 
                 <?php endif; ?>
