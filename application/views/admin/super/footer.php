@@ -157,8 +157,8 @@ foreach ($systemInfos as $key => $systemInfo) {
 
             </div>
             <div class="modal-footer modal-footer-yes-no">
-                <a class="btn btn-primary btn-ok"><span class='fa fa-check'></span>&nbsp;<?php eT("Yes"); ?></a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class='fa fa-ban'></span>&nbsp;<?php eT("No"); ?></button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                <a class="btn btn-primary btn-ok"></span>&nbsp;<?php eT("Confirm"); ?></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">

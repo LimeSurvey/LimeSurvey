@@ -21,7 +21,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
 
                 // Modal
                 'actionType' => 'modal',
-                'modalType' => 'empty',
+                'modalType' => 'cancel-delete',
                 'keepopen' => 'no',
                 'sModalTitle' => gT('Delete one or more participants...'),
                 'htmlModalBody' =>
@@ -51,7 +51,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                 'grid-reload' => 'yes',
                 //modal
                 'actionType' => 'modal',
-                'modalType' => 'yes-no',
+                'modalType' => 'cancel-apply',
                 'keepopen' => 'yes',
                 'yes' => gT('Apply'),
                 'no' => gT('Cancel'),

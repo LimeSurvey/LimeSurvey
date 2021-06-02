@@ -96,7 +96,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
             <?php eT('Cancel'); ?>
           </button>
           <button type="button" id="deletemodal-confirm" class="btn btn-danger">
-            <?php eT('Delete now'); ?>
+            <?php eT('Delete'); ?>
           </button>
         </div>
       </div>

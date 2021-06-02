@@ -41,7 +41,7 @@ echo viewHelper::getViewTestTag('roles');
                 'ajaxType'        => 'POST',
                 'ajaxUpdate'      => 'RoleControl--identity-gridPanel',
                 'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
-                'summaryText'     => "<div class='row'>"
+                'summaryText'     => "<div class='row' style='text-align:left; color:#000'>"
                     . "<div class='col-xs-6'>" . $massiveAction . "</div>"
                     . "<div class='col-xs-6'>"
                     . gT('Displaying {start}-{end} of {count} result(s).') . ' '

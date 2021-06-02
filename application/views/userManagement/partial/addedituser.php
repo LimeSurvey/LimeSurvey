@@ -1,43 +1,48 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="modalTitle-addedit"><?=($oUser->isNewRecord ? gT('Add user') : gT('Edit user'))?></h4>
-</div>
+<?php
+$modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => $modalTitle]
+);
+?>
+
+<?php $form = $this->beginWidget('TbActiveForm', array(
+    'id' => 'UserManagement--modalform',
+    'action' => App()->createUrl('userManagement/applyedit'),
+    'enableAjaxValidation'=>false,
+    'enableClientValidation'=>false,
+));?>
+
 <div class="modal-body">
     <div class="container-center">
-        <?php $form = $this->beginWidget('TbActiveForm', array(
-            'id' => 'UserManagement--modalform',
-            'action' => App()->createUrl('userManagement/applyedit'),
-            'enableAjaxValidation'=>false,
-            'enableClientValidation'=>false,
-        ));?>
 
-        <?=$form->hiddenField($oUser,'uid', ['uid' => 'User_Form_users_id'])?>
+        <?=$form->hiddenField($oUser, 'uid', ['uid' => 'User_Form_users_id'])?>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
 
         </div>
         <div class="row ls-space margin top-5">
-            <?php echo $form->labelEx($oUser,'users_name', ['for' => 'User_Form_users_name']); ?>
-            <?php 
-                if($oUser->isNewRecord) {
-                   echo $form->textField($oUser,'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
+            <?php echo $form->labelEx($oUser, 'users_name', ['for' => 'User_Form_users_name']); ?>
+            <?php
+                if ($oUser->isNewRecord) {
+                   echo $form->textField($oUser, 'users_name', ['id' => 'User_Form_users_name', 'required' => 'required']);
                 } else {
                     echo '<input class="form-control" type="text" name="usernameshim" value="'.$oUser->users_name.'" disabled="true" />';
                 }
             ?>
 
-            <?php echo $form->error($oUser,'users_name'); ?>
+            <?php echo $form->error($oUser, 'users_name'); ?>
         </div>
         <div class="row ls-space margin top-5">
-            <?php echo $form->labelEx($oUser,'full_name', ['for'=>'User_Form_full_name']); ?>
-            <?php echo $form->textField($oUser,'full_name', ['id'=>'User_Form_full_name']); ?>
-            <?php echo $form->error($oUser,'full_name'); ?>
+            <?php echo $form->labelEx($oUser, 'full_name', ['for'=>'User_Form_full_name']); ?>
+            <?php echo $form->textField($oUser, 'full_name', ['id'=>'User_Form_full_name']); ?>
+            <?php echo $form->error($oUser, 'full_name'); ?>
         </div>
         <div class="row ls-space margin top-5">
-            <?php echo $form->labelEx($oUser,'email', ['for'=>'User_Form_email']); ?>
-            <?php echo $form->emailField($oUser,'email', ['id'=>'User_Form_email', 'required' => 'required']); ?>
-            <?php echo $form->error($oUser,'email'); ?>
+            <?php echo $form->labelEx($oUser, 'email', ['for'=>'User_Form_email']); ?>
+            <?php echo $form->emailField($oUser, 'email', ['id'=>'User_Form_email', 'required' => 'required']); ?>
+            <?php echo $form->error($oUser, 'email'); ?>
         </div>
-        <?php if(!$oUser->isNewRecord) { ?> 
+        <?php if (!$oUser->isNewRecord) { ?>
         <div class="row ls-space margin top-10">
             <div class="col-xs-12">
                 <input type="checkbox" id="utility_change_password">
@@ -89,14 +94,12 @@
             </div>
             <?php } ?>
         </div>
-        
-        <div class="row ls-space margin top-15">
-            <hr />
-        </div>
-        <div class="row ls-space margin top-5">
-            <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>
-            <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1" id="exitForm"><?=gT('Cancel')?></button>
-        </div>
-        <?php $this->endWidget(); ?>
+
     </div>
 </div>
+
+<div class="modal-footer modal-footer-buttons" style="margin-top: 15px;" >
+    <button class="btn btn-cancel" id="exitForm"><?=gT('Cancel')?></button>
+    <button class="btn btn-success" id="submitForm"><?=gT('Save')?></button>
+</div>
+<?php $this->endWidget(); ?>
