@@ -505,12 +505,8 @@ class TemplateManifest extends TemplateConfiguration
             if ($file->attributes()->role == "content") {
 
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = explode(DIRECTORY_SEPARATOR, $file);
-                $sFormatedFile = end($aExplodedFile);
-
-                // The file extension (.twig) is defined inside the theme itself.
-                $aExplodedFile = explode('.', $sFormatedFile);
-                $sFormatedFile = $aExplodedFile[0];
+                $aExplodedFile = pathinfo($file);
+                $sFormatedFile = $aExplodedFile['filename'];
                 return (string) $sFormatedFile;
             }
         }
