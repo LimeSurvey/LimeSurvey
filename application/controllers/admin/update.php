@@ -65,7 +65,7 @@ class update extends Survey_Common_Action
 {
 
     /**
-     * First function to be called, when comming to admin/update
+     * First function to be called, when coming to admin/update
      *
      */
     public function index()
@@ -83,7 +83,11 @@ class update extends Survey_Common_Action
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
+
+        // Green Bar (SurveyManagerBar Heading)
+        $aData['pageTitle'] = gT('ComfortUpdate');
         $aData['fullpagebar']['update'] = true;
+
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');

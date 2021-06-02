@@ -52,7 +52,7 @@
             <?php endif;?>
 
             <?php if (isset($fullpagebar['update'])) :?>
-                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default">
+                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
                 </a>
