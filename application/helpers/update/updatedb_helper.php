@@ -4603,7 +4603,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 448) {
+        if ($iOldDBVersion < 449) {
             $oTransaction = $oDB->beginTransaction();
 
             //updating the default values for htmleditor
@@ -4611,7 +4611,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{surveys_groupsettings}}', 'htmlemail', 'string(1)', false, 'Y');
             alterColumn('{{surveys}}', 'htmlemail', 'string(1)', false, 'Y');
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 448), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 449), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     }catch (Exception $e) {
