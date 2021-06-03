@@ -267,7 +267,7 @@
     {{ registerScript("StickyMatrixHeaderScript", "
         var stickyRows = new StickyTableRows();
         $('thead>tr.ls-heading').each(function(itrt, item){
-            if($(item).closest('div.question-container').hasClass('array-flexible-duel-scale')) {
+            if($(item).closest('div.question-container').hasClass('array-flexible-dual-scale')) {
                 return;
             }
             stickyRows.add(item);
