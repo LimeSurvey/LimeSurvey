@@ -94,37 +94,59 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // copy any valid codes from code field to assessment field
             switch (Yii::app()->db->driverName) {
                 case 'mysql':
-                    $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
-                    $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'")->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                    )->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                    )->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    $oDB->createCommand("UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')")->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')"
+                    )->execute();
                     break;
                 case 'sqlsrv':
                 case 'dblib':
                 case 'mssql':
                     try {
-                        $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
-                        $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1")->execute();
+                        $oDB->createCommand(
+                            "UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
+                        )->execute();
+                        $oDB->createCommand(
+                            "UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
+                        )->execute();
                     } catch (Exception $e) {
                     };
-                // copy assessment link to message since from now on we will have HTML assignment messages
+                    // copy assessment link to message since from now on we will have HTML assignment messages
                     alterColumn('{{assessments}}', 'link', "text", false);
                     alterColumn('{{assessments}}', 'message', "text", false);
-                    $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'")->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'"
+                    )->execute();
                     break;
                 case 'pgsql':
-                    $oDB->createCommand("UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
-                    $oDB->createCommand("UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'")->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
+                    )->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
+                    )->execute();
                     // copy assessment link to message since from now on we will have HTML assignment messages
-                    $oDB->createCommand("UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'")->execute();
+                    $oDB->createCommand(
+                        "UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'"
+                    )->execute();
                     break;
             }
             // activate assessment where assessment rules exist
-            $oDB->createCommand("UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)")->execute();
+            $oDB->createCommand(
+                "UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)"
+            )->execute();
             // add language field to assessment table
             addColumn('{{assessments}}', 'language', "string(20) NOT NULL default 'en'");
             // update language field with default language of that particular survey
-            $oDB->createCommand("UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)")->execute();
+            $oDB->createCommand(
+                "UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)"
+            )->execute();
             // drop the old link field
             dropColumn('{{assessments}}', 'link');
 
@@ -132,7 +154,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             addColumn('{{surveys_languagesettings}}', 'surveyls_url', "string");
             addColumn('{{surveys_languagesettings}}', 'surveyls_endtext', 'text');
             // copy old URL fields ot language specific entries
-            $oDB->createCommand("UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)")->execute();
+            $oDB->createCommand(
+                "UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)"
+            )->execute();
             // drop old URL field
             dropColumn('{{surveys}}', 'url');
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 133), "stg_name='DBVersion'");
@@ -234,7 +258,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             addColumn('{{questions}}', 'scale_id', 'integer NOT NULL default 0');
             addColumn('{{questions}}', 'same_default', 'integer NOT NULL default 0');
             dropPrimaryKey('answers');
-            addPrimaryKey('answers', array('qid','code','language','scale_id'));
+            addPrimaryKey('answers', array('qid', 'code', 'language', 'scale_id'));
 
             $aFields = array(
                 'qid' => "integer NOT NULL default 0",
@@ -245,7 +269,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'defaultvalue' => 'text',
             );
             $oDB->createCommand()->createTable('{{defaultvalues}}', $aFields);
-            addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
+            addPrimaryKey('defaultvalues', array('qid', 'specialtype', 'language', 'scale_id', 'sqid'));
 
             // -Move all 'answers' that are subquestions to the questions table
             // -Move all 'labels' that are answers to the answers table
@@ -270,13 +294,25 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('sess2_expiry', '{{sessions}}', 'expiry');
             $oDB->createCommand()->createIndex('sess2_expireref', '{{sessions}}', 'expireref');
             // Move all user templates to the new user template directory
-            echo "<br>" . sprintf(gT("Moving user templates to new location at %s..."), $sUserTemplateRootDir) . "<br />";
+            echo "<br>" . sprintf(
+                gT("Moving user templates to new location at %s..."),
+                $sUserTemplateRootDir
+            ) . "<br />";
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates = array();
             // get each entry
             while ($entryName = readdir($hTemplateDirectory)) {
-                if (!in_array($entryName, array('.','..','.svn')) && is_dir($sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName) && !Template::isStandardTemplate($entryName)) {
-                    if (!rename($sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName, $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName)) {
+                if (
+                    !in_array($entryName, array('.', '..', '.svn')) && is_dir(
+                        $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
+                    ) && !Template::isStandardTemplate($entryName)
+                ) {
+                    if (
+                        !rename(
+                            $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName,
+                            $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
+                        )
+                    ) {
                         $aFailedTemplates[] = $entryName;
                     };
                 }
@@ -328,7 +364,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'export_p' => "integer NOT NULL default 0"
             );
             $oDB->createCommand()->createTable('{{survey_permissions}}', $aFields);
-            addPrimaryKey('survey_permissions', array('sid','uid','permission'));
+            addPrimaryKey('survey_permissions', array('sid', 'uid', 'permission'));
 
             upgradeSurveyPermissions145();
 
@@ -377,18 +413,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{assessments}}', 'minimum', "string(50)", false, '');
             alterColumn('{{assessments}}', 'maximum', "string(50)", false, '');
             // change the primary index to include language
-            if (Yii::app()->db->driverName == 'mysql') { // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
+            if (
+                Yii::app(
+                )->db->driverName == 'mysql'
+            ) { // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
                 modifyPrimaryKey('assessments', array('id', 'language'));
             } else {
                 dropPrimaryKey('assessments');
-                addPrimaryKey('assessments', array('id','language'));
+                addPrimaryKey('assessments', array('id', 'language'));
             }
 
 
             alterColumn('{{conditions}}', 'cfieldname', "string(50)", false, '');
             dropPrimaryKey('defaultvalues');
             alterColumn('{{defaultvalues}}', 'specialtype', "string(20)", false, '');
-            addPrimaryKey('defaultvalues', array('qid','specialtype','language','scale_id','sqid'));
+            addPrimaryKey('defaultvalues', array('qid', 'specialtype', 'language', 'scale_id', 'sqid'));
 
             alterColumn('{{groups}}', 'group_name', "string(100)", false, '');
             alterColumn('{{labels}}', 'code', "string(5)", false, '');
@@ -427,7 +466,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{saved_control}}', 'saved_thisstep', "text", false);
             $oDB->createCommand()->update('{{saved_control}}', array('status' => ''), "status is NULL");
             alterColumn('{{saved_control}}', 'status', "string(1)", false, '');
-            $oDB->createCommand()->update('{{saved_control}}', array('saved_date' => '1980-01-01 00:00:00'), "saved_date is NULL");
+            $oDB->createCommand()->update(
+                '{{saved_control}}',
+                array('saved_date' => '1980-01-01 00:00:00'),
+                "saved_date is NULL"
+            );
             alterColumn('{{saved_control}}', 'saved_date', "datetime", false);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => ''), "stg_value is NULL");
             alterColumn('{{settings_global}}', 'stg_value', "string", false, '');
@@ -453,7 +496,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{surveys}}', 'bounce_email', "string(320)");
             alterColumn('{{surveys}}', 'tokenlength', 'integer', true, 15);
 
-            $oDB->createCommand()->update('{{surveys_languagesettings}}', array('surveyls_title' => ''), "surveyls_title is NULL");
+            $oDB->createCommand()->update(
+                '{{surveys_languagesettings}}',
+                array('surveyls_title' => ''),
+                "surveyls_title is NULL"
+            );
             alterColumn('{{surveys_languagesettings}}', 'surveyls_title', "string(200)", false);
             alterColumn('{{surveys_languagesettings}}', 'surveyls_endtext', "text");
             alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "string");
@@ -491,18 +538,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             } catch (Exception $e) {
             }
             try {
-                addPrimaryKey('user_in_groups', array('ugid','uid'));
+                addPrimaryKey('user_in_groups', array('ugid', 'uid'));
             } catch (Exception $e) {
             }
 
             addColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer NOT NULL DEFAULT 0");
 
-            $oDB->createCommand()->createTable('{{failed_login_attempts}}', array(
-                'id' => "pk",
-                'ip' => 'string(37) NOT NULL',
-                'last_attempt' => 'string(20) NOT NULL',
-                'number_attempts' => "integer NOT NULL"
-            ));
+            $oDB->createCommand()->createTable(
+                '{{failed_login_attempts}}',
+                array(
+                    'id' => "pk",
+                    'ip' => 'string(37) NOT NULL',
+                    'last_attempt' => 'string(20) NOT NULL',
+                    'number_attempts' => "integer NOT NULL"
+                )
+            );
             upgradeTokens145();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 145), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -514,7 +564,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Fix permissions for new feature quick-translation
             try {
                 setTransactionBookmark();
-                $oDB->createCommand("INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}")->execute();
+                $oDB->createCommand(
+                    "INSERT into {{survey_permissions}} (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from {{surveys}}"
+                )->execute();
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             }
@@ -534,59 +586,80 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
 
-            $oDB->createCommand()->createTable('{{participants}}', array(
-                'participant_id' => 'string(50) NOT NULL',
-                'firstname' => 'string(40) default NULL',
-                'lastname' => 'string(40) default NULL',
-                'email' => 'string(80) default NULL',
-                'language' => 'string(40) default NULL',
-                'blacklisted' => 'string(1) NOT NULL',
-                'owner_uid' => "integer NOT NULL"
-            ));
+            $oDB->createCommand()->createTable(
+                '{{participants}}',
+                array(
+                    'participant_id' => 'string(50) NOT NULL',
+                    'firstname' => 'string(40) default NULL',
+                    'lastname' => 'string(40) default NULL',
+                    'email' => 'string(80) default NULL',
+                    'language' => 'string(40) default NULL',
+                    'blacklisted' => 'string(1) NOT NULL',
+                    'owner_uid' => "integer NOT NULL"
+                )
+            );
             addPrimaryKey('participants', array('participant_id'));
 
-            $oDB->createCommand()->createTable('{{participant_attribute}}', array(
-                'participant_id' => 'string(50) NOT NULL',
-                'attribute_id' => "integer NOT NULL",
-                'value' => 'string(50) NOT NULL'
-            ));
-            addPrimaryKey('participant_attribute', array('participant_id','attribute_id'));
+            $oDB->createCommand()->createTable(
+                '{{participant_attribute}}',
+                array(
+                    'participant_id' => 'string(50) NOT NULL',
+                    'attribute_id' => "integer NOT NULL",
+                    'value' => 'string(50) NOT NULL'
+                )
+            );
+            addPrimaryKey('participant_attribute', array('participant_id', 'attribute_id'));
 
-            $oDB->createCommand()->createTable('{{participant_attribute_names}}', array(
-                'attribute_id' => 'autoincrement',
-                'attribute_type' => 'string(4) NOT NULL',
-                'visible' => 'string(5) NOT NULL',
-                'PRIMARY KEY (attribute_id,attribute_type)'
-            ));
+            $oDB->createCommand()->createTable(
+                '{{participant_attribute_names}}',
+                array(
+                    'attribute_id' => 'autoincrement',
+                    'attribute_type' => 'string(4) NOT NULL',
+                    'visible' => 'string(5) NOT NULL',
+                    'PRIMARY KEY (attribute_id,attribute_type)'
+                )
+            );
 
-            $oDB->createCommand()->createTable('{{participant_attribute_names_lang}}', array(
-                'attribute_id' => 'integer NOT NULL',
-                'attribute_name' => 'string(30) NOT NULL',
-                'lang' => 'string(20) NOT NULL'
-            ));
-            addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+            $oDB->createCommand()->createTable(
+                '{{participant_attribute_names_lang}}',
+                array(
+                    'attribute_id' => 'integer NOT NULL',
+                    'attribute_name' => 'string(30) NOT NULL',
+                    'lang' => 'string(20) NOT NULL'
+                )
+            );
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
 
-            $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
-                'attribute_id' => 'integer NOT NULL',
-                'value_id' => 'pk',
-                'value' => 'string(20) NOT NULL'
-            ));
+            $oDB->createCommand()->createTable(
+                '{{participant_attribute_values}}',
+                array(
+                    'attribute_id' => 'integer NOT NULL',
+                    'value_id' => 'pk',
+                    'value' => 'string(20) NOT NULL'
+                )
+            );
 
-            $oDB->createCommand()->createTable('{{participant_shares}}', array(
-                'participant_id' => 'string(50) NOT NULL',
-                'share_uid' => 'integer NOT NULL',
-                'date_added' => 'datetime NOT NULL',
-                'can_edit' => 'string(5) NOT NULL'
-            ));
-            addPrimaryKey('participant_shares', array('participant_id','share_uid'));
+            $oDB->createCommand()->createTable(
+                '{{participant_shares}}',
+                array(
+                    'participant_id' => 'string(50) NOT NULL',
+                    'share_uid' => 'integer NOT NULL',
+                    'date_added' => 'datetime NOT NULL',
+                    'can_edit' => 'string(5) NOT NULL'
+                )
+            );
+            addPrimaryKey('participant_shares', array('participant_id', 'share_uid'));
 
-            $oDB->createCommand()->createTable('{{survey_links}}', array(
-                'participant_id' => 'string(50) NOT NULL',
-                'token_id' => 'integer NOT NULL',
-                'survey_id' => 'integer NOT NULL',
-                'date_created' => 'datetime NOT NULL'
-            ));
-            addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
+            $oDB->createCommand()->createTable(
+                '{{survey_links}}',
+                array(
+                    'participant_id' => 'string(50) NOT NULL',
+                    'token_id' => 'integer NOT NULL',
+                    'survey_id' => 'integer NOT NULL',
+                    'date_created' => 'datetime NOT NULL'
+                )
+            );
+            addPrimaryKey('survey_links', array('participant_id', 'token_id', 'survey_id'));
             // Add language field to question_attributes table
             addColumn('{{question_attributes}}', 'language', "string(20)");
             upgradeQuestionAttributes148();
@@ -632,18 +705,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 153) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{expression_errors}}', array(
-                'id' => 'pk',
-                'errortime' => 'string(50)',
-                'sid' => 'integer',
-                'gid' => 'integer',
-                'qid' => 'integer',
-                'gseq' => 'integer',
-                'qseq' => 'integer',
-                'type' => 'string(50)',
-                'eqn' => 'text',
-                'prettyprint' => 'text'
-            ));
+            $oDB->createCommand()->createTable(
+                '{{expression_errors}}',
+                array(
+                    'id' => 'pk',
+                    'errortime' => 'string(50)',
+                    'sid' => 'integer',
+                    'gid' => 'integer',
+                    'qid' => 'integer',
+                    'gseq' => 'integer',
+                    'qseq' => 'integer',
+                    'type' => 'string(50)',
+                    'eqn' => 'text',
+                    'prettyprint' => 'text'
+                )
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 153), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -677,13 +753,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             } catch (Exception $e) {
                 // do nothing
             }
-            $oDB->createCommand()->createTable('{{survey_url_parameters}}', array(
-                'id' => 'pk',
-                'sid' => 'integer NOT NULL',
-                'parameter' => 'string(50) NOT NULL',
-                'targetqid' => 'integer',
-                'targetsqid' => 'integer'
-            ));
+            $oDB->createCommand()->createTable(
+                '{{survey_url_parameters}}',
+                array(
+                    'id' => 'pk',
+                    'sid' => 'integer NOT NULL',
+                    'parameter' => 'string(50) NOT NULL',
+                    'targetqid' => 'integer',
+                    'targetsqid' => 'integer'
+                )
+            );
 
             try {
                 $oDB->createCommand()->dropTable('{{sessions}}');
@@ -691,17 +770,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 // do nothing
             }
             if (Yii::app()->db->driverName == 'mysql') {
-                $oDB->createCommand()->createTable('{{sessions}}', array(
-                    'id' => 'string(32) NOT NULL',
-                    'expire' => 'integer',
-                    'data' => 'longtext'
-                ));
+                $oDB->createCommand()->createTable(
+                    '{{sessions}}',
+                    array(
+                        'id' => 'string(32) NOT NULL',
+                        'expire' => 'integer',
+                        'data' => 'longtext'
+                    )
+                );
             } else {
-                $oDB->createCommand()->createTable('{{sessions}}', array(
-                    'id' => 'string(32) NOT NULL',
-                    'expire' => 'integer',
-                    'data' => 'text'
-                ));
+                $oDB->createCommand()->createTable(
+                    '{{sessions}}',
+                    array(
+                        'id' => 'string(32) NOT NULL',
+                        'expire' => 'integer',
+                        'data' => 'text'
+                    )
+                );
             }
 
             addPrimaryKey('sessions', array('id'));
@@ -714,7 +799,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
             $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
             foreach ($oSurveyResult as $row) {
-                    $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
+                $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 156), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -733,7 +818,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
             dropPrimaryKey('answers');
             alterColumn('{{answers}}', 'scale_id', 'integer', false, '0');
-            addPrimaryKey('answers', array('qid','code','language','scale_id'));
+            addPrimaryKey('answers', array('qid', 'code', 'language', 'scale_id'));
             alterColumn('{{conditions}}', 'method', "string(5)", false, '');
             alterColumn('{{participants}}', 'owner_uid', 'integer', false);
             alterColumn('{{participant_attribute_names}}', 'visible', 'string(5)', false);
@@ -878,7 +963,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             };
             try {
                 setTransactionBookmark();
-                addPrimaryKey('user_in_groups', array('ugid','uid'));
+                addPrimaryKey('user_in_groups', array('ugid', 'uid'));
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
@@ -898,7 +983,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             };
             try {
                 setTransactionBookmark();
-                addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+                addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
@@ -931,13 +1016,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Sometimes the survey_links table was deleted before this step, if so
             // we recreate it (copied from line 663)
             if (!tableExists('{survey_links}')) {
-                $oDB->createCommand()->createTable('{{survey_links}}', array(
-                    'participant_id' => 'string(50) NOT NULL',
-                    'token_id' => 'integer NOT NULL',
-                    'survey_id' => 'integer NOT NULL',
-                    'date_created' => 'datetime NOT NULL'
-                ));
-                addPrimaryKey('survey_links', array('participant_id','token_id','survey_id'));
+                $oDB->createCommand()->createTable(
+                    '{{survey_links}}',
+                    array(
+                        'participant_id' => 'string(50) NOT NULL',
+                        'token_id' => 'integer NOT NULL',
+                        'survey_id' => 'integer NOT NULL',
+                        'date_created' => 'datetime NOT NULL'
+                    )
+                );
+                addPrimaryKey('survey_links', array('participant_id', 'token_id', 'survey_id'));
             }
             alterColumn('{{survey_links}}', 'date_created', "datetime", true);
             alterColumn('{{saved_control}}', 'identifier', "text", false);
@@ -977,7 +1065,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
-
 
 
             if (Yii::app()->db->driverName == 'pgsql') {
@@ -1034,16 +1121,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{user_groups}}', 'description', "text", false);
 
 
-
             alterColumn('{{conditions}}', 'value', 'string', false, '');
             alterColumn('{{participant_shares}}', 'can_edit', "string(5)", false);
 
-             alterColumn('{{users}}', 'password', "binary", false);
+            alterColumn('{{users}}', 'password', "binary", false);
             dropColumn('{{users}}', 'one_time_pw');
             addColumn('{{users}}', 'one_time_pw', 'binary');
 
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'random_order' and value = '2'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'random_order' and value = '2'"
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 157), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1097,25 +1187,30 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveyTables164();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 164), "stg_name='DBVersion'");
             $oTransaction->commit();
-
             // Not updating settings table as upgrade process takes care of that step now
         }
 
         if ($iOldDBVersion < 165) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{plugins}}', array(
-                'id' => 'pk',
-                'name' => 'string NOT NULL',
-                'active' => 'boolean'
-            ));
-            $oDB->createCommand()->createTable('{{plugin_settings}}', array(
-                'id' => 'pk',
-                'plugin_id' => 'integer NOT NULL',
-                'model' => 'string',
-                'model_id' => 'integer',
-                'key' => 'string',
-                'value' => 'text'
-            ));
+            $oDB->createCommand()->createTable(
+                '{{plugins}}',
+                array(
+                    'id' => 'pk',
+                    'name' => 'string NOT NULL',
+                    'active' => 'boolean'
+                )
+            );
+            $oDB->createCommand()->createTable(
+                '{{plugin_settings}}',
+                array(
+                    'id' => 'pk',
+                    'plugin_id' => 'integer NOT NULL',
+                    'model' => 'string',
+                    'model_id' => 'integer',
+                    'key' => 'string',
+                    'value' => 'text'
+                )
+            );
             alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "text");
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 165), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1133,7 +1228,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             addColumn('{{permissions}}', 'id', 'pk');
             try {
                 setTransactionBookmark();
-                $oDB->createCommand()->createIndex('idxPermissions', '{{permissions}}', 'entity_id,entity,permission,uid', true);
+                $oDB->createCommand()->createIndex(
+                    'idxPermissions',
+                    '{{permissions}}',
+                    'entity_id,entity,permission,uid',
+                    true
+                );
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             }
@@ -1188,8 +1288,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 170) {
             $oTransaction = $oDB->beginTransaction();
             // renamed advanced attributes fields dropdown_dates_year_min/max
-            $oDB->createCommand()->update('{{question_attributes}}', array('attribute' => 'date_min'), "attribute='dropdown_dates_year_min'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('attribute' => 'date_max'), "attribute='dropdown_dates_year_max'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('attribute' => 'date_min'),
+                "attribute='dropdown_dates_year_min'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('attribute' => 'date_max'),
+                "attribute='dropdown_dates_year_max'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 170), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1239,7 +1347,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         rollBackToTransactionBookmark();
                     };
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
-                    $oDB->createCommand()->createIndex('permissions_idx2', '{{permissions}}', 'entity_id,entity,permission,uid', true);
+                    $oDB->createCommand()->createIndex(
+                        'permissions_idx2',
+                        '{{permissions}}',
+                        'entity_id,entity,permission,uid',
+                        true
+                    );
                     break;
                 default:
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
@@ -1322,7 +1435,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 178) {
             $oTransaction = $oDB->beginTransaction();
             if (Yii::app()->db->driverName == 'mysql') {
-                modifyPrimaryKey('questions', array('qid','language'));
+                modifyPrimaryKey('questions', array('qid', 'language'));
             }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 178), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1488,19 +1601,27 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 259) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{notifications}}', array(
-                'id' => 'pk',
-                'entity' => 'string(15) not null',
-                'entity_id' => 'integer not null',
-                'title' => 'string not null', // varchar(255) in postgres
-                'message' => 'text not null',
-                'status' => "string(15) not null default 'new' ",
-                'importance' => 'integer not null default 1',
-                'display_class' => "string(31) default 'default'",
-                'created' => 'datetime',
-                'first_read' => 'datetime'
-            ));
-            $oDB->createCommand()->createIndex('{{notif_index}}', '{{notifications}}', 'entity, entity_id, status', false);
+            $oDB->createCommand()->createTable(
+                '{{notifications}}',
+                array(
+                    'id' => 'pk',
+                    'entity' => 'string(15) not null',
+                    'entity_id' => 'integer not null',
+                    'title' => 'string not null', // varchar(255) in postgres
+                    'message' => 'text not null',
+                    'status' => "string(15) not null default 'new' ",
+                    'importance' => 'integer not null default 1',
+                    'display_class' => "string(31) default 'default'",
+                    'created' => 'datetime',
+                    'first_read' => 'datetime'
+                )
+            );
+            $oDB->createCommand()->createIndex(
+                '{{notif_index}}',
+                '{{notifications}}',
+                'entity, entity_id, status',
+                false
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 259), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1565,10 +1686,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 // RAND is RANDOM in Postgres
                 switch (Yii::app()->db->driverName) {
                     case 'pgsql':
-                        Yii::app()->db->createCommand("UPDATE {$sTableName} SET seed = ROUND(RANDOM() * 10000000)")->execute();
+                        Yii::app()->db->createCommand(
+                            "UPDATE {$sTableName} SET seed = ROUND(RANDOM() * 10000000)"
+                        )->execute();
                         break;
                     default:
-                        Yii::app()->db->createCommand("UPDATE {$sTableName} SET seed = ROUND(RAND() * 10000000, 0)")->execute();
+                        Yii::app()->db->createCommand(
+                            "UPDATE {$sTableName} SET seed = ROUND(RAND() * 10000000, 0)"
+                        )->execute();
                         break;
                 }
             }
@@ -1675,15 +1800,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (tableExists('{settings_user}')) {
                 $oDB->createCommand()->dropTable('{{settings_user}}');
             }
-            $oDB->createCommand()->createTable('{{settings_user}}', array(
-                'id' => 'pk',
-                'uid' => 'integer NOT NULL',
-                'entity' => 'string(15)',
-                'entity_id' => 'string(31)',
-                'stg_name' => 'string(63) not null',
-                'stg_value' => 'text',
+            $oDB->createCommand()->createTable(
+                '{{settings_user}}',
+                array(
+                    'id' => 'pk',
+                    'uid' => 'integer NOT NULL',
+                    'entity' => 'string(15)',
+                    'entity_id' => 'string(31)',
+                    'stg_name' => 'string(63) not null',
+                    'stg_value' => 'text',
 
-            ));
+                )
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 307), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1806,7 +1934,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
 
-
         //Rename order to sortorder
 
         if ($iOldDBVersion < 318) {
@@ -1854,22 +1981,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createTable(
                 '{{tutorials}}',
                 [
-                    'tid' =>  'pk',
-                    'name' =>  'string(128)',
-                    'description' =>  'text',
-                    'active' =>  'integer DEFAULT 0',
+                    'tid' => 'pk',
+                    'name' => 'string(128)',
+                    'description' => 'text',
+                    'active' => 'integer DEFAULT 0',
                     'settings' => 'text',
-                    'permission' =>  'string(128) NOT NULL',
-                    'permission_grade' =>  'string(128) NOT NULL'
+                    'permission' => 'string(128) NOT NULL',
+                    'permission_grade' => 'string(128) NOT NULL'
                 ]
             );
             $oDB->createCommand()->createTable(
                 '{{tutorial_entries}}',
                 [
-                    'teid' =>  'pk',
-                    'tid' =>  'integer NOT NULL',
-                    'title' =>  'text',
-                    'content' =>  'text',
+                    'teid' => 'pk',
+                    'tid' => 'integer NOT NULL',
+                    'title' => 'text',
+                    'content' => 'text',
                     'settings' => 'text'
                 ]
             );
@@ -1881,7 +2008,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
-            $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder', 'language'], false);
+            $oDB->createCommand()->createIndex(
+                '{{idx4_labels}}',
+                '{{labels}}',
+                ['lid', 'sortorder', 'language'],
+                false
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 323), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1899,70 +2031,264 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropTable('{{template_configuration}}');
 
             // templates
-            $oDB->createCommand()->createTable('{{templates}}', array(
-                'id' =>  "pk",
-                'name' =>  "string(150) NOT NULL",
-                'folder' =>  "string(45) NULL",
-                'title' =>  "string(100) NOT NULL",
-                'creation_date' =>  "datetime NULL",
-                'author' =>  "string(150) NULL",
-                'author_email' =>  "string(255) NULL",
-                'author_url' =>  "string(255) NULL",
-                'copyright' =>  "text ",
-                'license' =>  "text ",
-                'version' =>  "string(45) NULL",
-                'api_version' =>  "string(45) NOT NULL",
-                'view_folder' =>  "string(45) NOT NULL",
-                'files_folder' =>  "string(45) NOT NULL",
-                'description' =>  "text ",
-                'last_update' =>  "datetime NULL",
-                'owner_id' =>  "integer NULL",
-                'extends' =>  "string(150)  NULL",
-            ));
+            $oDB->createCommand()->createTable(
+                '{{templates}}',
+                array(
+                    'id' => "pk",
+                    'name' => "string(150) NOT NULL",
+                    'folder' => "string(45) NULL",
+                    'title' => "string(100) NOT NULL",
+                    'creation_date' => "datetime NULL",
+                    'author' => "string(150) NULL",
+                    'author_email' => "string(255) NULL",
+                    'author_url' => "string(255) NULL",
+                    'copyright' => "text ",
+                    'license' => "text ",
+                    'version' => "string(45) NULL",
+                    'api_version' => "string(45) NOT NULL",
+                    'view_folder' => "string(45) NOT NULL",
+                    'files_folder' => "string(45) NOT NULL",
+                    'description' => "text ",
+                    'last_update' => "datetime NULL",
+                    'owner_id' => "integer NULL",
+                    'extends' => "string(150)  NULL",
+                )
+            );
 
             $oDB->createCommand()->createIndex('{{idx1_templates}}', '{{templates}}', 'name', false);
             $oDB->createCommand()->createIndex('{{idx2_templates}}', '{{templates}}', 'title', false);
             $oDB->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
             $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
 
-            $headerArray = ['name', 'folder', 'title', 'creation_date', 'author', 'author_email', 'author_url', 'copyright', 'license', 'version', 'api_version', 'view_folder', 'files_folder', 'description', 'last_update', 'owner_id', 'extends'];
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", null, 1, '']));
+            $headerArray = [
+                'name',
+                'folder',
+                'title',
+                'creation_date',
+                'author',
+                'author_email',
+                'author_url',
+                'copyright',
+                'license',
+                'version',
+                'api_version',
+                'view_folder',
+                'files_folder',
+                'description',
+                'last_update',
+                'owner_id',
+                'extends'
+            ];
+            $oDB->createCommand()->insert(
+                "{{templates}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'default',
+                        'default',
+                        'Advanced Template',
+                        date('Y-m-d H:i:s'),
+                        'Louis Gac',
+                        'louis.gac@limesurvey.org',
+                        'https://www.limesurvey.org/',
+                        'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                        'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+                        '1.0',
+                        '3.0',
+                        'views',
+                        'files',
+                        "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)",
+                        null,
+                        1,
+                        ''
+                    ]
+                )
+            );
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', null, 1, 'default']));
+            $oDB->createCommand()->insert(
+                "{{templates}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'material',
+                        'material',
+                        'Material Template',
+                        date('Y-m-d H:i:s'),
+                        'Louis Gac',
+                        'louis.gac@limesurvey.org',
+                        'https://www.limesurvey.org/',
+                        'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                        'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+                        '1.0',
+                        '3.0',
+                        'views',
+                        'files',
+                        '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>',
+                        null,
+                        1,
+                        'default'
+                    ]
+                )
+            );
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', null, 1, '']));
+            $oDB->createCommand()->insert(
+                "{{templates}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'monochrome',
+                        'monochrome',
+                        'Monochrome Templates',
+                        date('Y-m-d H:i:s'),
+                        'Louis Gac',
+                        'louis.gac@limesurvey.org',
+                        'https://www.limesurvey.org/',
+                        'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                        'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+                        '1.0',
+                        '3.0',
+                        'views',
+                        'files',
+                        '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.',
+                        null,
+                        1,
+                        ''
+                    ]
+                )
+            );
 
 
             // template_configuration
-            $oDB->createCommand()->createTable('{{template_configuration}}', array(
-                'id' => "pk",
-                'template_name' => "string(150)  NOT NULL",
-                'sid' => "integer NULL",
-                'gsid' => "integer NULL",
-                'uid' => "integer NULL",
-                'files_css' => "text",
-                'files_js' => "text",
-                'files_print_css' => "text",
-                'options' => "text ",
-                'cssframework_name' => "string(45) NULL",
-                'cssframework_css' => "text",
-                'cssframework_js' => "text",
-                'packages_to_load' => "text",
-                'packages_ltr' => "text",
-                'packages_rtl' => "text",
-            ));
+            $oDB->createCommand()->createTable(
+                '{{template_configuration}}',
+                array(
+                    'id' => "pk",
+                    'template_name' => "string(150)  NOT NULL",
+                    'sid' => "integer NULL",
+                    'gsid' => "integer NULL",
+                    'uid' => "integer NULL",
+                    'files_css' => "text",
+                    'files_js' => "text",
+                    'files_print_css' => "text",
+                    'options' => "text ",
+                    'cssframework_name' => "string(45) NULL",
+                    'cssframework_css' => "text",
+                    'cssframework_js' => "text",
+                    'packages_to_load' => "text",
+                    'packages_ltr' => "text",
+                    'packages_rtl' => "text",
+                )
+            );
 
-            $oDB->createCommand()->createIndex('{{idx1_template_configuration}}', '{{template_configuration}}', 'template_name', false);
-            $oDB->createCommand()->createIndex('{{idx2_template_configuration}}', '{{template_configuration}}', 'sid', false);
-            $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
-            $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
+            $oDB->createCommand()->createIndex(
+                '{{idx1_template_configuration}}',
+                '{{template_configuration}}',
+                'template_name',
+                false
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx2_template_configuration}}',
+                '{{template_configuration}}',
+                'sid',
+                false
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx3_template_configuration}}',
+                '{{template_configuration}}',
+                'gsid',
+                false
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx4_template_configuration}}',
+                '{{template_configuration}}',
+                'uid',
+                false
+            );
 
-            $headerArray = ['template_name', 'sid', 'gsid', 'uid', 'files_css', 'files_js', 'files_print_css', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js', 'packages_to_load', 'packages_ltr', 'packages_rtl'];
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['default', null, null, null, '{"add": ["css/animate.css","css/template.css"]}', '{"add": ["scripts/template.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"off","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '["pjax"]', '', '']));
+            $headerArray = [
+                'template_name',
+                'sid',
+                'gsid',
+                'uid',
+                'files_css',
+                'files_js',
+                'files_print_css',
+                'options',
+                'cssframework_name',
+                'cssframework_css',
+                'cssframework_js',
+                'packages_to_load',
+                'packages_ltr',
+                'packages_rtl'
+            ];
+            $oDB->createCommand()->insert(
+                "{{template_configuration}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'default',
+                        null,
+                        null,
+                        null,
+                        '{"add": ["css/animate.css","css/template.css"]}',
+                        '{"add": ["scripts/template.js", "scripts/ajaxify.js"]}',
+                        '{"add":"css/print_template.css"}',
+                        '{"ajaxmode":"off","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+                        'bootstrap',
+                        '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
+                        '',
+                        '["pjax"]',
+                        '',
+                        ''
+                    ]
+                )
+            );
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['material', null, null, null, '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}', '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"off","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}', '', '["pjax"]', '', '']));
+            $oDB->createCommand()->insert(
+                "{{template_configuration}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'material',
+                        null,
+                        null,
+                        null,
+                        '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}',
+                        '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}',
+                        '{"add":"css/print_template.css"}',
+                        '{"ajaxmode":"off","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+                        'bootstrap',
+                        '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}',
+                        '',
+                        '["pjax"]',
+                        '',
+                        ''
+                    ]
+                )
+            );
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['monochrome', null, null, null, '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}', '{"add":["scripts/template.js","scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"off","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{}', '', '["pjax"]', '', '']));
+            $oDB->createCommand()->insert(
+                "{{template_configuration}}",
+                array_combine(
+                    $headerArray,
+                    [
+                        'monochrome',
+                        null,
+                        null,
+                        null,
+                        '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}',
+                        '{"add":["scripts/template.js","scripts/ajaxify.js"]}',
+                        '{"add":"css/print_template.css"}',
+                        '{"ajaxmode":"off","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+                        'bootstrap',
+                        '{}',
+                        '',
+                        '["pjax"]',
+                        '',
+                        ''
+                    ]
+                )
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 325), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -2052,7 +2378,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 338) {
             $oTransaction = $oDB->beginTransaction();
-            $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where('ico=:ico', [':ico' => 'templates'])->queryRow();
+            $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where(
+                'ico=:ico',
+                [':ico' => 'templates']
+            )->queryRow();
             $position = 6;
             if ($rowToRemove !== false) {
                 $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
@@ -2149,23 +2478,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ->queryRow();
             if (empty($vanilla)) {
                 $vanillaData = [
-                    'name'          => 'vanilla',
-                    'folder'        => 'vanilla',
-                    'title'         => 'Vanilla Theme',
+                    'name' => 'vanilla',
+                    'folder' => 'vanilla',
+                    'title' => 'Vanilla Theme',
                     'creation_date' => date('Y-m-d H:i:s'),
-                    'author'        => 'Louis Gac',
-                    'author_email'  => 'louis.gac@limesurvey.org',
-                    'author_url'    => 'https://www.limesurvey.org/',
-                    'copyright'     => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
-                    'license'       => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
-                    'version'       => '3.0',
-                    'api_version'   => '3.0',
-                    'view_folder'   => 'views',
-                    'files_folder'  => 'files',
-                    'description'   => '<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.',
-                    'last_update'   => null,
-                    'owner_id'      => 1,
-                    'extends'       => '',
+                    'author' => 'Louis Gac',
+                    'author_email' => 'louis.gac@limesurvey.org',
+                    'author_url' => 'https://www.limesurvey.org/',
+                    'copyright' => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
+                    'license' => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+                    'version' => '3.0',
+                    'api_version' => '3.0',
+                    'view_folder' => 'views',
+                    'files_folder' => 'files',
+                    'description' => '<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.',
+                    'last_update' => null,
+                    'owner_id' => 1,
+                    'extends' => '',
                 ];
                 $oDB->createCommand()->insert('{{templates}}', $vanillaData);
             }
@@ -2177,20 +2506,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ->queryRow();
             if (empty($vanillaConf)) {
                 $vanillaConfData = [
-                    'template_name'     =>  'vanilla',
-                    'sid'               =>  null,
-                    'gsid'              =>  null,
-                    'uid'               =>  null,
-                    'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
-                    'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
-                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
+                    'template_name' => 'vanilla',
+                    'sid' => null,
+                    'gsid' => null,
+                    'uid' => null,
+                    'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                    'files_js' => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css' => '{"add":["css/print_theme.css"]}',
+                    'options' => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
                     'cssframework_name' => 'bootstrap',
-                    'cssframework_css'  => '{}',
-                    'cssframework_js'   => '',
-                    'packages_to_load'  => '{"add":["pjax","font-noto"]}',
-                    'packages_ltr'      => null,
-                    'packages_rtl'      => null
+                    'cssframework_css' => '{}',
+                    'cssframework_js' => '',
+                    'packages_to_load' => '{"add":["pjax","font-noto"]}',
+                    'packages_ltr' => null,
+                    'packages_rtl' => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
             }
@@ -2217,33 +2546,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->update(
                     '{{template_configuration}}',
                     [
-                        'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
-                        'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
-                        'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+                        'files_css' => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
+                        'files_js' => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                        'files_print_css' => '{"add":["css/print_theme.css"]}',
+                        'options' => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
                         'cssframework_name' => 'bootstrap',
-                        'cssframework_css'  => '{}',
-                        'cssframework_js'   => '',
-                        'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
+                        'cssframework_css' => '{}',
+                        'cssframework_js' => '',
+                        'packages_to_load' => '{"add":["pjax","font-noto","moment"]}',
                     ],
                     "template_name = 'fruity'"
                 );
             } else {
                 $fruityConfData = [
-                    'template_name'     =>  'fruity',
-                    'sid'               =>  null,
-                    'gsid'              =>  null,
-                    'uid'               =>  null,
-                    'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
-                    'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
-                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+                    'template_name' => 'fruity',
+                    'sid' => null,
+                    'gsid' => null,
+                    'uid' => null,
+                    'files_css' => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
+                    'files_js' => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css' => '{"add":["css/print_theme.css"]}',
+                    'options' => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
                     'cssframework_name' => 'bootstrap',
-                    'cssframework_css'  => '{}',
-                    'cssframework_js'   => '',
-                    'packages_to_load'  => '{"add":["pjax","font-noto","moment"]}',
-                    'packages_ltr'      => null,
-                    'packages_rtl'      => null
+                    'cssframework_css' => '{}',
+                    'cssframework_js' => '',
+                    'packages_to_load' => '{"add":["pjax","font-noto","moment"]}',
+                    'packages_ltr' => null,
+                    'packages_rtl' => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $fruityConfData);
             }
@@ -2257,33 +2586,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->update(
                     '{{template_configuration}}',
                     [
-                        'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
-                        'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
-                        'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                        'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+                        'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                        'files_js' => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                        'files_print_css' => '{"add":["css/print_theme.css"]}',
+                        'options' => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
                         'cssframework_name' => 'bootstrap',
-                        'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
-                        'cssframework_js'   => '',
-                        'packages_to_load'  => '{"add":["pjax","font-noto"]}',
+                        'cssframework_css' => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
+                        'cssframework_js' => '',
+                        'packages_to_load' => '{"add":["pjax","font-noto"]}',
                     ],
                     "template_name = 'bootswatch'"
                 );
             } else {
                 $bootswatchConfData = [
-                    'template_name'     =>  'bootswatch',
-                    'sid'               =>  null,
-                    'gsid'              =>  null,
-                    'uid'               =>  null,
-                    'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
-                    'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
-                    'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+                    'template_name' => 'bootswatch',
+                    'sid' => null,
+                    'gsid' => null,
+                    'uid' => null,
+                    'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
+                    'files_js' => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
+                    'files_print_css' => '{"add":["css/print_theme.css"]}',
+                    'options' => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
                     'cssframework_name' => 'bootstrap',
-                    'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
-                    'cssframework_js'   => '',
-                    'packages_to_load'  => '{"add":["pjax","font-noto"]}',
-                    'packages_ltr'      => null,
-                    'packages_rtl'      => null
+                    'cssframework_css' => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
+                    'cssframework_js' => '',
+                    'packages_to_load' => '{"add":["pjax","font-noto"]}',
+                    'packages_ltr' => null,
+                    'packages_rtl' => null
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
             }
@@ -2325,7 +2654,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice', 'text');
             $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_error', 'text');
-            $oDB->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_policy_notice_label', 'string(192)');
+            $oDB->createCommand()->addColumn(
+                '{{surveys_languagesettings}}',
+                'surveyls_policy_notice_label',
+                'string(192)'
+            );
             $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 348], "stg_name='DBVersion'");
@@ -2345,11 +2678,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 350) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{asset_version}}', array(
-                'id' => 'pk',
-                'path' => 'text NOT NULL',
-                'version' => 'integer NOT NULL',
-            ));
+            $oDB->createCommand()->createTable(
+                '{{asset_version}}',
+                array(
+                    'id' => 'pk',
+                    'path' => 'text NOT NULL',
+                    'version' => 'integer NOT NULL',
+                )
+            );
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 350], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -2425,7 +2761,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
-                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                $oDB->createCommand()->delete(
+                    '{{surveymenu_entries}}',
+                    'name=:name',
+                    [':name' => $aSurveymenuentry['name']]
+                );
                 switch ($aSurveymenuentry['menu_id']) {
                     case 1:
                         $aSurveymenuentry['menu_id'] = $aIdMap['settings'];
@@ -2454,15 +2794,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
                 $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
-                ->select(['id'])
-                ->from('{{surveymenu}}')
-                ->where('name=:name', [':name' => $aSurveymenu['name']])
-                ->queryScalar();
+                    ->select(['id'])
+                    ->from('{{surveymenu}}')
+                    ->where('name=:name', [':name' => $aSurveymenu['name']])
+                    ->queryScalar();
             }
 
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
-                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                $oDB->createCommand()->delete(
+                    '{{surveymenu_entries}}',
+                    'name=:name',
+                    [':name' => $aSurveymenuentry['name']]
+                );
                 switch ($aSurveymenuentry['menu_id']) {
                     case 1:
                         $aSurveymenuentry['menu_id'] = $aIdMap['settings'];
@@ -2499,7 +2843,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     break;
             }
             // Only change label box if it's there.
-            $labelBox = $oDB->createCommand("SELECT * FROM {{boxes}} WHERE id = 5 AND position = 5 AND title = 'Label sets'")->queryRow();
+            $labelBox = $oDB->createCommand(
+                "SELECT * FROM {{boxes}} WHERE id = 5 AND position = 5 AND title = 'Label sets'"
+            )->queryRow();
             if ($labelBox) {
                 $oDB
                     ->createCommand()
@@ -2507,9 +2853,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         '{{boxes}}',
                         [
                             'title' => 'LimeStore',
-                            'ico'   => 'fa fa-cart-plus',
-                            'desc'  => 'LimeSurvey extension marketplace',
-                            'url'   => 'https://account.limesurvey.org/limestore'
+                            'ico' => 'fa fa-cart-plus',
+                            'desc' => 'LimeSurvey extension marketplace',
+                            'url' => 'https://account.limesurvey.org/limestore'
                         ],
                         'id = 5'
                     );
@@ -2533,7 +2879,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 359) {
             $oTransaction = $oDB->beginTransaction();
             alterColumn('{{notifications}}', 'message', "text", false);
@@ -2584,14 +2930,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB = Yii::app()->getDb();
             foreach ($aTableNames as $sTableName) {
                 try {
-                        setTransactionBookmark();
+                    setTransactionBookmark();
                     switch (Yii::app()->db->driverName) {
                         case 'mysql':
                         case 'mysqli':
                             $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
                             break;
                         case 'pgsql':
-                            $oDB->createCommand()->createIndex('idx_email_' . substr($sTableName, 7) . '_' . rand(1, 50000), $sTableName, 'email', false);
+                            $oDB->createCommand()->createIndex(
+                                'idx_email_' . substr($sTableName, 7) . '_' . rand(1, 50000),
+                                $sTableName,
+                                'email',
+                                false
+                            );
                             break;
                         // MSSQL does not support indexes on text fields so no dice
                     }
@@ -2613,11 +2964,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 364], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-                
+
         if ($iOldDBVersion < 400) {
             // Fix database default collation, again
             if (Yii::app()->db->driverName == 'mysql') {
-                Yii::app()->db->createCommand("ALTER DATABASE `" . getDBConnectionStringProperty('dbname') . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                Yii::app()->db->createCommand(
+                    "ALTER DATABASE `" . getDBConnectionStringProperty(
+                        'dbname'
+                    ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+                );
             }
 
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
@@ -2628,44 +2983,61 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{question_l10ns}}');
             }
-            $oDB->createCommand()->createTable('{{question_l10ns}}', array(
-                'id' =>  "pk",
-                'qid' =>  "integer NOT NULL",
-                'question' =>  "text NOT NULL",
-                'help' =>  "text",
-                'language' =>  "string(20) NOT NULL"
-            ), $options);
-            $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
-            $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
+            $oDB->createCommand()->createTable(
+                '{{question_l10ns}}',
+                array(
+                    'id' => "pk",
+                    'qid' => "integer NOT NULL",
+                    'question' => "text NOT NULL",
+                    'help' => "text",
+                    'language' => "string(20) NOT NULL"
+                ),
+                $options
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx1_question_l10ns}}',
+                '{{question_l10ns}}',
+                ['qid', 'language'],
+                true
+            );
+            $oDB->createCommand(
+                "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
+            )->execute();
             /* questions by rename/insert */
             if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
                 $oDB->createCommand()->dropTable('{{questions_update400}}');
             }
             $oDB->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
-            $oDB->createCommand()->createTable('{{questions}}', array(
-                'qid' =>  "pk",
-                'parent_qid' =>  "integer NOT NULL default '0'",
-                'sid' =>  "integer NOT NULL default '0'",
-                'gid' =>  "integer NOT NULL default '0'",
-                'type' =>  "string(30) NOT NULL default 'T'",
-                'title' =>  "string(20) NOT NULL default ''",
-                'preg' =>  "text",
-                'other' =>  "string(1) NOT NULL default 'N'",
-                'mandatory' =>  "string(1) NULL",
-                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
-                'question_order' =>  "integer NOT NULL",
-                'scale_id' =>  "integer NOT NULL default '0'",
-                'same_default' =>  "integer NOT NULL default '0'",
-                'relevance' =>  "text",
-                'modulename' =>  "string(255) NULL"
-            ), $options);
+            $oDB->createCommand()->createTable(
+                '{{questions}}',
+                array(
+                    'qid' => "pk",
+                    'parent_qid' => "integer NOT NULL default '0'",
+                    'sid' => "integer NOT NULL default '0'",
+                    'gid' => "integer NOT NULL default '0'",
+                    'type' => "string(30) NOT NULL default 'T'",
+                    'title' => "string(20) NOT NULL default ''",
+                    'preg' => "text",
+                    'other' => "string(1) NOT NULL default 'N'",
+                    'mandatory' => "string(1) NULL",
+                    //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                    'question_order' => "integer NOT NULL",
+                    'scale_id' => "integer NOT NULL default '0'",
+                    'same_default' => "integer NOT NULL default '0'",
+                    'relevance' => "text",
+                    'modulename' => "string(255) NULL"
+                ),
+                $options
+            );
             switchMSSQLIdentityInsert('questions', true); // Untested
-            $oDB->createCommand("INSERT INTO {{questions}}
+            $oDB->createCommand(
+                "INSERT INTO {{questions}}
                 (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
                 SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
                 FROM {{questions_update400}}
                     INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
-                ")->execute();
+                "
+            )->execute();
             switchMSSQLIdentityInsert('questions', false); // Untested
             $oDB->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
             $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
@@ -2678,33 +3050,45 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{group_l10ns}}');
             }
-            $oDB->createCommand()->createTable('{{group_l10ns}}', array(
-                'id' =>  "pk",
-                'gid' =>  "integer NOT NULL",
-                'group_name' =>  "text NOT NULL",
-                'description' =>  "text",
-                'language' =>  "string(20) NOT NULL"
-            ), $options);
+            $oDB->createCommand()->createTable(
+                '{{group_l10ns}}',
+                array(
+                    'id' => "pk",
+                    'gid' => "integer NOT NULL",
+                    'group_name' => "text NOT NULL",
+                    'description' => "text",
+                    'language' => "string(20) NOT NULL"
+                ),
+                $options
+            );
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
-            $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
+            $oDB->createCommand(
+                "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}"
+            )->execute();
             if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
                 $oDB->createCommand()->dropTable('{{groups_update400}}');
             }
             $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
-            $oDB->createCommand()->createTable('{{groups}}', array(
-                'gid' =>  "pk",
-                'sid' =>  "integer NOT NULL default '0'",
-                'group_order' =>  "integer NOT NULL default '0'",
-                'randomization_group' =>  "string(20) NOT NULL default ''",
-                'grelevance' =>  "text NULL"
-            ), $options);
+            $oDB->createCommand()->createTable(
+                '{{groups}}',
+                array(
+                    'gid' => "pk",
+                    'sid' => "integer NOT NULL default '0'",
+                    'group_order' => "integer NOT NULL default '0'",
+                    'randomization_group' => "string(20) NOT NULL default ''",
+                    'grelevance' => "text NULL"
+                ),
+                $options
+            );
             switchMSSQLIdentityInsert('groups', true); // Untested
-            $oDB->createCommand("INSERT INTO {{groups}}
+            $oDB->createCommand(
+                "INSERT INTO {{groups}}
                 (gid, sid, group_order, randomization_group, grelevance)
                 SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
                 FROM {{groups_update400}}
                     INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
-                ")->execute();
+                "
+            )->execute();
             switchMSSQLIdentityInsert('groups', false); // Untested
             $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
             $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
@@ -2713,12 +3097,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{answer_l10ns}}');
             }
-            $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
-                'id' =>  "pk",
-                'aid' =>  "integer NOT NULL",
-                'answer' =>  "text NOT NULL",
-                'language' =>  "string(20) NOT NULL"
-            ), $options);
+            $oDB->createCommand()->createTable(
+                '{{answer_l10ns}}',
+                array(
+                    'id' => "pk",
+                    'aid' => "integer NOT NULL",
+                    'answer' => "text NOT NULL",
+                    'language' => "string(20) NOT NULL"
+                ),
+                $options
+            );
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             /* Renaming old without pk answers */
             if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
@@ -2726,31 +3114,43 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
             /* Create new answers with pk and copy answers_update400 Grouping by unique part */
-            $oDB->createCommand()->createTable('{{answers}}', [
-                'aid' =>  'pk',
-                'qid' => 'integer NOT NULL',
-                'code' => 'string(5) NOT NULL',
-                'sortorder' => 'integer NOT NULL',
-                'assessment_value' => 'integer NOT NULL DEFAULT 0',
-                'scale_id' => 'integer NOT NULL DEFAULT 0'
-            ], $options);
-            $oDB->createCommand()->createIndex('answer_update400_idx_10', '{{answers_update400}}', ['qid', 'code', 'scale_id']);
+            $oDB->createCommand()->createTable(
+                '{{answers}}',
+                [
+                    'aid' => 'pk',
+                    'qid' => 'integer NOT NULL',
+                    'code' => 'string(5) NOT NULL',
+                    'sortorder' => 'integer NOT NULL',
+                    'assessment_value' => 'integer NOT NULL DEFAULT 0',
+                    'scale_id' => 'integer NOT NULL DEFAULT 0'
+                ],
+                $options
+            );
+            $oDB->createCommand()->createIndex(
+                'answer_update400_idx_10',
+                '{{answers_update400}}',
+                ['qid', 'code', 'scale_id']
+            );
             /* No pk in insert */
-            $oDB->createCommand("INSERT INTO {{answers}}
+            $oDB->createCommand(
+                "INSERT INTO {{answers}}
                 (qid, code, sortorder, assessment_value, scale_id)
                 SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
                 FROM {{answers_update400}}
                     INNER JOIN {{questions}} ON {{answers_update400}}.qid = {{questions}}.qid
                     INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
-                ")->execute();
+                "
+            )->execute();
             /* no pk in insert, get aid by INNER join */
-            $oDB->createCommand("INSERT INTO {{answer_l10ns}}
+            $oDB->createCommand(
+                "INSERT INTO {{answer_l10ns}}
                 (aid, answer, language)
                 SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
                 FROM {{answers_update400}}
                 INNER JOIN {{answers}}
                 ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
-            ")->execute();
+            "
+            )->execute();
 
             $oDB->createCommand()->dropTable('{{answers_update400}}');
             $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
@@ -2764,35 +3164,52 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->dropTable('{{labels_update400}}');
             }
             $oDB->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
-            $oDB->createCommand()->createTable('{{labels}}', [
-                'id' =>  "pk",
-                'lid' => 'integer NOT NULL',
-                'code' => 'string(5) NOT NULL',
-                'sortorder' => 'integer NOT NULL',
-                'assessment_value' => 'integer NOT NULL DEFAULT 0'
-            ], $options);
+            $oDB->createCommand()->createTable(
+                '{{labels}}',
+                [
+                    'id' => "pk",
+                    'lid' => 'integer NOT NULL',
+                    'code' => 'string(5) NOT NULL',
+                    'sortorder' => 'integer NOT NULL',
+                    'assessment_value' => 'integer NOT NULL DEFAULT 0'
+                ],
+                $options
+            );
             /* The previous id is broken and can not be used, create a new one */
             /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
-            $oDB->createCommand("INSERT INTO {{labels}}
+            $oDB->createCommand(
+                "INSERT INTO {{labels}}
                 (lid, code, sortorder, assessment_value)
                 SELECT lid, code, min(sortorder), min(assessment_value)
                 FROM {{labels_update400}}
-                GROUP BY lid, code")->execute();
-            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
-                'id' =>  "pk",
-                'label_id' =>  "integer NOT NULL",
-                'title' =>  "text",
-                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
-            ), $options);
-            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+                GROUP BY lid, code"
+            )->execute();
+            $oDB->createCommand()->createTable(
+                '{{label_l10ns}}',
+                array(
+                    'id' => "pk",
+                    'label_id' => "integer NOT NULL",
+                    'title' => "text",
+                    'language' => "string(20) NOT NULL DEFAULT 'en'"
+                ),
+                $options
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx1_label_l10ns}}',
+                '{{label_l10ns}}',
+                ['label_id', 'language'],
+                true
+            );
             // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
             $oDB->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
-            $oDB->createCommand("INSERT INTO {{label_l10ns}}
+            $oDB->createCommand(
+                "INSERT INTO {{label_l10ns}}
                 (label_id, title, language)
                 SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
                 FROM {{labels_update400}}
                     INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
-                ")->execute();
+                "
+            )->execute();
             $oDB->createCommand()->dropTable('{{labels_update400}}');
 
             // Extend language field on labelsets
@@ -2800,7 +3217,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             // Extend question type field length
             alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
-            
+
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
 
@@ -2833,7 +3250,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oTransaction->commit();
         }
-            
+
         /**
          * Make tokens fit UUID 36 chars
          */
@@ -2858,14 +3275,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         // In case any LS4 user missed database update from version 356.
         if ($iOldDBVersion < 405) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand("
+            $oDB->createCommand(
+                "
                 UPDATE
                     {{boxes}}
                 SET ico = CASE
                     WHEN ico IN ('add', 'list', 'settings', 'shield', 'templates', 'label') THEN CONCAT('icon-', ico)
                     ELSE ico
                 END
-                ")->execute();
+                "
+            )->execute();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 405), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -2877,7 +3296,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             // surveys
             $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
-            $oDB->createCommand()->update('{{surveys}}', array('tokenencryptionoptions' => json_encode(Token::getDefaultEncryptionOptions())));
+            $oDB->createCommand()->update(
+                '{{surveys}}',
+                array(
+                    'tokenencryptionoptions' => json_encode(
+                        Token::getDefaultEncryptionOptions()
+                    )
+                )
+            );
             // participants
             try {
                 setTransactionBookmark();
@@ -2897,13 +3323,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL");
             $aCoreAttributes = array('firstname', 'lastname', 'email');
             foreach ($aCoreAttributes as $attribute) {
-                $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
-                    'attribute_type'    => 'TB',
-                    'defaultname'       => $attribute,
-                    'visible'           => 'TRUE',
-                    'encrypted'         => 'N',
-                    'core_attribute'    => 'Y'
-                ));
+                $oDB->createCommand()->insert(
+                    '{{participant_attribute_names}}',
+                    array(
+                        'attribute_type' => 'TB',
+                        'defaultname' => $attribute,
+                        'visible' => 'TRUE',
+                        'encrypted' => 'N',
+                        'core_attribute' => 'Y'
+                    )
+                );
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
 
@@ -2917,38 +3346,64 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
             }
-            $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
-                'id' =>  "pk",
-                'dvid' =>  "integer NOT NULL default '0'",
-                'language' =>  "string(20) NOT NULL",
-                'defaultvalue' =>  "text",
-            ), $options);
-            $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
+            $oDB->createCommand()->createTable(
+                '{{defaultvalue_l10ns}}',
+                array(
+                    'id' => "pk",
+                    'dvid' => "integer NOT NULL default '0'",
+                    'language' => "string(20) NOT NULL",
+                    'defaultvalue' => "text",
+                ),
+                $options
+            );
+            $oDB->createCommand()->createIndex(
+                '{{idx1_defaultvalue_l10ns}}',
+                '{{defaultvalue_l10ns}}',
+                ['dvid', 'language'],
+                true
+            );
             if (Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
                 $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
             }
             $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
-            $oDB->createCommand()->createIndex('defaultvalues_update407_idx_10', '{{defaultvalues_update407}}', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
-            $oDB->createCommand()->createTable('{{defaultvalues}}', [
-                'dvid' =>  "pk",
-                'qid' =>  "integer NOT NULL default '0'",
-                'scale_id' =>  "integer NOT NULL default '0'",
-                'sqid' =>  "integer NOT NULL default '0'",
-                'specialtype' =>  "string(20) NOT NULL default ''",
-            ], $options);
+            $oDB->createCommand()->createIndex(
+                'defaultvalues_update407_idx_10',
+                '{{defaultvalues_update407}}',
+                ['qid', 'scale_id', 'sqid', 'specialtype', 'language']
+            );
+            $oDB->createCommand()->createTable(
+                '{{defaultvalues}}',
+                [
+                    'dvid' => "pk",
+                    'qid' => "integer NOT NULL default '0'",
+                    'scale_id' => "integer NOT NULL default '0'",
+                    'sqid' => "integer NOT NULL default '0'",
+                    'specialtype' => "string(20) NOT NULL default ''",
+                ],
+                $options
+            );
             /* Get only survey->language */
-            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, sqid, scale_id, specialtype)
+            $oDB->createCommand(
+                "INSERT INTO {{defaultvalues}} (qid, sqid, scale_id, specialtype)
                 SELECT qid, sqid, scale_id, specialtype
                 FROM {{defaultvalues_update407}}
                 GROUP BY qid, sqid, scale_id, specialtype
-                ")->execute();
-            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
-            $oDB->createCommand("INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
+                "
+            )->execute();
+            $oDB->createCommand()->createIndex(
+                '{{idx1_defaultvalue}}',
+                '{{defaultvalues}}',
+                ['qid', 'scale_id', 'sqid', 'specialtype'],
+                false
+            );
+            $oDB->createCommand(
+                "INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
                 SELECT {{defaultvalues}}.dvid, {{defaultvalues_update407}}.language, {{defaultvalues_update407}}.defaultvalue
                 FROM {{defaultvalues}}
                 INNER JOIN {{defaultvalues_update407}}
                     ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id AND {{defaultvalues}}.specialtype = {{defaultvalues_update407}}.specialtype
-                ")->execute();
+                "
+            )->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 407), "stg_name='DBVersion'");
@@ -2957,16 +3412,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 408) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{participant_attribute_names}}', array('encrypted' => 'Y'), "core_attribute='Y'");
+            $oDB->createCommand()->update(
+                '{{participant_attribute_names}}',
+                array('encrypted' => 'Y'),
+                "core_attribute='Y'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 408), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 409) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             $sEncrypted = 'N';
-            $oDB->createCommand()->update('{{participant_attribute_names}}', array('encrypted' => $sEncrypted), "core_attribute='Y'");
+            $oDB->createCommand()->update(
+                '{{participant_attribute_names}}',
+                array('encrypted' => $sEncrypted),
+                "core_attribute='Y'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 409), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3007,7 +3470,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             /*
              *  changes for this version are removed, but this block stays for the continuity
              */
-            
+
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 413), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -3022,33 +3485,52 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 415) {
             $oTransaction = $oDB->beginTransaction();
-            
-            $oDB->createCommand()->update('{{surveymenu_entries}}', [
-                "menu_link" => "admin/filemanager",
-                "action" => '',
-                "template" => '',
-                "partial" => '',
-                "classes" => '',
-                "data" => '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
-            ], 'name=:name', [':name' => 'resources']);
+
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    "menu_link" => "admin/filemanager",
+                    "action" => '',
+                    "template" => '',
+                    "partial" => '',
+                    "classes" => '',
+                    "data" => '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+                ],
+                'name=:name',
+                [':name' => 'resources']
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 415), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 416) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             // encrypt values in db
-            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(App()->getConfig('emailsmtppassword')));
-            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(App()->getConfig('bounceaccountpass')));
-            
+            SettingGlobal::setSetting(
+                'emailsmtppassword',
+                LSActiveRecord::encryptSingle(App()->getConfig('emailsmtppassword'))
+            );
+            SettingGlobal::setSetting(
+                'bounceaccountpass',
+                LSActiveRecord::encryptSingle(App()->getConfig('bounceaccountpass'))
+            );
+
             // encrypt bounceaccountpass value in db
             alterColumn('{{surveys}}', 'bounceaccountpass', "text", true, 'NULL');
             $sSurveyQuery = "SELECT * from {{surveys}} order by sid";
             $aSurveys = $oDB->createCommand($sSurveyQuery)->queryAll();
             foreach ($aSurveys as $aSurvey) {
                 if (!empty($aSurvey['bounceaccountpass'])) {
-                    $oDB->createCommand()->update('{{surveys}}', ['bounceaccountpass' => LSActiveRecord::encryptSingle($aSurvey->bounceaccountpass)], "sid=" . $aSurvey[sid]);
+                    $oDB->createCommand()->update(
+                        '{{surveys}}',
+                        [
+                            'bounceaccountpass' => LSActiveRecord::encryptSingle(
+                                $aSurvey->bounceaccountpass
+                            )
+                        ],
+                        "sid=" . $aSurvey[sid]
+                    );
                 }
             }
 
@@ -3061,47 +3543,61 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => 'reorder']);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 417), "stg_name='DBVersion'");
             $oTransaction->commit();
-            
+
             SurveymenuEntries::reorderMenu(2);
         }
 
         if ($iOldDBVersion < 418) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->insert("{{plugins}}", [
-                'name'               => 'PasswordRequirement',
-                'plugin_type'        => 'core',
-                'active'             => 1,
-                'version'            => '1.0.0',
-                'load_error'         => 0,
-                'load_error_message' => null
-            ]);
-            
+            $oDB->createCommand()->insert(
+                "{{plugins}}",
+                [
+                    'name' => 'PasswordRequirement',
+                    'plugin_type' => 'core',
+                    'active' => 1,
+                    'version' => '1.0.0',
+                    'load_error' => 0,
+                    'load_error_message' => null
+                ]
+            );
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
             $oTransaction->commit();
-            
+
             SurveymenuEntries::reorderMenu(2);
         }
 
         if ($iOldDBVersion < 419) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable("{{permissiontemplates}}", [
-                'ptid' =>  "pk",
-                'name' =>  "string(127) NOT NULL",
-                'description' =>  "text NULL",
-                'renewed_last' =>  "datetime NULL",
-                'created_at' =>  "datetime NOT NULL",
-                'created_by' =>  "int NOT NULL"
-            ]);
-            
+            $oDB->createCommand()->createTable(
+                "{{permissiontemplates}}",
+                [
+                    'ptid' => "pk",
+                    'name' => "string(127) NOT NULL",
+                    'description' => "text NULL",
+                    'renewed_last' => "datetime NULL",
+                    'created_at' => "datetime NOT NULL",
+                    'created_by' => "int NOT NULL"
+                ]
+            );
+
             $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
-            $oDB->createCommand()->createTable('{{user_in_permissionrole}}', array(
+            $oDB->createCommand()->createTable(
+                '{{user_in_permissionrole}}',
+                array(
                     'ptid' => "integer NOT NULL",
                     'uid' => "integer NOT NULL",
-                ), $options);
-        
-            $oDB->createCommand()->addPrimaryKey('{{user_in_permissionrole_pk}}', '{{user_in_permissionrole}}', ['ptid','uid']);
-            
+                ),
+                $options
+            );
+
+            $oDB->createCommand()->addPrimaryKey(
+                '{{user_in_permissionrole_pk}}',
+                '{{user_in_permissionrole}}',
+                ['ptid', 'uid']
+            );
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 419), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3111,10 +3607,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 "{{surveymenu_entries}}",
                 [
-                    'name' =>  "listSurveyGroups",
-                    'title' =>  gT('Group list', 'unescaped'),
-                    'menu_title' =>  gT('Group list', 'unescaped'),
-                    'menu_description' =>  gT('List question groups', 'unescaped'),
+                    'name' => "listSurveyGroups",
+                    'title' => gT('Group list', 'unescaped'),
+                    'menu_title' => gT('Group list', 'unescaped'),
+                    'menu_description' => gT('List question groups', 'unescaped'),
                 ],
                 'name=\'listQuestionGroups\''
             );
@@ -3122,37 +3618,40 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 420), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
 
-        
+
         if ($iOldDBVersion < 421) {
             $oTransaction = $oDB->beginTransaction();
             // question_themes
-            $oDB->createCommand()->createTable('{{question_themes}}', [
-                'id' => "pk",
-                'name' => "string(150) NOT NULL",
-                'visible' => "string(1) NULL",
-                'xml_path' => "string(255) NULL",
-                'image_path' => 'string(255) NULL',
-                'title' => "string(100) NOT NULL",
-                'creation_date' => "datetime NULL",
-                'author' => "string(150) NULL",
-                'author_email' => "string(255) NULL",
-                'author_url' => "string(255) NULL",
-                'copyright' => "text",
-                'license' => "text",
-                'version' => "string(45) NULL",
-                'api_version' => "string(45) NOT NULL",
-                'description' => "text",
-                'last_update' => "datetime NULL",
-                'owner_id' => "integer NULL",
-                'theme_type' => "string(150)",
-                'question_type' => "string(150) NOT NULL",
-                'core_theme' => 'boolean',
-                'extends' => "string(150) NULL",
-                'group' => "string(150)",
-                'settings' => "text"
-            ], $options);
+            $oDB->createCommand()->createTable(
+                '{{question_themes}}',
+                [
+                    'id' => "pk",
+                    'name' => "string(150) NOT NULL",
+                    'visible' => "string(1) NULL",
+                    'xml_path' => "string(255) NULL",
+                    'image_path' => 'string(255) NULL',
+                    'title' => "string(100) NOT NULL",
+                    'creation_date' => "datetime NULL",
+                    'author' => "string(150) NULL",
+                    'author_email' => "string(255) NULL",
+                    'author_url' => "string(255) NULL",
+                    'copyright' => "text",
+                    'license' => "text",
+                    'version' => "string(45) NULL",
+                    'api_version' => "string(45) NOT NULL",
+                    'description' => "text",
+                    'last_update' => "datetime NULL",
+                    'owner_id' => "integer NULL",
+                    'theme_type' => "string(150)",
+                    'question_type' => "string(150) NOT NULL",
+                    'core_theme' => 'boolean',
+                    'extends' => "string(150) NULL",
+                    'group' => "string(150)",
+                    'settings' => "text"
+                ],
+                $options
+            );
 
             $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
@@ -3168,21 +3667,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 422) {
             $oTransaction = $oDB->beginTransaction();
             //update core themes api_version
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "4.0",
-                'version' =>  "4.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='fruity'");
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "4.0",
-                'version' =>  "4.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='vanilla'");
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "4.0",
-                'version' =>  "4.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='bootwatch'");
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "4.0",
+                    'version' => "4.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='fruity'"
+            );
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "4.0",
+                    'version' => "4.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='vanilla'"
+            );
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "4.0",
+                    'version' => "4.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='bootwatch'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 422), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3190,21 +3701,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 423) {
             $oTransaction = $oDB->beginTransaction();
             //update core themes api_version
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "3.0",
-                'version' =>  "3.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='fruity'");
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "3.0",
-                'version' =>  "3.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='vanilla'");
-            $oDB->createCommand()->update('{{templates}}', array(
-                'api_version' =>  "3.0",
-                'version' =>  "3.0",
-                'copyright' =>  "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
-            ), "name='bootwatch'");
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "3.0",
+                    'version' => "3.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='fruity'"
+            );
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "3.0",
+                    'version' => "3.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='vanilla'"
+            );
+            $oDB->createCommand()->update(
+                '{{templates}}',
+                array(
+                    'api_version' => "3.0",
+                    'version' => "3.0",
+                    'copyright' => "Copyright (C) 2007-2019 The LimeSurvey Project Team\r\nAll rights reserved."
+                ),
+                "name='bootwatch'"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 423), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3226,11 +3749,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $oDB->createCommand()->insert(
                         "{{plugins}}",
                         [
-                            'name'               => $name,
-                            'plugin_type'        => 'core',
-                            'active'             => $active,
-                            'version'            => '1.0.0',
-                            'load_error'         => 0,
+                            'name' => $name,
+                            'plugin_type' => 'core',
+                            'active' => $active,
+                            'version' => '1.0.0',
+                            'load_error' => 0,
                             'load_error_message' => null
                         ]
                     );
@@ -3238,8 +3761,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $oDB->createCommand()->update(
                         "{{plugins}}",
                         [
-                            'plugin_type'        => 'core',
-                            'version'            => '1.0.0',
+                            'plugin_type' => 'core',
+                            'version' => '1.0.0',
                         ],
                         App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
                     );
@@ -3279,7 +3802,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 426) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->addColumn('{{surveys_groupsettings}}', 'ipanonymize', "string(1) NOT NULL default 'N'");
+            $oDB->createCommand()->addColumn(
+                '{{surveys_groupsettings}}',
+                'ipanonymize',
+                "string(1) NOT NULL default 'N'"
+            );
             $oDB->createCommand()->addColumn('{{surveys}}', 'ipanonymize', "string(1) NOT NULL default 'N'");
 
             //all groups (except default group gsid=0), must have inheritance value
@@ -3303,9 +3830,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => '',
-                    'action'    => 'updatesurveylocalsettings',
-                    'template'  => 'editLocalSettings_main_view',
-                    'partial'   => '/admin/survey/subview/accordion/_resources_panel'
+                    'action' => 'updatesurveylocalsettings',
+                    'template' => 'editLocalSettings_main_view',
+                    'partial' => '/admin/survey/subview/accordion/_resources_panel'
                 ),
                 "name='resources'"
             );
@@ -3339,12 +3866,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
         /** THIS CAME FROM MASTER **/
         //~ if ($iOldDBVersion < 429) {
-            //~ $oTransaction = $oDB->beginTransaction();
-            //~ extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
-            //~ $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
-            //~ $oTransaction->commit();
+        //~ $oTransaction = $oDB->beginTransaction();
+        //~ extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
+        //~ $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>429], "stg_name='DBVersion'");
+        //~ $oTransaction->commit();
         //~ }
-    
+
         if ($iOldDBVersion < 429) {
             // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
             $oTransaction = $oDB->beginTransaction();
@@ -3353,9 +3880,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => '',
-                    'action'    => 'updatesurveylocalesettings',
-                    'template'  => 'editLocalSettings_main_view',
-                    'partial'   => '/admin/survey/subview/accordion/_resources_panel',
+                    'action' => 'updatesurveylocalesettings',
+                    'template' => 'editLocalSettings_main_view',
+                    'partial' => '/admin/survey/subview/accordion/_resources_panel',
                     'getdatamethod' => 'tabResourceManagement'
                 ),
                 "name='resources'"
@@ -3367,14 +3894,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 430) { //REFACTORING surveyadmin to surveyAdministrationController ...
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->insert("{{plugins}}", [
-                'name'               => 'ComfortUpdateChecker',
-                'plugin_type'        => 'core',
-                'active'             => 1,
-                'version'            => '1.0.0',
-                'load_error'         => 0,
-                'load_error_message' => null
-            ]);
+            $oDB->createCommand()->insert(
+                "{{plugins}}",
+                [
+                    'name' => 'ComfortUpdateChecker',
+                    'plugin_type' => 'core',
+                    'active' => 1,
+                    'version' => '1.0.0',
+                    'load_error' => 0,
+                    'load_error_message' => null
+                ]
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 430), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3521,7 +4051,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => 'themeOptions/updateSurvey',
-                    'data'      => '{"render": {"link": { "pjaxed": true, "data": {"sid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'
+                    'data' => '{"render": {"link": { "pjaxed": true, "data": {"sid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'
                 ),
                 "name='theme_options'"
             );
@@ -3540,7 +4070,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB = Yii::app()->getDb();
             foreach ($aTableNames as $sTableName) {
                 try {
-                        setTransactionBookmark();
+                    setTransactionBookmark();
                     switch (Yii::app()->db->driverName) {
                         case 'mysql':
                         case 'mysqli':
@@ -3575,20 +4105,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 434) {
             $oTransaction = $oDB->beginTransaction();
             $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
-            $oDB->createCommand()->insert('{{settings_global}}', [
-                "stg_name" => 'sendadmincreationemail',
-                "stg_value" => $defaultSetting['sendadmincreationemail'],
-            ]);
+            $oDB->createCommand()->insert(
+                '{{settings_global}}',
+                [
+                    "stg_name" => 'sendadmincreationemail',
+                    "stg_value" => $defaultSetting['sendadmincreationemail'],
+                ]
+            );
 
-            $oDB->createCommand()->insert('{{settings_global}}', [
-                "stg_name" => 'admincreationemailsubject',
-                "stg_value" => $defaultSetting['admincreationemailsubject'],
-            ]);
+            $oDB->createCommand()->insert(
+                '{{settings_global}}',
+                [
+                    "stg_name" => 'admincreationemailsubject',
+                    "stg_value" => $defaultSetting['admincreationemailsubject'],
+                ]
+            );
 
-            $oDB->createCommand()->insert('{{settings_global}}', [
-                "stg_name" => 'admincreationemailtemplate',
-                "stg_value" => $defaultSetting['admincreationemailtemplate'],
-            ]);
+            $oDB->createCommand()->insert(
+                '{{settings_global}}',
+                [
+                    "stg_name" => 'admincreationemailtemplate',
+                    "stg_value" => $defaultSetting['admincreationemailtemplate'],
+                ]
+            );
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 434], "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -3622,84 +4161,268 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 437), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if($iOldDBVersion < 438){
+        if ($iOldDBVersion < 438) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'hidden' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'hidden' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'hidden' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'hidden' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'statistics_showgraph' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'statistics_showgraph' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'statistics_showgraph' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'statistics_showgraph' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'public_statistics' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'public_statistics' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'public_statistics' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'public_statistics' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'page_break' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'page_break' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'page_break' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'page_break' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'other_numbers_only' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'other_numbers_only' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'other_numbers_only' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'other_numbers_only' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'other_comment_mandatory' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'other_comment_mandatory' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'other_comment_mandatory' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'other_comment_mandatory' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'hide_tip' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'hide_tip' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'hide_tip' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'hide_tip' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'exclude_all_others_auto' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'exclude_all_others_auto' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'exclude_all_others_auto' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'exclude_all_others_auto' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'commented_checkbox_auto' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'commented_checkbox_auto' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'commented_checkbox_auto' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'commented_checkbox_auto' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'num_value_int_only' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'num_value_int_only' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'num_value_int_only' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'num_value_int_only' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'alphasort' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'alphasort' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'alphasort' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'alphasort' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'use_dropdown' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'use_dropdown' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'use_dropdown' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'use_dropdown' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'num_value_int_only' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'num_value_int_only' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'num_value_int_only' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'num_value_int_only' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_default_set' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_default_set' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_default_set' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_default_set' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_layout' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_layout' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_layout' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_layout' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_middlestart' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_middlestart' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_middlestart' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_middlestart' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_reset' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_reset' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_reset' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_reset' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_reversed' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_reversed' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_reversed' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_reversed' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'slider_showminmax' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'slider_showminmax' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'slider_showminmax' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'slider_showminmax' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'value_range_allows_missing' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'value_range_allows_missing' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'value_range_allows_missing' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'value_range_allows_missing' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'multiflexible_checkbox' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'multiflexible_checkbox' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'multiflexible_checkbox' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'multiflexible_checkbox' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'reverse' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'reverse' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'reverse' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'reverse' and value = 'N'"
+            );
 
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '1'), "attribute = 'input_boxes' and value = 'Y'");
-            $oDB->createCommand()->update('{{question_attributes}}', array('value' => '0'), "attribute = 'input_boxes' and value = 'N'");
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '1'),
+                "attribute = 'input_boxes' and value = 'Y'"
+            );
+            $oDB->createCommand()->update(
+                '{{question_attributes}}',
+                array('value' => '0'),
+                "attribute = 'input_boxes' and value = 'N'"
+            );
 
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 438), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if($iOldDBVersion < 439) {
+        if ($iOldDBVersion < 439) {
             $oTransaction = $oDB->beginTransaction();
 
             // Some tables were renamed in dbversion 400 - their sequence needs to be fixed in Postgres
@@ -3710,7 +4433,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 fixPostgresSequence('labels');
                 fixPostgresSequence('defaultvalues');
             }
-                $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 439), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 439), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -3773,14 +4496,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     ]
                 );
             }
-            $oDB->createCommand()->insert("{{plugins}}", [
-                'name'               => 'TwoFactorAdminLogin',
-                'plugin_type'        => 'core',
-                'active'             => 0,
-                'version'            => '1.2.5',
-                'load_error'         => 0,
-                'load_error_message' => null
-            ]);
+            $oDB->createCommand()->insert(
+                "{{plugins}}",
+                [
+                    'name' => 'TwoFactorAdminLogin',
+                    'plugin_type' => 'core',
+                    'active' => 0,
+                    'version' => '1.2.5',
+                    'load_error' => 0,
+                    'load_error_message' => null
+                ]
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -3835,15 +4561,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 446) {
             $oTransaction = $oDB->beginTransaction();
             // archived_table_settings
-            $oDB->createCommand()->createTable('{{archived_table_settings}}', [
-                'id' => "pk",
-                'survey_id' => "int NOT NULL",
-                'user_id' => "int NOT NULL",
-                'tbl_name' => "string(255) NOT NULL",
-                'tbl_type' => "string(10) NOT NULL",
-                'created' => "datetime NOT NULL",
-                'properties' => "text NOT NULL",
-            ], $options);
+            $oDB->createCommand()->createTable(
+                '{{archived_table_settings}}',
+                [
+                    'id' => "pk",
+                    'survey_id' => "int NOT NULL",
+                    'user_id' => "int NOT NULL",
+                    'tbl_name' => "string(255) NOT NULL",
+                    'tbl_type' => "string(10) NOT NULL",
+                    'created' => "datetime NOT NULL",
+                    'properties' => "text NOT NULL",
+                ],
+                $options
+            );
             upgradeArchivedTableSettings446();
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
@@ -3860,13 +4590,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             //override existing email text (take out password there)
             $sqlGetAdminCreationEmailTemplat = "SELECT stg_value FROM {{settings_global}} WHERE stg_name='admincreationemailtemplate'";
             $adminCreationEmailTemplateValue = $oDB->createCommand($sqlGetAdminCreationEmailTemplat)->queryAll();
-            if($adminCreationEmailTemplateValue){
-                if($adminCreationEmailTemplateValue[0]['stg_value'] === null || $adminCreationEmailTemplateValue[0]['stg_value']===''){
+            if ($adminCreationEmailTemplateValue) {
+                if ($adminCreationEmailTemplateValue[0]['stg_value'] === null || $adminCreationEmailTemplateValue[0]['stg_value'] === '') {
                     // if text in admincreationemailtemplate is empty use the default from LsDafaultDataSets
                     $defaultCreationEmailContent = LsDefaultDataSets::getDefaultUserAdministrationSettings();
                     $replaceValue = $defaultCreationEmailContent['admincreationemailtemplate'];
-                }else{ // if not empty replace PASSWORD with *** and write it back to DB
-                    $replaceValue = str_replace('PASSWORD','***',$adminCreationEmailTemplateValue[0]['stg_value']);
+                } else { // if not empty replace PASSWORD with *** and write it back to DB
+                    $replaceValue = str_replace('PASSWORD', '***', $adminCreationEmailTemplateValue[0]['stg_value']);
                 }
                 $oDB->createCommand()->update(
                     '{{settings_global}}',
@@ -3878,12 +4608,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 447), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+
         if ($iOldDBVersion < 448) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand('UPDATE {{question_themes}} SET settings=\'{"subquestions":"1","answerscales":"2","hasdefaultvalues":"0","assessable":"1","class":"array-flexible-dual-scale"}\' WHERE name=\'arrays/dualscale\'')->execute();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 448), "stg_name='DBVersion'");
             $oTransaction->commit();
-        }        
+        }
+
+        if ($iOldDBVersion < 449) {
+            $oTransaction = $oDB->beginTransaction();
+
+            //updating the default values for htmleditor
+            //surveys_groupsettings htmlemail should be 'Y'
+            alterColumn('{{surveys_groupsettings}}', 'htmlemail', 'string(1)', false, 'Y');
+            alterColumn('{{surveys}}', 'htmlemail', 'string(1)', false, 'Y');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 449), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -6071,7 +6815,7 @@ function fixLanguageConsistencyAllSurveys()
 }
 
 /**
- * This function fixes Postgres sequences for one/all tables in a database 
+ * This function fixes Postgres sequences for one/all tables in a database
  * This is necessary if a table is renamed. If tablename is given then only that table is fixed
  * @param string $tableName Table name without prefix
  * @return void
