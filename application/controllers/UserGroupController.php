@@ -81,7 +81,7 @@ class UserGroupController extends LSBaseController
      * @param $ugid
      * @param bool $header
      */
-    public function actionViewGroup($ugid, $header = false)
+    public function actionViewGroup($ugid, bool $header = false)
     {
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -179,6 +179,11 @@ class UserGroupController extends LSBaseController
 
         $aData['usergroupbar']['edit'] = true;
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $basePageTitle = 'User group';
+        $userGroupName = $aData['groupname'];
+        $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
         $this->aData = $aData;
 
