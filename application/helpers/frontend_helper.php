@@ -1321,7 +1321,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters()));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
@@ -2221,7 +2221,7 @@ function cookieConsentLocalization()
  *
  * @return array<string,mixed>
  */
-function getForwardParameters()
+function getForwardParameters($request)
 {
     $reservedGetValues = array(
         'token',
@@ -2235,7 +2235,6 @@ function getForwardParameters()
         'index.php',
     );
 
-    $request = Yii::app()->getRequest();
     $parameters = [];
     if (in_array($request->getRequestType(), ['GET', 'POST'])) {
         $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
