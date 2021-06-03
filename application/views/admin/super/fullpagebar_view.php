@@ -5,14 +5,13 @@
 ?>
 
 <!-- Full page menu bar -->
-<div class='menubar' id="fullpagebar">
+<div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
         </div>
 
-
         <!-- Right actions -->
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-right" style="margin-bottom: 10px;">
 
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
