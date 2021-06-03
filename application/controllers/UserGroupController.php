@@ -284,6 +284,9 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['add'] = 'admin/usergroups';
 
+        # Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Add user group';
+
         $this->aData = $aData;
 
         $this->render('addUserGroup_view');

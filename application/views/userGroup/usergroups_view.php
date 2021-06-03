@@ -8,7 +8,6 @@
 ?>
 
 <div class="col-lg-12">
-   <!-- <div class="pagetitle h3"><?php eT('User group list'); ?></div> -->
 
     <div class="h4"><?php
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
