@@ -295,20 +295,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('sess2_expireref', '{{sessions}}', 'expireref');
             // Move all user templates to the new user template directory
             echo "<br>" . sprintf(
-                    gT("Moving user templates to new location at %s..."),
-                    $sUserTemplateRootDir
-                ) . "<br />";
+                gT("Moving user templates to new location at %s..."),
+                $sUserTemplateRootDir
+            ) . "<br />";
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates = array();
             // get each entry
             while ($entryName = readdir($hTemplateDirectory)) {
-                if (!in_array($entryName, array('.', '..', '.svn')) && is_dir(
+                if (
+                    !in_array($entryName, array('.', '..', '.svn')) && is_dir(
                         $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
-                    ) && !Template::isStandardTemplate($entryName)) {
-                    if (!rename(
-                        $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName,
-                        $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
-                    )) {
+                    ) && !Template::isStandardTemplate($entryName)
+                ) {
+                    if (
+                        !rename(
+                            $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName,
+                            $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
+                        )
+                    ) {
                         $aFailedTemplates[] = $entryName;
                     };
                 }
@@ -409,8 +413,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{assessments}}', 'minimum', "string(50)", false, '');
             alterColumn('{{assessments}}', 'maximum', "string(50)", false, '');
             // change the primary index to include language
-            if (Yii::app(
-                )->db->driverName == 'mysql') { // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
+            if (
+                Yii::app(
+                )->db->driverName == 'mysql'
+            ) { // special treatment for mysql because this needs to be in one step since an AUTOINC field is involved
                 modifyPrimaryKey('assessments', array('id', 'language'));
             } else {
                 dropPrimaryKey('assessments');
@@ -4614,7 +4620,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 449), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-    }catch (Exception $e) {
+    } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
         // Activate schema caching
@@ -6801,7 +6807,7 @@ function fixLanguageConsistencyAllSurveys()
 }
 
 /**
- * This function fixes Postgres sequences for one/all tables in a database 
+ * This function fixes Postgres sequences for one/all tables in a database
  * This is necessary if a table is renamed. If tablename is given then only that table is fixed
  * @param string $tableName Table name without prefix
  * @return void
