@@ -558,7 +558,7 @@ class themes extends Survey_Common_Action
         $aData['pageTitle'] = $pageTitle;
 
         // White Bar
-        $aData['fullpagebar']['returnbutton'] = true;
+        $aData['templateEditorBar']['buttons']['returnbutton'] = true;
 
         $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
 

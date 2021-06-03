@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 </script>
 
 <!-- Template Editor Bar -->
-<div class='menubar' id="templateeditorbar">
+<div class='menubar' id="templateeditorbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
 
         <!-- Left Menu -->
@@ -199,7 +199,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <?php endif;?>
 
             <!-- Return to Theme List -->
-            <?php if(isset($fullpagebar['returnbutton'])):?>
+            <?php if(isset($templateEditorBar['buttons']['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("themeOptions/index"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
@@ -215,8 +215,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 <?php endif;?>
 
 <!-- Template Editor -->
-<div class="col-lg-12 templateeditor">
-    <!-- <div class="h3 theme-editor-header"><?php eT("Theme editor:"); ?> <i><?php echo $templatename; ?></i></div> -->
+<div class="col-lg-12 templateeditor" style="margin: 10px 0 0 0;">
 
     <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">
