@@ -8,23 +8,24 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 ?>
 <?php if (empty($model->sid)): ?>
 <!-- This is only visible when we're not in survey view. -->
-<div class='container-fluid'>
-    <div class='menubar' id='theme-options-bar'>
-        <div class='row' style="margin-top: 10px;">
-            <div class='text-right'>
+    <div class='menubar' id='theme-options-bar' style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;" >
+        <div class='row'>
+            <div class='text-right' style="margin: 10px 0 10px 0;">
 
                 <?php
                   $sThemeOptionUrl = App()->createUrl("themeOptions");
                   $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid, "#" => 'templateSettingsFortThisGroup'));
                   $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
                 ?>
+
+                <!-- Back -->
                 <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
                     <span class="fa fa-backward"></span>
                     <?php eT('Back'); ?>
                 </a>
 
-
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
+                <!-- Save -->
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT('Save'); ?>
                 </a>
@@ -36,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php endif; ?>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12" id="theme-options-tabs">
+        <div class="col-sm-12" id="theme-options-tabs" style="margin-top: 10px;">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <?php
@@ -258,7 +259,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
-</div>
 
 <!-- Form for image file upload -->
 <div class="hidden">
