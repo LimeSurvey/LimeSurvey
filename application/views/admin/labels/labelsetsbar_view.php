@@ -6,10 +6,10 @@
 </script>
 
 <!-- Label Bar menu -->
-<div class='menubar' id="labelbar">
+<div class='menubar' id="labelbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6" style="margin-bottom: 10px;">
 
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
