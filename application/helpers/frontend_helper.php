@@ -2219,6 +2219,8 @@ function cookieConsentLocalization()
 /**
  * Returns an array of URL parameters that can be forwarded
  *
+ * @param LSHttpRequest $request the HTTP request
+ *
  * @return array<string,mixed>
  */
 function getForwardParameters($request)
