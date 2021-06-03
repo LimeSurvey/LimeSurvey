@@ -1901,7 +1901,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
-            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // Only set the other state for question types that have this attribute
             if (
                 ($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
@@ -1926,7 +1926,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
-            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
             if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;

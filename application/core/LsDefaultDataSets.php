@@ -2078,7 +2078,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Arrays",
-                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-duel-scale\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-dual-scale\"}",
             ),
             array(
                 "name" => "arrays/increasesamedecrease",
