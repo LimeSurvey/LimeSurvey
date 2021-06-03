@@ -594,6 +594,18 @@ class QuestionTheme extends LSActiveRecord
         // todo: object or array?
         $baseQuestion = self::model()->query($criteria, false);
 
+        if (empty($baseQuestion)) {
+            $settings = new StdClass();
+            $settings->class = '';
+            $settings->answerscales = 0;
+            return [
+                'title' => gT('Question theme error: Missing metadata'),
+                'name' => gT('Question theme error: Missing metadata'),
+                'question_type' => '',
+                'settings' => $settings
+            ];
+        }
+
         // language settings
         $baseQuestion->title = gT($baseQuestion->title, "html", $language);
         $baseQuestion->group = gT($baseQuestion->group, "html", $language);

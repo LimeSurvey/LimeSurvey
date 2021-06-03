@@ -64,6 +64,7 @@
                     <!-- Question code and question type selector -->
                     <div class="row">
                         <?php
+                        // TODO: Change this to $question->question_theme->config->metadata
                         $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                         $this->renderPartial(
                             "codeAndType",
