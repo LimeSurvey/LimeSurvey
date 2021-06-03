@@ -18,10 +18,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php App()->end();?>
 <?php endif; ?>
 
-<?php
-    $this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' =>"User management panel" ));
-?>
-
 <?php $this->renderPartial('partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
 
