@@ -430,7 +430,7 @@ class LayoutHelper
      * @param array $aData
      * @return string
      */
-    protected function beforeSideMenuRender(array $aData): string
+    protected function beforeSideMenuRender(array $aData)
     {
         $event = new PluginEvent('beforeSideMenuRender', $this);
         $event->set('aData', $aData);
