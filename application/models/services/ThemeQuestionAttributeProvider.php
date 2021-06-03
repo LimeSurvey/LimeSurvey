@@ -42,8 +42,8 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
         $questionTheme = \QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $questionThemeName, 'extends' => $questionType]);
         if ($questionTheme !== null) {
             $xmlFilePath = App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml';
-            $xmlLoader = new XmlConfigHandler($xmlFilePath);
-            $xmlAttributes = $xmlLoader->getNodeAsArray('attributes');
+            $extensionConfig = \ExtensionConfig::loadConfigFromFile($xmlFilePath);
+            $xmlAttributes = $extensionConfig->getNodeAsArray('attributes');
         }
 
         if (!empty($xmlAttributes)) {

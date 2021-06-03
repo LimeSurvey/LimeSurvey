@@ -64,8 +64,8 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            $xmlLoader = new XmlConfigHandler($xmlFilePath);
-            $xmlAttributes = $xmlLoader->getNodeAsArray('generalattributes');
+            $extensionConfig = \ExtensionConfig::loadConfigFromFile($xmlFilePath);
+            $xmlAttributes = $extensionConfig->getNodeAsArray('generalattributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
                 $temp = $xmlAttributes['attribute'];
@@ -102,8 +102,8 @@ class CoreQuestionAttributeProvider extends QuestionAttributeProvider
         $attributes = [];
 
         if (file_exists($xmlFilePath)) {
-            $xmlLoader = new XmlConfigHandler($xmlFilePath);
-            $xmlAttributes = $xmlLoader->getNodeAsArray('attributes');
+            $extensionConfig = \ExtensionConfig::loadConfigFromFile($xmlFilePath);
+            $xmlAttributes = $extensionConfig->getNodeAsArray('attributes');
             // if only one attribute, then it doesn't return numeric index
             if (!empty($xmlAttributes) && !array_key_exists('0', $xmlAttributes['attribute'])) {
                 $temp = $xmlAttributes['attribute'];
