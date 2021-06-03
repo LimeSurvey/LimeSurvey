@@ -34,11 +34,12 @@ class QuestionAttributeFetcher
      * from all available sources.
      *
      * @return array<string,array> array of question attribute definitions
+     * @throws \InvalidArgumentException if no question is specified
      */
     public function fetch()
     {
         if (empty($this->question)) {
-            return [];
+            throw new \InvalidArgumentException(gT("No question specified."));
         }
 
         $questionAttributeHelper = new QuestionAttributeHelper();
