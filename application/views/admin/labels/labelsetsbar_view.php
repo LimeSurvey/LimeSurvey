@@ -101,7 +101,7 @@
 
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>" style="margin-top: 10px;">
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>" style="margin: 10px 0 10px 0;">
                     <span class="fa fa-floppy-o"></span>
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
@@ -109,7 +109,7 @@
 
             <!-- Close -->
             <?php if(isset($labelbar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button" style="margin: 10px 0 10px 0;">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
