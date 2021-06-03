@@ -57,7 +57,9 @@ class UserGroupController extends LSBaseController
         $model = UserGroup::model();
 
         $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        $aData['pageTitle'] = 'User group list';
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
