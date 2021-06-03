@@ -4345,3 +4345,9 @@ table.dataTable thead .sorting_desc:after {
   content: "\f0dd" !important;
   /* sort-by-attributes-alt */
 }
+
+.menubar.sticky {
+    position: fixed !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+}

@@ -1897,4 +1897,23 @@ $(document).on('ready pjax:scriptcomplete', function () {
     }
 
     $('#relevance').on('keyup', showConditionsWarning);
+
+    var makeTopbarSticky = function () {
+      var topbar = $('#pjax-content > .menubar');
+      var editor = $('#in_survey_common');
+      var topbarOffset = topbar.offset().top;
+  
+      $(window).on('scroll', function(e) {
+        if (window.pageYOffset >= topbarOffset) {
+          topbar.addClass("sticky")
+          topbar.css('width', topbar.parent().width());
+          editor.css('padding-top', topbar.outerHeight(true));
+        } else {
+          topbar.removeClass("sticky");
+          topbar.css('width', '');
+          editor.css('padding-top', '');
+        }
+      });
+    };
+    makeTopbarSticky();
 });

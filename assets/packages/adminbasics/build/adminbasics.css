@@ -1,8 +1,4 @@
 @charset "UTF-8";
-#cpdbatt {
-  min-height: 100px;
-}
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -118,22 +114,6 @@
 
 .item.inactive {
   display: none;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: left;
-  padding-bottom: 15px;
 }
 
 #selectable .ui-selecting {
@@ -4433,6 +4413,12 @@ table.dataTable thead .sorting_desc:after {
   /* sort-by-attributes-alt */
 }
 
+.menubar.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
 .grid-view .table td.button-column, .grid-view .table th.button-column {
   white-space: nowrap;
   text-align: initial;
@@ -4534,4 +4520,24 @@ table.dataTable thead .sorting_desc:after {
   margin: 0;
   border: none;
   display: inline-block;
+}
+
+#cpdbatt {
+  min-height: 100px;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: left;
+  padding-bottom: 15px;
 }
