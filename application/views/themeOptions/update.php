@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <!-- This is only visible when we're not in survey view. -->
 <div class='container-fluid'>
     <div class='menubar' id='theme-options-bar'>
-        <div class='row'>
+        <div class='row' style="margin-top: 10px;">
             <div class='text-right'>
 
                 <?php
@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 ?>
                 <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
                     <span class="fa fa-backward"></span>
-                    <?php eT('Close'); ?>
+                    <?php eT('Back'); ?>
                 </a>
 
 
@@ -34,27 +34,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else: ?>
 <div class="col-sm-12 side-body <?=getSideBodyClass(false)?>" id="theme-option-sidebody">
 <?php endif; ?>
-    <div class="row h1 pagetitle">
-        <?php echo sprintf(gT('Survey options for theme %s'),'<em>' . $model->template_name . '</em>'); ?>
-        (
-            <?php
-
-                // This is a quick and dirty solution.
-                // @Todo A clean system to show the level and indicate where the inherited values are taken
-                // @Todo: Don't concatenate translations, fix them, Louis
-
-                if (!is_null($sid)){
-                    eT(" for survey id: $sid ");
-                }elseif(!is_null($gsid)){
-                    eT(" for survey group id: $gsid ");
-                }else{
-                    eT(" global level");
-                }
-
-            ?>
-        )
-    </div>
-        <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
+    <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <div class="col-sm-12" id="theme-options-tabs">
             <!-- Nav tabs -->
