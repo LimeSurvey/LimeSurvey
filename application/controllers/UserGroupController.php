@@ -437,9 +437,9 @@ class UserGroupController extends LSBaseController
     /**
      *  Sends email to all users in a group
      *
-     * @param $ugid
+     * @param int $ugid
      */
-    public function actionMailToAllUsersInGroup($ugid)
+    public function actionMailToAllUsersInGroup(int $ugid)
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
