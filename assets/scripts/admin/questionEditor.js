@@ -1832,7 +1832,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
-      const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      const tableId = $(e.relatedTarget).closest('div.action-buttons').parent().find('table.answertable').attr('id');
       if (tableId === '') {
         alert('Internal error: Did not find tableId');
         throw 'abort';
