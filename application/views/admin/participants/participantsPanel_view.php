@@ -1,3 +1,9 @@
+<?php
+/*
+* @var bool $ownsAddParticipantsButton
+**/
+?>
+
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -114,10 +120,7 @@
 
         <div class="col-md-3 text-right">
             <!-- Add Participants -->
-            <?php if (
-                Permission::model()->hasGlobalPermission('superadmin', 'read')
-                || Permission::model()->hasGlobalPermission('participantpanel', 'create')
-            ): ?>
+            <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
                 <button class="btn btn-default" id="addParticipantToCPP">
                     <i class="fa fa-plus-circle text-success"></i>&nbsp;
                     <?php eT("Add new participant"); ?>

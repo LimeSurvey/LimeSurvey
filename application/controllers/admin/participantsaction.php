@@ -262,6 +262,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Loads the view 'participantsPanel'
+     * Central Participants database summary action
      */
     public function index()
     {
@@ -282,11 +283,18 @@ class participantsaction extends Survey_Common_Action
             'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'attributecount' => ParticipantAttributeName::model()->count(),
-            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
+            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\''),
+            'ownsAddParticipantsButton' =>
+                Permission::model()->hasGlobalPermission('superadmin', 'read')
+                || Permission::model()->hasGlobalPermission('participantpanel', 'create'),
         );
 
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = "Central participants database summary";
+
         // loads the participant panel and summary view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
     }

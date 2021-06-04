@@ -7,9 +7,8 @@ echo viewHelper::getViewTestTag('participantsSummary');
 ?>
 <div id="pjax-content">
     <div class="col-lg-12 list-surveys">
-        <h3><?php eT("Central participants database summary"); ?></h3>
 
-        <div class="row">
+        <div class="row" style="margin-top: 10px;">
             <div class="col-lg-12 content-right">
     <table class='statisticssummary table table-striped'>
         <tr>
