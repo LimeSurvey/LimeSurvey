@@ -40,6 +40,9 @@ class LSHttpRequest extends CHttpRequest
     public $noCsrfValidationRoutes = array();
     public $noCsrfValidationParams = array();
 
+    /** @var array<string,mixed>|null the request query parameters (name-value pairs) */
+    private $queryParams;
+
     /**
      * Return the referal url,
      * it's used for the "close" buttons, and the "save and close" buttons
@@ -220,5 +223,31 @@ class LSHttpRequest extends CHttpRequest
             $this->_pathInfo = $pathInfo;
         }
         return $this->_pathInfo;
+    }
+
+    /**
+     * Returns the request parameters given in the [[queryString]].
+     *
+     * This method will return the contents of `$_GET` if params where not explicitly set.
+     * @return array the request GET parameter values.
+     * @see setQueryParams()
+     */
+    public function getQueryParams()
+    {
+        if ($this->queryParams === null) {
+            return $_GET;
+        }
+
+        return $this->queryParams;
+    }
+
+    /**
+     * Sets the request [[queryString]] parameters.
+     * @param array $values the request query parameters (name-value pairs)
+     * @see getQueryParams()
+     */
+    public function setQueryParams($values)
+    {
+        $this->queryParams = $values;
     }
 }
