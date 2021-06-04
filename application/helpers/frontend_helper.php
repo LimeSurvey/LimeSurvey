@@ -884,8 +884,9 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType()=='GET') {
-        $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
+    $request = Yii::app()->getRequest();
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
         if(!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
@@ -1320,7 +1321,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
@@ -2213,4 +2214,32 @@ function cookieConsentLocalization()
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')
     );
+}
+
+/**
+ * Returns an array of URL parameters that can be forwarded
+ *
+ * @param LSHttpRequest $request the HTTP request
+ *
+ * @return array<string,mixed>
+ */
+function getForwardParameters($request)
+{
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed',
+        'index.php',
+    );
+
+    $parameters = [];
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
+    }
+    return $parameters;
 }
