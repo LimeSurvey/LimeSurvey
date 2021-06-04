@@ -392,6 +392,9 @@ class participantsaction extends Survey_Common_Action
             Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
         }
 
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Central participant management';
+
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
