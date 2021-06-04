@@ -478,6 +478,9 @@ class UserGroupController extends LSBaseController
 
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
 
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = "Mail to all Members";
+
         $this->aData = $aData;
 
         $this->render('mailUserGroup_view', [
