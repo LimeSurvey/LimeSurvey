@@ -3948,7 +3948,9 @@ class LimeExpressionManager
                 foreach ($token as $key => $val) {
                     // Decrypt encrypted token attributes
                     if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y') {
-                        $val = $token->decrypt($val);
+                        if (!empty($val)) {
+                            $val = $token->decrypt($val);
+                        }
                     }
                     $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code'      => $anonymized ? '' : $val,
