@@ -20,7 +20,6 @@ LS.renderBootstrapSwitch();
 </script>
 
 <div class="container-fluid welcome full-page-wrapper">
-<div class="pagetitle h3"><?php eT("Global settings"); ?></div>
 
 <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="active"><a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
