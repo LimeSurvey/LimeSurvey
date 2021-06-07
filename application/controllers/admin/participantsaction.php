@@ -1956,6 +1956,7 @@ class participantsaction extends Survey_Common_Action
     /**
      * Loads the view 'sharePanel'
      * @return void
+     * @throws CException
      */
     public function sharePanel()
     {
@@ -1964,6 +1965,7 @@ class participantsaction extends Survey_Common_Action
             $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
         }
         $model->bEncryption = true;
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -1972,7 +1974,8 @@ class participantsaction extends Survey_Common_Action
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
-            'debug' => Yii::app()->request->getParam('Participant')
+            'debug' => Yii::app()->request->getParam('Participant'),
+            'pageTitle' => "Share panel",
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
