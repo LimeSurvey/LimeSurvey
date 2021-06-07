@@ -21,7 +21,7 @@
                 </a>
             <?php endif;?>
 
-            
+            <!-- Save and Close -->
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
@@ -37,6 +37,7 @@
                 </a>
             <?php endif;?>
 
+            <!-- Box Buttons -->
             <?php if(isset($fullpagebar['boxbuttons'])):?>
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
                     <span class="icon-add  text-success"></span>
@@ -48,6 +49,7 @@
                 </a>
             <?php endif;?>
 
+            <!-- Manage your Key -->
             <?php if(isset($fullpagebar['update'])):?>
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>

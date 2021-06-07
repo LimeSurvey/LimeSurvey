@@ -16,19 +16,7 @@ LS.renderBootstrapSwitch();
     strOK='<?php eT('OK','js');?>';
 </script>
 
-<div class="col-lg-12 list-surveys">
-
-    <?php $this->renderPartial('//admin/super/fullpagebar_view', array(
-        'fullpagebar' => array(
-            'boxbuttons'=>true,
-            'returnbutton'=>array(
-                'url'=>'admin/index',
-                'text'=>gT('Close'),
-            ),
-        )
-    )); ?>
-
-    <h3><?php eT('Home page settings'); ?></h3>
+<div class="col-lg-12 list-surveys" style="margin-top: 10px;">
 
     <div class="row">
         <label class="col-sm-2 control-label"><?php eT("Display logo:");?> </label>

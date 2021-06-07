@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HomepageSettingsController
+ */
 class HomepageSettingsController extends LSBaseController
 {
     /**
@@ -50,7 +53,16 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $this->aData = [];
+        $this->aData = [
+            'fullpagebar' => [
+                'boxbuttons' => true,
+                'returnbutton' => [
+                    'url'=>'admin/index',
+                    'text'=>gT('Close'),
+                ],
+            ],
+            'pageTitle' => 'Home page settings',
+        ];
 
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox,
