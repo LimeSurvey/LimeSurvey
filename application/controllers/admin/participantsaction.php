@@ -778,7 +778,8 @@ class participantsaction extends Survey_Common_Action
         $this->checkPermission('import');
 
         $aData = array(
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'pageTitle' => "Import CSV",
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
