@@ -17,10 +17,15 @@
             <span class="icon-bar"></span>
         </button>
 
-
-        <a class="navbar-brand" href="<?php echo $this->createUrl("/admin/"); ?>">
-            <?php echo $sitename; ?>
-        </a>
+      <div style="margin: 5px;">
+          <img src="/LimeSurvey/assets/images/LimeSurvey_Logo_LS4.svg"
+               alt="<?php echo $sitename ?>"
+               class="pull-left hidden-xs hidden-sm">
+          <! -- Logo -->
+          <a class="navbar-brand hidden-xs hidden-sm pull-right" href="<?php echo $this->createUrl("/admin/"); ?>">
+              <?php echo $sitename ?>
+          </a>
+      </div>
     </div>
 
 
