@@ -491,6 +491,24 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Global survey settings';
+
+        // White Top Bar
+        $aData['fullpagebar'] = [
+            'returnbutton' => [
+                'url' => 'admin/index',
+                'text' => gT('Back'),
+            ],
+            'savebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+        'saveandclosebutton' => [
+            'form' => 'survey-settings-form',
+        ],
+    ];
+
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
