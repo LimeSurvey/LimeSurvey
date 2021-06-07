@@ -1,22 +1,27 @@
-<div class='menubar surveybar' id="usermanagementbar">
+<div class='menubar surveybar' id="usermanagementbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row'>
-        <div class="col-md-9">
+        <div class="col-md-9" style="margin-bottom: 10px;">
             <?php if(!isset($inImportView)) { ?>
                 <?php if(Permission::model()->hasGlobalPermission('users', 'create')) {
                     ?>
+                    <!-- Add User -->
                     <button  data-href="<?=$this->createUrl("userManagement/addEditUser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>"
                              class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user"); ?>
                     </button>
+
+                    <!-- Add Dummy User -->
                     <button  data-href="<?=$this->createUrl("userManagement/addDummyUser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>"
                              class="btn btn-default UserManagement--action--openmodal">
                         <i class="fa fa-plus-square text-success"></i> <?=gT('Add dummy user')?>
                     </button>
 
+                    <!-- Import CSV -->
                     <button  data-href="<?=$this->createUrl("userManagement/renderUserImport",["importFormat"=>"csv"])?>" data-toggle="modal" title="<?php eT('Import survey administrators from CSV'); ?>" class="btn btn-default UserManagement--action--openmodal">
                         <span class="icon-import text-success"></span> <?php eT("Import (CSV)"); ?>
                     </button>
 
+                    <!-- Import JSON -->
                     <button  data-href="<?=App()->createUrl("userManagement/renderUserImport",["importFormat"=>"json"])?>" data-toggle="modal" title="<?php eT('Import survey administrators from Json'); ?>" class="btn btn-default UserManagement--action--openmodal">
                         <span class="icon-import text-success"></span> <?php eT("Import (JSON)"); ?>
                     </button>
@@ -25,6 +30,7 @@
                 } ?>
                 <?php if(Permission::model()->hasGlobalPermission('users', 'export')) { ?>
                     <div div class="btn-group">
+                        <!-- Export -->
                         <button class="btn btn-default" type="button" data-toggle="dropdown">
                             <i class="fa fa-upload text-success"></i> <?php eT("Export");?>
                             <span class="caret"></span>
@@ -55,7 +61,7 @@
                 <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;
-                    <?php eT('Return to admin home'); ?>
+                    <?php eT('Back'); ?>
                 </a>
             <?php endif; ?>
         </div>

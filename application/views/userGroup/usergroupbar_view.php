@@ -1,10 +1,11 @@
 <?php
 /** @var AdminController $this */
 /** @var UserGroup $userGroup */
-
 ?>
-<div class='menubar' id="usergroupbar">
-    <div class='row container-fluid'>
+<!-- User Group Bar -->
+<div class='menubar' id="usergroupbar" style="box-shadow: 3px 3px 3px #35363f;">
+    <div class='row container-fluid' style="margin-top: 10px;">
+        <!-- Left side -->
         <div class="col-lg-6 col-sm-8">
 
             <!-- Add -->
@@ -40,8 +41,10 @@
             <?php endif;?>
         </div>
 
-        <div class="col-lg-6 col-sm-4 text-right">
+        <!-- Right side -->
+        <div class="col-lg-6 col-sm-4 text-right" style="margin-bottom: 10px;">
 
+            <!-- Save -->
             <?php if(isset($usergroupbar['savebutton']['form'])):?>
                 <a class="btn btn-primary" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o" ></span>
@@ -57,6 +60,7 @@
                 </a>
             <?php endif;?>
 
+            <!-- Back -->
             <?php if(isset($usergroupbar['returnbutton']['url'])):?>
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward" ></span>

@@ -3270,6 +3270,7 @@ class LimeExpressionManager
      * @param boolean|null $forceRefresh
      * @param boolean|null $anonymized
      * @return boolean|null - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
+     * @todo Keep method as-is but factor out content to new class; add unit tests for class
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
@@ -3948,7 +3949,9 @@ class LimeExpressionManager
                 foreach ($token as $key => $val) {
                     // Decrypt encrypted token attributes
                     if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y') {
-                        $val = $token->decrypt($val);
+                        if (!empty($val)) {
+                            $val = $token->decrypt($val);
+                        }
                     }
                     $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code'      => $anonymized ? '' : $val,
