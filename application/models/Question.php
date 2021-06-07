@@ -1533,4 +1533,15 @@ class Question extends LSActiveRecord
         }
         return $results;
     }
+
+    /**
+     * Get the question theme name
+     *
+     * @return string
+     */
+    public function getQuestionThemeName()
+    {
+        $questionTheme = $this->getQuestionAttribute('question_template');
+        return !empty($questionTheme) ? $questionTheme : self::DEFAULT_QUESTION_THEME;
+    }
 }
