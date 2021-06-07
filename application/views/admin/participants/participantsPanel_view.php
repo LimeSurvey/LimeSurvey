@@ -1,7 +1,8 @@
 <?php
 /*
-* @var bool $ownsAddParticipantsButton
-**/
+ * @var bool $ownsAddParticipantsButton
+ * @var bool $ownsAddAttributeButton
+ */
 ?>
 
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
@@ -127,6 +128,14 @@
                 </button>
             <?php endif; ?>
 
+            <!-- Add Attribute -->
+            <?php if(isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)): ?>
+                <button class="btn btn-default" id="addParticipantAttributeName">
+                    <i class="fa fa-plus-circle text-success"></i>
+                    &nbsp;
+                    <?php eT("Add new attribute"); ?>
+                </button>
+            <?php endif; ?>
             <!-- Back -->
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="fa fa-backward"></span>

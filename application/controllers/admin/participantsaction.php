@@ -1372,7 +1372,9 @@ class participantsaction extends Survey_Common_Action
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
-            'debug' => Yii::app()->request->getParam('Attribute')
+            'debug' => Yii::app()->request->getParam('Attribute'),
+            'pageTitle' => "Attribute management",
+            'ownsAddAttributeButton' => true,
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeAttributes')) {
