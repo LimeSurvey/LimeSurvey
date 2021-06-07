@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.1 (build 210531) to 3.27.2 (build 210608) June 7, 2021
+-Fixed issue: Database error when editing a quota and text is too long (Gabriel Jenik)
+-Fixed issue #17298: queXML PDF Export: 500: Internal Server Error (#1902) (Adam Zammit)
+-Fixed issue #17239: Unable to find template "./subviews/content/.twig" (with PHP8) (Gabriel Jenik)
+-Fixed issue #14897: Edit theme permissions: option 'All themes' not working (#1903) (Gabriel Jenik)
+-Fixed issue #14039: Captcha prevent panel integration. GET URL parameter not captured (#1896) (Gabriel Jenik)
+
+
 Changes from 3.27.0 (build 210525) to 3.27.1 (build 210531) May 31, 2021
 -Fixed issue #17306: Some update theme can break page in 3.26.4 (#1892) (Gabriel Jenik)
 
