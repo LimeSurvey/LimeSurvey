@@ -1299,7 +1299,8 @@ class participantsaction extends Survey_Common_Action
             'hideblacklisted' => Yii::app()->getConfig('hideblacklisted'),
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'pageTitle' => "Blacklist settings",
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
