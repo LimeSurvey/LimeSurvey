@@ -164,10 +164,23 @@ class HomepageSettingsController extends LSBaseController
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
+        $this->aData = [
+            'pageTitle' => 'Update box ' . $model->title,
+            'fullpagebar' => [
+                'savebutton' => [
+                    'form' => 'boxes-form',
+                ],
+                'saveandclosebutton' => [
+                    'form' => 'boxes-form'
+                ],
+                'closebutton' => [
+                    'url' => Yii::app()->createUrl('homepageSettings/index'),
+                ],
+             ],
+            'model' => $model,
+        ];
 
-        $this->render('update', [
-           'model' =>  $model
-        ]);
+        $this->render('update', $this->aData);
     }
 
     /**
