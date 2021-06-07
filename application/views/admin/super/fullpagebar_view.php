@@ -23,7 +23,7 @@
 
             <!-- Save and Close -->
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
-                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>" style="margin-top: 10px;">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
@@ -31,7 +31,7 @@
 
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
@@ -39,11 +39,11 @@
 
             <!-- Box Buttons -->
             <?php if(isset($fullpagebar['boxbuttons'])):?>
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
+                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default" style="margin-top: 10px;">
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create a new box");?>
                 </a>
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
                     <span class="fa fa-refresh"></span>
                     <?php eT("Reset to default boxes");?>
                 </a>

@@ -107,11 +107,25 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
+        $this->aData = [
+            'pageTitle' => 'New box',
+            'fullpagebar' => [
+                'savebutton' => [
+                    'form' => 'boxes-form',
+                ],
+                'saveandclosebutton' => [
+                    'form' => 'boxes-form'
+                ],
+                'closebutton' => [
+                    'url' => Yii::app()->createUrl('homepageSettings/index')
+                ]
+            ],
+            'model' => $model,
+        ];
+
         $this->render(
             'create',
-            [
-                'model' => $model
-            ]
+            $this->aData
         );
     }
 

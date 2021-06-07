@@ -14,7 +14,6 @@
                 // See class documentation of CActiveForm for details on this.
                 'enableAjaxValidation'=>false
             )); ?>
-                <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
 
                 <?php if($form->errorSummary($model)):?>
                     <div class="alert alert-danger" role="alert">
@@ -156,6 +155,7 @@
                     <?php endif;?>
                 </div>
 
+    <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
                 <div class="form-group buttons">
                     <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control hidden')); ?>
                 </div>
