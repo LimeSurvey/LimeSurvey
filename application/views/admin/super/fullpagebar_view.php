@@ -8,6 +8,42 @@
 <div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
+            <?php if(isset($fullpagebar['pluginManager'])): ?>
+
+                <!-- Install Plugin Zip -->
+                <?php if (isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
+                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']): ?>
+                    <a
+                        href=''
+                        class='btn btn-default'
+                        data-toggle='modal'
+                        data-target='#installPluginZipModal'
+                        data-tooltip='true'
+                        title='<?php eT('Install plugin by ZIP archive'); ?>'
+                        style="margin-top: 10px;"
+                    >
+                        <i class='icon-import'></i>&nbsp;
+                        <?php eT('Upload & install'); ?>
+                    </a>
+                <?php endif; ?>
+
+                 <!-- Scan Files -->
+                <?php if(isset($fullpagebar['pluginManager']['buttons']['scanFiles'])): ?>
+                    <a
+                        href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
+                        class='btn btn-default'
+                        data-toggle='tooltip'
+                        title='<?php eT('Scan files for available plugins'); ?>'
+                        style="margin-top: 10px;"
+                    >
+                        <i class='fa fa-file '></i>
+                        <i class='fa fa-search '></i>&nbsp;
+                        <?php eT('Scan files'); ?>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Find Updates -->
+            <?php endif; ?>
         </div>
 
         <!-- Right actions -->
