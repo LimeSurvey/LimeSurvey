@@ -44,10 +44,31 @@
 
                 <!-- Find Updates -->
             <?php endif; ?>
+
+            <!-- Add new Menu entry -->
+            <?php if(isset($fullpagebar['menus'])): ?>
+                <?php if(isset($fullpagebar['menus']['buttons']['addMenuEntry']) && $fullpagebar['menus']['buttons']['addMenuEntry']): ?>
+                    <a class="btn btn-default"
+                       id="createnewmenu"
+                       style="margin-top: 10px; margin-bottom: 10px;">
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New') ?>
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
 
         <!-- Right actions -->
         <div class="col-md-6 text-right" style="margin-bottom: 10px;">
+            <!-- Reset -->
+            <?php if(isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']):?>
+                <a class="btn btn-danger"
+                   href="#restoremodal"
+                   data-toggle="modal"
+                style="margin-top: 10px;">
+                    <i class="fa fa-refresh"></i>&nbsp;
+                    <?php eT('Reset') ?>
+                </a>
+            <?php endif; ?>
 
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>

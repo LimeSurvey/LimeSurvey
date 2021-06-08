@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class SurveymenuController
+ */
 class SurveymenuController extends Survey_Common_Action
 {
 
@@ -353,20 +356,29 @@ class SurveymenuController extends Survey_Common_Action
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
+    /**
+     * @throws CHttpException
+     */
     public function view()
     {
-        //$this->checkPermission();
-
-        $data = array();
-        $data['model'] = Surveymenu::model();
+        $aData = array();
+        $aData['model'] = Surveymenu::model();
         
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
-
+        $aData['pageTitle'] = 'Survey menus';
+        $aData['fullpagebar'] = [
+            'menus' => [
+                'buttons' => [
+                    'addMenuEntry' => true,
+                    'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
+                ],
+            ],
+        ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('surveymenu/index'), $data);
+        $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
 
     public function getsurveymenuform($menuid = null)
