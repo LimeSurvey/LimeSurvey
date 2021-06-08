@@ -176,7 +176,13 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $questionTemplate = 'core';
+        $questionTemplate = SettingsUser::getUserSettingValue(
+            'preselectquestiontheme',
+            null,
+            null,
+            null,
+            App()->getConfig('preselectquestiontheme')
+        );
         if ($question->qid !== 0) {
             $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
         }

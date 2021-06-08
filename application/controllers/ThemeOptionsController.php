@@ -661,8 +661,8 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int                   $sid   Survey ID
-     * @param int                   $gsid  Survey Group ID
+     * @param int|null $sid Survey ID
+     * @param int|null $gsid Survey Group ID
      *
      * @return void
      */
@@ -707,7 +707,6 @@ class ThemeOptionsController extends LSBaseController
             'optionCssFramework'    => $oModelWithInheritReplacement->cssframework_css,
             'aTemplateConfiguration' => $aTemplateConfiguration,
             'aOptionAttributes'      => $aOptionAttributes,
-            'sid'             => $sid,
             'oParentOptions'  => $oParentOptions,
             'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
             'sid' => $sid,
@@ -723,6 +722,23 @@ class ThemeOptionsController extends LSBaseController
             $aData['subaction'] = gT("Survey theme options");
             $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         }
+
+        // Title concatenation
+        $templateName = $model->template_name;
+        $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+
+        if (!is_null($sid)) {
+            $addictionalSubtitle = gT(" for survey id: $sid");
+        } elseif (!is_null($gsid)) {
+            $addictionalSubtitle = gT(" for survey group id: $gsid");
+        } else {
+            $addictionalSubtitle = gT(" global level");
+        }
+
+        $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = $pageTitle;
 
         $this->aData = $aData;
         $this->render('update', $aData);

@@ -1,7 +1,7 @@
 <div class="col-lg-12 list-surveys">
-    <div class="pagetitle h3">
+   <!-- <div class="pagetitle h3">
         <?php eT("Add user group"); ?>
-    </div>
+    </div> -->
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2 content-right">
