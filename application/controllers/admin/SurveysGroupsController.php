@@ -105,8 +105,9 @@ class SurveysGroupsController extends Survey_Common_Action
      *
      * @param integer $id the ID of the model to be updated
      * @return void
+     * @throws CHttpException
      */
-    public function update($id)
+    public function update(int $id)
     {
         $model = $this->loadModel($id);
         if (!empty(App()->getRequest()->getPost('SurveysGroups'))) {
@@ -151,18 +152,36 @@ class SurveysGroupsController extends Survey_Common_Action
             }
         }
 
+        $oSurveySearch = new Survey('search');
+        $oSurveySearch->gsid = $model->gsid;
+
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup')),
+            'pageTitle' => 'Update survey group: ' . $model->title,
         );
-        $oSurveySearch = new Survey('search');
-        $oSurveySearch->gsid = $model->gsid;
+
         $aData['oSurveySearch'] = $oSurveySearch;
         $aData['aRigths'] = array(
             'update' => $model->hasPermission('group', 'update'),
             'delete' => $model->hasPermission('group', 'delete'),
             'owner_id' => $model->owner_id == Yii::app()->user->id || Permission::model()->hasGlobalPermission('superadmin', 'read')
         );
+
+        $updateRightsForm = $aData['aRigths']['update'] ? 'surveys-groups-form' : null;
+
+        $aData['fullpagebar'] = [
+            'returnbutton' => [
+                'url' => 'surveyAdministration/listsurveys#surveygroups',
+                'text' => gT('Back'),
+            ],
+            'savebutton' => [
+                'form' => $updateRightsForm,
+            ],
+            'saveandclosebutton' => [
+                '$updateRightsForm',
+            ],
+        ];
 
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
@@ -178,6 +197,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions           = new TemplateConfiguration();
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
+
         // Page size
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
