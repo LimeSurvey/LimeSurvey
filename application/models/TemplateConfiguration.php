@@ -40,6 +40,9 @@ if (!defined('BASEPATH')) {
  * @package       LimeSurvey
  * @subpackage    Backend
  */
+
+use LimeSurvey\Datavalueobjects\ThemeFileCategory;
+use LimeSurvey\Datavalueobjects\ThemeFileInfo;
 class TemplateConfiguration extends TemplateConfig
 {
 
@@ -118,6 +121,7 @@ class TemplateConfiguration extends TemplateConfig
             array('template_name', 'length', 'max'=>150),
             array('cssframework_name', 'length', 'max'=>45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load', 'safe'),
+            array('options', 'sanitizeImagePathsOnJson'),
             // The following rule is used by search().
             array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
         );
@@ -826,7 +830,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $file with Path
      * @return array|null
      */
-    private function _getImageInfo($file)
+    private function _getImageInfo($file, $pathPrefix = '')
     {
         if(!file_exists($file)) {
             return;
@@ -838,27 +842,41 @@ class TemplateConfiguration extends TemplateConfig
         }
         $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'), $file);
         $previewFilePath = App()->getAssetManager()->publish($file);
-        return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>basename($file)];
+        $fileName = basename($file);
+        return ['preview' => $previewFilePath, 'filepath' => $pathPrefix . $fileName, 'filepathOptions' => $filePath, 'filename' => $fileName];
     }
 
     protected function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
+        //$fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        $categoryList = []; // Array with optgroup label and path
-        $categoryList[] = ['group' => gT("Global"),'path' => $this->generalFilesPath];
-        $categoryList[] = ['group' => gT("Theme"),'path' => $this->filesPath];
-        if($this->sid) {
-            $categoryList[] = ['group' => gT("Survey"),'path' => Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'];
-        }
-        foreach($categoryList as $category) {
-            $fileList = Template::getOtherFiles($category['path']);
+        $categoryList = $this->getFileCategories();
+        foreach ($categoryList as $category) {
+            $pathPrefix = empty($category->pathPrefix) ? '' : $category->pathPrefix;
+            if ($category->name == 'theme') {
+                if (!empty($this->template)) {
+                    $filesFolder = $this->getTemplateForPath($this, 'files_folder')->template->files_folder . '/';
+                } else {
+                    $template = Template::model()->findByAttributes(['name' => $this->template_name]);
+                    $filesFolder = $template->files_folder;
+                }
+                $basePath = $category->path . $filesFolder;
+                $pathPrefix = $pathPrefix . $filesFolder;
+            } else {
+                $basePath = $category->path;
+            }
+            $fileList = Template::getOtherFiles($basePath);
             foreach ($fileList as $file) {
-                $imageInfo = $this->_getImageInfo($category['path'].$file['name']);
+                $imageInfo = $this->_getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
-                    $aData['imageFileList'][] = array_merge($category,$imageInfo);
+                    $aData['imageFileList'][] = array_merge(
+                        [
+                            'group' => $category->title,
+                        ],
+                        $imageInfo
+                    );
                 }
             };
         }
@@ -1354,4 +1372,189 @@ class TemplateConfiguration extends TemplateConfig
             $this->options = json_encode($aOptions);
         }
     }
+
+    /**
+     * Returns the list theme's file categories
+     *
+     * @return LimeSurvey\Datavalueobjects\ThemeFileCategory[]
+     */
+    public function getFileCategories()
+    {
+        // We need to determine the paths first. They may already be set, but if they're not, we need to get them from the template.
+        // Note that the template cannot be accessed as relation until the model is saved.
+        $template = !empty($this->template) ? $this->template : Template::model()->findByAttributes(['name' => $this->template_name]);
+        if (empty($this->path)) {
+            $isStandard = Template::isStandardTemplate($this->template_name);
+            $path = $isStandard
+                ? Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR
+                : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $template->folder . DIRECTORY_SEPARATOR;
+        } else {
+            $path = $this->path;
+        }
+        $generalFilesPath = !empty($this->generalFilesPath) ? $this->generalFilesPath : Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . 'generalfiles' . DIRECTORY_SEPARATOR;
+
+        /** @var LimeSurvey\Datavalueobjects\ThemeFileCategory[] */
+        $categoryList = [];
+        $categoryList[] = new ThemeFileCategory('generalfiles', gT("Global"), $generalFilesPath, 'image::generalfiles::');
+        $categoryList[] = new ThemeFileCategory('theme', gT("Theme"), $path, 'image::theme::');
+        if (!empty($this->sid)) {
+            $categoryList[] = new ThemeFileCategory('survey', gT("Survey"), Yii::app()->getConfig('uploaddir') . '/surveys/' . $this->sid . '/images/', 'image::survey::');
+        }
+        return $categoryList;
+    }
+
+    /**
+     * Returns the virtual path of $path if it's valid.
+     *
+     * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
+     *
+     * @return string|null the virtual path if it's valid, of null if it's not.
+     */
+    public function getVirtualThemeFilePath($path)
+    {
+        /** @var LimeSurvey\Datavalueobjects\ThemeFileInfo|null */
+        $fileInfo = $this->getThemeFileInfo($path);
+
+        if (empty($fileInfo)) {
+            return null;
+        }
+
+        return $fileInfo->virtualPath;
+    }
+
+    /**
+     * Returns the real absolute path of $path if it's valid.
+     *
+     * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
+     *
+     * @return string|null the real absolute path if it's valid, of null if it's not.
+     */
+    public function getRealThemeFilePath($path)
+    {
+        /** @var LimeSurvey\Datavalueobjects\ThemeFileInfo|null */
+        $fileInfo = $this->getThemeFileInfo($path);
+
+        if (empty($fileInfo)) {
+            return null;
+        }
+
+        return $fileInfo->realPath;
+    }
+
+    /**
+     * Returns the theme file information if the path is valid.
+     * To be valid, the $path must correspond to one of the theme file categories.
+     *
+     * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
+     *
+     * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null the file info if it's valid, of null if it's not.
+     */
+    public function getThemeFileInfo($path)
+    {
+        if (is_null($path)) {
+            return null;
+        }
+
+        /** @var LimeSurvey\Datavalueobjects\ThemeFileCategory[] */
+        $categoryList = $this->getFileCategories();
+
+        // Check if the path matches the virtual path category format
+        $prefix = $this->getVirtualPathPrefix($path);
+        if (!empty($prefix)) {
+            $filteredCategories = array_filter($categoryList, function ($v) use ($prefix) { return $v->pathPrefix == $prefix; });
+            if (empty($filteredCategories)) {
+                return null;    // No category matched the path's prefix
+            }
+            $category = reset($filteredCategories);
+
+            // Validate that the file exists
+            $realPath = realpath($category->path . '/' . substr($path, strlen($prefix)));
+
+            // If the file exists and no traversing is done (the real path starts with the category's base path),
+            // return the real path
+            if ($realPath !== false && strpos($realPath, $category->path) === 0) {
+                $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
+                return new ThemeFileInfo($realPath, $virtualPath, $category);
+            } else {
+                return null;
+            }
+        }
+
+        // Path doesn't match the virtual path category format, so we try the determine if it belongs to a category.
+        foreach ($categoryList as $category) {
+            // Check for paths relative to the theme, relative to the rootdir, or absolute
+            $realPath = realpath($category->path . '/' . $path);
+            if ($realPath === false) {
+                $realPath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
+            }
+            if ($realPath === false && strpos($path, '/') === 0) {
+                $realPath = realpath($path);
+            }
+            if ($realPath === false) {
+                continue;
+            }
+
+            // If the real path is within a category's path, we return it.
+            if (strpos($realPath, $category->path) === 0) {
+                $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
+                return new ThemeFileInfo($realPath, $virtualPath, $category);
+            }
+        }
+
+        // The path didn't belong to any category
+        return null;
+    }
+
+    /**
+     * Sanitizes the theme options making sure that paths are valid.
+     * Options that match a file will be cleared if the file is not valid,
+     * or replaced with the virtual path if the file is valid.
+     */
+    public function sanitizeImagePathsOnJson($attribute, $params)
+    {
+        $decodedOptions = json_decode($this->$attribute, true);
+        if (is_array($decodedOptions)) {
+            foreach($decodedOptions as &$value) {
+                if (empty($value) || $value == 'inherit') {
+                    continue;
+                }
+                if (strpos($value, 'theme') === 0) xdebug_break();
+                $virtualPath = $this->getVirtualThemeFilePath($value);
+                if (!empty($virtualPath)) {
+                    $value = $virtualPath;
+                } elseif ($this->isVirtualPath($value) || realpath($value) !== false || realpath(Yii::app()->getConfig('rootdir') . '/' . $value) !== false) {
+                    $value = 'invalid:' . $value;
+                }
+            }
+            $this->$attribute = json_encode($decodedOptions);
+        }
+    }
+
+    /**
+     * Returns the virtual path prefix of $virtualPath.
+     *
+     * @param string $virtualPath
+     * @return string|null the virtual path prefix, or null if $virtualPath doesn't match the format
+     */
+    private function getVirtualPathPrefix($virtualPath)
+    {
+        if (preg_match('/(image::\w+::)/', $virtualPath, $m)) {
+            return $m[1];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if $value matches the virtual path format.
+     * It doesn't check the path validity.
+     *
+     * @param string $value
+     * @return boolean
+     */
+    private function isVirtualPath($value)
+    {
+        return !empty($this->getVirtualPathPrefix($value));
+    }
+
 }
