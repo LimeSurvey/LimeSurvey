@@ -2,6 +2,9 @@
 
 use LimeSurvey\Models\Services\FilterImportedResources;
 
+/**
+ * Class SurveyAdministrationController
+ */
 class SurveyAdministrationController extends LSBaseController
 {
 
@@ -49,6 +52,12 @@ class SurveyAdministrationController extends LSBaseController
         ];
     }
 
+    /**
+     * SurveyAdministrationController constructor.
+     * @param $id
+     * @param null $module
+     * @throws CException
+     */
     public function __construct($id, $module = null)
     {
         Yii::app()->request->updateNavigationStack();
