@@ -571,17 +571,27 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns All QuestionTheme settings
+     * Returns all QuestionTheme settings
      *
      * @param string $question_type
+     * @param string $question_template 'core' OR question theme name
      * @param string $language
-     *
-     * @return mixed $baseQuestions Questions as Array or Object
+     * @return QuestionTheme
      */
     public static function findQuestionMetaData($question_type, $question_template = 'core', $language = '')
     {
+        if (empty($question_type)) {
+            throw new InvalidArgumentException('question_type cannot be empty');
+        }
+
+        if (empty($question_template)) {
+            throw new InvalidArgumentException('question_template cannot be empty');
+        }
+
         $criteria = new CDbCriteria();
 
+        error_log($question_type);
+        error_log($question_template);
         if ($question_template === 'core') {
             $criteria->condition = 'extends = :extends';
             $criteria->addCondition('question_type = :question_type', 'AND');
@@ -591,35 +601,37 @@ class QuestionTheme extends LSActiveRecord
             $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
         }
 
-        // todo: object or array?
-        $baseQuestion = self::model()->query($criteria, false);
+        $questionTheme = self::model()->query($criteria, false);
+        //error_log($questionTheme);
 
-        if (empty($baseQuestion)) {
+        if (empty($questionTheme)) {
+            //var_dump($criteria);die;
             $settings = new StdClass();
             $settings->class = '';
             $settings->answerscales = 0;
-            return [
-                'title' => gT('Question theme error: Missing metadata'),
-                'name' => gT('Question theme error: Missing metadata'),
-                'question_type' => '',
-                'settings' => $settings
-            ];
+            $settings->subquestions = 0;
+            $questionTheme = new self();
+            $questionTheme->title = gT('Question theme error: Missing metadata');
+            $questionTheme->name = gT('Question theme error: Missing metadata');
+            $questionTheme->question_type = $question_type;
+            $questionTheme->settings = $settings;
+            return $questionTheme;
         }
 
         // language settings
-        $baseQuestion->title = gT($baseQuestion->title, "html", $language);
-        $baseQuestion->group = gT($baseQuestion->group, "html", $language);
+        $questionTheme->title = gT($questionTheme->title, "html", $language);
+        $questionTheme->group = gT($questionTheme->group, "html", $language);
 
         // decode settings json
-        $baseQuestion->settings = json_decode($baseQuestion->settings);
+        $questionTheme->settings = json_decode($questionTheme->settings);
 
-        return $baseQuestion;
+        return $questionTheme;
     }
 
     /**
      * Returns all Question Meta Data for the question type selector
      *
-     * @return mixed $baseQuestions Questions as Array or Object
+     * @return QuestionTheme[]
      */
     public static function findAllQuestionMetaDataForSelector()
     {

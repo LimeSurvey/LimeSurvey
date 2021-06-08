@@ -36,6 +36,8 @@ $oQuestionSelector = $this->beginWidget(
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
                 "$('#question_type').val(value);
                  $('#question_template').val(theme); 
+                console.log('value', value);
+                console.log('theme', theme);
                 LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl');"
             ]
         ]

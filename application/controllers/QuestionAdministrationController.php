@@ -1194,7 +1194,8 @@ class QuestionAdministrationController extends LSBaseController
         $gid = (int)$gid;
         $qid = (int)$qid;
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-       // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // TODO: $questionMetaData should be $questionThemeSettings
         $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
@@ -2297,6 +2298,10 @@ class QuestionAdministrationController extends LSBaseController
 
         // Get the advanced settings array
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
+        if ($sQuestionType !== null) {
+            $attributes = QuestionTheme::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTheme);
+            //$advancedSettings = array_merge($advancedSettings, $attributes);
+        }
 
         // Group the array in categories
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
@@ -2952,8 +2957,9 @@ class QuestionAdministrationController extends LSBaseController
     /**
      * @param QuestionTheme[] $questionThemes Question theme List
      * @return array
+     * @todo Move to PreviewModalWidget?
      */
-    private function getQuestionTypeGroups($questionThemes)
+    private function getQuestionTypeGroups(array $questionThemes)
     {
         $aQuestionTypeGroups = [];
 
@@ -2975,6 +2981,7 @@ class QuestionAdministrationController extends LSBaseController
             }
             $questionThemeData = [];
             $questionThemeData['title'] = $questionTheme->title;
+            $questionThemeData['theme'] = $questionTheme->name;
             $questionThemeData['type'] = $questionTheme->question_type;
             $questionThemeData['detailpage'] = '
                 <div class="col-sm-12 currentImageContainer">
