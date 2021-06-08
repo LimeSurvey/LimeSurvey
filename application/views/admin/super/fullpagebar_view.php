@@ -41,8 +41,6 @@
                         <?php eT('Scan files'); ?>
                     </a>
                 <?php endif; ?>
-
-                <!-- Find Updates -->
             <?php endif; ?>
 
             <!-- Add new Menu entry -->
@@ -67,6 +65,16 @@
                 style="margin-top: 10px;">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset') ?>
+                </a>
+            <?php endif; ?>
+
+            <!-- Reorder -->
+            <?php if(isset($fullpagebar['menus']['buttons']['reorder']) && $fullpagebar['menus']['buttons']['reorder']): ?>
+                <a class="btn btn-warning"
+                   id="reorderentries"
+                   style="margin-top: 10px;>
+                    <i class="fa fa-sort"></i>&nbsp;
+                    <?php eT('Reorder') ?>
                 </a>
             <?php endif; ?>
 
