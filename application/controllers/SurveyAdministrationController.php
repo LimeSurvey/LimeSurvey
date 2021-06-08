@@ -393,6 +393,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
         $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
 
+        // @todo $aViewsUrls can be removed, cause its never used.
         $aViewUrls[] = 'newSurvey_view';
 
         $arrayed_data = array();
@@ -402,7 +403,9 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
-        $aData['title_bar']['title'] = gT('New survey');
+        // Green Bar Page Title
+        $aData['pageTitle'] = "Create, import, or copy survey";
+
         $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
