@@ -225,11 +225,12 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     * @throws CHttpException
      * @todo : find where it shown
      * @todo : fix $_POST call
-     * @param integer $id the ID of the model to be updated
      */
-    public function surveySettings($id)
+    public function surveySettings(int $id)
     {
         $bRedirect = 0;
         /** @var SurveysGroups $model */
@@ -312,21 +313,24 @@ class SurveysGroupsController extends Survey_Common_Action
                 'Survey settings' => gT('Survey settings')
             ]
         ];
-        $aData['buttons'] = array(
-            'closebutton' => array(
+
+        $buttons = [];
+
+        $buttons['closebutton'] = array(
                 'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-            ),
         );
         if ($model->hasPermission('surveysettings', 'update')) {
-            $aData['buttons']['savebutton'] = array(
+            $buttons['savebutton'] = [
                 'form' => 'survey-settings-options-form'
-            );
-            $aData['buttons']['saveandclosebutton'] = array(
+            ];
+
+            $buttons['saveandclosebutton'] = array(
                 'form' => 'survey-settings-options-form'
             );
         }
         $aData['partial'] = $sPartial;
-
+        $aData['pageTitle'] = 'Survey settings for group: ' . $model->title;
+        $aData['fullpagebar'] = $buttons;
         $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 
@@ -344,7 +348,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $sGroupTitle    = $oGroupToDelete->title;
         $returnUrl = App()->getRequest()->getPost('returnUrl', array('surveyAdministration/listsurveys', '#' => 'surveygroups'));
 
-        if ($oGroupToDelete->gsid==1) {
+        if ($oGroupToDelete->gsid == 1) {
             Yii::app()->setFlashMessage(gT("You can't delete the default survey group!"), 'error');
             $this->getController()->redirect($returnUrl);
         } elseif ($oGroupToDelete->hasSurveys) {
