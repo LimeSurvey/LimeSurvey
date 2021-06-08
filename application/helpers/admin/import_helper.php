@@ -47,6 +47,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     $results['subquestions'] = 0;
     $results['conditions'] = 0;
     $results['groups'] = 0;
+    $results['importwarnings'] = [];
 
     $importlanguages = array();
     foreach ($xml->languages->language as $language) {
