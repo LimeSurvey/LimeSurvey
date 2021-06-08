@@ -16,6 +16,9 @@
 
 use LimeSurvey\Models\Services\SurveysGroupCreator;
 
+/**
+ * Class SurveysGroupsController
+ */
 class SurveysGroupsController extends Survey_Common_Action
 {
 
@@ -37,6 +40,7 @@ class SurveysGroupsController extends Survey_Common_Action
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
      * @return void
+     * @throws CHttpException
      */
     public function create()
     {
@@ -69,6 +73,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#' => 'settingsForThisGroup')),
+            'pageTitle' => 'Create survey group',
         );
         $aData['aRigths'] = array(
             'update' => true,
@@ -81,7 +86,7 @@ class SurveysGroupsController extends Survey_Common_Action
             ),
             'returnbutton' => array(
                 'url' => 'surveyAdministration/listsurveys#surveygroups',
-                'text' => gT('Close'),
+                'text' => gT('Back'),
             )
         );
         /* User for dropdown */
@@ -185,7 +190,6 @@ class SurveysGroupsController extends Survey_Common_Action
     /**
      * Show the survey settings menue for a particular group
      * @param integer $id group id, used for permission control
-     * @todo camelCase here and globalsettings->surveysettingmenues
      * @return void
      */
     public function surveysettingmenues($id)
