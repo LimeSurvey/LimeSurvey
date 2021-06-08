@@ -143,23 +143,27 @@ class PluginManagerController extends Survey_Common_Action
                 'sa' => 'installPluginFromFile'
             ]
         );
-        $data['scanFilesUrl'] = $this->getController()->createUrl(
+        $scanFilesUrl = $this->getController()->createUrl(
             '/admin/pluginmanager',
             [
                 'sa' => 'scanFiles',
             ]
         );
+
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
-        $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
+        $data['fullpagebar']['returnbutton']['text'] = gT('Back');
+        $data['pageTitle'] = 'Plugins - scanned files';
+        $data['fullpagebar']['pluginManager']['buttons'] = [
+            'scanFiles' => [
+                'url' => $scanFilesUrl,
+            ],
+        ];
 
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'scanFilesResult',
             $data
         );
-
-        //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
-        //$this->getController()->redirect($indexUrl);
     }
 
     public function deleteFiles($plugin)
