@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-05-24 18:40:40+00:00\n"
+"POT-Creation-Date: 2021-06-08 06:52:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -705,8 +705,8 @@ msgstr ""
 #: application/helpers/qanda_helper.php:2307
 #: application/models/Assessment.php:100 application/models/Permission.php:759
 #: application/models/Question.php:862 application/models/SavedControl.php:131
-#: application/models/TemplateManifest.php:691
-#: application/models/TemplateManifest.php:694
+#: application/models/TemplateManifest.php:687
+#: application/models/TemplateManifest.php:690
 #: application/views/admin/participants/massive_actions/_selector.php:18
 #: application/views/admin/participants/massive_actions/_selector.php:37
 #: application/views/admin/participants/massive_actions/_selector_attribute.php:18
@@ -1783,8 +1783,8 @@ msgstr ""
 #: application/helpers/export_helper.php:347
 #: application/helpers/export_helper.php:356
 #: application/helpers/export_helper.php:360
-#: application/helpers/export_helper.php:1808
-#: application/helpers/export_helper.php:1829
+#: application/helpers/export_helper.php:1814
+#: application/helpers/export_helper.php:1835
 #: application/helpers/expressions/em_manager_helper.php:3705
 #: application/helpers/expressions/em_manager_helper.php:3709
 #: application/helpers/questionHelper.php:56
@@ -1909,7 +1909,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1246
 #: application/helpers/common_helper.php:1183
 #: application/helpers/export_helper.php:362
-#: application/helpers/export_helper.php:1829
+#: application/helpers/export_helper.php:1835
 #: application/helpers/expressions/em_manager_helper.php:3711
 #: application/helpers/userstatistics_helper.php:1221
 #: application/views/admin/dataentry/content_view.php:711
@@ -1940,8 +1940,8 @@ msgstr ""
 #: application/helpers/common_helper.php:1182
 #: application/helpers/export_helper.php:357
 #: application/helpers/export_helper.php:361
-#: application/helpers/export_helper.php:1808
-#: application/helpers/export_helper.php:1829
+#: application/helpers/export_helper.php:1814
+#: application/helpers/export_helper.php:1835
 #: application/helpers/expressions/em_manager_helper.php:3706
 #: application/helpers/expressions/em_manager_helper.php:3710
 #: application/helpers/questionHelper.php:55
@@ -2063,7 +2063,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1263
 #: application/helpers/common_helper.php:1188
 #: application/helpers/export_helper.php:365
-#: application/helpers/export_helper.php:1834
+#: application/helpers/export_helper.php:1840
 #: application/helpers/expressions/em_manager_helper.php:3714
 #: application/helpers/userstatistics_helper.php:1238
 #: application/views/admin/dataentry/content_view.php:735
@@ -2079,7 +2079,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1264
 #: application/helpers/common_helper.php:1190
 #: application/helpers/export_helper.php:366
-#: application/helpers/export_helper.php:1834
+#: application/helpers/export_helper.php:1840
 #: application/helpers/expressions/em_manager_helper.php:3715
 #: application/helpers/userstatistics_helper.php:1239
 #: application/views/admin/dataentry/content_view.php:736
@@ -2095,7 +2095,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1265
 #: application/helpers/common_helper.php:1189
 #: application/helpers/export_helper.php:367
-#: application/helpers/export_helper.php:1834
+#: application/helpers/export_helper.php:1840
 #: application/helpers/expressions/em_manager_helper.php:3716
 #: application/helpers/userstatistics_helper.php:1240
 #: application/views/admin/dataentry/content_view.php:737
@@ -2138,7 +2138,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1359
 #: application/helpers/common_helper.php:1175
 #: application/helpers/export_helper.php:352
-#: application/helpers/export_helper.php:1813
+#: application/helpers/export_helper.php:1819
 #: application/helpers/expressions/em_manager_helper.php:3702
 #: application/helpers/userstatistics_helper.php:1334
 #: application/views/admin/dataentry/content_view.php:104
@@ -2157,7 +2157,7 @@ msgstr ""
 #: application/helpers/admin/statistics_helper.php:1360
 #: application/helpers/common_helper.php:1174
 #: application/helpers/export_helper.php:353
-#: application/helpers/export_helper.php:1813
+#: application/helpers/export_helper.php:1819
 #: application/helpers/expressions/em_manager_helper.php:3701
 #: application/helpers/userstatistics_helper.php:1335
 #: application/views/admin/dataentry/content_view.php:105
@@ -3213,7 +3213,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1318
-#: application/helpers/frontend_helper.php:2212
+#: application/helpers/frontend_helper.php:2213
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -3767,12 +3767,13 @@ msgstr ""
 msgid "Quotas"
 msgstr ""
 
-#: application/controllers/admin/quotas.php:251 application/models/Quota.php:99
+#: application/controllers/admin/quotas.php:251
+#: application/models/Quota.php:100
 msgid "Quota name"
 msgstr ""
 
 #: application/controllers/admin/quotas.php:251
-#: application/models/Quota.php:101
+#: application/models/Quota.php:102
 #: application/views/admin/quotas/viewquotas_view.php:90
 msgid "Limit"
 msgstr ""
@@ -7815,7 +7816,7 @@ msgid "(Any)"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
-#: application/helpers/common_helper.php:235 application/models/Quota.php:100
+#: application/helpers/common_helper.php:235 application/models/Quota.php:101
 #: application/models/Survey.php:1189
 msgid "Active"
 msgstr ""
@@ -9752,37 +9753,37 @@ msgstr ""
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1237
+#: application/helpers/frontend_helper.php:1238
 msgid "You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1250
+#: application/helpers/frontend_helper.php:1251
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1409
-#: application/helpers/frontend_helper.php:1434
+#: application/helpers/frontend_helper.php:1410
+#: application/helpers/frontend_helper.php:1435
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1413
+#: application/helpers/frontend_helper.php:1414
 #: tmp/runtime/twig_cache/ba/baa2a2944b3309ef25a31788dd94be97a63156ddda26500e7eddc521b7ccf84d.php:128
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1417
+#: application/helpers/frontend_helper.php:1418
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2211
+#: application/helpers/frontend_helper.php:2212
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2213
+#: application/helpers/frontend_helper.php:2214
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2214
+#: application/helpers/frontend_helper.php:2215
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -12722,28 +12723,28 @@ msgstr ""
 msgid "You can not add a group if survey is active."
 msgstr ""
 
-#: application/models/Quota.php:102
+#: application/models/Quota.php:103
 msgid "Autoload URL"
 msgstr ""
 
-#: application/models/Quota.php:103
+#: application/models/Quota.php:104
 msgid "Quota action"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:83
+#: application/models/QuotaLanguageSetting.php:86
 msgid "URL must be set if autoload URL is turned on!"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:90
+#: application/models/QuotaLanguageSetting.php:93
 msgid "Quota message:"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:91
+#: application/models/QuotaLanguageSetting.php:94
 #: application/views/admin/global_settings/_interfaces.php:25
 msgid "URL:"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:92
+#: application/models/QuotaLanguageSetting.php:95
 msgid "URL Description:"
 msgstr ""
 
@@ -13140,7 +13141,7 @@ msgid "User theme"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:630
-#: application/models/TemplateManifest.php:668
+#: application/models/TemplateManifest.php:664
 msgid "Theme editor"
 msgstr ""
 
@@ -13290,15 +13291,15 @@ msgstr ""
 msgid "Some URL description"
 msgstr ""
 
-#: application/models/TemplateManifest.php:678
+#: application/models/TemplateManifest.php:674
 msgid "Install"
 msgstr ""
 
-#: application/models/TemplateManifest.php:690
+#: application/models/TemplateManifest.php:686
 msgid "Are you sure you want to delete this theme? "
 msgstr ""
 
-#: application/models/TemplateManifest.php:714
+#: application/models/TemplateManifest.php:710
 msgid "You can't import the theme '%s' because '%s'  is not installed."
 msgstr ""
 
