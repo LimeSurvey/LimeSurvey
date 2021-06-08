@@ -211,8 +211,11 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
-        $aData['fullpagebar']['button']['newsurvey'] = true;
 
+        $aData['pageTitle'] = 'Survey list';
+        $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
+
+        $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
     }
 

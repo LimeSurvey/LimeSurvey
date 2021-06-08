@@ -10,6 +10,18 @@
 <div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
+
+            <!-- List Surveys - Create a new Survey -->
+            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
+                Permission::model()->hasGlobalPermission('surveys','create')):?>
+                <a class="btn btn-default"
+                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
+                   role="button"
+                   style="margin-top: 10px; margin-bottom: 10px;">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Create a new survey");?>
+                </a>
+            <?php endif;?>
         </div>
 
 
