@@ -2981,7 +2981,7 @@ class QuestionAdministrationController extends LSBaseController
             }
             $questionThemeData = [];
             $questionThemeData['title'] = $questionTheme->title;
-            $questionThemeData['theme'] = $questionTheme->name;
+            $questionThemeData['name'] = $questionTheme->name;
             $questionThemeData['type'] = $questionTheme->question_type;
             $questionThemeData['detailpage'] = '
                 <div class="col-sm-12 currentImageContainer">
