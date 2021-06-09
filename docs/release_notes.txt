@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.2 (build 210607) to 5.0.3 (build 210609) June 8, 2021
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Portuguese (Portugal) by c_schmitz, victorgoncalves, thiagosmartins, holch, paulohpmoraes, mauriciofurtado, femariso, marciojv, fermacedo, GabrielLF, lucaspcs, samarta, marcelovincenzi, cassiofs
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.0.1 (build 210532) to 5.0.2 (build 210607) June 7, 2021
 -Fixed issue: Page Header (Jessica Höck)
 -Fixed issue: Database error when editing a quota and text is too long (Gabriel Jenik)
