@@ -1737,6 +1737,42 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Get HTML for extra options (subquestions/answers).
+     * Called with Ajax after question type is selected.
+     *
+     * @param int $surveyId
+     * @param string $questionType One-char string
+     * @param int $questionId Null or 0 if new question is being created.
+     * @return void
+     */
+    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null)
+    {
+        if (empty($questionType)) {
+            throw new CHttpException(405, 'Internal error: No question type');
+        }
+        // TODO: Difference between create and update permissions?
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        // NB: This works even when $questionId is null (get default question values).
+        $question = $this->getQuestionObject($questionId, $questionType);
+        if ($questionId) {
+            // NB: Could happen if user manipulates request.
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT('No permission'));
+            }
+        }
+        $this->renderPartial(
+            "extraOptions",
+            [
+                'question'         => $question,
+                'survey'           => $question->survey,
+            ]
+        );
+    }
+
+    /**
      * This function prepares the data for label set details
      *
      * @param int $lid
