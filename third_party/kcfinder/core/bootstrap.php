@@ -108,6 +108,7 @@ function checkLSSession()
     {
         define("BASEPATH", realpath($sLimesurveyFolder . "/../framework") . "/");
     }
+    require_once APPPATH . '../third_party/autoload.php';
     require_once BASEPATH . 'yii.php';
     require_once APPPATH . 'core/LSYii_Application.php';
     $config = require_once(APPPATH . 'config/internal.php');
