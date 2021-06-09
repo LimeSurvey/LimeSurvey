@@ -1547,7 +1547,8 @@ class QuestionAdministrationController extends LSBaseController
         }
         // NB: This works even when $questionId is null (get default question values).
         $question = $this->getQuestionObject($questionId, $questionType);
-        if ($questionId) {
+        // NB: Only check permission when there is a question.
+        if (!empty($question)) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
                 throw new CHttpException(403, gT('No permission'));
