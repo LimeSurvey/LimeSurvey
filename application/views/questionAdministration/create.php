@@ -65,7 +65,6 @@
                         <div class="row">
                             <!-- Question code -->
                             <?php
-                            $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                             $this->renderPartial(
                                 "questionCode",
                                 ['question' => $oQuestion]
@@ -106,7 +105,7 @@
                                     [
                                         'oSurvey'         => $oSurvey,
                                         'question'        => $oQuestion,
-                                        'aStructureArray' => $aQuestionTypeGroups,
+                                        //'aStructureArray' => $aQuestionTypeGroups,
                                         'showScriptField' => $showScriptField,
                                     ]
                                 ); ?>

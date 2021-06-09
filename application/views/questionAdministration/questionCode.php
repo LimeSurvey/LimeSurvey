@@ -14,7 +14,7 @@
             class="form-control"
             id="questionCode"
             name="question[title]"
-            value="<?= $question->title; ?>"
+            value="<?= !empty($newTitle) ? $newTitle : $question->title; ?>"
             required="true"
             maxlength="20"
             onfocusout="LS.questionEditor.checkQuestionCodeUniqueness($(this).val(), <?= $question->qid; ?>)"
