@@ -870,7 +870,10 @@ class InstallerController extends CController
 
         // gd library check
         if (function_exists('gd_info')) {
-            $aData['gdPresent'] = $this->check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+            $gdInfo = gd_info();
+            $gdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $aData['gdPresent'] = $this->check_HTML_image($gdHasJpegSupport);
+            $aData['gdHasJpegSupport'] = $gdHasJpegSupport;
         } else {
             $aData['gdPresent'] = $this->check_HTML_image(false);
         }

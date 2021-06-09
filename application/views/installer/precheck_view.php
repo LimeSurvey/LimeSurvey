@@ -136,7 +136,10 @@ function dirReport($dir, $write)
         <tr>
                <td><?php eT("PHP GD library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $gdPresent ; ?></td>
+               <td><?php echo $gdPresent ;
+                if (!$gdHasJpegSupport) {
+                    echo '<br/>' . gT("GD is installed without JPEG support");
+                } ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
