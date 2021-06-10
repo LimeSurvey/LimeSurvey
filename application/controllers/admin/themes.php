@@ -528,9 +528,10 @@ class themes extends Survey_Common_Action
      * @param string $templatename
      * @return void
      */
-    public function index($editfile = '', $screenname = 'welcome', $templatename = '')
+    public function index(string $editfile = '', string $screenname = 'welcome', string $templatename = '')
     {
         if ($templatename == '') {
+            // @todo getGlobalSetting is deprecated!
             $templatename = getGlobalSetting('defaulttheme');
         }
 
@@ -551,9 +552,16 @@ class themes extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
-        $aData['fullpagebar']['returnbutton'] = true;
+
+        // Green SurveyManagerBar Page Title
+        $pageTitle = gT('Theme editor:') . ' ' . $templatename;
+        $aData['pageTitle'] = $pageTitle;
+
+        // White Bar
+        $aData['templateEditorBar']['buttons']['returnbutton'] = true;
 
         $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
+
         // This helps handle the load/save buttons)
         if ($screenname != 'welcome') {
             Yii::app()->session['step'] = 1;

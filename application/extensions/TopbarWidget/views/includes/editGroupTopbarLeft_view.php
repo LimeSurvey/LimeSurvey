@@ -17,32 +17,36 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 
     <!-- Delete -->
     <?php if( $oSurvey->active != "Y" ):?>
-
-        <!-- has question -->
-        <?php if(is_null($condarray)):?>
+        <?php if($oSurvey->groupsCount == 1): ?>
+            <!-- can't delete the only group in a survey -->
+            <button type="button" class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Cannot delete this group because it's the only group in the survey."); ?>" >
+                <span class="fa fa-trash"></span>
+                <?php eT("Delete group"); ?>
+            </button>
+        <?php elseif(is_null($condarray)):?>
             <!-- can delete group and question -->
             <button
-                class="btn btn-default"
+                class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#confirmation-modal"
-                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?> })'
+                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["asJson" => true, "surveyid" => $surveyid, "gid"=>$gid])); ?> })'
                 data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
                 >
                 <span class="fa fa-trash"></span>
-                <?php eT("Delete current question group"); ?>
+                <?php eT("Delete group"); ?>
             </button>
         <?php else: ?>
             <!-- there is at least one question having a condition on its content -->
-            <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
+            <button type="button" class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
                 <span class="fa fa-trash"></span>
-                <?php eT("Delete current question group"); ?>
-            </button>
+                <?php eT("Delete group"); ?>
+            </a>
         <?php endif; ?>
     <?php else:?>
         <!-- Activated -->
-        <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
+        <button type="button" class="btn btn-danger btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
             <span class="fa fa-trash"></span>
-            <?php eT("Delete current question group"); ?>
+            <?php eT("Delete group"); ?>
         </button>
     <?php endif; ?>
 <?php endif; ?>

@@ -47,7 +47,7 @@ class ExtensionConfig
                 'version',
                 'type'
             ],
-            'compatibility',
+            'compatibility' => [],
         ];
         foreach ($tags as $key => $value) {
             if (!isset($this->xml->$key)) {
@@ -197,5 +197,20 @@ class ExtensionConfig
         }
 
         return $fetchers;
+    }
+
+    /**
+     * Returns the $nodeName XML node as an array
+     *
+     * @param string $nodeName the name of the node to retrieve
+     * @return array<mixed> the node contents as an array
+     */
+    public function getNodeAsArray($nodeName)
+    {
+        if (empty($this->xml)) {
+            throw new Exception(gT("No XML config loaded"));
+        }
+        $node = json_decode(json_encode((array)$this->xml->$nodeName), true);
+        return $node;
     }
 }

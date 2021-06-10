@@ -48,7 +48,7 @@ foreach ($aQuestionTypeList as $questionType) {
     }
     $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
 }
-$currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+
 $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
     'renderType' => "group-simple",
@@ -59,11 +59,17 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'previewWindowTitle' => gT("Preview question type"),
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $currentPreselectedQuestiontype,
+    'theme' => $currentPreselectedQuestionTheme,
     'debug' => YII_DEBUG,
     'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'buttonClasses' => ['btn-primary'],
     'optionArray' => [
         'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
+        'onUpdate' => [
+            'value',
+            'theme',
+            "$('#preselectquestiontheme').val(theme);"
+        ],
     ]
 ));
 
@@ -244,6 +250,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', array('class'=>" control-label")); ?>
                                     <?=$oQuestionSelector->getButtonOrSelect(true)?>
                                     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+                                    <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">

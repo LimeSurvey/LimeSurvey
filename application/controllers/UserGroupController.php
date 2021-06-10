@@ -57,7 +57,9 @@ class UserGroupController extends LSBaseController
         $model = UserGroup::model();
 
         $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        $aData['pageTitle'] = 'User group list';
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -79,7 +81,7 @@ class UserGroupController extends LSBaseController
      * @param $ugid
      * @param bool $header
      */
-    public function actionViewGroup($ugid, $header = false)
+    public function actionViewGroup($ugid, bool $header = false)
     {
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -177,6 +179,11 @@ class UserGroupController extends LSBaseController
 
         $aData['usergroupbar']['edit'] = true;
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $basePageTitle = 'User group';
+        $userGroupName = $aData['groupname'];
+        $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
         $this->aData = $aData;
 
@@ -281,6 +288,9 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['savebutton']['text'] = gT('Save');
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['add'] = 'admin/usergroups';
+
+        # Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Add user group';
 
         $this->aData = $aData;
 
@@ -427,9 +437,9 @@ class UserGroupController extends LSBaseController
     /**
      *  Sends email to all users in a group
      *
-     * @param $ugid
+     * @param int $ugid
      */
-    public function actionMailToAllUsersInGroup($ugid)
+    public function actionMailToAllUsersInGroup(int $ugid)
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");

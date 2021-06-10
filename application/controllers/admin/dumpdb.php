@@ -21,8 +21,12 @@
  */
 class Dumpdb extends Survey_Common_Action
 {
-
-    function __construct($controller, $id)
+    /**
+     * Dumpdb constructor.
+     * @param $controller
+     * @param $id
+     */
+    public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
 
@@ -50,17 +54,16 @@ class Dumpdb extends Survey_Common_Action
         Yii::app()->loadHelper("admin/backupdb");
         $sDbName = _getDbName();
         $sFileName = 'LimeSurvey_' . $sDbName . '_dump_' . dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')) . '.sql';
-        $this->_outputHeaders($sFileName);
+        $this->outputHeaders($sFileName);
         outputDatabase();
         exit;
     }
-
 
     /**
      * Send the headers so that it is shown as a download
      * @param string $sFileName
      */
-    private function _outputHeaders($sFileName)
+    private function outputHeaders(string $sFileName)
     {
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $sFileName);
