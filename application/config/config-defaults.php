@@ -791,6 +791,7 @@ $config['pluginCoreList'] = [
     'AuditLog',
     'ExportR',
     'ExportSTATAxml',
+    'ExportSPSSsav',
     'extendedStartPage',
     'oldUrlCompat',
     'AuthLDAP',

@@ -41,6 +41,9 @@ if (PHP_VERSION_ID < 70000) {
     require_once dirname(__FILE__) . '/autoload-php7.php';
 }
 
+/* Explicitly, always load the Compat class: */
+require_once dirname(__FILE__) . '/src/Compat.php';
+
 if (!class_exists('SodiumException', false)) {
     require_once dirname(__FILE__) . '/src/SodiumException.php';
 }
