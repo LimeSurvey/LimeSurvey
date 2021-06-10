@@ -12,11 +12,6 @@ use InvalidArgumentException;
 class PluginInstaller extends ExtensionInstaller
 {
     /**
-     * @var FileFetcher
-     */
-    public $fileFetcher;
-
-    /**
      * Core, upload or user.
      * @var string
      */

@@ -205,7 +205,7 @@ class FileFetcherUploadZip extends FileFetcher
      * Check if uploaded zip file is a zip bomb.
      * @return void
      */
-    protected function checkZipBom()
+    protected function checkZipBomb()
     {
         // Check zip bomb.
         \Yii::import('application.helpers.common_helper', true);
@@ -223,7 +223,7 @@ class FileFetcherUploadZip extends FileFetcher
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadLibrary('admin.pclzip');
 
-        $this->checkZipBom();
+        $this->checkZipBomb();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
             throw new Exception(
