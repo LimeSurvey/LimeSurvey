@@ -849,25 +849,30 @@ class TemplateConfiguration extends TemplateConfig
     protected function getOptionPageAttributes()
     {
         $aData = $this->attributes;
-        //$fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         $categoryList = $this->getFileCategories();
+
+        // Compose list of image files for each category
         foreach ($categoryList as $category) {
+            // Get base path for category
             $pathPrefix = empty($category->pathPrefix) ? '' : $category->pathPrefix;
             if ($category->name == 'theme') {
                 if (!empty($this->template)) {
-                    $filesFolder = $this->getTemplateForPath($this, 'files_folder')->template->files_folder . '/';
+                    $template = $this->getTemplateConfigurationForAttribute($this, 'files_folder')->template;
                 } else {
                     $template = Template::model()->findByAttributes(['name' => $this->template_name]);
-                    $filesFolder = $template->files_folder;
                 }
+                $filesFolder = $template->files_folder;
                 $basePath = $category->path . $filesFolder;
                 $pathPrefix = $pathPrefix . $filesFolder;
             } else {
                 $basePath = $category->path;
             }
+            // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
+
+            // Keep only image files
             foreach ($fileList as $file) {
                 $imageInfo = $this->_getImageInfo($basePath . $file['name'], $pathPrefix);
                 if ($imageInfo) {
@@ -1038,12 +1043,15 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Get the closest template in the hierarchy that has the definition for $attribute
+     *
      * @param TemplateConfiguration $oRTemplate
-     * @param string $sPath
+     * @param string $attribute
+     * @return TemplateConfiguration
      */
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->template->$sPath)) {
+        while (empty($oRTemplate->template->$attribute)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
@@ -1074,8 +1082,8 @@ class TemplateConfiguration extends TemplateConfig
     {
 
         $this->apiVersion       = (!empty($this->template->api_version)) ? $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath         = $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath        = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
+        $this->viewPath         = $this->path.$this->getTemplateConfigurationForAttribute($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath        = $this->path.$this->getTemplateConfigurationForAttribute($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR;
         $this->generalFilesPath = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
         // Options are optional
         $this->setOptions();

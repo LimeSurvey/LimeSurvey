@@ -1236,11 +1236,11 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * @param TemplateManifest $oRTemplate
-     * @param string $sPath
+     * @param string $attribute
      */
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->config->xpath($sPath))) {
+        while (empty($oRTemplate->config->xpath($attribute))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
@@ -1259,9 +1259,9 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
 
 
-        $this->viewPath           = $this->path.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
-        $this->filesPath          = $this->path.$this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
-        $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
+        $this->viewPath           = $this->path.$this->getTemplateConfigurationForAttribute($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath          = $this->path.$this->getTemplateConfigurationForAttribute($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->templateEditor     = $this->getTemplateConfigurationForAttribute($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))) {

@@ -1221,7 +1221,7 @@ class TemplateConfig extends CActiveRecord
     {
     }
 
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
     }
 
