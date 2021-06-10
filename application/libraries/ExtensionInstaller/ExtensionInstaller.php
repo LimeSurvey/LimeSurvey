@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use InvalidArgumentException;
+use ExtensionConfig;
+
 /**
  * Base class for different extension installers.
  *
@@ -34,19 +38,36 @@ abstract class ExtensionInstaller
 
     /**
      * Order the file fetcher to fetch files.
+     *
      * @return void
      * @throws Exception
      */
-    abstract public function fetchFiles();
+    public function fetchFiles()
+    {
+        if (empty($this->fileFetcher)) {
+            throw new InvalidArgumentException('fileFetcher is not set');
+        }
+
+        $this->fileFetcher->fetch();
+    }
+
 
     /**
      * Get the configuration from temp dir.
      * Before an extension is installed, we need to read the config
      * file. That's why the extension if fetched into a temp folder
      * first.
-     * @return ExtensionConfig
+     *
+     * @return ExtensionConfig|null
      */
-    abstract public function getConfig();
+    public function getConfig()
+    {
+        if ($this->fileFetcher) {
+            return $this->fileFetcher->getConfig();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Install extension, which includes moving files
@@ -69,8 +90,13 @@ abstract class ExtensionInstaller
     abstract public function uninstall();
 
     /**
-     * Installation procedure was not completed, abort changes.
+     * When installation procedure was not completed, abort changes.
      * @return void
      */
-    abstract public function abort();
+    public function abort()
+    {
+        if ($this->fileFetcher) {
+            $this->fileFetcher->abort();
+        }
+    }
 }

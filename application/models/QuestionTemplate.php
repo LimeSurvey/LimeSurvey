@@ -325,7 +325,7 @@ class QuestionTemplate extends CFormModel
                 } else {
                     $templateurl = $this->getTemplateUrl();
                     foreach ($aCssFiles as $sCssFile) {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile", LSYii_ClientScript::POS_BEGIN);
                     }
                     foreach ($aJsFiles as $sJsFile) {
                         Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile", LSYii_ClientScript::POS_BEGIN);
@@ -353,7 +353,7 @@ class QuestionTemplate extends CFormModel
             if (is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
                 $this->sTemplateUrl = "$sBaseUrl/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             } elseif (is_dir("$sUserQTemplateRootDir/$sTemplateFolderName/")) {
-                $this->sTemplateUrl = "$sBaseUrl/upload/$sCoreQTemplateDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
+                $this->sTemplateUrl = "$sBaseUrl/$sUserQTemplateRootDir/$sTemplateFolderName/survey/questions/answer/$sFolderName/assets/";
             }
         }
         return $this->sTemplateUrl;
@@ -374,150 +374,32 @@ class QuestionTemplate extends CFormModel
      * Called from admin, to generate the template list for a given question type
      * @param string $type
      * @return array
+     * @todo Move to QuestionTheme?
      */
     public static function getQuestionTemplateList($type)
     {
-        $aQuestionTemplateList = QuestionTheme::model()->findAllByAttributes([], 'question_type = :question_type', ['question_type' => $type]);
+        /** @var QuestionTheme[] */
+        $questionThemes = QuestionTheme::model()->findAllByAttributes(
+            [],
+            'question_type = :question_type',
+            ['question_type' => $type]
+        );
         $aQuestionTemplates = [];
 
-        foreach ($aQuestionTemplateList as $aQuestionTemplate) {
-            if ($aQuestionTemplate['core_theme'] == true && empty($aQuestionTemplate['extends'])) {
+        foreach ($questionThemes as $questionTheme) {
+            if ($questionTheme->core_theme == true && empty($questionTheme->extends)) {
                 $aQuestionTemplates['core'] = [
                     'title' => gT('Default'),
-                    'preview' => $aQuestionTemplate['image_path']
+                    'preview' => $questionTheme->image_path
                 ];
             } else {
-                $aQuestionTemplates[$aQuestionTemplate['name']] = [
-                    'title' => $aQuestionTemplate['title'],
-                    'preview' => $aQuestionTemplate['image_path']
+                $aQuestionTemplates[$questionTheme->name] = [
+                    'title' => $questionTheme->title,
+                    'preview' => $questionTheme->image_path
                 ];
             }
         }
-//        $aUserQuestionTemplates = self::getQuestionTemplateUserList($type);
-//        $aCoreQuestionTemplates = self::getQuestionTemplateCoreList($type);
-//        $aQuestionTemplates     = array_merge($aUserQuestionTemplates, $aCoreQuestionTemplates);
         return $aQuestionTemplates;
-    }
-
-    /**
-     * @param string $type
-     * @return array
-     * @deprecated
-     */
-    public static function getQuestionTemplateUserList($type)
-    {
-        $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
-        $aQuestionTemplates     = array();
-
-        $aQuestionTemplates['core']['title'] = gT('Default');
-        $aQuestionTemplates['core']['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
-
-        $sFolderName = self::getFolderName($type);
-
-        if ($sUserQTemplateRootDir && is_dir($sUserQTemplateRootDir)) {
-            $handle = opendir($sUserQTemplateRootDir);
-            while (false !== ($file = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserQTemplateRootDir/$file") && $file != "." && $file != ".." && $file != ".svn") {
-                    $sFullPathToQuestionTemplate = "$sUserQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
-                    if (is_dir($sFullPathToQuestionTemplate)) {
-                        // Get the config file and check if template is available
-                        $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-                        if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                            if (!empty($oConfig->metadata->title)) {
-                                $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), true)[0];
-                            } else {
-                                $templateName = $file;
-                                $aQuestionTemplates[$file]['title'] = $templateName;
-                            }
-                            if (!empty($oConfig->files->preview->filename)) {
-                                $fileName = json_decode(json_encode($oConfig->files->preview->filename), true)[0];
-                                $previewPath = $sFullPathToQuestionTemplate . "/assets/" . $fileName;
-                                if (is_file($previewPath)) {
-                                    $check = LSYii_ImageValidator::validateImage($previewPath);
-                                    if ($check['check']) {
-                                        $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
-                                    } else {
-                                        /* Log it a theme.question.$oConfig->name as error, review ? */
-                                        Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/", 'error', 'theme.question.' . $oConfig->metadata->name);
-                                    }
-                                } else {
-                                        /* Log it a theme.question.$oConfig->name as error, review ? */
-                                        Yii::log("Unable to find $fileName for preview in $sFullPathToQuestionTemplate/assets/", 'error', 'theme.question.' . $oConfig->metadata->name);
-                                }
-                            }
-                            if (empty($aQuestionTemplates[$file]['preview'])) {
-                                $aQuestionTemplates[$file]['preview'] = $aQuestionTemplates['core']['preview'];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $aQuestionTemplates;
-    }
-
-    // TODO: code duplication
-    /**
-     * @param string $type
-     * @return array
-     * @deprecated
-     */
-    public static function getQuestionTemplateCoreList($type)
-    {
-        $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestionthemerootdir");
-        $sCoreQTemplateRootUrl  = Yii::app()->getConfig("publicurl") . 'themes/question';
-        $aQuestionTemplates     = array();
-
-        $sFolderName = self::getFolderName($type);
-
-        if ($sCoreQTemplateRootDir && is_dir($sCoreQTemplateRootDir)) {
-            $handle = opendir($sCoreQTemplateRootDir);
-            while (false !== ($file = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sCoreQTemplateRootDir/$file") && $file != "." && $file != ".." && $file != ".svn") {
-                        $sFullPathToQuestionTemplate = "$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
-
-
-                    if (is_dir($sFullPathToQuestionTemplate)) {
-                        // Get the config file and check if template is available
-                        $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-
-                        if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                            if (!empty($oConfig->metadata->title)) {
-                                $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), true)[0];
-                            } else {
-                                $templateName = $file;
-                                $aQuestionTemplates[$file]['title'] = $templateName;
-                            }
-
-                            if (!empty($oConfig->files->preview->filename)) {
-                                $aQuestionTemplates[$file]['preview'] = "$sCoreQTemplateRootUrl/$file/survey/questions/answer/$sFolderName/assets/" . json_decode(json_encode($oConfig->files->preview->filename), true)[0];
-                            } else {
-                                $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $aQuestionTemplates;
-    }
-
-    /**
-     * Retrieve the config of the question template
-     * @param string $sFullPathToQuestionTemplate
-     * @return bool|SimpleXMLElement
-     */
-    public static function getTemplateConfig($sFullPathToQuestionTemplate)
-    {
-        $xmlFile = $sFullPathToQuestionTemplate . '/config.xml';
-        if (is_file($xmlFile)) {
-            $sXMLConfigFile  = file_get_contents(realpath($xmlFile)); // Entity loader is disabled, so we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-            $oConfig         = simplexml_load_string($sXMLConfigFile);
-            return $oConfig;
-        }
-        return false;
     }
 
     /**

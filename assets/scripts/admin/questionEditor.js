@@ -1485,12 +1485,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
      *
      * @param {string} questionType - One-letter string of question type
      * @param {string} questionTheme - One-letter string of question type
-     * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
-     * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
+     * @param {string} generalSettingsUrl - URL to controller to fetch new HTML for General Settings
+     * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML for Advanced Settings
+     * @param {string} extraOptionsUrl - URL to controller to fetch new HTML for Extra Options (Subquestions/Answers)
      * @return {Promise}
      */
     // eslint-disable-next-line no-unused-vars
-    updateQuestionAttributes: async function (questionType, questionTheme, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
+    updateQuestionAttributes: async function (questionType, questionTheme, generalSettingsUrl, advancedSettingsUrl, extraOptionsUrl) {  // jshint ignore:line
       // If same question type, do nothing.
       // Else, fetch new HTML from server.
       $('#ls-loading').show();
@@ -1523,13 +1524,28 @@ $(document).on('ready pjax:scriptcomplete', function () {
           },
         });
       });
+      const extraOptionsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+          url: extraOptionsUrl,
+          method: 'GET',
+          data: { questionType },
+          dataType: 'html',
+          success: (data) => {
+            resolve(data);
+          },
+          error: (data) => {
+            reject(data);
+          },
+        });
+      });
       try {
-        const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
+        const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
-        $('#general-settings').replaceWith(html);
+        $('#general-settings').replaceWith(generalSettingsHtml);
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
-        $('#advanced-options-container').replaceWith(html2);
+        $('#advanced-options-container').replaceWith(advancedSettingsHtml);
+        $('#extra-options-container').replaceWith(extraOptionsHtml);
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -1816,7 +1832,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
-      const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      const tableId = $(e.relatedTarget).closest('div.action-buttons').parent().find('table.answertable').attr('id');
       if (tableId === '') {
         alert('Internal error: Did not find tableId');
         throw 'abort';
@@ -1859,11 +1875,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
      });
 
     // Hide all language except the selected one.
-    $('.lang-switch-button').on('click', function langSwitchOnClick() {
+    $('.lang-switch-button').on('click', function langSwitchOnClick(e) {
+      e.preventDefault();
       const lang = $(this).data('lang');
       const langClass = `.lang-${lang}`;
       $('.lang-hide').hide();
       $(langClass).show();
+      $('#language-dropdown-text').text($(this).text());
     });
 
     // Hide all languages except main.
@@ -1896,6 +1914,15 @@ $(document).on('ready pjax:scriptcomplete', function () {
       throw 'abort';
     }
 
+    // Fix ace editor size for script fields
+    $('textarea.ace:not(.none)').each(function() {
+      var id = $(this).attr('id') + '__ace';
+      var width = '100%';
+      var height = 225;
+      $('#' + id).width(width).height(height);
+      $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
+    });
+    
     $('#relevance').on('keyup', showConditionsWarning);
 
   function makeTopbarSticky() {

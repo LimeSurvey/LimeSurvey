@@ -2,7 +2,7 @@
 /**
  * @var QuestionTheme $oQuestionTheme
  */
-$aQuestionThemes = $oQuestionTheme->getAvailableQuestions();
+$aQuestionThemes = $oQuestionTheme->getAvailableQuestionThemes();
 ?>
 <?php if (!empty($aQuestionThemes['available_themes'])): ?>
     <h3><?php eT('Available question themes:'); ?></h3>

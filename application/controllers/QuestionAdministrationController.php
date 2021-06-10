@@ -176,7 +176,13 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $questionTemplate = 'core';
+        $questionTemplate = SettingsUser::getUserSettingValue(
+            'preselectquestiontheme',
+            null,
+            null,
+            null,
+            App()->getConfig('preselectquestiontheme')
+        );
         if ($question->qid !== 0) {
             $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
         }
@@ -1188,7 +1194,8 @@ class QuestionAdministrationController extends LSBaseController
         $gid = (int)$gid;
         $qid = (int)$qid;
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-       // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // TODO: $questionMetaData should be $questionThemeSettings
         $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
@@ -1541,7 +1548,8 @@ class QuestionAdministrationController extends LSBaseController
         }
         // NB: This works even when $questionId is null (get default question values).
         $question = $this->getQuestionObject($questionId, $questionType);
-        if ($questionId) {
+        // NB: Only check permission when there is a question.
+        if (!empty($question)) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
                 throw new CHttpException(403, gT('No permission'));
@@ -1726,6 +1734,42 @@ class QuestionAdministrationController extends LSBaseController
                 'advancedSettings'  => $advancedSettings,
                 'question'         => $question,
                 'oSurvey'           => $question->survey,
+            ]
+        );
+    }
+
+    /**
+     * Get HTML for extra options (subquestions/answers).
+     * Called with Ajax after question type is selected.
+     *
+     * @param int $surveyId
+     * @param string $questionType One-char string
+     * @param int $questionId Null or 0 if new question is being created.
+     * @return void
+     */
+    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null)
+    {
+        if (empty($questionType)) {
+            throw new CHttpException(405, 'Internal error: No question type');
+        }
+        // TODO: Difference between create and update permissions?
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        // NB: This works even when $questionId is null (get default question values).
+        $question = $this->getQuestionObject($questionId, $questionType);
+        if ($questionId) {
+            // NB: Could happen if user manipulates request.
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT('No permission'));
+            }
+        }
+        $this->renderPartial(
+            "extraOptions",
+            [
+                'question'         => $question,
+                'survey'           => $question->survey,
             ]
         );
     }
@@ -2944,22 +2988,23 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @param array $aQuestionTypeList Question Type List as Array
+     * @param QuestionTheme[] $questionThemes Question theme List
      * @return array
+     * @todo Move to PreviewModalWidget?
      */
-    private function getQuestionTypeGroups($aQuestionTypeList)
+    private function getQuestionTypeGroups(array $questionThemes)
     {
         $aQuestionTypeGroups = [];
 
-        uasort($aQuestionTypeList, "questionTitleSort");
-        foreach ($aQuestionTypeList as $questionType) {
-            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+        uasort($questionThemes, "questionTitleSort");
+        foreach ($questionThemes as $questionTheme) {
+            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
             if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
                 $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                    'questionGroupName' => $questionType['group']
+                    'questionGroupName' => $questionTheme->group
                 );
             }
-            $imageName = $questionType['question_type'];
+            $imageName = $questionTheme->question_type;
             if ($imageName == ":") {
                 $imageName = "COLON";
             } elseif ($imageName == "|") {
@@ -2967,19 +3012,22 @@ class QuestionAdministrationController extends LSBaseController
             } elseif ($imageName == "*") {
                 $imageName = "EQUATION";
             }
-            $questionType['type'] = $questionType['question_type'];
-            $questionType['detailpage'] = '
+            $questionThemeData = [];
+            $questionThemeData['title'] = $questionTheme->title;
+            $questionThemeData['name'] = $questionTheme->name;
+            $questionThemeData['type'] = $questionTheme->question_type;
+            $questionThemeData['detailpage'] = '
                 <div class="col-sm-12 currentImageContainer">
-                <img src="' . $questionType['image_path'] . '" />
+                <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
-                $questionType['detailpage'] = '
+                $questionThemeData['detailpage'] = '
                     <div class="col-sm-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';
             }
-            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;
     }
