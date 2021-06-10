@@ -2335,10 +2335,6 @@ class QuestionAdministrationController extends LSBaseController
 
         // Get the advanced settings array
         $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
-        if ($sQuestionType !== null) {
-            $attributes = QuestionTheme::getQuestionThemeAttributeValues($sQuestionType, $sQuestionTheme);
-            //$advancedSettings = array_merge($advancedSettings, $attributes);
-        }
 
         // Group the array in categories
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
