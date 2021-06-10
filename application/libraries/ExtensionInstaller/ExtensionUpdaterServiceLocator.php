@@ -62,7 +62,7 @@ class ExtensionUpdaterServiceLocator
     /**
      * Get created updaters for one updater class.
      * @param string $name
-     * @return ExtensionUpdater
+     * @return ExtensionUpdater|null
      */
     public function getUpdater(string $name)
     {

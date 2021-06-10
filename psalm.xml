@@ -10,6 +10,7 @@
     <projectFiles>
         <directory name="application/datavalueobjects" />
         <directory name="application/models/services" />
+        <directory name="application/libraries/ExtensionInstaller" />
         <file name="application/models/QuestionAttribute.php" />
         <file name="application/libraries/PluginManager/LimesurveyApi.php" />
         <file name="application/models/ArchivedTableSettings.php" />

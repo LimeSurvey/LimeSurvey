@@ -9030,6 +9030,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             </tr>\n";
 
         $_gseq = -1;
+        $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
             $gid = $q['info']['gid'];
@@ -9081,9 +9082,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             //////
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
-            //$qtypes = Question::typeList();
-            $questionThemeMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
-            $typedesc = $questionThemeMetaData[$type]->title;
+            $typedesc = $baseQuestionThemes[$type]->title;
             $sgqas = explode('|', $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,

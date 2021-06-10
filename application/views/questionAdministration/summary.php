@@ -193,7 +193,7 @@
         <!-- Group Relevance equation -->
         <?php if (trim($question->group->grelevance)!=''): ?>
             <tr>
-                <td><?php eT("Group relevance:"); ?></td>
+                <td><strong><?php eT("Group relevance:"); ?></strong></td>
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString("{" . $question->group->grelevance . "}", $question->qid);

@@ -123,14 +123,13 @@ class ThemeOptionsController extends LSBaseController
 
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
             foreach ($aTemplates as $template) {
-
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var  $model QuestionTheme */
-                    $model = QuestionTheme::model()->findByPk($template);
-                    $templatename = $model->name;
-                    $templatefolder = $model->xml_path;
+                    /** @var QuestionTheme|null */
+                    $questionTheme = QuestionTheme::model()->findByPk($template);
+                    $templatename = $questionTheme->name;
+                    $templatefolder = $questionTheme->xml_path;
                     $aResults[$template]['title'] = $templatename;
-                    $sQuestionThemeName = $model->importManifest($templatefolder);
+                    $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
                     $model = TemplateConfiguration::model()->findByPk($template);
@@ -155,7 +154,7 @@ class ThemeOptionsController extends LSBaseController
             );
         } else {
             //todo: this message gets never visible for the user ...
-           App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
     }
 

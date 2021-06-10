@@ -436,7 +436,8 @@ class QuestionAttribute extends LSActiveRecord
             'attribute' => 'question_template'
         ]);
 
-        return !empty($question_template) ? $question_template->value : 'core';
+        $value = !empty($question_template) && !empty($question_template->value) ? $question_template->value : 'core';
+        return $value;
     }
 
     /**
@@ -579,5 +580,4 @@ class QuestionAttribute extends LSActiveRecord
 
         return (array) $result->get('questionAttributes');
     }
-
 }

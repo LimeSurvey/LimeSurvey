@@ -7,7 +7,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 
 <!-- Edit button -->
 <?php if($hasSurveyContentUpdatePermission): ?>
-    <a class="btn btn-primary pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+    <a class="btn btn-success pjax" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/edit/surveyid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
         <span class="icon-edit"></span>
         <?php eT("Edit question group");?>
     </a>

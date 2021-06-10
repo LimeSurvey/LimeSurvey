@@ -125,6 +125,7 @@ if (typeof PreviewModalScript === 'function') {
               $('#in_survey_common, #in_survey_common_action').on('change.previewModal', `#${this.widgetsJsName}`, (e) => {
                   var target = $(e.currentTarget);
                   var option = target.find("option:selected");
+                  console.log('option.data', option.data);
                   this.options.onUpdate(target.val(), option.data('theme'));
               });
           }
