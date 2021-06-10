@@ -876,7 +876,7 @@ class InstallerController extends CController
             if ($gdHasJpegSupport) {
                 $aData['gdPresent'] = $this->check_HTML_image(true);
             } else {
-                $aData['gdPresent'] = $this->check_HTML_image(false) . '<br/>' . gT("GD is installed without JPEG support");
+                $aData['gdPresent'] = $this->check_HTML_image(false) . '<br/>' . gT("The GD extension found doesn't support JPEG");
             }
         } else {
             $aData['gdPresent'] = $this->check_HTML_image(false);
