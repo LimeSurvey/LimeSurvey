@@ -487,22 +487,22 @@ function buildSelects($allfields, $surveyid, $language)
                 //timestamp equals
                 $formatdata = getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv])) {
-                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
-                    $sDateValue = $datetimeobj->format("Y-m-d");
+                    $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                    $sDateValue = $datetimeobj->convert("Y-m-d");
 
                     $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " >= " . App()->db->quoteValue($sDateValue . " 00:00:00") . " and " . Yii::app()->db->quoteColumnName('datestamp') . " <= " . App()->db->quoteValue($sDateValue . " 23:59:59");
                 } else {
                     //timestamp less than
                     if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv])) {
-                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
-                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " < " . App()->db->quoteValue($sDateValue);
                     }
 
                     //timestamp greater than
                     if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv])) {
-                        $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'] . ' H:i', $_POST[$pv]);
-                        $sDateValue = $datetimeobj->format("Y-m-d H:i:s");
+                        $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'] . ' H:i');
+                        $sDateValue = $datetimeobj->convert("Y-m-d H:i:s");
                         $selects[] = Yii::app()->db->quoteColumnName('datestamp') . " > " . App()->db->quoteValue($sDateValue);
                     }
                 }
