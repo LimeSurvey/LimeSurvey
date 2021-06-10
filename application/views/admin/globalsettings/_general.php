@@ -49,7 +49,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">
                 <label class="col-sm-12 text-left control-label" for="createsample">
-                    <?php eT("Create example question group and question?");?>
+                    <?php eT("Create example question group and question:");?>
                 </label>
                 <div class="col-sm-12">
                     <?php 

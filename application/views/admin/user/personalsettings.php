@@ -351,6 +351,24 @@ echo $oQuestionSelector->getModal();
                                  ?>
                                 </div>
                             </div>
+                            <!-- Create example question group and question -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <?php echo TbHtml::label( gT("Create example question group and question:"), 'createsample', array('class'=>" control-label")); ?>
+                                    <?php
+                                        echo TbHtml::dropDownList(
+                                            'createsample',
+                                            ($aUserSettings['createsample'] ?? 'default'),
+                                            array(
+                                                'default' => gT("Default",'unescaped'),
+                                                '0' => gT("No",'unescaped'),
+                                                '1' => gT("Yes",'unescaped'),
+                                            ),
+                                            array('class' => "form-control")
+                                        );
+                                    ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

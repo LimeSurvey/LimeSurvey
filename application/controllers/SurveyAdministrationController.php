@@ -486,7 +486,10 @@ class SurveyAdministrationController extends LSBaseController
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
 
-            $createSample = Yii::app()->getConfig('createsample');
+            $createSample = SettingsUser::getUserSettingValue('createsample');
+            if ($createSample === null || $createSample === 'default') {
+                $createSample = Yii::app()->getConfig('createsample');
+            }
 
             // Figure out destination
             if ($createSample) {
