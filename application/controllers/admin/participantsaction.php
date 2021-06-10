@@ -402,6 +402,7 @@ class participantsaction extends Survey_Common_Action
 
         // Green Bar (SurveyManagerBar) Page Title
         $aData['pageTitle'] = 'Central participant management';
+        $aData['ownsAddParticipantsButton'] = true;
 
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
