@@ -4628,6 +4628,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 449), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 450) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
+            $oDB->createCommand(
+                "UPDATE {{questions}} q LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template'
+                 SET q.question_theme_name = qt.value 
+                 WHERE qt.value IS NOT NULL"
+            )->execute();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
