@@ -1,4 +1,4 @@
-<div class='menubar surveybar' id="rolemanagementbar">
+<div class='menubar surveybar' id="rolemanagementbar" style="box-shadow: 3px 3px 3px #35363f;">
     <div class='row'>
         <div class="col-md-9">
             <?php if(Permission::model()->hasGlobalPermission('superadmin', 'read')) { ?>

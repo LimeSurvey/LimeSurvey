@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * Class SurveymenuEntryController
+ */
 class SurveymenuEntryController extends Survey_Common_Action
 {
-    
+    /**
+     * SurveymenuEntryController constructor.
+     * @param $controller
+     * @param $id
+     */
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -24,20 +31,21 @@ class SurveymenuEntryController extends Survey_Common_Action
         );
     }
 
-        /**
-         *
-         * @access public
-         * @return void
-         */
+    /**
+     *
+     * @access public
+     * @return void
+     */
     public function index()
     {
          $this->getController()->redirect(array('admin/menuentries/sa/view'));
     }
 
+    /**
+     * @throws CHttpException
+     */
     public function view()
     {
-        //$this->checkPermission();
-
         $data = array();
         $filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
         $data['model'] = SurveymenuEntries::model();
@@ -47,8 +55,17 @@ class SurveymenuEntryController extends Survey_Common_Action
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
-        $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
-
+        $data['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
+        $data['pageTitle'] = 'Menu entries';
+        $data['fullpagebar'] = [
+            'menus' => [
+                'buttons' => [
+                    'addMenuEntry' => true,
+                    'reset' => true,
+                    'reorder' => true,
+                ],
+            ],
+        ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }

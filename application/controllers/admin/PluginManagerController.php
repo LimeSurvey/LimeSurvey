@@ -52,16 +52,9 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->user->setState('pageSize', intval(Yii::app()->request->getParam('pageSize')));
         }
 
-        $aData['fullpagebar']['returnbutton']['url'] = 'index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
         $aData['plugins'] = $aoPlugins;
-        $aData['scanFilesUrl'] = $this->getController()->createUrl(
-            '/admin/pluginmanager',
-            [
-                'sa' => 'scanFiles',
-            ]
-        );
+        $aData['scanFilesUrl'] =
 
         $aData['extraMenus'] = $this->getExtraMenus();
 
@@ -69,6 +62,30 @@ class PluginManagerController extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
+
+        $scanFilesUrl = $this->getController()->createUrl(
+            '/admin/pluginmanager',
+            [
+                'sa' => 'scanFiles',
+            ]
+        );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = 'Plugins';
+        // White Bar
+        $aData['fullpagebar']['returnbutton']['url'] = 'index';
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
+
+        // Additional Buttons in white bar
+        $aData['fullpagebar']['pluginManager']['buttons'] = [
+            'installPluginZipModal' => [
+                'hasConfigDemoMode' => Yii::app()->getConfig('demoMode'),
+            ],
+            'scanFiles' => [
+                'url' => $scanFilesUrl,
+            ],
+        ];
+
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
     }
 
@@ -126,23 +143,27 @@ class PluginManagerController extends Survey_Common_Action
                 'sa' => 'installPluginFromFile'
             ]
         );
-        $data['scanFilesUrl'] = $this->getController()->createUrl(
+        $scanFilesUrl = $this->getController()->createUrl(
             '/admin/pluginmanager',
             [
                 'sa' => 'scanFiles',
             ]
         );
+
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
-        $data['fullpagebar']['returnbutton']['text'] = gT('Return to plugin manager');
+        $data['fullpagebar']['returnbutton']['text'] = gT('Back');
+        $data['pageTitle'] = 'Plugins - scanned files';
+        $data['fullpagebar']['pluginManager']['buttons'] = [
+            'scanFiles' => [
+                'url' => $scanFilesUrl,
+            ],
+        ];
 
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'scanFilesResult',
             $data
         );
-
-        //$indexUrl = $this->getController()->createUrl('/admin/pluginmanager');
-        //$this->getController()->redirect($indexUrl);
     }
 
     public function deleteFiles($plugin)

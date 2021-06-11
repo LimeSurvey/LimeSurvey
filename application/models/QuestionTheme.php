@@ -590,8 +590,6 @@ class QuestionTheme extends LSActiveRecord
 
         $criteria = new CDbCriteria();
 
-        error_log($question_type);
-        error_log($question_template);
         if ($question_template === 'core') {
             $criteria->condition = 'extends = :extends';
             $criteria->addCondition('question_type = :question_type', 'AND');
@@ -602,10 +600,8 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $questionTheme = self::model()->query($criteria, false);
-        //error_log($questionTheme);
 
         if (empty($questionTheme)) {
-            //var_dump($criteria);die;
             $settings = new StdClass();
             $settings->class = '';
             $settings->answerscales = 0;

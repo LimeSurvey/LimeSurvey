@@ -40,6 +40,7 @@ class GlobalSettings extends Survey_Common_Action
      *
      * @access public
      * @return void
+     * @throws CHttpException
      */
     public function index()
     {
@@ -65,6 +66,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * @throws CHttpException
+     */
     private function _displaySettings()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
@@ -81,6 +85,7 @@ class GlobalSettings extends Survey_Common_Action
         $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
         $data['updatelastcheck'] = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i:s");
 
+        // @todo getGlobalSetting is deprecated!
         $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = getGlobalSetting("updateinfo");
@@ -116,6 +121,8 @@ class GlobalSettings extends Survey_Common_Action
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
+
+        $data['pageTitle'] = "Global settings";
 
         $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -484,6 +491,24 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Global survey settings';
+
+        // White Top Bar
+        $aData['fullpagebar'] = [
+            'returnbutton' => [
+                'url' => 'admin/index',
+                'text' => gT('Back'),
+            ],
+            'savebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+        'saveandclosebutton' => [
+            'form' => 'survey-settings-form',
+        ],
+    ];
+
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 

@@ -2,6 +2,9 @@
 
 use LimeSurvey\Models\Services\FilterImportedResources;
 
+/**
+ * Class SurveyAdministrationController
+ */
 class SurveyAdministrationController extends LSBaseController
 {
 
@@ -49,6 +52,12 @@ class SurveyAdministrationController extends LSBaseController
         ];
     }
 
+    /**
+     * SurveyAdministrationController constructor.
+     * @param $id
+     * @param null $module
+     * @throws CException
+     */
     public function __construct($id, $module = null)
     {
         Yii::app()->request->updateNavigationStack();
@@ -202,8 +211,11 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
-        $aData['fullpagebar']['button']['newsurvey'] = true;
 
+        $aData['pageTitle'] = 'Survey list';
+        $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
+
+        $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
     }
 
@@ -385,7 +397,9 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
-        $aData['title_bar']['title'] = gT('New survey');
+        // Green Bar Page Title
+        $aData['pageTitle'] = "Create, import, or copy survey";
+
         $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 

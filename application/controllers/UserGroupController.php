@@ -203,10 +203,10 @@ class UserGroupController extends LSBaseController
      *
      * Load edit user group screen.
      *
-     * @param mixed $ugid
+     * @param int $ugid
      * @return void
      */
-    public function actionEdit($ugid)
+    public function actionEdit(int $ugid)
     {
         $ugid = (int) $ugid;
 
@@ -238,8 +238,10 @@ class UserGroupController extends LSBaseController
 
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text'] = gT("Update user group");
+        $aData['usergroupbar']['savebutton']['text'] = gT("Save");
 
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']);
         $this->aData = $aData;
 
         $this->render('editUserGroup_view', [
@@ -477,6 +479,9 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = "Mail to all Members";
 
         $this->aData = $aData;
 

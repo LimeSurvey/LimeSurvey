@@ -1,3 +1,10 @@
+<?php
+/*
+ * @var bool $ownsAddParticipantsButton
+ * @var bool $ownsAddAttributeButton
+ */
+?>
+
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -42,14 +49,9 @@
             )
         ));?>;
 </script>
-<div class="menubar surveymanagerbar">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-md-12">
-            <div class="h2"><?php eT("Central participant database")?></div>
-        </div>
-    </div>
-</div>
-<div class='menubar surveybar' id="participantbar">
+
+<!-- Participant Bar -->
+<div class='menubar surveybar' id="participantbar" style="box-shadow: 3px 3px 3px #35363f;">
     <div class='row'>
 
         <div class="col-md-9">
@@ -117,14 +119,28 @@
             <?php endif;?>
         </div>
 
-
-
-
         <div class="col-md-3 text-right">
+            <!-- Add Participants -->
+            <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
+                <button class="btn btn-default" id="addParticipantToCPP">
+                    <i class="fa fa-plus-circle text-success"></i>&nbsp;
+                    <?php eT("Add new participant"); ?>
+                </button>
+            <?php endif; ?>
+
+            <!-- Add Attribute -->
+            <?php if(isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)): ?>
+                <button class="btn btn-default" id="addParticipantAttributeName">
+                    <i class="fa fa-plus-circle text-success"></i>
+                    &nbsp;
+                    <?php eT("Add new attribute"); ?>
+                </button>
+            <?php endif; ?>
+            <!-- Back -->
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="fa fa-backward"></span>
                 &nbsp;
-                <?php eT('Return to admin home'); ?>
+                <?php eT('Back'); ?>
             </a>
         </div>
     </div>
