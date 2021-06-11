@@ -2314,7 +2314,7 @@ class SurveyAdministrationController extends LSBaseController
             $expires = null;
         } else {
             //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-            $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'] . ' H:i');
+            $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
             $expires = $datetimeobj->convert("Y-m-d H:i:s");
         }
 
