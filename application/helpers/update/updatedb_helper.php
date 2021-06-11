@@ -4667,7 +4667,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $insertPlugin('ExportSPSSsav', 1);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
             $oTransaction->commit();
-        }        
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
