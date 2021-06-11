@@ -3127,7 +3127,7 @@ class QuestionAdministrationController extends LSBaseController
         /** @var string */
         $questionThemeName = $question->getQuestionAttribute('question_template');
 
-        /** @var array<string,mixed> */
+        /** @var QuestionTheme */
         $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionThemeName);
         if (empty($questionTheme['extends'])) {
             $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346

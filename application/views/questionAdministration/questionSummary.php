@@ -2,7 +2,7 @@
 
 /** @var Survey $survey */
 /** @var Question $question */
-/** @var array<string,mixed> $questionTheme */
+/** @var QuestionTheme $questionTheme */
 /** @var boolean $visibilityOverview */
 /** @var array<string,array<mixed>> $advancedSettings */
 ?>
