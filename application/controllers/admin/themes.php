@@ -297,6 +297,7 @@ class themes extends Survey_Common_Action
                 $src = $_FILES['the_file']['tmp_name'];
                 $extConfig = ExtensionConfig::loadFromZip($src);
                 $destdir = $extConfig->getName();
+                // TODO: Replace with extension installer factory.
                 $installer = $this->getQuestionThemeInstaller();
                 $installer->fetchFiles();
                 /** @var ExtensionConfig */
