@@ -34,6 +34,32 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.3 (build 210609) to 5.0.4 (build 210614) June 14, 2021
+-Fixed issue: Renamed Config menu entries (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Surveys - Create Survey (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Settings - Global (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Create/edit user roles (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Central participant management (Jessica Höck)
+-Fixed issue #17347: 'Class Twig_Environment not found' when uploading an image (#1913) (Gabriel Jenik)
+-Fixed issue #17309: Date question always shows error when using AR language - can't proceed at survey (#1887) (Gabriel Jenik)
+-Fixed issue #17303: ZipArchive error when exporting theme and debug mode is avtive (Carsten Schmitz)
+-Fixed issue #17297: Importing question group does not work (#1914) (Gabriel Jenik)
+-Fixed issue #17250: Unable to upload image with extension in uppercase in Theme option (#1884) (Gabriel Jenik)
+-Fixed issue #17201: Easier switch between customized condition and condition designer (#1874) (Gabriel Jenik)
+-Fixed issue #16834: When importing a theme bigger in size than the allowed PHP.ini settings, there is no proper description of the error (#1861) (Gabriel Jenik)
+-Fixed issue #12349: RTL languages not dispayed correctly in the admin editor (#1879) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by nostradumusfdx, holch, femariso, GabrielLF, lucaspcs, marcelovincenzi, cassiofs, josesiqueira, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.0.2 (build 210607) to 5.0.3 (build 210609) June 8, 2021
 #Updated translation: Turkish by bulent, kayazeren
 #Updated translation: Portuguese (Portugal) by c_schmitz, victorgoncalves, thiagosmartins, holch, paulohpmoraes, mauriciofurtado, femariso, marciojv, fermacedo, GabrielLF, lucaspcs, samarta, marcelovincenzi, cassiofs
