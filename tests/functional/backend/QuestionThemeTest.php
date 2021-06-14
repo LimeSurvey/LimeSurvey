@@ -181,10 +181,10 @@ class QuestionThemeTest extends TestBaseClassWeb
     }
 
     /**
+     * @depends testImportQuestionTheme
      */
     public function testExecuteQuestionThemeSurvey()
     {
-        //* @depends testImportQuestionTheme
         // Import lsa
         $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
         self::importSurvey($surveyFile);
