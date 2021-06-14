@@ -4346,6 +4346,13 @@ table.dataTable thead .sorting_desc:after {
   /* sort-by-attributes-alt */
 }
 
+// Sticky topbar
+.menubar.sticky {
+    position: fixed !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+}
+
 /* Reduce margins for question editor */
 #edit-question-form {
     margin-left: -15px;
@@ -4363,13 +4370,14 @@ table.dataTable thead .sorting_desc:after {
 /* Scrollable subquestion/answer tables*/
 .subquestions-table-wrapper,
 .answeroptions-table-wrapper {
-display: block;
-overflow: auto;
-margin-bottom: 20px;
+    display: block;
+    overflow: auto;
+    margin-bottom: 20px;
 }
+
 .subquestions-table,
 .answeroptions-table {
-margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 .subquestions-table input.code,
