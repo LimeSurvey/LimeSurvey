@@ -45,6 +45,27 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
             </div>
         </div>
+        <!-- Autocreate group and question -->
+        <div class="row ls-space margin top-10">
+            <div class="form-group col-xs-12">
+                <label class="col-sm-12 text-left control-label" for="createsample">
+                    <?php eT("Create example question group and question:");?>
+                </label>
+                <div class="col-sm-12">
+                    <?php 
+                        $this->widget(
+                            'yiiwheels.widgets.switch.WhSwitch', [
+                                'name' => 'createsample',
+                                'id' => 'createsample',
+                                'value' => Yii::app()->getConfig('createsample'),
+                                'onLabel' => gT('On'),
+                                'offLabel' => gT('Off')
+                            ]
+                        );
+                    ?>
+                </div>
+            </div>
+        </div>
         <!-- Administrative Template -->
         <div class="row ls-space margin top-10">
             <div class="form-group col-xs-12">

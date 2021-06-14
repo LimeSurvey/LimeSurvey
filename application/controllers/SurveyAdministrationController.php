@@ -499,22 +499,23 @@ class SurveyAdministrationController extends LSBaseController
             // This will force the generation of the entry for survey group
             TemplateConfiguration::checkAndcreateSurveyConfig($iNewSurveyid);
 
-            $createSample = App()->request->getPost('createsample');
-            $createSampleChecked = ($createSample === 'on');
+            $createSample = SettingsUser::getUserSettingValue('createsample');
+            if ($createSample === null || $createSample === 'default') {
+                $createSample = Yii::app()->getConfig('createsample');
+            }
 
             // Figure out destination
-            if ($createSampleChecked) {
+            if ($createSample) {
                 $iNewGroupID = $this->createSampleGroup($iNewSurveyid);
                 $iNewQuestionID = $this->createSampleQuestion($iNewSurveyid, $iNewGroupID);
 
                 Yii::app()->setFlashMessage(gT("Your new survey was created. 
                 We also created a first question group and an example question for you."), 'info');
-                $landOnSideMenuTab = 'structure';
                 $redirecturl = $this->getSurveyAndSidemenueDirectionURL(
                     $iNewSurveyid,
                     $iNewGroupID,
                     $iNewQuestionID,
-                    $landOnSideMenuTab
+                    'structure'
                 );
             } elseif (!$ownsPreviousSurveys) {
                 // SET create question and create question group as default view.
@@ -529,6 +530,7 @@ class SurveyAdministrationController extends LSBaseController
                 );
                 Yii::app()->setFlashMessage(gT("Your new survey was created."), 'info');
             }
+
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array(
@@ -2203,6 +2205,7 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['aImportResults'] = $aImportResults;
                 $aData['action'] = $action;
                 if (isset($aImportResults['newsid'])) {
+                    // Set link pointing to survey administration overview. This link will be updated if the survey has groups
                     $aData['sLink'] = $this->createUrl('surveyAdministration/view/', ['iSurveyID' => $aImportResults['newsid']]);
                     $aData['sLinkApplyThemeOptions'] = 'surveyAdministration/applythemeoptions/surveyid/' . $aImportResults['newsid'];
                 }
@@ -2224,6 +2227,22 @@ class SurveyAdministrationController extends LSBaseController
                 LimeExpressionManager::FinishProcessingGroup();
             }
             LimeExpressionManager::FinishProcessingPage();
+
+            // Make the link point to the first group/question if available
+            if (!empty($aGrouplist)) {
+                $oFirstGroup = $aGrouplist[0];
+                $oFirstQuestion = Question::model()->findByAttributes(
+                    ['gid' => $oFirstGroup->gid],
+                    ['order' => 'question_order ASC']
+                );
+
+                $aData['sLink'] = $this->getSurveyAndSidemenueDirectionURL(
+                    $aImportResults['newsid'],
+                    $oFirstGroup->gid,
+                    !empty($oFirstQuestion) ? $oFirstQuestion->qid : null,
+                    'structure'
+                );
+            }
         }
 
         $this->aData = $aData;
@@ -2626,13 +2645,15 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function getSurveyAndSidemenueDirectionURL($sid, $gid, $qid, $landOnSideMenuTab)
     {
-        $url = 'questionAdministration/view/';
+        $url = !empty($qid) ? 'questionAdministration/view/' : 'questionGroupsAdministration/view/';
         $params = [
             'surveyid' => $sid,
             'gid' => $gid,
-            'qid' => $qid,
-            'landOnSideMenuTab' => $landOnSideMenuTab
         ];
+        if (!empty($qid)) {
+            $params['qid'] = $qid;
+        }
+        $params['landOnSideMenuTab'] = $landOnSideMenuTab;
         return $this->createUrl($url, $params);
     }
 

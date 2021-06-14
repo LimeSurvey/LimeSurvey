@@ -63,12 +63,6 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 <label for="surveyTitle"><?= gT('Survey title')?></label>
                                 <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
                             </div>
-                            <div class="form-group col-md-4 col-md-6">
-                                <label for="createsample" class="control-label"><?= gT('Create example question group and question?')?></label>
-                                <div>
-                                    <input type="checkbox" name="createsample" />
-                                </div>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-4 col-md-6" >
