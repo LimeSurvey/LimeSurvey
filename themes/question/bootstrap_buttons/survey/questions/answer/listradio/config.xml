@@ -63,7 +63,6 @@
             <default>default</default>
             <help>Change button size</help>
             <caption>Button size</caption>
-            <i18n>hr</i18n>
         </attribute>
         <attribute>
             <name>max_buttons_row</name>
