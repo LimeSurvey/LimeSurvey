@@ -85,7 +85,6 @@ class QuestionThemeTest extends TestBaseClassWeb
      */
     public function testSelectQuestionThemeInQuestionEditor()
     {
-
         // Import survey with one group and question
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_193959_testSelectQuestionThemeInEditor.lss';
         self::importSurvey($surveyFile);
@@ -182,15 +181,56 @@ class QuestionThemeTest extends TestBaseClassWeb
     }
 
     /**
-     * @depends testSelectQuestionThemeInQuestionEditor
      */
-    public function testPreviewQuestionThemeQuestion()
+    public function testExecuteQuestionThemeSurvey()
     {
-        // Use previous survey
-        // Activate survey
+        //* @depends testImportQuestionTheme
+        // Import lsa
+        $surveyFile = self::$surveysFolder . '/survey_archive_222923_executeQuestionThemeSurvey.lsa';
+        self::importSurvey($surveyFile);
+
+        $urlMan = \Yii::app()->urlManager;
+        $web = self::$webDriver;
+
+        // Go to survey overview.
+        $url = $urlMan->createUrl(
+            'surveyAdministration/view/surveyid/' . self::$surveyId
+        );
+        self::$webDriver->get($url);
+
         // Execute survey
-        // Answer question using question theme
+        $button = self::$webDriver->findById('execute_survey_button') ;
+        $button->click();
+        sleep(1);
+
+        // Switch to new tab.
+        $windowHandles = self::$webDriver->getWindowHandles();
+        self::$webDriver->switchTo()->window(
+            end($windowHandles)
+        );
+        sleep(1);
+
+        // Click on slider to trigger answering.
+        $sliderHandler = $web->findByCss('.slider-handle');
+        $sliderHandler->click();
+
         // Submit
+        $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        $nextButton->click();
+        sleep(1);
+
         // Check result in database
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+
+        $sid = self::$surveyId;
+        $gid = self::$testSurvey->groups[0]->gid;
+        $qid = self::$testSurvey->questions[0]->qid;
+
+        $sgqa1 = sprintf('%dX%dX%dSQ001', $sid, $gid, $qid);
+        $sgqa2 = sprintf('%dX%dX%dSQ002', $sid, $gid, $qid);
+
+        $this->assertEquals(4, (int) $responses[0]->attributes[$sgqa1]);
+        $this->assertEquals(7, (int) $responses[0]->attributes[$sgqa2]);
     }
 }

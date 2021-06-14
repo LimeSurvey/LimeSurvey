@@ -81,7 +81,6 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
         $models = \Response::model(self::$surveyId)->findAll();
 
         $this->assertTrue((isset($models[0]->ipaddr)) && ($models[0]->ipaddr==='127.0.0.0'));
-
     }
 
     /**
