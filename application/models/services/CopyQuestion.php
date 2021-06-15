@@ -107,7 +107,7 @@ class CopyQuestion
      * Copies the languages of a question.
      *
      * @param \Question $oQuestion old question from where to copy the languages (see table questions_l10ns)
-     * @param array<string,CopyQuestionTextValues> $newQuestionL10nData the text values to override
+     * @param array<string,\LimeSurvey\Datavalueobjects\CopyQuestionTextValues> $newQuestionL10nData the text values to override
      *
      * @before $this->newQuestion must exist and should not be null
      *
