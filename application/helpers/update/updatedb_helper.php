@@ -4631,13 +4631,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 450) {
             $oTransaction = $oDB->beginTransaction();
-
+            // Add the new column to questions table
             $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
+            // Fill column from question_attributes when it's not null or 'core'
             $oDB->createCommand(
                 "UPDATE {{questions}} q LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template'
                  SET q.question_theme_name = qt.value 
-                 WHERE qt.value IS NOT NULL"
+                 WHERE qt.value IS NOT NULL AND qt.value <> 'core'"
             )->execute();
+            // Fill null question_theme_name values using the proper theme name
+            $oDB->createCommand(
+                "UPDATE {{questions}} q LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = :true AND qt.extends = :extends
+                 SET q.question_theme_name = qt.name 
+                 WHERE q.question_theme_name IS NULL"
+            )
+            ->bindValue(':true', 1)
+            ->bindValue(':extends', '')
+            ->execute();
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
             $oTransaction->commit();

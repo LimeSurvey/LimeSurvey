@@ -124,6 +124,7 @@ class Question extends LSActiveRecord
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
+            'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['type'=>'question_type', 'question_theme_name'=>'name']],
         );
     }
 
