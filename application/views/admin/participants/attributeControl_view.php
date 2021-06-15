@@ -5,20 +5,7 @@
 echo viewHelper::getViewTestTag('participantsAttributeControl');
 
 ?>
-<div id="pjax-content">
-    <div class="col-xs-12 ">
-        <div class="pagetitle row h3">
-            <div class="col-xs-8 ">
-                <?php eT("Attribute management"); ?>
-            </div>
-            <div class="col-xs-4 text-right">
-                <button class="btn btn-default" id="addParticipantAttributeName">
-                    <i class="fa fa-plus-circle text-success"></i> 
-                    &nbsp;
-                    <?php eT("Add new attribute"); ?>
-                </button>
-            </div>
-        </div>
+<div id="pjax-content" style="margin-top: 20px;">
 
         <div class="row">
             <div class="container-fluid">

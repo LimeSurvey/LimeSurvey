@@ -17,69 +17,65 @@
             {% endif %}
 
             <!-- Answer options table -->
-            <table
-                class='answertable answeroptions-table table table-responsive'
-                id='answeroptions_{{lang}}_{{scale_id}}'
-                data-scaleid='{{ scale_id }}'
-                data-input-data-id='add-answer-option-input-javascript-datas'
-            >
+            <div class="answeroptions-table-wrapper" style="max-height: 394px;">
+                <table
+                    class='answertable answeroptions-table table table-responsive'
+                    id='answeroptions_{{lang}}_{{scale_id}}'
+                    data-scaleid='{{ scale_id }}'
+                    data-input-data-id='add-answer-option-input-javascript-datas'
+                >
 
-                <!-- Headers -->
-                <thead>
-                    <tr>
-                        <th class="col-md-1">
-                            {% if first and activated != 'Y' %}
-                                {{ gT("Position") }}
+                    <!-- Headers -->
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class='col-md-1'>{{ gT("Code") }}</th>
+
+                            {% if assessmentvisible %}
+                                <th class='col-md-1'>
+                                    {{ gT("Assessment value") }}
+                                </th>
                             {% else %}
-                                &nbsp;
+                                <th style='display:none;'>
+                                    &nbsp;
+                                </th>
                             {% endif %}
-                        </th>
-                        <th class='col-md-1'>{{ gT("Code") }}</th>
 
-                        {% if assessmentvisible %}
+                            <th class='col-md-8'>
+                                {{ gT("Answer options") }}
+                                <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                            </th>
+
                             <th class='col-md-1'>
-                                {{ gT("Assessment value") }}
+                                {% if first %}
+                                    {{ gT("Actions") }}
+                                {% endif %}
                             </th>
-                        {% else %}
-                            <th style='display:none;'>
-                                &nbsp;
-                            </th>
-                        {% endif %}
+                        </tr>
+                    </thead>
 
-                        <th class='col-md-8'>
-                            {{ gT("Answer options") }}
-                            <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
-                        </th>
+                    <!-- Body -->
+                    <tbody>
+                        {% for answerOption in answers[scale_id] %}
+                            <!-- Line tag -->
+                            {% include 'answerOptionRow.twig' with {
+                                'activated'         : activated,
+                                'position'          : position,
+                                'first'             : first,
+                                'assessmentvisible' : assessmentvisible,
+                                'scale_id'          : scale_id,
+                                'question'          : question,
+                                'answerOption'      : answerOption,
+                                'answerOptionl10n'  : answerOption.answerl10ns[lang],
+                                'oldCode'           : true,
+                                'language'          : lang
+                            } %}
 
-                        <th class='col-md-1'>
-                            {% if first %}
-                                {{ gT("Actions") }}
-                            {% endif %}
-                        </th>
-                    </tr>
-                </thead>
-
-                <!-- Body -->
-                <tbody>
-                    {% for answerOption in answers[scale_id] %}
-                        <!-- Line tag -->
-                        {% include 'answerOptionRow.twig' with {
-                            'activated'         : activated,
-                            'position'          : position,
-                            'first'             : first,
-                            'assessmentvisible' : assessmentvisible,
-                            'scale_id'          : scale_id,
-                            'question'          : question,
-                            'answerOption'      : answerOption,
-                            'answerOptionl10n'  : answerOption.answerl10ns[lang],
-                            'oldCode'           : true,
-                            'language'          : lang
-                        } %}
-
-                        {% set position = position + 1 %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                            {% set position = position + 1 %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="action-buttons" style="padding-bottom: 10px;">
                 {% if first %}
@@ -99,11 +95,7 @@
                     type='button'
                     onclick="LS.questionEditor.showLabelSetPicker(event, 'answeroptions');"
                 >
-                    {{ gT('Predefined label sets...') }}
-                </button>
-
-                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
-                    {{ gT('Quick add...') }}
+                    {{ gT('Load label set') }}
                 </button>
 
                 {% if hasLabelSetPermission %}
@@ -114,9 +106,13 @@
                         onclick="LS.questionEditor.showLabelSetSaver(event, 'answeroptions-table');"
                         data-target="#saveaslabelModal"
                     >
-                        {{ gT('Save as label set') }}
+                        {{ gT('Save label set') }}
                     </button>
                 {% endif %}
+
+                <button {{ disabled }}  id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd pull-right' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                    {{ gT('Quick add') }}
+                </button>
             </div>
             {% set position = sprintf("%05d", position) %}
         {% endfor %}

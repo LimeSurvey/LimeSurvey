@@ -1,7 +1,5 @@
 <div class="col-lg-12 list-surveys">
-    <div class="pagetitle h3"><?php eT("User group"); ?> : <?php echo $groupname; ?></div>
-
-    <div class="row">
+    <div class="row" style="margin-top: 20px;">
         <div class="col-lg-12 content-right text-center">
             <div class="h4"><?php eT("Group members"); ?></div>
 
@@ -10,7 +8,6 @@
                 <?php echo htmlspecialchars($usergroupdescription);?>
 
             <?php endif;?>
-
 <br/><br/>
 
 

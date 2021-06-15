@@ -8,23 +8,24 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 ?>
 <?php if (empty($model->sid)): ?>
 <!-- This is only visible when we're not in survey view. -->
-<div class='container-fluid'>
-    <div class='menubar' id='theme-options-bar'>
+    <div class='menubar' id='theme-options-bar' style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;" >
         <div class='row'>
-            <div class='text-right'>
+            <div class='text-right' style="margin: 10px 0 10px 0;">
 
                 <?php
                   $sThemeOptionUrl = App()->createUrl("themeOptions");
                   $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid, "#" => 'templateSettingsFortThisGroup'));
                   $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
                 ?>
+
+                <!-- Back -->
                 <a class="btn btn-default" href="<?php echo $sUrl; ?>" role="button">
                     <span class="fa fa-backward"></span>
-                    <?php eT('Close'); ?>
+                    <?php eT('Back'); ?>
                 </a>
 
-
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
+                <!-- Save -->
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form" style="margin-right: 30px;">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT('Save'); ?>
                 </a>
@@ -34,29 +35,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php else: ?>
 <div class="col-sm-12 side-body <?=getSideBodyClass(false)?>" id="theme-option-sidebody">
 <?php endif; ?>
-    <div class="row h1 pagetitle">
-        <?php echo sprintf(gT('Survey options for theme %s'),'<em>' . $model->template_name . '</em>'); ?>
-        (
-            <?php
-
-                // This is a quick and dirty solution.
-                // @Todo A clean system to show the level and indicate where the inherited values are taken
-                // @Todo: Don't concatenate translations, fix them, Louis
-
-                if (!is_null($sid)){
-                    eT(" for survey id: $sid ");
-                }elseif(!is_null($gsid)){
-                    eT(" for survey group id: $gsid ");
-                }else{
-                    eT(" global level");
-                }
-
-            ?>
-        )
-    </div>
-        <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
+    <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12" id="theme-options-tabs">
+        <div class="col-sm-12" id="theme-options-tabs" style="margin-top: 10px;">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <?php
@@ -278,7 +259,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
-</div>
 
 <!-- Form for image file upload -->
 <div class="hidden">

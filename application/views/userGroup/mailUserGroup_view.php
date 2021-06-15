@@ -4,10 +4,7 @@
 
 ?>
 
-<div class="col-lg-12 list-surveys">
-    <div class="pagetitle h3">
-        <?php eT("Mail to all Members"); ?>
-    </div>
+<div class="col-lg-12 list-surveys" style="margin-top: 30px;">
 
     <div class="row">
         <?php echo CHtml::form(array("userGroup/MailToAllUsersInGroup/ugid/{$ugid}"), 'post',

@@ -112,7 +112,13 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
         <tr>
                <td><?php eT("PHP GD library"); ?></td>
                <td><span class='fa fa-check text-success'></span></td>
-               <td><?= $model->isPhpGdPresent ? $iconOk : $iconFail ?></td>
+               <td>
+                    <?php if ($model->isPhpGdPresent): ?>
+                        <?= $model->phpGdHasJpegSupport ? $iconOk : $iconFail . '<br/>' . gT("The GD extension found doesn't support JPEG") ?>
+                    <?php else: ?>
+                        <?= $iconFail ?>
+                    <?php endif; ?>
+               </td>
         </tr>
         <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
