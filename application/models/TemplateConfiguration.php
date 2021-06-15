@@ -1526,7 +1526,6 @@ class TemplateConfiguration extends TemplateConfig
                 if (empty($value) || $value == 'inherit') {
                     continue;
                 }
-                if (strpos($value, 'theme') === 0) xdebug_break();
                 $virtualPath = $this->getVirtualThemeFilePath($value);
                 if (!empty($virtualPath)) {
                     $value = $virtualPath;
