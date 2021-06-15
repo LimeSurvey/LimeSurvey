@@ -32,7 +32,8 @@
                         'cols' => '60',
                         'rows' => '8',
                         'id' => "question_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr'
+                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                        'placeholder' => gT('Enter your question here...'),
                     ]
                 ); ?>
                 <?= getEditor(
@@ -62,7 +63,8 @@
                         'cols' => '60',
                         'rows' => '4',
                         'id' => "help_{$lang}",
-                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr'
+                        'data-contents-dir' => getLanguageRTL($lang) ? 'rtl' : 'ltr',
+                        'placeholder' => gT('Enter some help text if your question needs some explanation here...'),
                     ]
                 ); ?>
                 <?= getEditor(
