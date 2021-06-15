@@ -285,20 +285,22 @@ class LS_Twig_Extension extends Twig_Extension
         if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
             $oTemplate =  Template::getLastInstance();
             $sFullPath = $oTemplate->getRealThemeFilePath($sImagePath);
-            if (empty($sFullPath)) {
-                return false;
-            }
         } else {
-            // Reccurence on templates to find the file
+            // If it's not a virtual path, only paths relative to a theme (and within the theme) are allowed.
+            // Recurrence on templates to find the file
             $oTemplate = self::getTemplateForRessource($sImagePath);
             $sUrlImgAsset =  $sImagePath;
 
             if ($oTemplate) {
                 $sFullPath = $oTemplate->path.$sImagePath;
-            } else {
-                // If it's not a virtual path, only paths within a theme are allowed.
-                return false;
             }
+        }
+
+        if (empty($sFullPath)) {
+            if($default) {
+                return self::imageSrc($default);
+            }
+            return false;
         }
 
         // check if this is a true image
