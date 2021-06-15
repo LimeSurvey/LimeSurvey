@@ -63,7 +63,6 @@ class TemplateConfigurationTest extends TestBaseClass
 
         // Check that non-paths (values that don't match an existing file) are not changed
         $this->assertEquals($options['nonExistingFile'], $savedOptions['nonExistingFile']);
-
     }
 
     public function testImageSrc()
@@ -87,22 +86,22 @@ class TemplateConfigurationTest extends TestBaseClass
 
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(realGeneralFile) }}', $options, $templateConfiguration);
         $this->assertEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(realRelativeThemeFile) }}', $options, $templateConfiguration);
         $this->assertNotEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualThemeFile) }}', $options, $templateConfiguration);
         $this->assertNotEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(nonExistingFile) }}', $options, $templateConfiguration);
         $this->assertEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(existingInvalidFile) }}', $options, $templateConfiguration);
         $this->assertEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualPathWithTraversalInsideTheme) }}', $options, $templateConfiguration);
         $this->assertNotEmpty($output);
-        
+
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualPathWithTraversalOutsideTheme) }}', $options, $templateConfiguration);
         $this->assertEmpty($output);
 
@@ -112,6 +111,5 @@ class TemplateConfigurationTest extends TestBaseClass
         // the file is found but not an image.
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualGeneralFile, "files/logo.png") is same as(false) ? "OK" : "" }}', $options, $templateConfiguration);
         $this->assertEquals("OK", $output);
-        
     }
 }
