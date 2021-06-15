@@ -1434,12 +1434,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Main query
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-    $aquery = "SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value"
+    $aquery = "SELECT g.*, q.*, gls.*, qls.*"
     . " FROM $quotedGroups g"
     . ' JOIN {{questions}} q on q.gid=g.gid '
     . ' JOIN {{group_l10ns}} gls on gls.gid=g.gid '
     . ' JOIN {{question_l10ns}} qls on qls.qid=q.qid '
-    . " LEFT JOIN {{question_attributes}} qa ON qa.qid=q.qid AND qa.attribute='question_template' "
     . " WHERE qls.language='{$sLanguage}' and gls.language='{$sLanguage}' AND"
     . " g.sid={$surveyid} AND"
     . " q.parent_qid=0";
@@ -1469,8 +1468,8 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
         $usedinconditions = 'N';
 
         // Check if answertable has custom setting for current question
-        if (isset($arow['attribute']) && isset($arow['type']) && $arow['attribute'] == 'question_template') {
-            $answerColumnDefinition = QuestionTheme::getAnswerColumnDefinition($arow['value'], $arow['type']);
+        if (isset($arow['attribute']) && isset($arow['type']) && isset($arow['question_theme_name'])) {
+            $answerColumnDefinition = QuestionTheme::getAnswerColumnDefinition($arow['question_theme_name'], $arow['type']);
         }
 
         // Field identifier
