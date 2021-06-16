@@ -11,6 +11,30 @@
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
 
+            <!-- Themes -->
+            <?php if (isset($fullpagebar['themes'])): ?>
+                <!-- Upload and Install -->
+                <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
+                    <a  class="btn btn-default" 
+                        href="" 
+                        role="button" 
+                        data-toggle="modal" 
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        style="margin-top: 10px;">
+                        <span class="icon-import text-success"></span>
+                        <?php eT("Upload & install"); ?>
+                    </a>
+                <?php elseif(isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])): ?>
+                    <!-- import disabled -->
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
+                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <span class="icon-import text-success"></span>
+                        <?php eT("Import"); ?>
+                    </button>
+                </span>
+                <?php endif; ?>
+            <?php endif; ?>
+
             <!-- List Surveys - Create a new Survey -->
             <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                 Permission::model()->hasGlobalPermission('surveys','create')):?>

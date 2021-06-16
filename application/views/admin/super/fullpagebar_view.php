@@ -8,6 +8,7 @@
 <div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
+            <!-- Plugin Manager -->
             <?php if(isset($fullpagebar['pluginManager'])): ?>
 
                 <!-- Install Plugin Zip -->
