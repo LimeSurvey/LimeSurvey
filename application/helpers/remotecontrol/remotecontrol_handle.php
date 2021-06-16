@@ -2778,7 +2778,7 @@ class remotecontrol_handle
                 if ($Response){
                     // delete the files and timings and row
                     $Response->delete();
-                    return array('iSurveyID'=>$iSurveyID);
+                    return array($iResponseID=>'deleted');
                 }
                 else{
                     return array('status' => 'Response Id not found');
