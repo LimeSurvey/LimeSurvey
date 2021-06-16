@@ -2774,42 +2774,14 @@ class remotecontrol_handle
 
             if (hasSurveyPermission($iSurveyID, 'responses', 'delete')){
                 // get response id from response table using token
-                $oResult = Survey_dynamic::model($iSurveyID)->findByPk($iResponseID);
+                $oResult = Response::model($iSurveyID)->findByPk($iResponseID);
                 if ($oResult){
                     // delete the files
-                    $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
-                    $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $sLanguageCode);
-                    $fuqtquestions = array();
-                    // find all fuqt questions
-                    foreach ($fieldmap as $field){
-                        if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0){
-                            $fuqtquestions[] = $field['fieldname'];
-                        }
-                    }
-
-                    if (!empty($fuqtquestions)){
-                        // find all responses (filenames) to the fuqt questions
-                        $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $iResponseID));
-                        $filecount = 0;
-                        foreach ($filearray as $metadata){
-                            foreach ($metadata as $aData){
-                                $phparray = json_decode_ls($aData);
-                                if (is_array($phparray)){
-                                    foreach ($phparray as $file){
-                                        @unlink($uploaddir . $file['filename']);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
+                    $oResult.deleteFiles();
+                    // delete timings
+                    $oResult.deleteTimings();
                     // delete the row
                     Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
-                    // delete timings if savetimings is set
-                    if (isset( $thissurvey['savetimings'] ) && $thissurvey['savetimings'] == "Y"){
-                        Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
-                    }
-
                     return array('iSurveyID'=>$iSurveyID);
                 }
                 else{
