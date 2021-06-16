@@ -241,14 +241,14 @@ class QuestionAttributeHelper
         $attributeValues = $this->getAttributeValuesFromDB($question->qid);
 
         // Get question theme name if not specified
-        $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
-        $questionTheme = !empty($questionThemeOverride) ? $questionThemeOverride : $questionTheme;
+        $questionThemeName = $question->question_theme_name;
+        $questionThemeName = !empty($questionThemeOverride) ? $questionThemeOverride : $questionThemeName;
 
         // Get advanced attribute definitions for the question type
         $questionTypeAttributes = $this->getAttributesFromQuestionType($question->type, $advancedOnly);
 
         // Get question theme attribute definitions
-        $questionThemeAttributes = $this->getAttributesFromQuestionTheme($questionTheme, $question->type);
+        $questionThemeAttributes = $this->getAttributesFromQuestionTheme($questionThemeName, $question->type);
 
         // Merge the attributes with the question theme ones
         $attributes = $this->mergeQuestionAttributes($questionTypeAttributes, $questionThemeAttributes);
@@ -282,13 +282,13 @@ class QuestionAttributeHelper
     /**
      * Get the definitions of question attributes from Question Theme
      *
-     * @param string $questionTheme    the name of the question theme
+     * @param string $questionThemeName    the name of the question theme
      * @param string $questionType     the base question type
      * @return array    all question attribute definitions provided by the question theme
      */
-    public function getAttributesFromQuestionTheme($questionTheme, $questionType)
+    public function getAttributesFromQuestionTheme($questionThemeName, $questionType)
     {
-        return \QuestionTheme::getAdditionalAttrFromExtendedTheme($questionTheme, $questionType);
+        return \QuestionTheme::getAdditionalAttrFromExtendedTheme($questionThemeName, $questionType);
     }
 
     /**
