@@ -23,6 +23,9 @@ class TemplateConfigurationTest extends TestBaseClass
         $this->assertTrue(true);
     }
 
+    /**
+     * Test sanitization of paths in template configuration options
+     */
     public function testOptionsSanitization()
     {
         // Import lss
@@ -31,6 +34,7 @@ class TemplateConfigurationTest extends TestBaseClass
 
         $templateConfiguration = \TemplateConfiguration::checkAndcreateSurveyConfig(self::$surveyId);
 
+        // Prepare dataset
         $options = [
             'realThemeFile' => 'themes/survey/fruity/files/logo.png',
             'realGeneralFile' => 'upload/themes/survey/generalfiles/index.html',
@@ -42,9 +46,10 @@ class TemplateConfigurationTest extends TestBaseClass
             'virtualPathWithTraversalInsideTheme' => 'image::theme::../fruity/files/logo.png',
             'virtualPathWithTraversalOutsideTheme' => 'image::theme::../vanilla/files/logo.png',
         ];
+
+        // Test
         $templateConfiguration->options = json_encode($options);
         $templateConfiguration->save();
-
         $savedOptions = json_decode($templateConfiguration->options, true);
 
         // Check that valid "real" paths get transformed
@@ -65,6 +70,9 @@ class TemplateConfigurationTest extends TestBaseClass
         $this->assertEquals($options['nonExistingFile'], $savedOptions['nonExistingFile']);
     }
 
+    /**
+     * Test the behaviour of imageSrc() with different paths
+     */
     public function testImageSrc()
     {
         $templateConfiguration =  \Template::getInstance('fruity', null, null, false);
@@ -105,10 +113,12 @@ class TemplateConfigurationTest extends TestBaseClass
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualPathWithTraversalOutsideTheme) }}', $options, $templateConfiguration);
         $this->assertEmpty($output);
 
-        // There is no general image file uploaded but, when setting a valid default,
-        // imageSrc will only return false if the file is found and is not a valid image.
-        // We are passing an 'index.html' file here so, imageSrc returning false means that
-        // the file is found but not an image.
+        // This is hard to test as general files folder doesn't have any at time of running the test. But it has an index.html.
+        // So, we use the "default" parameter of imageSrc.
+        // If the file is not found at all, it returns the default value given by parameter.
+        // On this case, the path exists but is not an image, so imageSrc is expected to return false.
+        // We can't assert false as convertTwigToHtml transforms it into an empty string.
+        // As it, we reaplce the "false" xexpected by imageSrc to an "OK".
         $output = \Yii::app()->twigRenderer->convertTwigToHtml('{{ imageSrc(virtualGeneralFile, "files/logo.png") is same as(false) ? "OK" : "" }}', $options, $templateConfiguration);
         $this->assertEquals("OK", $output);
     }

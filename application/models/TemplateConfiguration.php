@@ -857,17 +857,12 @@ class TemplateConfiguration extends TemplateConfig
         foreach ($categoryList as $category) {
             // Get base path for category
             $pathPrefix = empty($category->pathPrefix) ? '' : $category->pathPrefix;
+            $basePath = $category->path;
+            // If the category is theme, add the "files folder" to the base path, as that's the directory to scan for files
             if ($category->name == 'theme') {
-                if (!empty($this->template)) {
-                    $template = $this->getTemplateConfigurationForAttribute($this, 'files_folder')->template;
-                } else {
-                    $template = Template::model()->findByAttributes(['name' => $this->template_name]);
-                }
-                $filesFolder = $template->files_folder;
-                $basePath = $category->path . $filesFolder;
+                $filesFolder = $this->getAttributeValue('files_folder');
+                $basePath = $basePath . $filesFolder;
                 $pathPrefix = $pathPrefix . $filesFolder;
-            } else {
-                $basePath = $category->path;
             }
             // Get full list of files
             $fileList = Template::getOtherFiles($basePath);
@@ -1051,7 +1046,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->template->$attribute)) {
+        while (empty($oRTemplate->getRelatedTemplate()->$attribute)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
@@ -1382,7 +1377,9 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the list theme's file categories
+     * Returns a list of file categories for the theme.
+     * Each category is related to a directory which holds files for the theme.
+     * This files are usually listed to be selected as values for options.
      *
      * @return LimeSurvey\Datavalueobjects\ThemeFileCategory[]
      */
@@ -1390,7 +1387,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         // We need to determine the paths first. They may already be set, but if they're not, we need to get them from the template.
         // Note that the template cannot be accessed as relation until the model is saved.
-        $template = !empty($this->template) ? $this->template : Template::model()->findByAttributes(['name' => $this->template_name]);
+        $template = $this->getRelatedTemplate();
         if (empty($this->path)) {
             $isStandard = Template::isStandardTemplate($this->template_name);
             $path = $isStandard
@@ -1412,7 +1409,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the virtual path of $path if it's valid.
+     * Returns the virtual path for $path
+     * If $path is not valid, returns null.
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      *
@@ -1431,7 +1429,8 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the real absolute path of $path if it's valid.
+     * Returns the real aboslute path of $path
+     * If $path is not valid, returns null.
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      *
@@ -1450,14 +1449,16 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Returns the theme file information if the path is valid.
-     * To be valid, the $path must correspond to one of the theme file categories.
+     * Validates $path and returns its file info
+     * Rules:
+     *  - valid virtual path
+     *  - real path for an available category
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      *
      * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null the file info if it's valid, or null if it's not.
      */
-    public function getThemeFileInfo($path)
+    private function getThemeFileInfo($path)
     {
         if (is_null($path)) {
             return null;
@@ -1469,6 +1470,7 @@ class TemplateConfiguration extends TemplateConfig
         // Check if the path matches the virtual path category format
         $prefix = $this->getVirtualPathPrefix($path);
         if (!empty($prefix)) {
+            // Find category that matches the prefix
             $filteredCategories = array_filter($categoryList, function ($v) use ($prefix) { return $v->pathPrefix == $prefix; });
             if (empty($filteredCategories)) {
                 return null;    // No category matched the path's prefix
@@ -1479,7 +1481,7 @@ class TemplateConfiguration extends TemplateConfig
             $realPath = realpath($category->path . '/' . substr($path, strlen($prefix)));
 
             // If the file exists and no traversing is done (the real path starts with the category's base path),
-            // return the real path
+            // return the file info
             if ($realPath !== false && strpos($realPath, $category->path) === 0) {
                 $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
@@ -1490,7 +1492,7 @@ class TemplateConfiguration extends TemplateConfig
 
         // Path doesn't match the virtual path category format, so we try the determine if it belongs to a category.
         foreach ($categoryList as $category) {
-            // Check for paths relative to the theme, relative to the rootdir, or absolute
+            // Get the realpath for the file. Test whether it is relative to the category, rootdir or absolute.
             $realPath = realpath($category->path . '/' . $path);
             if ($realPath === false) {
                 $realPath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
@@ -1502,7 +1504,7 @@ class TemplateConfiguration extends TemplateConfig
                 continue;
             }
 
-            // If the real path is within a category's path, we return it.
+            // If the real path is within a category's path, we return the file info.
             if (strpos($realPath, $category->path) === 0) {
                 $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
@@ -1520,16 +1522,25 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function sanitizeImagePathsOnJson($attribute, $params)
     {
+        // Validates all options of the theme. Not only classic ones which are expected to hold a path,
+        // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode($this->$attribute, true);
         if (is_array($decodedOptions)) {
             foreach($decodedOptions as &$value) {
                 if (empty($value) || $value == 'inherit') {
                     continue;
                 }
+                // Alternative A - If option value is a path that matches a virtual path, transform the value to the virtual path
                 $virtualPath = $this->getVirtualThemeFilePath($value);
                 if (!empty($virtualPath)) {
                     $value = $virtualPath;
-                } elseif ($this->isVirtualPath($value) || realpath($value) !== false || realpath(Yii::app()->getConfig('rootdir') . '/' . $value) !== false) {
+                    continue;
+                }
+                // Alternative B - If any of the following:
+                // - option value matches a virtual path format or
+                // - option value matches a real existing path to a file either relative to the root LS installation or to the current workgin dir or absolute
+                // Mark the value as invalid, as that's not allowed
+                if ($this->isVirtualPath($value) || realpath($value) !== false || realpath(Yii::app()->getConfig('rootdir') . '/' . $value) !== false) {
                     $value = 'invalid:' . $value;
                 }
             }
@@ -1564,4 +1575,27 @@ class TemplateConfiguration extends TemplateConfig
         return !empty($this->getVirtualPathPrefix($value));
     }
 
+    /**
+     * Returns the related Template.
+     * The template can only be accessed as a relation when this model is stored in the DB. Before
+     * saving, $this->template is null. In that case, this method will load the approriate Template.
+     * @return Template|null
+     */
+    private function getRelatedTemplate()
+    {
+        $template = !empty($this->template) ? $this->template : Template::model()->findByAttributes(['name' => $this->template_name]);
+        return $template;
+    }
+
+    /**
+     * Returns the value of the specified attribute ($attributeName) from
+     * the closest Template in the hierarchy.
+     *
+     * @param string $attributeName
+     * @return mixed
+     */
+    private function getAttributeValue($attributeName)
+    {
+        return $this->getTemplateConfigurationForAttribute($this, $attributeName)->$attributeName;
+    }
 }
