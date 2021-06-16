@@ -15,7 +15,14 @@
 <!-- NB: These must be inside #pjax-content to work with pjax. -->
 <?= $jsVariablesHtml; ?>
 <?= $modalsHtml; ?>
-<?php $visibilityEditor = ''; //should be displayed ?>
+<?php $visibilityEditor = true; //should be displayed ?>
+<?php $visibilityOverview = false; ?>
+<?php
+    $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
+    if (empty($questionTheme['extends'])) {
+        $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
+    }
+?>
 
 <!-- Create form for question -->
 <div class="side-body">
@@ -23,11 +30,11 @@
     <?php if ($oQuestion->qid !== 0): ?>
         <?php
             if ($this->aData['tabOverviewEditor'] === 'overview') {
-                $visibilityOverview = ''; //should be displayed
-                $visibilityEditor = 'style="display:none;"';
+                $visibilityOverview = true; //should be displayed
+                $visibilityEditor = false;
             } else {
-                $visibilityOverview = 'style="display:none;"';
-                $visibilityEditor = '';
+                $visibilityOverview = false;
+                $visibilityEditor = true;
             }
         ?>
     <?php endif; ?>
@@ -36,7 +43,13 @@
         <?php echo CHtml::form(
             ['questionAdministration/saveQuestionData'],
             'post',
-            ['id' => 'edit-question-form']
+            [
+                'id' => 'edit-question-form',
+                'data-summary-url' => $this->createUrl(
+                    'questionAdministration/getSummaryHTML',
+                    ['questionId' => $oQuestion->qid]
+                ),
+            ]
         ); ?>
 
             <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
@@ -50,7 +63,7 @@
                 id = 'submit-create-question'
                 name="savecreate"
             />
-            <div id="advanced-question-editor" class="row" <?= $visibilityEditor?>>
+            <div id="advanced-question-editor" class="row"<?= empty($visibilityEditor) ? ' style="display:none;"' : '' ?>>
                 <div class="col-lg-7">
                     <div class="container-center scoped-new-questioneditor">
                         <div class="pagetitle h3 scoped-unset-pointer-events">
@@ -65,7 +78,6 @@
                         <div class="row">
                             <!-- Question code -->
                             <?php
-                            $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
                             $this->renderPartial(
                                 "questionCode",
                                 ['question' => $oQuestion]
@@ -80,10 +92,6 @@
                         <!-- Question type selector -->
                         <div class="row">
                             <?php
-                            $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
-                            if (empty($questionTheme['extends'])) {
-                                $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
-                            }
                             $this->renderPartial(
                                 "typeSelector",
                                 [
@@ -154,54 +162,14 @@
     </div>
 
     <!-- Show summary page if we're editing or viewing. -->
-    <?php if ($oQuestion->qid !== 0): ?>
-        <div class="container-fluid" id="question-overview" <?= $visibilityOverview?>>
-            <form>
-            <!-- Question summary -->
-            <div class="container-center scoped-new-questioneditor">
-                <div class="pagetitle h3">
-                    <?php eT('Question summary'); ?>&nbsp;
-                    <small>
-                        <em><?= $oQuestion->title; ?></em>&nbsp;
-                        (ID: <?php echo (int) $oQuestion->qid;?>)
-                    </small>
-                </div>
-                <div class="row">
-                    <?php $this->renderPartial(
-                        "summary",
-                        [
-                            'question'         => $oQuestion,
-                            'questionTheme'    => $questionTheme,
-                            'answersCount'      => count($oQuestion->answers),
-                            'subquestionsCount' => count($oQuestion->subquestions),
-                            'advancedSettings'  => $advancedSettings
-                        ]
-                    ); ?>
-                </div>
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'update')): ?>
-                    <div id="survey-action-title" class="pagetitle h3"><?php eT('Question quick actions'); ?></div>
-                    <div class="row welcome survey-action">
-                        <div class="col-lg-12 content-right">
-
-                            <!-- create question in this group -->
-                            <div class="col-lg-3">
-                                <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('questionAdministration/create/surveyid/'.$oSurvey->sid.'/gid/'.$oQuestion->gid); ?>">
-                                    <div class="panel-heading">
-                                        <div class="panel-title h4"><?php eT("Add new question to group");?></div>
-                                    </div>
-                                    <div class="panel-body">
-                                        <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                        <p class='btn-link'>
-                                                <?php eT("Add new question to group");?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-            </form>
-        </div>
-    <?php endif; ?>
+    <?php $this->renderPartial(
+        "questionSummary",
+        [
+            'survey' => $oSurvey,
+            'question' => $oQuestion,
+            'questionTheme' => $questionTheme,
+            'advancedSettings' => $advancedSettings,
+            'visibilityOverview' => $visibilityOverview,
+        ]
+    ); ?>
 </div>

@@ -1687,6 +1687,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       }
 
+      const updateQuestionSummary = () => {
+        const form = document.getElementById('edit-question-form');
+        if (!(form instanceof HTMLFormElement)) {
+          throw 'form is not HTMLFormElement';
+        }
+        $.ajax({
+          url: form.dataset.summaryUrl,
+          method: 'GET',
+          data: {},
+          dataType: 'html',
+          success: (summaryHtml) => {
+            const isVisible = $('#question-overview').is(':visible');
+            const newSummary = $(summaryHtml);
+            if (isVisible) {
+              newSummary.show();
+            } else {
+              newSummary.hide();
+            }
+            $('#question-overview').replaceWith(newSummary);
+            // Quick action buttons are hidden in the html, and normally made visible by panelsAnimation() function of adminbasics.js,
+            // which is triggered on document ready or pjax:scriptcomplete. To avoid messing with other things, we just do the animation
+            // again here.
+            $('.panel').each(function (i) {
+              $(this).delay(i++ * 200).animate({
+                opacity: 1,
+                top: '0px'
+              }, 200);
+            });
+          },
+          error: (response) => {
+            alert('Internal error in updateQuestionSummary: ' + response);
+          },
+        });
+      };
+
       // Helper function after unique check.
       const saveFormWithAjax /*: (void) => (void) */ = () => {
         const data = {};
@@ -1738,6 +1773,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 'well-lg bg-danger text-center'
               );
             }
+            updateQuestionSummary();
           },
           error: (data) => {
             $('#ls-loading').hide();
@@ -1924,4 +1960,23 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
+
+  function makeTopbarSticky() {
+    const topbar = $('#pjax-content > .menubar');
+    const editor = $('#in_survey_common');
+    const topbarOffset = topbar.offset().top;
+
+    $(window).on('scroll', () => {
+      if (window.pageYOffset >= topbarOffset) {
+        topbar.addClass('sticky');
+        topbar.css('width', topbar.parent().width());
+        editor.css('padding-top', topbar.outerHeight(true));
+      } else {
+        topbar.removeClass('sticky');
+        topbar.css('width', '');
+        editor.css('padding-top', '');
+      }
+    });
+  }
+  makeTopbarSticky();
 });

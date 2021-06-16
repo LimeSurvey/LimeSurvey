@@ -683,6 +683,7 @@ class UserAction extends Survey_Common_Action
                 SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
+                SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {

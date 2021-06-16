@@ -3106,4 +3106,47 @@ class QuestionAdministrationController extends LSBaseController
         }
         Yii::app()->end();
     }
+
+    /**
+     * Get HTML for question summary.
+     * Called with Ajax after question is saved.
+     *
+     * @param int $questionId
+     * @return void
+     */
+    public function actionGetSummaryHTML(int $questionId)
+    {
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+
+        /** @var string */
+        $questionThemeName = $question->getQuestionAttribute('question_template');
+
+        /** @var QuestionTheme */
+        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionThemeName);
+        if (empty($questionTheme['extends'])) {
+            $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
+        }
+
+        /** @var array<string,array<mixed>> */
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionThemeName);
+        // Remove general settings from this array.
+        unset($advancedSettings['Attribute']);
+
+        $this->renderPartial(
+            "questionSummary",
+            [
+                'survey' => $question->survey,
+                'question' => $question,
+                'questionTheme' => $questionTheme,
+                'advancedSettings' => $advancedSettings,
+                'overviewVisibility' => false,  // Hidden by default
+            ]
+        );
+    }
 }

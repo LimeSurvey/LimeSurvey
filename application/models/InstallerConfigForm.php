@@ -114,6 +114,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpGdPresent = false;
 
     /** @var bool */
+    public $phpGdHasJpegSupport = false;
+
+    /** @var bool */
     public $isPhpLdapPresent = false;
 
     /** @var bool */
@@ -208,7 +211,9 @@ class InstallerConfigForm extends CFormModel
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
 
         if (function_exists('gd_info')) {
-            $this->isPhpGdPresent = array_key_exists('FreeType Support', gd_info());
+            $gdInfo = gd_info();
+            $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
     }

@@ -81,9 +81,10 @@ class GlobalSettings extends Survey_Common_Action
         foreach ($this->_checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
+        Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
-        $data['updatelastcheck'] = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i:s");
+        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
         // @todo getGlobalSetting is deprecated!
         $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
@@ -268,6 +269,8 @@ class GlobalSettings extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
+
+        SettingGlobal::setSetting('createsample', (bool) Yii::app()->getRequest()->getPost('createsample'));
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");

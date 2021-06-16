@@ -1153,15 +1153,19 @@ class Survey_Common_Action extends CAction
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($oSurvey->startdate) != '') {
-            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->startdate);
-            $aData['startdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
+            Yii::import('application.libraries.Date_Time_Converter');
+            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
+            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['startdate'] = "-";
         }
 
         if (trim($oSurvey->expires) != '') {
-            $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $oSurvey->expires);
-            $aData['expdate'] = $datetimeobj->format($dateformatdetails['phpdate'] . ' H:i');
+            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
+            Yii::import('application.libraries.Date_Time_Converter');
+            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
+            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
+            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
         }
