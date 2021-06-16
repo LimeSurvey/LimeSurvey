@@ -2749,6 +2749,83 @@ class remotecontrol_handle
         }
     }
 
+
+    /**
+     * Delete a response in a given survey using its ID
+     *
+     * RPC Routine to delete responses of particular id in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param string $sToken unique token id of specific participant
+     * @param string $sLanguageCode The language to be used
+     * @return array Result of the change action
+     */
+     public function delete_responses($sSessionKey, $iSurveyID, $iResponseID, $sLanguageCode='')
+     {
+    	  // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey)){
+    		    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    		    if (!isset($oSurvey)){
+    			      return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+                // get response id from response table using token
+                $oResult = Survey_dynamic::model($iSurveyID)->findByPk($iResponseID);
+                if ($oResult){
+                    // delete the files
+                    $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$iSurveyID}/files/";
+                    $fieldmap = createFieldMap($iSurveyID, 'full' ,false, false, $sLanguageCode);
+                    $fuqtquestions = array();
+                    // find all fuqt questions
+                    foreach ($fieldmap as $field){
+                        if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0){
+                            $fuqtquestions[] = $field['fieldname'];
+                        }
+                    }
+
+                    if (!empty($fuqtquestions)){
+                        // find all responses (filenames) to the fuqt questions
+                        $filearray = Survey_dynamic::model($iSurveyID)->findAllByAttributes(array('id' => $iResponseID));
+                        $filecount = 0;
+                        foreach ($filearray as $metadata){
+                            foreach ($metadata as $aData){
+                                $phparray = json_decode_ls($aData);
+                                if (is_array($phparray)){
+                                    foreach ($phparray as $file){
+                                        @unlink($uploaddir . $file['filename']);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // delete the row
+                    Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                    // delete timings if savetimings is set
+                    if (isset( $thissurvey['savetimings'] ) && $thissurvey['savetimings'] == "Y"){
+                        Survey_timings::model($iSurveyID)->deleteByPk($iResponseID);
+                    }
+
+                    return array('iSurveyID'=>$iSurveyID);
+                }
+                else{
+                    return array('status' => 'Response Id not found');
+                }
+            }
+            else{
+                return array('status' => 'No permission');
+            }
+        }
+    	  else{
+           return array('status' => 'Invalid Session Key');
+        }
+    }
+
+
     /**
      * Uploads one file to be used later.
      *
