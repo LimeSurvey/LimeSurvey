@@ -1,52 +1,52 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-3.x-LTS',
-    'version' => 'dev-3.x-LTS',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-3.x-LTS',
+        'version' => 'dev-3.x-LTS',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => 'd37ae7daf2130c469d874471db3ead26f8302904',
+        'name' => 'limesurvey/limesurvey',
+        'dev' => false,
     ),
-    'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
-    'name' => 'limesurvey/limesurvey',
-  ),
-  'versions' => 
-  array (
-    'limesurvey/limesurvey' => 
-    array (
-      'pretty_version' => 'dev-3.x-LTS',
-      'version' => 'dev-3.x-LTS',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
+    'versions' => array(
+        'limesurvey/limesurvey' => array(
+            'pretty_version' => 'dev-3.x-LTS',
+            'version' => 'dev-3.x-LTS',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => 'd37ae7daf2130c469d874471db3ead26f8302904',
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-ctype' => array(
+            'pretty_version' => 'v1.19.0',
+            'version' => '1.19.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
+            'reference' => 'aed596913b70fae57be53d86faa2e9ef85a2297b',
+            'dev_requirement' => false,
+        ),
+        'twig/twig' => array(
+            'pretty_version' => 'v1.42.5',
+            'version' => '1.42.5.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twig/twig',
+            'aliases' => array(),
+            'reference' => '87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e',
+            'dev_requirement' => false,
+        ),
+        'yiiext/twig-renderer' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'yii-extension',
+            'install_path' => __DIR__ . '/../yiiext/twig-renderer',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
+            'dev_requirement' => false,
+        ),
     ),
-    'symfony/polyfill-ctype' => 
-    array (
-      'pretty_version' => 'v1.19.0',
-      'version' => '1.19.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'aed596913b70fae57be53d86faa2e9ef85a2297b',
-    ),
-    'twig/twig' => 
-    array (
-      'pretty_version' => 'v1.42.5',
-      'version' => '1.42.5.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '87b2ea9d8f6fd014d0621ca089bb1b3769ea3f8e',
-    ),
-    'yiiext/twig-renderer' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-        0 => '9999999-dev',
-      ),
-      'reference' => '3cb9b60a0d579855c17d7830d5015b74705c9fdd',
-    ),
-  ),
 );

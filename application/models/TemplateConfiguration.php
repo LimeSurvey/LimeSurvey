@@ -1455,7 +1455,7 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      *
-     * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null the file info if it's valid, of null if it's not.
+     * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null the file info if it's valid, or null if it's not.
      */
     public function getThemeFileInfo($path)
     {
