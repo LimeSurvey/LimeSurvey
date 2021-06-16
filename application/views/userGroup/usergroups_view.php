@@ -43,6 +43,14 @@
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
 
+                     array(
+                        'header'      => '',
+                        'name'        => 'actions',
+                        'type'        => 'raw',
+                        'value'       => '$data->buttons',
+                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-left'),
+                    ),
+
                     array(
                         'header'      => gT('Name'),
                         'name'        => 'name',
@@ -70,15 +78,6 @@
                         'value'       => '$data->countUsers',
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
-
-                    array(
-                        'header'      => '',
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-                    ),
-
                 ),
 
                 'htmlOptions'      => array('style' => 'cursor: pointer;', 'class' => 'hoverAction'),

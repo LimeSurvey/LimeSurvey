@@ -2,6 +2,9 @@
 
 class UserGroupController extends LSBaseController
 {
+    /**
+     * @return array
+     **/
     public function accessRules()
     {
         return array(
