@@ -292,14 +292,10 @@ class QuestionAttribute extends LSActiveRecord
     public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion)
     {
         $retAttributeNamesExtended = $aAttributeNames;
-        /* @var $oAttributeValue QuestionAttribute*/
-        $oAttributeValue = self::model()->resetScope()->find(
-            "qid=:qid and attribute=:attribute",
-            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
-        );
-        if ($oAttributeValue !== null) {
-            $sQuestionTheme = $oAttributeValue->value;
-            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+        /** @var string|null */
+        $questionThemeName = $oQuestion->question_theme_name;
+        if (!empty($questionThemeName)) {
+            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($questionThemeName, $oQuestion->type);
             $questionAttributeHelper = new QuestionAttributeHelper();
             $retAttributeNamesExtended = $questionAttributeHelper->mergeQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
