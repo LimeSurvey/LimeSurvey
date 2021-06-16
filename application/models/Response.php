@@ -138,8 +138,8 @@
          */
         public function deleteTimings()
         {
-          if (isset($this->dynamicId['savetimings']) && $this->dynamicId['savetimings'] == "Y"){
-              Survey_timings::model($this->dynamicId)->deleteByPk($this->id);
+          if (Survey::model()->findByPk($this->dynamicId)->isSaveTimings) {
+              SurveyTimingDynamic::model($this->dynamicId)->deleteByPk($this->id);
           }
         }
 

@@ -2773,15 +2773,11 @@ class remotecontrol_handle
             }
 
             if (hasSurveyPermission($iSurveyID, 'responses', 'delete')){
-                // get response id from response table using token
-                $oResult = Response::model($iSurveyID)->findByPk($iResponseID);
-                if ($oResult){
-                    // delete the files
-                    $oResult.deleteFiles();
-                    // delete timings
-                    $oResult.deleteTimings();
-                    // delete the row
-                    Survey_dynamic::model($iSurveyID)->deleteByPk($iResponseID);
+                // get response id from response table using ID
+                $Response = Response::model($iSurveyID)->findByPk($iResponseID);
+                if ($Response){
+                    // delete the files and timings and row
+                    $Response->delete();
                     return array('iSurveyID'=>$iSurveyID);
                 }
                 else{
