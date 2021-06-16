@@ -515,30 +515,36 @@ class QuestionTheme extends LSActiveRecord
             };
         }
 
-        // transform theme name compatible with question attributes for core/default theme_template
-        $sThemeName = empty($oQuestionTheme->extends) ? 'core' : $oQuestionTheme->name;
-
         // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
-        $aQuestions = Question::model()->with('questionattributes')->findAll(
-            'type = :type AND parent_qid = :parent_qid',
+        $aQuestions = Question::model()->findAll(
+            'type = :type AND question_theme_name = :theme AND parent_qid = :parent_qid',
             [
                 ':type'       => $oQuestionTheme->question_type,
+                ':theme'      => $oQuestionTheme->name,
                 ':parent_qid' => 0
             ]
         );
-        foreach ($aQuestions as $oQuestion) {
-            if (isset($oQuestion['questionattributes']['question_template'])) {
-                if ($sThemeName === $oQuestion['questionattributes']['question_template']['value']) {
-                    $bDeleteTheme = false;
-                    break;
-                }
-            } else {
-                if ($sThemeName === 'core') {
-                    $bDeleteTheme = false;
-                    break;
-                }
+        if (!empty($aQuestions)) {
+            // There are questions using this theme. Don't delete it
+            $bDeleteTheme = false;
+        }
+
+        // Just in case, if this is a core (base) theme we also check if there are any questions without theme name (this shouldn't happen)
+        if (empty($oQuestionTheme->extends) && $bDeleteTheme !== false) {
+            $aQuestions = Question::model()->findAll(
+                'type = :type AND (question_theme_name = :empty OR question_theme_name IS NULL) AND parent_qid = :parent_qid',
+                [
+                    ':type'       => $oQuestionTheme->question_type,
+                    ':empty'      => '',
+                    ':parent_qid' => 0
+                ]
+            );
+            if (!empty($aQuestions)) {
+                // There are questions using this theme. Don't delete it
+                $bDeleteTheme = false;
             }
         }
+
         // if this questiontheme is used, it cannot be deleted
         if (isset($bDeleteTheme) && !$bDeleteTheme) {
             return [
