@@ -44,7 +44,7 @@
                     ),
 
                      array(
-                        'header'      => gT('Actions'),
+                        'header'      => '',
                         'name'        => 'actions',
                         'type'        => 'raw',
                         'value'       => '$data->buttons',
