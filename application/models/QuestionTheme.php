@@ -82,6 +82,17 @@ class QuestionTheme extends LSActiveRecord
         return array();
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            'core' => array(
+                'condition' => 'core_theme = :true AND extends = :extends',
+                'params' => array(':true' => 1, ':extends' => '')
+            ),
+        );
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */

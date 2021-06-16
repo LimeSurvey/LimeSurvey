@@ -184,7 +184,7 @@ class QuestionAdministrationController extends LSBaseController
             App()->getConfig('preselectquestiontheme')
         );
         if ($question->qid !== 0) {
-            $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
+            $questionTemplate = $question->question_theme_name;
         }
 
         $this->aData['surveyid'] = $question->sid;

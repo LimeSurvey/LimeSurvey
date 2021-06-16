@@ -431,12 +431,12 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function getQuestionTemplateValue($questionID)
     {
-        $question_template = QuestionAttribute::model()->findByAttributes([
-            'qid' => $questionID,
-            'attribute' => 'question_template'
-        ]);
-
-        $value = !empty($question_template) && !empty($question_template->value) ? $question_template->value : 'core';
+        /**
+         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
+         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
+         */
+        $question = Question::model()->findByPk($questionID);
+        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
         return $value;
     }
 
