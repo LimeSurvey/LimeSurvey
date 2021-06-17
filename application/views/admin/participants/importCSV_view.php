@@ -7,7 +7,6 @@ echo viewHelper::getViewTestTag('importParticipants');
 ?>
 <div id="pjax-content">
     <div class="col-lg-12 list-surveys">
-        <h3><?php eT("Import CSV"); ?></h3>
 
         <div class="row">
             <div class="container">

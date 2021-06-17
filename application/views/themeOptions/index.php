@@ -13,14 +13,21 @@
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
 
-$this->renderPartial('../admin/super/fullpagebar_view', array(
-'fullpagebar' => array(
-    'returnbutton'=>array(
-        'url'=>'index',
-        'text'=>gT('Close'),
+// Green Bar with Page Title
+$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Themes'));
+
+// White Bar with Button inside (visible in configuration pages)
+$this->renderPartial(
+    '../admin/super/fullpagebar_view',
+    array(
+        'fullpagebar' => array(
+            'returnbutton' => array(
+                'url' => 'index',
+                'text' => gT('Back'),
+            ),
         ),
     )
-));
+);
 ?>
 
 <div class="meme ls-space margin left-15 right-15 row list-themes">
@@ -33,7 +40,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
         <div id="surveythemes" class="tab-pane active">
             <div class="col-lg-12 list-surveys">
 
-                <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
+                <?php echo '<h3>' . gT('Installed survey themes:') . '</h3>'; ?>
 
                 <?php $this->renderPartial(
                         './surveythememenu',
@@ -51,7 +58,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                 ); ?>
 
                 <!-- Available Themes -->
-                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>
+                <?php if (count($oSurveyTheme->templatesWithNoDb) > 0) :?>
                     <h3><?php eT('Available survey themes:'); ?></h3>
                     <div class="row">
                         <div class="col-sm-12 content-right">
@@ -65,7 +72,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                     </thead>
 
                                     <tbody>
-                                        <?php foreach ($oSurveyTheme->templatesWithNoDb as $oTemplate):?>
+                                        <?php foreach ($oSurveyTheme->templatesWithNoDb as $oTemplate) :?>
                                             <?php // echo $oTemplate; ?>
                                             <tr class="odd">
                                                 <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
@@ -88,8 +95,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                 <?php endif;?>
 
                 <!-- Broken Themes  -->
-                <?php $aBrokenThemes = Template::getBrokenThemes(); if (count($aBrokenThemes) > 0 ):?>
-
+                <?php $aBrokenThemes = Template::getBrokenThemes(); if (count($aBrokenThemes) > 0) :?>
                     <div class="alert alert-danger" role="alert">
                       <?php eT('Broken survey themes:'); ?>
                     </div>
@@ -106,7 +112,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                     </thead>
 
                                     <tbody>
-                                        <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme):?>
+                                        <?php foreach ($aBrokenThemes as $sName => $oBrokenTheme) :?>
                                             <?php // echo $oTemplate; ?>
                                             <tr class="odd">
                                                 <td class="col-md-1 text-danger"><?php echo $sName; ?></td>
@@ -114,7 +120,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                                 <td class="col-md-1">
 
                                                     <!-- Export -->
-                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && class_exists('ZipArchive')):?>
+                                                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
                                                         <a class="btn btn-default  btn-block" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/brokentemplatezip/templatename/' . $sName) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
@@ -122,7 +128,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                                     <?php endif;?>
 
                                                     <!-- Delete -->
-                                                    <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
+                                                    <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')) :?>
                                                         <a
                                                             id="button-delete"
                                                             href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
@@ -152,7 +158,7 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
 
                 <!-- Deprecated Themes -->
                 <?php $aDeprecatedThemes =  Template::getDeprecatedTemplates(); ?>
-                <?php if (count( $aDeprecatedThemes ) > 0 ):?>
+                <?php if (count($aDeprecatedThemes) > 0) :?>
                     <h3><?php eT('Deprecated survey themes:'); ?></h3>
                     <div class="row">
                         <div class="col-sm-12 content-right">
@@ -166,11 +172,11 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                     </thead>
 
                                     <tbody>
-                                        <?php foreach ($aDeprecatedThemes as $aDeprecatedTheme):?>
+                                        <?php foreach ($aDeprecatedThemes as $aDeprecatedTheme) :?>
                                             <tr class="odd">
                                                 <td class="col-md-10"><?php echo $aDeprecatedTheme['name']; ?></td>
                                                 <td class="col-md-2">
-                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && class_exists('ZipArchive')):?>
+                                                    <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && class_exists('ZipArchive')) :?>
                                                         <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
                                                             <span class="icon-export text-success"></span>
                                                             <?php eT("Export"); ?>
@@ -204,17 +210,17 @@ $this->renderPartial('../admin/super/fullpagebar_view', array(
                                 </thead>
 
                                 <tbody>
-                                    <?php foreach ($oAdminTheme->adminThemeList as $oTheme ):?>
+                                    <?php foreach ($oAdminTheme->adminThemeList as $oTheme) :?>
                                         <tr class="odd">
                                             <td class="col-md-1"><?php echo $oTheme->preview; ?></td>
                                             <td class="col-md-2"><?php echo $oTheme->metadata->name; ?></td>
                                             <td class="col-md-3"><?php echo $oTheme->metadata->description; ?></td>
                                             <td class="col-md-2"><?php eT('Core admin theme');?></td>
                                             <td class="col-md-1">
-                                                <?php if ($oTheme->path == getGlobalSetting('admintheme')):?>
+                                                <?php if ($oTheme->path == getGlobalSetting('admintheme')) :?>
                                                     <h3><strong class="text-info"><?php eT("Selected")?></strong></h3>
-                                                <?php else: ?>
-                                                    <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName'=>$oTheme->path]);?>" class="btn btn-default btn-lg ">
+                                                <?php else : ?>
+                                                    <a href="<?php echo $this->createUrl("themeOptions/setAdminTheme/", ['sAdminThemeName' => $oTheme->path]);?>" class="btn btn-default btn-lg ">
                                                         <?php eT("Select");?>
                                                     </a>
                                                 <?php endif; ?>

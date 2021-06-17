@@ -677,11 +677,13 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
                 
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
+                SettingsUser::setUserSetting('preselectquestiontheme', Yii::app()->request->getPost('preselectquestiontheme'));
                 SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
                 SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
+                SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -728,11 +730,13 @@ class UserAction extends Survey_Common_Action
         });
 
         $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
+        $currentPreselectedQuestionTheme = array_key_exists('preselectquestiontheme', $aUserSettings) ? $aUserSettings['preselectquestiontheme'] : App()->getConfig('preselectquestiontheme');
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
+        $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;
         $aData['aUserSettings'] = $aUserSettings;
         $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype);
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype, $currentPreselectedQuestionTheme);
 
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;

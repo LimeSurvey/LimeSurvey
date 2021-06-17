@@ -110,7 +110,7 @@ class PluginManager extends \CApplicationComponent
     public function installUploadedPlugin($destdir)
     {
         $configFile = $destdir . '/config.xml';
-        $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
+        $extensionConfig = \ExtensionConfig::loadFromFile($configFile);
         if (empty($extensionConfig)) {
             return [false, gT('Could not parse config.xml file.')];
         } else {
@@ -367,7 +367,7 @@ class PluginManager extends \CApplicationComponent
                     $configFile = Yii::getPathOfAlias($pluginDir)
                         . DIRECTORY_SEPARATOR . $pluginClass
                         . DIRECTORY_SEPARATOR .'config.xml';
-                    $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
+                    $extensionConfig = \ExtensionConfig::loadFromFile($configFile);
                     if ($extensionConfig) {
                         $pluginType = $type;
                         $found = true;

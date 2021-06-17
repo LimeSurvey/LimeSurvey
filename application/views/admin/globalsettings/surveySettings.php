@@ -16,23 +16,6 @@ $optionsOnOff = array(
 ?>
 
 <div class="col-lg-12 list-surveys">
-    
-    <?php $this->renderPartial('super/fullpagebar_view', array(
-        'fullpagebar' => array(
-            'returnbutton'=>array(
-                'url'=>'admin/index',
-                'text'=>gT('Close'),
-            ),
-            'savebutton' => array(
-                'form' => 'survey-settings-form'
-            ),
-            'saveandclosebutton' => array(
-                'form' => 'survey-settings-form'
-            )
-        )
-    )); ?>
-
-    <h3><?php eT('Global survey settings'); ?></h3>
 
     <div class="row">
         <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id'=>'survey-settings-form')); ?>    

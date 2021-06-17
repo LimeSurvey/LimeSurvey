@@ -34,6 +34,61 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.3 (build 210609) to 5.0.4 (build 210614) June 14, 2021
+-Fixed issue: Renamed Config menu entries (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Surveys - Create Survey (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Settings - Global (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Create/edit user roles (Jessica Höck)
+-Fixed issue: Page Header and TopBar: Central participant management (Jessica Höck)
+-Fixed issue #17347: 'Class Twig_Environment not found' when uploading an image (#1913) (Gabriel Jenik)
+-Fixed issue #17309: Date question always shows error when using AR language - can't proceed at survey (#1887) (Gabriel Jenik)
+-Fixed issue #17303: ZipArchive error when exporting theme and debug mode is avtive (Carsten Schmitz)
+-Fixed issue #17297: Importing question group does not work (#1914) (Gabriel Jenik)
+-Fixed issue #17250: Unable to upload image with extension in uppercase in Theme option (#1884) (Gabriel Jenik)
+-Fixed issue #17201: Easier switch between customized condition and condition designer (#1874) (Gabriel Jenik)
+-Fixed issue #16834: When importing a theme bigger in size than the allowed PHP.ini settings, there is no proper description of the error (#1861) (Gabriel Jenik)
+-Fixed issue #12349: RTL languages not dispayed correctly in the admin editor (#1879) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by nostradumusfdx, holch, femariso, GabrielLF, lucaspcs, marcelovincenzi, cassiofs, josesiqueira, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.0.2 (build 210607) to 5.0.3 (build 210609) June 8, 2021
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Portuguese (Portugal) by c_schmitz, victorgoncalves, thiagosmartins, holch, paulohpmoraes, mauriciofurtado, femariso, marciojv, fermacedo, GabrielLF, lucaspcs, samarta, marcelovincenzi, cassiofs
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: French (France) by DenisChenu
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.0.1 (build 210532) to 5.0.2 (build 210607) June 7, 2021
+-Fixed issue: Page Header (Jessica Höck)
+-Fixed issue: Database error when editing a quota and text is too long (Gabriel Jenik)
+-Fixed issue: Adjusted Save and Close Button in Create or Import new Label Set(s) view (Jessica Höck)
+-Fixed issue: Added Shadow and Adjusted Action Bar in Themes view (Jessica Höck)
+-Fixed issue #17353: Argument 1 must be at least CRYPTO_SIGN_BYTES long (Olle Haerstedt)
+-Fixed issue #17345: Personal Settings: Default Question Type is not saved as expected. (#1909) (Gabriel Jenik)
+-Fixed issue #17337: Setting mandatory state on multiple questions leads to exception (#1904) (Gabriel Jenik)
+-Fixed issue #17298: queXML PDF Export: 500: Internal Server Error (#1905) (Adam Zammit)
+-Fixed issue #17239: Error : Unable to find template "./subviews/content/.twig" (with PHP8) (#1907) (Gabriel Jenik)
+-Fixed issue #14039: Captcha prevent panel integration. GET URL parameter not captured (#1896) (Gabriel Jenik)
+
+
 Changes from 5.0.0 (build 210526) to 5.0.1 (build 210532) May 31, 2021
 -Fixed issue #17341: Typo in question class for dual scale array (Carsten Schmitz)
 -Fixed issue #17327: Untranslatable help text in SPSS export (Olle Haerstedt)

@@ -80,7 +80,7 @@ class ExtensionConfig
      */
     public function getName()
     {
-        return $this->xml->metadata->name;
+        return (string) $this->xml->metadata->name;
     }
 
     /**
@@ -88,7 +88,7 @@ class ExtensionConfig
      */
     public function getDescription()
     {
-        return $this->xml->metadata->description;
+        return (string) $this->xml->metadata->description;
     }
 
     /**
@@ -96,7 +96,7 @@ class ExtensionConfig
      */
     public function getAuthor()
     {
-        return $this->xml->metadata->author;
+        return (string) $this->xml->metadata->author;
     }
 
     /**
@@ -104,16 +104,17 @@ class ExtensionConfig
      */
     public function getLicense()
     {
-        return $this->xml->metadata->license;
+        return (string) $this->xml->metadata->license;
     }
 
     /**
      * Version is a string, not number, due to semantic versioning.
+     *
      * @return string
      */
     public function getVersion()
     {
-        return $this->xml->metadata->version;
+        return (string) $this->xml->metadata->version;
     }
 
     /**
@@ -146,7 +147,7 @@ class ExtensionConfig
      * @param string $file Full file path.
      * @return ExtensionConfig
      */
-    public static function loadConfigFromFile($file)
+    public static function loadFromFile($file)
     {
         if (!file_exists($file)) {
             return null;
@@ -158,9 +159,55 @@ class ExtensionConfig
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
             }
-            $config = new \ExtensionConfig($xml);
+            $config = new self($xml);
             return $config;
         }
+    }
+
+    /**
+     * Create an ExtensionConfig from config.xml inside zip $filePath
+     * config.xml can be in a subfolder.
+     *
+     * @param string $filePath Full file path.
+     * @return ExtensionConfig
+     * @throws Exception at error
+     */
+    public static function loadFromZip($filePath)
+    {
+        $zip = new ZipArchive();
+        $err = $zip->open($filePath);
+        if ($err !== true) {
+            throw new Exception('Could not open zip file');
+        }
+        $configFilename = self::findConfigXml($zip);
+        $configString = $zip->getFromName($configFilename);
+        $zip->close();
+        if ($configString === null) {
+            throw new Exception('Config file is empty');
+        }
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
+        $xml = simplexml_load_string($configString);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
+        return new self($xml);
+    }
+
+    /**
+     * @param ZipArchive $zip
+     * @return string|null
+     */
+    private static function findConfigXml(ZipArchive $zip)
+    {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if (strpos($filename, 'config.xml') !== false) {
+                return $filename;
+            }
+        }
+        return null;
     }
 
     /**

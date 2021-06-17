@@ -13,15 +13,14 @@ if (App()->session['questionselectormode'] !== 'default') {
 } else {
     $selectormodeclass = App()->getConfig('defaultquestionselectormode');
 }
-uasort($aQuestionTypeList, "questionTitleSort");
-foreach ($aQuestionTypeList as $questionType) {
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+foreach ($aQuestionTypeList as $questionTheme) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
-            'questionGroupName' => $questionType['group']
+            'questionGroupName' => $questionTheme->group
         );
     }
-    $imageName = $questionType['question_type'];
+    $imageName = $questionTheme->question_type;
     if ($imageName == ":") {
         $imageName = "COLON";
     } else {
@@ -34,21 +33,24 @@ foreach ($aQuestionTypeList as $questionType) {
         }
     }
 
-    $questionType['type'] = $questionType['question_type'];
-    $questionType['detailpage'] = '
+    $questionTypeData = [];
+    $questionTypeData['type'] = $questionTheme->question_type;
+    $questionTypeData['name'] = $questionTheme->name;
+    $questionTypeData['title'] = $questionTheme->title;
+    $questionTypeData['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="' . $questionType['image_path'] . '" />
+            <img src="' . $questionTheme->image_path . '" />
         </div>';
     if ($imageName == 'S') {
-        $questionType['detailpage'] = '
+        $questionTypeData['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
     }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionTypeData;
 }
-$currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+
 $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
     'renderType' => "group-simple",
@@ -59,11 +61,17 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'previewWindowTitle' => gT("Preview question type"),
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $currentPreselectedQuestiontype,
+    'theme' => $currentPreselectedQuestionTheme,
     'debug' => YII_DEBUG,
     'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'buttonClasses' => ['btn-primary'],
     'optionArray' => [
         'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
+        'onUpdate' => [
+            'value',
+            'theme',
+            "$('#preselectquestiontheme').val(theme);"
+        ],
     ]
 ));
 
@@ -244,6 +252,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', array('class'=>" control-label")); ?>
                                     <?=$oQuestionSelector->getButtonOrSelect(true)?>
                                     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+                                    <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
@@ -349,6 +358,24 @@ echo $oQuestionSelector->getModal();
                                          '1' => gT("Yes",'unescaped'),
                                      ), array('class'=>"form-control"));
                                  ?>
+                                </div>
+                            </div>
+                            <!-- Create example question group and question -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <?php echo TbHtml::label( gT("Create example question group and question:"), 'createsample', array('class'=>" control-label")); ?>
+                                    <?php
+                                        echo TbHtml::dropDownList(
+                                            'createsample',
+                                            ($aUserSettings['createsample'] ?? 'default'),
+                                            array(
+                                                'default' => gT("Default",'unescaped'),
+                                                '0' => gT("No",'unescaped'),
+                                                '1' => gT("Yes",'unescaped'),
+                                            ),
+                                            array('class' => "form-control")
+                                        );
+                                    ?>
                                 </div>
                             </div>
                         </div>

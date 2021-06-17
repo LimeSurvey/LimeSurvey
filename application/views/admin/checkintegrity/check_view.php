@@ -1,12 +1,18 @@
 <?php
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
+/* @var array $fullpagebar */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('checkIntegrity');
 
+// Green Bar (SurveyManagerBar)
+//$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Check data integrity'));
+
+// White Bar (FullPager)
+//$this->renderPartial('../layouts/fullpagebar_view', array('fullpagebar' => $fullpagebar));
 ?>
-<div class="pagetitle h3"><?php eT("Check data integrity");?></div>
+<!-- <div class="pagetitle h3"><?php eT("Check data integrity");?></div> -->
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
@@ -287,8 +293,6 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <?php
             } ?>
         </div>
-
-
 
         <div class="jumbotron message-box">
                 <h2><?php eT("Data redundancy check"); ?></h2>

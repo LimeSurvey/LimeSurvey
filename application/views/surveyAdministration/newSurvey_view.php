@@ -13,17 +13,13 @@ echo viewHelper::getViewTestTag('createSurvey');
 <!-- new survey view -->
 <?php
     extract($arrayed_data);
-    //Yii::app()->loadHelper('admin.htmleditor');
-    //PrepareEditorScript(false, $this);
     $active = Yii::app()->request->getParam('tab', 'create');
 ?>
 <script type="text/javascript">
     standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
     templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
-
-<div class="pagetitle h3"><?php eT("Create, import, or copy survey"); ?></div>
-<div class="row" style="margin-bottom: 100px">
+<div class="row" style="margin-top: 10px; margin-bottom: 100px">
     <div class="col-lg-12">
         <!-- tabs -->
         <?php $this->renderPartial('tab_survey_view', $data); ?>
