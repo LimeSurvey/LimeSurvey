@@ -591,29 +591,29 @@ class QuestionTheme extends LSActiveRecord
      * Returns all QuestionTheme settings
      *
      * @param string $question_type
-     * @param string $question_template 'core' OR question theme name
+     * @param string $question_theme_name 'core' OR question theme name
      * @param string $language
      * @return QuestionTheme
      */
-    public static function findQuestionMetaData($question_type, $question_template = 'core', $language = '')
+    public static function findQuestionMetaData($question_type, $question_theme_name = 'core', $language = '')
     {
         if (empty($question_type)) {
             throw new InvalidArgumentException('question_type cannot be empty');
         }
 
-        if (empty($question_template)) {
-            throw new InvalidArgumentException('question_template cannot be empty');
+        if (empty($question_theme_name)) {
+            throw new InvalidArgumentException('question_theme_name cannot be empty');
         }
 
         $criteria = new CDbCriteria();
 
-        if ($question_template === 'core') {
+        if ($question_theme_name === 'core') {
             $criteria->condition = 'extends = :extends';
             $criteria->addCondition('question_type = :question_type', 'AND');
             $criteria->params = [':extends' => '', ':question_type' => $question_type];
         } else {
             $criteria->addCondition('question_type = :question_type AND name = :name');
-            $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
+            $criteria->params = [':question_type' => $question_type, ':name' => $question_theme_name];
         }
 
         $questionTheme = self::model()->query($criteria, false);
@@ -680,10 +680,6 @@ class QuestionTheme extends LSActiveRecord
             // decode settings json
             $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
-            // if its a core question change name to core for rendering Default rendering in the selector
-            if (empty($baseQuestion['extends'])) {
-                $baseQuestion['name'] = 'core';
-            }
             $baseQuestion['image_path'] = str_replace(
                 '//',
                 '/',

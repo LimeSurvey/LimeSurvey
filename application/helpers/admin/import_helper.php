@@ -434,6 +434,18 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             }
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
 
+            // Question theme was previously stored as a question attribute ('question_template'), but now it
+            // is a normal attribute of the Question model. So we must check if the imported question has the
+            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
+            // as QuestionAttribute.
+            if ($insertdata['attribute'] == 'question_template') {
+                $oQuestion = Question::model()->findByPk($insertdata['qid']);
+                if (!empty($oQuestion)) {
+                    $oQuestion->question_theme_name = $insertdata['value'];
+                    $oQuestion->save();
+                }
+                continue;
+            }
 
             if (
                 $iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) &&
@@ -972,6 +984,19 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             unset($insertdata['qaid']);
             if ($insertdata['qid']) {
                 $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
+            }
+
+            // Question theme was previously stored as a question attribute ('question_template'), but now it
+            // is a normal attribute of the Question model. So we must check if the imported question has the
+            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
+            // as QuestionAttribute.
+            if ($insertdata['attribute'] == 'question_template') {
+                $oQuestion = Question::model()->findByPk($insertdata['qid']);
+                if (!empty($oQuestion)) {
+                    $oQuestion->question_theme_name = $insertdata['value'];
+                    $oQuestion->save();
+                }
+                continue;
             }
 
             if (
@@ -1924,6 +1949,20 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
+
+            // Question theme was previously stored as a question attribute ('question_template'), but now it
+            // is a normal attribute of the Question model. So we must check if the imported question has the
+            // 'question_template' attribute and use it for overriding 'question_theme_name' instead of saving
+            // as QuestionAttribute.
+            if ($insertdata['attribute'] == 'question_template') {
+                $oQuestion = Question::model()->findByPk($insertdata['qid']);
+                if (!empty($oQuestion)) {
+                    $oQuestion->question_theme_name = $insertdata['value'];
+                    $oQuestion->save();
+                }
+                continue;
+            }
+            
             if ($iDBVersion < 156 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n']) {
                 foreach ($aLanguagesSupported as $sLanguage) {
                     $insertdata['language'] = $sLanguage;

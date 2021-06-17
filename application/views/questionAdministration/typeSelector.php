@@ -39,7 +39,7 @@ $oQuestionSelector = $this->beginWidget(
                 'theme',
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
                 "$('#question_type').val(value);
-                 $('#question_template').val(theme); 
+                 $('#question_theme_name').val(theme);
                 LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl', '$extraOptionsUrl');"
             ]
         ]
@@ -56,5 +56,5 @@ $oQuestionSelector = $this->beginWidget(
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
-    <input type="hidden" id="question_template" name="question[question_template]" value="<?= $questionThemeName; ?>" />
+    <input type="hidden" id="question_theme_name" name="question[question_theme_name]" value="<?= $questionThemeName; ?>" />
 </div>

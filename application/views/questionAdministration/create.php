@@ -2,7 +2,6 @@
 
 /** @var Survey $oSurvey */
 /** @var Question $oQuestion */
-/** @var string $questionTemplate */
 ?>
 
 <style>
@@ -18,10 +17,7 @@
 <?php $visibilityEditor = true; //should be displayed ?>
 <?php $visibilityOverview = false; ?>
 <?php
-    $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $questionTemplate);
-    if (empty($questionTheme['extends'])) {
-        $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
-    }
+    $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $oQuestion->question_theme_name);
 ?>
 
 <!-- Create form for question -->

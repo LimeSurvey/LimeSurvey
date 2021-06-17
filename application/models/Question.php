@@ -215,6 +215,8 @@ class Question extends LSActiveRecord
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
+            /* Don't save empty or 'core' question theme name */
+            $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
         } else {
             $aRules[] = array('title', 'compare', 'compareValue' => 'time', 'operator' => '!=',
                 'message' => gT("'time' is a reserved word and can not be used for a subquestion."),
@@ -1533,5 +1535,22 @@ class Question extends LSActiveRecord
             }
         }
         return $results;
+    }
+
+    /**
+     * Validates the question theme name, making sure it's not empty or 'core'
+     */
+    public function questionThemeNameValidator()
+    {
+        // As long as there is a question theme name, and it's not 'core', it's ok.
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            return;
+        }
+
+        // We need to determine the actual theme name of the core theme
+        $coreQuestionTheme = QuestionTheme::model()->core()->findByAttributes(['question_type' => $this->type]);
+        if (!empty($coreQuestionTheme)) {
+            $this->question_theme_name = $coreQuestionTheme->name;
+        }
     }
 }

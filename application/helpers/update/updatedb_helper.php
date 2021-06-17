@@ -4649,6 +4649,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ->bindValue(':extends', '')
             ->execute();
 
+            // Also update 'preselectquestiontheme' user settings where the value is 'core'
+            $oDB->createCommand("UPDATE {{settings_user}} su
+                JOIN {{settings_user}} su2 ON su2.uid = su.uid AND su2.stg_name = 'preselectquestiontype'
+                JOIN {{question_themes}} qt ON qt.question_type = su2.stg_value
+                SET su.stg_value = qt.name
+                WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'"
+            )->execute();
+            
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
             $oTransaction->commit();
         }

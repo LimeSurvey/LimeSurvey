@@ -295,7 +295,7 @@ class QuestionAttributeHelper
      * Get the definitions of question attributes from base question type
      *
      * @param string $questionType     the base question type
-     * @param boolean $advancedOnly     if true, general attributes ('question_template', 'gid', ...) are excluded
+     * @param boolean $advancedOnly     if true, general attributes ('question_theme_name', 'gid', ...) are excluded
      * @return array    all question attribute definitions provided by the question type
      */
     public function getAttributesFromQuestionType($questionType, $advancedOnly = false)

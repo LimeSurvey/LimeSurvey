@@ -8,7 +8,7 @@ class QuestionCreate extends Question
     /**
      * @todo This is a factory method, not a singleton. Rename to make() or create().
      */
-    public static function getInstance($iSurveyId, $type = null)
+    public static function getInstance($iSurveyId, $type = null, $themeName = null)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (empty($oSurvey)) {
@@ -22,6 +22,11 @@ class QuestionCreate extends Question
             $questionType = $type;
         } else {
             $questionType = SettingsUser::getUserSettingValue('preselectquestiontype', null, null, null, Yii::app()->getConfig('preselectquestiontype'));
+        }
+        if (isset($themeName) && !empty($themeName)) {
+            $questionThemeName = $themeName;
+        } else {
+            $questionThemeName = SettingsUser::getUserSettingValue('preselectquestiontheme', null, null, null, Yii::app()->getConfig('preselectquestiontheme'));
         }
         $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
         $temporaryTitle =
@@ -39,6 +44,7 @@ class QuestionCreate extends Question
                 'modulename' => '',
                 'title' => $temporaryTitle,
                 'question_order' => 9999,
+                'question_theme_name' => $questionThemeName,
         ];
 
         $oQuestion = new QuestionCreate();
