@@ -219,7 +219,7 @@ class labels extends Survey_Common_Action
         $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view')); // Close button, UrlReferrer
 
         // Green SurveyManagerBar
-        $aData['pageTitle'] = gT($pageTitle);
+        $aData['pageTitle'] = $pageTitle;
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
