@@ -35,6 +35,8 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
 
     var sReplacementFieldTitle = '".gT('Placeholder fields','js')."';
     var sReplacementFieldButton = '".gT('Insert/edit placeholder field','js')."';
+    var sSwitchToolbarFullTitle = '".gT('Show full toolbar','js')."';
+    var sSwitchToolbarBasicTitle = '".gT('Show basic toolbar','js')."';
     var editorwindowsHash = new Object();
 
     function find_popup_editor(fieldname)
