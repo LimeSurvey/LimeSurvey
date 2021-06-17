@@ -34,7 +34,7 @@ CKEDITOR.editorConfig = function (a) {
             ["ShowBlocks", "Templates"]
         ];
         a.toolbar_inline = [
-            ["Maximize", "Source", "Createlimereplacementfields"],
+            ["Maximize", "Source", "Createlimereplacementfields", "SwitchToolbar"],
             ["Cut",
                 "Copy", "Paste", "PasteText", "PasteFromWord"
             ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "Html5video", "VideoDetector", "Flash"],
@@ -52,12 +52,11 @@ CKEDITOR.editorConfig = function (a) {
             ["TextColor", "BGColor"]
         ];
         a.toolbar_inline2 = [
-            ["Maximize", "Createlimereplacementfields"],
+            ["Maximize", "Source", "Createlimereplacementfields", "SwitchToolbar"],
             ["Bold", "Italic", "Underline"],
             ["NumberedList", "BulletedList", "-", "Outdent", "Indent"],
             ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["Link", "Unlink", "Image"],
-            ["Source"]
         ];
     
         a.toolbar = [
@@ -78,7 +77,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Anchor", "Iframe"],
             ["TextColor", "BGColor"]
         ];
-        a.extraPlugins = "limereplacementfields,codemirror,sourcedialog";
+        a.extraPlugins = "limereplacementfields,codemirror,sourcedialog,editorplaceholder,lsswitchtoolbars";
         a.removePlugins = 'sourcearea';
         
 };
