@@ -47,7 +47,7 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
                             <div class="form-group">
                                 <label class="control-label " for='group_name_<?php echo $grouplang; ?>'><?php eT("Title:"); ?></label>
                                 <div class="">
-                                    <input class="form-control group_title" type='text' size='80' maxlength='100' name='questionGroupI10N[<?=$grouplang?>][group_name]' id='group_name_<?php echo $grouplang; ?>' /></li>
+                                    <input class="form-control group_title" type='text' size='80' maxlength='200' name='questionGroupI10N[<?=$grouplang?>][group_name]' id='group_name_<?php echo $grouplang; ?>' /></li>
                                 </div>
                             </div>
 
