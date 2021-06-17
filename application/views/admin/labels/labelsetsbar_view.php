@@ -48,7 +48,7 @@
                 <?php if (isset($labelbar['buttons']['edit'])): ?>
                     <!-- Edit label set -->
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button" style="margin-top:10px;">
                             <span class="fa fa-pencil  text-success"></span>
                             <?php eT("Edit label set"); ?>
                         </a>
@@ -57,7 +57,9 @@
 
                     <!-- Export this label set -->
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>" role="button">
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>"
+                            role="button"
+                            style="margin-top:10px;">
                             <span class="icon-export text-success"></span>
                             <?php eT("Export this label set"); ?>
                         </a>
@@ -73,7 +75,7 @@
                            data-target="#confirmation-modal"
                            data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'
                            data-message="<?php eT("Do you really want to delete this label set?","js"); ?>"
-                           >
+                           style="margin-top: 10px;">
                             <span class="fa fa-trash text-danger"></span>
                             <?php eT("Delete label set"); ?>
                         </button>
