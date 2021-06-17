@@ -251,7 +251,7 @@ class RemoteControlTest extends TestBaseClass
         // Check result via database.
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
-        $this->assertCount(1, $result, 'Exactly zero response');
+        $this->assertCount(0, $result, 'Exactly zero response');
 
         // Cleanup
         self::$testSurvey->delete();
