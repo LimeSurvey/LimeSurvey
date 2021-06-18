@@ -32,6 +32,14 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                     'columns' => array(
 
                         array(
+                            'header'=>gT('Actions'),
+                            'name'=>'actions',
+                            'type'=>'raw',
+                            'value'=>'$data->buttons',
+                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-center button-column'),
+                        ),
+
+                        array(
                             'header' => gT('Label set ID'),
                             'name' => 'labelset_id',
                             'value'=>'$data->lid',
@@ -51,14 +59,6 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                             'value'=> '$data->languages',
                             'type' => 'LanguageList',
                             'htmlOptions' => array('class' => 'col-md-6'),
-                        ),
-
-                        array(
-                            'header'=>'',
-                            'name'=>'actions',
-                            'type'=>'raw',
-                            'value'=>'$data->buttons',
-                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right button-column'),
                         ),
 
                     ),
