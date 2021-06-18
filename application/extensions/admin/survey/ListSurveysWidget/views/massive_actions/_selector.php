@@ -27,7 +27,7 @@
 
                     // modal
                     'actionType'    => 'modal',
-                    'modalType'     => 'yes-no',
+                    'modalType'     => 'cancel-delete',
                     'keepopen'      => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
@@ -53,12 +53,12 @@
                     'grid-reload' => 'no',
                     // modal
                     'actionType'   => 'modal',
-                    'modalType'    => 'yes-no',
-                    'showSelected' => 'yes',   
+                    'modalType'    => 'cancel-apply',
+                    'showSelected' => 'yes',
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'     => 'yes',
                     'sModalTitle'  => gT('Set survey theme'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php',array(),true),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php', array(), true),
                 ),
 
                 // Change survey group selector
@@ -72,9 +72,9 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'yes-no',
+                    'modalType'   => 'cancel-apply',
                     'keepopen'    => 'yes',
-                    'showSelected'  => 'yes',   
+                    'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Change survey group'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_change_survey_group.php',array(),true),
@@ -106,9 +106,9 @@
 
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'yes-no',
+                    'modalType'   => 'cancel-apply',
                     'keepopen'    => 'yes',
-                    'showSelected'  => 'yes',   
+                    'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export survey archive'),
                     'htmlModalBody' => gT('This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive.').' '.gT('Continue?'),
@@ -126,9 +126,9 @@
 
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'yes-no',
+                    'modalType'   => 'cancel-apply',
                     'keepopen'    => 'yes',
-                    'showSelected'  => 'yes',   
+                    'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export survey structure'),
                     'htmlModalBody' => gT('This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive.').' '.gT('Continue?'),
@@ -144,9 +144,9 @@
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'yes-no',
+                    'modalType'   => 'cancel-apply',
                     'keepopen'    => 'yes',
-                    'showSelected'  => 'yes',   
+                    'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'sModalTitle'   => gT('Export printable survey'),
                     'htmlModalBody' => gT('This will export a printable version of your survey.').' '.gT('Continue?'),
@@ -162,12 +162,12 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'yes-no',
-                    'showSelected' => 'yes', 
+                    'modalType'   => 'cancel-apply',
+                    'showSelected' => 'yes',
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Set expiry date'),
-                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php',array(),true),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php', array(), true),
                 ),
             ),
 

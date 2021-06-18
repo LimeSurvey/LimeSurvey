@@ -42,8 +42,20 @@ $this->renderPartial(
 
                 <?php echo '<h3>' . gT('Installed survey themes:') . '</h3>'; ?>
 
-                <?php $this->renderPartial('./surveythememenu', ['canImport' => $canImport,'importErrorMessage' => $importErrorMessage, 'importModal' => 'importSurveyModal', 'importTemplate' => 'importSurveyTemplate', 'themeType' => 'survey']); ?>
-                <?php $this->renderPartial('./surveythemelist', array( 'oSurveyTheme' => $oSurveyTheme, 'pageSize' => $pageSize )); ?>
+                <?php $this->renderPartial(
+                        './surveythememenu',
+                        [
+                                'canImport'=>$canImport,
+                            'importErrorMessage'=>$importErrorMessage,
+                            'importModal' => 'importSurveyModal',
+                            'importTemplate' => 'importSurveyTemplate',
+                            'themeType' => 'survey'
+                        ]
+                ); ?>
+                <?php $this->renderPartial(
+                        './surveythemelist',
+                        array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize)
+                ); ?>
 
                 <!-- Available Themes -->
                 <?php if (count($oSurveyTheme->templatesWithNoDb) > 0) :?>

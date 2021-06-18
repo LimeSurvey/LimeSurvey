@@ -10,12 +10,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <?php echo CHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>$importTemplate, 'name'=>$importTemplate, 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="modal-title h4">
-                        <?php eT("Upload theme file") ?>
-                    </div>
-                </div>
+            <?php
+            Yii::app()->getController()->renderPartial(
+                '/layouts/partial_modals/modal_header',
+                ['modalTitle' => gT("Upload theme file")]
+            );
+            ?>
                 <div class="modal-body">
                     <input type='hidden' name='lid' value='$lid' />
                     <input type='hidden' name='action' value='templateupload' />
@@ -31,14 +31,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">
+                        <?php eT("Cancel");?>
+                    </button>
                     <?php if (!class_exists('ZipArchive')) {?>
                         <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
                     <?php } else {?>
-                        <input class="btn btn-success" type='button' value='<?php eT("Import") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT(' Please select a file to import! ', 'js ') ?>")) { this.form.submit();}' />
+                        <input class="btn btn-success" type='button' value='<?php eT("Install") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT(' Please select a file to import! ', 'js ') ?>")) { this.form.submit();}' />
                     <?php }?>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <?php eT("Close");?>
-                    </button>
                 </div>
             </form>
         </div>
