@@ -85,8 +85,6 @@
         // modal
         'actionType' => 'modal',
         'modalType' => 'cancel-apply',
-        //'yes' => gT('Apply'),
-        //'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set "Mandatory" state'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
@@ -105,8 +103,6 @@
         // modal
         'actionType' => 'modal',
         'modalType' => 'cancel-apply',
-        //'yes' => gT('Apply'),
-        //'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set CSS class'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_css_class', ['model' => $model], true),
@@ -125,8 +121,6 @@
         // modal
         'actionType' => 'modal',
         'modalType' => 'cancel-apply',
-        //'yes' => gT('Apply'),
-        //'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
