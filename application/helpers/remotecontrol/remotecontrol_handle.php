@@ -3015,8 +3015,10 @@ class remotecontrol_handle
                 $Response = Response::model($iSurveyID)->findByPk($iResponseID);
                 if ($Response){
                     // delete the files and timings and row
-                    $Response->delete();
-                    return array($iResponseID=>'deleted');
+                    if ($Response->delete()){
+                        return array($iResponseID=>'deleted');
+                    }
+                    return array('status' => 'Response not deleted for unknow reason');                    
                 }
                 else{
                     return array('status' => 'Response Id not found');

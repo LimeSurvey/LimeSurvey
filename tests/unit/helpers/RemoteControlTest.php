@@ -204,9 +204,8 @@ class RemoteControlTest extends TestBaseClass
         $dbo->createCommand($query)->execute();
 
         // Import survey
-        $filename = self::$surveysFolder . '/limesurvey_survey_666368.lss';
+        $filename = self::$surveysFolder . '/survey_archive_deleteResponseTest.lsa';
         self::importSurvey($filename);
-        self::$testHelper->activateSurvey(self::$surveyId);
 
         // Create handler.
         $admin   = new \AdminController('dummyid');
@@ -215,43 +214,18 @@ class RemoteControlTest extends TestBaseClass
         // Get session key.
         $sessionKey = $handler->get_session_key(
             self::$username,
-            self::$password
-        );
+            self::$password);
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
-        // Get sgqa.
-        $survey = \Survey::model()->findByPk(self::$surveyId);
-        $question = $survey->groups[0]->questions[0];
-        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $question->qid;
-
-        // Add response
-        $response = [
-            $sgqa => 'One answer'
-        ];
-        $result = $handler->add_response($sessionKey, self::$surveyId, $response);
+        // Delete response
+        $id_response = 19;
+        $result = $handler->delete_response($sessionKey, self::$surveyId, $id_response);
         $this->assertEquals('19', $result, '$result = ' . json_encode($result));
 
         // Check result via database.
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
-        $this->assertEquals('One answer', $result[0][$sgqa], '"One answer" response');
-
-        // Check result via API.
-        $result = $handler->export_responses($sessionKey, self::$surveyId, 'json');
-        $this->assertNotNull($result);
-        $responses = json_decode(file_get_contents($result->fileName));
-        $this->assertTrue(count($responses->responses) === 1);
-
-        // Delete response
-        $id_response = 1;
-        $result = $handler->delete_response($sessionKey, self::$surveyId, $id_response);
-        $this->assertEquals('1', $result, '$result = ' . json_encode($result));
-
-        // Check result via database.
-        $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
-        $result = $dbo->createCommand($query)->queryAll();
-        $this->assertCount(0, $result, 'Exactly zero response');
 
         // Cleanup
         self::$testSurvey->delete();
