@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-06-08 11:06:55+00:00\n"
+"POT-Creation-Date: 2021-06-21 08:21:06+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -252,19 +252,23 @@ msgstr ""
 msgid "The password you have chosen at the optional settings step."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1113
+#: application/controllers/InstallerController.php:878
+msgid "The GD extension found doesn't support JPEG"
+msgstr ""
+
+#: application/controllers/InstallerController.php:1119
 msgid "Configuration directory is not writable"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1114
+#: application/controllers/InstallerController.php:1120
 msgid "You will be redirected in about 5 secs. If not, click <a href=\"%s\">here</a>."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1334
+#: application/controllers/InstallerController.php:1340
 msgid "Try again! Connection with database failed."
 msgstr ""
 
-#: application/controllers/InstallerController.php:1335
+#: application/controllers/InstallerController.php:1341
 #: application/libraries/PluginManager/PluginBase.php:431
 #: application/views/admin/checkintegrity/check_view.php:26
 #: application/views/admin/checkintegrity/check_view.php:88
@@ -277,7 +281,7 @@ msgstr ""
 msgid "Reason:"
 msgstr ""
 
-#: application/controllers/InstallerController.php:1348
+#: application/controllers/InstallerController.php:1354
 msgid "The database does not meet the minimum MySQL/MariaDB server version requirement for LimeSurvey (%s). Found version: %s"
 msgstr ""
 
@@ -21886,6 +21890,10 @@ msgstr ""
 msgid "Delete this subquestion"
 msgstr ""
 
+#: tmp/runtime/twig_cache/25/2501433d213f4c0250155c9796239b1c90dd2e84e679ba52c01dc69039c8ff16.php:164
+msgid "For further information please contact %s:"
+msgstr ""
+
 #: tmp/runtime/twig_cache/25/25753a99ff12b2993972ad8cbe094ecea74c4a0ad470df8abb852fbb806259b9.php:56
 msgid "End url"
 msgstr ""
@@ -22010,10 +22018,6 @@ msgstr ""
 
 #: tmp/runtime/twig_cache/de/deffd718373d14e47c812a4cd56fba24c68d081edc41971c6e2a256648d16976.php:95
 msgid "Accept"
-msgstr ""
-
-#: tmp/runtime/twig_cache/e3/e3632bbdd88d5b8af11cb4dcf4e5c954519a4b3bb453b4a2cbf9675193981a39.php:158
-msgid "For further information please contact %s:"
 msgstr ""
 
 #: tmp/runtime/twig_cache/e7/e751487f4e31a4a560a11aa092cc688c1b1d3d86be7c5a3507e412313df4e2cd.php:135
