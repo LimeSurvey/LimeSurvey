@@ -18,7 +18,7 @@ $aActionsArray = array(
             'text'          =>  gT('Delete'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-delete',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
@@ -34,7 +34,7 @@ $aActionsArray = array(
             'text'          =>  gT('Resend login data'),
             'grid-reload'   => 'yes',
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-apply',
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
@@ -51,12 +51,13 @@ $aActionsArray = array(
             'grid-reload'       => 'yes',
             //modal
             'actionType'        => 'modal',
-            'modalType'         => 'yes-no-lg',
+            'modalType'         => 'cancel-apply',
+            'largeModalView'    => true,
             'keepopen'          => 'yes',
             'showSelected'      => 'yes',
             'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
             'sModalTitle'       => gT('Edit permissions'),
-            'htmlFooterButtons' => [],
+            //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true)
         ),
         
@@ -74,7 +75,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
-        'modalType'     => 'yes-no-lg',
+        'modalType'     => 'cancel-apply',
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
@@ -94,7 +95,8 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         'grid-reload'       => 'yes',
         //modal
         'actionType'        => 'modal',
-        'modalType'         => 'yes-no-lg',
+        'modalType'         => 'cancel-apply',
+        'largeModalView'    => true,
         'keepopen'          => 'yes',
         'showSelected'      => 'yes',
         'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),

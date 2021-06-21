@@ -37,8 +37,15 @@
 </table>
 
 <?php if(!$bArchiveIsEmpty):?>
+<div class="modal-footer modal-footer-buttons">
+    <button type="button" class="btn btn-cancel" data-dismiss="modal">
+        &nbsp
+        <?php
+        eT("Cancel"); ?>
+    </button>
     <a class='btn btn-primary' href="<?php echo App()->createUrl('/admin/export/sa/downloadZip/sZip/'.$sZip);?>">
         <span class="fa fa-download"></span>
         <?php eT('Download archive');?>
     </a>
+</div>
 <?php endif; ?>

@@ -129,11 +129,12 @@
 <div class="modal fade" tabindex="-1" id="delete-modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title"><?= gT("Delete this user group") ?></h4>
-            </div>
+            <?php
+            Yii::app()->getController()->renderPartial(
+                '/layouts/partial_modals/modal_header',
+                ['modalTitle' => gT('Delete this user group')]
+            );
+            ?>
             <div class="modal-body">
                 <?= CHtml::form(array("userGroup/deleteGroup"), 'post',
                     array('class' => '', 'id' => 'delete-modal-form', 'name' => 'delete-modal-form')) ?>
@@ -142,8 +143,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?= gT('Cancel') ?></button>
-                <button type="button" class="btn btn-danger" id="confirm-deletion"><?= gT('Yes') ?></button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?= gT('Cancel') ?></button>
+                <button type="button" class="btn btn-danger" id="confirm-deletion"><?= gT('Delete') ?></button>
             </div>
         </div>
     </div>

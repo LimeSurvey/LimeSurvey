@@ -664,6 +664,9 @@ class TemplateManifest extends TemplateConfiguration
               href="' . $sDeleteUrl . '"
               data-post=\'{ "templatename": "' . $this->sTemplateName . '" }\'
               data-text="' . gT('Are you sure you want to delete this theme? ') . '"
+              data-button-no="' . gt('Cancel') . '"  
+              data-button-yes="' . gt('Delete') . '"
+              data-button-type="btn-danger"
               title="' . gT('Delete') . '"
               class="btn btn-danger btn-block selector--ConfirmModal">
                   <span class="fa fa-trash "></span>

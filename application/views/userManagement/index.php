@@ -58,7 +58,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                 'columns' => $columnDefinition,
                 'filter' => $model,
                 'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
-                'summaryText'   => "<div class='row' style='text-align:left; color:#000'>"
+                'summaryText'   => "<div class='row'>"
                 ."<div class='col-xs-6 content-left'>".$massiveAction."</div>"
                 ."<div class='col-xs-6'>"
                 .gT('Displaying {start}-{end} of {count} result(s).').' '

@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label class="control-label " id="question-group-title-<?=$aGroupData[$i]['language']?>"><?php eT("Title:"); ?></label>
                                     <div class="">
-                                        <?php echo CHtml::textField("questionGroupI10N[{$aGroupData[$i]['language']}][group_name]",$aGroupData[$i]['group_name'],array('class'=>'form-control','size'=>"80",'maxlength'=>'100','id'=>"group_name_{$aGroupData[$i]['language']}")); ?>
+                                        <?php echo CHtml::textField("questionGroupI10N[{$aGroupData[$i]['language']}][group_name]",$aGroupData[$i]['group_name'],array('class'=>'form-control','size'=>"80",'maxlength'=>'200','id'=>"group_name_{$aGroupData[$i]['language']}")); ?>
                                     </div>
                                 </div>
 

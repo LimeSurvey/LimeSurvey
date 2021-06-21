@@ -42,7 +42,7 @@
 
             // modal
             'actionType' => 'modal',
-            'modalType' => 'yes-no',
+            'modalType' => 'cancel-delete',
             'keepopen' => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('questionAdministration/renderItemsSelected/'),
@@ -63,7 +63,7 @@
 
             // modal
             'actionType' => 'modal',
-            'modalType' => 'yes-no',
+            'modalType' => 'cancel-apply',
             'keepopen' => 'no',
             'yes' => gT('Apply'),
             'no' => gT('Cancel'),
@@ -84,9 +84,7 @@
 
         // modal
         'actionType' => 'modal',
-        'modalType' => 'yes-no',
-        'yes' => gT('Apply'),
-        'no' => gT('Cancel'),
+        'modalType' => 'cancel-apply',
         'keepopen' => 'no',
         'sModalTitle' => gT('Set "Mandatory" state'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
@@ -104,9 +102,7 @@
 
         // modal
         'actionType' => 'modal',
-        'modalType' => 'yes-no',
-        'yes' => gT('Apply'),
-        'no' => gT('Cancel'),
+        'modalType' => 'cancel-apply',
         'keepopen' => 'no',
         'sModalTitle' => gT('Set CSS class'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_css_class', ['model' => $model], true),
@@ -124,9 +120,7 @@
 
         // modal
         'actionType' => 'modal',
-        'modalType' => 'yes-no',
-        'yes' => gT('Apply'),
-        'no' => gT('Cancel'),
+        'modalType' => 'cancel-apply',
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
         'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
@@ -160,9 +154,9 @@
 
             // modal
             'actionType' => 'modal',
-            'modalType' => 'yes-no',
-            'yes' => gT('Apply'),
-            'no' => gT('Cancel'),
+            'modalType' => 'cancel-apply',
+            //'yes' => gT('Apply'),
+            //'no' => gT('Cancel'),
             'keepopen' => 'no',
             'sModalTitle' => gT('Set "Other" state'),
             'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
@@ -181,12 +175,16 @@
 
         // modal
         'actionType' => 'modal',
-        'modalType' => 'yes-no',
-        'yes' => gT('Apply'),
-        'no' => gT('Cancel'),
+        'modalType' => 'cancel-apply',
+        //'yes' => gT('Apply'),
+        //'no' => gT('Cancel'),
         'keepopen' => 'false',
         'sModalTitle' => gT('Present subquestions/answer options in random order'),
-        'htmlModalBody' => $this->renderPartial('/admin/survey/Question/massive_actions/_set_subquestansw_order',  ['model' => $model], true),
+        'htmlModalBody' => $this->renderPartial(
+                '/admin/survey/Question/massive_actions/_set_subquestansw_order',
+                ['model' => $model],
+                true
+        ),
     );
 
 

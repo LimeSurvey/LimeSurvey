@@ -30,3 +30,10 @@
         </div>
     </div>
 </div>
+<div class="modal-footer modal-footer-buttons">
+    <button type="button" class="btn btn-default" data-dismiss="modal">
+        &nbsp
+        <?php
+        eT("Close"); ?>
+    </button>
+</div>
