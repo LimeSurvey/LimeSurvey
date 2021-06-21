@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.3 (build 210615) to 3.27.4 (build 210622) June 21, 2021
+-Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)
+-Fixed issue #17351: Also check that GD implement jpeg support (#1917) (Gabriel Jenik)
+-Fixed issue #17038: templateurl placeholder not being replaced (#1924) (Gabriel Jenik)
+
+
 Changes from 3.27.2 (build 210608) to 3.27.3 (build 210615) June 14, 2021
 -Fixed issue #17347: 'Class Twig_Environment not found' when uploading an image (#1912) (Gabriel Jenik)
 #Updated translation: Turkish by kayazeren
