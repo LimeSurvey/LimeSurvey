@@ -726,6 +726,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['radixpoint'] = 1;
     $supportedLanguages['ru']['momentjs'] = 'ru';
 
+    // Sami
+    $supportedLanguages['smi']['description'] = gT('Sami');
+    $supportedLanguages['smi']['nativedescription'] = 'Sámi';
+    $supportedLanguages['smi']['rtl'] = false;
+    $supportedLanguages['smi']['dateformat'] = 4;
+    $supportedLanguages['smi']['radixpoint'] = 1;
+    $supportedLanguages['smi']['momentjs'] = 'sme';
+
     // Serbian
     $supportedLanguages['sr']['description'] = gT('Serbian (Cyrillic)');
     $supportedLanguages['sr']['nativedescription'] = '&#1057;&#1088;&#1087;&#1089;&#1082;&#1080;';
@@ -936,7 +944,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cy']['radixpoint'] = 0;
     $supportedLanguages['cy']['momentjs'] = 'cy';
 
-    // Azerbaijani
+    // Yakut
     $supportedLanguages['sah']['description'] = gT('Yakut');
     $supportedLanguages['sah']['nativedescription'] = '&#x421;&#x430;&#x445;&#x430; &#x442;&#x44B;&#x43B;&#x430;';
     $supportedLanguages['sah']['rtl'] = false;
