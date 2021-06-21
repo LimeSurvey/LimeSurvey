@@ -369,7 +369,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionUserPermissions()
+    public function actionUserPermissions(): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
