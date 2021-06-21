@@ -3001,7 +3001,7 @@ class remotecontrol_handle
      * @param string $sLanguageCode The language to be used
      * @return array Result of the change action
      */
-     public function delete_responses($sSessionKey, $iSurveyID, $iResponseID, $sLanguageCode='')
+     public function delete_responses($sSessionKey, $iSurveyID, $iResponseID)
      {
     	  // check sessionKey is valid or not
         if ($this->_checkSessionKey($sSessionKey)){
@@ -3018,7 +3018,7 @@ class remotecontrol_handle
                     if ($Response->delete()){
                         return array($iResponseID=>'deleted');
                     }
-                    return array('status' => 'Response not deleted for unknow reason');                    
+                    return array('status' => 'Response not deleted for unknow reason');
                 }
                 else{
                     return array('status' => 'Response Id not found');
