@@ -2989,7 +2989,7 @@ class remotecontrol_handle
     }
 
     /**
-     * Delete a response in a given survey using its ID
+     * Delete a response in a given survey using its Id
      *
      * RPC Routine to delete responses of particular id in a survey.
      * Returns array
@@ -2997,7 +2997,7 @@ class remotecontrol_handle
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey that participants belong
-     * @param string $sToken unique token id of specific participant
+     * @param int $iResponseID Id of the response to delete
      * @return array Result of the change action
      */
      public function delete_responses($sSessionKey, $iSurveyID, $iResponseID)
