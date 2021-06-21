@@ -2998,7 +2998,6 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the survey that participants belong
      * @param string $sToken unique token id of specific participant
-     * @param string $sLanguageCode The language to be used
      * @return array Result of the change action
      */
      public function delete_responses($sSessionKey, $iSurveyID, $iResponseID)
