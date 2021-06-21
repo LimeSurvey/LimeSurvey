@@ -38,11 +38,14 @@ const ConfirmationModal = function(e){
         if (typeof onclick_fn == 'function') {
             $(_this).find('.btn-ok').off('click');
 
-            $(_this).find('.btn-ok').on('click', function(ev) {
-                if(!options.keepopen ) { $('#confirmation-modal').modal('hide'); }
+            $(_this).find('.btn-ok').on('click', function (ev) {
+                if (!options.keepopen )
+                {
+                    $('#confirmation-modal').modal('hide');
+                }
                 onclick_fn();
             });
-            return
+            return;
         }
         LOG.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
         return;
