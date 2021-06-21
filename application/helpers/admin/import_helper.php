@@ -1248,7 +1248,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             return $aImportResults;
         case 'lsa':
             // Import a survey archive
-            Yii::import("application.libraries.admin.pclzip.pclzip", true);
+            Yii::app()->loadLibrary('admin.pclzip');
             $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
             $aFiles = $pclzip->listContent();
 

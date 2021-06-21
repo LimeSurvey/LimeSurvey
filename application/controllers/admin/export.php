@@ -901,7 +901,7 @@ class export extends Survey_Common_Action
     {
         $aSurveys = json_decode($sSurveys);
         $aResults = array();
-        Yii::import('application.libraries.admin.pclzip', true);
+        Yii::app()->loadLibrary('admin.pclzip');
         $bArchiveIsEmpty = true;
         $sTempDir        = Yii::app()->getConfig("tempdir");
         $sZip            = randomChars(30);
@@ -1019,7 +1019,7 @@ class export extends Survey_Common_Action
         $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
         $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
 
-        Yii::import('application.libraries.admin.pclzip', true);
+        Yii::app()->loadLibrary('admin.pclzip');
         $zip = new PclZip($aZIPFileName);
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
