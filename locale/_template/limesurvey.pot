@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-06-21 08:21:17+00:00\n"
+"POT-Creation-Date: 2021-06-21 13:03:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19537,7 +19537,7 @@ msgid "Homepage"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:277
-msgid "Global Survey"
+msgid "Global survey"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:302
@@ -23272,7 +23272,7 @@ msgid "No questions found."
 msgstr ""
 
 #: application/views/questionAdministration/questionCode.php:9
-msgid "The Question Code Represents the ID, number or code for the question that is used for quick identification. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."
+msgid "The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."
 msgstr ""
 
 #: application/views/questionAdministration/questionSummary.php:35
