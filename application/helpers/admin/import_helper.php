@@ -58,13 +58,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
         return $results;
     }
-    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
-    /*
-    $fieldnames=array();
-    foreach ($xml->questions->fields->fieldname as $fieldname ){
-    $fieldnames[]=(string)$fieldname;
-    };*/
-
 
     // Import group table ===================================================================================
     $iGroupOrder = Yii::app()->db->createCommand()->select('MAX(group_order)')->from('{{groups}}')->where('sid=:sid', array(':sid' => $iNewSID))->queryScalar();
@@ -644,19 +637,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $results['fatalerror'] = gT("The languages of the imported question file must at least include the base language of this survey.");
         return $results;
     }
-    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
-    /*
-    $fieldnames=array();
-    foreach ($xml->questions->fields->fieldname as $fieldname ){
-    $fieldnames[]=(string)$fieldname;
-    };*/
-
 
     // Import questions table ===================================================================================
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
-
 
     $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$iNewGID";
     $res = Yii::app()->db->createCommand($query)->query();
