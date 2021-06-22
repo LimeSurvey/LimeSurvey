@@ -548,7 +548,7 @@ class QuestionTheme extends LSActiveRecord
         // if this questiontheme is used, it cannot be deleted
         if (isset($bDeleteTheme) && !$bDeleteTheme) {
             return [
-                'error'  => gT('Question type is used in a Survey and cannot be uninstalled'),
+                'error'  => gT('Question theme is used in a Survey and cannot be uninstalled'),
                 'result' => false
             ];
         }

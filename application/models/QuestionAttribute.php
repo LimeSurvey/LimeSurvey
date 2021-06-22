@@ -424,6 +424,8 @@ class QuestionAttribute extends LSActiveRecord
      * the attribute is missing. In those cases, the deault "core" is used.
      *
      * @return string question_template or 'core' if it not exists
+     * 
+     * @deprecated use $question->question_theme_name instead (Question model)
      */
     public static function getQuestionTemplateValue($questionID)
     {
