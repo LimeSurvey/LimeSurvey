@@ -289,6 +289,9 @@ class User extends LSActiveRecord
         return false;
     }
 
+    /**
+     * @todo document me
+     */
     public function checkPasswordStrength($password)
     {
         $settings = Yii::app()->getConfig("passwordValidationRules");
@@ -373,6 +376,9 @@ class User extends LSActiveRecord
         return $errorMsg;
     }
 
+    /**
+     * @todo document me
+     */
     public function getPasswordHelpText()
     {
         $settings =  Yii::app()->getConfig("passwordValidationRules");
@@ -430,6 +436,9 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
+    /**
+     * @todo document me
+     */
     public function getGroupList()
     {
         $collector = array_map(function ($oUserInGroup) {
