@@ -3000,7 +3000,7 @@ class remotecontrol_handle
      * @param int $iResponseID Id of the response to delete
      * @return array Result of the change action
      */
-     public function delete_responses($sSessionKey, $iSurveyID, $iResponseID)
+     public function delete_response($sSessionKey, $iSurveyID, $iResponseID)
      {
     	  // check sessionKey is valid or not
         if ($this->_checkSessionKey($sSessionKey)){
@@ -3009,7 +3009,7 @@ class remotecontrol_handle
     			      return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')){
                 // get response id from response table using ID
                 $Response = Response::model($iSurveyID)->findByPk($iResponseID);
                 if ($Response){
