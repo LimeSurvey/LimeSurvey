@@ -1349,7 +1349,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
                 if (!$questionGroup->save()) {
-                    safeDie(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->errors()));
+                    throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }
                 $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
