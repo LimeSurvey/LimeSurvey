@@ -401,41 +401,6 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     *
-     * REFACTORED in LayoutHelper
-     *
-     * Survey summary
-     * @param array $aData
-     */
-    private function _nsurveysummary($aData)
-    {
-        if (isset($aData['display']['surveysummary'])) {
-            if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
-                $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
-            }
-            $this->_surveysummary($aData);
-        }
-    }
-
-    /**
-     * Header
-     *
-     * * REFACTORED (in LayoutHelper.php)
-     *
-     * @param array $aData
-     */
-    private function _showHeaders($aData, $sendHTTPHeader = true)
-    {
-        if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
-            // Send HTTP header
-            if ($sendHTTPHeader) {
-                header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-            }
-            Yii::app()->getController()->_getAdminHeader();
-        }
-    }
-
-    /**
      * _showadminmenu() function returns html text for the administration button bar
      *
      * REFACTORED (in LayoutHelper.php)
