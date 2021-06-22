@@ -1312,7 +1312,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['surveyls_attributecaptions']);
         }
 
-        SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
+            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        }
     }
 
 
@@ -1820,7 +1822,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // now translate any links
-            $result = Condition::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[10]<br />");
+            $result = Condition::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[10]<br />");
+            }
             $results['conditions']++;
         }
     }
@@ -1848,7 +1853,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey id
             // now translate any links
-            $result = Assessment::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
+            $result = Assessment::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
+            }
 
             if (!isset($aASIDReplacements[$oldasid])) {
                 $aASIDReplacements[$oldasid] = $result->id; // add old and new id to the mapping array
@@ -1871,7 +1879,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
+            $result = Quota::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
+            }
             $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -1940,7 +1951,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['targetqid'] = $aQIDReplacements[(int) $insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result = SurveyURLParameter::model()->insertRecord($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[14]<br />");
+            $result = SurveyURLParameter::model()->insertRecord($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[14]<br />");
+            }
             $results['survey_url_parameters']++;
         }
     }
@@ -2222,7 +2236,9 @@ if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
                             }
                         }
 
-                        SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
+                        if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
+                            throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
+                        }
                         $results['responses']++;
                     }
                 }
@@ -2581,7 +2597,9 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             $insertdata[$key] = (string) $value;
         }
 
-        SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
+        if (!SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
+            throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
+        }
 
         $results['responses']++;
     }
