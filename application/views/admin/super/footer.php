@@ -132,13 +132,15 @@ foreach ($systemInfos as $key => $systemInfo) {
 
  */
 ?>
+
+<?php /** this one works with assets/packages/adminbasics/src/parts/confirmationModal.js */?>
 <div id="confirmation-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="h3 modal-title"><?php eT("Confirm"); ?></div>
+                <div class="h4 modal-title"><?php eT("Confirm"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -158,7 +160,7 @@ foreach ($systemInfos as $key => $systemInfo) {
             </div>
             <div class="modal-footer modal-footer-yes-no">
                 <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a class="btn btn-primary btn-ok"></span>&nbsp;<?php eT("Confirm"); ?></a>
+                <a class="btn btn-ok"><?php eT("Confirm"); ?></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">

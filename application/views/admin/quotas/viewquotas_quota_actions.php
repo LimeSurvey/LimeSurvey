@@ -20,6 +20,8 @@
             data-toggle="modal"
             data-target="#confirmation-modal"
             data-tooltip="true"
+            data-btnclass="btn-danger"
+            data-btntext="<?= gt('Delete')?>"
             title="<?php eT("Delete");?>"
             data-message="<?php eT("Are you sure you want to delete the selected quotas?","js"); ?>"
     >

@@ -8,14 +8,16 @@ const ConfirmationModal = function(e){
     //////PREGENERATED VARIABLES
     //Define the scope
     const _this = this;
-    //Set everything to null on default
+    //Set default options
     const optionsDefault = {
         onclick     : null,
         href        : null,
         message     : null,
-        keepopen    : null,    
-        postDatas   : null,    
+        keepopen    : null,
+        postDatas   : null,
         gridid      : null,
+        btnclass    : 'btn-primary',
+        btntext     : 'Confirm',
         "ajax-url"  : null,
     };
 
@@ -95,6 +97,10 @@ const ConfirmationModal = function(e){
     const options = _parseOptions(e);
     //Set the message if available
     $(this).find('.modal-body-text').html(options.message);
+    //first remove both classes
+    $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
+    $(this).find('.btn-ok').addClass(options.btnclass);
+    $(this).find('.btn-ok').html(options.btntext);
     //Run setTarget to determine loading target
     _setTarget();
 };
