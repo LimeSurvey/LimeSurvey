@@ -35,7 +35,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
-        safeDie('This is not a valid LimeSurvey group structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey group structure XML file.');
     }
 
     $iDBVersion = (int) $xml->DBVersion;
@@ -94,7 +94,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->randomization_group = $insertdata['randomization_group'];
             $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
-                safeDie(gT("Error") . ": Failed to insert data [3]<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data [3]<br />");
             }
 
             $newgid = $questionGroup->gid;
@@ -201,11 +201,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                     $oQuestion->title = $sNewTitle;
                     $attempts++;
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
@@ -299,11 +299,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -532,7 +532,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Question') {
-        safeDie('This is not a valid LimeSurvey question structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey question structure XML file.');
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
@@ -733,11 +733,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
 
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
@@ -924,7 +924,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
     $sXMLdata = (string) file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Label set') {
-        safeDie('This is not a valid LimeSurvey label set structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey label set structure XML file.');
     }
     $aLSIDReplacements = $results = [];
     $results['labelsets'] = 0;
@@ -1312,7 +1312,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['surveyls_attributecaptions']);
         }
 
-        SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
     }
 
 
@@ -1473,11 +1473,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $oQuestion->title = $sNewTitle;
                     $attempts++;
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -1579,11 +1579,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -1737,14 +1737,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $questionAttribute = new QuestionAttribute();
                     $questionAttribute->attributes = $insertdata;
                     if (!$questionAttribute->save()) {
-                        safeDie(gT("Error") . ": Failed to insert data[7]<br />");
+                        throw new Exception(gT("Error") . ": Failed to insert data[7]<br />");
                     }
                 }
             } else {
                 $questionAttribute = new QuestionAttribute();
                 $questionAttribute->attributes = $insertdata;
                 if (!$questionAttribute->save()) {
-                    safeDie(gT("Error") . ": Failed to insert data[8]<br />");
+                    throw new Exception(gT("Error") . ": Failed to insert data[8]<br />");
                 }
             }
             checkWrongQuestionAttributes($insertdata['qid']);
@@ -1820,7 +1820,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // now translate any links
-            $result = Condition::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[10]<br />");
+            $result = Condition::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[10]<br />");
             $results['conditions']++;
         }
     }
@@ -1848,7 +1848,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey id
             // now translate any links
-            $result = Assessment::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[11]<br />");
+            $result = Assessment::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
 
             if (!isset($aASIDReplacements[$oldasid])) {
                 $aASIDReplacements[$oldasid] = $result->id; // add old and new id to the mapping array
@@ -1871,7 +1871,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[12]<br />");
+            $result = Quota::model()->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
             $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -1897,7 +1897,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // now translate any links
             $quotaMember->setAttributes($insertdata, false);
             if (!$quotaMember->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[13]<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data[13]<br />");
             }
             $results['quotamembers']++;
         }
@@ -1919,7 +1919,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $quotaLanguagesSetting = new QuotaLanguageSetting();
             $quotaLanguagesSetting->setAttributes($insertdata, false);
             if (!$quotaLanguagesSetting->save()) {
-                safeDie(gT("Error") . ": Failed to insert data<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data<br />");
             }
             $results['quotals']++;
         }
@@ -1940,7 +1940,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['targetqid'] = $aQIDReplacements[(int) $insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result = SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error") . ": Failed to insert data[14]<br />");
+            $result = SurveyURLParameter::model()->insertRecord($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[14]<br />");
             $results['survey_url_parameters']++;
         }
     }
@@ -2222,7 +2222,7 @@ if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
                             }
                         }
 
-                        SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error") . ": Failed to insert data[16]<br />");
+                        SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
                         $results['responses']++;
                     }
                 }
@@ -2285,7 +2285,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     // Read the file
     $handle = fopen($sFullFilePath, "r"); // Need to be adapted for Mac ? in options ?
     if ($handle === false) {
-        safeDie("Can't open file");
+        throw new Exception("Can't open file");
     }
     while (!feof($handle)) {
         $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
@@ -2581,7 +2581,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             $insertdata[$key] = (string) $value;
         }
 
-        SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[17]<br />");
+        SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
 
         $results['responses']++;
     }
@@ -2605,7 +2605,7 @@ function TSVImportSurvey($sFullFilePath)
 
     $handle = fopen($sFullFilePath, 'r');
     if ($handle === false) {
-        safeDie("Can't open file");
+        throw new Exception("Can't open file");
     }
     $bom = fread($handle, 2);
     rewind($handle);
@@ -3232,7 +3232,7 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
                         $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
                     }
                 } else {
-                    safeDie(gT("Error") . ": Failed to insert data[9]<br />");
+                    throw new Exception(gT("Error") . ": Failed to insert data[9]<br />");
                 }
                 $results['defaultvalues']++;
             }
@@ -3277,7 +3277,7 @@ function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDR
             $oDefaultValueL10n = new DefaultValueL10n();
             $oDefaultValueL10n->setAttributes($insertdata, false);
             if (!$oDefaultValueL10n->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[19]<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data[19]<br />");
             }
         }
     }
