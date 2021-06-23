@@ -17,7 +17,8 @@
 <?php $visibilityEditor = true; //should be displayed ?>
 <?php $visibilityOverview = false; ?>
 <?php
-    $questionTheme = QuestionTheme::findQuestionMetaData($oQuestion->type, $oQuestion->question_theme_name);
+    // Use the question's theme if it exists, or a dummy theme if it doesn't
+    $questionTheme = !empty($oQuestion->questionTheme) ? $oQuestion->questionTheme : QuestionTheme::getDummyInstance($oQuestion->type);
 ?>
 
 <!-- Create form for question -->
@@ -94,9 +95,7 @@
                                     'oSurvey'             => $oSurvey,
                                     'question'            => $oQuestion,
                                     'aQuestionTypeGroups' => $aQuestionTypeGroups,
-                                    'questionThemeTitle'  => $questionTheme['title'],
-                                    'questionThemeName'   => $questionTheme['name'],
-                                    'questionThemeClass'  => ($questionTheme['settings'])->class,
+                                    'questionTheme'       => $questionTheme,
                                     'selectormodeclass'   => $selectormodeclass,
                                 ]
                             ); ?>

@@ -611,16 +611,7 @@ class QuestionTheme extends LSActiveRecord
         }
 
         if (empty($questionTheme)) {
-            $settings = new StdClass();
-            $settings->class = '';
-            $settings->answerscales = 0;
-            $settings->subquestions = 0;
-            $questionTheme = new self();
-            $questionTheme->title = gT('Question theme error: Missing metadata');
-            $questionTheme->name = gT('Question theme error: Missing metadata');
-            $questionTheme->question_type = $question_type;
-            $questionTheme->settings = $settings;
-            return $questionTheme;
+            return self::getDummyInstance($question_type);
         }
 
         // language settings
@@ -1048,5 +1039,36 @@ class QuestionTheme extends LSActiveRecord
         if (!empty($questionTheme)) {
             return $questionTheme->name;
         }
+    }
+
+    /**
+     * Returns the settings attribute decoded
+     * @return mixed
+     */
+    public function getDecodedSettings()
+    {
+        return json_decode($this->settings);
+    }
+
+    /**
+     * Returns a dummy instance of QuestionTheme, with
+     * the question type $questionType.
+     *
+     * @param string $questionType
+     * @return QuestionTheme
+     */
+    public static function getDummyInstance($questionType)
+    {
+        $settings = new StdClass();
+        $settings->class = '';
+        $settings->answerscales = 0;
+        $settings->subquestions = 0;
+
+        $questionTheme = new self();
+        $questionTheme->title = gT('Question theme error: Missing metadata');
+        $questionTheme->name = gT('Question theme error: Missing metadata');
+        $questionTheme->question_type = $questionType;
+        $questionTheme->settings = $settings;
+        return $questionTheme;
     }
 }

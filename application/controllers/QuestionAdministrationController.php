@@ -3116,8 +3116,9 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT('No permission'));
         }
 
+        // Use the question's theme if it exists, or a dummy theme if it doesn't
         /** @var QuestionTheme */
-        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $question->question_theme_name);
+        $questionTheme = !empty($question->questionTheme) ? $question->questionTheme : QuestionTheme::getDummyInstance($question->type);
 
         /** @var array<string,array<mixed>> */
         $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $question->question_theme_name);
