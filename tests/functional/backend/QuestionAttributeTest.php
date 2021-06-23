@@ -84,7 +84,7 @@ class QuestionAttributeTest extends TestBaseClassWeb
         $this->assertNotEmpty($questionAttributes);
         $this->assertArrayHasKey('add_platform_info', $questionAttributes);
 
-        $questionAttributes = $provider->getDefinitions(['question' => $question]);
+        $questionAttributes = $provider->getDefinitions($question, []);
         $this->assertEmpty($questionAttributes);
 
         // Test again but passing only a question type and theme
