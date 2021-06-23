@@ -89,6 +89,9 @@ class Question extends LSActiveRecord
     /** Set defaut relevance **/
     public $relevance ='';
 
+    /** @var QuestionTheme cached question theme*/
+    private $relatedQuestionTheme;
+
     /**
      * @inheritdoc
      * @return Question
@@ -1573,6 +1576,9 @@ class Question extends LSActiveRecord
         if (empty($questionThemeName) || $questionThemeName == 'core') {
             $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
         }
-        return QuestionTheme::model()->findByAttributes(['question_type' => $this->type, 'name' => $questionThemeName]);
+        if (empty($this->relatedQuestionTheme) || $this->relatedQuestionTheme->name != $questionThemeName) {
+            $this->relatedQuestionTheme = QuestionTheme::model()->findByAttributes(['question_type' => $this->type, 'name' => $questionThemeName]);
+        }
+        return $this->relatedQuestionTheme;
     }
 }
