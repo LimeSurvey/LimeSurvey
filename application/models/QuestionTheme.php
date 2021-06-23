@@ -602,7 +602,7 @@ class QuestionTheme extends LSActiveRecord
         }
 
         if (empty($question_theme_name)) {
-            throw new InvalidArgumentException('question_theme_name cannot be empty');
+            $question_theme_name = 'core';
         }
 
         $criteria = new CDbCriteria();
