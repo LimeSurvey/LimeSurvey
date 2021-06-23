@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
                 <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save");?></button>
             </div>
         </div><!-- /.modal-content -->

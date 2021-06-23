@@ -13,11 +13,14 @@
     'enableAjaxValidation'=>false,
     'htmlOptions' => ['class' =>'form '],
     'action' => Yii::app()->getController()->createUrl('admin/menuentries/sa/update', ['id' => $model->id])
-)); ?>
+));
 
-<div class="modal-header">
-	<?php $model->isNewRecord ? eT('Create new survey menu entry') : eT('Edit survey menu entry') ?>
-</div>
+$modalTitle = $model->isNewRecord ? gT('Create new survey menu entry') : gT('Edit survey menu entry');
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => $modalTitle]
+);
+?>
 <div class="modal-body">
 	<div class="container-fluid">
 
@@ -208,9 +211,11 @@
 		<?php echo $form->hiddenField($model, 'id');?>
 		
 	</div>
+</div>
 	<div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal"><?=gT('Cancel')?></button>
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
-		<button type="button" class="btn btn-danger" data-dismiss="modal"><?=gT('Close')?></button>
+
 	</div>
 
 <?php $this->endWidget(); ?>

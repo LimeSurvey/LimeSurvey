@@ -12,6 +12,10 @@ php:
     - 7.2
 env:
     - DBENGINE=INNODB
+cache:
+    yarn: true
+    directories:
+        - $HOME/.composer/cache/files
 notifications:
     email:
         recipients:

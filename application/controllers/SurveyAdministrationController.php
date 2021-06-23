@@ -382,9 +382,6 @@ class SurveyAdministrationController extends LSBaseController
             'custom' => gT('Custom', 'unescaped'),
         );
 
-        //Prepare the edition panes
-    //    $aData['edittextdata'] = array_merge($aData, $this->getTextEditData($survey));
-
         $defaultLanguage = App()->getConfig('defaultlang');
 
         $testLanguages = getLanguageDataRestricted(true, 'short');
@@ -392,9 +389,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['edittextdata']['listLanguagesCode'] = $testLanguages;
         $aData['edittextdata']['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
         $aData['edittextdata']['defaultLanguage'] =  getLanguageCodefromLanguage($defaultLanguage);
-
-        // @todo $aViewsUrls can be removed, cause its never used.
-        $aViewUrls[] = 'newSurvey_view';
 
         $arrayed_data = array();
         $arrayed_data['oSurvey'] = $survey;
@@ -466,7 +460,6 @@ class SurveyAdministrationController extends LSBaseController
 
             $simpleSurveyValues = new \LimeSurvey\Datavalueobjects\SimpleSurveyValues();
             $baseLanguage = App()->request->getPost('language');
-            $searchForValidLanguage = getLanguageCodefromLanguage($baseLanguage);
             if ($baseLanguage === null) {
                 $baseLanguage = 'en'; //shoulb be const somewhere ... or get chosen language from user
             }
@@ -1768,7 +1761,7 @@ class SurveyAdministrationController extends LSBaseController
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
-        $aData = $aViewUrls = array();
+        $aData = [];
         $aData['surveyid'] = $iSurveyID;
         $aData['sid'] = $aData['surveyid'];
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -1871,7 +1864,6 @@ class SurveyAdministrationController extends LSBaseController
     public function actionRendersidemenulink($surveyid, $subaction)
     {
         $iSurveyID = (int) $surveyid;
-        $aViewUrls = $aData = [];
         $menuaction = (string) $subaction;
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
@@ -2394,7 +2386,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabResourceManagement($survey)
+    protected function tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
@@ -2575,7 +2567,7 @@ class SurveyAdministrationController extends LSBaseController
      * This method is called via call_user_func in self::rendersidemenulink()
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function pluginTabSurvey($survey)
+    protected function pluginTabSurvey($survey)
     {
         $aData = array();
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
@@ -2973,7 +2965,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function getTextEditData($survey)
+    protected function getTextEditData($survey)
     {
         Yii::app()->getClientScript()->registerScript(
             "TextEditDataGlobal",
@@ -2999,8 +2991,7 @@ class SurveyAdministrationController extends LSBaseController
         );
 
         App()->getClientScript()->registerPackage('ace');
-        $aData = $aTabTitles = $aTabContents = array();
-        return $aData;
+        return [];
     }
 
     /**
@@ -3012,7 +3003,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function getDataSecurityEditData($survey)
+    protected function getDataSecurityEditData($survey)
     {
         Yii::app()->loadHelper("admin.htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
@@ -3057,7 +3048,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return mixed
      */
-    private function generalTabEditSurvey($survey)
+    protected function generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
         return $aData;
@@ -3072,7 +3063,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabPresentationNavigation($survey)
+    protected function tabPresentationNavigation($survey)
     {
         $aData = [];
         $aData['esrow'] = $survey;
@@ -3088,7 +3079,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabPublicationAccess($survey)
+    protected function tabPublicationAccess($survey)
     {
         $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $aData = [];
@@ -3106,7 +3097,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabNotificationDataManagement($survey)
+    protected function tabNotificationDataManagement($survey)
     {
         $aData = [];
         $aData['esrow'] = $survey;
@@ -3122,7 +3113,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabTokens($survey)
+    protected function tabTokens($survey)
     {
         $aData = [];
         $aData['esrow'] = $survey;
@@ -3137,7 +3128,7 @@ class SurveyAdministrationController extends LSBaseController
      *
      * @return array
      */
-    private function tabPanelIntegration($survey, $sLang = null)
+    protected function tabPanelIntegration($survey, $sLang = null)
     {
         $aData = [];
         $oResult = Question::model()->with('subquestions')->findAll("t.sid={$survey->sid} AND (t.type = 'T'  OR t.type = 'Q'  OR  t.type = 'S') AND t.parent_qid = 0");

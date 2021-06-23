@@ -274,7 +274,7 @@
                     <!-- Global Survey -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/globalsettings/sa/surveysettings"); ?>">
-                            <?php eT("Global Survey");?>
+                            <?php eT("Global survey");?>
                         </a>
                     </li>
 

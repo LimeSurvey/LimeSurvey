@@ -532,10 +532,9 @@ class QuestionTheme extends LSActiveRecord
         // Just in case, if this is a core (base) theme we also check if there are any questions without theme name (this shouldn't happen)
         if (empty($oQuestionTheme->extends) && $bDeleteTheme !== false) {
             $aQuestions = Question::model()->findAll(
-                'type = :type AND (question_theme_name = :empty OR question_theme_name IS NULL) AND parent_qid = :parent_qid',
+                "type = :type AND (question_theme_name = '' OR question_theme_name IS NULL) AND parent_qid = :parent_qid",
                 [
                     ':type'       => $oQuestionTheme->question_type,
-                    ':empty'      => '',
                     ':parent_qid' => 0
                 ]
             );

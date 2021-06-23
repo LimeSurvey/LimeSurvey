@@ -35,7 +35,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     if ($xml === false || $xml->LimeSurveyDocType != 'Group') {
-        safeDie('This is not a valid LimeSurvey group structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey group structure XML file.');
     }
 
     $iDBVersion = (int) $xml->DBVersion;
@@ -58,13 +58,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
         $results['fatalerror'] = gT("The languages of the imported group file must at least include the base language of this survey.");
         return $results;
     }
-    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
-    /*
-    $fieldnames=array();
-    foreach ($xml->questions->fields->fieldname as $fieldname ){
-    $fieldnames[]=(string)$fieldname;
-    };*/
-
 
     // Import group table ===================================================================================
     $iGroupOrder = Yii::app()->db->createCommand()->select('MAX(group_order)')->from('{{groups}}')->where('sid=:sid', array(':sid' => $iNewSID))->queryScalar();
@@ -101,7 +94,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
             $questionGroup->randomization_group = $insertdata['randomization_group'];
             $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
-                safeDie(gT("Error") . ": Failed to insert data [3]<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data [3]<br />");
             }
 
             $newgid = $questionGroup->gid;
@@ -208,11 +201,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                     $oQuestion->title = $sNewTitle;
                     $attempts++;
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 $results['questions']++;
@@ -306,11 +299,11 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -464,92 +457,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     // Import defaultvalues ------------------------------------------------------
-    if (isset($xml->defaultvalues)) {
-        $results['defaultvalues'] = 0;
-        $aInsertData = array();
-        foreach ($xml->defaultvalues->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            if (isset($xml->defaultvalue_l10ns->rows->row) && !empty($insertdata['dvid'])) {
-                $iDvidOld = $insertdata['dvid'];
-                unset($insertdata['dvid']);
-            }
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
-                continue;
-            }
-
-            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-                // remap the subquestion id
-                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
-            }
-
-            if (!isset($xml->defaultvalue_l10ns->rows->row)) {
-                //TODO: undefined variable $aLanguagesSupported
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
-                    continue;
-                }
-
-                $aInsertData[$insertdata['qid']][$insertdata['scale_id']][$insertdata['sqid']][$insertdata['specialtype']][$insertdata['language']] = [$insertdata['defaultvalue']];
-            } else {
-                $defaultValue = new DefaultValue();
-                $defaultValue->setAttributes($insertdata, false);
-                if ($defaultValue->save()) {
-                    if ($iDvidOld > 0) {
-                        $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
-                    }
-                } else {
-                    safeDie(gT("Error") . ": Failed to insert data[9]<br />");
-                }
-                $results['defaultvalues']++;
-            }
-        }
-
-        // insert default values from LS v3 which doesn't have defaultvalue_l10ns
-        if (!empty($aInsertData)) {
-            foreach ($aInsertData as $qid => $aQid) {
-                foreach ($aQid as $scaleId => $aScaleId) {
-                    foreach ($aScaleId as $sqid => $aSqid) {
-                        foreach ($aSqid as $specialtype => $aSpecialtype) {
-                            $oDefaultValue = new DefaultValue();
-                            $oDefaultValue->setAttributes(array('qid' => $qid, 'scale_id' => $scaleId, 'sqid' => $sqid, 'specialtype' => $specialtype), false);
-                            if ($oDefaultValue->save()) {
-                                $results['defaultvalues']++;
-                                foreach ($aSpecialtype as $language => $defaultvalue) {
-                                    $oDefaultValueL10n = new DefaultValueL10n();
-                                    $oDefaultValueL10n->dvid = $oDefaultValue->dvid;
-                                    $oDefaultValueL10n->language = $language;
-                                    $oDefaultValueL10n->defaultvalue = $defaultvalue[0];
-                                    $oDefaultValueL10n->save();
-                                    unset($oDefaultValueL10n);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Import defaultvalue_l10ns ------------------------------------------------------
-    if (isset($xml->defaultvalue_l10ns)) {
-        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
-            unset($insertdata['id']);
-
-            $oDefaultValueL10n = new DefaultValueL10n();
-            $oDefaultValueL10n->setAttributes($insertdata, false);
-            if (!$oDefaultValueL10n->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[19]<br />");
-            }
-        }
-    }
+    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
 
     // Import conditions --------------------------------------------------------------
     if (isset($xml->conditions)) {
@@ -636,11 +544,10 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Question') {
-        safeDie('This is not a valid LimeSurvey question structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey question structure XML file.');
     }
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
-    $aSQIDReplacements = array(0 => 0);
 
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
@@ -656,19 +563,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
         $results['fatalerror'] = gT("The languages of the imported question file must at least include the base language of this survey.");
         return $results;
     }
-    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
-    /*
-    $fieldnames=array();
-    foreach ($xml->questions->fields->fieldname as $fieldname ){
-    $fieldnames[]=(string)$fieldname;
-    };*/
-
 
     // Import questions table ===================================================================================
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
-
 
     $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$iNewSID AND gid=$iNewGID";
     $res = Yii::app()->db->createCommand($query)->query();
@@ -846,11 +745,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
 
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
@@ -959,7 +858,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
-            if ($bTranslateInsertansTags) {
+            if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
             if (isset($aAIDReplacements[$insertdata['aid']])) {
@@ -1027,98 +926,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
     }
 
     // Import defaultvalues ------------------------------------------------------
-    if (isset($xml->defaultvalues)) {
-        $results['defaultvalues'] = 0;
-        $aInsertData = array();
-        foreach ($xml->defaultvalues->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            if (isset($xml->defaultvalue_l10ns->rows->row) && !empty($insertdata['dvid'])) {
-                $iDvidOld = $insertdata['dvid'];
-                unset($insertdata['dvid']);
-            }
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
-                continue;
-            }
-
-            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-                // remap the subquestion id
-                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
-            }
-
-            if (!isset($xml->defaultvalue_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
-                    continue;
-                }
-
-                $aInsertData[$insertdata['qid']][$insertdata['scale_id']][$insertdata['sqid']][$insertdata['specialtype']][$insertdata['language']] = [$insertdata['defaultvalue']];
-            } else {
-                $defaultValue = new DefaultValue();
-                $defaultValue->setAttributes($insertdata, false);
-                if ($defaultValue->save()) {
-                    if ($iDvidOld > 0) {
-                        $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
-                    }
-                } else {
-                    safeDie(gT("Error") . ": Failed to insert data[9]<br />");
-                }
-                $results['defaultvalues']++;
-            }
-        }
-
-        // insert default values from LS v3 which doesn't have defaultvalue_l10ns
-        if (!empty($aInsertData)) {
-            foreach ($aInsertData as $qid => $aQid) {
-                foreach ($aQid as $scaleId => $aScaleId) {
-                    foreach ($aScaleId as $sqid => $aSqid) {
-                        foreach ($aSqid as $specialtype => $aSpecialtype) {
-                            $oDefaultValue = new DefaultValue();
-                            $oDefaultValue->setAttributes(
-                                array('qid' => $qid,
-                                      'scale_id' => $scaleId,
-                                      'sqid' => $sqid,
-                                      'specialtype' => $specialtype
-                                ),
-                                false
-                            );
-                            if ($oDefaultValue->save()) {
-                                $results['defaultvalues']++;
-                                foreach ($aSpecialtype as $language => $defaultvalue) {
-                                    $oDefaultValueL10n = new DefaultValueL10n();
-                                    $oDefaultValueL10n->dvid = $oDefaultValue->dvid;
-                                    $oDefaultValueL10n->language = $language;
-                                    $oDefaultValueL10n->defaultvalue = $defaultvalue[0];
-                                    $oDefaultValueL10n->save();
-                                    unset($oDefaultValueL10n);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Import defaultvalue_l10ns ------------------------------------------------------
-    if (isset($xml->defaultvalue_l10ns)) {
-        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
-            unset($insertdata['id']);
-
-            $oDefaultValueL10n = new DefaultValueL10n();
-            $oDefaultValueL10n->setAttributes($insertdata, false);
-            if (!$oDefaultValueL10n->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[19]<br />");
-            }
-        }
-    }
+    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
     
     LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
@@ -1141,9 +949,8 @@ function XMLImportLabelsets($sFullFilePath, $options)
     $sXMLdata = (string) file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
     if ($xml->LimeSurveyDocType != 'Label set') {
-        safeDie('This is not a valid LimeSurvey label set structure XML file.');
+        throw new Exception('This is not a valid LimeSurvey label set structure XML file.');
     }
-    $iDBVersion = (int) $xml->DBVersion;
     $aLSIDReplacements = $results = [];
     $results['labelsets'] = 0;
     $results['labels'] = 0;
@@ -1273,7 +1080,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
             return $aImportResults;
         case 'lsa':
             // Import a survey archive
-            Yii::import("application.libraries.admin.pclzip.pclzip", true);
+            Yii::app()->loadLibrary('admin.pclzip');
             $pclzip = new PclZip(array('p_zipname' => $sFullFilePath));
             $aFiles = $pclzip->listContent();
 
@@ -1373,7 +1180,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
-    $aDvidReplacements = array();
     $aQuestionCodeReplacements = array();
     $aQuotaReplacements = array();
     $results['defaultvalues'] = 0;
@@ -1531,7 +1337,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['surveyls_attributecaptions']);
         }
 
-        SurveyLanguageSetting::model()->insertNewSurvey($insertdata) or safeDie(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
+            throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
+        }
     }
 
 
@@ -1568,7 +1376,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $questionGroup->attributes = $insertdata;
                 $questionGroup->sid = $iNewSID;
                 if (!$questionGroup->save()) {
-                    safeDie(gT("Error") . ": Failed to insert data [3]<br />");
+                    throw new Exception(gT("Error") . ": Failed to insert data [3]<br /> " . json_encode($questionGroup->getErrors()));
                 }
                 $newgid = $questionGroup->gid;
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
@@ -1692,11 +1500,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $oQuestion->title = $sNewTitle;
                     $attempts++;
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -1798,11 +1606,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $attempts++;
 
                     if ($attempts > 10) {
-                        safeDie(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
+                        throw new Exception(gT("Error") . ": Failed to resolve question code problems after 10 attempts.<br />");
                     }
                 }
                 if (!$oQuestion->save()) {
-                    safeDie(gT("Error while saving: ") . print_r($oQuestion->errors, true));
+                    throw new Exception(gT("Error while saving: ") . print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
                 ;
@@ -1970,14 +1778,14 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $questionAttribute = new QuestionAttribute();
                     $questionAttribute->attributes = $insertdata;
                     if (!$questionAttribute->save()) {
-                        safeDie(gT("Error") . ": Failed to insert data[7]<br />");
+                        throw new Exception(gT("Error") . ": Failed to insert data[7]<br />");
                     }
                 }
             } else {
                 $questionAttribute = new QuestionAttribute();
                 $questionAttribute->attributes = $insertdata;
                 if (!$questionAttribute->save()) {
-                    safeDie(gT("Error") . ": Failed to insert data[8]<br />");
+                    throw new Exception(gT("Error") . ": Failed to insert data[8]<br />");
                 }
             }
             checkWrongQuestionAttributes($insertdata['qid']);
@@ -1986,91 +1794,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     // Import defaultvalues ------------------------------------------------------
-    if (isset($xml->defaultvalues)) {
-        $results['defaultvalues'] = 0;
-        $aInsertData = array();
-        foreach ($xml->defaultvalues->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            if (isset($xml->defaultvalue_l10ns->rows->row) && !empty($insertdata['dvid'])) {
-                $iDvidOld = $insertdata['dvid'];
-                unset($insertdata['dvid']);
-            }
-            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
-                continue;
-            }
+    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
 
-            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-                // remap the subquestion id
-                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
-            }
-
-            if (!isset($xml->defaultvalue_l10ns->rows->row)) {
-                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
-                    continue;
-                }
-
-                $aInsertData[$insertdata['qid']][$insertdata['scale_id']][$insertdata['sqid']][$insertdata['specialtype']][$insertdata['language']] = [$insertdata['defaultvalue']];
-            } else {
-                $defaultValue = new DefaultValue();
-                $defaultValue->setAttributes($insertdata, false);
-                if ($defaultValue->save()) {
-                    if ($iDvidOld > 0) {
-                        $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
-                    }
-                } else {
-                    safeDie(gT("Error") . ": Failed to insert data[9]<br />");
-                }
-                $results['defaultvalues']++;
-            }
-        }
-
-        // insert default values from LS v3 which doesn't have defaultvalue_l10ns
-        if (!empty($aInsertData)) {
-            foreach ($aInsertData as $qid => $aQid) {
-                foreach ($aQid as $scaleId => $aScaleId) {
-                    foreach ($aScaleId as $sqid => $aSqid) {
-                        foreach ($aSqid as $specialtype => $aSpecialtype) {
-                            $oDefaultValue = new DefaultValue();
-                            $oDefaultValue->setAttributes(array('qid' => $qid, 'scale_id' => $scaleId, 'sqid' => $sqid, 'specialtype' => $specialtype), false);
-                            if ($oDefaultValue->save()) {
-                                $results['defaultvalues']++;
-                                foreach ($aSpecialtype as $language => $defaultvalue) {
-                                    $oDefaultValueL10n = new DefaultValueL10n();
-                                    $oDefaultValueL10n->dvid = $oDefaultValue->dvid;
-                                    $oDefaultValueL10n->language = $language;
-                                    $oDefaultValueL10n->defaultvalue = $defaultvalue[0];
-                                    $oDefaultValueL10n->save();
-                                    unset($oDefaultValueL10n);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Import defaultvalue_l10ns ------------------------------------------------------
-    if (isset($xml->defaultvalue_l10ns)) {
-        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
-            $insertdata = array();
-            foreach ($row as $key => $value) {
-                $insertdata[(string) $key] = (string) $value;
-            }
-            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
-            unset($insertdata['id']);
-
-            $oDefaultValueL10n = new DefaultValueL10n();
-            $oDefaultValueL10n->setAttributes($insertdata, false);
-            if (!$oDefaultValueL10n->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[19]<br />");
-            }
-        }
-    }
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
 
     // Import conditions ---------------------------------------------------------
@@ -2136,7 +1861,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // now translate any links
-            $result = Condition::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[10]<br />");
+            $result = Condition::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[10]<br />");
+            }
             $results['conditions']++;
         }
     }
@@ -2164,7 +1892,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['sid'] = $iNewSID; // remap the survey id
             // now translate any links
-            $result = Assessment::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[11]<br />");
+            $result = Assessment::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[11]<br />");
+            }
 
             if (!isset($aASIDReplacements[$oldasid])) {
                 $aASIDReplacements[$oldasid] = $result->id; // add old and new id to the mapping array
@@ -2187,7 +1918,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $oldid = $insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            $result = Quota::model()->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[12]<br />");
+            $result = Quota::model()->insertRecords($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[12]<br />");
+            }
             $aQuotaReplacements[$oldid] = getLastInsertID('{{quota}}');
             $results['quota']++;
         }
@@ -2213,7 +1947,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // now translate any links
             $quotaMember->setAttributes($insertdata, false);
             if (!$quotaMember->save()) {
-                safeDie(gT("Error") . ": Failed to insert data[13]<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data[13]<br />");
             }
             $results['quotamembers']++;
         }
@@ -2235,7 +1969,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $quotaLanguagesSetting = new QuotaLanguageSetting();
             $quotaLanguagesSetting->setAttributes($insertdata, false);
             if (!$quotaLanguagesSetting->save()) {
-                safeDie(gT("Error") . ": Failed to insert data<br />");
+                throw new Exception(gT("Error") . ": Failed to insert data<br />");
             }
             $results['quotals']++;
         }
@@ -2256,7 +1990,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['targetqid'] = $aQIDReplacements[(int) $insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            $result = SurveyURLParameter::model()->insertRecord($insertdata) or safeDie(gT("Error") . ": Failed to insert data[14]<br />");
+            $result = SurveyURLParameter::model()->insertRecord($insertdata);
+            if (!$result) {
+                throw new Exception(gT("Error") . ": Failed to insert data[14]<br />");
+            }
             $results['survey_url_parameters']++;
         }
     }
@@ -2538,7 +2275,9 @@ if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null) {
                             }
                         }
 
-                        SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error") . ": Failed to insert data[16]<br />");
+                        if (!SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData)) {
+                            throw new Exception(gT("Error") . ": Failed to insert data[16]<br />");
+                        }
                         $results['responses']++;
                     }
                 }
@@ -2601,7 +2340,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     // Read the file
     $handle = fopen($sFullFilePath, "r"); // Need to be adapted for Mac ? in options ?
     if ($handle === false) {
-        safeDie("Can't open file");
+        throw new Exception("Can't open file");
     }
     while (!feof($handle)) {
         $buffer = fgets($handle); //To allow for very long lines . Another option is fgetcsv (0 to length), but need mb_convert_encoding
@@ -2897,7 +2636,9 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
             $insertdata[$key] = (string) $value;
         }
 
-        SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata) or safeDie(gT("Error") . ": Failed to insert data[17]<br />");
+        if (!SurveyTimingDynamic::model($iSurveyID)->insertRecords($insertdata)) {
+            throw new Exception(gT("Error") . ": Failed to insert data[17]<br />");
+        }
 
         $results['responses']++;
     }
@@ -2921,7 +2662,7 @@ function TSVImportSurvey($sFullFilePath)
 
     $handle = fopen($sFullFilePath, 'r');
     if ($handle === false) {
-        safeDie("Can't open file");
+        throw new Exception("Can't open file");
     }
     $bom = fread($handle, 2);
     rewind($handle);
@@ -3034,14 +2775,9 @@ function TSVImportSurvey($sFullFilePath)
     $gseq = 1; // group_order
     $qid = 1;
     $qidNew = 0;
-    $asidNew = 0;
     $qseq = 0; // question_order
     $qtype = 'T';
     $aseq = 0; // answer sortorder
-    $attribute_index = 0;
-    $answer_index = 0;
-    $default_index = 0;
-    $quota_index = 0;
     
     $ginfo = array();
     $qinfo = array();
@@ -3501,4 +3237,105 @@ function createXMLfromData($aData = array())
     $xml->endElement();
     $xml->endDocument();
     return $xml->outputMemory(true);
+}
+
+/**
+ * Import default values inside $xml, record process in $results
+ * Also imports defaultvalue_l10ns.
+ *
+ * @param SimpleXMLElement $xml
+ * @param array $aLanguagesSupported
+ * @param array &$results
+ * @return void
+ */
+function importDefaultValues(SimpleXMLElement $xml, $aLanguagesSupported, $aQIDReplacements, array &$results)
+{
+    // Default value id replacements
+    $aDvidReplacements = [];
+
+    if (isset($xml->defaultvalues)) {
+        $results['defaultvalues'] = 0;
+        $aInsertData = array();
+        foreach ($xml->defaultvalues->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key => $value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            if (isset($xml->defaultvalue_l10ns->rows->row) && !empty($insertdata['dvid'])) {
+                $iDvidOld = $insertdata['dvid'];
+                unset($insertdata['dvid']);
+            }
+            if (!isset($aQIDReplacements[(int) $insertdata['qid']])) {
+                continue;
+            }
+
+            $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
+            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
+                // remap the subquestion id
+                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
+            }
+
+            if (!isset($xml->defaultvalue_l10ns->rows->row)) {
+                if (!in_array($insertdata['language'], $aLanguagesSupported)) {
+                    continue;
+                }
+
+                $aInsertData[$insertdata['qid']][$insertdata['scale_id']][$insertdata['sqid']][$insertdata['specialtype']][$insertdata['language']] = [$insertdata['defaultvalue']];
+            } else {
+                $defaultValue = new DefaultValue();
+                $defaultValue->setAttributes($insertdata, false);
+                if ($defaultValue->save()) {
+                    if ($iDvidOld > 0) {
+                        $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
+                    }
+                } else {
+                    throw new Exception(gT("Error") . ": Failed to insert data[9]<br />");
+                }
+                $results['defaultvalues']++;
+            }
+        }
+
+        // insert default values from LS v3 which doesn't have defaultvalue_l10ns
+        if (!empty($aInsertData)) {
+            foreach ($aInsertData as $qid => $aQid) {
+                foreach ($aQid as $scaleId => $aScaleId) {
+                    foreach ($aScaleId as $sqid => $aSqid) {
+                        foreach ($aSqid as $specialtype => $aSpecialtype) {
+                            $oDefaultValue = new DefaultValue();
+                            $oDefaultValue->setAttributes(array('qid' => $qid, 'scale_id' => $scaleId, 'sqid' => $sqid, 'specialtype' => $specialtype), false);
+                            if ($oDefaultValue->save()) {
+                                $results['defaultvalues']++;
+                                foreach ($aSpecialtype as $language => $defaultvalue) {
+                                    $oDefaultValueL10n = new DefaultValueL10n();
+                                    $oDefaultValueL10n->dvid = $oDefaultValue->dvid;
+                                    $oDefaultValueL10n->language = $language;
+                                    $oDefaultValueL10n->defaultvalue = $defaultvalue[0];
+                                    $oDefaultValueL10n->save();
+                                    unset($oDefaultValueL10n);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Import defaultvalue_l10ns ------------------------------------------------------
+    if (isset($xml->defaultvalue_l10ns)) {
+        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key => $value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
+            unset($insertdata['id']);
+
+            $oDefaultValueL10n = new DefaultValueL10n();
+            $oDefaultValueL10n->setAttributes($insertdata, false);
+            if (!$oDefaultValueL10n->save()) {
+                throw new Exception(gT("Error") . ": Failed to insert data[19]<br />");
+            }
+        }
+    }
 }

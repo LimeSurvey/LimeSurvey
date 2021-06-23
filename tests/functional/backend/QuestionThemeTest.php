@@ -56,7 +56,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         $button = $web->findByLinkText('Question themes');
         $button->click();
 
-        $button = $web->findByLinkText('Upload & install');
+        $button = $web->findByLinkText('Upload theme');
         $button->click();
 
         sleep(1);

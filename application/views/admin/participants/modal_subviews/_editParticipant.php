@@ -1,7 +1,15 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <div class="modal-title h4" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></div>
-</div>
+<?php
+if ($editType == 'add'){
+    $modalTitle = gT('Add participant');
+}else{
+    $modalTitle = gT('Edit participant');
+}
+
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => $modalTitle]
+);
+?>
 <div class="modal-body edit-participant-modal-body ">
 <?php
     $form = $this->beginWidget(
@@ -132,7 +140,7 @@
     <?php endif; ?>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>
+    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editParticipant"><?php eT("Save")?></button>
 </div>
 <script>

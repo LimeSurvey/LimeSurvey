@@ -18,11 +18,12 @@ const ConfirmDeleteModal = function (options) {
         gridid = options.gridid || $item.data('grid-id') || '',
         buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
         buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
+        buttonType = $item.data('button-type') || 'btn-primary',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
     const closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButtonHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">' + buttonNo + '</button>',
-        confirmButtonHTML = '<button type="button" class="btn btn-primary selector--button-confirm">' + buttonYes + '</button>';
+        closeButtonHTML = '<button type="button" class="btn btn-cancel" data-dismiss="modal">' + buttonNo + '</button>',
+        confirmButtonHTML = '<button type="button" class="btn ' + buttonType + ' selector--button-confirm">' + buttonYes + '</button>';
 
 
     //Define all the blocks and combine them by jquery methods

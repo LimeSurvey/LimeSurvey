@@ -2751,7 +2751,8 @@ function breakToNewline($data)
 * Provides a safe way to end the application
 *
 * @param mixed $sText
-* @returns boolean Fake return so Scrutinizes shuts up
+* @return void
+* @todo This should probably never be used, since it returns 0 from CLI and makes PHPUnit think all is fine :(
 */
 function safeDie($sText)
 {
@@ -2759,7 +2760,6 @@ function safeDie($sText)
     $textarray = explode('<br />', $sText);
     $textarray = array_map('htmlspecialchars', $textarray);
     die(implode('<br />', $textarray));
-    return false; // do not remove
 }
 
 /**

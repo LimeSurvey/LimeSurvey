@@ -7,9 +7,12 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <?php echo CHtml::form(array("/assessment/insertUpdate/surveyid/$surveyid"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
-          <div class="modal-header">
-            <h4 class="modal-title"> </h4>
-          </div>
+          <?php
+          Yii::app()->getController()->renderPartial(
+              '/layouts/partial_modals/modal_header',
+              ['modalTitle' => gt('Add assessment rule')]
+          );
+          ?>
           <div class="modal-body">
             <!-- Scope, Total, Group -->
             <div class='row'>
@@ -138,7 +141,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+            <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel");?></button>
             <button type="button" class="btn btn-success" id="selector__assessments-save-modal"><?php eT('Save'); ?></button>
           </div>
           </form>

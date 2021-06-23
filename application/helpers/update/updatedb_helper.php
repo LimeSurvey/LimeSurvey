@@ -4629,7 +4629,48 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 450) {
+        if ($iOldDBVersion < 450) { //ExportSPSSsav plugin
+            $oTransaction = $oDB->beginTransaction();
+            $installedPlugins = array_map(
+                function ($v) {
+                    return $v['name'];
+                },
+                $oDB->createCommand('SELECT name FROM {{plugins}}')->queryAll()
+            );
+            /**
+             * @param string $name Name of plugin
+             * @param int $active
+             */
+            $insertPlugin = function ($name, $active = 0) use ($installedPlugins, $oDB) {
+                if (!in_array($name, $installedPlugins)) {
+                    $oDB->createCommand()->insert(
+                        "{{plugins}}",
+                        [
+                            'name'               => $name,
+                            'plugin_type'        => 'core',
+                            'active'             => $active,
+                            'version'            => '1.0.0',
+                            'load_error'         => 0,
+                            'load_error_message' => null
+                        ]
+                    );
+                } else {
+                    $oDB->createCommand()->update(
+                        "{{plugins}}",
+                        [
+                            'plugin_type'        => 'core',
+                            'version'            => '1.0.0',
+                        ],
+                        App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
+                    );
+                }
+            };
+            $insertPlugin('ExportSPSSsav', 1);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 451) {
             $oTransaction = $oDB->beginTransaction();
             // Add the new column to questions table
             $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
@@ -4652,7 +4693,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 SET su.stg_value = qt.name
                 WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'")->execute();
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 451), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
