@@ -1,4 +1,4 @@
-<?php /**@var array $questionTheme */ ?>
+<?php /** @var QuestionTheme $questionTheme */ ?>
 
 <div class="col-lg-12 content-right">
 

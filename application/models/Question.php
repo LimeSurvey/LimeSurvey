@@ -124,7 +124,11 @@ class Question extends LSActiveRecord
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
-            'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['type'=>'question_type', 'question_theme_name'=>'name']],
+            // The 'question_theme' relation is possible but commented on purpose as to discourage its ussage.
+            // This relation will fail for non saved questions, which is often the case
+            // when using question editor on create mode.
+            // So better use getQuestionTheme()
+            // 'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['type' => 'question_type', 'question_theme_name' => 'name']],
         );
     }
 
@@ -1547,10 +1551,28 @@ class Question extends LSActiveRecord
             return;
         }
 
-        // We need to determine the actual theme name of the core theme
-        $coreQuestionTheme = QuestionTheme::model()->core()->findByAttributes(['question_type' => $this->type]);
-        if (!empty($coreQuestionTheme)) {
-            $this->question_theme_name = $coreQuestionTheme->name;
+        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
+        if (!empty($baseQuestionThemeName)) {
+            $this->question_theme_name = $baseQuestionThemeName;
         }
+    }
+
+    /**
+     * Returns the QuestionTheme related to this question.
+     * It's not implemented as a relation because relations only work on
+     * persisted models.
+     * It also returns the proper theme when 'question_theme_name' is empty or 'core'.
+     *
+     * @return QuestionTheme|null
+     */
+    public function getQuestionTheme()
+    {
+        $questionThemeName = $this->question_theme_name;
+        // If the model's question_theme_name attribute is empty or 'core', we get the name for the base theme
+        if (empty($questionThemeName) || $questionThemeName == 'core') {
+            $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
+        }
+        return QuestionTheme::model()->findByAttributes(['question_type' => $this->type, 'name' => $questionThemeName]);
     }
 }

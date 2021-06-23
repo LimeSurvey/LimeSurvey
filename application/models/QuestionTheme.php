@@ -86,7 +86,8 @@ class QuestionTheme extends LSActiveRecord
     public function scopes()
     {
         return array(
-            'core' => array(
+            // 'base' themes are the ones that don't extend any question type/theme. 
+            'base' => array(
                 'condition' => 'core_theme = :true AND extends = :extends',
                 'params' => array(':true' => 1, ':extends' => '')
             ),
@@ -590,32 +591,24 @@ class QuestionTheme extends LSActiveRecord
      * Returns all QuestionTheme settings
      *
      * @param string $question_type
-     * @param string $question_theme_name 'core' OR question theme name
+     * @param string $question_theme_name
      * @param string $language
      * @return QuestionTheme
      */
-    public static function findQuestionMetaData($question_type, $question_theme_name = 'core', $language = '')
+    public static function findQuestionMetaData($question_type, $question_theme_name = null, $language = '')
     {
         if (empty($question_type)) {
             throw new InvalidArgumentException('question_type cannot be empty');
         }
 
-        if (empty($question_theme_name)) {
-            $question_theme_name = 'core';
-        }
-
-        $criteria = new CDbCriteria();
-
-        if ($question_theme_name === 'core') {
-            $criteria->condition = 'extends = :extends';
-            $criteria->addCondition('question_type = :question_type', 'AND');
-            $criteria->params = [':extends' => '', ':question_type' => $question_type];
+        if (empty($question_theme_name) || $question_theme_name === 'core') {
+            $questionTheme = self::model()->base()->findByAttributes(['question_type' => $question_type]);
         } else {
+            $criteria = new CDbCriteria();
             $criteria->addCondition('question_type = :question_type AND name = :name');
             $criteria->params = [':question_type' => $question_type, ':name' => $question_theme_name];
+            $questionTheme = self::model()->query($criteria, false);
         }
-
-        $questionTheme = self::model()->query($criteria, false);
 
         if (empty($questionTheme)) {
             $settings = new StdClass();
@@ -786,8 +779,8 @@ class QuestionTheme extends LSActiveRecord
             return $cacheMemo[$cacheKey];
         }
 
-        if ($name == 'core') {
-            $questionTheme = self::model()->findByAttributes([], 'question_type=:question_type AND extends=:extends', ['question_type' => $type, 'extends' => '']);
+        if (empty($name) || $name == 'core') {
+            $questionTheme = self::model()->base()->findByAttributes(['question_type' => $type, 'extends' => '']);
         } else {
             $questionTheme = self::model()->findByAttributes([], 'name=:name AND question_type=:question_type', ['name' => $name, 'question_type' => $type]);
         }
@@ -1041,5 +1034,19 @@ class QuestionTheme extends LSActiveRecord
             $sThemeDirectoryName = $aMatches[1];
         }
         return $sThemeDirectoryName;
+    }
+
+    /**
+     * Returns the name of the base question theme for the question type $questionType
+     *
+     * @param string $questionType
+     * @return string|null question theme name or null if no question theme is found
+     */
+    public function getBaseThemeNameForQuestionType($questionType)
+    {
+        $questionTheme = $this->base()->findByAttributes(['question_type' => $questionType]);
+        if (!empty($questionTheme)) {
+            return $questionTheme->name;
+        }
     }
 }

@@ -557,7 +557,7 @@ class QuestionAdministrationController extends LSBaseController
         $sQuestionType = null,
         $gid = null,
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
-        $questionThemeName = 'core'
+        $questionThemeName = null
     ) {
         $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $questionThemeName);
 
@@ -572,7 +572,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param boolean $returnArray
-     * @param string $themeName
+     * @param string $questionThemeName
      *
      * @return void|array
      * @throws CException
@@ -582,11 +582,12 @@ class QuestionAdministrationController extends LSBaseController
         $iQuestionId = null,
         $sQuestionType = null,
         $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
-        $themeName = 'core'
+        $questionThemeName = null
     ) {
         //here we get a Question object (also if question is new --> QuestionCreate)
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $themeName);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $themeName);
+        // TODO: this object doesn't seem to be needed here.
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $questionThemeName);
+        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $questionThemeName);
 
         $this->renderJSON(
             [
@@ -1524,7 +1525,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1692,7 +1693,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -2191,7 +2192,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return Question
      * @throws CException
      */
-    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null, $themeName = null)
+    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null, $questionThemeName = null)
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ??
@@ -2201,15 +2202,15 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if (empty($oQuestion)) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType, $themeName);
+            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType, $questionThemeName);
         }
 
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
         }
 
-        if ($themeName != null) {
-            $oQuestion->question_theme_name = $themeName;
+        if ($questionThemeName != null) {
+            $oQuestion->question_theme_name = $questionThemeName;
         }
 
         if ($gid != null) {
@@ -2225,7 +2226,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
-     * @param string $themeName
+     * @param string $questionThemeName
      *
      * @return void|array
      * @throws CException
@@ -2234,12 +2235,12 @@ class QuestionAdministrationController extends LSBaseController
         $iQuestionId = null,
         $sQuestionType = null,
         $gid = null,
-        $themeName = 'core'
+        $questionThemeName = null
     ) {
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid, $themeName);
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid, $questionThemeName);
         $result = $oQuestion
             ->getDataSetObject()
-            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $themeName);
+            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $questionThemeName);
         return $result;
     }
 
@@ -2319,7 +2320,7 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      * @throws Exception
      */
-    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = 'core')
+    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = null)
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
         $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $sQuestionTheme);
@@ -3115,17 +3116,11 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT('No permission'));
         }
 
-        /** @var string */
-        $questionThemeName = $question->getQuestionAttribute('question_template');
-
         /** @var QuestionTheme */
-        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionThemeName);
-        if (empty($questionTheme['extends'])) {
-            $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
-        }
+        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $question->question_theme_name);
 
         /** @var array<string,array<mixed>> */
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionThemeName);
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $question->question_theme_name);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
