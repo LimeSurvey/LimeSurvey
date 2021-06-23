@@ -53,6 +53,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'usermanagement--identity-gridPanel',
+                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                 'itemsCssClass' => 'table table-striped items',
                 'dataProvider' => $model->search(),
                 'columns' => $columnDefinition,

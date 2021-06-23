@@ -592,28 +592,33 @@ class User extends LSActiveRecord
                 data-toggle='tooltip' 
                 title='" . gT("Edit permissions") . "'  
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                 style='margin-left: 5px;'
                 data-href='" . $setPermissionsUrl . "'><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("User role") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                style='margin-left: 5px;'
                 data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
         $editTemplatePermissionButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("Template permissions") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+                style='margin-left: 5px; margin-top: 5px;'
                 data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
+                style='margin-left: 5px;'
                 data-href='" . $editUrl . "'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
-                id='UserManagement--takeown-" . $this->uid . "' 
+                id='UserManagement--takeown-" . $this->uid . "'
+                style='margin-left: 5px;' 
                 class='btn btn-sm btn-default' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
@@ -630,26 +635,11 @@ class User extends LSActiveRecord
         $deleteUserButton = ""
             . "<button 
                 id='UserManagement--delete-" . $this->uid . "' 
-                class='btn btn-sm btn-danger UserManagement--action--openmodal UserManagement--action--delete' 
+                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete'
+                style='margin-left: 5px; margin-top: 5px;'
                 data-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
-                data-href='" . $deleteUrl . "'><i class='fa fa-trash text-danger'></i></button>";
-        /*$deleteUserButton = ""
-            ."<button
-                id='UserManagement--delete-".$this->uid."'
-                class='btn btn-sm btn-danger'
-                data-toggle='modal'
-                data-target='#confirmation-modal'
-                data-url='".$deleteUrl."'
-                data-userid='".$this->uid."'
-                data-user='".$this->full_name."'
-                data-action='deluser'
-                data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\")'
-                data-message='".gt('Do you want to delete this user?')."'>
-                    <span data-toggle='tooltip' title='".gT("Delete User")."'>
-                        <i class='fa fa-trash text-danger'></i>
-                    </span>
-              </button>";*/
+                data-href='" . $deleteUrl . "'><i class='text-danger fa fa-trash'></i></button>";
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -793,7 +783,10 @@ class User extends LSActiveRecord
                 "type" => 'raw',
                 "header" => gT("Action"),
                 'filter' => false,
-                'htmlOptions' => ["style" => "white-space: pre;"]
+                'htmlOptions' => [
+                    // "style" => "white-space: pre;",
+                    "class" => "col-md-2 col-xs-1 text-center button-column"
+                ]
             ),
             array(
                 "name" => 'uid',
