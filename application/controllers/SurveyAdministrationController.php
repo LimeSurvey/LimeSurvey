@@ -402,7 +402,7 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['title_bar']['title'] = gT('New survey');
 
         // Green Bar Page Title
-        $aData['pageTitle'] = "Create, import, or copy survey";
+        $aData['pageTitle'] = gT("Create a new survey");
 
         $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
         //$aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
