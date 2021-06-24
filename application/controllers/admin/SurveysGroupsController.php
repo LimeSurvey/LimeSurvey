@@ -73,7 +73,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/create", array('#' => 'settingsForThisGroup')),
-            'pageTitle' => 'Create survey group',
+            'pageTitle' => gT('Create survey group'),
         );
         $aData['aRigths'] = array(
             'update' => true,
@@ -158,7 +158,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData = array(
             'model' => $model,
             'action' => App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup')),
-            'pageTitle' => 'Update survey group: ' . $model->title,
+            'pageTitle' => gT('Update survey group: ') . $model->title,
         );
 
         $aData['oSurveySearch'] = $oSurveySearch;
@@ -329,7 +329,7 @@ class SurveysGroupsController extends Survey_Common_Action
             );
         }
         $aData['partial'] = $sPartial;
-        $aData['pageTitle'] = 'Survey settings for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Survey settings for group: ') . $model->title;
         $aData['fullpagebar'] = $buttons;
         $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }

@@ -189,10 +189,10 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = gT("New label set");
-                $pageTitle = 'Create or import new label set(s)';
+                $pageTitle = gT('Create or import new label set(s)');
             } else {
                 $tabitem = gT("Edit label set");
-                $pageTitle = 'Edit label set';
+                $pageTitle = gT('Edit label set');
             }
 
             $langidsarray = explode(" ", trim($langids)); // Make an array of it
@@ -317,7 +317,7 @@ class labels extends Survey_Common_Action
         }
 
         // Green SurveyManagerBar Page Title
-        $aData['pageTitle'] = 'Label sets list';
+        $aData['pageTitle'] = gT('Label sets list');
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }

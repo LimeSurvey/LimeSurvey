@@ -61,7 +61,7 @@ class HomepageSettingsController extends LSBaseController
                     'text'=>gT('Close'),
                 ],
             ],
-            'pageTitle' => 'Home page settings',
+            'pageTitle' => gT('Home page settings'),
         ];
 
         $this->render('index', [
@@ -108,7 +108,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         $this->aData = [
-            'pageTitle' => 'New box',
+            'pageTitle' => gT('New box'),
             'fullpagebar' => [
                 'savebutton' => [
                     'form' => 'boxes-form',
@@ -165,7 +165,7 @@ class HomepageSettingsController extends LSBaseController
             }
         }
         $this->aData = [
-            'pageTitle' => 'Update box ' . $model->title,
+            'pageTitle' => gT('Update box ') . $model->title,
             'fullpagebar' => [
                 'savebutton' => [
                     'form' => 'boxes-form',

@@ -123,7 +123,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
-        $data['pageTitle'] = "Global settings";
+        $data['pageTitle'] = gT("Global settings");
 
         $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -496,7 +496,7 @@ class GlobalSettings extends Survey_Common_Action
         $aData['partial'] = $sPartial;
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = 'Global survey settings';
+        $aData['pageTitle'] = gT('Global survey settings');
 
         // White Top Bar
         $aData['fullpagebar'] = [

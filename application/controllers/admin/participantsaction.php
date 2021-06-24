@@ -293,7 +293,7 @@ class participantsaction extends Survey_Common_Action
         $aData['searchstring'] = $searchstring;
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = "Central participants database summary";
+        $aData['pageTitle'] = gT("Central participants database summary");
 
         // loads the participant panel and summary view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
@@ -780,7 +780,7 @@ class participantsaction extends Survey_Common_Action
 
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => "Import CSV",
+            'pageTitle' => gT("Import CSV"),
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
@@ -1301,7 +1301,7 @@ class participantsaction extends Survey_Common_Action
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => "Blacklist settings",
+            'pageTitle' => gT("Blacklist settings"),
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
@@ -1374,7 +1374,7 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Attribute'),
-            'pageTitle' => "Attribute management",
+            'pageTitle' => gT("Attribute management"),
             'ownsAddAttributeButton' => true,
         );
         // Page size
@@ -1976,7 +1976,7 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Participant'),
-            'pageTitle' => "Share panel",
+            'pageTitle' => gT("Share panel"),
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
