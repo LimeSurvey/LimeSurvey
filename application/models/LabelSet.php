@@ -124,7 +124,6 @@ class LabelSet extends LSActiveRecord
      */
     public function getbuttons()
     {
-
         // View labelset
         $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
         $button = '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="left" title="' . gT('View labels') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
