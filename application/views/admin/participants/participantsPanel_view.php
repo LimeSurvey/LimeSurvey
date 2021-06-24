@@ -70,10 +70,10 @@
                 </a>
             <?php endif;?>
 
-            <!-- Information -->
+            <!-- Summary -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
                 <span class="fa fa-list-alt text-success" ></span>
-                <?php eT("Info");?>
+                <?php eT("Summary");?>
             </a>
 
             <!-- Import from CSV file -->
