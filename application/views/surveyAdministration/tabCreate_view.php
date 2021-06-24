@@ -99,25 +99,23 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
                                 ));?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div id="conditional-administrator-fields" style="display: none;">
-                                <div class="form-group col-md-4 col-md-6">
-                                    <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
-                                    <?php echo CHtml::textField('admin', '', array(
-                                        'class' => 'form-control',
-                                        'id' => 'admin',
-                                        'size' => '50',
-                                        'maxlength' => '50',
-                                    ));?>
-                                </div>
-                                <div class="form-group col-md-4 col-md-6">
-                                    <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
-                                    <?php echo CHtml::textField('adminemail', '', array(
-                                        'class' => 'form-control',
-                                        'id' => 'adminemail',
-                                        'size' => '50',
-                                    ));?>
-                                </div>
+                        <div id="conditional-administrator-fields" style="display: none;">
+                            <div class="form-group col-4">
+                                <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
+                                <?php echo CHtml::textField('admin', '', array(
+                                    'class' => 'form-control',
+                                    'id' => 'admin',
+                                    'size' => '50',
+                                    'maxlength' => '50',
+                                ));?>
+                            </div>
+                            <div class="form-group col-4">
+                                <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
+                                <?php echo CHtml::textField('adminemail', '', array(
+                                    'class' => 'form-control',
+                                    'id' => 'adminemail',
+                                    'size' => '50',
+                                ));?>
                             </div>
                         </div>
                         <!-- Submit -->
