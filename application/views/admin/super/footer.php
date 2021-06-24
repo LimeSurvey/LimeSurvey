@@ -160,7 +160,7 @@ foreach ($systemInfos as $key => $systemInfo) {
             </div>
             <div class="modal-footer modal-footer-yes-no">
                 <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
-                <a class="btn btn-ok"><?php eT("Confirm"); ?></a>
+                <a id="actionBtn" class="btn btn-ok" data-actionbtntext="<?php eT('Confirm'); ?>" ></a>
             </div>
             <div class="modal-footer-close modal-footer" style="display: none;">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">

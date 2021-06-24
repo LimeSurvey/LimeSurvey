@@ -8,6 +8,8 @@ const ConfirmationModal = function(e){
     //////PREGENERATED VARIABLES
     //Define the scope
     const _this = this;
+    const actionBtn = document.getElementById("actionBtn");
+
     //Set default options
     const optionsDefault = {
         onclick     : null,
@@ -17,7 +19,7 @@ const ConfirmationModal = function(e){
         postDatas   : null,
         gridid      : null,
         btnclass    : 'btn-primary',
-        btntext     : 'Confirm',
+        btntext     : actionBtn.dataset.actionbtntext,
         "ajax-url"  : null,
     };
 
@@ -55,6 +57,7 @@ const ConfirmationModal = function(e){
     //Set up an ajax call and regenerate a gridView on ok button click
     _ajaxHandler = () => {
         LOG.log('Binding ajax handler in notification panel');
+
         $(_this).find('.btn-ok').on('click', function(ev) {
             $.ajax({
                 type: "POST",
@@ -99,7 +102,9 @@ const ConfirmationModal = function(e){
     $(this).find('.modal-body-text').html(options.message);
     //first remove both classes
     $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
-    $(this).find('.btn-ok').addClass(options.btnclass);
+    if (options.btnclass !== null) {
+        $(this).find('.btn-ok').addClass(options.btnclass);
+    }
     $(this).find('.btn-ok').html(options.btntext);
     //Run setTarget to determine loading target
     _setTarget();

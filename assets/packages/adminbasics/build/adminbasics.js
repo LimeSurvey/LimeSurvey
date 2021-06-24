@@ -27841,8 +27841,9 @@
 	var ConfirmationModal = function ConfirmationModal(e) {
 	  //////PREGENERATED VARIABLES
 	  //Define the scope
-	  var _this = this; //Set everything to null on default
+	  var _this = this;
 
+	  var actionBtn = document.getElementById("actionBtn"); //Set default options
 
 	  var optionsDefault = {
 	    onclick: null,
@@ -27852,7 +27853,7 @@
 	    postDatas: null,
 	    gridid: null,
 	    btnclass: 'btn-primary',
-	    btntext: 'Confirm',
+	    btntext: actionBtn.dataset.actionbtntext,
 	    "ajax-url": null
 	  }; //////METHODS
 	  //Parse available options from specific item.data settings, if not available load relatedTarget settings
@@ -27889,7 +27890,11 @@
 	  },
 	      //Set up an ajax call and regenerate a gridView on ok button click
 	  _ajaxHandler = function _ajaxHandler() {
-	    adminCoreLSConsole.log('Binding ajax handler in notification panel');
+	    adminCoreLSConsole.log('Binding ajax handler in notification panel'); //set csrfToken for ajaxpost
+
+	    var csrfToken = $('meta[name="csrf-token"]').attr("content");
+	    console.log(csrfToken);
+	    console.log(options.postDatas);
 	    $(_this).find('.btn-ok').on('click', function (ev) {
 	      $.ajax({
 	        type: "POST",
@@ -27939,7 +27944,11 @@
 	  $(this).find('.modal-body-text').html(options.message); //first remove both classes
 
 	  $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
-	  $(this).find('.btn-ok').addClass(options.btnclass);
+
+	  if (options.btnclass !== null) {
+	    $(this).find('.btn-ok').addClass(options.btnclass);
+	  }
+
 	  $(this).find('.btn-ok').html(options.btntext); //Run setTarget to determine loading target
 
 	  _setTarget();
