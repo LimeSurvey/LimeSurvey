@@ -28,11 +28,11 @@
         <!-- Right actions -->
         <div class="col-md-6 text-right" style="margin-bottom: 10px;">
 
-            <!-- Save -->
-            <?php if (isset($fullpagebar['savebutton']['form'])) :?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
-                    <span class="fa fa-floppy-o"></span>
-                    <?php eT("Save");?>
+            <!-- Close -->
+            <?php if (isset($fullpagebar['closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                    <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
                 </a>
             <?php endif;?>
 
@@ -44,11 +44,11 @@
                 </a>
             <?php endif; ?>
 
-            <!-- Close -->
-            <?php if (isset($fullpagebar['closebutton']['url'])) :?>
-                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
-                    <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
+            <!-- Save -->
+            <?php if (isset($fullpagebar['savebutton']['form'])) :?>
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
+                    <span class="fa fa-floppy-o"></span>
+                    <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
