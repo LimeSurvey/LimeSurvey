@@ -18,7 +18,13 @@
                     <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class=''>
-                    <input id='the_file' name="the_file" type="file" accept='.lss,.lsa,.tsv,.txt'/>
+                    <input
+                        id='the_file'
+                        name="the_file"
+                        type="file"
+                        accept='.lss,.lsa,.tsv,.txt'
+                        onchange="$('#import-submit').attr('disabled', false).attr('data-toggle', false);"
+                    />
                 </div>
             </div>
 
@@ -39,7 +45,15 @@
             <!-- Submit -->
             <div class='form-group col-4 text-center'>
                 <div class=''>
-                    <input type='submit' class="btn btn-primary col-6" value='<?php  eT("Import survey"); ?>' />
+                    <input
+                        type='submit'
+                        id="import-submit"
+                        class="btn btn-primary col-6"
+                        value='<?php  eT("Import survey"); ?>'
+                        disabled="disabled"
+                        data-toggle="tooltip"
+                        data-title="Please choose a file"
+                    />
                 </div>
             </div>
 
