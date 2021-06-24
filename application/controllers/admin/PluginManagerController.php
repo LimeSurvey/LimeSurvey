@@ -71,7 +71,7 @@ class PluginManagerController extends Survey_Common_Action
         );
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Plugins';
+        $aData['pageTitle'] = gT('Plugins');
         // White Bar
         $aData['fullpagebar']['returnbutton']['url'] = 'index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
@@ -152,7 +152,7 @@ class PluginManagerController extends Survey_Common_Action
 
         $data['fullpagebar']['returnbutton']['url'] = 'pluginmanager';
         $data['fullpagebar']['returnbutton']['text'] = gT('Back');
-        $data['pageTitle'] = 'Plugins - scanned files';
+        $data['pageTitle'] = gT('Plugins - scanned files');
         $data['fullpagebar']['pluginManager']['buttons'] = [
             'scanFiles' => [
                 'url' => $scanFilesUrl,

@@ -470,7 +470,7 @@ class ThemeOptionsController extends LSBaseController
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Themes';
+        $aData['pageTitle'] = gT('Themes');
         
         // White Bar with Buttons
         $aData['fullpagebar']['returnbutton'] = [

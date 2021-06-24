@@ -368,7 +368,7 @@ class SurveymenuController extends Survey_Common_Action
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
-        $aData['pageTitle'] = 'Survey menus';
+        $aData['pageTitle'] = gT('Survey menus');
         $aData['fullpagebar'] = [
             'menus' => [
                 'buttons' => [

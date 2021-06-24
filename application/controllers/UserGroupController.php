@@ -184,7 +184,7 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
 
         // Green Bar (SurveyManagerBar) Page Title
-        $basePageTitle = 'User group';
+        $basePageTitle = gT('User group');
         $userGroupName = $aData['groupname'];
         $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
@@ -295,7 +295,7 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['add'] = 'admin/usergroups';
 
         # Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = 'Add user group';
+        $aData['pageTitle'] = gT('Add user group');
 
         $this->aData = $aData;
 
@@ -484,7 +484,7 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = "Mail to all Members";
+        $aData['pageTitle'] = gT("Mail to all Members");
 
         $this->aData = $aData;
 
