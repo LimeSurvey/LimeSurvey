@@ -117,17 +117,18 @@
                     </a>
 
             <?php endif;?>
-        </div>
 
-        <div class="col-md-3 text-right">
-            <!-- Add Participants -->
-            <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
+             <!-- Add Participants -->
+             <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
                 <button class="btn btn-default" id="addParticipantToCPP">
                     <i class="fa fa-plus-circle text-success"></i>&nbsp;
                     <?php eT("Add participant"); ?>
                 </button>
             <?php endif; ?>
+        </div>
 
+        <div class="col-md-3 text-right">
+           
             <!-- Add Attribute -->
             <?php if(isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)): ?>
                 <button class="btn btn-default" id="addParticipantAttributeName">
@@ -136,6 +137,7 @@
                     <?php eT("Add new attribute"); ?>
                 </button>
             <?php endif; ?>
+            
             <!-- Back -->
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="fa fa-backward"></span>
