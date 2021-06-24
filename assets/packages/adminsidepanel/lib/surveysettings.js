@@ -26,9 +26,9 @@ function setAdministratorFieldsVisibility(form) {
     var option = form.find("[name=administrator]:checked").val();
     var fieldsContainer = $("#conditional-administrator-fields");
     if (option == "custom") {
-        fieldsContainer.show();
+        fieldsContainer.show(200);
     } else {
-        fieldsContainer.hide();
+        fieldsContainer.hide(200);
     }
 }
 
