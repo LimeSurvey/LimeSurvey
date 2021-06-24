@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.4 (build 210622) to 3.27.5 (build 210624) June 24, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
+#Updated translation: Yakut by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Sami by c_schmitz
+#Updated translation: Mongolian by amidral
+#Updated translation: Latvian (Informal) by anorkusa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by datamunger, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Azerbaijani by c_schmitz
+
+
 Changes from 3.27.3 (build 210615) to 3.27.4 (build 210622) June 21, 2021
 -Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)
 -Fixed issue #17351: Also check that GD implement jpeg support (#1917) (Gabriel Jenik)
