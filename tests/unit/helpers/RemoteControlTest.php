@@ -220,7 +220,7 @@ class RemoteControlTest extends TestBaseClass
         // Delete response
         $id_response = 19;
         $result = $handler->delete_response($sessionKey, self::$surveyId, $id_response);
-        $this->assertEquals('19', $result, '$result = ' . json_encode($result));
+        $this->assertEquals([19 => 'deleted'], $result, '$result = ' . json_encode($result));
 
         // Check result via database.
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
