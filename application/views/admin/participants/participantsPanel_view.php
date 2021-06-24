@@ -124,7 +124,7 @@
             <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
                 <button class="btn btn-default" id="addParticipantToCPP">
                     <i class="fa fa-plus-circle text-success"></i>&nbsp;
-                    <?php eT("Add new participant"); ?>
+                    <?php eT("Add participant"); ?>
                 </button>
             <?php endif; ?>
 
