@@ -55,7 +55,7 @@ class Permissiontemplates extends CActiveRecord
      *
      * @return array filled with usermodels
      */
-    public function getConnectedUserobjects()
+    public function getConnectedUserobjects(): array
     {
         return array_map(
             function ($oMappingInstance) {
@@ -66,11 +66,13 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Apply to user.
+     * @todo Apply what to user?
      * @param int $iUserId
      * @param int $ptid Permissiontemplates id
      * @return boolean
      */
-    public function applyToUser($iUserId, $ptid = null)
+    public function applyToUser(int $iUserId, int $ptid = null): bool
     {
         if ($ptid == null) {
             $ptid = $this->ptid;
@@ -88,10 +90,11 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Clear User.
      * @param int $iUserId
      * @return boolean
      */
-    public function clearUser($iUserId)
+    public function clearUser(int $iUserId): bool
     {
         $aModels = UserInPermissionrole::model()->findAllByAttributes(['uid' => $iUserId]);
 
@@ -109,18 +112,20 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Returns Date Format.
      * @return string
      */
-    public function getDateFormat()
+    public function getDateFormat(): string
     {
         $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
     }
 
-    /**
+    /**s
+     * Returns formatted 'created at' date.
      * @return string
      */
-    public function getFormattedDateCreated()
+    public function getFormattedDateCreated(): string
     {
         $dateCreated = $this->created_at;
         $date = new DateTime($dateCreated);
@@ -128,9 +133,10 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Returns formatted 'renewed_last' date.
      * @return string
      */
-    public function getFormattedDateModified()
+    public function getFormattedDateModified(): string
     {
         $dateModified = $this->renewed_last;
         $date = new DateTime($dateModified);
@@ -140,37 +146,61 @@ class Permissiontemplates extends CActiveRecord
      * Gets the buttons for the GridView
      * @return string
      */
-    public function getButtons()
+    public function getButtons(): string
     {
-        $detailUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
-        $editUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
-        $exportRoleUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
+        $detailUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
+        $editUrl           = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
+        $exportRoleUrl     = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
-        
+        $deleteUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
 
+        // Role Detail
         $roleDetail = ""
             . "<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
+                data-toggle='tooltip'
+                data-placement='top'
+                title='" . gT('View Role Details') . "'
                 data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
 
+        // Edit Permission
         $editPermissionButton = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions' 
-                data-href='" . $setPermissionsUrl . "'><i class='fa fa-lock'></i></button>";
+                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions'
+                data-toggle='tooltip' 
+                data-placement='top'
+                title='" . gT('Edit Permission') . "'
+                data-href='" . $setPermissionsUrl . "'>
+                    <i class='fa fa-lock'></i>
+                </button>";
+       
+        // Edit Role
         $editRoleButton = ""
             . "<button 
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--edituser' 
-                data-href='" . $editUrl . "'><i class='fa fa-edit'></i></button>";
-                
+                data-toggle='tooltip'
+                data-placement='top'
+                title='" . gT('Edit Role') . "'
+                data-href='" . $editUrl . "'>
+                    <i class='fa fa-pencil'></i>
+                </button>";
+        
+        // Export Role
         $exportRoleButton = ""
             . "<a class='btn btn-sm btn-default RoleControl--action--link'
-                href='" . $exportRoleUrl . "'><i class='fa fa-download'></i></a>";
-                
+                data-toggle='tooltip'
+                data-placement='top'
+                title='" . gT('Export Role') . "'
+                href='" . $exportRoleUrl . "'
+                role='button'>
+                    <i class='fa fa-download'></i>
+                </a>";
+
+        // Delete Role
         $deleteRoleButton = ""
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-danger' 
+                class='btn btn-sm btn-default' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
                 data-url='" . $deleteUrl . "' 
@@ -178,7 +208,7 @@ class Permissiontemplates extends CActiveRecord
                 data-action='delrole' 
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
-                    <i class='fa fa-trash text-danger'></i>
+                    <i class='text-danger fa fa-trash'></i>
               </button>";
 
         return join("\n", [
@@ -191,6 +221,7 @@ class Permissiontemplates extends CActiveRecord
     }
 
     /**
+     * Returns Columns.s
      * @return array
      */
     public function getColumns()
