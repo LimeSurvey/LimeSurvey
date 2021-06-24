@@ -69,7 +69,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'rowHtmlOptionsExpression' => '["data-participant_id" => $data->id]',
-                    'htmlOptions' => array('class'=> 'table-responsive'),
+                    'htmlOptions'     => array('style'=>'cursor: pointer;', 'class'=>'hoverAction table-responsive'),
                     'itemsCssClass' => 'table table-responsive table-striped',
                     'filter'=>$model,
                     'afterAjaxUpdate' => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
