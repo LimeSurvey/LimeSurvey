@@ -34,6 +34,34 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.5 (build 210621) to 5.0.6 (build 210625) June 24, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Patrick Teichmann)
+-Fixed issue #17385: Ranking answer language issue (Olle Haerstedt)
+-Fixed issue #17372: Importing LSQ fails with files generated from LSv4+ (Olle Haerstedt)
+#Updated translation: Sami by c_schmitz
+#Updated translation: Sakha by c_schmitz
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: German by c_schmitz
+#Updated translation: German by RobinBur, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Azerbaijani by c_schmitz
+
+
+Changes from 5.0.4 (build 210614) to 5.0.5 (build 210621) June 21, 2021
+-Fixed issue #17371: Only a maximum of 100 characters can be entered in the heading for the question groups (Olle Haerstedt)
+-Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)
+-Fixed issue #17366: Dual Matrix - Dynamic generation of row labels is broken (Olle Haerstedt)
+-Fixed issue #17360: Cannot save display theme option button size for bootstrap button question type (#1921) (Gabriel Jenik)
+-Fixed issue #17351: Also check that GD implement jpeg support (#1918) (Gabriel Jenik)
+-Fixed issue #17276: 500: Internal Server Error - Call to a member function format() on bool (#1916) (Gabriel Jenik)
+-Fixed issue #17038: templateurl placeholder not being replaced (#1925) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by marcelovincenzi, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.0.3 (build 210609) to 5.0.4 (build 210614) June 14, 2021
 -Fixed issue: Renamed Config menu entries (Jessica Höck)
 -Fixed issue: Page Header and TopBar: Surveys - Create Survey (Jessica Höck)

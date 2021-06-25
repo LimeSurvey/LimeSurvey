@@ -947,7 +947,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
-            if ($bTranslateInsertansTags) {
+            if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
             if (isset($aAIDReplacements[$insertdata['aid']])) {

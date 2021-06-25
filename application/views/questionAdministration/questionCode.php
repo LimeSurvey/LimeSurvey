@@ -6,7 +6,7 @@
     <label for="questionCode"><?= gT('Question code'); ?></label>
     <i class="fa fa-question-circle text-success"
         data-toggle="tooltip"
-        title="<?= gT("The Question Code Represents the ID, number or code for the question that is used for quick identification. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."); ?>"
+        title="<?= gT("The question code is used for quick identification of this question and must be unique. It is especially useful if you wish to use the LimeSurvey assessments feature and/or the ExpressionScript."); ?>"
         ></i>
     <div class="scoped-keep-in-line">
         <input
