@@ -197,11 +197,11 @@
                     <?php eT('Users');?>
                 </li>
 
-                <!-- Manage survey administrators -->
+                <!-- User management panel -->
                 <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
-                            <?php eT("Survey administrators");?>
+                            <?php eT("User management panel");?>
                         </a>
                     </li>
                     <?php endif;?>
