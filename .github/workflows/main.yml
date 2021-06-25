@@ -23,6 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
+
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
         run: |
@@ -84,7 +85,7 @@ jobs:
         run: |
           php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
-          
+
         # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
         # TODO: Disable, a lines was added to config file and some tests started to fail.
         # NB: EmCache is always disabled when debug => 2
