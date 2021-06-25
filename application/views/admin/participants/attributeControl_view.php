@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                     'columns' => $model->columns,
                     'filter'=>$model,
                     'emptyText'=>gT('No attributes found.'),
-                    'htmlOptions' => array('class'=> 'table-responsive'),
+                    'htmlOptions' => array('class'=> 'table-responsive hoverAction', 'style' => 'cursor: pointer;'),
                     'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
                     'itemsCssClass' => 'table table-responsive table-striped',
                     'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
