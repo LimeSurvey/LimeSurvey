@@ -482,7 +482,9 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
 
         // Green Bar (SurveyManagerBar) Page Title
         $aData['pageTitle'] = gT("Mail to all Members");
