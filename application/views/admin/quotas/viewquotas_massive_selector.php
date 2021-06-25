@@ -23,7 +23,7 @@
 
             // modal
             'actionType'  => 'modal',
-            'modalType'   => 'yes-no',
+            'modalType'   => 'cancel-apply',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Activate quotas'),
             'htmlModalBody' => gT('Are you sure you want to activate all selected quotas?'),
@@ -39,7 +39,7 @@
 
             // modal
             'actionType'  => 'modal',
-            'modalType'   => 'yes-no',
+            'modalType'   => 'cancel-apply',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Deactivate quotas'),
             'htmlModalBody' => gT('Are you sure you want to deactivate all selected quotas?'),
@@ -55,7 +55,7 @@
 
             // modal
             'actionType'  => 'modal',
-            'modalType'   => 'yes-no',
+            'modalType'   => 'cancel-apply',
             'keepopen'    => 'yes',
             'sModalTitle'   => gT('Change settings'),
             'htmlModalBody' => $this->renderPartial('/admin/quotas/viewquotas_massive_langsettings_form',
@@ -82,7 +82,7 @@
 
             // modal
             'actionType'  => 'modal',
-            'modalType'   => 'yes-no',
+            'modalType'   => 'cancel-delete',
             'keepopen'    => 'no',
             'sModalTitle'   => gT('Delete quotas'),
             'htmlModalBody' => gT('Are you sure you want to delete all selected quotas?'),

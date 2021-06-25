@@ -2293,20 +2293,18 @@ class participantsaction extends Survey_Common_Action
         }
 
         $i = 0;
-        // $iShareUserId == 0 means any user
-        if ($iShareUserId !== '') {
-            foreach ($participantIds as $id) {
-                $time = time();
-                $aData = array(
-                    'participant_id' => (int) $id,
-                    'share_uid' => $iShareUserId,
-                    'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
-                );
-                ParticipantShare::model()->storeParticipantShare($aData, $permissions);
-                $i++;
-            }
+        foreach ($participantIds as $id) {
+            $time = time();
+            $aData = array(
+                'participant_id' => $id, //id is a UUID, not an integer
+                'share_uid' => $iShareUserId, // $iShareUserId == 0 means any user
+                'date_added' => date('Y-m-d H:i:s', $time),
+                'can_edit' => ($bCanEdit === false ? 0 : 1)
+            );
+            ParticipantShare::model()->storeParticipantShare($aData, $permissions);
+            $i++;
         }
+
         $this->ajaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 

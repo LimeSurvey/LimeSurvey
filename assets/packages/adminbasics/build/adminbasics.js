@@ -28095,8 +28095,9 @@
   var ConfirmationModal = function ConfirmationModal(e) {
     //////PREGENERATED VARIABLES
     //Define the scope
-    var _this = this; //Set everything to null on default
+    var _this = this;
 
+    var actionBtn = document.getElementById("actionBtn"); //Set default options
 
     var optionsDefault = {
       onclick: null,
@@ -28105,6 +28106,8 @@
       keepopen: null,
       postDatas: null,
       gridid: null,
+      btnclass: 'btn-primary',
+      btntext: actionBtn.dataset.actionbtntext,
       "ajax-url": null
     }; //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
@@ -28188,7 +28191,15 @@
     var options = _parseOptions(e); //Set the message if available
 
 
-    $(this).find('.modal-body-text').html(options.message); //Run setTarget to determine loading target
+    $(this).find('.modal-body-text').html(options.message); //first remove both classes
+
+    $(this).find('.btn-ok').removeClass("btn-primary btn-danger");
+
+    if (options.btnclass !== null) {
+      $(this).find('.btn-ok').addClass(options.btnclass);
+    }
+
+    $(this).find('.btn-ok').html(options.btntext); //Run setTarget to determine loading target
 
     _setTarget();
   };

@@ -14,7 +14,17 @@
     </a>
 <?php } ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','delete')) { ?>
-    <a data-href="<?php echo $deleteUrl; ?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+    <a
+            data-href="<?php echo $deleteUrl; ?>"
+            class="btn btn-default"
+            data-toggle="modal"
+            data-target="#confirmation-modal"
+            data-tooltip="true"
+            data-btnclass="btn-danger"
+            data-btntext="<?= gt('Delete')?>"
+            title="<?php eT("Delete");?>"
+            data-message="<?php eT("Are you sure you want to delete the selected quotas?","js"); ?>"
+    >
         <span class='fa fa-trash text-danger'></span>
     </a>
 <?php } ?>

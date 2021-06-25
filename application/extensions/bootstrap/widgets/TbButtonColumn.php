@@ -72,6 +72,18 @@ class TbButtonColumn extends CButtonColumn
         $label = TbArray::popValue('label', $button, $id);
         $options = TbArray::popValue('options', $button, array());
 
+        // Start of modification
+        if (isset( $options['evaluateOptions']))
+        {
+            foreach ($options['evaluateOptions'] as $key => $value)
+            {
+                $options[$value] = $this->evaluateExpression($options[$value], array('data'=>$data,'row'=>$row));
+            }
+
+            unset($options['evaluateOptions']);
+        }
+        // END of modifications
+
         TbArray::defaultValue('title', $label, $options);
         TbArray::defaultValue('rel', 'tooltip', $options);
 
