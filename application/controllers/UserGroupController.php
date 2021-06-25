@@ -239,7 +239,8 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT("Save");
 
