@@ -10,5 +10,14 @@
                 </button>
             <?php } ?>
         </div>
+        <div class="col-md-3 text-right">
+            <?php if(!isset($inImportView)): ?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
+                    <span class="fa fa-backward"></span>
+                    &nbsp;
+                    <?php eT('Back'); ?>
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
