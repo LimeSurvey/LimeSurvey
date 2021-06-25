@@ -130,17 +130,16 @@ class Box extends CActiveRecord
     }
 
     /**
+     * Returns the Buttons for the Grid View
      * @return string
      */
     public function getbuttons()
     {
-
         $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
         $url .= '/' . $this->id;
-        $button = '<a class="btn btn-default" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+        $button = '<a class="btn btn-default" style="margin-right: 5px;" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
-        //$url .= '/'.$this->id;
         $button .= '<a class="btn btn-default selector--ConfirmModal"'
         . ' data-button-no="' . gT('Cancel') . '"'
         . ' data-button-yes="' . gT('Delete') . '"'

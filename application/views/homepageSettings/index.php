@@ -89,12 +89,20 @@ LS.renderBootstrapSwitch();
 
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
                 'dataProvider'=>$dataProviderBox,
+                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                 'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
                 'columns' => array(
                     array(
                         'header' => gT('Position'),
                         'name' => 'position',
                         'value'=>'$data->position',
+                        'htmlOptions' => array('class' => 'col-md-1'),
+                    ),
+                    array(
+                        'header' => gT('Action'),
+                        'name' => 'actions',
+                        'value'=>'$data->buttons',
+                        'type'=>'raw',
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
                     array(
@@ -126,13 +134,6 @@ LS.renderBootstrapSwitch();
                         'header' => gT('User group'),
                         'name' => 'url',
                         'value'=>'$data->usergroupname',
-                        'htmlOptions' => array('class' => 'col-md-1'),
-                    ),
-                    array(
-                        'header' => '',
-                        'name' => 'actions',
-                        'value'=>'$data->buttons',
-                        'type'=>'raw',
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
                 ),
