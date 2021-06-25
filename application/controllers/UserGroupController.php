@@ -181,7 +181,10 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['usergroupbar']['edit'] = true;
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
+
+        // Return Button
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
 
         // Green Bar (SurveyManagerBar) Page Title
         $basePageTitle = gT('User group');
