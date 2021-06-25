@@ -114,7 +114,7 @@ class ParticipantAttributeName extends LSActiveRecord
             'action_attributeNames_editModal',
             '',
             gT("Edit this attribute"),
-            'edit'
+            'pencil'
         );
 
         $buttons .= vsprintf($raw_button_template, $editData);
