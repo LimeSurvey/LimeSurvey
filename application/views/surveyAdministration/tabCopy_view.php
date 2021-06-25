@@ -18,11 +18,9 @@
                                 <?php echo getSurveyList(false); ?>
                             </select>
                         </div>
-                        <div class="">
-                          <p class="form-control-static">
+                        <p class="form-control-static">
                             <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
-                          </p>
-                        </div>
+                        </p>
                     </div>
 
                     <!-- New survey title -->

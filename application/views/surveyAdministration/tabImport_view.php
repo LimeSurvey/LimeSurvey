@@ -52,7 +52,7 @@
                         value='<?php  eT("Import survey"); ?>'
                         disabled="disabled"
                         data-toggle="tooltip"
-                        data-title="Please choose a file"
+                        data-title="<?= gT('Please choose a file'); ?>"
                     />
                 </div>
             </div>

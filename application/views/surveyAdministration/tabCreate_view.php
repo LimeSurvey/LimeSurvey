@@ -60,11 +60,14 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                     <div class="row">
                         <div class="form-group col-4">
-                            <label for="surveyTitle"><?= gT('Survey title')?></label>
+                            <label for="surveyTitle"><?= gT('Survey title:')?></label>
                             <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
+                            <div class="form-control-static">
+                                <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
+                            </div>
                         </div>
                         <div class="form-group col-4">
-                            <label class="control-label" for="language"><?= gT('Base language')?></label>
+                            <label class="control-label" for="language"><?= gT('Base language:')?></label>
                             <div class="">
                                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'asDropDownList' => true,
