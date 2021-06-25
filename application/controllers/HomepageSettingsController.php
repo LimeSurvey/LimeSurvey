@@ -58,7 +58,7 @@ class HomepageSettingsController extends LSBaseController
                 'boxbuttons' => true,
                 'returnbutton' => [
                     'url'=>'admin/index',
-                    'text'=>gT('Close'),
+                    'text'=>gT('Back'),
                 ],
             ],
             'pageTitle' => gT('Home page settings'),
