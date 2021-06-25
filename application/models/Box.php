@@ -144,6 +144,7 @@ class Box extends CActiveRecord
         $button .= '<a class="btn btn-default selector--ConfirmModal"'
         . ' data-button-no="' . gT('Cancel') . '"'
         . ' data-button-yes="' . gT('Delete') . '"'
+        . ' data-button-type="btn-danger"'
         . ' href="' . $url . '"'
         . ' title="' . gT("Delete the box") . '"'
         . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
