@@ -51,7 +51,7 @@ jobs:
           sudo apt-get update > /dev/null
           sudo apt install php libapache2-mod-php -y
 
-          sudo cp -f ./tests/travis/github-actions-apache /etc/apache2/sites-available/000-default.conf
+          sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
           sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
           sudo service apache2 restart
 
