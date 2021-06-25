@@ -2298,10 +2298,10 @@ class participantsaction extends Survey_Common_Action
             foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
-                    'participant_id' => (int) $id,
+                    'participant_id' => $id, //id is a UUID, not an integer
                     'share_uid' => $iShareUserId,
                     'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
+                    'can_edit' => ($bCanEdit === false ? 0 : 1)
                 );
                 ParticipantShare::model()->storeParticipantShare($aData, $permissions);
                 $i++;
