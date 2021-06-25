@@ -104,7 +104,7 @@ class ParticipantAttributeName extends LSActiveRecord
             return '';
         }
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' style='margin-right: 5px;' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons = "";
