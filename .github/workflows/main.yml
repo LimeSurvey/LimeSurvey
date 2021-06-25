@@ -23,7 +23,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
         run: |
@@ -37,7 +36,6 @@ jobs:
           # Test
           echo $archive_url
           php -r 'var_dump(PHP_INT_SIZE);'
-
           # Install LimeSurvey.
           php -m  # Spit out all loaded PHP modules
           mysql --version
@@ -58,11 +56,11 @@ jobs:
 
           # Give permision to access files for Apache
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tmp
-          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload 
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./themes
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tests/tmp
           setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./application/config
-          
+
           chmod -R 777 ./tmp
           sudo chown -R www-data:docker ./tmp
           chmod -R 777 ./upload
