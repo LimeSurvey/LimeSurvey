@@ -44,14 +44,6 @@
         <!-- Right side -->
         <div class="col-lg-6 col-sm-4 text-right" style="margin-bottom: 10px;">
 
-            <!-- Save -->
-            <?php if(isset($usergroupbar['savebutton']['form'])):?>
-                <a class="btn btn-primary" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
-                    <span class="fa fa-floppy-o" ></span>
-                    <?php echo $usergroupbar['savebutton']['text'];?>
-                </a>
-            <?php endif;?>
-
             <!-- Close -->
             <?php if(isset($usergroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $usergroupbar['closebutton']['url']; ?>" role="button">
@@ -60,9 +52,17 @@
                 </a>
             <?php endif;?>
 
+            <!-- Save -->
+            <?php if(isset($usergroupbar['savebutton']['form'])):?>
+                <a class="btn btn-primary" href="#" role="button" id="save-form-button" data-form-id="<?php echo $usergroupbar['savebutton']['form']; ?>">
+                    <span class="fa fa-floppy-o" ></span>
+                    <?php echo $usergroupbar['savebutton']['text'];?>
+                </a>
+            <?php endif;?>
+
             <!-- Back -->
             <?php if(isset($usergroupbar['returnbutton']['url'])):?>
-                <a class="btn btn-default pull-right" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
+                <a class="btn btn-default pull-right" style="margin-left: 5px;" href="<?php echo $this->createUrl($usergroupbar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php echo $usergroupbar['returnbutton']['text']; ?>
