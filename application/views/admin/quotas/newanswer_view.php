@@ -13,7 +13,7 @@
 
             <div class="jumbotron message-box">
                 <div class='row'>
-                    <h2><?php echo sprintf(gT("New answer for quota '%s'"), htmlentities($oQuota->name));?></h2>
+                    <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>
                     <p class="lead">
                         <?php eT("Select question");?>:
                     </p>

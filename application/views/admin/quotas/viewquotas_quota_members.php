@@ -25,7 +25,7 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
                 <span><span class="fa fa-external-link"></span> <?php echo gT('Autoload URL:').' '.htmlentities($oQuota->mainLanguagesetting->quotals_url);?></span>
             <?php endif;?>
         </div>
-        <?php echo htmlentities(viewHelper::flatEllipsizeText($oQuota->name)) ;?>
+        <?php echo CHtml::encode($oQuota->name) ;?>
     </div>
     <table class="table table-quota-items table-striped table-condensed" >
         <thead>
