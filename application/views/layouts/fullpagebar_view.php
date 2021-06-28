@@ -76,15 +76,27 @@
                 </a>
             <?php endif;?>
 
+            <!-- Return -->
+            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
+                    <span class="fa fa-backward"></span>
+                    &nbsp;&nbsp;
+                    <?php echo $fullpagebar['returnbutton']['text']; ?>
+                </a>
+            <?php endif;?>
+            
             <!-- Box Buttons -->
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default" style="margin-top: 10px;">
-                    <span class="icon-add  text-success"></span>
-                    <?php eT("Create a new box");?>
-                </a>
+
+                <!-- Reset Boxes Button -->
                 <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
                     <span class="fa fa-refresh"></span>
-                    <?php eT("Reset to default boxes");?>
+                    <?php eT("Reset");?>
+                </a>
+
+                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default" style="margin-top: 10px;">
+                    <span class="icon-add  text-success"></span>
+                    <?php eT("Create box");?>
                 </a>
             <?php endif;?>
 
@@ -93,15 +105,6 @@
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
-                </a>
-            <?php endif;?>
-
-            <!-- Return -->
-            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
-                    <span class="fa fa-backward"></span>
-                    &nbsp;&nbsp;
-                    <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
         </div>
