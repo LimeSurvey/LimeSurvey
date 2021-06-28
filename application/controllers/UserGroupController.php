@@ -293,9 +293,15 @@ class UserGroupController extends LSBaseController
             $this->redirect('index');
         }
 
+        // Save Button
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+
+        // Add User Group Button
         $aData['usergroupbar']['add'] = 'admin/usergroups';
 
         # Green Bar (SurveyManagerBar) Page Title
