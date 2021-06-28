@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.6 (build 210625) to 5.0.7 (build 210628) June 28, 2021
+-Fixed issue #17394: Sharing a participant does not work in CPDB (Carsten Schmitz)
+-Fixed issue #17389: Giving Surveys in group permission didn't work (#1934) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by mauriciofurtado, jjesusfilho, femariso, marciojv, fermacedo, holch, educaticteced, marcelovincenzi, cassiofs, samarta
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.0.5 (build 210621) to 5.0.6 (build 210625) June 24, 2021
 -Fixed issue: [security] Resuming a survey may load wrong data (Patrick Teichmann)
 -Fixed issue #17385: Ranking answer language issue (Olle Haerstedt)
