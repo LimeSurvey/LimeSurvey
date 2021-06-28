@@ -54,8 +54,6 @@ class PluginManagerController extends Survey_Common_Action
 
         $aData['data'] = $data;
         $aData['plugins'] = $aoPlugins;
-        $aData['scanFilesUrl'] =
-
         $aData['extraMenus'] = $this->getExtraMenus();
 
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
