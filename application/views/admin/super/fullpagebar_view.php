@@ -58,6 +58,15 @@
 
         <!-- Right actions -->
         <div class="col-md-6 text-right" style="margin-bottom: 10px;">
+
+            <!-- White Close button -->
+            <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                     <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
             <!-- Reset -->
             <?php if(isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']):?>
                 <a class="btn btn-danger"
@@ -79,14 +88,6 @@
                 </a>
             <?php endif; ?>
 
-            <!-- Close -->
-            <?php if(isset($fullpagebar['closebutton']['url'])):?>
-                <a class="btn btn-default" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
-                    <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
-                </a>
-            <?php endif;?>
-
             <!-- Save and Close -->
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>" style="margin-top: 10px;">
@@ -100,6 +101,14 @@
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Close -->
+            <?php if(isset($fullpagebar['closebutton']['url'])):?>
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                    <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
                 </a>
             <?php endif;?>
 
