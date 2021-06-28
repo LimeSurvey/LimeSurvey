@@ -305,7 +305,7 @@ class labels extends Survey_Common_Action
         } else {
             $aData['labelbar']['buttons']['delete'] = true;
             $aData['labelbar']['savebutton']['form'] = 'mainform';
-            $aData['labelbar']['savebutton']['text'] = gT("Save changes");
+            $aData['labelbar']['savebutton']['text'] = gT("Save");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
             $aData['labelbar']['buttons']['edition'] = true;
 
