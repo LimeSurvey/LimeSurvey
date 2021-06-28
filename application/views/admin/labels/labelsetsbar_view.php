@@ -14,31 +14,15 @@
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','create') || Permission::model()->hasGlobalPermission('labelsets','import')):?>
+
                     <!-- Create or Import -->
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button" style="margin-top: 10px;">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create or import new label set(s)"); ?>
                     </a>
-                    <?php endif; ?>
-                <!-- Export Multiple -->
-                <?php if ( count($labelsets) > 0 ): ?>
-                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button" style="margin-top: 10px;">
-                            <span class="icon-export text-success"></span>
-                            <?php eT("Export multiple label sets"); ?>
-                        </a>
-                        <?php endif; ?>
-                    <?php else:?>
-                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                        <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
-                            <a class="btn btn-default disabled" role="button" style="margin-top: 10px;">
-                                <span class="icon-export text-success"></span>
-                                <?php eT("Export multiple label sets"); ?>
-                            </a>
-                        </span>
-                        <?php endif; ?>
                 <?php endif; ?>
-                <?php endif; ?>
+
+            <?php endif; ?>
 
 
             <!-- Edition buttons -->
@@ -89,6 +73,24 @@
         <!-- Right action buttons -->
         <div class="col-lg-6 text-right">
 
+             <!-- Export Multiple -->
+                    <?php if ( count($labelsets) > 0 ): ?>
+                        <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button" style="margin-top: 10px;">
+                                <span class="icon-export text-success"></span>
+                                <?php eT("Export"); ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php else:?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                        <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                            <a class="btn btn-default disabled" role="button" style="margin-top: 10px;">
+                                <span class="icon-export text-success"></span>
+                                <?php eT("Export multiple label sets"); ?>
+                            </a>
+                        </span>
+                        <?php endif; ?>
+                    <?php endif; ?>
             <!-- view action buttons-->
 
             <!-- edition action buttons -->
