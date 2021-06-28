@@ -421,9 +421,10 @@ class labels extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $aData = [];
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
-            $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
+            $aData['labelbar']['savebutton']['text'] = gT("Save");
             $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
             $aData['labelbar']['buttons']['edition'] = true;
+            $aData['pageTitle'] = gT('Export multiple label sets');
             $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }

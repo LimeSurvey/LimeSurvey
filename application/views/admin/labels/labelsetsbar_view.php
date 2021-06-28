@@ -76,8 +76,7 @@
              <!-- Export Multiple -->
                     <?php if ( count($labelsets) > 0 ): ?>
                         <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button"
-                                style="margin-top: 10px;">
+                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export"); ?>
                             </a>
