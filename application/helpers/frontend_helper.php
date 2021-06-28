@@ -33,16 +33,12 @@ function loadanswers()
         $sLoadName = Yii::app()->request->getParam('loadname');
         $sLoadPass = Yii::app()->request->getParam('loadpass');
         $oCriteria = new CDbCriteria();
-        $oCriteria->select = 'sc.*';
-        $oCriteria->join = "LEFT JOIN {{saved_control}} as sc ON t.id=sc.srid";
-        $oCriteria->condition = "sc.sid=:sid";
-        $aParams = [':sid' => $surveyid];
         if (isset($scid)) {
             //Would only come from email : we don't need it ....
-            $oCriteria->addCondition("sc.scid=:scid");
+            $oCriteria->addCondition("saved_control.scid=:scid");
             $aParams[':scid'] = $scid;
         }
-        $oCriteria->addCondition("sc.identifier=:identifier");
+        $oCriteria->addCondition("saved_control.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
     } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
         $oCriteria = new CDbCriteria();
@@ -77,6 +73,8 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
                 $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
             }
+        } else {
+            return false;
         }
     }
     // Get if survey is been answered
