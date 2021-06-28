@@ -61,7 +61,7 @@ class HomepageSettingsController extends LSBaseController
                     'text'=>gT('Back'),
                 ],
             ],
-            'pageTitle' => gT('Home page settings'),
+            'pageTitle' => gT('Dashboard'),
         ];
 
         $this->render('index', [

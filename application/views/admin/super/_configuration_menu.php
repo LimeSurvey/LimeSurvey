@@ -257,10 +257,10 @@
                 </li>
 
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
-                    <!-- Homepage -->
+                    <!-- Dashboard  -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
-                            <?php eT("Homepage");?>
+                            <?php eT("Dashboard");?>
                         </a>
                     </li>
 
