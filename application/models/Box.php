@@ -137,7 +137,11 @@ class Box extends CActiveRecord
     {
         $url = Yii::app()->createUrl("/homepageSettings/updateBox/id/");
         $url .= '/' . $this->id;
-        $button = '<a class="btn btn-default" style="margin-right: 5px;" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+        $button = '<a class="btn btn-default" data-toggle="tooltip" data-target="top" '
+         . 'title="'.gT('Edit').'"'
+         . 'style="margin-right: 5px;" href="' 
+         . $url 
+         . '" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/homepageSettings/deleteBox");
         $button .= '<a class="btn btn-default selector--ConfirmModal"'
@@ -145,7 +149,9 @@ class Box extends CActiveRecord
         . ' data-button-yes="' . gT('Delete') . '"'
         . ' data-button-type="btn-danger"'
         . ' href="' . $url . '"'
-        . ' title="' . gT("Delete the box") . '"'
+        . ' data-toggle="tooltip"'
+        . ' data-target="top"'
+        . ' title="' . gT('Delete the box') . '"'
         . ' role="button" data-post=\'' . json_encode(['id' => $this->id]) . '\''
         . ' data-text="' . gT('Are you sure you want to delete this box ?') . '"'
         . '><span class="text-danger fa fa-trash" ></span></a>';
