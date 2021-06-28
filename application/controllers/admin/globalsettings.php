@@ -503,17 +503,16 @@ class GlobalSettings extends Survey_Common_Action
 
         // White Top Bar
         $aData['fullpagebar'] = [
-            'returnbutton' => [
-                'url' => 'admin/index',
-                'text' => gT('Back'),
-            ],
             'savebutton' => [
                 'form' => 'survey-settings-form',
             ],
-        'saveandclosebutton' => [
-            'form' => 'survey-settings-form',
-        ],
-    ];
+            'saveandclosebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+            'white_closebutton' => [
+                'url' => 'admin/index',
+            ],
+        ];
 
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
