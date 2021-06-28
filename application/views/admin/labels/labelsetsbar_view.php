@@ -90,24 +90,32 @@
         <div class="col-lg-6 text-right">
 
             <!-- view action buttons-->
-            <?php if (isset($labelbar['buttons']['view'])):?>
+
+            <!-- edition action buttons -->
+            <?php if (isset($labelbar['buttons']['edition'])):?>
+                
+                    <a class="btn btn-success" 
+                       href="#" 
+                       role="button" 
+                       id="save-form-button" 
+                       data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
+                       style="margin: 10px 0 10px 0;">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php echo $labelbar['savebutton']['text'];?>
+                    </a>
+                
+                <?php endif;?>
+
+            <?php if (isset($labelbar['buttons']['return'])):?>
 
                 <!-- return to admin panel -->
-                <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block; margin-top: 10px;">
+              <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block; margin-top: 10px; margin-right: 5px;">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php eT('Back'); ?>
                 </a>
-
-                <?php endif; ?>
-
-            <!-- edition action buttons -->
-            <?php if (isset($labelbar['buttons']['edition'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>" style="margin: 10px 0 10px 0;">
-                    <span class="fa fa-floppy-o"></span>
-                    <?php echo $labelbar['savebutton']['text'];?>
-                </a>
-                <?php endif;?>
+        
+            <?php endif; ?>
 
             <!-- Close -->
             <?php if(isset($labelbar['closebutton']['url'])):?>
@@ -115,7 +123,8 @@
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
-                <?php endif;?>
+            <?php endif;?>
+
         </div>
     </div>
 </div>

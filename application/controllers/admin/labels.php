@@ -213,10 +213,13 @@ class labels extends Survey_Common_Action
 
         // Label Bar
         $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
+        // Save button
         $aData['labelbar']['buttons']['edition'] = true;
+        // Return button
+        $aData['labelbar']['buttons']['return'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
-        $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view')); // Close button, UrlReferrer
+       
 
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
