@@ -20,12 +20,14 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-
-
-
 class GlobalSettings extends Survey_Common_Action
 {
 
+    /**
+     * GlobalSettings Constructor
+     * @param $controller
+     * @param $id
+     **/
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -67,6 +69,7 @@ class GlobalSettings extends Survey_Common_Action
     }
 
     /**
+     * Displays the settings.
      * @throws CHttpException
      */
     private function _displaySettings()
@@ -104,7 +107,7 @@ class GlobalSettings extends Survey_Common_Action
 
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
+        $data['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
