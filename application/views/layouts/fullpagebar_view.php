@@ -60,6 +60,14 @@
                 </a>
             <?php endif;?>
 
+            <!-- White Close button -->
+            <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                     <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
             <!-- Return -->
             <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
@@ -68,7 +76,7 @@
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
-            
+
             <!-- Save and Close -->
             <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>" style="margin-top: 10px;">

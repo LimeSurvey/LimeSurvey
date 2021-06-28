@@ -116,9 +116,8 @@ class HomepageSettingsController extends LSBaseController
                 'saveandclosebutton' => [
                     'form' => 'boxes-form'
                 ],
-                'returnbutton' => [
+                'white_closebutton' => [
                     'url' => Yii::app()->createUrl('homepageSettings/index'),
-                    'text' => gT('Back'),
                 ],
             ],
             'model' => $model,
@@ -174,7 +173,7 @@ class HomepageSettingsController extends LSBaseController
                 'saveandclosebutton' => [
                     'form' => 'boxes-form'
                 ],
-                'closebutton' => [
+                'white_closebutton' => [
                     'url' => Yii::app()->createUrl('homepageSettings/index'),
                 ],
              ],
