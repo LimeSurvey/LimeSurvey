@@ -2770,7 +2770,7 @@ class remotecontrol_handle
     			      return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')){
                 // get response id from response table using ID
                 $Response = Response::model($iSurveyID)->findByPk($iResponseID);
                 if ($Response){
