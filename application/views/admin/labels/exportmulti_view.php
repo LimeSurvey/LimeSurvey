@@ -4,9 +4,7 @@
     //-->
 </script>
 
-<div class="col-lg-12 list-surveys">
-    <h3><?php eT('Export multiple label sets');?></h3>
-
+<div class="col-lg-12 list-surveys" style="margin-top: 10px;">
     <div class="row">
         <div class="col-lg-12 content-right text-center">
 
