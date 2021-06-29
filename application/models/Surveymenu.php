@@ -344,11 +344,14 @@ class Surveymenu extends LSActiveRecord
         );
     }
 
+    /**
+     * Returns the buttons for gridview.
+     **/
     public function getButtons()
     {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' style='margin-right: 5px;' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
@@ -357,7 +360,7 @@ class Surveymenu extends LSActiveRecord
                 'action_surveymenu_editModal',
                 'text-danger',
                 gT("Edit this survey menu"),
-                'edit'
+                'pencil'
             );
             $deleteData = array(
                 'action_surveymenu_deleteModal',
@@ -375,7 +378,9 @@ class Surveymenu extends LSActiveRecord
 
         return $buttons;
     }
+
     /**
+     * Returns the columns for gridview.
      * @return array
      */
     public function getColumns()
