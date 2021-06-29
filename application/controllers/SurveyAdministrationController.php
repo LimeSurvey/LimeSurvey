@@ -220,7 +220,7 @@ class SurveyAdministrationController extends LSBaseController
         // Return Button
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
-        
+
         $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
     }

@@ -27,14 +27,6 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
 
         <div id="surveygroups" class="tab-pane">
-            <?php if(Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
-                <div class="col-12">
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Create a new survey group");?>
-                    </a>
-                </div>
-            <?php endif;?>
             <div class="pagetitle h3 ls-space margin top-25"><?php eT('Survey groups'); ?></div>
             <div class="row">
                 <div class="col-sm-12 content-right">
