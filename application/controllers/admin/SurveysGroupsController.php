@@ -84,10 +84,12 @@ class SurveysGroupsController extends Survey_Common_Action
             'savebutton' => array(
                 'form' => 'surveys-groups-form'
             ),
-            'returnbutton' => array(
+            'saveandclosebutton' => [
+                'form' => 'surveys-groups-form',
+            ],
+            'white_closebutton' => array(
                 'url' => 'surveyAdministration/listsurveys#surveygroups',
-                'text' => gT('Back'),
-            )
+            ),
         );
         /* User for dropdown */
         $aUserIds = getUserList('onlyuidarray');
