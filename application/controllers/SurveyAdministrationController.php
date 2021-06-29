@@ -217,6 +217,10 @@ class SurveyAdministrationController extends LSBaseController
 
         // Create Survey Button Url
         $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
+
+        // Create Survey Groups Button
+        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
+        
         // Return Button
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
