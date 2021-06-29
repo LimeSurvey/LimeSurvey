@@ -34,7 +34,8 @@ echo viewHelper::getViewTestTag('listSurveys');
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $groupModel->search(),
                         'columns' => $groupModel->columns,
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' ',
+                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
                     ));
                     ?>
                 </div>
