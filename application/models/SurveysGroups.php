@@ -303,7 +303,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = '';
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
+            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('surveysettings', 'read')) {
             $button .= '<a class="btn btn-default" href="' . $sSurveySettingsUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
