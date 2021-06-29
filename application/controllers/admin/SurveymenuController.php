@@ -114,6 +114,10 @@ class SurveymenuController extends Survey_Common_Action
             false
         );
     }
+
+    /**
+     * Batch Edit.
+     **/
     public function batchEdit()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -351,12 +355,16 @@ class SurveymenuController extends Survey_Common_Action
         }
     }
 
+    /**
+     * Index
+     **/
     public function index()
     {
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
     /**
+     * View.
      * @throws CHttpException
      */
     public function view()
@@ -381,6 +389,10 @@ class SurveymenuController extends Survey_Common_Action
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
 
+    /**
+     * Get SurveyMenuForm
+     * @param $menuid
+     **/
     public function getsurveymenuform($menuid = null)
     {
         $menuid = Yii::app()->request->getParam('menuid', null);
