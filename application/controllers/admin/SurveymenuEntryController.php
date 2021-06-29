@@ -62,9 +62,13 @@ class SurveymenuEntryController extends Survey_Common_Action
             'menus' => [
                 'buttons' => [
                     'addMenuEntry' => true,
-                    'reset' => true,
-                    'reorder' => true,
+                    'reset'        => true,
+                    'reorder'      => true,
                 ],
+            ],
+            'returnbutton' => [
+                'url'  => 'admin/index',
+                'text' => gT('Back'),
             ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');

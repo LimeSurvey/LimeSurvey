@@ -67,12 +67,21 @@
                 </a>
             <?php endif;?>
 
+            <!-- Return -->
+            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top: 10px;">
+                    <span class="fa fa-backward"></span>
+                    &nbsp;&nbsp;
+                    <?php echo $fullpagebar['returnbutton']['text']; ?>
+                </a>
+            <?php endif;?>
+
             <!-- Reset -->
             <?php if(isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']):?>
-                <a class="btn btn-danger"
+                <a class="btn btn-warning"
                    href="#restoremodal"
                    data-toggle="modal"
-                style="margin-top: 10px;">
+                   style="margin-top: 10px;">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset') ?>
                 </a>
@@ -129,15 +138,6 @@
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
-                </a>
-            <?php endif;?>
-
-            <!-- Return -->
-            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top: 10px;">
-                    <span class="fa fa-backward"></span>
-                    &nbsp;&nbsp;
-                    <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
         </div>
