@@ -91,22 +91,7 @@
                         </span>
                         <?php endif; ?>
                     <?php endif; ?>
-            <!-- view action buttons-->
-
-            <!-- edition action buttons -->
-            <?php if (isset($labelbar['buttons']['edition'])):?>
-                
-                    <a class="btn btn-success" 
-                       href="#" 
-                       role="button" 
-                       id="save-form-button" 
-                       data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
-                       style="margin: 10px 0 10px 0;">
-                        <span class="fa fa-floppy-o"></span>
-                        <?php echo $labelbar['savebutton']['text'];?>
-                    </a>
-                
-                <?php endif;?>
+            <!-- view action buttons-->           
 
             <?php if (isset($labelbar['buttons']['return'])):?>
 
@@ -127,6 +112,34 @@
                 </a>
             <?php endif;?>
 
+            <!-- White Close button -->
+            <?php if (isset($labelbar['white_closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $labelbar['white_closebutton']['url']; ?>" role="button">
+                     <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Save and Close -->
+            <?php if(isset($labelbar['saveandclosebutton']['form'])):?>
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $labelbar['saveandclosebutton']['form']; ?>">
+                    <span class="fa fa-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
+            <?php endif; ?>
+
+            <?php if (isset($labelbar['buttons']['edition'])):?>
+                <!-- Save -->
+                <a class="btn btn-success" 
+                   href="#" 
+                   role="button" 
+                   id="save-form-button" 
+                   data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
+                   style="margin: 10px 0 10px 0;">
+                    <span class="fa fa-floppy-o"></span>
+                    <?php echo $labelbar['savebutton']['text'];?>
+                </a>
+            <?php endif;?>
         </div>
     </div>
 </div>

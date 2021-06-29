@@ -81,8 +81,8 @@ $codeids = '';
                 </tbody>
             </table>
 
-            
-            <div class="action-buttons">
+            <!-- Action Buttons Quick Add and Save Changes -->
+            <div class="action-buttons text-left">
             <?php $i++;
             if (Permission::model()->hasGlobalPermission('labelsets','update'))
             { ?>
@@ -90,8 +90,6 @@ $codeids = '';
                         <?php eT('Quick add...') ?>
                     </button>
                 <?php }; ?>
-                <input type='submit' class="btn btn-success" name='method' value='<?php eT("Save changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' />
-                </div>
         </div>
         <?php  $first=false;
         endforeach;?>
