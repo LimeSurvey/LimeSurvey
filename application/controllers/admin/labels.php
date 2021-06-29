@@ -304,9 +304,19 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['view'] = true;
         } else {
             $aData['labelbar']['buttons']['delete'] = true;
+
+            // Save Button 
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save");
-            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
+
+            // Save and Close Button
+            $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
+            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save and Close');
+
+            // White Close Button
+            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));;
+            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
+
             $aData['labelbar']['buttons']['edition'] = true;
 
             $aData['labelbar']['buttons']['edit'] = true;
