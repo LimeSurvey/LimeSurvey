@@ -384,6 +384,10 @@ class SurveymenuController extends Survey_Common_Action
                     'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
                 ],
             ],
+            'returnbutton' => [
+                'text' => gT('Back'),
+                'url' => 'admin/index',
+            ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
