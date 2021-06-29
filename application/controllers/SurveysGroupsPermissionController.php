@@ -150,12 +150,13 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         // White Top Bar
         $aData['fullpagebar'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+            'returnbutton' => array(
+                'text' => gT('Back'),
+                'url'  => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
             ),
         );
         $this->aData = $aData;
