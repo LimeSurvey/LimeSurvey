@@ -46,6 +46,14 @@
                     <?php eT("Create a new survey");?>
                 </a>
             <?php endif;?>
+
+            <!-- List Surveys - Create a new Survey Group -->
+            <?php if(Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Create a new survey group");?>
+                </a>
+            <?php endif; ?>
         </div>
 
 
