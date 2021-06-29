@@ -1488,6 +1488,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns buttons for gridview.
      * @return string
      */
     public function getbuttons()
@@ -1500,7 +1501,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $button = '';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
+            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
@@ -1517,10 +1518,6 @@ class Survey extends LSActiveRecord implements PermissionInterface
                 }
             }
         }
-
-        //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
-        //$previewUrl .= '/'.$this->sid;
-        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         return $button;
     }

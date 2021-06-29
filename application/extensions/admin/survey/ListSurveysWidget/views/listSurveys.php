@@ -15,7 +15,7 @@
 
 <!-- Grid -->
 <div class="row">
-    <div class="col-sm-12 content-right">
+    <div class="col-lg-12 content-right">
         <?php
             $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $this->model->search(),
@@ -45,6 +45,14 @@
                         'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    ),
+
+                     array(
+                        'header' => gT('Action'),
+                        'name' => 'actions',
+                        'value'=>'$data->buttons',
+                        'type'=>'raw',
+                        'htmlOptions' => array('class' => 'text-center col-md-2'),
                     ),
 
                     array(
@@ -131,14 +139,6 @@
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->hasTokensTable ? gT("Yes"):gT("No"), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'has-link'),
-                    ),
-
-                    array(
-                        'header' => '',
-                        'name' => 'actions',
-                        'value'=>'$data->buttons',
-                        'type'=>'raw',
-                        'htmlOptions' => array('class' => 'text-right'),
                     ),
 
                 ),
