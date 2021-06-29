@@ -9,8 +9,8 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massiv
 echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
-<div class="container-fluid ls-space padding left-50 right-50">
-    <div class="ls-flex-column ls-space padding left-35 right-35">
+<div class="container-fluid ls-space">
+    <div class="ls-flex-column ls-space">
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
 				<?php $this->widget('bootstrap.widgets.TbGridView', array(
