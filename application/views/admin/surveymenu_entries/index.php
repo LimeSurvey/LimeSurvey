@@ -10,8 +10,8 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 
 ?>
 
-<div class="container-fluid ls-space padding left-50 right-50">
-    <div class="ls-flex-column ls-space padding left-35 right-35">
+<div class="container-fluid ls-space">
+    <div class="ls-flex-column ls-space">
     </div>
 
         <div class="ls-flex-row">
