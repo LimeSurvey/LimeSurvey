@@ -13,6 +13,5 @@ class DummyController extends \CController
      * Do nothing.
      */
     public function redirect($url, $terminate = true, $statusCode = 302)
-    {
-    }
+    { }
 }
