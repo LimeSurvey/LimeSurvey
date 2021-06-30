@@ -1,6 +1,10 @@
 name: LimeSurvey - CI pipeline
-# Triggers the workflow on push or pull request events but only for the master branch
-on: [push, pull_request]
+# Triggers the workflow on push or pull request events on all branches
+on:
+  pull_request:
+  push:
+    branches:
+      - '*'
 
 jobs:
   CI-pipeline:
