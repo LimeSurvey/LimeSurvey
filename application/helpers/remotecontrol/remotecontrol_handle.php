@@ -2750,6 +2750,50 @@ class remotecontrol_handle
     }
 
     /**
+     * Delete a response in a given survey using its Id
+     *
+     * RPC Routine to delete responses of particular id in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param int $iResponseID Id of the response to delete
+     * @return array Result of the change action
+     */
+     public function delete_responses($sSessionKey, $iSurveyID, $iResponseID)
+     {
+    	  // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey)){
+    		    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    		    if (!isset($oSurvey)){
+    			      return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+                // get response id from response table using ID
+                $Response = Response::model($iSurveyID)->findByPk($iResponseID);
+                if ($Response){
+                    // delete the files and timings and row
+                    if ($Response->delete()){
+                        return array($iResponseID=>'deleted');
+                    }
+                    return array('status' => 'Response not deleted for unknow reason');
+                }
+                else{
+                    return array('status' => 'Response Id not found');
+                }
+            }
+            else{
+                return array('status' => 'No permission');
+            }
+        }
+    	  else{
+           return array('status' => 'Invalid Session Key');
+        }
+    }
+
+    /**
      * Uploads one file to be used later.
      *
      * Returns the metadata on success.
