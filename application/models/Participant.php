@@ -131,12 +131,40 @@ class Participant extends LSActiveRecord
         if ($this->userHasPermissionToEdit()) {
             // Edit button
             $editData = array(
-                'action_participant_editModal',
+                'green-border action_participant_editModal',
                 '',
                 gT("Edit this participant"),
-                'edit'
+                'pencil'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
+
+            // Add participant to survey
+            $addParticipantData = array(
+                'action_participant_addToSurvey',
+                '',
+                gT("Add participant to survey"),
+                'user-plus'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $addParticipantData);
+
+            // Survey information
+            $listActiveSurveysData = array(
+                'action_participant_infoModal',
+                '',
+                gT("List active surveys"),
+                'search'
+            );
+            $buttons .= vsprintf($raw_button_template, $listActiveSurveysData);
+
+            // Share this participant
+            $shareParticipantData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $shareParticipantData);
 
             // Only owner or superadmin can delete
             $userId = Yii::app()->user->id;
@@ -145,30 +173,21 @@ class Participant extends LSActiveRecord
             if ($this->owner_uid == $userId || $isSuperAdmin || $deletePermission) {
                 // Delete button
                 $deleteData = array(
-                    'action_participant_deleteModal',
+                    'red-border action_participant_deleteModal',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'trash'
                 );
-                $buttons .= vsprintf($raw_button_template, $deleteData);
             } else {
                 // Invisible button
                 $deleteData = array(
-                    'action_participant_deleteModal invisible',
+                    'red-border action_participant_deleteModal invisible',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'trash'
                 );
-                $buttons .= vsprintf($raw_button_template, $deleteData);
             }
-            // Share this participant
-            $infoData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
+            $buttons .= vsprintf($raw_button_template, $deleteData);
         } else {
             // Three empty buttons for correct alignment
             // TODO: For some reason, the delete button is smaller than the others
@@ -195,7 +214,17 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
             }
-            $buttons .= vsprintf($raw_button_template, $deleteData);
+
+            // Share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+
+           
             $infoData = array(
                 'action_participant_shareParticipant invisible',
                 '',
@@ -204,24 +233,6 @@ class Participant extends LSActiveRecord
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
         }
-
-        // Survey information
-        $infoData = array(
-            'action_participant_infoModal',
-            '',
-            gT("List active surveys"),
-            'search'
-        );
-        $buttons .= vsprintf($raw_button_template, $infoData);
-
-        // Add participant to survey
-        $infoData = array(
-            'action_participant_addToSurvey',
-            '',
-            gT("Add participant to survey"),
-            'user-plus'
-        );
-        $buttons .= vsprintf($raw_button_template, $infoData);
 
         $buttons .= "</div>";
         return $buttons;
