@@ -3319,8 +3319,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             alterColumn('{{participants}}', 'firstname', "text");
             alterColumn('{{participants}}', 'lastname', "text");
-            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL");
-            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL DEFAULT ''");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL DEFAULT ''");
             $aCoreAttributes = array('firstname', 'lastname', 'email');
             foreach ($aCoreAttributes as $attribute) {
                 $oDB->createCommand()->insert(
