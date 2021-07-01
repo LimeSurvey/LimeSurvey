@@ -7,8 +7,8 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
                 <?php foreach ($oSurvey->allLanguages as $lang): ?>
-                    <li>
-                        <a href="#" class="lang-switch-button<?= $lang === $oSurvey->language ? ' active' : '' ?>" data-lang="<?= $lang; ?>">
+                    <li class="<?= $lang === $oSurvey->language ? ' active' : '' ?>">
+                        <a href="#" class="lang-switch-button" data-lang="<?= $lang; ?>">
                             <?= getLanguageNameFromCode($lang, false); ?>
                         </a>
                     </li>
