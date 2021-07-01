@@ -175,6 +175,50 @@ function submitEditToken(){
 }
 
 /**
+ * Validates that mandatory additional attributes are filled
+ */
+function validateAdditionalAttributes() {
+    const reportFieldValidity = function (field) {
+        // Pick the message from the field attributes, or use a default one if not set
+        var msg = field.attr('data-empty-msg');
+        if (!msg) {
+            msg = "Please fill out this field";
+        }
+        // Set the custom validity error
+        field.get(0).setCustomValidity(msg);
+        // Trigger the invalid event and show the errors
+        field.get(0).reportValidity();
+        // Clear the validation error on input
+        field.off('input.token-validate').on('input.token-validate', function() {
+            $(this).get(0).setCustomValidity('');
+        });
+    };
+
+    $valid = true;
+    $('.mandatory-attribute').each(function () {
+        const field = $(this);
+        $value = field.val();
+        if ($value === null || $value === "") {
+            $valid = false;
+            if ($('#custom').is(':visible')) {
+                reportFieldValidity(field);
+            } else {
+                const additionalAttributesTab = $('a[href="#custom"]');
+                additionalAttributesTab.on('shown.bs.tab.token-validate', function () {
+                    additionalAttributesTab.off('shown.bs.tab.token-validate');
+                    reportFieldValidity(field);
+                });
+                additionalAttributesTab.tab('show');
+            }
+            //$(this).trigger('invalid');
+            return false;
+        }
+        field.get(0).setCustomValidity('');
+    });
+    return $valid;
+}
+
+/**
  * Scroll the pager and the footer when scrolling horizontally
  */
 $(document).on('ready  pjax:scriptcomplete', function(){
@@ -267,7 +311,21 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
+            return;
         }
+        if (!validateAdditionalAttributes()) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    // When the additional attributes tab is shown, clear the custom validation errors from
+    // additional attributes, because reportValidity() may run on the form when the fields
+    // are not visible, triggering an error.
+    $('a[href="#custom"]').on('hidden.bs.tab', function () {
+        $('.mandatory-attribute').each(function () {
+            $(this).get(0).setCustomValidity('');
+        });
     });
 
     /**

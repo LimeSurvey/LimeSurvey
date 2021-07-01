@@ -417,7 +417,15 @@ foreach ($tokendata as $Key => $Value) {
                     <?php echo $attr_description['description'].($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:
                 </label>
                 <div class="">
-                    <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');}?>' />
+                    <input
+                        class='form-control<?= $attr_description['mandatory'] == 'Y' ? ' mandatory-attribute' : '' ?>'
+                        type='text'
+                        size='55'
+                        id='<?php echo $attr_name; ?>'
+                        name='<?php echo $attr_name; ?>'
+                        value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'utf-8');}?>'
+                        data-empty-msg='<?= gT("Please fill out this field"); ?>'
+                    />
                 </div>
             </div>
             <?php endforeach; ?>
