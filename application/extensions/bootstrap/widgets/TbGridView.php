@@ -42,7 +42,7 @@ class TbGridView extends CGridView
     public function init()
     {
         parent::init();
-        $classes = array('table');
+        $classes = array('table table-hover');
         if (isset($this->type) && !empty($this->type)) {
             if (is_string($this->type)) {
                 $this->type = explode(' ', $this->type);
