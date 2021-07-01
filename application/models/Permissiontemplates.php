@@ -177,7 +177,7 @@ class Permissiontemplates extends CActiveRecord
         // Edit Role
         $editRoleButton = ""
             . "<button 
-                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--edituser' 
+                class='btn btn-sm btn-default green-border RoleControl--action--openmodal RoleControl--action--edituser' 
                 data-toggle='tooltip'
                 data-placement='top'
                 title='" . gT('Edit Role') . "'
@@ -200,7 +200,7 @@ class Permissiontemplates extends CActiveRecord
         $deleteRoleButton = ""
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-default' 
+                class='btn btn-sm btn-default red-border' 
                 data-toggle='modal' 
                 title='" . gT('Delete Role') . "'
                 data-target='#confirmation-modal' 
@@ -209,13 +209,13 @@ class Permissiontemplates extends CActiveRecord
                 data-action='delrole'         
                 data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
-                    <i class='text-danger fa fa-trash'></i>
+                    <i class='fa fa-trash'></i>
               </button>";
 
         return join("\n", [
-            $roleDetail,
-            $editPermissionButton,
             $editRoleButton,
+            $editPermissionButton,
+            $roleDetail,
             $exportRoleButton,
             $deleteRoleButton
         ]);
