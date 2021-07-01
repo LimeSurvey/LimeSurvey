@@ -1,6 +1,6 @@
-<div class='menubar surveybar' id="usermanagementbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
-    <div class='row'>
-        <div class="col-md-9" style="margin-bottom: 10px;">
+<div class='menubar surveybar' id="usermanagementbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 8px;">
+    <div class='row' style="margin-bottom: 8px;">
+        <div class="col-md-9">
             <?php if(!isset($inImportView)) { ?>
                 <?php if(Permission::model()->hasGlobalPermission('users', 'create')) {
                     ?>
