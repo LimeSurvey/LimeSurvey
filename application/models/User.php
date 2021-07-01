@@ -575,7 +575,6 @@ class User extends LSActiveRecord
         $editUrl = Yii::app()->getController()->createUrl('userManagement/addEditUser', ['userid' => $this->uid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userPermissions', ['userid' => $this->uid]);
         $setRoleUrl = Yii::app()->getController()->createUrl('userManagement/addRole', ['userid' => $this->uid]);
-        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('userManagement/takeOwnership');
         $deleteUrl = Yii::app()->getController()->createUrl('userManagement/deleteConfirm', ['userid' => $this->uid, 'user' => $this->full_name]);
         
@@ -601,13 +600,6 @@ class User extends LSActiveRecord
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
                 style='margin-left: 5px;'
                 data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
-        $editTemplatePermissionButton = ""
-            . "<button 
-                data-toggle='tooltip' 
-                title='" . gT("Template permissions") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
-                style='margin-left: 5px;'
-                data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-toggle='tooltip' 
@@ -658,7 +650,6 @@ class User extends LSActiveRecord
                 $addRoleButton,
                 "\n",
                 $userDetail,
-                $editTemplatePermissionButton,
                 $this->parent_id != Yii::app()->session['loginID'] ? $takeOwnershipButton : '',
                 $deleteUserButton]);
         }
@@ -695,14 +686,6 @@ class User extends LSActiveRecord
             && !Permission::isForcedSuperAdmin($this->uid)                      //Can't change forced Superadmins permissions
         ) {
             $buttonArray[] = $editPermissionButton;
-        }
-        
-        //Check if user can set template permissions
-        if (
-            Permission::model()->hasGlobalPermission('templates', 'read')       //Has global permission templates read
-            && !Permission::isForcedSuperAdmin($this->uid)                      //Is not a forced superadmin
-        ) {
-            $buttonArray[] = $editTemplatePermissionButton;
         }
 
         //Check if user can take ownership
