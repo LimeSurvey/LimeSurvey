@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * UserGroupController
+ **/
 class UserGroupController extends LSBaseController
 {
     /**
