@@ -75,11 +75,13 @@
 
         <!-- Right action buttons -->
         <div class="col-lg-6 text-right">
-
              <!-- Export Multiple -->
-                    <?php if ( count($labelsets) > 0 ): ?>
-                        <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
-                            <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>" role="button">
+                <?php if ( count($labelsets) > 0 ): ?>
+                    <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
+                        <a class="btn btn-default"
+                           href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>"
+                           style="margin-top: 10px;"
+                           role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export"); ?>
                             </a>
