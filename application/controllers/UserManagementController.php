@@ -58,7 +58,7 @@ class UserManagementController extends LSBaseController
 
         $aData['massiveAction'] = $this->renderPartial(
             'massiveAction/_selector',
-            [],
+            ['userid' => $model->uid],
             true,
             false
         );
