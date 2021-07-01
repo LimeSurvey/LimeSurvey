@@ -20,8 +20,8 @@ echo viewHelper::getViewTestTag('roles');
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id'              => 'RoleControl--identity-gridPanel',
-                'itemsCssClass'   => 'table table-striped items',
-                'htmlOptions'     => array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
+                'itemsCssClass'   => 'table items',
+                'htmlOptions'     => array('style'=>'cursor: pointer;'),
                 'dataProvider'    => $model->search(),
                 'columns'         => $model->columns,
                 'filter'          => $model,
