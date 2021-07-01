@@ -19,7 +19,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php endif; ?>
 
 <?php $this->renderPartial('partial/_menubar'); ?>
-<div class="pagetitle h3"><?php eT("User control");?></div>
 
 <div class="row">
     <?php
