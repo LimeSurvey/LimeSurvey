@@ -16,14 +16,14 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                 <?php
                 $this->widget('bootstrap.widgets.TbGridView', array(
                     'id' => 'list_attributes',
-                    'itemsCssClass' => 'table table-striped items',
+                    'itemsCssClass' => 'table table-hover items',
                     'dataProvider' => $model->search(),
                     'columns' => $model->columns,
                     'filter'=>$model,
                     'emptyText'=>gT('No attributes found.'),
-                    'htmlOptions' => array('class'=> 'table-responsive hoverAction', 'style' => 'cursor: pointer;'),
+                    'htmlOptions' => array('class'=> 'table-responsive', 'style' => 'cursor: pointer;'),
                     'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
-                    'itemsCssClass' => 'table table-responsive table-striped',
+                    'itemsCssClass' => 'table table-responsive table-hover',
                     'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                     'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
