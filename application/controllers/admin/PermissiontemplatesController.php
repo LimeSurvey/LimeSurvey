@@ -44,7 +44,7 @@ class PermissiontemplatesController extends Survey_Common_Action
             array(
                 'model'         => $model,
                 'massiveAction' => $massiveAction,
-                'pageTitle'     => gT('Permission roles'),
+                'pageTitle'     => gT('User roles'),
             )
         );
     }
