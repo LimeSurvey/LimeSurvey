@@ -3769,6 +3769,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 }
             };
             $insertPlugin('AuthLDAP');
+            $insertPlugin('Authdb');
+            $insertPlugin('ComfortUpdateChecker');
             $insertPlugin('AuditLog');
             $insertPlugin('Authwebserver');
             $insertPlugin('ExportR', 1);
