@@ -42,8 +42,7 @@
                     <!-- Export this label set -->
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/dumplabel/lid/$lid");?>"
-                            role="button"
-                            style="margin-top:10px;">
+                            role="button">
                             <span class="icon-export text-success"></span>
                             <?php eT("Export this label set"); ?>
                         </a>
