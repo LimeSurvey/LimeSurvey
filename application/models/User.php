@@ -489,7 +489,7 @@ class User extends LSActiveRecord
                 data-uid='" . $this->uid . "'
                 data-user='" . htmlspecialchars($oUser['full_name']) . "'
                 data-action='modifyuser'
-                class='btn btn-default btn-xs action_usercontrol_button'>
+                class='btn btn-default btn-sm green-border action_usercontrol_button'>
                     <span class='fa fa-pencil text-success'></span>
                 </button>";
         } else {
@@ -500,7 +500,7 @@ class User extends LSActiveRecord
                     && $this->parent_id == Yii::app()->session['loginID']
                 )
             ) {
-                $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
+                $editUser = "<button data-toggle='tooltip' data-url='" . $editUrl . "' data-user='" . htmlspecialchars($oUser['full_name']) . "' data-uid='" . $this->uid . "' data-action='modifyuser' title='" . gT("Edit this user") . "' type='submit' class='btn btn-default btn-sm green-border action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
 
             if (
@@ -543,8 +543,8 @@ class User extends LSActiveRecord
                         data-action='deluser'
                         data-onclick='triggerRunAction($(\"#delete_user_" . $this->uid . "\"))'
                         data-message='" . gT("Do you want to delete this user?") . "'
-                        class='btn btn-default btn-xs '>
-                            <span class='fa fa-trash  text-danger'></span>
+                        class='btn btn-default btn-sm red-border'>
+                            <span class='fa fa-trash'></span>
                         </button>
                     </span>";
             }
@@ -606,15 +606,15 @@ class User extends LSActiveRecord
                 data-toggle='tooltip' 
                 title='" . gT("Template permissions") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
-                style='margin-left: 5px; margin-top: 5px;'
+                style='margin-left: 5px;'
                 data-href='" . $setTemplatePermissionsUrl . "'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser green-border' 
                 style='margin-left: 5px;'
-                data-href='" . $editUrl . "'><i class='fa fa-edit'></i></button>";
+                data-href='" . $editUrl . "'><i class='fa fa-pencil'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
@@ -635,11 +635,11 @@ class User extends LSActiveRecord
         $deleteUserButton = ""
             . "<button 
                 id='UserManagement--delete-" . $this->uid . "' 
-                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete'
-                style='margin-left: 5px; margin-top: 5px;'
+                class='btn btn-default btn-sm UserManagement--action--openmodal UserManagement--action--delete red-border'
+                style='margin-left: 5px;'
                 data-toggle='tooltip' 
                 title='" . gT("Delete User") . "' 
-                data-href='" . $deleteUrl . "'><i class='text-danger fa fa-trash'></i></button>";
+                data-href='" . $deleteUrl . "'><i class='fa fa-trash'></i></button>";
 
         // Superadmins can do everything, no need to do further filtering
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
