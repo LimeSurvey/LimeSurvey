@@ -64,7 +64,7 @@ class UserManagementController extends LSBaseController
         );
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = gT('User management panel');
+        $aData['pageTitle'] = gT('User management');
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;

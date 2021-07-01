@@ -197,11 +197,11 @@
                     <?php eT('Users');?>
                 </li>
 
-                <!-- User management panel -->
+                <!-- User management -->
                 <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
-                            <?php eT("User management panel");?>
+                            <?php eT("User management");?>
                         </a>
                     </li>
                     <?php endif;?>
