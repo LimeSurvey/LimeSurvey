@@ -95,6 +95,7 @@ class ParticipantAttributeName extends LSActiveRecord
     }
 
     /**
+     * Returns Buttons for Grid view
      * @return string html
      */
     public function getButtons()
@@ -108,22 +109,22 @@ class ParticipantAttributeName extends LSActiveRecord
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons = "";
-        //DELETE attribute
+        
         //Edit-button
         $editData = array(
-            'action_attributeNames_editModal',
+            'green-border action_attributeNames_editModal',
             '',
             gT("Edit this attribute"),
             'pencil'
         );
-
         $buttons .= vsprintf($raw_button_template, $editData);
+
         //delete-button
         $deleteData = array(
-            'action_attributeNames_deleteModal',
-            'text-danger',
+            'red-border action_attributeNames_deleteModal',
+            '',
             gT("Delete this attribute"),
-            'trash text-danger'
+            'trash'
         );
         $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>"
             . vsprintf($raw_button_template, $deleteData)
