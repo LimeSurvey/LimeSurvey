@@ -23,7 +23,7 @@
 
 <!-- Send reminder buttons -->
 <?php if(!empty($showSendReminderButton)):?>
-    <a class="btn btn-default" href="#" role="button" id="send-reminders-button">
+    <a class="btn btn-success pull-right" style="margin-left: 5px;" href="#" role="button" id="send-reminders-button">
         <span class="icon-invite" ></span>
         <?php eT("Send reminders");?>
     </a>
