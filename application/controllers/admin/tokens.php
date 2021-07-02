@@ -1508,7 +1508,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function exportdialog($iSurveyId)
+    public function exportdialog(int $iSurveyId)
     {
         $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -1534,7 +1534,6 @@ class tokens extends Survey_Common_Action
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         } else {
-            //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
 
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
