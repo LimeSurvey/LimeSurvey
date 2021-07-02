@@ -1601,7 +1601,15 @@ class tokens extends Survey_Common_Action
                 ),
             );
 
-            $aData['showCloseButton'] = true;
+            // Save Button
+            $aData['showSaveButton'] = true;
+
+            // Save and Close Button
+            $aData['showSaveAndCloseButton'] = true;
+            
+            // White Close Button
+            $aData['showWhiteCloseButton'] = true;
+            
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
