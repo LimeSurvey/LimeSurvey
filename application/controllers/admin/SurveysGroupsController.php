@@ -318,20 +318,26 @@ class SurveysGroupsController extends Survey_Common_Action
 
         $buttons = [];
 
-        $buttons['closebutton'] = array(
+        // White Close Button
+        $buttons['white_closebutton'] = array(
                 'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
         );
         if ($model->hasPermission('surveysettings', 'update')) {
+            // Save Button
             $buttons['savebutton'] = [
                 'form' => 'survey-settings-options-form'
             ];
 
+            // Save and Close butotn
             $buttons['saveandclosebutton'] = array(
                 'form' => 'survey-settings-options-form'
             );
         }
         $aData['partial'] = $sPartial;
+
+        // Page Title
         $aData['pageTitle'] = gT('Survey settings for group: ') . $model->title;
+
         $aData['fullpagebar'] = $buttons;
         $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
