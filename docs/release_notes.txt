@@ -34,6 +34,56 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.5 (build 210624) to 3.27.6 (build 210629) June 28, 2021
+-Fixed issue [security] #17388: Stored XSS in quota management (Denis Chenu)
+-Fixed issue #17394: Sharing a participant does not work in CPDB (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.27.4 (build 210622) to 3.27.5 (build 210624) June 24, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
+#Updated translation: Yakut by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Sami by c_schmitz
+#Updated translation: Mongolian by amidral
+#Updated translation: Latvian (Informal) by anorkusa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by datamunger, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Azerbaijani by c_schmitz
+
+
+Changes from 3.27.3 (build 210615) to 3.27.4 (build 210622) June 21, 2021
+-Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)
+-Fixed issue #17351: Also check that GD implement jpeg support (#1917) (Gabriel Jenik)
+-Fixed issue #17038: templateurl placeholder not being replaced (#1924) (Gabriel Jenik)
+
+
+Changes from 3.27.2 (build 210608) to 3.27.3 (build 210615) June 14, 2021
+-Fixed issue #17347: 'Class Twig_Environment not found' when uploading an image (#1912) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.27.1 (build 210531) to 3.27.2 (build 210608) June 7, 2021
+-Fixed issue: Database error when editing a quota and text is too long (Gabriel Jenik)
+-Fixed issue #17298: queXML PDF Export: 500: Internal Server Error (#1902) (Adam Zammit)
+-Fixed issue #17239: Unable to find template "./subviews/content/.twig" (with PHP8) (Gabriel Jenik)
+-Fixed issue #14897: Edit theme permissions: option 'All themes' not working (#1903) (Gabriel Jenik)
+-Fixed issue #14039: Captcha prevent panel integration. GET URL parameter not captured (#1896) (Gabriel Jenik)
+
+
 Changes from 3.27.0 (build 210525) to 3.27.1 (build 210531) May 31, 2021
 -Fixed issue #17306: Some update theme can break page in 3.26.4 (#1892) (Gabriel Jenik)
 

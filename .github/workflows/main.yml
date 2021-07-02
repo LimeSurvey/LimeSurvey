@@ -1,0 +1,139 @@
+name: LimeSurvey - CI pipeline for 3.x
+# Triggers the workflow on push or pull request events on all branches
+on:
+  pull_request:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  CI-pipeline:
+    runs-on: ubuntu-18.04    # ubuntu runner hosted by Github
+    strategy:
+      matrix:
+        # Specify what versions of php you want to test
+        php-versions: ['5.6', '7.4']
+        nodeJS-versions: ['10.16.3']
+    # Env vars for this job
+    env:
+      DBENGINE: INNODB
+
+    name: PHP ${{ matrix.php-versions }}  # Check each version of php specified in matrix
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # This will change the php version for every version specified in matrix https://github.com/marketplace/actions/setup-php-action
+      - name: Install specified PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
+      - name: Start the MySQL service
+        run: |
+          sudo systemctl start mysql.service
+
+      - name: Initilize and check all dependencies
+        run: |
+          # Before running composer install, check that the autoloader is up-to-date and all classes can be loaded.
+          php tests/check_autoloader.php
+
+          # Test
+          echo $archive_url
+          php -r 'var_dump(PHP_INT_SIZE);'
+          # Install LimeSurvey.
+          php -m  # Spit out all loaded PHP modules
+          mysql --version
+          touch enabletests
+          # NB: PHPUnit 6.5.* is installed with composer.
+          composer install -vvv
+          ./third_party/bin/phpunit --version
+
+      - name: Set up Apache+PHP
+        run: |
+          # Set up the Apache and PHP
+          sudo apt-get update > /dev/null
+          sudo apt install php libapache2-mod-php -y
+
+          sudo cp -f ./tests/CI-pipeline/github-actions-apache /etc/apache2/sites-available/000-default.conf
+          sudo sed -e "s?%CI_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+          sudo service apache2 restart
+
+          # Give permision to access files for Apache
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tmp
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./upload
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./themes
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./tests/tmp
+          setfacl -dR -m u:www-data:rwX -m u:$(whoami):rwx ./application/config
+
+          chmod -R 777 ./tmp
+          sudo chown -R www-data:docker ./tmp
+          chmod -R 777 ./upload
+          chmod -R 777 ./themes  # Need 777 so both console and web server can cd into the folder.
+          chmod -R 777 ./tests/tmp
+          chmod -R 777 ./application/config
+          chmod +x ./tests/bin/lint-*
+
+      - name: Check MySQL service
+        run: |
+          # InnoDB needs large_file_prefix & Barracuda file format
+          # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
+          # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
+
+          sudo service mysql status
+          mysql -uroot -proot -e "Show  variables like '%large%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
+          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+
+      - name: Load custom console and start the Application
+        run: |
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
+          cp application/config/config-sample-mysql.php application/config/config.php
+
+        # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
+        # TODO: Disable, a lines was added to config file and some tests started to fail.
+        # NB: EmCache is always disabled when debug => 2
+        # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
+        # sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
+        # cat application/config/config.php
+
+      - name: Run syntax check, CodeSniffer, MessDetector, ...
+        run: composer test
+
+      - name: Test the server
+        run: |
+          # Test server.
+          wget localhost
+          cat index.html
+
+        # Chromedriver setup.
+        # Note: Keep getting timeout problems on Travis with chromedriver.
+        # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+        # unzip chromedriver_linux64.zip
+
+      - name: Set up Selenium with firefox
+        run: |
+          which firefox
+          firefox -v
+
+          # Setup Selenium with Firefox headless mode, Gecko driver already installed
+          wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
+          export MOZ_HEADLESS=1
+          java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
+
+      # Prepare the packages that need to be tested and update the nvm
+      - name: Prepare the nvm with Node ${{ matrix.nodeJS-versions }}
+        run: |
+          # Update
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+          source ~/.nvm/nvm.sh
+
+          # Install Node.js
+          nvm install ${{ matrix.nodeJS-versions }}
+          nvm use ${{ matrix.nodeJS-versions }}
+          node ./buildVueComponents.js -s adminbasics -p
+
+      - name: Run the test script
+        run: |
+          DOMAIN=localhost ./third_party/bin/phpunit --testdox --stop-on-failure
+          yarn --cwd ./assets/packages/adminbasics run test
