@@ -19,6 +19,11 @@ class AdvancedSettingWidget extends CWidget
         //if ($this->setting['inputtype'] === 'singleselect') {
             //echo '<pre>'; var_dump($this->setting['aFormElementOptions']['options']); echo '</pre>';
         //}
+
+        if (isset($this->setting['expression']) && $this->setting['expression'] == 2) {
+            $this->setting['aFormElementOptions']['inputGroup'] = ['prefix' => '{', 'suffix' => '}'];
+        }
+
         $content = $this->render($this->setting['inputtype'], null, true);
         $this->render('layout', ['content' => $content]);
     }
