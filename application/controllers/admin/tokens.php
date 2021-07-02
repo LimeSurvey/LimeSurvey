@@ -2342,10 +2342,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * Bounce Settings Action.
      * @param int $iSurveyId
      * @return void
      */
-    public function bouncesettings($iSurveyId)
+    public function bouncesettings(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -2390,8 +2391,12 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
-        $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        
+        // Save Button
+        $aData['topBar']['showSaveButton'] = true;
+        // Back Button
+        $aData['topBar']['showBackButton'] = true;
+        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
