@@ -1279,10 +1279,9 @@ class tokens extends Survey_Common_Action
     /**
      * Handle email action
      * @param int $iSurveyId
-     * @param string $tokenids Int list separated with |?
      * @return void
      */
-    public function email($iSurveyId)
+    public function email(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $aData = array();
@@ -1606,7 +1605,7 @@ class tokens extends Survey_Common_Action
 
             // Save and Close Button
             $aData['showSaveAndCloseButton'] = true;
-            
+
             // White Close Button
             $aData['showWhiteCloseButton'] = true;
             
