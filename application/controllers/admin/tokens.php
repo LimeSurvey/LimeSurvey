@@ -805,8 +805,13 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
+        // Save Button
         $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        // Save And Close Button
+        $aData['topBar']['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['topBar']['showWhiteCloseButton'] = true;
+        $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
@@ -890,7 +895,6 @@ class tokens extends Survey_Common_Action
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
                 $aData['showSaveButton'] = true;
-                $aData['showCloseButton'] = true;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
                 $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -938,7 +942,6 @@ class tokens extends Survey_Common_Action
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
             $aData['showSaveButton'] = true;
-            $aData['showCloseButton'] = true;
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
