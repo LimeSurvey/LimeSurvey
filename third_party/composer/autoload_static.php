@@ -24,6 +24,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
             'LimeSurvey\\PluginManager\\' => 25,
             'LimeSurvey\\Menu\\' => 16,
             'LimeSurvey\\Helpers\\' => 19,
+            'LimeSurvey\\Datavalueobjects\\' => 28,
         ),
     );
 
@@ -49,6 +50,10 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
+        ),
+        'LimeSurvey\\Datavalueobjects\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/datavalueobjects',
         ),
     );
 

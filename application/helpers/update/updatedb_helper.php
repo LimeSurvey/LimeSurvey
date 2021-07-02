@@ -2542,6 +2542,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Sanitize theme option paths
+         */
+        if ($iOldDBVersion < 366) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $templateConfigurations = TemplateConfiguration::model()->findAll();
+            if (!empty($templateConfigurations)) {
+                foreach ($templateConfigurations as $templateConfiguration) {
+                    $templateConfiguration->save();
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 366), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

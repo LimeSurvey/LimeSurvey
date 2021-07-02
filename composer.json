@@ -25,6 +25,7 @@
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
+			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
             "Twig\\": "third_party/twig/twig/src"
 		}
 	},
