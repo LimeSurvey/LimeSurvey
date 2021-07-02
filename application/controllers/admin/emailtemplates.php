@@ -20,7 +20,9 @@
  * @copyright 2011
  * @access public
  */
-
+/**
+ * Class EmailTemplates
+ **/
 class emailtemplates extends Survey_Common_Action
 {
     /**
@@ -90,7 +92,13 @@ class emailtemplates extends Survey_Common_Action
         $aData['grplangs'] = $grplangs;
 
         $aData['topBar']['name'] = 'baseTopbar_view';
+
+        // Save Button
         $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
+        
+        // Back Button
+        $aData['topBar']['showBackButton'] = true;
+        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
         
         App()->getClientScript()->registerPackage('expressionscript');
         
