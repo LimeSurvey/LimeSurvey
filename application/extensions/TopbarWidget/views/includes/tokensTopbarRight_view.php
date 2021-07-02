@@ -7,7 +7,7 @@
 
 <!-- Download CSV -->
 <?php if(!empty($showDownloadButton)):?>
-    <a class="btn btn-success" href="#" role="button" id="save-button">
+    <a class="btn btn-success pull-right" style="margin-left: 5px;" href="#" role="button" id="save-button">
         <span class="fa fa fa-export" ></span>
             <?php eT("Download CSV file"); ?>
     </a>
