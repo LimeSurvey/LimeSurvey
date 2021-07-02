@@ -2777,10 +2777,14 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        $aData['showCloseButton'] = true;
+        // Back Button
+        $aData['showBackButton'] = true;
+        $aData['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+
         if (Yii::app()->request->getParam('action') == "remind") {
             $aData['showSendReminderButton'] = true;
         } else {
+            // Send Invitation Button
             $aData['showSendInvitationButton'] = true;
         }
         $aData['topBar']['name'] = 'tokensTopbar_view';

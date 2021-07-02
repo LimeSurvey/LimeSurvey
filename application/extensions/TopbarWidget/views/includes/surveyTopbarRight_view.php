@@ -42,6 +42,15 @@
     </button>
 <?php endif;?>
 
+<!-- Return -->
+<?php if (!empty($showBackButton)): ?>
+    <a class="btn btn-default" href="<?php echo $returnUrl; ?>" role="button">
+        <span class="fa fa-backward"></span>
+        &nbsp;&nbsp;
+        <?php eT('Back') ?>
+    </a>
+<?php endif;?>
+
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
     <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
