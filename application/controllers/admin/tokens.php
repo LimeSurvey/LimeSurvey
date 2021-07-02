@@ -491,7 +491,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws CException
      */
-    public function addnew($iSurveyId)
+    public function addnew(int $iSurveyId)
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
@@ -603,6 +603,15 @@ class tokens extends Survey_Common_Action
             $aData['title_bar']['sSubaction'] = $subAction;
             $aData['title_bar']['active'] = true;
 
+            // Save Button
+            $aData['topBar']['rightSideView']['showSaveButton'] = true;
+
+            // Save and Close Button
+            $aData['topBar']['rightSideView']['showSaveAndCloseButton'] = true;
+
+            // White Close Button
+            $aData['topBar']['showWhiteCloseButton'] = true;
+            $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $aData['surveyid']);
             $aData['topBar']['name'] = 'tokensTopbar_view';
 
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
