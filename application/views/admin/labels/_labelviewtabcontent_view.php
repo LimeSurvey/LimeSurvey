@@ -87,7 +87,7 @@ $codeids = '';
             if (Permission::model()->hasGlobalPermission('labelsets','update'))
             { ?>
                     <button type="button" id='btnquickadd_<?php echo $i ?>' class="btnquickadd btn btn-default " data-toggle="modal" data-target="#quickadd">
-                        <?php eT('Quick add') ?>
+                        <?php eT('Quick add labels') ?>
                     </button>
                 <?php }; ?>
         </div>
