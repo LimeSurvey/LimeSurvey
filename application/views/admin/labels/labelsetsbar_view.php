@@ -93,19 +93,16 @@
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
                         </span>
-                        <?php endif; ?>
                     <?php endif; ?>
-            <!-- view action buttons-->           
+                <?php endif; ?>          
 
+            <!-- return to admin panel -->
             <?php if (isset($labelbar['buttons']['return'])):?>
-
-                <!-- return to admin panel -->
-              <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block; margin-top: 10px; margin-right: 5px;">
+              <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="margin-right: 5px;">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php eT('Back'); ?>
                 </a>
-        
             <?php endif; ?>
 
             <!-- Close -->

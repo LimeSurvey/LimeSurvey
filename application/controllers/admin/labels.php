@@ -163,10 +163,11 @@ class labels extends Survey_Common_Action
      * Function to load new/edit labelset screen.
      *
      * @access public
+     * @param string  $sa
      * @param integer $lid
      * @return
      */
-    public function index($sa, $lid = 0)
+    public function index(string $sa, $lid = 0)
     {
         Yii::app()->loadHelper('surveytranslator');
 
