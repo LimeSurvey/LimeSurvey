@@ -149,8 +149,11 @@ function submitEditToken(){
         success : function(result, stat) {
             if (result.success) {
                 $modal.modal('hide');
-            }
-            else {
+            } else {
+                var errorMsg = result.error.message ? result.error.message : result.error;
+                if (!errorMsg) errorMsg = "Unexpected error";
+                showError(errorMsg);
+                return;
             }
 
             // Using Try/Catch here to catch errors if there is no grid
@@ -174,46 +177,29 @@ function submitEditToken(){
     });
 }
 
+function showError(msg) {
+    $('#edittoken-error-container .alert-content').html(msg);
+    $('#edittoken-error-container').show();
+}
+
 /**
  * Validates that mandatory additional attributes are filled
  */
 function validateAdditionalAttributes() {
-    const reportFieldValidity = function (field) {
-        // Pick the message from the field attributes, or use a default one if not set
-        var msg = field.attr('data-empty-msg');
-        if (!msg) {
-            msg = "Please fill out this field";
-        }
-        // Set the custom validity error
-        field.get(0).setCustomValidity(msg);
-        // Trigger the invalid event and show the errors
-        field.get(0).reportValidity();
-        // Clear the validation error on input
-        field.off('input.token-validate').on('input.token-validate', function() {
-            $(this).get(0).setCustomValidity('');
-        });
-    };
+    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
 
     $valid = true;
     $('.mandatory-attribute').each(function () {
-        const field = $(this);
-        $value = field.val();
+        $value = $(this).val();
         if ($value === null || $value === "") {
             $valid = false;
-            if ($('#custom').is(':visible')) {
-                reportFieldValidity(field);
-            } else {
-                const additionalAttributesTab = $('a[href="#custom"]');
-                additionalAttributesTab.on('shown.bs.tab.token-validate', function () {
-                    additionalAttributesTab.off('shown.bs.tab.token-validate');
-                    reportFieldValidity(field);
-                });
-                additionalAttributesTab.tab('show');
+            if (!$('#custom').is(':visible')) {
+                $('.nav-tabs a[href="#custom"]').tab('show');
             }
-            //$(this).trigger('invalid');
+            showError(validationErrorMsg);
+            $(this).trigger('invalid');
             return false;
         }
-        field.get(0).setCustomValidity('');
     });
     return $valid;
 }
@@ -319,20 +305,13 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
     });
 
-    // When the additional attributes tab is shown, clear the custom validation errors from
-    // additional attributes, because reportValidity() may run on the form when the fields
-    // are not visible, triggering an error.
-    $('a[href="#custom"]').on('hidden.bs.tab', function () {
-        $('.mandatory-attribute').each(function () {
-            $(this).get(0).setCustomValidity('');
-        });
-    });
-
     /**
      * Save token
      */
-    $("#save-edittoken").click(function(){
-        submitEditToken();
+    $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
+        if (validateAdditionalAttributes()) {
+            submitEditToken();
+        }
     });
 
 
