@@ -258,9 +258,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
      * @param int $surveyid
      * @param string $landOnSideMenuTab
      *
-     * * @return void
+     * @return void
      */
-    public function actionAdd($surveyid, $landOnSideMenuTab = 'structure')
+    public function actionAdd(int $surveyid, string $landOnSideMenuTab = 'structure')
     {
         //check permission to create groups ...
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
@@ -283,7 +283,6 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'questiongroup.js');
 
-        //$aData['display']['menu_bars']['surveysummary'] = 'addgroup';
         $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
         $aData['surveyid'] = $surveyid;
         $aData['grplangs'] = $aSurveyLanguages;
@@ -291,17 +290,16 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
-        $aData['closeBtnUrl'] = $this->createUrl(
-            'questionGroupsAdministration/listquestiongroups',
-            [
-                'surveyid' => $surveyid
-            ]
-        );
 
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView'] = 'addGroupTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'addGroupTopbarRight_view';
-
+        $aData['backUrl'] = $this->createUrl(
+            'questionGroupsAdministration/listquestiongroups',
+            [
+                'surveyid' => $surveyid
+            ]
+        );;
         ///////////
         // sidemenu
         $aData['sidemenu']['state'] = false;
