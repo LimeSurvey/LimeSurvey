@@ -1,6 +1,6 @@
 <?php
 /**
- * UserGroupController
+ * class UserGroupController
  **/
 class UserGroupController extends LSBaseController
 {
@@ -496,6 +496,14 @@ class UserGroupController extends LSBaseController
         // Back Button
         $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
         $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        // Send Button
+        $aData['usergroupbar']['savebutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['savebutton']['text'] = gT('Send');
+
+        // Reset Button
+        $aData['usergroupbar']['resetbutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['resetbutton']['text'] = gT('Reset');
 
         // Green Bar (SurveyManagerBar) Page Title
         $aData['pageTitle'] = gT("Mail to all Members");
