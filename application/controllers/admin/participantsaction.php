@@ -262,6 +262,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Loads the view 'participantsPanel'
+     * Central Participants database summary action
      */
     public function index()
     {
@@ -282,11 +283,18 @@ class participantsaction extends Survey_Common_Action
             'shared' => Participant::model()->getParticipantsSharedCount($iUserID),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'attributecount' => ParticipantAttributeName::model()->count(),
-            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\'')
+            'blacklisted' => Participant::model()->count('owner_uid = ' . $iUserID . ' AND blacklisted = \'Y\''),
+            'ownsAddParticipantsButton' =>
+                Permission::model()->hasGlobalPermission('superadmin', 'read')
+                || Permission::model()->hasGlobalPermission('participantpanel', 'create'),
         );
 
         $searchstring = Yii::app()->request->getPost('searchstring');
         $aData['searchstring'] = $searchstring;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = "Central participants database summary";
+
         // loads the participant panel and summary view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
     }
@@ -391,6 +399,10 @@ class participantsaction extends Survey_Common_Action
         if ($request->getPost('pageSizeParticipantView')) {
             Yii::app()->user->setState('pageSizeParticipantView', $request->getPost('pageSizeParticipantView'));
         }
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Central participant management';
+        $aData['ownsAddParticipantsButton'] = true;
 
         // Loads the participant panel view and display participant view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
@@ -767,7 +779,8 @@ class participantsaction extends Survey_Common_Action
         $this->checkPermission('import');
 
         $aData = array(
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'pageTitle' => "Import CSV",
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
@@ -780,6 +793,10 @@ class participantsaction extends Survey_Common_Action
     {
         $this->checkPermission('import');
 
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', array('admin/participants/sa/importCSV'));
+
         if ($_FILES['the_file']['name'] == '') {
             Yii::app()->setFlashMessage(gT('Please select a file to import!'), 'error');
             Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
@@ -789,11 +806,7 @@ class participantsaction extends Survey_Common_Action
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            Yii::app()->getController()->redirect(array('admin/participants/sa/importCSV'));
-            Yii::app()->end();
-        } elseif (strtolower($sExtension) == 'csv') {
+        if (strtolower($sExtension) == 'csv') {
             $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
             $filterblankemails = Yii::app()->request->getPost('filterbea');
         } else {
@@ -1287,7 +1300,8 @@ class participantsaction extends Survey_Common_Action
             'hideblacklisted' => Yii::app()->getConfig('hideblacklisted'),
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
-            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes()
+            'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
+            'pageTitle' => "Blacklist settings",
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
@@ -1359,7 +1373,9 @@ class participantsaction extends Survey_Common_Action
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
-            'debug' => Yii::app()->request->getParam('Attribute')
+            'debug' => Yii::app()->request->getParam('Attribute'),
+            'pageTitle' => "Attribute management",
+            'ownsAddAttributeButton' => true,
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeAttributes')) {
@@ -1941,6 +1957,7 @@ class participantsaction extends Survey_Common_Action
     /**
      * Loads the view 'sharePanel'
      * @return void
+     * @throws CException
      */
     public function sharePanel()
     {
@@ -1949,6 +1966,7 @@ class participantsaction extends Survey_Common_Action
             $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
         }
         $model->bEncryption = true;
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -1957,7 +1975,8 @@ class participantsaction extends Survey_Common_Action
             'attributeValues' => ParticipantAttributeName::model()->getAllAttributesValues(),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
-            'debug' => Yii::app()->request->getParam('Participant')
+            'debug' => Yii::app()->request->getParam('Participant'),
+            'pageTitle' => "Share panel",
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
@@ -2274,20 +2293,18 @@ class participantsaction extends Survey_Common_Action
         }
 
         $i = 0;
-        // $iShareUserId == 0 means any user
-        if ($iShareUserId !== '') {
-            foreach ($participantIds as $id) {
-                $time = time();
-                $aData = array(
-                    'participant_id' => (int) $id,
-                    'share_uid' => $iShareUserId,
-                    'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
-                );
-                ParticipantShare::model()->storeParticipantShare($aData, $permissions);
-                $i++;
-            }
+        foreach ($participantIds as $id) {
+            $time = time();
+            $aData = array(
+                'participant_id' => $id, //id is a UUID, not an integer
+                'share_uid' => $iShareUserId, // $iShareUserId == 0 means any user
+                'date_added' => date('Y-m-d H:i:s', $time),
+                'can_edit' => ($bCanEdit === false ? 0 : 1)
+            );
+            ParticipantShare::model()->storeParticipantShare($aData, $permissions);
+            $i++;
         }
+
         $this->ajaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 

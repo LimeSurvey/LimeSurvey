@@ -16,7 +16,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
      * Activate needed plugins
      * Import survey in tests/surveys/.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         self::installAndActivatePlugin('statFunctions');
@@ -40,7 +40,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             ]
         );
         try {
-            self::$webDriver->get($url);
+            self::$webDriver->get($url);            
+            sleep(1); // Page did not load properly
+            
             /* 1st page */
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
@@ -117,7 +119,7 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
      * @inheritdoc
      * @todo Deactivate and uninstall plugins ?
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::deActivatePlugin('statFunctions');
         parent::tearDownAfterClass();

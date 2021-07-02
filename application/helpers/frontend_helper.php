@@ -33,16 +33,12 @@ function loadanswers()
         $sLoadName = Yii::app()->request->getParam('loadname');
         $sLoadPass = Yii::app()->request->getParam('loadpass');
         $oCriteria = new CDbCriteria();
-        $oCriteria->select = 'sc.*';
-        $oCriteria->join = "LEFT JOIN {{saved_control}} as sc ON t.id=sc.srid";
-        $oCriteria->condition = "sc.sid=:sid";
-        $aParams = [':sid' => $surveyid];
         if (isset($scid)) {
             //Would only come from email : we don't need it ....
-            $oCriteria->addCondition("sc.scid=:scid");
+            $oCriteria->addCondition("saved_control.scid=:scid");
             $aParams[':scid'] = $scid;
         }
-        $oCriteria->addCondition("sc.identifier=:identifier");
+        $oCriteria->addCondition("saved_control.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
     } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
         $oCriteria = new CDbCriteria();
@@ -53,10 +49,10 @@ function loadanswers()
     }
     $oCriteria->params = $aParams;
     $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
-
     if (!$oResponses) {
         return false;
     }
+    $oResponses->decrypt();
 
     if (isset($oResponses->saved_control) && $oResponses->saved_control) {
         $saved_control = $oResponses->saved_control;
@@ -77,6 +73,8 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
                 $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
             }
+        } else {
+            return false;
         }
     }
     // Get if survey is been answered
@@ -174,7 +172,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8');
+            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -633,7 +631,7 @@ function buildsurveysession($surveyid, $preview = false)
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang       = $_SESSION['survey_' . $surveyid]['s_lang'];
+    $lang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : '';
     if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
@@ -755,9 +753,10 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_' . $surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType() == 'GET') {
-        $getValues = array_diff_key($_GET, array_combine($reservedGetValues, $reservedGetValues));
-        if (!empty($getValues)) {
+    $request = Yii::app()->getRequest();
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
+        if(!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
             foreach ($_SESSION['survey_' . $surveyid]['fieldmap'] as $sgqa => $details) {
@@ -1098,7 +1097,7 @@ function finalizeRandomization($fieldmap)
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
     $FlashError = '';
-    if (FailedLoginAttempt::model()->isLockedOut()) {
+    if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
         $FlashError = sprintf(gT('You have exceeded the number of maximum access code validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
         $renderToken = 'main';
     } else {
@@ -1185,7 +1184,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid" => $surveyid));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
@@ -1288,7 +1287,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 /**
  * @param string $sTemplateViewPath
  */
-function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
+function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath)
 {
     // Template settings
     $surveyid = $thissurvey['sid'];
@@ -1296,7 +1295,7 @@ function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
     //$oTemplate->registerAssets();
 
     $aError = array();
-    $aError['title']      = ($sTitle != '') ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
+    $aError['title']      = (!empty(trim($sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
@@ -2074,4 +2073,32 @@ function cookieConsentLocalization()
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')
     );
+}
+
+/**
+ * Returns an array of URL parameters that can be forwarded
+ *
+ * @param LSHttpRequest $request the HTTP request
+ *
+ * @return array<string,mixed>
+ */
+function getForwardParameters($request)
+{
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed',
+        'index.php',
+    );
+
+    $parameters = [];
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
+    }
+    return $parameters;
 }

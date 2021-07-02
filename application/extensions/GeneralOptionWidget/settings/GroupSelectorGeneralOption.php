@@ -15,7 +15,7 @@ class GroupSelectorGeneralOption extends GeneralOption
         $this->name = 'gid';
         $this->title = gT('Question group');
         $this->inputType = 'questiongroup';
-        $this->disableInActive = true;
+        $this->setDisableInActive($question->survey);
         $this->formElement = new FormElement(
             'gid',
             null,

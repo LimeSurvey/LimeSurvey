@@ -6,24 +6,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
 
 ?>
 <div id="pjax-content">
-    <div class="col-xs-12">
-        <div class="pagetitle h3 row">
-            <div class="col-xs-8 ">
-                <?php eT("Central participant management"); ?>
-            </div>
-            <div class="col-xs-4 text-right">
-                <?php if (
-                    Permission::model()->hasGlobalPermission('superadmin', 'read')
-                    || Permission::model()->hasGlobalPermission('participantpanel', 'create')
-                ): ?>
-                    <button class="btn btn-default" id="addParticipantToCPP">
-                        <i class="fa fa-plus-circle text-success"></i>&nbsp;
-                        <?php eT("Add new participant"); ?>
-                    </button>
-                <?php endif; ?>
-            </div>
-        </div>
-    <div class="row" style="margin-bottom: 100px">
+    <div class="row" style="margin-top: 30px;margin-bottom: 100px;">
     <div class="container-fluid">
             <?php 
             $hiddenFilterValues = "";

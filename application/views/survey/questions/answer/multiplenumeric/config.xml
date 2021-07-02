@@ -26,6 +26,7 @@
 
     <compatibility>
         <version>4.0</version>
+        <version>5.0</version>
     </compatibility>
 
     <!--
@@ -135,7 +136,7 @@
             <sortorder>210</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
@@ -159,7 +160,7 @@
             <sortorder>230</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
             <caption>Sub-question validation tip</caption>
             <readonly></readonly>
@@ -447,7 +448,7 @@
             <sortorder>10</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>Add a prefix to the answer field</help>
             <caption>Answer prefix</caption>
             <readonly></readonly>
@@ -459,7 +460,7 @@
             <sortorder>201</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <default></default>
             <help>In the printable version the condition is being replaced with this explanation text.</help>
             <caption>Relevance help for printable survey</caption>
@@ -784,7 +785,7 @@
             <sortorder>11</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>Add a suffix to the answer field</help>
             <caption>Answer suffix</caption>
             <readonly></readonly>

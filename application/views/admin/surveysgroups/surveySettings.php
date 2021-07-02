@@ -15,18 +15,8 @@ Yii::app()->getClientScript()->registerScript(
 
 ?>
 
-<div class="col-lg-12 list-surveys">
+<div class="col-lg-12 list-surveys" style="margin-top: 10px;">
 
-    <?php
-    $this->renderPartial(
-        'super/fullpagebar_view',
-        array(
-            'fullpagebar' => $buttons,
-        )
-    );
-    ?>
-
-    <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
     <div class="row">
         <div id="surveySettingsForThisGroup" style="display: flex; flex-wrap:nowrap;">
             <div id="global-sidebar-container">

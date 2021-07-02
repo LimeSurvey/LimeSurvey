@@ -86,6 +86,16 @@ class CHtml
 	 */
 	public static $closeSingleTags=true;
 	/**
+	 * @var boolean whether to add <code>type="javascript"</code> to <code>&lt;script&gt;</code> tags. Defaults to true. Can be set to false for HTML5.
+	 * @since 1.1.24
+	 */
+	public static $setScriptType=true;
+	/**
+	 * @var boolean whether to add a CDATA wrapper around <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code> contents. Defaults to true. Can be set to false for HTML5.
+	 * @since 1.1.24
+	 */
+	public static $cdataScriptAndStyleContents=true;
+	/**
 	 * @var boolean whether to render special attributes value. Defaults to true. Can be set to false for HTML5.
 	 * @since 1.1.13
 	 */
@@ -252,7 +262,9 @@ class CHtml
 	{
 		if($media!=='')
 			$media=' media="'.$media.'"';
-		return "<style type=\"text/css\"{$media}>\n/*<![CDATA[*/\n{$text}\n/*]]>*/\n</style>";
+		if(self::$cdataScriptAndStyleContents)
+			$text="/*<![CDATA[*/\n{$text}\n/*]]>*/";
+		return "<style type=\"text/css\"{$media}>\n{$text}\n</style>";
 	}
 
 	/**
@@ -291,11 +303,13 @@ class CHtml
 	 */
 	public static function script($text,array $htmlOptions=array())
 	{
-		$defaultHtmlOptions=array(
-			'type'=>'text/javascript',
-		);
+		$defaultHtmlOptions=array();
+		if(self::$setScriptType)
+			$defaultHtmlOptions['type']='text/javascript';
 		$htmlOptions=array_merge($defaultHtmlOptions,$htmlOptions);
-		return self::tag('script',$htmlOptions,"\n/*<![CDATA[*/\n{$text}\n/*]]>*/\n");
+		if(self::$cdataScriptAndStyleContents)
+			$text="/*<![CDATA[*/\n{$text}\n/*]]>*/";
+		return self::tag('script',$htmlOptions,"\n{$text}\n");
 	}
 
 	/**
@@ -306,10 +320,10 @@ class CHtml
 	 */
 	public static function scriptFile($url,array $htmlOptions=array())
 	{
-		$defaultHtmlOptions=array(
-			'type'=>'text/javascript',
-			'src'=>$url
-		);
+		$defaultHtmlOptions=array();
+		if(self::$setScriptType)
+			$defaultHtmlOptions['type']='text/javascript';
+		$defaultHtmlOptions['src']=$url;
 		$htmlOptions=array_merge($defaultHtmlOptions,$htmlOptions);
 		return self::tag('script',$htmlOptions,'');
 	}
@@ -2197,6 +2211,10 @@ EOD;
 	 * make the error summary to show only the first error message of each attribute.
 	 * If this is not set or is false, all error messages will be displayed.
 	 * This option has been available since version 1.1.3.
+	 * Another special option named 'encode' is recognized, which when set false, will
+	 * disable the CHtml::encode encoding of all error messages.
+	 * If this is not set or is true, all error messages will be encoded by CHtml::encode.
+	 * This option has been available since version 1.1.23.
 	 * @return string the error summary. Empty if no errors are found.
 	 * @see CModel::getErrors
 	 * @see errorSummaryCss
@@ -2220,7 +2238,11 @@ EOD;
 				foreach($errors as $error)
 				{
 					if($error!='')
-						$content.= '<li>'.self::encode($error)."</li>\n";
+					{
+						if (!isset($htmlOptions['encode']) || $htmlOptions['encode'])
+							$error=self::encode($error);
+						$content.= '<li>'.$error."</li>\n";
+					}
 					if($firstError)
 						break;
 				}
@@ -2251,7 +2273,9 @@ EOD;
 	public static function error($model,$attribute,$htmlOptions=array())
 	{
 		self::resolveName($model,$attribute); // turn [a][b]attr into attr
-		$error=self::encode($model->getError($attribute));
+		$error=$model->getError($attribute);
+		if (!isset($htmlOptions['encode']) || $htmlOptions['encode'])
+			$error=self::encode($error);
 		if($error!='')
 		{
 			if(!isset($htmlOptions['class']))

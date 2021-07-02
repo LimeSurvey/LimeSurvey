@@ -1,20 +1,5 @@
-<div class='col-lg-12'>
-    <div class='pagetitle h3'><?php eT('Plugin manager - scanned files'); ?></div>
+<div class='col-lg-12' style="margin-top: 10px;">
     <div class='col-sm-12'>
-            <div class='pull-right'>
-                <a 
-                    href='<?php echo $scanFilesUrl; ?>'
-                    class='btn btn-default'
-                    data-toggle='tooltip'
-                    title='<?php eT('Scan files for available plugins'); ?>'
-                >
-                    <i class='fa fa-file '></i>
-                    <i class='fa fa-search '></i>&nbsp;
-                    <?php eT('Scan files'); ?>
-                </a>
-                &nbsp;
-            </div>
-        </div>
     <?php foreach($result as $name => $scannedPlugin): ?>
         <div class='form-group col-lg-12'>
             <label class='control-label col-sm-4'>

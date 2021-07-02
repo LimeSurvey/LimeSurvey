@@ -2,15 +2,6 @@
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
-// $this->breadcrumbs=array(
-// 	'Surveymenus',
-// );
-
-// $this->menu=array(
-// 	array('label'=>'Create Surveymenu', 'url'=>array('create')),
-// 	array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
-// );
-//
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', array(), true, false);
 
@@ -20,20 +11,6 @@ echo viewHelper::getViewTestTag('surveyMenus');
 ?>
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
-        <div class="col-12 h1 pagetitle">
-            <?php eT('Survey menus')?> 
-        </div>
-        <div class="col-12">
-            <a class="btn btn-default pull-left col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
-                <i class="icon-add text-success"></i>&nbsp;<?php eT('New') ?>
-            </a>	
-            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
-            <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
-                <i class="fa fa-refresh"></i>&nbsp;
-                <?php eT('Reset') ?>
-            </a>
-            <?php endif; ?>	
-        </div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
 				<?php $this->widget('bootstrap.widgets.TbGridView', array(
@@ -80,14 +57,14 @@ echo viewHelper::getViewTestTag('surveyMenus');
   	<div class="modal-dialog modal-lg" role="document">
     	<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><?php eT("Really delete this survey menu?");?></h4>
+				<h4 class="modal-title"><?php eT("Delete this survey menu?");?></h4>
 			</div>
 			<div class="modal-body">
 				<?php eT("All menu entries of this menu will also be deleted."); ?>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel'); ?></button>
-				<button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete now'); ?></button>
+				<button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
+				<button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete'); ?></button>
 			</div>
 		</div>
 	</div>

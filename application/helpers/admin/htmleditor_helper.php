@@ -255,7 +255,9 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
         $ckeditexpandtoolbar = Yii::app()->getConfig('ckeditexpandtoolbar');
         if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true) {
             $toolbaroption = ",toolbarStartupExpanded:true\n"
-            . ",toolbar:'inline'\n";
+            . ",toolbar:'inline2'\n"
+            . ",basicToolbar:'inline2'\n"
+            . ",fullToolbar:'inline'\n";
         }
     }
 
@@ -288,18 +290,37 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
 
                 $('#" . $fieldname . "').before('$loaderHTML');
 
-                $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                LimeReplacementFieldsType : \"" . $fieldtype . "\"
-                ,LimeReplacementFieldsSID : \"" . $surveyID . "\"
-                ,LimeReplacementFieldsGID : \"" . $gID . "\"
-                ,LimeReplacementFieldsQID : \"" . $qID . "\"
-                ,LimeReplacementFieldsAction : \"" . $action . "\"
-                ,LimeReplacementFieldsPath : \"" . Yii::app()->getController()->createUrl("limereplacementfields/index") . "\"
-                ,language:'" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "'"
-            . $sFileBrowserAvailable
-            . $htmlformatoption
-            . $toolbaroption
-            . "});
+                var ckeConfig = {
+                    LimeReplacementFieldsType : \"" . $fieldtype . "\"
+                    ,LimeReplacementFieldsSID : \"" . $surveyID . "\"
+                    ,LimeReplacementFieldsGID : \"" . $gID . "\"
+                    ,LimeReplacementFieldsQID : \"" . $qID . "\"
+                    ,LimeReplacementFieldsAction : \"" . $action . "\"
+                    ,LimeReplacementFieldsPath : \"" . Yii::app()->getController()->createUrl("limereplacementfields/index") . "\"
+                    ,language:'" . sTranslateLangCode2CK(Yii::app()->session['adminlang']) . "'"
+                . $sFileBrowserAvailable
+                . $htmlformatoption
+                . $toolbaroption
+                . "};
+
+                // Override language direction if 'data-contents-dir' attribute is set in the target field
+                if ($('#" . $fieldname . "').get(0).hasAttribute('data-contents-dir')) {
+                    var inputLangDirection = $('#" . $fieldname . "').attr('data-contents-dir');
+                    ckeConfig.contentsLangDirection = inputLangDirection ? inputLangDirection : '';
+                }
+
+                // Set the placeholder text
+                if ($('#" . $fieldname . "').attr('placeholder')) {
+                    ckeConfig.editorplaceholder = $('#" . $fieldname . "').attr('placeholder');
+                }
+
+                // Show full toolbar if cookie is set
+			    var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
+                if (toolbarCookie == 'full' && ckeConfig.toolbar == ckeConfig.basicToolbar) {
+                    ckeConfig.toolbar = ckeConfig.fullToolbar;
+                }
+
+                $oCKeditorVarName = CKEDITOR.replace('$fieldname', ckeConfig);
 
                 \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
             }";

@@ -40,6 +40,7 @@ class GlobalSettings extends Survey_Common_Action
      *
      * @access public
      * @return void
+     * @throws CHttpException
      */
     public function index()
     {
@@ -65,6 +66,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * @throws CHttpException
+     */
     private function _displaySettings()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
@@ -77,10 +81,12 @@ class GlobalSettings extends Survey_Common_Action
         foreach ($this->_checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
+        Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
-        $data['updatelastcheck'] = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i:s");
+        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
+        // @todo getGlobalSetting is deprecated!
         $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = getGlobalSetting("updateinfo");
@@ -116,6 +122,8 @@ class GlobalSettings extends Survey_Common_Action
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
+
+        $data['pageTitle'] = "Global settings";
 
         $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -262,6 +270,8 @@ class GlobalSettings extends Survey_Common_Action
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
+        SettingGlobal::setSetting('createsample', (bool) Yii::app()->getRequest()->getPost('createsample'));
+
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, Template::getTemplateList())) {
@@ -270,6 +280,18 @@ class GlobalSettings extends Survey_Common_Action
             }
             SettingGlobal::setSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
             SettingGlobal::setSetting('force_ssl', Yii::app()->getRequest()->getPost('force_ssl'));
+        }
+
+        $warning = '';
+        $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
+        SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
+        if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")).'<br/>';
+        }
+        $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
+        SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);
+        if (!empty($validatedTokenIpWhitelistInput['invalid'])) {
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for token access")).'<br/>';
         }
 
         // we set the admin theme
@@ -295,7 +317,6 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         SettingGlobal::setSetting('filterxsshtml', strip_tags(Yii::app()->getRequest()->getPost('filterxsshtml')));
         SettingGlobal::setSetting('disablescriptwithxss', strip_tags(Yii::app()->getRequest()->getPost('disablescriptwithxss')));
-        $warning = '';
         // make sure emails are valid before saving them
         if (
             Yii::app()->request->getPost('siteadminbounce', '') == ''
@@ -360,7 +381,10 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('timeadjust', $savetime);
         SettingGlobal::setSetting('usercontrolSameGroupPolicy', strip_tags(Yii::app()->getRequest()->getPost('usercontrolSameGroupPolicy')));
 
-        Yii::app()->session['flashmessage'] = $warning . gT("Global settings were saved.");
+        if (!empty($warning)) {
+            Yii::app()->setFlashMessage($warning, 'warning');
+        }
+        Yii::app()->setFlashMessage(gT("Global settings were saved."), 'success');
 
         // Redirect if user clicked save-and-close-button
         if (Yii::app()->getRequest()->getPost('saveandclose')) {
@@ -426,20 +450,20 @@ class GlobalSettings extends Survey_Common_Action
     {
         $bRedirect = 0;
         $gsid = 0; // global setting in SurveysGroupsettings model
-        $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
-        $oSurvey->setOptions();
+        $oSurveyGroupSetting = SurveysGroupsettings::model()->findByPk($gsid);
+        $oSurveyGroupSetting->setOptions();
 
         $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
 
         if (isset($_POST)) {
-            $oSurvey->attributes = $_POST;
-            $oSurvey->gsid = 0;
-            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+            $oSurveyGroupSetting->attributes = $_POST;
+            $oSurveyGroupSetting->gsid = 0;
+            $oSurveyGroupSetting->usecaptcha = Survey::saveTranscribeCaptchaOptions();
 
             //todo: when changing ipanonymiez from "N" to "Y", call the function that anonymizes the ip-addresses
 
 
-            if ($oSurvey->save()) {
+            if ($oSurveyGroupSetting->save()) {
                 $bRedirect = 1;
             }
         }
@@ -452,7 +476,7 @@ class GlobalSettings extends Survey_Common_Action
         // Sort users by name
         asort($aData['users']);
 
-        $aData['oSurvey'] = $oSurvey;
+        $aData['oSurvey'] = $oSurveyGroupSetting;
 
         if ($bRedirect && App()->request->getPost('saveandclose') !== null) {
             $this->getController()->redirect($this->getController()->createUrl('admin/index'));
@@ -470,6 +494,24 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = 'Global survey settings';
+
+        // White Top Bar
+        $aData['fullpagebar'] = [
+            'returnbutton' => [
+                'url' => 'admin/index',
+                'text' => gT('Back'),
+            ],
+            'savebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+        'saveandclosebutton' => [
+            'form' => 'survey-settings-form',
+        ],
+    ];
+
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
@@ -549,5 +591,32 @@ class GlobalSettings extends Survey_Common_Action
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'globalsettings.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Splits list of IP addresses into lists of valid and invalid addresses
+     *
+     * @param string $ipList list of IP addresses to validate, separated by comma or new line
+     *
+     * @return array<string,string> an array of the form ['valid' => validlist, 'invalid' => invalidlist]
+     *                              where each list is a comma separated string.
+     */
+    protected function validateIpAddresses($ipList)
+    {
+        $inputAddresses = preg_split('/\n|,/', $ipList);
+        $validAddresses = [];
+        $invalidAddresses = [];
+        foreach ($inputAddresses as $inputAddress) {
+            $inputAddress = trim($inputAddress);
+            if (check_ip_address($inputAddress)) {
+                $validAddresses[] = $inputAddress;
+            } else {
+                $invalidAddresses[] = $inputAddress;
+            }
+        }
+        return [
+            'valid' => implode(",", $validAddresses),
+            'invalid' => implode(",", $invalidAddresses)
+        ];
     }
 }

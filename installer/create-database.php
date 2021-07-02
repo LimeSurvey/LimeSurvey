@@ -487,6 +487,23 @@ function populateDatabase($oDB)
 
         $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
 
+        //this part has only been done in update...
+        $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'sendadmincreationemail',
+            "stg_value" => $defaultSetting['sendadmincreationemail'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailsubject',
+            "stg_value" => $defaultSetting['admincreationemailsubject'],
+        ]);
+
+        $oDB->createCommand()->insert('{{settings_global}}', [
+            "stg_name" => 'admincreationemailtemplate',
+            "stg_value" => $defaultSetting['admincreationemailtemplate'],
+        ]);
+
 
 
         //settings_user
@@ -616,7 +633,7 @@ function populateDatabase($oDB)
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
-            'htmlemail' => "string(1) NOT NULL default 'N'",
+            'htmlemail' => "string(1) NOT NULL default 'Y'",
             'sendconfirmation' => "string(1) NOT NULL default 'Y'",
             'tokenanswerspersistence' => "string(1) NOT NULL default 'N'",
             'assessments' => "string(1) NOT NULL default 'N'",
@@ -704,7 +721,7 @@ function populateDatabase($oDB)
             'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
             'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
             'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
-            'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'Y'",
             'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
             'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
             'assessments' => "string(1) NOT NULL DEFAULT 'N'",
@@ -753,7 +770,7 @@ function populateDatabase($oDB)
             'publicstatistics' => 'N',
             'publicgraphs' => 'N',
             'listpublic' => 'N',
-            'htmlemail' => 'N',
+            'htmlemail' => 'Y',
             'sendconfirmation' => 'Y',
             'tokenanswerspersistence' => 'N',
             'assessments' => 'N',
@@ -1064,6 +1081,8 @@ function populateDatabase($oDB)
             'last_login' => "datetime NULL",
             'created' => "datetime",
             'modified' => "datetime",
+            'validation_key' => 'string(38)',
+            'validation_key_expiration' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1087,6 +1106,17 @@ function populateDatabase($oDB)
             'version' => 'integer NOT NULL',
         ), $options);
 
+        // archived_table_settings
+        $oDB->createCommand()->createTable('{{archived_table_settings}}', [
+            'id' => "pk",
+            'survey_id' => "int NOT NULL",
+            'user_id' => "int NOT NULL",
+            'tbl_name' => "string(255) NOT NULL",
+            'tbl_type' => "string(10) NOT NULL",
+            'created' => "datetime NOT NULL",
+            'properties' => "text NOT NULL",
+        ], $options);
+
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
             unset($plugin['id']);
@@ -1095,9 +1125,14 @@ function populateDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name' => 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
-        $oTransaction->commit();
     } catch (Exception $e) {
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
+    // Some database (like MySQl) do not support table creation in transaction and will auto-commit
+    // Any error in the transaction commit should not be propagated
+    try {
+        $oTransaction->commit();
+    } catch (Exception $e) {
+    };
 }

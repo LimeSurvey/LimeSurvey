@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="6"
+    errorLevel="5"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
@@ -10,6 +10,10 @@
     <projectFiles>
         <directory name="application/datavalueobjects" />
         <directory name="application/models/services" />
+        <directory name="application/libraries/ExtensionInstaller" />
+        <file name="application/models/QuestionAttribute.php" />
+        <file name="application/libraries/PluginManager/LimesurveyApi.php" />
+        <file name="application/models/ArchivedTableSettings.php" />
         <ignoreFiles>
             <directory name="third_party" />
             <directory name="framework" />

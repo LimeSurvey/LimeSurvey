@@ -3,6 +3,10 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 use Exception;
+use InvalidArgumentException;
+use ExtensionConfig;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * Extension file fetcher for upload ZIP file.
@@ -31,6 +35,7 @@ class FileFetcherUploadZip extends FileFetcher
     /**
      * Fetch files, meaning grab uploaded ZIP file and
      * unzip it in system tmp folder.
+     *
      * @return void
      */
     public function fetch()
@@ -41,13 +46,14 @@ class FileFetcherUploadZip extends FileFetcher
 
     /**
      * Move files from tempdir to final destdir.
+     *
      * @param string $destdir
      * @return boolean
      */
     public function move($destdir)
     {
         if (empty($destdir)) {
-            throw new \InvalidArgumentException('Missing destdir argument');
+            throw new InvalidArgumentException('Missing destdir argument');
         }
 
         $tempdir = $this->getTempdir();
@@ -76,7 +82,9 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * @return \ExtensionConfig
+     * Get config from unzipped zip file, but in temp dir. fetch() must be called before this.
+     *
+     * @return ExtensionConfig
      * @throws Exception
      */
     public function getConfig()
@@ -86,37 +94,39 @@ class FileFetcherUploadZip extends FileFetcher
             throw new Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
-        $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
-
-        if (!file_exists($configFile)) {
-            //Check if zip file was unzipped in subfolder
-            $subdirs = preg_grep('/^([^.])/', scandir($tempdir));
-            if (count($subdirs) == 1) {
-                $configXml = '';
-                foreach ($subdirs as $dir) {
-                    $tempdir = $tempdir . DIRECTORY_SEPARATOR . $dir;
-                    $configXml = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
-                }
-                if (file_exists($configXml)) {
-                    //save new tempDir in the user session
-                    App()->user->setState('filefetcheruploadzip_tmpdir', $tempdir);
-                    //set new config file
-                    $configFile = $configXml;
-                } else {
-                    throw new Exception(gT('Configuration file config.xml does not exist.'));
-                }
-            } else {
-                throw new Exception(gT('Configuration file config.xml does not exist.'));
-            }
-        }
-
-        $config = \ExtensionConfig::loadConfigFromFile($configFile);
+        $config = $this->getConfigFromDir($tempdir);
 
         if (empty($config)) {
             throw new Exception(gT('Could not parse config.xml file.'));
         }
 
         return $config;
+    }
+
+    /**
+     * Look for config.xml in $tempdir
+     * Recursively searches the folders if config.xml is not in root folder.
+     *
+     * @param string $tempdir
+     * @return ExtensionConfig|null
+     */
+    public function getConfigFromDir(string $tempdir)
+    {
+        $configFile = $tempdir . DIRECTORY_SEPARATOR . 'config.xml';
+
+        if (file_exists($configFile)) {
+             return ExtensionConfig::loadFromFile($configFile);
+        } else {
+            $it = new RecursiveDirectoryIterator($tempdir);
+            // @see https://stackoverflow.com/questions/1860393/recursive-file-search-php
+            foreach (new RecursiveIteratorIterator($it) as $file) {
+                // @see https://stackoverflow.com/questions/619610/whats-the-most-efficient-test-of-whether-a-php-string-ends-with-another-string?lq=1
+                if (stripos(strrev($file), strrev('config.xml')) === 0) {
+                    return ExtensionConfig::loadFromFile($file);
+                }
+            }
+        }
+        throw new Exception(gT('Configuration file config.xml does not exist.'));
     }
 
     /**
@@ -195,7 +205,7 @@ class FileFetcherUploadZip extends FileFetcher
      * Check if uploaded zip file is a zip bomb.
      * @return void
      */
-    protected function checkZipBom()
+    protected function checkZipBomb()
     {
         // Check zip bomb.
         \Yii::import('application.helpers.common_helper', true);
@@ -213,7 +223,7 @@ class FileFetcherUploadZip extends FileFetcher
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadLibrary('admin.pclzip');
 
-        $this->checkZipBom();
+        $this->checkZipBomb();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
             throw new Exception(
@@ -250,17 +260,29 @@ class FileFetcherUploadZip extends FileFetcher
      * @param string $dest
      * @return boolean
      * @see https://stackoverflow.com/questions/2050859/copy-entire-contents-of-a-directory-to-another-using-php
+     * @todo Inject FileIO wrapper and add unit-test
      */
-    protected function recurseCopy($src, $dest)
+    public function recurseCopy($src, $dest)
     {
         $dir = opendir($src);
-        mkdir($dest);
+        if (!file_exists($dest)) {
+            if (!mkdir($dest)) {
+                throw new Exception('Could not create folder ' . $dest);
+            }
+        }
         while (false !== ($file = readdir($dir))) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($src . '/' . $file)) {
-                    $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                    // If folder name === extension name, skip one folder level to avoid duplicates.
+                    if ($file === $this->getConfig()->getName()) {
+                        $this->recurseCopy($src . '/' . $file, $dest . '/../' . $file);
+                    } else {
+                        $this->recurseCopy($src . '/' . $file, $dest . '/' . $file);
+                    }
                 } else {
-                    copy($src . '/' . $file, $dest . '/' . $file);
+                    if (!copy($src . '/' . $file, $dest . '/' . $file)) {
+                        throw new Exception('Could not copy to ' . $file);
+                    }
                 }
             }
         }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class PermissiontemplatesController
+ */
 class PermissiontemplatesController extends Survey_Common_Action
 {
 
@@ -34,15 +37,18 @@ class PermissiontemplatesController extends Survey_Common_Action
         if ($aPermissiontemplatesParam) {
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
+
         $this->_renderWrappedTemplate(
             null,
             'permissiontemplates/index',
             array(
                 'model'         => $model,
-                'massiveAction' => $massiveAction
+                'massiveAction' => $massiveAction,
+                'pageTitle'     => 'Permission roles',
             )
         );
     }
+
     /**
      * Displays a particular model.
      * @param integer $ptid the ID of the model to be displayed

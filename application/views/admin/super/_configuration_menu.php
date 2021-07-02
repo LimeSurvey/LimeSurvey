@@ -149,17 +149,17 @@
                     <!-- Edit label sets -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/labels/sa/view"); ?>">
-                            <?php eT("Manage label sets");?>
+                            <?php eT("Label sets");?>
                         </a>
                     </li>
                     <?php endif;?>
 
-                <!-- Check Data Integrity -->
+                <!-- Data Integrity -->
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
 
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/checkintegrity"); ?>">
-                            <?php eT("Check data integrity");?>
+                            <?php eT("Data integrity");?>
                         </a>
                     </li>
 
@@ -201,16 +201,16 @@
                 <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
-                            <?php eT("Manage survey administrators");?>
+                            <?php eT("Survey administrators");?>
                         </a>
                     </li>
                     <?php endif;?>
                 <?php if(Permission::model()->hasGlobalPermission('usergroups','read')): ?>
 
-                    <!-- Create/edit user groups -->
+                    <!-- User groups -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("userGroup/index"); ?>">
-                            <?php eT("Create/edit user groups");?>
+                            <?php eT("User groups");?>
                         </a>
                     </li>
 
@@ -218,10 +218,10 @@
 
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
 
-                    <!-- Create/edit user groups -->
+                    <!-- User groups -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/roles/"); ?>">
-                            <?php eT("Create/edit user roles");?>
+                            <?php eT("User roles");?>
                         </a>
                     </li>
 
@@ -257,45 +257,49 @@
                 </li>
 
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
-                    <!-- Home page settings -->
+                    <!-- Homepage -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
-                            <?php eT("Home page settings");?>
+                            <?php eT("Homepage");?>
                         </a>
                     </li>
 
-                    <!-- Global settings -->
+                    <!-- Global -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
-                            <?php eT("Global settings");?>
+                            <?php eT("Global");?>
                         </a>
                     </li>
 
-                    <!-- Global survey settings -->
+                    <!-- Global Survey -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/globalsettings/sa/surveysettings"); ?>">
-                            <?php eT("Global survey settings");?>
+                            <?php eT("Global survey");?>
                         </a>
                     </li>
 
+                    <!-- Plugins -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
-                            <?php eT("Plugin manager");?>
+                            <?php eT("Plugins");?>
                         </a>
                     </li>
+
                 <!-- Surveymenu Editor -->
+                <!-- Menu -->
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Menu configuration");?>
+                            <?php eT("Menu");?>
                         </a>
                     </li>
                 <?php endif;?>
                 <!-- Surveymenu entry Editor -->
+                <!-- Menu entries -->
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
-                            <?php eT("Menu entries configuration");?>
+                            <?php eT("Menu entries");?>
                         </a>
                     </li>
                 <?php endif;?>

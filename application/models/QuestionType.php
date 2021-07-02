@@ -126,7 +126,7 @@ class QuestionType extends StaticModel
                 'assessable' => 1,
                 'hasdefaultvalues' => 0,
                 'answerscales' => 2,
-                'class' => 'array-flexible-duel-scale',
+                'class' => 'array-flexible-dual-scale',
             ],
             self::QT_5_POINT_CHOICE => [
                 'code' => self::QT_5_POINT_CHOICE,

@@ -36,6 +36,7 @@ Yii::import('application.helpers.expressions.warnings.EMWarningHTMLBaker', true)
 Yii::app()->loadHelper('database');
 Yii::app()->loadHelper('frontend');
 Yii::app()->loadHelper('surveytranslator');
+Yii::import("application.libraries.Date_Time_Converter");
 Yii::import('application.helpers.expressions.emcache.em_cache_exception', true);
 Yii::import('application.helpers.expressions.emcache.em_cache_helper', true);
 define('LEM_DEBUG_TIMING', 1);
@@ -3270,6 +3271,7 @@ class LimeExpressionManager
      * @param boolean|null $forceRefresh
      * @param boolean|null $anonymized
      * @return boolean|null - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
+     * @todo Keep method as-is but factor out content to new class; add unit tests for class
      */
     public function setVariableAndTokenMappingsForExpressionManager($surveyid, $forceRefresh = false, $anonymized = false)
     {
@@ -3376,7 +3378,7 @@ class LimeExpressionManager
         $this->runtimeTimings[] = [__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM', (microtime(true) - $now)];
         $now = microtime(true);
 
-        $this->qans = $this->getAnswerSetsForEM($surveyid, null, $_SESSION['LEMlang']);
+        $this->qans = $this->getAnswerSetsForEM($surveyid, $_SESSION['LEMlang']);
 
         $this->runtimeTimings[] = [__METHOD__ . ' - answers_model->getAnswerSetsForEM', (microtime(true) - $now)];
         $now = microtime(true);
@@ -3948,7 +3950,9 @@ class LimeExpressionManager
                 foreach ($token as $key => $val) {
                     // Decrypt encrypted token attributes
                     if (isset($tokenEncryptionOptions['columns'][$key]) && $tokenEncryptionOptions['columns'][$key] === 'Y') {
-                        $val = $token->decrypt($val);
+                        if (!empty($val)) {
+                            $val = $token->decrypt($val);
+                        }
                     }
                     $this->knownVars["TOKEN:" . strtoupper($key)] = [
                         'code'      => $anonymized ? '' : $val,
@@ -4645,8 +4649,8 @@ class LimeExpressionManager
                         } else {
                             // We don't really validate date here, anyone can send anything : forced too
                             $dateformatdatat = getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                            $datetimeobj = DateTime::createFromFormat($dateformatdatat['phpdate'], $value);
-                            $value = $datetimeobj->format("Y-m-d H:i");
+                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                            $value = $datetimeobj->convert("Y-m-d H:i");
                         }
                         break;
                     case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
@@ -8265,7 +8269,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $where .= " and a.language='" . $lang . "'";
+            $where .= " and l.language='" . $lang . "'";
         }
 
         $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"
@@ -8414,8 +8418,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     /* @todo : test to reviewed : need to disable move */
                                 } else {
                                     $newValue = $dateTime->format("Y-m-d H:i");
-                                    // For an explanation about the exclamation mark, see this thread:
-                                    // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march                                $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                     $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
                                     if ($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                         $value = $newValue;
@@ -9027,6 +9029,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             </tr>\n";
 
         $_gseq = -1;
+        $baseQuestionThemes = QuestionTheme::findQuestionMetaDataForAllTypes();
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
             $gid = $q['info']['gid'];
@@ -9078,9 +9081,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             //////
             $mandatory = (($q['info']['mandatory'] == 'Y' || $q['info']['mandatory'] == 'S') ? "<span class='mandatory'>*</span>" : '');
             $type = $q['info']['type'];
-            //$qtypes = Question::typeList();
-            $questionThemeMetaData = QuestionTheme::findQuestionMetaDataForAllTypes();
-            $typedesc = $questionThemeMetaData[$type]->title;
+            $typedesc = $baseQuestionThemes[$type]->title;
             $sgqas = explode('|', $q['sgqa']);
             $qReplacement = array_merge(
                 $standardsReplacementFields,
@@ -9595,14 +9596,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         $standard = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
         if ($lang == 'ar') {
-            $eastern_arabic_symbols = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+            $eastern_arabic_symbols = ["\u{0660}","\u{0661}","\u{0662}","\u{0663}","\u{0664}","\u{0665}","\u{0666}","\u{0667}","\u{0668}","\u{0669}"];
             $result = str_replace($eastern_arabic_symbols, $standard, $str);
         } elseif ($lang == 'fa') {
             // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-            $extended_arabic_indic = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+            $extended_arabic_indic = ["\u{06F0}","\u{06F1}","\u{06F2}","\u{06F3}","\u{06F4}","\u{06F5}","\u{06F6}","\u{06F7}","\u{06F8}","\u{06F9}"];
             $result = str_replace($extended_arabic_indic, $standard, $str);
         } elseif ($lang == 'hi') {
-            $hindi_symbols = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
+            $hindi_symbols = ["\u{0966}","\u{0967}","\u{0968}","\u{0969}","\u{096A}","\u{096B}","\u{096C}","\u{096D}","\u{096E}","\u{096F}"];
             $result = str_replace($hindi_symbols, $standard, $str);
         }
 

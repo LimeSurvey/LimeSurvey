@@ -49,7 +49,7 @@
 
                 // modal
                 'actionType'    => 'modal',
-                'modalType'     => 'yes-no',
+                'modalType'     => 'cancel-apply',
                 'keepopen'      => 'yes',
                 'showSelected'  => 'yes',
                 'selectedUrl'   => App()->createUrl('themeOptions/selectedItems/'),

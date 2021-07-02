@@ -1,7 +1,10 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php eT('Delete participant'); ?></h4>
-</div>
+<?php
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => gT('Delete participant')]
+);
+?>
+
 <div class="modal-body ">
 <?php
     $form = $this->beginWidget(
@@ -23,8 +26,8 @@
     </select>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger action_save_modal_deleteParticipant" data-dismiss="modal"><span class='fa fa-trash'></span>&nbsp;<?php eT('Delete') ?></button>
-    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>
+    <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel') ?></button>
+    <button type="button" class="btn btn-danger action_save_modal_deleteParticipant" data-dismiss="modal">&nbsp;<?php eT('Delete') ?></button>
 </div>
 <?php
 $this->endWidget();

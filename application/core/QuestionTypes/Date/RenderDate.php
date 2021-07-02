@@ -314,7 +314,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         $coreClass .= " dropdown-item"; // items ?
         if (!empty($this->mSessionValue) && ($this->mSessionValue != 'INVALID')) {
-            $datetimeobj   = DateTime::createFromFormat("Y-m-d H:i:s", $this->mSessionValue);
+            $datetimeobj   = new Date_Time_Converter($this->mSessionValue, "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
             $currentday   = $datetimeobj->days;
@@ -398,7 +398,7 @@ class RenderDate extends QuestionBaseRenderer
     {
         $answer = '';
         $inputnames = [];
-        $this->aDateformatDetails      = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid);
+        $this->aDateformatDetails      = getDateFormatDataForQID($this->aQuestionAttributes, $this->oQuestion->sid, App()->language);
         $coreClass = "ls-answers answer-item date-item " . $sCoreClasses;
         $this->setMinDate();
         $this->setMaxDate();

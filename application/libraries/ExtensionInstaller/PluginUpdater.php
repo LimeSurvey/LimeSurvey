@@ -14,6 +14,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use ExtensionConfig;
+
 /**
  * @since 2018-09-26
  * @author Olle Haerstedt
@@ -24,7 +27,7 @@ class PluginUpdater extends ExtensionUpdater
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
-    public static function createUpdaters() : array
+    public static function createUpdaters(): array
     {
         // Get all installed plugins (both active and non-active).
         $plugins = \Plugin::model()->findAll();
@@ -34,7 +37,7 @@ class PluginUpdater extends ExtensionUpdater
         foreach ($plugins as $plugin) {
             try {
                 $updaters[] = new PluginUpdater($plugin);
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 $errors[] = $ex->getMessage();
             }
         }

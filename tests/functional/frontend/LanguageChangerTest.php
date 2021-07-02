@@ -14,7 +14,7 @@ class LanguageChangerTest extends TestBaseClassWeb
     /**
      * Setup before class.
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -55,7 +55,7 @@ class LanguageChangerTest extends TestBaseClassWeb
             $text = $web->findElement(
                 WebDriverBy::cssSelector('.question-count-text')
             );
-            $this->assertContains($text->getText(), 'In dieser Umfrage sind 2 Fragen enthalten.');
+            $this->assertStringContainsString($text->getText(), 'In dieser Umfrage sind 2 Fragen enthalten.');
 
             // Click next.
             $web->next();

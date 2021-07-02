@@ -18,14 +18,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php App()->end();?>
 <?php endif; ?>
 
-
-<div class="menubar surveymanagerbar">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-md-12">
-            <div class="h2"><?php eT("User management panel")?></div>
-        </div>
-    </div>
-</div>
 <?php $this->renderPartial('partial/_menubar'); ?>
 <div class="pagetitle h3"><?php eT("User control");?></div>
 
@@ -66,7 +58,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                 'columns' => $columnDefinition,
                 'filter' => $model,
                 'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
-                'summaryText'   => "<div class='row' style='text-align:left; color:#000'>"
+                'summaryText'   => "<div class='row'>"
                 ."<div class='col-xs-6 content-left'>".$massiveAction."</div>"
                 ."<div class='col-xs-6'>"
                 .gT('Displaying {start}-{end} of {count} result(s).').' '

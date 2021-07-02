@@ -650,7 +650,7 @@ class LsDefaultDataSets
                 '',
                 'surveyactivation',
                 'update',
-                '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}',
+                '{"render": {"isActive": false, "link": {"data": {"iSurveyID": ["survey","sid"]}}}}',
                 '',
                 'en-GB',
                 1,
@@ -2078,7 +2078,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Arrays",
-                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-duel-scale\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-dual-scale\"}",
             ),
             array(
                 "name" => "arrays/increasesamedecrease",
@@ -2859,9 +2859,11 @@ class LsDefaultDataSets
     }
 
     /**
+     * Email content for registration email (subject and body)
      * Default user administration global configuration settings
      *
      * @return array with user administration default setting
+     *                  ['sendadmincreationemail'] set to 1, to indicate that email should be send?
      */
     public static function getDefaultUserAdministrationSettings()
     {
@@ -2870,9 +2872,10 @@ class LsDefaultDataSets
         $template .= "<p>" . sprintf(gT("This is an automated email notification that a user has been created for you on the website %s."), "<strong>'{SITENAME}'</strong>") . "</p>";
         $template .= "<p></p><p>" . gT("You can use now the following credentials to log in:") . "</p>";
         $template .= "<p><strong>" . gT("Username") . "</strong>: {USERNAME}</p>";
-        $template .= "<p><strong>" . gT("Password") . "</strong>: {PASSWORD}</p>";
-        $template .= '<p><a href="{LOGINURL}">' . gT("Click here to login") . '</a></p>';
-        $template .= "<p>" . sprintf(gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at"), "{SITEADMINEMAIL}") . "</p><p> </p>";
+        //don't send password anymore, just send a link for the new admin to generate his own password
+        //$template .= "<p><strong>" . gt("Password") . "</strong>: {PASSWORD}</p>";
+        $template .= '<p><a href="{LOGINURL}">' . gT("Click here to set your password") . '</a></p>';
+        $template .= "<p>" . gT("If you have any questions regarding this email, please do not hesitate to contact the site administrator at") . " {SITEADMINEMAIL}.</p><p> </p>";
         $template .= "<p>" . gT("Thank you") . "!</p>";
 
         $default['sendadmincreationemail'] = 1;

@@ -71,7 +71,7 @@
                     <?php eT("Existing survey participant attributes"); ?>
                 </div>
                 <div class='panel-body'>
-                    <div class="tokenatt ui-sortable" style="min-height: 200px;">
+                    <div class="tokenatt ui-sortable">
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
                                 <?php if (isset($automaticallyMappedAttributes[$id])): ?>
                                     <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>

@@ -50,6 +50,7 @@ class QuestionAttributeHelper
      * @param array $attributes the array of attributes to sanitize
      *
      * @return array<string,array> the array of sanitized attributes
+     * @todo Pure function - move outside class?
      */
     public function sanitizeQuestionAttributes($attributes)
     {
@@ -95,6 +96,7 @@ class QuestionAttributeHelper
      * @param array $languages the languages to use for i18n attributes
      *
      * @return array the same source attributes with their corresponding values (when available)
+     * @todo Pure function - move outside class?
      */
     public function fillAttributesWithValues($attributes, $attributeValues, $languages = [])
     {
@@ -132,6 +134,7 @@ class QuestionAttributeHelper
      *
      * @param array $attributes
      * @return array Grouped question attributes, with category as array key
+     * @todo Pure function - move outside class?
      */
     public function groupAttributesByCategory($attributes)
     {
@@ -235,7 +238,7 @@ class QuestionAttributeHelper
         }
 
         // Get attribute values
-        $attributeValues = $this->getAttributesValuesFromDB($question->qid);
+        $attributeValues = $this->getAttributeValuesFromDB($question->qid);
 
         // Get question theme name if not specified
         $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
@@ -271,7 +274,7 @@ class QuestionAttributeHelper
      *               array(attributeName => array(languageCode => value, ...), ...)
      *               where languageCode is '' if no language is specified.
      */
-    public function getAttributesValuesFromDB($questionId)
+    public function getAttributeValuesFromDB($questionId)
     {
         return \QuestionAttribute::model()->getAttributesAsArrayFromDB($questionId);
     }

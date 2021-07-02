@@ -1,20 +1,19 @@
 <?php
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => gT('Import role')]
+);
 ?>
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="modalTitle-addedit">
-        <?=gT('Import role');?>
-    </h4>
-</div>
+<?= TbHtml::formTb(
+    null,
+    App()->createUrl('admin/roles/sa/importXML'),
+    'post',
+    ["id" => "RoleControl--modalform-import", 'enctype' => 'multipart/form-data']
+) ?>
+
 <div class="modal-body">
     <div class="container-center">
-        <?= TbHtml::formTb(
-            null,
-            App()->createUrl('admin/roles/sa/importXML'),
-            'post',
-            ["id" => "RoleControl--modalform-import", 'enctype' => 'multipart/form-data']
-        ) ?>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
         </div>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="RoleControl--errors">
@@ -26,10 +25,11 @@
         <div class="row ls-space margin top-5">
             <hr class="ls-space margin top-5 bottom-10"/>
         </div>
-        <div class="row ls-space margin top-5">
-            <button class="btn btn-success col-sm-3 col-xs-5 col-sm-offset-2 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>
-            <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1" id="exitForm"><?=gT('Cancel')?></button>
-        </div>
-    </form>
     </div>
 </div>
+
+<div class="modal-footer modal-footer-buttons" style="margin-top: 15px; ">
+    <button class="btn btn-cancel" id="exitForm"><?=gT('Cancel')?></button>
+    <button class="btn btn-success" id="submitForm"><?=gT('Save')?></button>
+</div>
+</form>

@@ -40,12 +40,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $aQuestionCodeReplacements = array();
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
     $results['question_attributes'] = 0;
     $results['subquestions'] = 0;
     $results['conditions'] = 0;
     $results['groups'] = 0;
+    $results['importwarnings'] = [];
 
     $importlanguages = array();
     foreach ($xml->languages->language as $language) {
@@ -587,6 +589,15 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 
+    if (count($aQuestionCodeReplacements)) {
+        array_unshift(
+            $results['importwarnings'],
+            "<span class='warningtitle'>"
+            . gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.')
+            . '</span>'
+        );
+    }
+
     $results['newgid'] = $newgid;
     $results['labelsets'] = 0;
     $results['labels'] = 0;
@@ -936,7 +947,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
-            if ($bTranslateInsertansTags) {
+            if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
             if (isset($aAIDReplacements[$insertdata['aid']])) {

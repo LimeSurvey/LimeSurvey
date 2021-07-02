@@ -13,7 +13,7 @@ class InstallationControllerTest extends TestBaseClassWeb
     /**
      * Setup
      */
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         // NB: Does not call parent, because there might not
         // be a database (happens if this test is run multiple
@@ -26,7 +26,7 @@ class InstallationControllerTest extends TestBaseClassWeb
     /**
      *
      */
-    public static function teardownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         $configFile = \Yii::app()->getBasePath() . '/config/config.php';
         if (file_exists($configFile)) {
@@ -61,8 +61,8 @@ class InstallationControllerTest extends TestBaseClassWeb
         }
         $dbpwd = getenv('DBPASSWORD');
         if (!$dbpwd) {
-            $dbpwd = '';
-            echo 'Default to empty database password. Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
+            $dbpwd = 'root'; // See https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
+            echo 'Default to database password "root". Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
         }
 
         if (file_exists($configFile)) {
@@ -83,6 +83,8 @@ class InstallationControllerTest extends TestBaseClassWeb
             $result = unlink($configFile);
             $this->assertTrue($result, 'Could unlink config.php');
         }
+        
+        exec("sudo chmod -R 777 ./tmp"); // Add chmod 777, needed for CI pipeline
 
         // Run installer.
         $urlMan = \Yii::app()->urlManager;

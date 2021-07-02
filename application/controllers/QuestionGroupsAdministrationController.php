@@ -573,7 +573,21 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
-        $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if (!empty($survey->groups)) {
+            $this->redirect(
+                Yii::app()->createUrl(
+                    'questionGroupsAdministration/view/',
+                    [
+                        'surveyid' => $iSurveyId,
+                        'gid' => $survey->groups[0]->gid,
+                        'landOnSideMenuTab' => 'structure'
+                    ]
+                )
+            );
+        } else {
+            $this->redirect(array('questionGroupsAdministration/listquestiongroups/surveyid/' . $iSurveyId));
+        }
     }
 
     /**
@@ -728,6 +742,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
         }
 
         if ($oQuestionGroup == null) {
+            $isNewGroup = true;
             $oQuestionGroup = $this->newQuestionGroup($iSurveyId, $questionGroup);
         } else {
             $oQuestionGroup = $this->editQuestionGroup($oQuestionGroup, $questionGroup);
@@ -741,6 +756,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
                 $sScenario = 'save-and-new';
             } elseif (App()->request->getPost('saveandnewquestion', '')) {
                 $sScenario = 'save-and-new-question';
+            } elseif (!empty($isNewGroup)) {
+                $sScenario = 'save-and-close';
             }
         }
         switch ($sScenario) {

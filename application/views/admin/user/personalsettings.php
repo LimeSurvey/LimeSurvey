@@ -13,15 +13,14 @@ if (App()->session['questionselectormode'] !== 'default') {
 } else {
     $selectormodeclass = App()->getConfig('defaultquestionselectormode');
 }
-uasort($aQuestionTypeList, "questionTitleSort");
-foreach ($aQuestionTypeList as $questionType) {
-    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+foreach ($aQuestionTypeList as $questionTheme) {
+    $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
-            'questionGroupName' => $questionType['group']
+            'questionGroupName' => $questionTheme->group
         );
     }
-    $imageName = $questionType['question_type'];
+    $imageName = $questionTheme->question_type;
     if ($imageName == ":") {
         $imageName = "COLON";
     } else {
@@ -34,21 +33,24 @@ foreach ($aQuestionTypeList as $questionType) {
         }
     }
 
-    $questionType['type'] = $questionType['question_type'];
-    $questionType['detailpage'] = '
+    $questionTypeData = [];
+    $questionTypeData['type'] = $questionTheme->question_type;
+    $questionTypeData['name'] = $questionTheme->name;
+    $questionTypeData['title'] = $questionTheme->title;
+    $questionTypeData['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
-            <img src="' . $questionType['image_path'] . '" />
+            <img src="' . $questionTheme->image_path . '" />
         </div>';
     if ($imageName == 'S') {
-        $questionType['detailpage'] = '
+        $questionTypeData['detailpage'] = '
             <div class="col-sm-12 currentImageContainer">
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                 <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
             </div>';
     }
-    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+    $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionTypeData;
 }
-$currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+
 $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
     'renderType' => "group-simple",
@@ -59,11 +61,17 @@ $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewMod
     'previewWindowTitle' => gT("Preview question type"),
     'groupStructureArray' => $aQuestionTypeGroups,
     'value' => $currentPreselectedQuestiontype,
+    'theme' => $currentPreselectedQuestionTheme,
     'debug' => YII_DEBUG,
     'currentSelected' => $selectedQuestion['title'] ?? gT('Invalid question'),
     'buttonClasses' => ['btn-primary'],
     'optionArray' => [
         'selectedClass' => $selectedQuestion['settings']->class ?? 'invalid_question',
+        'onUpdate' => [
+            'value',
+            'theme',
+            "$('#preselectquestiontheme').val(theme);"
+        ],
     ]
 ));
 
@@ -105,14 +113,6 @@ echo $oQuestionSelector->getModal();
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
                                 <div class="form-group">
-                                    <?php echo TbHtml::label(gT("Email:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
-                                        <?php echo TbHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="form-group">
                                     <?php echo TbHtml::label(gT("Full name:"), 'lang', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php echo TbHtml::textField('fullname', $sFullname ,array('class'=>'form-control','maxlength'=>50)); ?>
@@ -125,9 +125,9 @@ echo $oQuestionSelector->getModal();
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <button class="btn btn-default btn-warning" id="selector__showChangePassword" style="color: white; outline: none;">
+                                <button class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
                                     <i class="fa fa-lock"></i>
-                                    <?=gT("Change password")?>
+                                    <?=gT("Change password and/or Email")?>
                                 </button>
                                 
                                 <br/>
@@ -137,7 +137,10 @@ echo $oQuestionSelector->getModal();
                             <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0" />
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <?php echo TbHtml::label(gT("Current password:"), 'lang', array('class'=>"control-label")); ?>
+                                    <label for="oldpassword" class="control-label">
+                                        <?php echo gT("Current password:"); ?>
+                                        <span class="required">*</span>
+                                    </label>
                                     <div class="">
                                         <?php echo TbHtml::passwordField('oldpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                                     </div>
@@ -161,6 +164,14 @@ echo $oQuestionSelector->getModal();
                                     <?php echo TbHtml::label(gT("Repeat new password:"), 'lang', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php echo TbHtml::passwordField('repeatpassword', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <?php echo TbHtml::label(gT("Email:"), 'lang', array('class'=>" control-label")); ?>
+                                    <div class="">
+                                        <?php echo TbHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
                                     </div>
                                 </div>
                             </div>
@@ -241,6 +252,7 @@ echo $oQuestionSelector->getModal();
                                     <?php echo TbHtml::label(gT("Preselected question type:"), 'preselectquestiontype', array('class'=>" control-label")); ?>
                                     <?=$oQuestionSelector->getButtonOrSelect(true)?>
                                     <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+                                    <?php echo TbHtml::hiddenField('preselectquestiontheme', $currentPreselectedQuestionTheme); ?>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
@@ -346,6 +358,24 @@ echo $oQuestionSelector->getModal();
                                          '1' => gT("Yes",'unescaped'),
                                      ), array('class'=>"form-control"));
                                  ?>
+                                </div>
+                            </div>
+                            <!-- Create example question group and question -->
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <?php echo TbHtml::label( gT("Create example question group and question:"), 'createsample', array('class'=>" control-label")); ?>
+                                    <?php
+                                        echo TbHtml::dropDownList(
+                                            'createsample',
+                                            ($aUserSettings['createsample'] ?? 'default'),
+                                            array(
+                                                'default' => gT("Default",'unescaped'),
+                                                '0' => gT("No",'unescaped'),
+                                                '1' => gT("Yes",'unescaped'),
+                                            ),
+                                            array('class' => "form-control")
+                                        );
+                                    ?>
                                 </div>
                             </div>
                         </div>

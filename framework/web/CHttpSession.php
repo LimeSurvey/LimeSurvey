@@ -241,9 +241,8 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	 * The effect of this method only lasts for the duration of the script.
 	 * Call this method before the session starts.
 	 * @param array $value cookie parameters, valid keys include: lifetime, path,
-	 * domain, secure, httponly. Note that httponly is all lowercase.
+	 * domain, secure, httponly, samesite. Note that httponly and samesite is all lowercase.
 	 * @see http://us2.php.net/manual/en/function.session-set-cookie-params.php
-	 * @see patch from https://github.com/yiisoft/yii/pull/4313/files 
 	 */
 	public function setCookieParams($value)
 	{
@@ -269,7 +268,6 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 			session_set_cookie_params($lifetime,$path,$domain,$secure);
 		$this->unfreeze();
 	}
-
 
 	/**
 	 * @return string how to use cookie to store session ID. Defaults to 'Allow'.

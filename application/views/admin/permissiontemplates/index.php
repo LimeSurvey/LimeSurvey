@@ -8,15 +8,6 @@
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
-// $this->breadcrumbs=array(
-//     'Surveymenus',
-// );
-
-// $this->menu=array(
-//     array('label'=>'Create Surveymenu', 'url'=>array('create')),
-//     array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
-// );
-//
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('roles');
@@ -24,12 +15,7 @@ echo viewHelper::getViewTestTag('roles');
 ?>
 <?php $this->renderPartial('permissiontemplates/partials/_menubar', []); ?>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 h1 pagetitle">
-            <?php eT('Permission roles') ?>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 100px">
+    <div class="row" style="margin-top: 10px; margin-bottom: 100px">
         <div class="container-fluid">
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
@@ -41,7 +27,7 @@ echo viewHelper::getViewTestTag('roles');
                 'ajaxType'        => 'POST',
                 'ajaxUpdate'      => 'RoleControl--identity-gridPanel',
                 'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
-                'summaryText'     => "<div class='row'>"
+                'summaryText'     => "<div class='row' style='text-align:left; color:#000'>"
                     . "<div class='col-xs-6'>" . $massiveAction . "</div>"
                     . "<div class='col-xs-6'>"
                     . gT('Displaying {start}-{end} of {count} result(s).') . ' '

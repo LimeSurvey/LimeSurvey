@@ -15,6 +15,7 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 /**
+ * @todo Survey theme, question theme, admin theme...?
  * @since 2018-10-09
  * @author Olle Haerstedt
  */
@@ -52,13 +53,21 @@ class ThemeUpdater extends ExtensionUpdater
     /**
      * @return string
      */
+    public function getCurrentVersion()
+    {
+        return $this->model->version;
+    }
+
+    /**
+     * @return string
+     */
     public function getExtensionType()
     {
         return 't';
     }
 
     /**
-     * @return ExtensionConfig
+     * @return \ExtensionConfig
      */
     public function getExtensionConfig()
     {

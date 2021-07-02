@@ -17,7 +17,6 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
 
 <div class='col-sm-12'>
     <div>  <!-- Extra funny div -->
-        <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
         <div class='col-sm-12'>
             <div class='pull-right'>
                 <?php /* Disabled for prototype 1.
@@ -49,29 +48,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                         <?php echo $menu->getLabel(); ?>
                     </a>
                 <?php endforeach; ?>
-                <?php if (!Yii::app()->getConfig('demoMode')): ?>
-                    <a
-                        href=''
-                        class='btn btn-default'
-                        data-toggle='modal'
-                        data-target='#installPluginZipModal'
-                        data-tooltip='true'
-                        title='<?php eT('Install plugin by ZIP archive'); ?>'
-                    >
-                        <i class='icon-import'></i>&nbsp;
-                        <?php eT('Upload & install'); ?>
-                    </a>
-                <?php endif; ?>
-                <a 
-                    href='<?php echo $scanFilesUrl; ?>'
-                    class='btn btn-default'
-                    data-toggle='tooltip'
-                    title='<?php eT('Scan files for available plugins'); ?>'
-                >
-                    <i class='fa fa-file '></i>
-                    <i class='fa fa-search '></i>&nbsp;
-                    <?php eT('Scan files'); ?>
-                </a>
+
                 &nbsp;
             </div>
         </div>

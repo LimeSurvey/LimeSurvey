@@ -400,7 +400,7 @@ function updateMandatoryErrorClass(){
         }
     });
     $(".ls-error-mandatory.has-error").on("change",":radio",function(event){
-        if($(this).closest(".array-flexible-duel-scale").length){
+        if($(this).closest(".array-flexible-dual-scale").length){
             if($(this).closest(".has-error").find("input:radio:checked").length>1){
                 $(this).closest(".has-error").removeClass("has-error");
             }

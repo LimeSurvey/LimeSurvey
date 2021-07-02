@@ -34,7 +34,7 @@ class Answer extends LSActiveRecord
     
     /**
      * @inheritdoc
-     * @return Answer
+     * @return static
      */
     public static function model($class = __CLASS__)
     {

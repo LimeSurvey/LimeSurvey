@@ -115,7 +115,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId, $tabOverviewEditor = 'overview')
+    public function actionEdit($questionId, $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
 
@@ -131,7 +131,9 @@ class QuestionAdministrationController extends LSBaseController
         }
 
         // "Directly show edit mode" personal setting
-        $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : $tabOverviewEditor;
+        if (is_null($tabOverviewEditor)) {
+            $tabOverviewEditor = SettingsUser::getUserSettingValue('noViewMode', App()->user->id) ? 'editor' : 'overview';
+        }
 
         $this->aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
@@ -174,7 +176,13 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $questionTemplate = 'core';
+        $questionTemplate = SettingsUser::getUserSettingValue(
+            'preselectquestiontheme',
+            null,
+            null,
+            null,
+            App()->getConfig('preselectquestiontheme')
+        );
         if ($question->qid !== 0) {
             $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
         }
@@ -1071,15 +1079,14 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
-        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
         $fatalerror = '';
+        
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
 
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            $fatalerror = sprintf(
-                gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                getMaximumFileUploadSize() / 1024 / 1024
-            ) . '<br>';
-        } elseif (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
+        $sExtension = pathinfo($_FILES['the_file']['name'], PATHINFO_EXTENSION);
+        if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
             $fatalerror = gT(
                 "An error occurred uploading your file."
                     . " This may be caused by incorrect permissions for the application /tmp folder."
@@ -1187,7 +1194,8 @@ class QuestionAdministrationController extends LSBaseController
         $gid = (int)$gid;
         $qid = (int)$qid;
         $oQuestion = Question::model()->findByAttributes(['qid' => $qid, 'gid' => $gid,]);
-       // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // $aQuestionTypeMetadata = QuestionType::modelsAttributes();  this is old!
+        // TODO: $questionMetaData should be $questionThemeSettings
         $questionMetaData = QuestionTheme::findQuestionMetaData($oQuestion->type)['settings'];
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
@@ -1540,7 +1548,8 @@ class QuestionAdministrationController extends LSBaseController
         }
         // NB: This works even when $questionId is null (get default question values).
         $question = $this->getQuestionObject($questionId, $questionType);
-        if ($questionId) {
+        // NB: Only check permission when there is a question.
+        if (!empty($question)) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
                 throw new CHttpException(403, gT('No permission'));
@@ -1730,6 +1739,42 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
+     * Get HTML for extra options (subquestions/answers).
+     * Called with Ajax after question type is selected.
+     *
+     * @param int $surveyId
+     * @param string $questionType One-char string
+     * @param int $questionId Null or 0 if new question is being created.
+     * @return void
+     */
+    public function actionGetExtraOptionsHTML(int $surveyId, string $questionType, $questionId = null)
+    {
+        if (empty($questionType)) {
+            throw new CHttpException(405, 'Internal error: No question type');
+        }
+        // TODO: Difference between create and update permissions?
+        if (!Permission::model()->hasSurveyPermission($surveyId, 'surveycontent', 'update')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+        Yii::app()->loadHelper("admin.htmleditor");
+        // NB: This works even when $questionId is null (get default question values).
+        $question = $this->getQuestionObject($questionId, $questionType);
+        if ($questionId) {
+            // NB: Could happen if user manipulates request.
+            if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
+                throw new CHttpException(403, gT('No permission'));
+            }
+        }
+        $this->renderPartial(
+            "extraOptions",
+            [
+                'question'         => $question,
+                'survey'           => $question->survey,
+            ]
+        );
+    }
+
+    /**
      * This function prepares the data for label set details
      *
      * @param int $lid
@@ -1900,7 +1945,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
-            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // Only set the other state for question types that have this attribute
             if (
                 ($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
@@ -1925,7 +1970,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         foreach ($aQids as $sQid) {
             $iQid = (int)$sQid;
-            $oQuestion = Question::model()->findByPk(["qid" => $iQid], ['sid=:sid'], [':sid' => $iSid]);
+            $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
             if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
@@ -2458,6 +2503,8 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        $originalRelevance = $oQuestion->relevance;
+
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
             throw new LSJsonException(
@@ -2480,6 +2527,12 @@ class QuestionAdministrationController extends LSBaseController
                 true
             );
         }
+
+        // If relevance equation was manually edited, existing conditions must be cleared
+        if ($oQuestion->relevance != $originalRelevance && !empty($oQuestion->conditions)) {
+            Condition::model()->deleteAllByAttributes(['qid' => $oQuestion->qid]);
+        }
+
         return $oQuestion;
     }
 
@@ -2935,22 +2988,23 @@ class QuestionAdministrationController extends LSBaseController
     }
 
     /**
-     * @param array $aQuestionTypeList Question Type List as Array
+     * @param QuestionTheme[] $questionThemes Question theme List
      * @return array
+     * @todo Move to PreviewModalWidget?
      */
-    private function getQuestionTypeGroups($aQuestionTypeList)
+    private function getQuestionTypeGroups(array $questionThemes)
     {
         $aQuestionTypeGroups = [];
 
-        uasort($aQuestionTypeList, "questionTitleSort");
-        foreach ($aQuestionTypeList as $questionType) {
-            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+        uasort($questionThemes, "questionTitleSort");
+        foreach ($questionThemes as $questionTheme) {
+            $htmlReadyGroup = str_replace(' ', '_', strtolower($questionTheme->group));
             if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
                 $aQuestionTypeGroups[$htmlReadyGroup] = array(
-                    'questionGroupName' => $questionType['group']
+                    'questionGroupName' => $questionTheme->group
                 );
             }
-            $imageName = $questionType['question_type'];
+            $imageName = $questionTheme->question_type;
             if ($imageName == ":") {
                 $imageName = "COLON";
             } elseif ($imageName == "|") {
@@ -2958,19 +3012,22 @@ class QuestionAdministrationController extends LSBaseController
             } elseif ($imageName == "*") {
                 $imageName = "EQUATION";
             }
-            $questionType['type'] = $questionType['question_type'];
-            $questionType['detailpage'] = '
+            $questionThemeData = [];
+            $questionThemeData['title'] = $questionTheme->title;
+            $questionThemeData['name'] = $questionTheme->name;
+            $questionThemeData['type'] = $questionTheme->question_type;
+            $questionThemeData['detailpage'] = '
                 <div class="col-sm-12 currentImageContainer">
-                <img src="' . $questionType['image_path'] . '" />
+                <img src="' . $questionTheme->image_path . '" />
                 </div>';
             if ($imageName == 'S') {
-                $questionType['detailpage'] = '
+                $questionThemeData['detailpage'] = '
                     <div class="col-sm-12 currentImageContainer">
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '.png" />
                     <img src="' . App()->getConfig('imageurl') . '/screenshots/' . $imageName . '2.png" />
                     </div>';
             }
-            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionType;
+            $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][] = $questionThemeData;
         }
         return $aQuestionTypeGroups;
     }
@@ -3048,5 +3105,48 @@ class QuestionAdministrationController extends LSBaseController
             echo $count > 0 ? 'false' : 'true';
         }
         Yii::app()->end();
+    }
+
+    /**
+     * Get HTML for question summary.
+     * Called with Ajax after question is saved.
+     *
+     * @param int $questionId
+     * @return void
+     */
+    public function actionGetSummaryHTML(int $questionId)
+    {
+        $question = Question::model()->findByPk($questionId);
+        if (empty($question)) {
+            throw new CHttpException(404, gT("Invalid question id"));
+        }
+        if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'read')) {
+            throw new CHttpException(403, gT('No permission'));
+        }
+
+        /** @var string */
+        $questionThemeName = $question->getQuestionAttribute('question_template');
+
+        /** @var QuestionTheme */
+        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionThemeName);
+        if (empty($questionTheme['extends'])) {
+            $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
+        }
+
+        /** @var array<string,array<mixed>> */
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionThemeName);
+        // Remove general settings from this array.
+        unset($advancedSettings['Attribute']);
+
+        $this->renderPartial(
+            "questionSummary",
+            [
+                'survey' => $question->survey,
+                'question' => $question,
+                'questionTheme' => $questionTheme,
+                'advancedSettings' => $advancedSettings,
+                'overviewVisibility' => false,  // Hidden by default
+            ]
+        );
     }
 }

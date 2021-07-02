@@ -14,7 +14,7 @@ class SaveAsDefaultGeneralOption extends GeneralOption
         $this->name = 'save_as_default';
         $this->title = gT('Save as default values');
         $this->inputType = 'switch';
-        $this->disableInActive = true;
+        $this->setDisableInActive($question->survey);
         $this->formElement = new FormElement(
             'save_as_default',
             null,

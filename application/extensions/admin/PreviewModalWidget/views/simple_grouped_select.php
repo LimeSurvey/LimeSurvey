@@ -2,8 +2,15 @@
 /**
  * This view defines a simple select instead of a modal box
  */
+
+
+$disable = '';
+if ($this->survey_active) {
+    $disable = 'disabled';
+}
+
 ?>
-<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control">
+<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control" <?=$disable?>>
     <?php 
     foreach ($this->groupStructureArray as $sGroupTitle => $aGroupArray) {  
         echo sprintf("<optgroup label='%s'>", $aGroupArray[$this->groupTitleKey]);

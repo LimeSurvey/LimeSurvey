@@ -440,6 +440,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order' => 'groups.group_order ASC'),
+            'questions' => array(self::HAS_MANY, 'Question', 'sid', 'order' => 'questions.qid ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order' => 'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
@@ -2269,7 +2270,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return true;
         }
         /* Inherited by SurveysInGroup */
-        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission($sPermission, $sGlobalCRUD, $iUserID)) {
+        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);

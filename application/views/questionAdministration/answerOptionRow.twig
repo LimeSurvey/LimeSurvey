@@ -115,6 +115,7 @@
                 id='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
                 name='answeroptions[{{ answerOption.aid }}][{{ scale_id }}][answeroptionl10n][{{ language }}]'
                 placeholder='{{ gT("Some example answer option") }}'
+                data-contents-dir="{{ getLanguageRTL(language) ? 'rtl' : 'ltr' }}"
                 value="{{ answerOptionl10n.answer|escape('html_attr') }}"
             />
             <span class="input-group-addon">
@@ -147,7 +148,7 @@
                 ></i>
             </button>
             <button type="button" class="btn btn-default btn-sm btndelanswer">
-                <i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
+                <i class="fa fa-minus-circle text-danger " data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this entry") }}"></i>
             </button>
         {% endif %}
     </td>

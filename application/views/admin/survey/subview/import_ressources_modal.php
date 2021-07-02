@@ -28,10 +28,10 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">
-              <?php  eT("Close");?>
+            <button type="button" class="btn btn-cancel" data-dismiss="modal">
+              <?php  eT("Cancel");?>
             </button>
-            <input type='button' class="btn btn-default" value='<?php  eT("Import resources ZIP archive"); ?>' <?php echo $ZIPimportAction; ?> />
+            <input type='button' class="btn btn-primary" value='<?php  eT("Import"); ?>' <?php echo $ZIPimportAction; ?> />
           </div>
         </form>
     </div>

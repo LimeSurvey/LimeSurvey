@@ -47,7 +47,7 @@
 
 <!-- Close -->
 <?php if(!empty($showCloseButton)): ?>
-    <a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
+    <a class="btn btn-danger" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
         <span class="fa fa-close"></span>
         <?php eT("Close");?>
     </a>

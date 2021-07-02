@@ -69,9 +69,9 @@
                 <?php echo $quickAddConditionForm; ?>
             </div>
             <div class="modal-footer">
-                <button type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
+                <button type="button" id='quick-add-condition-close-button' class="btn btn-cancel" data-dismiss="modal">&nbsp;<?php eT("Cancel"); ?></button>
                 <button type='submit' id='quick-add-condition-save-and-close-button' class='btn btn-default'><?php eT('Save and close'); ?></button>
-                <button type="button" id='quick-add-condition-close-button' class="btn btn-danger" data-dismiss="modal">&nbsp;<?php eT("Close"); ?></button>
+                <button type='submit' id='quick-add-condition-save-button' class='btn btn-primary'><?php eT('Save'); ?></button>
                 <span id='quick-add-url' class='hidden'><?php echo $quickAddConditionURL; ?></span>
             </div>
         </div>

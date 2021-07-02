@@ -142,6 +142,7 @@ class TopbarConfiguration
         $hasSurveyReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
         $hasSurveyTokensPermission = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
             || Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+        $hasSurveyTokensReadPermission = Permission::model()->hasSurveyPermission($sid, 'tokens', 'read');
         $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
         $hasResponsesReadPermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
         $hasResponsesStatisticsReadPermission = Permission::model()->hasSurveyPermission($sid, 'statistics', 'read');
@@ -207,6 +208,7 @@ class TopbarConfiguration
             'conditionsCount' => $conditionsCount,
             'hasSurveyReadPermission' => $hasSurveyReadPermission,
             'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
+            'hasSurveyTokensReadPermission' => $hasSurveyTokensReadPermission,
             'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
             'hasResponsesReadPermission' => $hasResponsesReadPermission,
             'hasSurveyActivationPermission' => $hasSurveyActivationPermission,

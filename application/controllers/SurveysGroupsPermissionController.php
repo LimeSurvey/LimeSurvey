@@ -16,6 +16,9 @@
 
 use LimeSurvey\Models\Services\PermissionManager;
 
+/**
+ * Class SurveysGroupsPermissionController
+ */
 class SurveysGroupsPermissionController extends LSBaseController
 {
     /** By default : just view */
@@ -51,8 +54,9 @@ class SurveysGroupsPermissionController extends LSBaseController
      * No action done
      * @param integer $id SurveysGroups id
      * @return void
+     * @throws CHttpException
      */
-    public function actionIndex($id)
+    public function actionIndex(int $id)
     {
         /** @var SurveysGroups $model */
         $model = $this->loadModel($id);
@@ -69,6 +73,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         foreach ($aDefinitionPermissions as $permissionKey => $aPermission) {
             $aDefinitionPermissions[$permissionKey]['maxCrud'] = count(array_filter(array_intersect_key($aPermission, array_flip($aCruds)))); // Used for mixed class
         }
+
         /* Find all current user list with rights */
         /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
         $oCriteria = new CDbCriteria();
@@ -135,11 +140,6 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oAddGroupList = UserGroup::model()->findAll($oCriteria);
         }
         $aData['subview'] = 'viewCurrents';
-        $aData['buttons'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-            ),
-        );
         $aData['aPermissionData'] = array(
             'aDefinitionPermissions' => $aDefinitionPermissions,
             'oExistingUsers' => $oExistingUsers,
@@ -148,6 +148,18 @@ class SurveysGroupsPermissionController extends LSBaseController
             'oAddGroupList' => $oAddGroupList,
             'model' => $model,
         );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+
+        // White Top Bar
+        $aData['fullpagebar'] = array(
+            'closebutton' => array(
+                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+            ),
+        );
+        $this->aData = $aData;
+
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 

@@ -123,14 +123,13 @@ class ThemeOptionsController extends LSBaseController
 
         if (Permission::model()->hasGlobalPermission('template', 'update')) {
             foreach ($aTemplates as $template) {
-
                 if ($gridid === 'questionthemes-grid') {
-                    /** @var  $model QuestionTheme */
-                    $model = QuestionTheme::model()->findByPk($template);
-                    $templatename = $model->name;
-                    $templatefolder = $model->xml_path;
+                    /** @var QuestionTheme|null */
+                    $questionTheme = QuestionTheme::model()->findByPk($template);
+                    $templatename = $questionTheme->name;
+                    $templatefolder = $questionTheme->xml_path;
                     $aResults[$template]['title'] = $templatename;
-                    $sQuestionThemeName = $model->importManifest($templatefolder);
+                    $sQuestionThemeName = $questionTheme->importManifest($templatefolder);
                     $aResults[$template]['result'] = isset($sQuestionThemeName) ? true : false;
                 } elseif ($gridid === 'themeoptions-grid') {
                     $model = TemplateConfiguration::model()->findByPk($template);
@@ -155,7 +154,7 @@ class ThemeOptionsController extends LSBaseController
             );
         } else {
             //todo: this message gets never visible for the user ...
-           App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
     }
 
@@ -426,7 +425,7 @@ class ThemeOptionsController extends LSBaseController
         } elseif (!is_writable(App()->getConfig('userthemerootdir'))) {
             $canImport = false;
             $importErrorMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/themes in order to enable this option.");
-        } elseif (!function_exists("zip_open")) {
+        } elseif (!class_exists('ZipArchive')) {
             $canImport = false;
             $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
         }
@@ -662,8 +661,8 @@ class ThemeOptionsController extends LSBaseController
      * Updates Common.
      *
      * @param TemplateConfiguration $model Template Configuration
-     * @param int                   $sid   Survey ID
-     * @param int                   $gsid  Survey Group ID
+     * @param int|null $sid Survey ID
+     * @param int|null $gsid Survey Group ID
      *
      * @return void
      */
@@ -708,7 +707,6 @@ class ThemeOptionsController extends LSBaseController
             'optionCssFramework'    => $oModelWithInheritReplacement->cssframework_css,
             'aTemplateConfiguration' => $aTemplateConfiguration,
             'aOptionAttributes'      => $aOptionAttributes,
-            'sid'             => $sid,
             'oParentOptions'  => $oParentOptions,
             'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load,
             'sid' => $sid,
@@ -724,6 +722,23 @@ class ThemeOptionsController extends LSBaseController
             $aData['subaction'] = gT("Survey theme options");
             $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         }
+
+        // Title concatenation
+        $templateName = $model->template_name;
+        $basePageTitle = sprintf('Survey options for theme %s', $templateName);
+
+        if (!is_null($sid)) {
+            $addictionalSubtitle = gT(" for survey id: $sid");
+        } elseif (!is_null($gsid)) {
+            $addictionalSubtitle = gT(" for survey group id: $gsid");
+        } else {
+            $addictionalSubtitle = gT(" global level");
+        }
+
+        $pageTitle = $basePageTitle . " (" . $addictionalSubtitle . " )";
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = $pageTitle;
 
         $this->aData = $aData;
         $this->render('update', $aData);

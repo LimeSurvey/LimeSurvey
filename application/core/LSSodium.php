@@ -9,9 +9,9 @@ class LSSodium
 
     public function init()
     {
-        require_once APPPATH . '/third_party/sodium_compat/src/Compat.php';
-        require_once APPPATH . '/third_party/sodium_compat/src/Core/Util.php';
-        require_once APPPATH . '/third_party/sodium_compat/autoload.php';
+        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/src/Compat.php';
+        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/src/Core/Util.php';
+        require_once Yii::app()->basePath . '/../third_party/paragonie/sodium_compat/autoload.php';
 
         $this->checkIfLibraryExists();
 
@@ -22,7 +22,7 @@ class LSSodium
             $this->checkIfKeyExists();
         }
     }
-    
+
     /**
      * Check if Sodium library is installed
      * @return bool
@@ -84,7 +84,7 @@ class LSSodium
     {
         return ParagonIE_Sodium_Compat::hex2bin(Yii::app()->getConfig('encryptionsecretkey'));
     }
-    
+
     /**
      * Encrypt input data using AES256 CBC encryption
      * @param unknown_type $sDataToEncrypt Data to encrypt. Could be a string or a serializable PHP object
@@ -103,7 +103,7 @@ class LSSodium
             return $sDataToEncrypt;
         }
     }
- 
+
     /**
      *
      * Decrypt encrypted string.
@@ -126,7 +126,7 @@ class LSSodium
             return $sEncryptedString;
         }
     }
- 
+
     /**
      *
      * Write encryption key to version.php config file
@@ -145,7 +145,7 @@ class LSSodium
         if (empty($sEncryptionKeypair)) {
             return false;
         }
-        
+
         $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             . "/*" . "\n"
             . " * LimeSurvey" . "\n"

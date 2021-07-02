@@ -81,6 +81,7 @@ class Question extends LSActiveRecord
 
     const START_SORTING_VALUE = 1; //this is the start value for question_order
 
+    const DEFAULT_QUESTION_THEME = 'core';  // The question theme name to use when no theme is specified
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
@@ -1030,6 +1031,13 @@ class Question extends LSActiveRecord
     {
         if (parent::beforeSave()) {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
+
+            if ($surveyIsActive) {
+                //don't override questiontype when survey is active, set it back to what it was...
+                $oActualValue = Question::model()->findByPk(array("qid" => $this->qid));
+                $this->type = $oActualValue->type;
+            }
+
             if ($surveyIsActive && $this->getIsNewRecord()) {
                 return false;
             }

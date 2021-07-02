@@ -5,22 +5,6 @@
 
 <div class="col-lg-12 list-surveys">
 
-    <h3><?php eT('Update survey group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
-    <?php $this->renderPartial('super/fullpagebar_view', array(
-            'fullpagebar' => array(
-                'returnbutton'=>array(
-                    'url'=>'surveyAdministration/listsurveys#surveygroups',
-                    'text'=>gT('Close'),
-                ),
-                'savebutton' => array(
-                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
-                ),
-                'saveandclosebutton' => array(
-                    'form' => $aRigths['update'] ? 'surveys-groups-form' : null,
-                )
-            )
-        )); ?>
-
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
