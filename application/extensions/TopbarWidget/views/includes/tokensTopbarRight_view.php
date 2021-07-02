@@ -15,7 +15,7 @@
 
 <!-- Send invitations buttons -->
 <?php if(!empty($showSendInvitationButton)):?>
-    <a class="btn btn-default" href="#" role="button" id="send-invitation-button">
+    <a class="btn btn-success pull-right" style="margin-left: 5px;" href="#" role="button" id="send-invitation-button">
         <span class="icon-invite" ></span>
         <?php eT("Send invitations");?>
     </a>
