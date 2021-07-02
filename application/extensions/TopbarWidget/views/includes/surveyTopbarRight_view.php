@@ -1,21 +1,28 @@
+<!-- White Close button -->
+<?php if (!empty($showWhiteCloseButton)) :?>
+    <a class="btn btn-default" href="<?php echo $closeUrl ?>" role="button">
+        <span class="fa fa-close"></span>
+        <?php eT("Close");?>
+    </a>
+<?php endif;?>
+
+<!-- Save and Close -->
+<?php if(!empty($showSaveAndCloseButton)): ?>
+    <a class="btn btn-default" 
+       href="<?php echo $closeUrl; ?>"
+       role="button" 
+       id="save-and-close-form-button"
+       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
+            <span class="fa fa-saved"></span>
+            <?php eT("Save and close");?>
+    </a>
+<?php endif; ?>
+
 <!-- Save -->
 <?php if(!empty($showSaveButton)): ?>
     <a id="save-button" class="btn btn-success pull-right" style="margin-left: 5px;" role="button">
         <i class="fa fa-check"></i>
         <?php eT("Save");?>
-    </a>
-<?php endif; ?>
-
-<!-- Save and Close -->
-<?php if(!empty($showsSaveAndCloseButton)): ?>
-    <a class="btn btn-default" 
-       href="<?php echo $closeUrl; ?>"
-       role="button" 
-       id="save-and-close-form-button"
-       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');"
-       style="margin-top: 10px;">
-            <span class="fa fa-saved"></span>
-            <?php eT("Save and close");?>
     </a>
 <?php endif; ?>
 

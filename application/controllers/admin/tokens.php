@@ -516,7 +516,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['buttons']['view'] = true;
+        //$aData['token_bar']['buttons']['view'] = true;
         App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
@@ -603,15 +603,6 @@ class tokens extends Survey_Common_Action
             $aData['title_bar']['sSubaction'] = $subAction;
             $aData['title_bar']['active'] = true;
 
-            // Save Button
-            $aData['topBar']['rightSideView']['showSaveButton'] = true;
-
-            // Save and Close Button
-            $aData['topBar']['rightSideView']['showSaveAndCloseButton'] = true;
-
-            // White Close Button
-            $aData['topBar']['showWhiteCloseButton'] = true;
-            $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $aData['surveyid']);
             $aData['topBar']['name'] = 'tokensTopbar_view';
 
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
@@ -2470,8 +2461,13 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
+        // Save Button
         $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        // Save and Close Button
+        $aData['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['showWhiteCloseButton'] = true;
+
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
