@@ -784,7 +784,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws Exception
      */
-    public function addDummies($iSurveyId, $subaction = '')
+    public function addDummies(int $iSurveyId, string $subaction = '')
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -804,8 +804,7 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['savebutton']['form'] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
+
         $aData['topBar']['showSaveButton'] = true;
         $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
 
