@@ -308,10 +308,6 @@ class TopbarConfiguration
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
             'hasSurveySettingsUpdatePermission' => $hasSurveySettingsUpdatePermission,
-            'showSaveAndCloseButton' => true,
-            'showSaveButton'         => true,
-            'showWhiteCloseButton'   => true,
-            'closeUrl' => Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $sid)
         );
     }
 
