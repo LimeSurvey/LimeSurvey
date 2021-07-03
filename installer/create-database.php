@@ -374,6 +374,7 @@ function populateDatabase($oDB)
             'scale_id' =>  "integer NOT NULL default '0'",
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
+            'question_theme_name' => "string(150) NULL",
             'modulename' =>  "string(255) NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);

@@ -763,7 +763,7 @@ $config['defaultquestionselectormode'] = 'default';
 
 // Preselected Question Type
 $config['preselectquestiontype'] = 'T';
-$config['preselectquestiontheme'] = 'core';
+$config['preselectquestiontheme'] = 'longfreetext';
 
 // theme editor mode
 $config['defaultthemeteeditormode'] = 'default';

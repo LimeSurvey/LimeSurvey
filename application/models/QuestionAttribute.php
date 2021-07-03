@@ -292,14 +292,10 @@ class QuestionAttribute extends LSActiveRecord
     public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion)
     {
         $retAttributeNamesExtended = $aAttributeNames;
-        /* @var $oAttributeValue QuestionAttribute*/
-        $oAttributeValue = self::model()->resetScope()->find(
-            "qid=:qid and attribute=:attribute",
-            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
-        );
-        if ($oAttributeValue !== null) {
-            $sQuestionTheme = $oAttributeValue->value;
-            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
+        /** @var string|null */
+        $questionThemeName = $oQuestion->question_theme_name;
+        if (!empty($questionThemeName)) {
+            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($questionThemeName, $oQuestion->type);
             $questionAttributeHelper = new QuestionAttributeHelper();
             $retAttributeNamesExtended = $questionAttributeHelper->mergeQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
@@ -428,15 +424,17 @@ class QuestionAttribute extends LSActiveRecord
      * the attribute is missing. In those cases, the deault "core" is used.
      *
      * @return string question_template or 'core' if it not exists
+     * 
+     * @deprecated use $question->question_theme_name instead (Question model)
      */
     public static function getQuestionTemplateValue($questionID)
     {
-        $question_template = QuestionAttribute::model()->findByAttributes([
-            'qid' => $questionID,
-            'attribute' => 'question_template'
-        ]);
-
-        $value = !empty($question_template) && !empty($question_template->value) ? $question_template->value : 'core';
+        /**
+         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
+         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
+         */
+        $question = Question::model()->findByPk($questionID);
+        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
         return $value;
     }
 
