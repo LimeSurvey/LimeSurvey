@@ -216,8 +216,12 @@
                     </td>
                     <td>
                         <?php
-                            if (isset($setting['expression']) && $setting['expression'] == 2) {
-                                LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                            if (isset($setting['expression']) && $setting['expression'] > 0) {
+                                if ($setting['expression'] == 1) {
+                                    LimeExpressionManager::ProcessString($setting['value'], $question->qid);
+                                } else {
+                                    LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                                }
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             } else {
                                 if (($setting['i18n'] ==null) || ($setting['i18n'] == false)) {
