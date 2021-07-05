@@ -12,9 +12,15 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+/**
+ * Class Expressions
+ **/
 class Expressions extends Survey_Common_Action
 {
 
+    /**
+     * Index
+     **/
     function index()
     {
         $aData = array();
@@ -60,20 +66,28 @@ class Expressions extends Survey_Common_Action
         }
     }
 
+    /**
+     * Returns Replacements
+     * @param $replacementClass
+     * @todo Remove it - does nothing
+     **/
     public function getReplacements($replacementClass)
     {
         die('TEST');
     }
 
+    /**
+     * Survey Logic file
+     **/
     public function survey_logic_file()
     {
-        
         $aData = array();
         
         $sid = Yii::app()->request->getParam('sid', 0, 'integer');
         $surveyid = Yii::app()->request->getParam('surveyid', $sid, 'integer');
 
-        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read')) {
+        $hasSurveyContentReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+        if (!$hasSurveyContentReadPermission) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
@@ -119,18 +133,18 @@ class Expressions extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle() . " (" . gT("ID") . ":" . $sid . ")";
 
         $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $sid);
+        $aData['topBar']['showBackButton'] = true;
+        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('surveyAdministration/view/surveyid/' . $sid);
 
         if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);
-            $aData['closeUrl'] = Yii::app()->createUrl('questionGroupsAdministration/view/surveyid/' . $sid . '/gid/' . $gid);
+            $aData['returnUrl'] = Yii::app()->createUrl('questionGroupsAdministration/view/surveyid/' . $sid . '/gid/' . $gid);
             $aData['gid'] = $gid;
         }
         
         if ($qid !== null) {
             $qid = sanitize_int($qid);
-            $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
+            $aData['returnUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
             $aData['qid'] = $qid;
         }
 
@@ -174,6 +188,9 @@ class Expressions extends Survey_Common_Action
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);
     }
 
+    /**
+     * Survey Logic Form
+     **/
     public function survey_logic_form()
     {
 
@@ -196,7 +213,11 @@ class Expressions extends Survey_Common_Action
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 
-    private function _printOnLoad($which)
+    /**
+     * Print on load
+     * @param string $which
+     **/
+    private function _printOnLoad(string $which)
     {
         switch ($which) {
             case 'relevance':
@@ -208,7 +229,12 @@ class Expressions extends Survey_Common_Action
         }
     }
 
-    private function _printTitle($which)
+    /**
+     * Print Title 
+     * @param string $which
+     * @return string
+     **/
+    private function _printTitle(string $which): string
     {
         switch ($which) {
             case 'index':
@@ -277,12 +303,7 @@ class Expressions extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
-        // $aData['display']['header']=true;
-        // $aData['display']['menu_bars'] = true;
-        // $aData['display']['footer']= true;
         header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
-/* End of file expressions.php */
-/* Location: ./application/controllers/admin/expressions.php */
