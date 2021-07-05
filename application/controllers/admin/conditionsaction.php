@@ -119,8 +119,8 @@ class conditionsaction extends Survey_Common_Action
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView'] = 'conditionDesignerTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-        $aData['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid); // Close button
+        $aData['showBackButton'] = true;
+        $aData['returnUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid); // Close button
         $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
 
         $postSubaction = $request->getPost('subaction');
