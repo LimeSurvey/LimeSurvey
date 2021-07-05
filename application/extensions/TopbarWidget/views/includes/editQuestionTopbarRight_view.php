@@ -1,18 +1,3 @@
-<!-- Save -->
-<?php if(!empty($showSaveButton)): ?>
-    <a
-        id="save-button-create-question"
-        class="btn btn-default"
-        role="button"
-        <?php if ($oQuestion->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
-            data-save-with-ajax="true"
-        <?php endif; ?>
-        onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
-    >
-        <i class="fa fa-check-square"></i>
-        <?php eT("Save");?>
-    </a>
-<?php endif; ?>
 
 <?php /* Ported from previous versions: Pending to adapt to screen own JS for saving (and validations) 
 <!-- Save and new group -->
@@ -32,6 +17,14 @@
 <?php endif; ?>
 */ ?>
 
+<!-- Close -->
+<?php if(!empty($showCloseButton)): ?>
+    <a class="btn btn-default" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
+        <span class="fa fa-close"></span>
+        <?php eT("Close");?>
+    </a>
+<?php endif;?>
+
 <!-- Save and close -->
 <?php if(!empty($showSaveAndCloseButton)): ?>
     <a
@@ -45,10 +38,18 @@
     </a>
 <?php endif; ?>
 
-<!-- Close -->
-<?php if(!empty($showCloseButton)): ?>
-    <a class="btn btn-danger" href="#" role="button" onclick="LS.questionEditor.showOverview(); return false;">
-        <span class="fa fa-close"></span>
-        <?php eT("Close");?>
+<!-- Save -->
+<?php if(!empty($showSaveButton)): ?>
+    <a
+        id="save-button-create-question"
+        class="btn btn-success"
+        role="button"
+        <?php if ($oQuestion->qid !== 0): // Only enable Ajax save for edit question, not create question. ?>
+            data-save-with-ajax="true"
+        <?php endif; ?>
+        onclick="return LS.questionEditor.checkIfSaveIsValid(event, 'editor');"
+    >
+        <i class="fa fa-check"></i>
+        <?php eT("Save");?>
     </a>
-<?php endif;?>
+<?php endif; ?>

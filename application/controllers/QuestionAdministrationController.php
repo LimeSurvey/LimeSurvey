@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Class QuestionAdministrationController
+ */
 class QuestionAdministrationController extends LSBaseController
 {
 
