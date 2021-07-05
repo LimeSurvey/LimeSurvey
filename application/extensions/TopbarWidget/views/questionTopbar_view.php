@@ -23,12 +23,12 @@ $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_d
     <?php endif; ?>
     <div id="question-create-edit-topbar" class='row container-fluid' style="display: none">
         <!-- Left Side -->
-        <div class="<?= !empty($rightSideContent) ? 'col-md-8' : 'col-md-12'?>">
+        <div class="<?= !empty($rightSideContent) ? 'col-md-6' : 'col-md-12'?>">
             <?= $leftSideContentEditor ?>
         </div>
 
         <!-- Right Side -->
-        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-4' : 'col-md-12'?> pull-right text-right">
+        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-6' : 'col-md-12'?> pull-right text-right">
             <?= $rightSideContent ?>
         </div>
     </div>
