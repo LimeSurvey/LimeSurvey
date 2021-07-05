@@ -61,7 +61,8 @@ class TopbarConfiguration
                   !empty($config['showCloseButton'])  ||
                   !empty($config['showImportButton']) ||
                   !empty($config['showExportButton']) ||
-                  !empty($config['showBackButton'])) {
+                  !empty($config['showBackButton'])   ||
+                  !empty($config['showWhiteCloseButton'])) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
