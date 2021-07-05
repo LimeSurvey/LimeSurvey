@@ -400,14 +400,12 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['oSurvey'] = $survey;
         $arrayed_data['data'] = $aData;
         $arrayed_data['title_bar']['title'] = gT('New survey');
-        $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
         // Green Bar Page Title
-        $aData['pageTitle'] = "Create, import, or copy survey";
+        $aData['pageTitle'] = gT("Create a new survey");
 
-        $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
+        //$aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
 
         $this->aData = $aData;
 

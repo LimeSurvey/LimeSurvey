@@ -768,7 +768,7 @@ class TemplateConfiguration extends TemplateConfig
             . '\'
             data-text="' . gT('Please type in the new theme name above.') . '"
             data-button-no="' . gt('Cancel') . '" 
-            data-button-yes="' . gt('Apply') . '"
+            data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
             class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>

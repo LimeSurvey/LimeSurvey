@@ -1918,6 +1918,11 @@ $(document).on('ready pjax:scriptcomplete', function () {
       $('.lang-hide').hide();
       $(langClass).show();
       $('#language-dropdown-text').text($(this).text());
+      // Mark the selected option
+      $(this).closest('ul').find('li').each(function removeActiveClassFromLanguageListItems() {
+        $(this).removeClass('active');
+      });
+      $(this).closest('li').addClass('active');
     });
 
     // Hide all languages except main.

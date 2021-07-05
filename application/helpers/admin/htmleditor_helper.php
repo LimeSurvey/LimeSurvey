@@ -314,6 +314,12 @@ function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $
                     ckeConfig.editorplaceholder = $('#" . $fieldname . "').attr('placeholder');
                 }
 
+                // Show full toolbar if cookie is set
+			    var toolbarCookie = CKEDITOR.tools.getCookie('LS_CKE_TOOLBAR');
+                if (toolbarCookie == 'full' && ckeConfig.toolbar == ckeConfig.basicToolbar) {
+                    ckeConfig.toolbar = ckeConfig.fullToolbar;
+                }
+
                 $oCKeditorVarName = CKEDITOR.replace('$fieldname', ckeConfig);
 
                 \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');

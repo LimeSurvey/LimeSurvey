@@ -233,7 +233,7 @@ class ParticipantShare extends LSActiveRecord
                 "name" => 'share_uid',
                 "value" => '$data->sharedBy',
                 "type" => 'raw',
-                "header" => gT("Shared by"),
+                "header" => gT("Shared with"),
                 "filter" => $this->getSharedByList($this->share_uid)
             ),
             array(
