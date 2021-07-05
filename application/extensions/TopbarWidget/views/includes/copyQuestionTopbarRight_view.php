@@ -5,7 +5,7 @@
 </a>
 
 <!-- Save and close -->
-<a id="save-and-close-button-copy-question" class="btn btn-default" role="button">
+<a id="save-and-close-button-copy-question" class="btn btn-success" role="button">
     <i class="fa fa-check"></i>
     <?php eT("Save and close");?>
 </a>
