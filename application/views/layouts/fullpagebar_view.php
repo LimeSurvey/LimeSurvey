@@ -58,7 +58,7 @@
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create a new box");?>
                 </a>
-                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
                     <span class="fa fa-refresh"></span>
                     <?php eT("Reset to default boxes");?>
                 </a>
