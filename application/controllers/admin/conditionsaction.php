@@ -122,26 +122,6 @@ class conditionsaction extends Survey_Common_Action
         $aData['showCloseButton'] = true;
         $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid); // Close button
         $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
-        //$aData['questionbar']['buttons']['conditions'] = true;
-
-        /*switch ($subaction) {
-            case 'editconditionsform':
-                $aData['questionbar']['buttons']['condition']['edit'] = true;
-                break;
-
-            case 'conditions':
-                $aData['questionbar']['buttons']['condition']['conditions'] = true;
-                break;
-
-            case 'copyconditionsform':
-                $aData['questionbar']['buttons']['condition']['copyconditionsform'] = true;
-                break;
-
-            default:
-                $aData['questionbar']['buttons']['condition']['edit'] = true;
-                break;
-        }*/
-
 
         $postSubaction = $request->getPost('subaction');
         if (!empty($postSubaction)) {
