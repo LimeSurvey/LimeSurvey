@@ -1829,7 +1829,7 @@ class conditionsaction extends Survey_Common_Action
      * @param array $p_canswers E.g. array('A2')
      * @return string JS code
      */
-    protected function getJsAnswersToSelect(array $cquestions, string $p_cquestions, array $p_canswers): string
+    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers): string
     {
         $js_getAnswers_onload = "";
         foreach ($cquestions as $cqn) {
@@ -2189,7 +2189,7 @@ class conditionsaction extends Survey_Common_Action
      * @param int $qid
      * @return CActiveRecord[] Conditions
      */
-    protected function getAllScenarios(int s$qid)
+    protected function getAllScenarios(int $qid)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 'scenario'; // only select the 'scenario' column
