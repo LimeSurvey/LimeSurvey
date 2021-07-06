@@ -10,6 +10,8 @@
 
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
+    <?= $jsVariablesHtml; ?>
+
     <!-- Page Title-->
     <div class="pagetitle h3">
         <?php
@@ -22,6 +24,7 @@
         <?php echo CHtml::form(array("questionAdministration/copyQuestion"), 'post',
             array('class' => 'form30 ', 'id' => 'form_copy_question', 'name' => 'frmeditquestion')); ?>
         <?php /** this btn is trigger by save&close topbar button in copyQuestiontobar_view  */ ?>
+        <input type="hidden" name="sid" value="<?= $oSurvey->sid; ?>" />
         <input
                 type='submit'
                 style="display:none"

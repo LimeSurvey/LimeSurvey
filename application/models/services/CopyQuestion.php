@@ -56,7 +56,7 @@ class CopyQuestion
         );
         if ($copySuccessful) {
             //copy question languages
-            $this->copyQuestionLanguages($this->copyQuestionValues->getQuestiontoCopy());
+            $this->copyQuestionLanguages($this->copyQuestionValues->getQuestiontoCopy(), $this->copyQuestionValues->getQuestionL10nData());
 
             //copy subquestions
             if ($copyOptions['copySubquestions']) {
@@ -107,22 +107,27 @@ class CopyQuestion
      * Copies the languages of a question.
      *
      * @param \Question $oQuestion old question from where to copy the languages (see table questions_l10ns)
+     * @param array<string,\LimeSurvey\Datavalueobjects\CopyQuestionTextValues> $newQuestionL10nData the text values to override
      *
      * @before $this->newQuestion must exist and should not be null
      *
      * @return bool true if all languages could be copied,
      *              false if no language was copied or save failed for one language
      */
-    private function copyQuestionLanguages($oQuestion)
+    private function copyQuestionLanguages($oQuestion, $newQuestionL10nData = [])
     {
         $allLanguagesAreCopied = false;
         if ($oQuestion !== null) {
             $allLanguagesAreCopied = true;
-            foreach ($oQuestion->questionl10ns as $sLanguage) {
+            foreach ($oQuestion->questionl10ns as $questionl10n) {
                 $copyLanguage = new \QuestionL10n();
-                $copyLanguage->attributes = $sLanguage->attributes;
+                $copyLanguage->attributes = $questionl10n->attributes;
                 $copyLanguage->id = null; //new id needed
                 $copyLanguage->qid = $this->newQuestion->qid;
+                if (isset($newQuestionL10nData[$questionl10n->language])) {
+                    $copyLanguage->question = $newQuestionL10nData[$questionl10n->language]->getQuestionText();
+                    $copyLanguage->help = $newQuestionL10nData[$questionl10n->language]->getHelp();
+                }
                 $allLanguagesAreCopied = $allLanguagesAreCopied && $copyLanguage->save();
             }
         }

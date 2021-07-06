@@ -114,7 +114,7 @@
                                     [
                                         'oSurvey'         => $oSurvey,
                                         'question'        => $oQuestion,
-                                        'aStructureArray' => $aQuestionTypeGroups,
+                                        //'aStructureArray' => $aQuestionTypeGroups,
                                         'showScriptField' => $showScriptField,
                                     ]
                                 ); ?>
