@@ -11,7 +11,7 @@ $leftSideContentEditor = $this->render('includes/editQuestionTopbarLeft_view', g
 $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_defined_vars(), true);
 
 ?>
-
+<!-- Question Top Bar -->
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
     <?php if ($oQuestion->qid !== 0): ?>
         <div id="question-summary-topbar" class='row container-fluid' style="margin-bottom: 8px;">
@@ -21,7 +21,7 @@ $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_d
             </div>
         </div>
     <?php endif; ?>
-    <div id="question-create-edit-topbar" class='row container-fluid' style="display: none">
+    <div id="question-create-edit-topbar" class='row container-fluid' style="display: none; margin-bottom: 8px;">
         <!-- Left Side -->
         <div class="<?= !empty($rightSideContent) ? 'col-md-6' : 'col-md-12'?>">
             <?= $leftSideContentEditor ?>
