@@ -52,6 +52,9 @@ class GlobalSettings extends Survey_Common_Action
         $this->_displaySettings();
     }
 
+    /**
+     * Show PHP Info
+     */
     public function showphpinfo()
     {
         if (!Yii::app()->getConfig('demoMode')) {
@@ -59,6 +62,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * Refresh Assets
+     */
     public function refreshAssets()
     {
         // Only people who can create or update themes should be allowed to refresh the assets
@@ -215,6 +221,9 @@ class GlobalSettings extends Survey_Common_Action
         return $templates;
     }
 
+    /**
+     * Save Settings
+     */
     private function _saveSettings()
     {
         if (Yii::app()->getRequest()->getPost('action') !== "globalsettingssave") {
@@ -278,7 +287,7 @@ class GlobalSettings extends Survey_Common_Action
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, Template::getTemplateList())) {
-// Filter template name
+                // Filter template name
                 SettingGlobal::setSetting('defaulttheme', $sTemplate);
             }
             SettingGlobal::setSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
@@ -398,6 +407,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * Check Settings
+     */
     private function _checkSettings()
     {
         $surveycount = Survey::model()->count();
@@ -517,12 +529,18 @@ class GlobalSettings extends Survey_Common_Action
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
+    /**
+     * Survey Setting Menues
+     */
     public function surveysettingmenues()
     {
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
+    /**
+     * Send Test Email
+     */
     public function sendTestEmail()
     {
         $sSiteName = Yii::app()->getConfig('sitename');
@@ -540,6 +558,13 @@ class GlobalSettings extends Survey_Common_Action
         $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
     }
 
+    /**
+     * Send Email and show result
+     * @param string $body
+     * @param string $sSubject
+     * @param string $sTo
+     * @param string $sFrom
+     */
     private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
     {
         $mailer = new \LimeMailer();
@@ -566,6 +591,9 @@ class GlobalSettings extends Survey_Common_Action
         $this->_renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
     }
 
+    /**
+     * Send Test Email Confirmation
+     */
     public function sendTestEmailConfirmation()
     {
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
@@ -585,9 +613,10 @@ class GlobalSettings extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string $sAction     Current action, the folder to fetch views from
+     * @param string $aViewUrls   View url(s)
+     * @param array  $aData       Data to be passed on. Optional.
+     * @param bool   $sRenderFile
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
