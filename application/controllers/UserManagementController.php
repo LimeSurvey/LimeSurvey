@@ -1,6 +1,9 @@
 <?php
 
 //LSYii_Controller
+/**
+ * Class UserManagementController
+ */
 class UserManagementController extends LSBaseController
 {
 
