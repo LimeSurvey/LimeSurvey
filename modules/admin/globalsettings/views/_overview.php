@@ -16,7 +16,7 @@
   <p class="alert alert-info "> this subview is rendered from globall setting module. This message is shown only when debug mode is on </p>
 <?php endif;?>
 
-<br /><table class='table table-striped table-bordered'>
+<br /><table class='table table-hover'>
     <tr>
         <th ><?php eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
     </tr>

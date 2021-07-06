@@ -111,6 +111,7 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
+        // Fullpage Bar
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
@@ -132,6 +133,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
+        // Green Bar Title
         $data['pageTitle'] = gT("Global settings");
 
         $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
