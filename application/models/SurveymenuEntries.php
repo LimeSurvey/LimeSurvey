@@ -315,13 +315,13 @@ class SurveymenuEntries extends LSActiveRecord
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $deleteData = array(
                 'action_surveymenuEntries_deleteModal',
-                'text-danger',
+                'red-border',
                 gT("Delete this survey menu entry"),
-                'trash text-danger'
+                'trash'
             );
             $editData = array(
                 'action_surveymenuEntries_editModal',
-                'text-danger',
+                'green-border',
                 gT("Edit this survey menu entry"),
                 'pencil'
             );
