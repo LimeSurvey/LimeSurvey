@@ -16,7 +16,7 @@ LS.renderBootstrapSwitch();
     strOK='<?php eT('OK','js');?>';
 </script>
 
-<div class="col-lg-12 list-surveys" style="margin-top: 10px;">
+<div class="col-lg-12 list-surveys" style="margin-top: 20px;">
 
     <div class="row">
 
@@ -40,8 +40,8 @@ LS.renderBootstrapSwitch();
                     array(
                         'dataProvider' => $dataProviderBox,
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-                'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
-                'columns' => array(
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
+                        'columns' => array(
                     array(
                         'header' => gT('Position'),
                         'name' => 'position',
