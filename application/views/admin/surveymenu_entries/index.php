@@ -31,9 +31,9 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                             array('class'=>'changePageSize form-control', 'id'=>'pageSize', 'style'=>'display: inline; width: auto')
                         )
                     ),
-                    'itemsCssClass' =>'table table-striped',
+                    'itemsCssClass' =>'table table-hover',
                     'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-                    'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
+                    'htmlOptions'=>array('class'=>'grid-view col-12'),
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'bindAction',
                     'afterAjaxUpdate'=>'bindAction',
