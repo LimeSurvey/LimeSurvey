@@ -286,11 +286,11 @@
                     </li>
 
                 <!-- Surveymenu Editor -->
-                <!-- Menu -->
+                <!-- Survey Menu -->
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Menu");?>
+                            <?php eT("Survey Menu");?>
                         </a>
                     </li>
                 <?php endif;?>
