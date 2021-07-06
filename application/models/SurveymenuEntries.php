@@ -345,7 +345,6 @@ class SurveymenuEntries extends LSActiveRecord
     {
         $cols = array(
             array(
-            'name' => 'id',
             'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
             'type' => 'raw',
             'filter' => false
