@@ -14,7 +14,7 @@ $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_d
 
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
     <?php if ($oQuestion->qid !== 0): ?>
-        <div id="question-summary-topbar" class='row container-fluid'>
+        <div id="question-summary-topbar" class='row container-fluid' style="margin-bottom: 8px;">
             <!-- Left Side -->
             <div class="col-md-12">
                 <?= $leftSideContentSummary ?>
