@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                     ),
                     'itemsCssClass' =>'table table-hover',
                     'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-                    'htmlOptions'=>array('class'=>'grid-view col-12'),
+                    'htmlOptions'=>array('class'=>'table-responsive'),
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'bindAction',
                     'afterAjaxUpdate'=>'bindAction',
