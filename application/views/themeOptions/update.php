@@ -259,6 +259,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
+<?php if (!empty($model->sid)): // If we are in survey view, we have an additional div that we need to close ?>
+</div>
+<?php endif; ?>
 
 <!-- Form for image file upload -->
 <div class="hidden">
