@@ -372,6 +372,11 @@ class SurveymenuController extends Survey_Common_Action
         $aData = array();
         $aData['model'] = Surveymenu::model();
         
+        // Survey Menue Entries Data
+        $filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
+        $aData['entries_model'] = SurveymenuEntries::model();
+        $aData['entries_model']->setAttributes($filterAndSearch);
+
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
@@ -386,6 +391,7 @@ class SurveymenuController extends Survey_Common_Action
                 'buttons' => [
                     'addMenuEntry' => true,
                     'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
+                    'reorder' => true,
                 ],
             ],
             'returnbutton' => [
@@ -393,6 +399,7 @@ class SurveymenuController extends Survey_Common_Action
                 'url' => 'admin/index',
             ],
         ];
+
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
