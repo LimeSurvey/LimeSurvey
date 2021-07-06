@@ -53,6 +53,7 @@
                         'value'=>'$data->buttons',
                         'type'=>'raw',
                         'htmlOptions' => array('class' => 'text-center col-md-2'),
+                        'headerHtmlOptions'=>array('style'=>'text-align:center;'),
                     ),
 
                     array(
@@ -142,9 +143,7 @@
                     ),
 
                 ),
-                'itemsCssClass' =>'table-striped',
-                //'htmlOptions'=>array('style'=>'cursor: pointer;'),
-                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+                'htmlOptions'=>array('class'=>'table table-hover'),
                 'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
