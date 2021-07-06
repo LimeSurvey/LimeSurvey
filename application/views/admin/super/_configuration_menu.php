@@ -294,15 +294,6 @@
                         </a>
                     </li>
                 <?php endif;?>
-                <!-- Surveymenu entry Editor -->
-                <!-- Menu entries -->
-                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
-                    <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
-                            <?php eT("Menu entries");?>
-                        </a>
-                    </li>
-                <?php endif;?>
 
                 <?php endif;?>
 
