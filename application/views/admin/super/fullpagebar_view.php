@@ -50,7 +50,7 @@
                     <a class="btn btn-default"
                        id="createnewmenu"
                        style="margin-top: 10px; margin-bottom: 10px;">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New') ?>
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
