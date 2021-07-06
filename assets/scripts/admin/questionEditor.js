@@ -95,8 +95,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function updateRowProperties() {
     var sID = $('input[name=sid]').val();
-    var gID = $('input[name=gid]').val();
-    var qID = $('input[name=qid]').val();
+    var gID = $('[name=question\\[gid\\]]').val();
+    var qID = $('[name=question\\[qid\\]]').val();
     sID = $.isNumeric(sID) ? sID : '';
     gID = $.isNumeric(gID) ? gID : '';
     qID = $.isNumeric(qID) ? qID : '';
