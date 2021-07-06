@@ -108,7 +108,7 @@
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
-                    <span class="fa fa-floppy-o"></span>
+                    <span class="fa fa-check"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
