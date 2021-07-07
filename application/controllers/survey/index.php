@@ -14,18 +14,25 @@ if (!defined('BASEPATH')) {
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
-
+/**
+ * Class Index
+ */
 class index extends CAction
 {
-
     public $oTemplate;
 
+    /**
+     * Run
+     */
     public function run()
     {
         useFirebug();
         $this->action();
     }
 
+    /**
+     * Action
+     */
     public function action()
     {
         global $surveyid;
@@ -105,7 +112,6 @@ class index extends CAction
         }
 
         Yii::app()->setConfig('previewmode', $previewmode);
-
 
         // Token Object
         // Get token
@@ -455,7 +461,6 @@ class index extends CAction
 
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
-            //$oTemplate->registerAssets();
             $thissurvey['include_content'] = 'load';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey' => Survey::model()->findByPk($surveyid), 'aSurveyInfo' => $thissurvey), false);
         }
@@ -600,13 +605,14 @@ class index extends CAction
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
-        // try {
-            $tmp->run($surveyid, $redata);
-        // } catch (WrongTemplateVersionException $ex) {
-        //     echo $ex->getMessage();
-        // }
+        $tmp->run($surveyid, $redata);
     }
 
+    /**
+     * Get Parameters
+     * @param array $args
+     * @param array $post
+     */
     private function _getParameters($args = array(), $post = array())
     {
         $param = array();
@@ -629,6 +635,9 @@ class index extends CAction
         return $param;
     }
 
+    /**
+     * Load Required Helpers and Libraries
+     */
     private function _loadRequiredHelpersAndLibraries()
     {
         //Load helpers, libraries and config vars
@@ -637,6 +646,11 @@ class index extends CAction
         Yii::app()->loadHelper("surveytranslator");
     }
 
+    /**
+     * Load LimeSurvey Lang
+     * @param $mvSurveyIdOrBaseLang
+     * @todo Please rename the parameter - name is strange
+     */
     private function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
         $oSurvey = Survey::model()->findByPk($mvSurveyIdOrBaseLang);
@@ -651,33 +665,64 @@ class index extends CAction
         App()->setLanguage($baselang);
     }
 
+    /**
+     * Is Client Token different from session token
+     * @param string $clientToken
+     * @param string $surveyid
+     */
     private function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_' . $surveyid]['token']) && $clientToken != $_SESSION['survey_' . $surveyid]['token'];
     }
 
+    /**
+     * Is Survey Finished
+     * @param string $surveyid
+     * @return bool
+     */
     private function _isSurveyFinished($surveyid)
     {
         return isset($_SESSION['survey_' . $surveyid]['finished']) && $_SESSION['survey_' . $surveyid]['finished'] === true;
     }
 
+    /**
+     * Survey cant be viewed with current preview access
+     * @param int $surveyid
+     * @param bool $bIsSurveyActive
+     * @param bool $bSurveyExists
+     */
     private function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true && !$this->_canUserPreviewSurvey($surveyid);
     }
 
+    /**
+     * Did Session timeout
+     * @param int $surveyid
+     * @return bool
+     */
     private function _didSessionTimeout($surveyid)
     {
         return (!isset($_SESSION['survey_' . $surveyid]['step']) && null !== App()->request->getPost('thisstep'));
     }
 
-    function _canUserPreviewSurvey($iSurveyID)
+    /**
+     * Can User preview survey
+     * @param int $iSurveyID
+     * @return bool
+     */
+    private function _canUserPreviewSurvey($iSurveyID)
     {
         return Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
     }
 
-    function _userHasPreviewAccessSession($iSurveyID)
+    /**
+     * User has preview access session
+     * @param int $iSurveyID
+     * @return bool
+     */
+    private function _userHasPreviewAccessSession($iSurveyID)
     {
         return (isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $iSurveyID));
     }
