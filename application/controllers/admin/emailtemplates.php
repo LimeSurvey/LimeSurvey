@@ -316,6 +316,7 @@ class emailtemplates extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('emailtemplates');
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
+        $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
