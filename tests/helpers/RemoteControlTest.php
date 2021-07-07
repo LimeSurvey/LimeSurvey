@@ -109,6 +109,7 @@ class RemoteControlTest extends TestBaseClass
     /**
     * Test the add_response API call.
     */
+    /*
     public function testDeleteResponse()
     {
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
@@ -117,7 +118,7 @@ class RemoteControlTest extends TestBaseClass
         $dbo = \Yii::app()->getDb();
 
         // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        $plugin = \Plugin::model()->findByAttributes(array('name' => 'Authdb'));
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = 'Authdb';
@@ -143,7 +144,8 @@ class RemoteControlTest extends TestBaseClass
         // Get session key.
         $sessionKey = $handler->get_session_key(
             self::$username,
-            self::$password);
+            self::$password
+        );
         $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
         // Delete response
@@ -160,4 +162,5 @@ class RemoteControlTest extends TestBaseClass
         self::$testSurvey->delete();
         self::$testSurvey = null;
     }
+    '*/
 }
