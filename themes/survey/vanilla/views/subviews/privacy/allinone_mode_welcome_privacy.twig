@@ -17,13 +17,10 @@
 
     When survey is in All In One mode, if welcome or privacy message are activated, they must be shown on the page.
 #}
-
 {% if aSurveyInfo.format == 'A' %}
     {% if not aSurveyInfo.showwelcome is defined or not aSurveyInfo.showwelcome != 'N' %}
         {{ include('./subviews/messages/welcome.twig') }}
     {% endif %}
 
-    {% if aSurveyInfo.anonymized == 'Y' %}
-        {{ include('./subviews/privacy/privacy.twig') }}
-    {% endif %}
+    {{ include('./subviews/privacy/privacy.twig') }}
 {% endif %}

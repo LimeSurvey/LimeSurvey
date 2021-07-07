@@ -20,10 +20,10 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>3.0</version>
+        <version>3.0.1</version>
         <apiVersion>3</apiVersion>
         <description twig="on"><![CDATA[<strong>{{gT("LimeSurvey Bootstrap Vanilla Survey Theme")}}</strong><br>{{gT("A clean and simple base that can be used by developers to create their own Bootstrap based theme.")}}]]></description>
-        <last_update>2019-09-23 18:00:00</last_update>
+        <last_update>2021-06-23 16:47:00</last_update>
     </metadata>
 
     <!--
