@@ -351,7 +351,7 @@ class AdminTheme extends CFormModel
             define('LOGO_ICON_URL', App()->getAssetManager()->publish($this->path . '/images/logo_icon.png'));
         } else {
             define('LOGO_URL', $this->sTemplateUrl . '/images/logo.png');
-            define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.png');
+            define('LOGO_ICON_URL', $this->sTemplateUrl . '/images/logo_icon.svg');
         }
 
         // Define presentation text on welcome page

@@ -9,6 +9,7 @@
 
 <!-- admin menu bar -->
 <nav class="navbar">
+    <div class="container-fluid">
   <div class="navbar-header">
       <button class="navbar-toggle hidden-md hidden-lg" type="button" data-toggle="collapse" data-target="#small-screens-menus">
             <span class="sr-only">Toggle navigation</span>
@@ -17,15 +18,14 @@
             <span class="icon-bar"></span>
         </button>
 
-      <div style="margin: 5px;">
-          <img src="/LimeSurvey/assets/images/LimeSurvey_Logo_LS4.svg"
-               alt="<?php echo $sitename ?>"
-               class="pull-left hidden-xs hidden-sm">
           <! -- Logo -->
+          <img src="/LimeSurvey/assets/images/LimeSurvey_Logo_LS4.svg"
+                 alt="<?php echo $sitename ?>"
+                 class="navbar-brand hidden-xs hidden-sm pull-left"
+                 alt="LimeSurvey">
           <a class="navbar-brand hidden-xs hidden-sm pull-right" href="<?php echo $this->createUrl("/admin/"); ?>">
               <?php echo $sitename ?>
           </a>
-      </div>
     </div>
 
 
@@ -167,6 +167,9 @@
                 </ul>
             </div>
         <?php } ?>
+
+
+    </div>
 </nav>
 <script type="text/javascript">
     //show tooltips 

@@ -905,7 +905,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/survey/vanilla/files/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
+            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"themes/admin/Noto_All_Languages/images/logo.png","font":"noto", "showpopups":"1", "showclearall":"off", "questionhelptextposition":"top"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',

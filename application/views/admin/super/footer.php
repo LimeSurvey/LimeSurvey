@@ -62,9 +62,12 @@ foreach ($systemInfos as $key => $systemInfo) {
             </div>
 
             <!-- Support / Donate -->
-            <div  class="col-xs-6 col-sm-4 text-center" >
-                <a href='https://donate.limesurvey.org' target="_blank">
-                    <img alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
+            <div class="row col-xs-6 col-sm-4 text-center">
+                <a href="https://donate.limesurvey.org" target="_blank">
+                    <image alt='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>'
+                           title='<?php printf(gT("Support this project - Donate to %s!"), 'LimeSurvey'); ?>'
+                           src='<?php echo Yii::app()->getConfig('styleurl');?>Noto_All_Languages/images/logo_donate.png'
+                           style='width: 127px; height: auto;' />
                 </a>
             </div>
 
