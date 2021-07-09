@@ -388,9 +388,6 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }

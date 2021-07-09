@@ -142,12 +142,19 @@ class LabelSet extends LSActiveRecord
 
             // Delete labelset
         if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete label set") . '" href="#" role="button"'
-                . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Are you sure you want to delete this label set?"))
-                            . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
-                            . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]))
-                        . "});'>"
-                    . ' <i class="text-danger fa fa-trash"></i>
+            $url = Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]);
+            $message = gT("Are you sure you want to delete this label set?");
+            $button .= '<a 
+            class="btn btn-danger"  
+            data-toggle="modal"
+            data-href ="' . $url.'"
+            data-message="'. $message .'"
+            data-btnclass="btn-danger"
+            data-btntext="' . gt('Delete') . '"
+            data-target="#confirmation-modal" 
+            title="' . gT("Delete") . '" 
+            href="#" >
+                    <i class="text-danger fa fa-trash"></i>
                     </a>';
         }
             return $button;
