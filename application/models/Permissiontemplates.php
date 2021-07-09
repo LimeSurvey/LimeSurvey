@@ -173,7 +173,7 @@ class Permissiontemplates extends CActiveRecord
                 data-href='" . $setPermissionsUrl . "'>
                     <i class='fa fa-lock'></i>
                 </button>";
-       
+
         // Edit Role
         $editRoleButton = ""
             . "<button 
@@ -184,7 +184,7 @@ class Permissiontemplates extends CActiveRecord
                 data-href='" . $editUrl . "'>
                     <i class='fa fa-pencil'></i>
                 </button>";
-        
+
         // Export Role
         $exportRoleButton = ""
             . "<a class='btn btn-sm btn-default RoleControl--action--link'
@@ -197,17 +197,16 @@ class Permissiontemplates extends CActiveRecord
                 </a>";
 
         // Delete Role
+        $deleteUrl .= '/ptid/' . $this->ptid;
         $deleteRoleButton = ""
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
                 class='btn btn-sm btn-default red-border' 
                 data-toggle='modal' 
-                title='" . gT('Delete Role') . "'
-                data-target='#confirmation-modal' 
-                data-url='" . $deleteUrl . "' 
-                data-ptid='" . $this->ptid . "'
-                data-action='delrole'         
-                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
+                data-target='#confirmation-modal'
+                data-href ='" . $deleteUrl . "' 
+                data-btnclass='btn-danger'
+                data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash'></i>
               </button>";
