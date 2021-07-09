@@ -12,9 +12,4 @@
     <span class="icon-copy"></span>
     <?php eT("Copy conditions");?>
 </a>
-    
-<a class="btn btn-default" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
-    <span class="fa fa-saved"></span>
-    <?php eT("Save and close");?>
-</a>
 
