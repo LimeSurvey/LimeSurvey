@@ -39,7 +39,6 @@ LS.renderBootstrapSwitch();
                 <?php $this->widget('bootstrap.widgets.TbGridView',
                     array(
                         'dataProvider' => $dataProviderBox,
-                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).'),
                         'columns' => array(
                     array(
