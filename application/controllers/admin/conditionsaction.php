@@ -602,7 +602,7 @@ class conditionsaction extends Survey_Common_Action
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            } elseif(!empty(trim($oQuestion->relevance))) {
+            } elseif (!empty(trim($oQuestion->relevance)) ||  trim($oQuestion->relevance) == '1') {
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
