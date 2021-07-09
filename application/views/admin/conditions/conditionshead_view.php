@@ -33,19 +33,6 @@
                 <?php eT("Renumber scenarios");?>
             </button>
         <?php endif; ?>
-
-        <button
-            id='quick-add-condition-button'
-            class='btn btn-default pull-right condition-header-button'
-            data-toggle='modal'
-            data-target='#quick-add-condition-modal'
-            data-tooltip='true'
-            data-title='<?php eT('Add multiple conditions without a page reload'); ?>'
-        >
-            <span class="fa fa-plus-circle"></span>
-            &nbsp;
-            <?php eT('Quick-add conditions'); ?>
-        </button>
     </h3>
      <div class="row">
         <div class="col-lg-12 content-right">

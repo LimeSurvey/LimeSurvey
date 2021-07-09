@@ -297,6 +297,7 @@ class conditionsaction extends Survey_Common_Action
         $oQuestion = Question::model()->find('qid=:qid', array(':qid' => $qid));
         $aData['oQuestion'] = $oQuestion;
 
+        // @todo why surveyid and iSurveyID will be used? Only use one!
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
@@ -310,6 +311,7 @@ class conditionsaction extends Survey_Common_Action
 
         // Some extra args to getEditConditionForm
         $args['subaction'] = $subaction;
+        // @todo why surveyid and iSurveyID will be used? Only use one!
         $args['iSurveyID'] = $this->iSurveyID;
         $args['gid'] = $gid;
         $args['qcount'] = $this->getQCount($cquestions);
@@ -353,7 +355,7 @@ class conditionsaction extends Survey_Common_Action
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
-            //$aData['subaction'] = $subaction;
+            
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
                 $aViewUrls['conditionslist_view'][] = $aData;
