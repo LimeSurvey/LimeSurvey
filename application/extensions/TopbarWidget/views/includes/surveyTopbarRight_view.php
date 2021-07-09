@@ -18,6 +18,18 @@
     </a>
 <?php endif; ?>
 
+<!-- Green Save and Close -->
+<?php if(!empty($showGreenSaveAndCloseButton)): ?>
+    <a class="btn btn-success" 
+       href="<?php echo $closeUrl; ?>"
+       role="button" 
+       id="save-and-close-form-button"
+       onclick="$(this).addClass('disabled').attr('onclick', 'return false;');">
+            <span class="fa fa-saved"></span>
+            <?php eT("Save and close");?>
+    </a>
+<?php endif; ?>
+
 <!-- Save -->
 <?php if(!empty($showSaveButton)): ?>
     <a id="save-button" class="btn btn-success pull-right" style="margin-left: 5px;" role="button">
