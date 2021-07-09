@@ -166,17 +166,17 @@ class Permissiontemplates extends CActiveRecord
         $exportRoleButton = ""
             . "<a class='btn btn-sm btn-default RoleControl--action--link'
                 href='" . $exportRoleUrl . "'><i class='fa fa-download'></i></a>";
-                
+
+        $deleteUrl .= '/ptid/' . $this->ptid;
         $deleteRoleButton = ""
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
                 class='btn btn-sm btn-danger' 
                 data-toggle='modal' 
-                data-target='#confirmation-modal' 
-                data-url='" . $deleteUrl . "' 
-                data-ptid='" . $this->ptid . "'
-                data-action='delrole' 
-                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")' 
+                data-target='#confirmation-modal'
+                data-href ='" . $deleteUrl . "' 
+                data-btnclass='btn-danger'
+                data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>
               </button>";

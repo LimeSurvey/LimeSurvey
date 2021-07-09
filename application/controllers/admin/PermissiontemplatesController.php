@@ -344,8 +344,13 @@ class PermissiontemplatesController extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
-        $ptid = Yii::app()->request->getPost('ptid', 0);
-        $this->loadModel($ptid)->delete();
+        $ptid = Yii::app()->request->getParam('ptid', 0);
+        try {
+            $this->loadModel((int)$ptid)->delete();
+            Yii::app()->setFlashMessage(gT("Role was successfully deleted."), 'success');
+        } catch (Exception $e) {
+            Yii::app()->setFlashMessage(gT("Role could not be deleted."), 'error');
+        }
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
