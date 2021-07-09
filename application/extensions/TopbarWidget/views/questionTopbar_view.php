@@ -9,6 +9,7 @@ $aData = get_defined_vars();
 $leftSideContentSummary = $this->render('includes/questionTopbarLeft_view', get_defined_vars(), true);
 $leftSideContentEditor = $this->render('includes/editQuestionTopbarLeft_view', get_defined_vars(), true);
 $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_defined_vars(), true);
+$rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_view', get_defined_vars(), true);
 
 ?>
 <!-- Question Top Bar -->
@@ -16,8 +17,12 @@ $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_d
     <?php if ($oQuestion->qid !== 0): ?>
         <div id="question-summary-topbar" class='row container-fluid' style="margin-bottom: 8px;">
             <!-- Left Side -->
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <?= $leftSideContentSummary ?>
+            </div>
+
+            <div class="col-md-6 pull-right text-right">
+                <?= $rightSideContentSummary ?>
             </div>
         </div>
     <?php endif; ?>

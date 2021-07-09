@@ -117,7 +117,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return void
      * @throws CHttpException
      */
-    public function actionEdit($questionId, $tabOverviewEditor = null)
+    public function actionEdit(int $questionId, string $tabOverviewEditor = null)
     {
         $questionId = (int) $questionId;
 
@@ -193,7 +193,7 @@ class QuestionAdministrationController extends LSBaseController
         $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $this->aData['questionbar']['buttons']['view'] = true;
-        $this->aData['sidemenu']['landOnSideMenuTab']         = 'structure';
+        $this->aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $this->aData['title_bar']['title'] =
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
@@ -224,11 +224,15 @@ class QuestionAdministrationController extends LSBaseController
             true
         );
 
+        // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
-        $this->aData['showSaveButton'] = true;
-        $this->aData['showSaveAndCloseButton'] = true;
-        $this->aData['showCloseButton'] = true;
 
+        // Save Button
+        $this->aData['showSaveButton'] = true;
+
+        // Delete Button
+        $this->aData['showDeleteButton'] = true;
+        
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
