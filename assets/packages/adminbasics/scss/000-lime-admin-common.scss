@@ -311,6 +311,10 @@ html {
     z-index: 1000;
 }
 
+#fullpagebar {
+    z-index: 100;
+}
+
 .tab-content {
     padding-top: 2em;
 }
@@ -4351,6 +4355,12 @@ table.dataTable thead .sorting_desc:after {
     position: fixed !important;
     top: 0 !important;
     margin-top: 0 !important;
+}
+#sticky-topbar-placeholder {
+    display: none;
+}
+.menubar.sticky + #sticky-topbar-placeholder {
+    display: block;
 }
 
 /* Reduce margins for question editor */
