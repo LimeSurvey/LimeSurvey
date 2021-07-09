@@ -13,3 +13,16 @@
     <?php eT("Copy conditions");?>
 </a>
 
+<!-- Quick Add Contitions Button -->
+<button
+    id='quick-add-condition-button'
+    class='btn btn-default'
+    data-toggle='modal'
+    data-target='#quick-add-condition-modal'
+    data-tooltip='true'
+    data-title='<?php eT('Add multiple conditions without a page reload'); ?>'>
+        <span class="fa fa-plus-circle"></span>
+        &nbsp;
+        <?php eT('Quick-add conditions'); ?>
+</button>
+
