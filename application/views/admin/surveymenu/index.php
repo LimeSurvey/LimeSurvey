@@ -16,12 +16,12 @@ echo viewHelper::getViewTestTag('surveyMenus');
 		<ul class="nav nav-tabs" id="menueslist" role="tablist">
 			<li class="active">
 				<a href="#surveymenues">
-					<?php eT('Survey menues'); ?>
+					<?php eT('Survey menus'); ?>
 				</a>
 			</li>
 			<li>
 				<a href="#surveymenuentries">
-					<?php eT('Survey menue entries'); ?>
+					<?php eT('Survey menu entries'); ?>
 				</a>
 			</li>
 		</ul>
