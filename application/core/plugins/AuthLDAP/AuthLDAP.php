@@ -104,6 +104,12 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             'type' => 'checkbox',
             'label' => 'Grant survey creation permission to automatically created users'
         ),
+        'alternativeforgotpwurl' => [
+            'type' => 'string',
+            'label' => 'Alternative Forgot PW URL',
+            'default' => '',
+            'help' => 'Set an alternative url if your password are stored externaly'
+        ],
         'groupsearchbase' => array(
             'type' => 'string',
             'label' => 'Optional base DN for group restriction',
@@ -368,6 +374,15 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $this->getEvent()->getContent($this)
         ->addContent(CHtml::tag('span', array(), "<label for='user'>" . gT("Username") . "</label>" . CHtml::textField('user', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))))
         ->addContent(CHtml::tag('span', array(), "<label for='password'>" . gT("Password") . "</label>" . CHtml::passwordField('password', '', array('size' => 240, 'maxlength' => 240, 'class' => "form-control"))));
+
+        $alternativeForgotPwUrl = $this->get('alternativeforgotpwurl', null, null, '');
+        if (!empty($alternativeForgotPwUrl)) {
+            $js = '$( document ).ready(function() {
+                    $(\'div.login-submit\').find(\'a\').first().attr(\'href\', "'.$alternativeForgotPwUrl.'");
+            });';
+
+            $this->getEvent()->getContent($this)->addContent(CHtml::script($js));
+        }
     }
 
     /**
