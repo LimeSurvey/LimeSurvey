@@ -44,7 +44,7 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'edit')) {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
