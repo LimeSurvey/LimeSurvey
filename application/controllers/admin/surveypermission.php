@@ -678,7 +678,6 @@ class surveypermission extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
