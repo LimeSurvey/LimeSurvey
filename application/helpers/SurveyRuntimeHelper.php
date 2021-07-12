@@ -218,7 +218,6 @@ class SurveyRuntimeHelper
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
-
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['totalsteps'] + 1;
                 $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
@@ -226,6 +225,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
                 $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
             }
+            /* String used in vanilla/views/subviews/header/progress_bar.twig : for autotranslation */
+            $this->aSurveyInfo['progress']['string'] = gT('You have completed %s%% of this survey');
         }
 
         $this->aSurveyInfo['yiiflashmessages'] = Yii::app()->user->getFlashes();
