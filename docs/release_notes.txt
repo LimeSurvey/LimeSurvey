@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.6 (build 210629) to 3.27.7 (build 210713) July 12, 2021
++New feature: Delete response by id in remote API (#1932) (arnaudbore)
+-Fixed issue #14726: LanguageSelector national language (Olle Haerstedt)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Azerbaijani by c_schmitz
+
+
 Changes from 3.27.5 (build 210624) to 3.27.6 (build 210629) June 28, 2021
 -Fixed issue [security] #17388: Stored XSS in quota management (Denis Chenu)
 -Fixed issue #17394: Sharing a participant does not work in CPDB (Carsten Schmitz)
