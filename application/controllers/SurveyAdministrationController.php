@@ -633,19 +633,19 @@ class SurveyAdministrationController extends LSBaseController
                 // Delete the temporary file
                 unlink($zipfilename);
 
-                if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
+                if (empty($aErrorFilesInfo) && empty($aImportedFilesInfo)) {
                     Yii::app()->user->setFlash(
                         'error',
                         gT("This ZIP archive contains no valid Resources files. Import failed.")
                     );
-                    $this->redirect(array('surveyAdministration/view/surveyid/' . $iSurveyID));
+                    $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'resources'));
                 }
             } else {
                 Yii::app()->setFlashMessage(
                     gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
                     'error'
                 );
-                $this->redirect(array('surveyAdministration/view/' . $iSurveyID));
+                $this->redirect(array('surveyAdministration/rendersidemenulink/', 'surveyid' => $iSurveyID, 'subaction' => 'resources'));
             }
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -655,10 +655,7 @@ class SurveyAdministrationController extends LSBaseController
             $aData['display']['menu_bars']['surveysummary'] = true;
 
             $this->aData = $aData;
-            $this->render('importSurveyResources_view', [
-                'aErrorFilesInfo' => $this->aData['aErrorFilesInfo'],
-                'aImportedFilesInfo' => $this->aData['aImportedFilesInfo'],
-            ]);
+            $this->render('importSurveyResources_view', $this->aData);
         }
     }
 
