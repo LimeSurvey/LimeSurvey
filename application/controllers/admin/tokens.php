@@ -2613,7 +2613,7 @@ class tokens extends Survey_Common_Action
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
             $aData['sidemenu']["token_menu"] = true;
-            $aData['topBar']['name'] = 'tokensTopbar_view';
+            $aData['topBar']['hide'] = true;
 
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
