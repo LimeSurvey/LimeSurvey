@@ -61,8 +61,8 @@ class InstallationControllerTest extends TestBaseClassWeb
         }
         $dbpwd = getenv('DBPASSWORD');
         if (!$dbpwd) {
-            $dbpwd = '';
-            echo 'Default to empty database password. Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
+            $dbpwd = 'root';
+            echo 'Default to database password "root". Use DBPASSWORD=... from command-line to override this.' . PHP_EOL;
         }
 
         if (file_exists($configFile)) {
@@ -83,6 +83,7 @@ class InstallationControllerTest extends TestBaseClassWeb
             $result = unlink($configFile);
             $this->assertTrue($result, 'Could unlink config.php');
         }
+        exec("sudo chmod -R 777 ./tmp"); // Add chmod 777, needed for CI pipeline
 
         // Run installer.
         $urlMan = \Yii::app()->urlManager;
