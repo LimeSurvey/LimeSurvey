@@ -18,6 +18,7 @@ const ConfirmationModal = function(e){
         keepopen    : null,
         postDatas   : null,
         gridid      : null,
+        title       : null,
         btnclass    : 'btn-primary',
         btntext     : actionBtn.dataset.actionbtntext,
         "ajax-url"  : null,
@@ -106,6 +107,11 @@ const ConfirmationModal = function(e){
         $(this).find('.btn-ok').addClass(options.btnclass);
     }
     $(this).find('.btn-ok').html(options.btntext);
+    //change titel
+
+    if (options.title !== null) {
+        $(this).find('.modal-title').html(options.title);
+    }
     //Run setTarget to determine loading target
     _setTarget();
 };
