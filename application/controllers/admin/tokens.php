@@ -258,7 +258,9 @@ class tokens extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
+            //throw new CHttpException(405, gT("Invalid action"));
+            TokenDynamic::model($iSid)->deleteToken((int)$aTokenId); //in this case it's no an array ...
+            return true;
         }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
