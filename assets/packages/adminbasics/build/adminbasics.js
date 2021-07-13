@@ -28206,10 +28206,6 @@
 
   var adminCoreLSConsole = new ConsoleShim('AdminCore', window.debugState ? window.debugState.backend : false); //!window.debugState.backend);
 
-  /**
-   * Neccessary methods for the confirmation modal
-   */
-
   var ConfirmationModal = function ConfirmationModal(e) {
     //////PREGENERATED VARIABLES
     //Define the scope
@@ -28223,7 +28219,8 @@
       keepopen: null,
       postDatas: null,
       gridid: null,
-      "ajax-url": null
+      "ajax-url": null,
+      postUrl: null
     }; //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
 
@@ -28276,6 +28273,32 @@
         });
       });
     },
+        //Set up a form to send a POST on ok button click
+    _setupForm = function _setupForm() {
+      adminCoreLSConsole.log('Binding OK form on confirmation dialog');
+      $(_this).find('.btn-ok').on('click', function (ev) {
+        var modalObject = $('#confirmation-modal');
+        var formObject = $('<form name="confirmation-ok-form" method="post" action="' + options.postUrl + '" style="display: none;"></form>');
+
+        for (var key in options.postDatas) {
+          var type = 'hidden',
+              value = options.postDatas[key],
+              htmlClass = '';
+
+          if (_typeof(options.postDatas[key]) == 'object') {
+            type = options.postDatas[key].type;
+            value = options.postDatas[key].value;
+            htmlClass = options.postDatas[key].class;
+          }
+
+          formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
+        }
+
+        formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
+        modalObject.find('.modal-body').append(formObject);
+        formObject.submit();
+      });
+    },
         _setTarget = function _setTarget() {
       //Set up normal href
       if (!!options.href) {
@@ -28294,6 +28317,13 @@
 
       if (!!options['ajax-url']) {
         _ajaxHandler();
+
+        return;
+      } //Set up a form to send a POST request
+
+
+      if (!!options.postUrl) {
+        _setupForm();
 
         return;
       }
