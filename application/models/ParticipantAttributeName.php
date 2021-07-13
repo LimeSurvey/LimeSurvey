@@ -126,9 +126,15 @@ class ParticipantAttributeName extends LSActiveRecord
             gT("Delete this attribute"),
             'trash'
         );
-        $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>"
-            . vsprintf($raw_button_template, $deleteData)
-            . "</a>";
+        $buttons .= "<a href='#' 
+        data-toggle='modal' 
+        data-target='#confirmation-modal' 
+        data-title='" . gT("Delete this attribute") . "'
+        data-btnclass='btn-danger'
+        data-btntext='" . gt("Delete") . "'
+        data-message=' " . gt("Do you really want to delete this attribute") ."?'
+        data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>";
+        $buttons.= vsprintf($raw_button_template, $deleteData) . "</a>";
 
         return $buttons;
     }
