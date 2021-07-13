@@ -205,6 +205,10 @@ class LayoutHelper
                 $sAlternativeUrl = '/admin/index';
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
+            App()->getClientScript()->registerScriptFile(
+                App()->getConfig('adminscripts') . 'topbar.js',
+                CClientScript::POS_END
+            );
             Yii::app()->getController()->renderPartial("/layouts/fullpagebar_view", $aData);
         }
     }
@@ -445,6 +449,11 @@ class LayoutHelper
      */
     public static function renderTopbar(array $aData)
     {
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'topbar.js',
+            CClientScript::POS_END
+        );
+
         $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
 
         return Yii::app()->getController()->widget(
