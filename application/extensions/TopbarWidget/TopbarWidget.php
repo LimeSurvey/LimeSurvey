@@ -15,7 +15,7 @@ class TopbarWidget extends CWidget
     {
         parent::init();
 
-        if (is_null($this->config)) {
+        if (is_null($this->config) || $this->config->shouldHide()) {
             return;
         }
         
