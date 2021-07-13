@@ -916,11 +916,19 @@ class TokenDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-delete",
-                'data-toggle' => "tooltip",
+                ///'data-toggle' => "tooltip",
+                'data-toggle' => "modal",
+                'data-target' => '#confirmation-modal',
+                'data-title' => gt('Delete this participant'),
+                'data-message' => gt('Do you really want to delete this participant') . '?',
+                'data-btnclass' => 'btn-danger',
+                'data-href' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
+                'evaluateOptions' => array('data-href'),
+                'data-btntext' => gt('Delete'),
                 'title' => gT('Delete survey participant'),
             ),
             'visible' => '' . Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete'),
-            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
+            //'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         /* CPDB link */
         $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
