@@ -14,12 +14,26 @@
             <!-- List Surveys - Create a new Survey -->
             <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                 Permission::model()->hasGlobalPermission('surveys','create')):?>
-                <a class="btn btn-default"
+                <a class="btn btn-default tab-dependent-button"
+                   data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="margin-top: 10px; margin-bottom: 10px;">
+                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
+                </a>
+            <?php endif;?>
+
+            <!-- List Surveys - Create a new Survey group -->
+            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
+                Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
+                <a class="btn btn-default tab-dependent-button"
+                   data-tab="#surveygroups"
+                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
+                   role="button"
+                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Create a new survey group");?>
                 </a>
             <?php endif;?>
         </div>
