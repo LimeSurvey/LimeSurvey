@@ -23,8 +23,8 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'actionType'    => 'modal',
             'modalType'     => 'cancel-delete',
             'keepopen'      => 'no',
-            'sModalTitle'   => gT('Confirm'),
-            'htmlModalBody' => gT('Are you sure?'),
+            'sModalTitle'   => gT('Delete'),
+            'htmlModalBody' => gT('Do you really want to delete this attribute?'),
             'aCustomDatas'  => array()
         ),
     )
