@@ -427,7 +427,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $aPermission = array(
             'group' => array(
                 'create' => false,
-                'read' => false, /* Minimal : forced to true when edit, see survey for Survey model */
+                'read' => true, /* Minimal : forced to true when edit */
                 'update' => true,
                 'delete' => true,
                 'import' => false,
