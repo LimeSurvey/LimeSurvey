@@ -19,7 +19,6 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php endif; ?>
 
 <?php $this->renderPartial('partial/_menubar'); ?>
-<div class="pagetitle h3"><?php eT("User control");?></div>
 
 <div class="row">
     <?php
@@ -53,7 +52,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'usermanagement--identity-gridPanel',
-                'itemsCssClass' => 'table table-striped items',
+                'itemsCssClass' => 'table items',
                 'dataProvider' => $model->search(),
                 'columns' => $columnDefinition,
                 'filter' => $model,

@@ -83,8 +83,68 @@
   right: 1px;
 }
 
-.ui-datepicker .ui-datepicker-next-hover {
-  left: 10px;
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
 }
 
 .ui-datepicker .ui-datepicker-next span,
@@ -209,76 +269,10 @@
   right: auto;
 }
 
-.ui-datepicker-rtl .ui-datepicker-next {
-  right: 2px;
-  left: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-prev:hover {
-  left: 1px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-next:hover {
-  right: 1px;
-  left: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane {
-  clear: left;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
-.ui-datepicker-rtl .ui-datepicker-group {
-  float: left;
-}
-
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
-.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-  border-left-width: 0;
-  border-right-width: 1px;
-}
-
-.side-body,
-.full-page-wrapper {
-  min-height: 100%;
-  position: relative;
-  margin-bottom: 65px;
-  padding: 0;
-}
-
-.side-body h3,
-.pagetitle,
-.list-surveys h3 {
-  position: relative;
-  padding: 0.5em;
-  margin-bottom: 1em;
-}
-
-body {
-  font-size: 14px;
-  line-height: 1.428571429;
-  margin: 0;
-}
-
-body .row {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.jumbotron {
-  text-align: center;
-}
-
-.jumbotron.message-box {
-  margin-top: 1em;
-}
-
-html {
-  font-family: Roboto;
-  font-weight: 400;
-  position: relative;
-  min-height: 100%;
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .main-container {
@@ -291,8 +285,13 @@ html {
   background-color: transparent;
 }
 
-#welcome-jumbotron > img {
-  width: 350px;
+#cpdbatt {
+  min-height: 100px;
+}
+
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
 }
 
 .surveymanagerbar {
@@ -2332,10 +2331,22 @@ $color_norway_approx: adjust-color($base-color, $hue: 0deg, $saturation: -28%, $
   overflow-y: auto;
 }
 
-/** Popup when validating email template */
-iframe#dialog {
-  width: 100%;
-  height: 100%;
+/**
+ * Ajax loader
+ * from : http://codepen.io/weaintplastic/pen/qEMZbx
+ */
+.preloader {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  font-size: 20px;
+  display: block;
+  width: 3.75em;
+  height: 4.25em;
+  margin-right: -1.875em;
+  margin-top: -2.125em;
+  transform-origin: center center;
+  transform: rotateY(180deg) rotateZ(60deg);
 }
 
 /** Fixed pager width */
@@ -2394,37 +2405,34 @@ iframe#dialog {
   overflow-x: hidden;
 }
 
-#labelsetbrowserModal .modal-dialog {
-  width: 80%;
+.preloader.loading .slice:nth-child(1) {
+  transform: rotateZ(-60deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-1 linear infinite both;
 }
 
-.question-filter-container {
-  border: 1px solid #efefef;
-  padding: 2em;
-  margin: 0;
-  min-width: 33%;
-  max-width: 100%;
+.preloader.loading .slice:nth-child(2) {
+  transform: rotateZ(-120deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-2 linear infinite both;
 }
 
-/* Subquestion */
-td.subquestion-actions span:hover {
-  cursor: pointer;
+.preloader.loading .slice:nth-child(3) {
+  transform: rotateZ(-180deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-3 linear infinite both;
 }
 
-/* edit survey */
-.template-img {
-  padding-top: 0;
+.preloader.loading .slice:nth-child(4) {
+  transform: rotateZ(-240deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-4 linear infinite both;
 }
 
-/* Accordion*/
-.full-page-wrapper .handleAccordion {
-  display: none;
+.preloader.loading .slice:nth-child(5) {
+  transform: rotateZ(-300deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-5 linear infinite both;
 }
 
-/* Box in resopnses list need a little more space */
-div#gview_displayresponses th#displayresponses_cb {
-  width: 35px;
-  /* Override jQgrid stuff */
+.preloader.loading .slice:nth-child(6) {
+  transform: rotateZ(-360deg) rotateY(90deg) rotateX(0);
+  animation: 2s preload-cycle-6 linear infinite both;
 }
 
 /* View detail response, make sure left column is not too wide*/

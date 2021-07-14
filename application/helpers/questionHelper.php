@@ -740,7 +740,7 @@ class questionHelper
             'sortorder' => 100,
             'inputtype' => 'integer',
             'default' => '',
-            "help" => gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."),
+            "help" => gT("Set the size of the input or textarea. The input will be displayed approximately this size in width."),
             "caption" => gT("Text input box size")
         );
 

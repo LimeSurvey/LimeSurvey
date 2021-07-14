@@ -83,8 +83,68 @@
   left: 1px;
 }
 
-.ui-datepicker .ui-datepicker-next-hover {
-  right: 10px;
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
 }
 
 .ui-datepicker .ui-datepicker-next span,
@@ -209,76 +269,10 @@
   left: auto;
 }
 
-.ui-datepicker-rtl .ui-datepicker-next {
-  left: 2px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-prev:hover {
-  right: 1px;
-  left: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-next:hover {
-  left: 1px;
-  right: auto;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane {
-  clear: right;
-}
-
-.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
-.ui-datepicker-rtl .ui-datepicker-group {
-  float: right;
-}
-
-.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
-.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-  border-right-width: 0;
-  border-left-width: 1px;
-}
-
-.side-body,
-.full-page-wrapper {
-  min-height: 100%;
-  position: relative;
-  margin-bottom: 65px;
-  padding: 0;
-}
-
-.side-body h3,
-.pagetitle,
-.list-surveys h3 {
-  position: relative;
-  padding: 0.5em;
-  margin-bottom: 1em;
-}
-
-body {
-  font-size: 14px;
-  line-height: 1.428571429;
-  margin: 0;
-}
-
-body .row {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-.jumbotron {
-  text-align: center;
-}
-
-.jumbotron.message-box {
-  margin-top: 1em;
-}
-
-html {
-  font-family: Roboto;
-  font-weight: 400;
-  position: relative;
-  min-height: 100%;
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
 .main-container {
@@ -291,8 +285,13 @@ html {
   background-color: transparent;
 }
 
-#welcome-jumbotron > img {
-  width: 350px;
+#cpdbatt {
+  min-height: 100px;
+}
+
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
 }
 
 .surveymanagerbar {

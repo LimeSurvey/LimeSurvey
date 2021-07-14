@@ -8,11 +8,9 @@
                 <?php echo htmlspecialchars($usergroupdescription);?>
 
             <?php endif;?>
-<br/><br/>
-
-
-
-
+            
+            <br/><br/>
+            
             <?php if(isset($headercfg)): ?>
                 <?php if($headercfg["type"] == "success"): ?>
 
@@ -33,7 +31,7 @@
 
             <br/><br/>
             <?php if (!empty($userloop)) { ?>
-                <table class='users table'>
+                <table class='users table hoverAction' style="cursor: pointer;">
                     <thead><tr>
                         <th style="text-align: center;"><?php eT("Action");?></th>
                         <th style="text-align: center;"><?php eT("Username");?></th>
@@ -48,7 +46,12 @@
                             <?php
 							if ((isset($currentuser["displayactions"]) && $currentuser["displayactions"] == true || Permission::model()->hasGlobalPermission('superadmin')) && $currentuser["userid"] != '1') { ?>
                                 <?php echo CHtml::form(array("userGroup/DeleteUserFromGroup/ugid/{$ugid}/"), 'post'); ?>
-                                    <button  data-toggle="tooltip" data-placement="bottom" title="<?php eT('Delete');?>" type="submit" onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-xs ">
+                                    <button 
+                                        data-toggle="tooltip" 
+                                        data-placement="bottom" 
+                                        title="<?php eT('Delete');?>" 
+                                        type="submit" 
+                                        onclick='return confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")' class="btn btn-default btn-sm">
                                         <span class="fa fa-trash text-warning"></span>
                                     </button>
                                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
