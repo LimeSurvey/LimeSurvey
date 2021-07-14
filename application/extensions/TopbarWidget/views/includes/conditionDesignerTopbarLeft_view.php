@@ -12,9 +12,17 @@
     <span class="icon-copy"></span>
     <?php eT("Copy conditions");?>
 </a>
-    
-<a class="btn btn-default" href="<?php echo Yii::App()->createUrl("questionGroupsAdministration/listquestiongroups/surveyid/{$surveyid}"); ?>" role="button">
-    <span class="fa fa-saved"></span>
-    <?php eT("Save and close");?>
-</a>
+
+<!-- Quick Add Contitions Button -->
+<button
+    id='quick-add-condition-button'
+    class='btn btn-default'
+    data-toggle='modal'
+    data-target='#quick-add-condition-modal'
+    data-tooltip='true'
+    data-title='<?php eT('Add multiple conditions without a page reload'); ?>'>
+        <span class="fa fa-plus-circle"></span>
+        &nbsp;
+        <?php eT('Quick-add conditions'); ?>
+</button>
 

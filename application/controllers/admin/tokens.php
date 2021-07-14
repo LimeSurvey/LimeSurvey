@@ -355,7 +355,6 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title']            = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"]        = true;
         $aData['sidemenu']['state'] = false;
-        $aData['token_bar']['buttons']['view']  = true;
 
         /// FOR GRID View
         $model = TokenDynamic::model($iSurveyId);
@@ -491,7 +490,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws CException
      */
-    public function addnew($iSurveyId)
+    public function addnew(int $iSurveyId)
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
@@ -516,7 +515,6 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['buttons']['view'] = true;
         App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
@@ -784,7 +782,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws Exception
      */
-    public function addDummies($iSurveyId, $subaction = '')
+    public function addDummies(int $iSurveyId, string $subaction = '')
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -804,10 +802,14 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['savebutton']['form'] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
+
+        // Save Button
         $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        // Save And Close Button
+        $aData['topBar']['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['topBar']['showWhiteCloseButton'] = true;
+        $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
@@ -891,7 +893,6 @@ class tokens extends Survey_Common_Action
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
                 $aData['showSaveButton'] = true;
-                $aData['showCloseButton'] = true;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
                 $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -939,7 +940,6 @@ class tokens extends Survey_Common_Action
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
             $aData['showSaveButton'] = true;
-            $aData['showCloseButton'] = true;
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -973,7 +973,6 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
 
         $aData['thissurvey'] = $oSurvey->attributes;
         $aData['surveyid'] = $iSurveyId;
@@ -1280,10 +1279,9 @@ class tokens extends Survey_Common_Action
     /**
      * Handle email action
      * @param int $iSurveyId
-     * @param string $tokenids Int list separated with |?
      * @return void
      */
-    public function email($iSurveyId)
+    public function email(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $aData = array();
@@ -1302,7 +1300,6 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
 
         $aTokenIds = $this->getTokenIds();
         $sSubAction = $this->getSubAction();
@@ -1506,7 +1503,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function exportdialog($iSurveyId)
+    public function exportdialog(int $iSurveyId)
     {
         $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -1532,7 +1529,6 @@ class tokens extends Survey_Common_Action
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         } else {
-            //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
 
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
@@ -1604,7 +1600,15 @@ class tokens extends Survey_Common_Action
                 ),
             );
 
-            $aData['showCloseButton'] = true;
+            // Save Button
+            $aData['showSaveButton'] = true;
+
+            // Save and Close Button
+            $aData['showSaveAndCloseButton'] = true;
+
+            // White Close Button
+            $aData['showWhiteCloseButton'] = true;
+            
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2338,10 +2342,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * Bounce Settings Action.
      * @param int $iSurveyId
      * @return void
      */
-    public function bouncesettings($iSurveyId)
+    public function bouncesettings(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -2386,8 +2391,12 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
-        $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        
+        // Save Button
+        $aData['topBar']['showSaveButton'] = true;
+        // Back Button
+        $aData['topBar']['showBackButton'] = true;
+        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2461,8 +2470,13 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
+        // Save Button
         $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        // Save and Close Button
+        $aData['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['showWhiteCloseButton'] = true;
+
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2768,10 +2782,15 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        $aData['showCloseButton'] = true;
+        // Back Button
+        $aData['showBackButton'] = true;
+        $aData['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+
         if (Yii::app()->request->getParam('action') == "remind") {
+            // Send Reminders Button
             $aData['showSendReminderButton'] = true;
         } else {
+            // Send Invitation Button
             $aData['showSendInvitationButton'] = true;
         }
         $aData['topBar']['name'] = 'tokensTopbar_view';
