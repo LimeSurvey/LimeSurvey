@@ -248,19 +248,26 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-     * @return boolean
+     * Deletes a participant from survey.
+     *
+     * The parameter 'sItem' can either be an array of ids or just a single id (int)
+     *
+     * @todo separate this function in two: one for single delete and one for multiple delete
+     *
+     * @return bool
+     * @throws CHttpException
      */
     public function deleteToken()
     {
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
-        $iSid = Yii::app()->getRequest()->getParam('sid');
+        $iSid = (int) Yii::app()->getRequest()->getParam('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!Yii::app()->getRequest()->isPostRequest) {
-            //throw new CHttpException(405, gT("Invalid action"));
             TokenDynamic::model($iSid)->deleteToken((int)$aTokenId); //in this case it's no an array ...
-            return true;
+            App()->setFlashMessage(gT('Participant has been deleted.'), 'success');
+            $this->getController()->redirect(array("admin/tokens", "sa" => "browse", "surveyid" => $iSid));
         }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;

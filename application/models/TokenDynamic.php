@@ -913,7 +913,7 @@ class TokenDynamic extends LSActiveRecord
         $gridButtons['deletetoken'] = array(
             'label' => '<span class="sr-only">' . gT('Delete survey participant') . '</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
             'imageUrl' => false,
-            'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
+            //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-delete",
                 ///'data-toggle' => "tooltip",
@@ -922,7 +922,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-title' => gt('Delete this participant'),
                 'data-message' => gt('Do you really want to delete this participant') . '?',
                 'data-btnclass' => 'btn-danger',
-                'data-href' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
+                'data-href' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid));',
                 'evaluateOptions' => array('data-href'),
                 'data-btntext' => gt('Delete'),
                 'title' => gT('Delete survey participant'),
