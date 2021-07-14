@@ -11,6 +11,9 @@
     # deny access to hidden files and directories except .well-known
     RewriteCond %{REQUEST_URI} !^/\.well-known
     RewriteRule ^(.*/)?\.+ - [F]
+
+    # deny access to composer.json that is used for remote fingerprinting
+    RewriteRule ^composer.json - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite

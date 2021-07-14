@@ -1,6 +1,6 @@
 <?php if(!empty($oExistingUsers)) : ?>
 <h3 class="pagetitle h2"><?php eT('Current permissions:') ?></h3>
-    <table class='table table-striped table-security'>
+    <table class='table striped hoverAction' style="cursor: pointer;">
         <thead>
             <tr>
                 <th><?= eT("Action") ?></th>
@@ -16,7 +16,7 @@
             <tr>
                 <td>
                     <?php if ($model->hasPermission('permission', 'update')) : ?>
-                        <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser",array('id'=>$model->gsid, 'to' => $oUser->uid));?>">
+                        <a href="<?= $this->createUrl("surveysGroupsPermission/viewUser",array('id'=>$model->gsid, 'to' => $oUser->uid));?>" class="btn btn-default btn-sm" role="button">
                             <span class="fa fa-pencil text-success" aria-hidden="true" title="<?= gT("Edit permissions") ?>"><span>
                             <span class="sr-only"><?= gT("Edit permissions") ?></span>
                         </a>
@@ -27,7 +27,7 @@
                             'uid' => $oUser->uid
                         )); ?>
                         <?php /* @see https://bugs.limesurvey.org/view.php?id=16792 */ ?>
-                        <a
+                        <a class="btn btn-default btn-sm" role="button"
                             data-target='#confirmation-modal' data-toggle='modal'
                             data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
                             data-href='<?= $deleteUrl ?>'

@@ -12,22 +12,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
-
-// Green Bar with Page Title
-$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Themes'));
-
-// White Bar with Button inside (visible in configuration pages)
-$this->renderPartial(
-    '../admin/super/fullpagebar_view',
-    array(
-        'fullpagebar' => array(
-            'returnbutton' => array(
-                'url' => 'index',
-                'text' => gT('Back'),
-            ),
-        ),
-    )
-);
 ?>
 
 <div class="meme ls-space margin left-15 right-15 row list-themes">
