@@ -11,6 +11,30 @@
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
 
+            <!-- Themes -->
+            <?php if (isset($fullpagebar['themes'])): ?>
+                <!-- Upload and Install -->
+                <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
+                    <a  class="btn btn-default" 
+                        href="" 
+                        role="button" 
+                        data-toggle="modal" 
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        style="margin-top: 10px;">
+                        <span class="icon-import text-success"></span>
+                        <?php eT("Upload & install"); ?>
+                    </a>
+                <?php elseif(isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])): ?>
+                    <!-- import disabled -->
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
+                    <button type="button" class="btn btn-default btntooltip" disabled="disabled">
+                        <span class="icon-import text-success"></span>
+                        <?php eT("Import"); ?>
+                    </button>
+                </span>
+                <?php endif; ?>
+            <?php endif; ?>
+
             <!-- List Surveys - Create a new Survey -->
             <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                 Permission::model()->hasGlobalPermission('surveys','create')):?>
@@ -22,6 +46,15 @@
                     <?php eT("Create a new survey");?>
                 </a>
             <?php endif;?>
+
+            <!-- List Surveys - Create a new Survey Group -->
+            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurveyGroups']) &&
+                     Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Create a new survey group");?>
+                </a>
+            <?php endif; ?>
         </div>
 
 
@@ -30,9 +63,26 @@
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <!-- White Close button -->
+            <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                     <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Return -->
+            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
+                    <span class="fa fa-backward"></span>
+                    &nbsp;&nbsp;
+                    <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
 
@@ -47,20 +97,23 @@
             <!-- Save -->
             <?php if (isset($fullpagebar['savebutton']['form'])) :?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
-                    <span class="fa fa-floppy-o"></span>
+                    <span class="fa fa-check"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
             <!-- Box Buttons -->
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
+
+                <!-- Reset Boxes Button -->
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
+                    <span class="fa fa-refresh"></span>
+                    <?php eT("Reset");?>
+                </a>
+
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default" style="margin-top: 10px;">
                     <span class="icon-add  text-success"></span>
-                    <?php eT("Create a new box");?>
-                </a>
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
-                    <span class="fa fa-refresh"></span>
-                    <?php eT("Reset to default boxes");?>
+                    <?php eT("Create box");?>
                 </a>
             <?php endif;?>
 
@@ -69,15 +122,6 @@
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
-                </a>
-            <?php endif;?>
-
-            <!-- Return -->
-            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
-                    <span class="fa fa-backward"></span>
-                    &nbsp;&nbsp;
-                    <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
         </div>
