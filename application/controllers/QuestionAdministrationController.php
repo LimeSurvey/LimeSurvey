@@ -227,8 +227,15 @@ class QuestionAdministrationController extends LSBaseController
         // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
 
-        // Save Button
-        $this->aData['showSaveButton'] = true;
+        /**
+         * If Summary page than dont show the save button,
+         * otherwise show it.
+         **/
+        if ($this->aData['tabOverviewEditor'] === 'overview') {
+            $this->aData['showSaveButton'] = false;
+        } else {
+            $this->aData['showSaveButton'] = true;
+        }
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
