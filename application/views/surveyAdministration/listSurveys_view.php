@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
-<div class="ls-space margin left-15 right-15 row list-surveys">
+<div class="ls-space row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="active"><a href="#surveys"><?php eT('Survey list'); ?></a></li>
         <li><a href="#surveygroups"><?php eT('Survey groups'); ?></a></li>
@@ -34,7 +34,10 @@ echo viewHelper::getViewTestTag('listSurveys');
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $groupModel->search(),
                         'columns' => $groupModel->columns,
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' ',
+                        'itemsCssClass' =>'table-striped',
+                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+                        'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id" ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     ));
                     ?>
                 </div>

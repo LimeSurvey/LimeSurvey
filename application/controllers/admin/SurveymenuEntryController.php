@@ -32,16 +32,17 @@ class SurveymenuEntryController extends Survey_Common_Action
     }
 
     /**
-     *
+     * Index
      * @access public
      * @return void
      */
     public function index()
     {
-         $this->getController()->redirect(array('admin/menuentries/sa/view'));
+        $this->getController()->redirect(array('admin/menuentries/sa/view'));
     }
 
     /**
+     * View
      * @throws CHttpException
      */
     public function view()
@@ -56,14 +57,18 @@ class SurveymenuEntryController extends Survey_Common_Action
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
         $data['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
-        $data['pageTitle'] = 'Menu entries';
+        $data['pageTitle'] = gT('Menu entries');
         $data['fullpagebar'] = [
             'menus' => [
                 'buttons' => [
                     'addMenuEntry' => true,
-                    'reset' => true,
-                    'reorder' => true,
+                    'reset'        => true,
+                    'reorder'      => true,
                 ],
+            ],
+            'returnbutton' => [
+                'url'  => 'admin/index',
+                'text' => gT('Back'),
             ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
