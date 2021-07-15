@@ -62,7 +62,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 45),
-            array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group name can contain only alphanumeric character, underscore or dot.')),
+            array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group code can contain only alphanumeric character, underscore or dot. Spaces are not allowed.')),
             array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
@@ -92,7 +92,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         return array(
             'gsid'              => gT('ID'),
-            'name'              => gT('Name'),
+            'name'              => gT('Code'),
             'title'             => gT('Title'),
             'description'       => gT('Description'),
             'sortorder'         => gT('Sort order'),
@@ -496,5 +496,27 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
+     * Returns an available code based on the current group count.
+     * @return string
+     */
+    public static function getNewCode()
+    {
+        $attempts = 0;
+        $surveyGroupCount = self::model()->count();
+        $groupNumber = $surveyGroupCount + 1;
+        $groupCode = "SG" . $groupNumber;
+        while (self::model()->countByAttributes(['name' => $groupCode]) > 0) {
+            $attempts++;
+            $groupNumber++;
+            $groupCode = "SG" . $groupNumber;
+            // We only try a number of times, based on the record count.
+            if ($attempts > $surveyGroupCount + 1) {
+                throw new \Exception("Unable to get a valid survey group code after " . ($surveyGroupCount + 1) . " attempts");
+            }
+        }
+        return $groupCode;
     }
 }
