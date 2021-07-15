@@ -87,18 +87,19 @@
     <div class='container message-box col-sm-12'>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <h2><?php eT("Note: Please review your survey carefully before activating."); ?></h2>
+                <div class="alert alert-warning custom custom-margin top-20"><?php eT("Note: Please review your survey carefully before activating."); ?></div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <p class="lead">
+                <p>
                     <?php eT("Once a survey has been activated you can no longer add or delete questions, questions groups, or subquestions. You will be still able to edit questions, questions groups, or subquestions."); ?>
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
+                <h4>Notification and Data management</h4>
                 <p>
                     <strong><?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?></strong>
                     <br>
