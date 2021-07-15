@@ -15,7 +15,7 @@
 
 <!-- Grid -->
 <div class="row">
-    <div class="col-sm-12 content-right">
+    <div class="col-lg-12 content-right">
         <?php
             $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $this->model->search(),
@@ -45,6 +45,15 @@
                         'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    ),
+
+                     array(
+                        'header' => gT('Action'),
+                        'name' => 'actions',
+                        'value'=>'$data->buttons',
+                        'type'=>'raw',
+                        'htmlOptions' => array('class' => 'text-center col-md-2'),
+                        'headerHtmlOptions'=>array('style'=>'text-align:center;'),
                     ),
 
                     array(
@@ -133,18 +142,8 @@
                         'htmlOptions' => array('class' => 'has-link'),
                     ),
 
-                    array(
-                        'header' => '',
-                        'name' => 'actions',
-                        'value'=>'$data->buttons',
-                        'type'=>'raw',
-                        'htmlOptions' => array('class' => 'text-right'),
-                    ),
-
                 ),
-                'itemsCssClass' =>'table-striped',
-                //'htmlOptions'=>array('style'=>'cursor: pointer;'),
-                'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+                'htmlOptions'=>array('class'=>'table table-hover'),
                 'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',

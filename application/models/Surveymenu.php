@@ -344,45 +344,48 @@ class Surveymenu extends LSActiveRecord
         );
     }
 
+    /**
+     * Returns the buttons for gridview.
+     **/
     public function getButtons()
     {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
+            . "<button class='btn btn-default btn-sm %s %s' style='margin-right: 5px;' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>"
             . "</button>";
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $editData = array(
                 'action_surveymenu_editModal',
-                'text-danger',
+                'green-border',
                 gT("Edit this survey menu"),
-                'edit'
+                'pencil'
             );
             $deleteData = array(
                 'action_surveymenu_deleteModal',
-                'text-danger',
+                'red-border',
                 gT("Delete this survey menu"),
-                'trash text-danger'
+                'trash'
             );
 
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-
             $buttons .= vsprintf($raw_button_template, $editData);
+            $buttons .= vsprintf($raw_button_template, $deleteData);
         }
 
         $buttons .= '</div>';
 
         return $buttons;
     }
+
     /**
+     * Returns the columns for gridview.
      * @return array
      */
     public function getColumns()
     {
         $cols = array(
             array(
-            'name' => 'id',
             'value' => '\'<input type="checkbox" name="id[]" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
             'type' => 'raw'
             ),

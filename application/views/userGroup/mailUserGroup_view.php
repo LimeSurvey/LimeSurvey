@@ -29,8 +29,6 @@
             <textarea cols='50' rows='4' id='body' name='body' class="form-control"></textarea>
         </div>
 
-        <input type='submit' value='<?php eT("Send"); ?>' class="btn btn-default"/>
-        <input type='reset' value='<?php eT("Reset"); ?>' class="btn btn-default"/>
         <input type='hidden' name='action' value='mailsendusergroup'/>
         <input type='hidden' name='ugid' value='<?php echo $ugid; ?>'/>
         </form>
