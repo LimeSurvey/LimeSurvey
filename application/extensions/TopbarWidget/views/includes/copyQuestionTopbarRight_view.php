@@ -18,7 +18,7 @@
 
             const sid = $('input[name=surveyId]').val();
             const qid = 0;
-            const code = $('input[name=title]').val();
+            const code = $('input[name=question\\[title\\]]').val();
 
             $.ajax({
               url: "<?= Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'); ?>",
