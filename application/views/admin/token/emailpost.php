@@ -16,6 +16,7 @@ if(isset($nosidebodyblock) && $nosidebodyblock === true ){ ?>
             <div style='border: 1px solid #ccc; max-height: 80em; overflow: scroll; text-align:left; padding-left:0.5em;'>
                 <?php echo $tokenoutput ?>
             </div>
+            <a href='<?= Yii::app()->getController()->createUrl("/admin/tokens/sa/browse/surveyid/{$surveyid}") ?>' class="btn btn-success custom custom-margin top-10"><?= gT("Close") ?></a>
         </div>
     </div>
 </div>

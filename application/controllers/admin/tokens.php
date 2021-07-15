@@ -1345,6 +1345,8 @@ class tokens extends Survey_Common_Action
             $this->clearEmailSessionCache($iSurveyId);
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
+            $aData['topBar']['hide'] = true;
+
             $SQLemailstatuscondition   = $this->getSQLemailstatuscondition();
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
