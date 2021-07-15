@@ -129,7 +129,7 @@ class surveypermission extends Survey_Common_Action
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
+                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
                         <span class='fa fa-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
                         </a>";
                 }
@@ -541,9 +541,6 @@ class surveypermission extends Survey_Common_Action
      */
     function delete($surveyid)
     {
-        if(!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
 
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

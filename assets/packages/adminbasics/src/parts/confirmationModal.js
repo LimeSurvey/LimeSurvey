@@ -17,7 +17,6 @@ const ConfirmationModal = function(e){
         postDatas   : null,    
         gridid      : null,
         "ajax-url"  : null,
-        postUrl     : null,
     };
 
     //////METHODS
@@ -69,31 +68,6 @@ const ConfirmationModal = function(e){
             });
         });
     },
-    //Set up a form to send a POST on ok button click
-    _setupForm = () => {
-        LOG.log('Binding OK form on confirmation dialog');
-        $(_this).find('.btn-ok').on('click', function(ev) {
-            const modalObject = $('#confirmation-modal');
-            const formObject = $('<form name="confirmation-ok-form" method="post" action="' + options.postUrl + '" style="display: none;"></form>');
-            for (let key in options.postDatas) {
-                let type = 'hidden',
-                    value = options.postDatas[key],
-                    htmlClass = '';
-
-                if (typeof options.postDatas[key] == 'object') {
-                    type = options.postDatas[key].type;
-                    value = options.postDatas[key].value;
-                    htmlClass = options.postDatas[key].class
-                }
-
-                formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
-            }
-
-            formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
-            modalObject.find('.modal-body').append(formObject);
-            formObject.submit();
-        });
-    },
     _setTarget = () => {
         //Set up normal href
         if (!!options.href) {
@@ -108,11 +82,6 @@ const ConfirmationModal = function(e){
         //Set up an ajax post
         if (!!options['ajax-url']) {
             _ajaxHandler();
-            return;
-        }
-        //Set up a form to send a POST request
-        if (!!options.postUrl) {
-            _setupForm();
             return;
         }
         LOG.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
