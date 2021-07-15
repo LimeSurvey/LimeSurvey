@@ -26,6 +26,9 @@ class CopyQuestionValues
         /** @var int the position for the question on the left menu group */
         private $questionPositionInGroup;
 
+        /** @var array<string,CopyQuestionTextValues> the new question texts */
+        private $questionL10nData;
+
     /**
      * @return int
      */
@@ -104,5 +107,21 @@ class CopyQuestionValues
     public function setQuestiontoCopy(\Question $questiontoCopy): void
     {
         $this->questiontoCopy = $questiontoCopy;
+    }
+
+    /**
+     * @return array<string,CopyQuestionTextValues>
+     */
+    public function getQuestionL10nData(): array
+    {
+        return $this->questionL10nData;
+    }
+
+    /**
+     * @param array<string,CopyQuestionTextValues> $questiontoCopy
+     */
+    public function setQuestionL10nData(array $questionL10nData): void
+    {
+        $this->questionL10nData = $questionL10nData;
     }
 }

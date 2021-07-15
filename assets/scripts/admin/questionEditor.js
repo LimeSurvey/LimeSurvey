@@ -58,10 +58,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     return;
   }
 
-  $('.ace:not(.none)').ace({
-    'mode': 'javascript',
-    'highlightActiveLine': false
-  });
+  const isCopyMode = $('#form_copy_question').length > 0;
+
+  // Initialice Ace editors if needed
+  const aceInputs = $('.ace:not(.none)');
+  if (aceInputs.length) {
+    aceInputs.ace({
+      'mode': 'javascript',
+      'highlightActiveLine': false
+    });
+  }
 
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();
@@ -95,8 +101,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function updateRowProperties() {
     var sID = $('input[name=sid]').val();
-    var gID = $('input[name=gid]').val();
-    var qID = $('input[name=qid]').val();
+    var gID = $('[name=question\\[gid\\]]').val();
+    var qID = $('[name=question\\[qid\\]]').val();
     sID = $.isNumeric(sID) ? sID : '';
     gID = $.isNumeric(gID) ? gID : '';
     qID = $.isNumeric(qID) ? qID : '';
@@ -1898,9 +1904,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
 
     // Init Ace script editor.
-    $('.ace:not(.none)').ace({
+    /*$('.ace:not(.none)').ace({
       mode: 'javascript',
-    });
+    });*/
 
     // Hide help tips by default.
     $('.question-option-help').hide();
@@ -1933,26 +1939,28 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix
 
-    const qidInput = document.querySelector('input[name="question[qid]"]');
-    if (qidInput === null) {
-      alert('Internal error: Could not find qidInput');
-      throw 'abort';
-    }
-    if (qidInput instanceof HTMLInputElement) {
-      if (parseInt(qidInput.value) === 0) {
-        $('#question-create-edit-topbar').show();
-      } else {
-        if($('#tab-overview-editor-input').val() === 'editor'){
-            $('#question-create-edit-topbar').show();
-            $('#question-summary-topbar').hide();
-        }else{
-            $('#question-summary-topbar').show();
-            $('#question-create-edit-topbar').hide();
-        }
+    if (!isCopyMode) {
+      const qidInput = document.querySelector('input[name="question[qid]"]');
+      if (qidInput === null) {
+        alert('Internal error: Could not find qidInput');
+        throw 'abort';
       }
-    } else {
-      alert('Internal error: qidInput is not an HTMLInputElement');
-      throw 'abort';
+      if (qidInput instanceof HTMLInputElement) {
+        if (parseInt(qidInput.value) === 0) {
+          $('#question-create-edit-topbar').show();
+        } else {
+          if($('#tab-overview-editor-input').val() === 'editor'){
+              $('#question-create-edit-topbar').show();
+              $('#question-summary-topbar').hide();
+          }else{
+              $('#question-summary-topbar').show();
+              $('#question-create-edit-topbar').hide();
+          }
+        }
+      } else {
+        alert('Internal error: qidInput is not an HTMLInputElement');
+        throw 'abort';
+      }
     }
 
     // Fix ace editor size for script fields

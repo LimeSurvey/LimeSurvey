@@ -14,13 +14,12 @@
  *
  */
 /**
- * emailtemplates
+ * Class emailtemplates
  *
  * @package LimeSurvey
  * @copyright 2011
  * @access public
  */
-
 class emailtemplates extends Survey_Common_Action
 {
     /**
@@ -90,6 +89,8 @@ class emailtemplates extends Survey_Common_Action
         $aData['grplangs'] = $grplangs;
 
         $aData['topBar']['name'] = 'baseTopbar_view';
+
+        // Save Button
         $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
         
         App()->getClientScript()->registerPackage('expressionscript');
