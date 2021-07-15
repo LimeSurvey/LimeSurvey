@@ -129,7 +129,7 @@ class surveypermission extends Survey_Common_Action
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-onclick='(function() {window.LS.sendPost(\"{$deleteUrl}\");})' type='submit' class='btn-xs btn btn-default'>
+                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-onclick='(function() {" . convertGETtoPOST($deleteUrl) . "})' type='submit' class='btn-xs btn btn-default'>
                         <span class='fa fa-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
                         </a>";
                 }
