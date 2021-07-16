@@ -19,7 +19,7 @@
                         href="" 
                         role="button" 
                         data-toggle="modal" 
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                         style="margin-top: 10px;">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
