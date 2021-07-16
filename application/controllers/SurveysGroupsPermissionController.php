@@ -190,7 +190,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $aData['subview'] = 'addUserResult';
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         $aData['fullpagebar'] = [
             'closebutton' => [
@@ -248,7 +248,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $aData['subview'] = 'addUserGroupResult';
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         $aData['fullpagebar'] = [
             'closebutton' => [
@@ -435,7 +435,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $aData['subview'] = 'deleteUserResult';
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         $aData['fullpagebar'] = [
             'closebutton' => [
@@ -517,7 +517,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
 
         // Green Bar Page Title
-        $aData['pageTitle'] = 'Permission for group: ' . $model->title;
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
 
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,
