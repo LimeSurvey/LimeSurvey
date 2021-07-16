@@ -507,11 +507,11 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $attempts = 0;
         $surveyGroupCount = self::model()->count();
         $groupNumber = $surveyGroupCount + 1;
-        $groupCode = "SG" . $groupNumber;
+        $groupCode = "SG" . str_pad($groupNumber, 2, '0', STR_PAD_LEFT);
         while (self::model()->countByAttributes(['name' => $groupCode]) > 0) {
             $attempts++;
             $groupNumber++;
-            $groupCode = "SG" . $groupNumber;
+            $groupCode = "SG" . str_pad($groupNumber, 2, '0', STR_PAD_LEFT);
             // We only try a number of times, based on the record count.
             if ($attempts > $surveyGroupCount + 1) {
                 throw new \Exception("Unable to get a valid survey group code after " . ($surveyGroupCount + 1) . " attempts");
