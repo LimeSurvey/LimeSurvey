@@ -93,7 +93,13 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <p>
-                    <?php eT("Once a survey has been activated you can no longer add or delete questions, questions groups, or subquestions. You will be still able to edit questions, questions groups, or subquestions."); ?>
+                    <?php eT("Once a survey has been activated you can no longer "); ?>
+                    <strong><?php eT("add"); ?></strong>
+                    <?php eT("or ") ?>
+                    <strong><?php eT("delete"); ?></strong>
+                    <?php eT("questions, questions groups, or subquestions. You will be "); ?>
+                    <strong><?php eT("still able to edit"); ?></strong>
+                    <?php eT("questions, questions groups, or subquestions."); ?>
                 </p>
             </div>
         </div>
@@ -101,7 +107,7 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <h4><?php eT("Notification and Data management");?></h4>
                 <p>
-                    <strong><?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?></strong>
+                    <?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?>
                     <br>
                     <?php eT("Please check these settings now:");?>
                 </p>
@@ -127,13 +133,6 @@
                                 //-->
                             </script>
                         </label>
-
-                        <?php /*$this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                            'name' => 'anonymizedazd',
-                            'htmlOptions' => array(
-                            'id' => 'anonymizedazd',
-                            )
-                        )); */ ?>
 
                         <div class='col-sm-5'>
                             <select id='anonymized' class='form-control' name='anonymized' onchange='alertPrivacy();'>
@@ -255,10 +254,21 @@
                     </div>
                 </div>
             </div>
-
+            
+            <!-- Tip -->
             <div class='row'>
                 <div class='col-sm-8 col-sm-offset-2'>
-                    <div class="alert alert-info"><?php eT("Tip: Please note that you need to deactivate a survey if you want to add or delete groups/questions or change any of the settings above. The changes will cause all collected data from respondents to be moved and archived."); ?></div>
+                    <div class="alert alert-info">
+                        <?php eT("Tip: Please note that you need to "); ?>
+                        <strong> <?php eT("deactivate"); ?> </strong>
+                        <?php eT(" a survey if you want to "); ?>
+                        <strong> <?php eT("add"); ?> </strong>
+                        <?php eT("or "); ?>
+                        <strong> <?php eT("delete"); ?> </strong>
+                        <?php eT("groups/questions or "); ?>
+                        <strong> <?php eT("change"); ?> </strong>
+                        <?php eT("any of the settings above. The changes will cause all collected data from respondents to be moved and archived."); ?>
+                    </div>
                     <br><br>
                 </div>
             </div>
