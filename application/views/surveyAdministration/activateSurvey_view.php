@@ -105,7 +105,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <h4><?php eT("Notification and Data management");?></h4>
+                <h3 class="pagetitle"><?php eT("Notification and Data management");?></h3>
                 <p>
                     <?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?>
                     <br>
