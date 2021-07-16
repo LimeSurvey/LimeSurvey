@@ -29,7 +29,7 @@ class QuestionCreate extends Question
             $questionThemeName = SettingsUser::getUserSettingValue('preselectquestiontheme', null, null, null, Yii::app()->getConfig('preselectquestiontheme'));
         }
         if (empty($questionThemeName)) {
-            $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
+            $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($questionType);
         }
         $oCurrentGroup = QuestionGroup::model()->findByPk($gid);
         $temporaryTitle =
