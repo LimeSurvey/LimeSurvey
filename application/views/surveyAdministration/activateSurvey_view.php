@@ -87,7 +87,7 @@
     <div class='container message-box col-sm-12'>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <div class="alert alert-warning custom custom-margin top-20"><?php eT("Note: Please review your survey carefully before activating."); ?></div>
+                <h1><?php eT("Note: Please review your survey carefully before activating"); ?></h1>
             </div>
         </div>
         <div class="row">
