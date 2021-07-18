@@ -173,6 +173,7 @@ class SurveymenuEntries extends LSActiveRecord
     }
 
     /**
+     * Return attribute labels.
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -207,6 +208,10 @@ class SurveymenuEntries extends LSActiveRecord
         );
     }
 
+    /**
+     * Return combined menu link.
+     * @param $data
+     **/
     public static function returnCombinedMenuLink($data)
     {
         if ($data->menu_link) {
@@ -218,6 +223,10 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
+    /**
+     * Return menu icon
+     * @param $data
+     **/
     public static function returnMenuIcon($data)
     {
         if ($data->menu_icon_type == 'fontawesome') {
@@ -229,6 +238,9 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
+    /**
+     * Get menu id options
+     **/
     public function getMenuIdOptions()
     {
         $criteria = new CDbCriteria();
@@ -244,6 +256,9 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
+    /**
+     * Get user id options
+     **/
     public function getUserIdOptions()
     {
         $oUsers = User::model()->findAll();
@@ -258,9 +273,12 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
+    /**
+     * Get user options
+     * @return array
+     **/
     public function getUserOptions()
     {
-
         $oUsers = User::model()->findAll();
         $options = [];
         foreach ($oUsers as $oUser) {
@@ -269,6 +287,10 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
+    /**
+     * Get menu icon type options
+     * @return array
+     **/
     public function getMenuIconTypeOptions()
     {
         return [
@@ -279,26 +301,29 @@ class SurveymenuEntries extends LSActiveRecord
         //      ."<option value='image'>".gT('Image')."</option>";
     }
 
+    /**
+     * Returns buttons for gridview
+     **/
     public function getButtons()
     {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' style='margin-right: 5px' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $deleteData = array(
                 'action_surveymenuEntries_deleteModal',
-                'text-danger',
+                'red-border',
                 gT("Delete this survey menu entry"),
-                'trash text-danger'
+                'trash'
             );
             $editData = array(
                 'action_surveymenuEntries_editModal',
-                'text-danger',
+                'green-border',
                 gT("Edit this survey menu entry"),
-                'edit'
+                'pencil'
             );
 
 
@@ -311,14 +336,15 @@ class SurveymenuEntries extends LSActiveRecord
 
         return $buttons;
     }
+
     /**
+     * Returns columns for gridview
      * @return array
      */
     public function getColumns()
     {
         $cols = array(
             array(
-            'name' => 'id',
             'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
             'type' => 'raw',
             'filter' => false
