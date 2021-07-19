@@ -8,7 +8,6 @@
 ?>
 
 <div class="col-lg-12">
-    <div class="pagetitle h3"><?php eT('User group list'); ?></div>
 
     <div class="h4"><?php
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -41,7 +40,15 @@
                         'header'      => gT('User group ID'),
                         'name'        => 'usergroup_id',
                         'value'       => '$data->ugid',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => 'col-md-2'),
+                    ),
+
+                     array(
+                        'header'      => gT('Actions'),
+                        'name'        => 'actions',
+                        'type'        => 'raw',
+                        'value'       => '$data->buttons',
+                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-left'),
                     ),
 
                     array(
@@ -71,18 +78,9 @@
                         'value'       => '$data->countUsers',
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
-
-                    array(
-                        'header'      => '',
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-                    ),
-
                 ),
 
-                'htmlOptions'      => array('style' => 'cursor: pointer;', 'class' => 'hoverAction'),
+                'htmlOptions'      => array('style' => 'cursor: pointer;'),
                 'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate'       => 'usergroups-grid-mine',
             ));
@@ -130,11 +128,12 @@
 <div class="modal fade" tabindex="-1" id="delete-modal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title"><?= gT("Delete this user group") ?></h4>
-            </div>
+            <?php
+            Yii::app()->getController()->renderPartial(
+                '/layouts/partial_modals/modal_header',
+                ['modalTitle' => gT('Delete this user group')]
+            );
+            ?>
             <div class="modal-body">
                 <?= CHtml::form(array("userGroup/deleteGroup"), 'post',
                     array('class' => '', 'id' => 'delete-modal-form', 'name' => 'delete-modal-form')) ?>
@@ -143,8 +142,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?= gT('Cancel') ?></button>
-                <button type="button" class="btn btn-danger" id="confirm-deletion"><?= gT('Yes') ?></button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?= gT('Cancel') ?></button>
+                <button type="button" class="btn btn-danger" id="confirm-deletion"><?= gT('Delete') ?></button>
             </div>
         </div>
     </div>

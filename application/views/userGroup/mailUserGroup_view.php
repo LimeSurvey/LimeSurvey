@@ -4,10 +4,7 @@
 
 ?>
 
-<div class="col-lg-12 list-surveys">
-    <div class="pagetitle h3">
-        <?php eT("Mail to all Members"); ?>
-    </div>
+<div class="col-lg-12 list-surveys" style="margin-top: 30px;">
 
     <div class="row">
         <?php echo CHtml::form(array("userGroup/MailToAllUsersInGroup/ugid/{$ugid}"), 'post',
@@ -32,8 +29,6 @@
             <textarea cols='50' rows='4' id='body' name='body' class="form-control"></textarea>
         </div>
 
-        <input type='submit' value='<?php eT("Send"); ?>' class="btn btn-default"/>
-        <input type='reset' value='<?php eT("Reset"); ?>' class="btn btn-default"/>
         <input type='hidden' name='action' value='mailsendusergroup'/>
         <input type='hidden' name='ugid' value='<?php echo $ugid; ?>'/>
         </form>

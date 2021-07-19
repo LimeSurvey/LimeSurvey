@@ -8,7 +8,7 @@ class Authdb extends AuthPluginBase
     protected static $description = 'Core: Database authentication + exports';
     protected static $name = 'LimeSurvey internal database';
 
-    /** @inheritdoc, this plugin didn't have any public method */
+    /** @inheritdoc This plugin doesn't have any public methods */
     public $allowedPublicMethods = array();
 
     public function init()

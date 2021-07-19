@@ -14,6 +14,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use SimpleXMLElement;
+use Exception;
+
 /**
  * @since 2018-09-26
  * @author Olle Haerstedt
@@ -55,7 +58,7 @@ abstract class VersionFetcher
     /**
      * @param SimpleXMLElement $updaterXml
      */
-    public function __construct(\SimpleXMLElement $updaterXml)
+    public function __construct(SimpleXMLElement $updaterXml)
     {
         $this->updaterXml = $updaterXml;
         $this->setSource((string) $updaterXml->source);
@@ -99,7 +102,7 @@ abstract class VersionFetcher
     }
 
     /**
-     * @return string
+     * @return string?
      */
     public function getManualUpdateUrl()
     {

@@ -220,8 +220,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
-        $datetimeobj = DateTime::createFromFormat( "Y-m-d H:i:s", $thissurvey['expiry']);
-        $_dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d H:i:s");
+        $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
     } else {
         $_dateoutput = '-';
     }
@@ -403,8 +404,9 @@ function getStandardsReplacementFields($thissurvey)
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
-        $datetimeobj = DateTime::createFromFormat( "Y-m-d H:i:s", $thissurvey['expiry']);
-        $_dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d H:i:s");
+        $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
     } else {
         $_dateoutput = '-';
     }

@@ -1,6 +1,9 @@
-<div class="modal-header">
-    <?=gT('Saved successfully')?>
-</div>
+<?php
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => gT('Saved successfully')]
+);
+?>
 <div class="modal-body">
     <div class="container-center">
         <div class="row selector--animated_row">
@@ -27,7 +30,7 @@
         </div>
         
         <?php if(!isset($noButton)): ?>
-        <div class="row ls-space margin top-35">
+        <div class="modal-footer modal-footer-buttons row ls-space margin top-35">
             <button id="exitForm" class="btn btn-default"><?=gT('Close')?></button>
         </div>
         <?php endif;?>

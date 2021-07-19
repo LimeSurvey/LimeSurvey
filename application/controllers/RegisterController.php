@@ -413,8 +413,8 @@ class RegisterController extends LSYii_Controller
         }
         Yii::app()->loadHelper("surveytranslator");
         $aDateFormat = getDateFormatData(getDateFormatForSID($iSurveyId, Yii::app()->language), Yii::app()->language);
-        $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', $aSurveyInfo['startdate']);
-        return $datetimeobj->format($aDateFormat['phpdate']);
+        $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');
+        return $datetimeobj->convert($aDateFormat['phpdate']);
     }
     /**
      * Display needed public page

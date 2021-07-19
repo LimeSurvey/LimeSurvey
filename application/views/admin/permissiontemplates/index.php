@@ -8,40 +8,27 @@
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
-// $this->breadcrumbs=array(
-//     'Surveymenus',
-// );
-
-// $this->menu=array(
-//     array('label'=>'Create Surveymenu', 'url'=>array('create')),
-//     array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
-// );
-//
 $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('roles');
 
 ?>
 <?php $this->renderPartial('permissiontemplates/partials/_menubar', []); ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 h1 pagetitle">
-            <?php eT('Permission roles') ?>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 100px">
-        <div class="container-fluid">
+<div class="col-lg-12">
+    <div class="row" style="margin-top: 8px; margin-bottom: 100px">
+        <div class="col-lg-12 content-right">
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id'              => 'RoleControl--identity-gridPanel',
-                'itemsCssClass'   => 'table table-striped items',
+                'itemsCssClass'   => 'table items',
+                'htmlOptions'     => array('style'=>'cursor: pointer;'),
                 'dataProvider'    => $model->search(),
                 'columns'         => $model->columns,
                 'filter'          => $model,
                 'ajaxType'        => 'POST',
                 'ajaxUpdate'      => 'RoleControl--identity-gridPanel',
                 'afterAjaxUpdate' => 'LS.RoleControl.bindButtons',
-                'summaryText'     => "<div class='row'>"
+                'summaryText'     => "<div class='row' style='text-align:left; color:#000'>"
                     . "<div class='col-xs-6'>" . $massiveAction . "</div>"
                     . "<div class='col-xs-6'>"
                     . gT('Displaying {start}-{end} of {count} result(s).') . ' '

@@ -171,7 +171,7 @@ class QuestionTheme extends LSActiveRecord
      *
      * @param string $className active record class name.
      *
-     * @return Template the static model class
+     * @return static
      */
     public static function model($className = __CLASS__)
     {
@@ -233,9 +233,10 @@ class QuestionTheme extends LSActiveRecord
      *
      * @param string $sXMLDirectoryPath the relative path to the Question Theme XML directory
      * @param bool   $bSkipConversion   If converting should be skipped
-     *
+     * @param $bThrowConversionException If true, throws exception instead of redirecting
      * @return bool|string
      * @throws Exception
+     * @todo Please never redirect at this level, only from controllers.
      */
     public function importManifest($sXMLDirectoryPath, $bSkipConversion = false, $bThrowConversionException = false)
     {
@@ -245,7 +246,7 @@ class QuestionTheme extends LSActiveRecord
 
         // convert Question Theme
         if ($bSkipConversion === false) {
-            $aConvertSuccess = self::convertLS3toLS4($sXMLDirectoryPath);
+            $aConvertSuccess = self::convertLS3toLS5($sXMLDirectoryPath);
             if (!$aConvertSuccess['success']) {
                 if ($bThrowConversionException) {
                     throw new Exception($aConvertSuccess['message']);
@@ -257,32 +258,31 @@ class QuestionTheme extends LSActiveRecord
         }
 
         /** @var array */
-        $aQuestionMetaData = $this->getQuestionMetaData($sXMLDirectoryPath);
+        $aQuestionMetaData = self::getQuestionMetaData($sXMLDirectoryPath);
 
         if (empty($aQuestionMetaData)) {
-            // todo detailed error handling
-            return null;
+            throw new Exception('Found no question theme metadata');
         }
+
         /** @var array<string, mixed> */
-        // todo proper error handling should be done before in getQuestionMetaData via validate() remove @ afterwards
-        $aMetaDataArray = @$this->getMetaDataArray($aQuestionMetaData);
+        // todo proper error handling should be done before in getQuestionMetaData via validate()
+        $aMetaDataArray = self::getMetaDataArray($aQuestionMetaData);
 
         $this->setAttributes($aMetaDataArray, false);
         if ($this->save()) {
             return $aQuestionMetaData['title'];
         } else {
-            // todo detailed error handling
-            return null;
+            throw new Exception('Could not save question theme metadata: ' . json_encode($this->errors));
         }
     }
 
     /**
-     * Returns all Questions that can be installed
+     * Returns question themes available in the filesystem AND installed in the database
      *
-     * @return QuestionTheme[]
+     * @return array
      * @throws Exception
      */
-    public function getAvailableQuestions()
+    public function getAvailableQuestionThemes()
     {
         $aAvailableThemes = [];
         $aThemes = $this->getAllQuestionMetaData();
@@ -296,12 +296,10 @@ class QuestionTheme extends LSActiveRecord
                     }
                 }
             }
-            array_values($aThemes['available_themes']);
             foreach ($aThemes['available_themes'] as $questionMetaData) {
                 // TODO: replace by manifest
                 $questionTheme = new QuestionTheme();
-
-                $metaDataArray = $this->getMetaDataArray($questionMetaData);
+                $metaDataArray = self::getMetaDataArray($questionMetaData);
                 $questionTheme->setAttributes($metaDataArray, false);
                 $aAvailableThemes[] = $questionTheme;
             }
@@ -314,7 +312,7 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns an Array of all questionthemes and their metadata
+     * Returns an array of all question themes and their metadata, split into available_themes and broken_themes
      *
      * @param bool $core
      * @param bool $custom
@@ -350,44 +348,34 @@ class QuestionTheme extends LSActiveRecord
     /**
      * Read all the MetaData for given Question XML definition
      *
-     * @param $pathToXML
-     *
+     * @param string $pathToXmlFolder
      * @return array Question Meta Data
      * @throws Exception
+     * @todo Replace assoc array with DTO
      */
-    public static function getQuestionMetaData($pathToXML)
+    public static function getQuestionMetaData($pathToXmlFolder)
     {
         $questionDirectories = self::getQuestionThemeDirectories();
         foreach ($questionDirectories as $key => $questionDirectory) {
             $questionDirectories[$key] = str_replace('\\', '/', $questionDirectory);
         }
 
-        $pathToXML = str_replace('\\', '/', $pathToXML);
+        $pathToXmlFolder = str_replace('\\', '/', $pathToXmlFolder);
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         }
-        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $pathToXML . DIRECTORY_SEPARATOR . 'config.xml';
+        $sQuestionConfigFilePath = $pathToXmlFolder . DIRECTORY_SEPARATOR . 'config.xml';
         if (!file_exists($sQuestionConfigFilePath)) {
-            throw new Exception(gT('Extension configuration file is not valid or missing.'));
+            throw new Exception(sprintf(gT('Extension configuration file is missing at %s.'), $sQuestionConfigFilePath));
         }
         $sQuestionConfigFile = file_get_contents($sQuestionConfigFilePath);  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
 
-        // TODO: Copied from PluginManager - remake to extension manager.
-        $extensionConfig = new ExtensionConfig($oQuestionConfig);
-        if (!$extensionConfig->validate()) {
-            throw new Exception(gT('Extension configuration file is not valid.'));
-        }
-        if (!$extensionConfig->isCompatible()) {
-            throw new Exception(
-                sprintf(
-                    gT('Extension "%s" is not compatible with your LimeSurvey version.'),
-                    $extensionConfig->getName()
-                )
-            );
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($bOldEntityLoaderState);
         }
 
-        // read all metadata from the provided $pathToXML
+        // read all metadata from the provided $pathToXmlFolder
         $questionMetaData = json_decode(json_encode($oQuestionConfig->metadata), true);
 
         $aQuestionThemes = QuestionTheme::model()->findAll(
@@ -407,10 +395,10 @@ class QuestionTheme extends LSActiveRecord
         // get custom previewimage if defined
         if (!empty($oQuestionConfig->files->preview->filename)) {
             $previewFileName = json_decode(json_encode($oQuestionConfig->files->preview->filename), true)[0];
-            $questionMetaData['image_path'] = DIRECTORY_SEPARATOR . $pathToXML . '/assets/' . $previewFileName;
+            $questionMetaData['image_path'] = DIRECTORY_SEPARATOR . $pathToXmlFolder . '/assets/' . $previewFileName;
         }
 
-        $questionMetaData['xml_path'] = $pathToXML;
+        $questionMetaData['xml_path'] = $pathToXmlFolder;
 
         // set settings as json
         $questionMetaData['settings'] = json_encode([
@@ -422,24 +410,20 @@ class QuestionTheme extends LSActiveRecord
         ]);
 
         // override MetaData depending on directory
-        if (substr($pathToXML, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['coreQuestion'])) === $questionDirectories['coreQuestion']) {
             $questionMetaData['coreTheme'] = 1;
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
         }
-        if (substr($pathToXML, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customCoreTheme'])) === $questionDirectories['customCoreTheme']) {
             $questionMetaData['coreTheme'] = 1;
         }
-        if (substr($pathToXML, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
+        if (substr($pathToXmlFolder, 0, strlen($questionDirectories['customUserTheme'])) === $questionDirectories['customUserTheme']) {
             $questionMetaData['coreTheme'] = 0;
         }
 
         // get Default Image if undefined
         if (empty($questionMetaData['image_path']) || !file_exists(App()->getConfig('rootdir') . $questionMetaData['image_path'])) {
             $questionMetaData['image_path'] = App()->getConfig("imageurl") . '/screenshots/' . self::getQuestionThemeImageName($questionMetaData['questionType']);
-        }
-
-        if (\PHP_VERSION_ID < 80000) {
-            libxml_disable_entity_loader($bOldEntityLoaderState);
         }
 
         return $questionMetaData;
@@ -453,7 +437,6 @@ class QuestionTheme extends LSActiveRecord
      * @param bool $user
      *
      * @return array
-     * @todo Move to service class
      */
     public static function getAllQuestionXMLPaths($core = true, $custom = true, $user = true)
     {
@@ -494,8 +477,9 @@ class QuestionTheme extends LSActiveRecord
     /**
      * @param QuestionTheme $oQuestionTheme
      *
-     * @return array
-     * todo move actions to its controller and split between controller and model, related search for: 1573123789741
+     * @return array|false
+     * @todo move actions to its controller and split between controller and model, related search for: 1573123789741
+     * @todo Move to QuestionThemeInstaller
      */
     public static function uninstall($oQuestionTheme)
     {
@@ -566,20 +550,20 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns all question types with metadata as an array indexed by type.
+     * Returns all base question themes as an array indexed by question type
      * (all entries in table question_themes extends='')
      *
-     * @return array
+     * @return array<string, QuestionTheme>
      */
     public static function findQuestionMetaDataForAllTypes()
     {
-        //getting all question_types which are NOT extended
+        // Getting all question_types which are NOT extended
+        /** @var QuestionTheme[] $baseQuestions */
         $baseQuestions = self::model()->findAllByAttributes(['extends' => '']);
         $aQuestionsIndexedByType = [];
 
         foreach ($baseQuestions as $baseQuestion) {
-            /**@var QuestionTheme $baseQuestion */
-            $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+            $baseQuestion->settings = json_decode($baseQuestion['settings']);
             $aQuestionsIndexedByType[$baseQuestion->question_type] = $baseQuestion;
         }
 
@@ -587,15 +571,23 @@ class QuestionTheme extends LSActiveRecord
     }
 
     /**
-     * Returns All QuestionTheme settings
+     * Returns all QuestionTheme settings
      *
      * @param string $question_type
+     * @param string $question_template 'core' OR question theme name
      * @param string $language
-     *
-     * @return mixed $baseQuestions Questions as Array or Object
+     * @return QuestionTheme
      */
     public static function findQuestionMetaData($question_type, $question_template = 'core', $language = '')
     {
+        if (empty($question_type)) {
+            throw new InvalidArgumentException('question_type cannot be empty');
+        }
+
+        if (empty($question_template)) {
+            throw new InvalidArgumentException('question_template cannot be empty');
+        }
+
         $criteria = new CDbCriteria();
 
         if ($question_template === 'core') {
@@ -607,22 +599,35 @@ class QuestionTheme extends LSActiveRecord
             $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
         }
 
-        $baseQuestion = self::model()->query($criteria, false, false);
+        $questionTheme = self::model()->query($criteria, false);
+
+        if (empty($questionTheme)) {
+            $settings = new StdClass();
+            $settings->class = '';
+            $settings->answerscales = 0;
+            $settings->subquestions = 0;
+            $questionTheme = new self();
+            $questionTheme->title = gT('Question theme error: Missing metadata');
+            $questionTheme->name = gT('Question theme error: Missing metadata');
+            $questionTheme->question_type = $question_type;
+            $questionTheme->settings = $settings;
+            return $questionTheme;
+        }
 
         // language settings
-        $baseQuestion['title'] = gT($baseQuestion['title'], "html", $language);
-        $baseQuestion['group'] = gT($baseQuestion['group'], "html", $language);
+        $questionTheme->title = gT($questionTheme->title, "html", $language);
+        $questionTheme->group = gT($questionTheme->group, "html", $language);
 
         // decode settings json
-        $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
+        $questionTheme->settings = json_decode($questionTheme->settings);
 
-        return $baseQuestion;
+        return $questionTheme;
     }
 
     /**
      * Returns all Question Meta Data for the question type selector
      *
-     * @return mixed $baseQuestions Questions as Array or Object
+     * @return QuestionTheme[]
      */
     public static function findAllQuestionMetaDataForSelector()
     {
@@ -631,7 +636,8 @@ class QuestionTheme extends LSActiveRecord
         $criteria->addCondition('visible = :visible', 'AND');
         $criteria->params = [':visible' => 'Y'];
 
-        $baseQuestions = self::model()->query($criteria, true, false);
+        /** @var QuestionTheme[] */
+        $baseQuestions = self::model()->query($criteria, true);
 
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
@@ -640,13 +646,13 @@ class QuestionTheme extends LSActiveRecord
         $baseQuestionsModified = [];
         foreach ($baseQuestions as $baseQuestion) {
             //TODO: should be moved into DB column (question_theme_settings table)
-            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $baseQuestion['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            $sQuestionConfigFile = file_get_contents($baseQuestion->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             $questionEngineData = json_decode(json_encode($oQuestionConfig->engine), true);
             $showAsQuestionType = $questionEngineData['show_as_question_type'];
 
             // if an extended Question should not be shown as a selectable questiontype skip it
-            if (!empty($baseQuestion['extends'] && !$showAsQuestionType)) {
+            if (!empty($baseQuestion['extends']) && !$showAsQuestionType) {
                 continue;
             }
 
@@ -677,6 +683,9 @@ class QuestionTheme extends LSActiveRecord
         return $baseQuestions;
     }
 
+    /**
+     * @return array
+     */
     public static function getQuestionThemeDirectories()
     {
         $questionThemeDirectories['coreQuestion'] = App()->getConfig('corequestiontypedir') . '/survey/questions/answer';
@@ -695,7 +704,7 @@ class QuestionTheme extends LSActiveRecord
      * @todo Naming is wrong, it does not "get", it "convertTo"
      * @todo Possibly make a DTO for question metadata instead, and implement the ArrayAccess interface or "toArray()"
      */
-    private function getMetaDataArray($questionMetaData)
+    public static function getMetaDataArray($questionMetaData)
     {
         $questionMetaData = [
             'name'          => $questionMetaData['name'],
@@ -772,13 +781,13 @@ class QuestionTheme extends LSActiveRecord
         }
 
         $answerColumnDefinition = '';
-        if (isset($questionTheme['xml_path'])) {
+        if (isset($questionTheme->xml_path)) {
             if (\PHP_VERSION_ID < 80000) {
                 $bOldEntityLoaderState = libxml_disable_entity_loader(true);
             }
-
-
-            $sQuestionConfigFile = file_get_contents(App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $questionTheme['xml_path'] . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+            // If xml_path is relative, cwd is assumed to be ROOTDIR.
+            // TODO: Make it always relative depending on question theme type (core, custom, user).
+            $sQuestionConfigFile = file_get_contents($questionTheme->xml_path . DIRECTORY_SEPARATOR . 'config.xml');  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oQuestionConfig = simplexml_load_string($sQuestionConfigFile);
             if (isset($oQuestionConfig->metadata->answercolumndefinition)) {
                 // TODO: Check json_last_error.
@@ -804,23 +813,24 @@ class QuestionTheme extends LSActiveRecord
      */
     public static function getQuestionXMLPathForBaseType($type)
     {
-        $aQuestionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
-        if (empty($aQuestionTheme)) {
+        /** @var QuestionTheme|null */
+        $questionTheme = QuestionTheme::model()->findByAttributes([], 'question_type = :question_type AND extends = :extends', ['question_type' => $type, 'extends' => '']);
+        if (empty($questionTheme)) {
             throw new \CException("The Database definition for Questiontype: " . $type . " is missing");
         }
-        $configXMLPath = App()->getConfig('rootdir') . '/' . $aQuestionTheme['xml_path'] . '/config.xml';
+        $configXMLPath = App()->getConfig('rootdir') . '/' . $questionTheme->xml_path . '/config.xml';
 
         return $configXMLPath;
     }
 
     /**
-     * Converts LS3 Question Theme to LS4
+     * Converts LS3 Question Theme to LS5
      *
      * @param string $sXMLDirectoryPath
      *
      * @return array $success Returns an array with the conversion status
      */
-    public static function convertLS3toLS4($sXMLDirectoryPath)
+    public static function convertLS3toLS5($sXMLDirectoryPath)
     {
         $sXMLDirectoryPath = str_replace('\\', '/', $sXMLDirectoryPath);
         $sConfigPath = $sXMLDirectoryPath . DIRECTORY_SEPARATOR . 'config.xml';
@@ -828,7 +838,7 @@ class QuestionTheme extends LSActiveRecord
             $bOldEntityLoaderState = libxml_disable_entity_loader(true);
         }
 
-        $sQuestionConfigFilePath = App()->getConfig('rootdir') . DIRECTORY_SEPARATOR . $sConfigPath;
+        $sQuestionConfigFilePath = $sConfigPath;
         if (!file_exists($sQuestionConfigFilePath)) {
             throw new Exception('Found no config.xml file at ' . $sQuestionConfigFilePath);
         }
@@ -865,12 +875,17 @@ class QuestionTheme extends LSActiveRecord
         };
 
         // set compatibility version
-        if (isset($oThemeConfig->compatibility->version)) {
-            $oThemeConfig->compatibility->version = '4.0';
+        if (count($oThemeConfig->compatibility->version) > 1) {
+            $length = count($oThemeConfig->compatibility->version);
+            $compatibility = $oThemeConfig->addChild('compatibility');
+            $compatibility->addChild('version');
+            $oThemeConfig->compatibility->version[$length] = '5.0';
+        } elseif (count($oThemeConfig->compatibility->version) === 1) {
+            $oThemeConfig->compatibility->version = '5.0';
         } else {
             $compatibility = $oThemeConfig->addChild('compatibility');
             $compatibility->addChild('version');
-            $oThemeConfig->compatibility->version = '4.0';
+            $oThemeConfig->compatibility->version = '5.0';
         }
 
         $sThemeDirectoryName = self::getThemeDirectoryPath($sQuestionConfigFilePath);
@@ -976,7 +991,7 @@ class QuestionTheme extends LSActiveRecord
         }
         $questionTheme = QuestionTheme::model()->findByAttributes([], 'name = :name AND extends = :extends', ['name' => $sQuestionThemeName, 'extends' => $type]);
         if ($questionTheme !== null) {
-            $xml_config = simplexml_load_file(App()->getConfig('rootdir') . '/' . $questionTheme['xml_path'] . '/config.xml');
+            $xml_config = simplexml_load_file($questionTheme->xml_path . '/config.xml');
             $attributes = json_decode(json_encode((array)$xml_config->attributes), true);
         }
         if (\PHP_VERSION_ID < 80000) {

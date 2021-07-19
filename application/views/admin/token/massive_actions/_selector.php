@@ -27,9 +27,7 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'    => 'modal',
-                    'modalType'     => 'yes-no',
-                    'yes'           => gT('Apply'),
-                    'no'            => gT('Cancel'),
+                    'modalType'     => 'cancel-apply',
                     'keepopen'      => 'yes',
                     'sModalTitle'   => gT('Batch-edit participants'),
                     'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']), 'aLanguages' => $aLanguages), true),
@@ -48,7 +46,7 @@
 
                     // modal
                     'actionType'    => 'modal',
-                    'modalType'     => 'yes-no',
+                    'modalType'     => 'cancel-delete',
                     'keepopen'      => 'no',
                     'sModalTitle'   => gT('Delete survey participants'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),

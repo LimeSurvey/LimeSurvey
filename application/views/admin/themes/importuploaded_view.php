@@ -1,29 +1,24 @@
 <?php
-    // TODO : move all this to controller
-    $okfiles = 0;
-    $errfiles = 0;
-    if (count($aErrorFilesInfo) == 0 && empty($aImportErrors) && count($aImportedFilesInfo) > 0)
-    {
-        $status = gT("Success");
-        $class = '';
-        $statusClass = 'text-success';
-        $okfiles = count($aImportedFilesInfo);
-    }
-    elseif ((count($aErrorFilesInfo) > 0 || !empty($aImportErrors)) && count($aImportedFilesInfo) > 0)
-    {
-        $status = gT("Partial");
-        $class = 'message-box-warning';
-        $statusClass = 'text-warning';
-        $okfiles = count($aImportedFilesInfo);
-        $errfiles = count($aErrorFilesInfo);
-    }
-    else
-    {
-        $status = gT("Error");
-        $statusClass = 'text-error';
-        $class = 'message-box-error';
-        $errfiles = count($aErrorFilesInfo);
-    }
+// TODO : move all this to controller
+$okfiles = 0;
+$errfiles = 0;
+if ($result === 'success') {
+    $status = gT("Success");
+    $class = '';
+    $statusClass = 'text-success';
+    $okfiles = count($aImportedFilesInfo);
+} elseif ($result === 'partial') {
+    $status = gT("Partial");
+    $class = 'message-box-warning';
+    $statusClass = 'text-warning';
+    $okfiles = count($aImportedFilesInfo);
+    $errfiles = count($aErrorFilesInfo);
+} else {
+    $status = gT("Error");
+    $statusClass = 'text-error';
+    $class = 'message-box-error';
+    $errfiles = count($aErrorFilesInfo);
+}
 ?>
 <div class="row">
     <div class="col-sm-11 col-sm-offset-1 content-right">
@@ -36,9 +31,15 @@
             </p>
 
             <p>
-                <strong><u><?php eT("Resources import summary") ?></u></strong><br />
-                <?php echo gT("Files imported:") . " $okfiles" ?><br />
-                <?php echo gT("Files skipped:") . " $errfiles" ?><br />
+                <?php if (count($aImportedFilesInfo) > 0 || count($aErrorFilesInfo) > 0): ?>
+                    <strong><u><?php eT("Resources import summary") ?></u></strong><br />
+                <?php endif; ?>
+                <?php if (count($aImportedFilesInfo) > 0): ?>
+                    <?php echo gT("Files imported:") . " $okfiles" ?><br />
+                <?php endif; ?>
+                <?php if (count($aErrorFilesInfo) > 0): ?>
+                    <?php echo gT("Files skipped:") . " $errfiles" ?><br />
+                <?php endif; ?>
             </p>
             <?php if (count($aImportedFilesInfo) > 0): ?>
                 <p>

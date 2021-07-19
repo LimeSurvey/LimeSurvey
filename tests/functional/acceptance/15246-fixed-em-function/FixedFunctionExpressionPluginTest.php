@@ -40,7 +40,9 @@ class FixedFunctionExpressionPluginTest extends TestBaseClassWeb
             ]
         );
         try {
-            self::$webDriver->get($url);
+            self::$webDriver->get($url);            
+            sleep(1); // Page did not load properly
+            
             /* 1st page */
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();

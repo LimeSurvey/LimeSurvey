@@ -1,13 +1,13 @@
-<!-- Save and close -->
-<a id="save-and-close-button-copy-question" class="btn btn-default" role="button">
-    <i class="fa fa-check-square"></i>
-    <?php eT("Save and close");?>
-</a>
-
 <!-- Close -->
-<a class="btn btn-danger" href="<?php echo $closeUrl; ?>" role="button">
+<a class="btn btn-default" href="<?php echo $closeUrl; ?>" role="button">
     <span class="fa fa-close"></span>
     <?php eT("Close");?>
+</a>
+
+<!-- Save and close -->
+<a id="save-and-close-button-copy-question" class="btn btn-success" role="button">
+    <i class="fa fa-check"></i>
+    <?php eT("Save and close");?>
 </a>
 
 <script type="text/javascript">
@@ -18,7 +18,7 @@
 
             const sid = $('input[name=surveyId]').val();
             const qid = 0;
-            const code = $('input[name=title]').val();
+            const code = $('input[name=question\\[title\\]]').val();
 
             $.ajax({
               url: "<?= Yii::app()->createUrl('questionAdministration/checkQuestionCodeUniqueness'); ?>",

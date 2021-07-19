@@ -22,7 +22,7 @@
 
             // modal
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-delete',
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete responses'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected responses?')
@@ -44,7 +44,7 @@
 
             // modal
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-delete',
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete attachments'),
             'htmlModalBody' => gT('Are you sure you want to delete all uploaded files from the selected responses?'),

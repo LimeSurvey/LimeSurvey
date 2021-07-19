@@ -14,6 +14,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use SimpleXMLElement;
+use Exception;
+
 /**
  * Central Yii component to add and retrieve version fetcher strategies.
  *
@@ -38,7 +41,7 @@ class VersionFetcherServiceLocator
         // Add RESTVersionFetcher, available by default.
         $this->addVersionFetcherType(
             'rest',
-            function (\SimpleXMLElement $updaterXml) {
+            function (SimpleXMLElement $updaterXml) {
                 $vf = new RESTVersionFetcher($updaterXml);
                 return $vf;
             }
@@ -47,7 +50,7 @@ class VersionFetcherServiceLocator
         // TODO: Not implemented.
         $this->addVersionFetcherType(
             'git',
-            function (\SimpleXMLElement $updaterXml) {
+            function (SimpleXMLElement $updaterXml) {
                 return new GitVersionFetcher($updaterXml);
             }
         );
@@ -59,7 +62,7 @@ class VersionFetcherServiceLocator
      * @return VersionFetcher
      * @throws Exception if version fetcher is not found.
      */
-    public function createVersionFetcher(\SimpleXMLElement $updaterXml)
+    public function createVersionFetcher(SimpleXMLElement $updaterXml)
     {
         $this->validateXml($updaterXml);
 
@@ -69,7 +72,7 @@ class VersionFetcherServiceLocator
             $versionFetcher =  $this->versionFetcherCreators[$type]($updaterXml);
             return $versionFetcher;
         } else {
-            throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
+            throw new Exception('Did not find version fetcher of type ' . json_encode($type));
         }
     }
 
@@ -83,7 +86,7 @@ class VersionFetcherServiceLocator
     {
         if (isset($this->versionFetcherCreators[$name])) {
             // NB: Internal error, don't need to translate.
-            throw new \Exception("Version fetcher with name $name already exists");
+            throw new Exception("Version fetcher with name $name already exists");
         }
 
         $this->versionFetcherCreators[$name] = $vfCreator;
@@ -94,18 +97,18 @@ class VersionFetcherServiceLocator
      * @return void
      * @throws Exception on invalid xml.
      */
-    protected function validateXml(\SimpleXMLElement $xml)
+    protected function validateXml(SimpleXMLElement $xml)
     {
         if (empty((string) $xml->type)) {
-            throw new \Exception(gT('Missing type tag in updater xml'));
+            throw new Exception(gT('Missing type tag in updater xml'));
         }
 
         if (empty((string) $xml->source)) {
-            throw new \Exception(gT('Missing source tag in updater xml'));
+            throw new Exception(gT('Missing source tag in updater xml'));
         }
 
         if ((string) $xml->stable === '') {
-            throw new \Exception(gT('Missing stable tag in updater xml'));
+            throw new Exception(gT('Missing stable tag in updater xml'));
         }
     }
 }

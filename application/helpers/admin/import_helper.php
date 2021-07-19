@@ -47,6 +47,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
     $results['subquestions'] = 0;
     $results['conditions'] = 0;
     $results['groups'] = 0;
+    $results['importwarnings'] = [];
 
     $importlanguages = array();
     foreach ($xml->languages->language as $language) {
@@ -946,7 +947,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
             }
             unset($insertdata['id']);
             // now translate any links
-            if ($bTranslateInsertansTags) {
+            if ($options['translinkfields']) {
                 $insertdata['answer'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['answer']);
             }
             if (isset($aAIDReplacements[$insertdata['aid']])) {

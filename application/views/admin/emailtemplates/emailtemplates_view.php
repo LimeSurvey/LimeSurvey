@@ -80,6 +80,9 @@ var LS = LS || {};  // namespace
       <div class="modal-body" style="padding: 0;">
         <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
       </div>
+        <div class='modal-footer'>
+            <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Cancel");?></button>
+        </div>
     </div>
   </div>
 </div>

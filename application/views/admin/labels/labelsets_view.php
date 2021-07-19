@@ -12,7 +12,6 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">
-	<div class="pagetitle h3"><?php eT('Label sets list'); ?></div>
 
 	<div class="row">
         <div class="col-lg-12 content-right">
@@ -31,6 +30,14 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                             array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
 
                     'columns' => array(
+
+                        array(
+                            'header'=>gT('Action'),
+                            'name'=>'actions',
+                            'type'=>'raw',
+                            'value'=>'$data->buttons',
+                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-center button-column'),
+                        ),
 
                         array(
                             'header' => gT('Label set ID'),
@@ -52,14 +59,6 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                             'value'=> '$data->languages',
                             'type' => 'LanguageList',
                             'htmlOptions' => array('class' => 'col-md-6'),
-                        ),
-
-                        array(
-                            'header'=>'',
-                            'name'=>'actions',
-                            'type'=>'raw',
-                            'value'=>'$data->buttons',
-                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right button-column'),
                         ),
 
                     ),

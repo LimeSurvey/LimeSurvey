@@ -33,16 +33,12 @@ function loadanswers()
         $sLoadName = Yii::app()->request->getParam('loadname');
         $sLoadPass = Yii::app()->request->getParam('loadpass');
         $oCriteria = new CDbCriteria();
-        $oCriteria->select = 'sc.*';
-        $oCriteria->join = "LEFT JOIN {{saved_control}} as sc ON t.id=sc.srid";
-        $oCriteria->condition = "sc.sid=:sid";
-        $aParams = [':sid' => $surveyid];
         if (isset($scid)) {
             //Would only come from email : we don't need it ....
-            $oCriteria->addCondition("sc.scid=:scid");
+            $oCriteria->addCondition("saved_control.scid=:scid");
             $aParams[':scid'] = $scid;
         }
-        $oCriteria->addCondition("sc.identifier=:identifier");
+        $oCriteria->addCondition("saved_control.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
     } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
         $oCriteria = new CDbCriteria();
@@ -77,6 +73,8 @@ function loadanswers()
                 $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
                 $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
             }
+        } else {
+            return false;
         }
     }
     // Get if survey is been answered
@@ -174,7 +172,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8');
+            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -755,9 +753,10 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_' . $surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType() == 'GET') {
-        $getValues = array_diff_key($_GET, array_combine($reservedGetValues, $reservedGetValues));
-        if (!empty($getValues)) {
+    $request = Yii::app()->getRequest();
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
+        if(!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
             foreach ($_SESSION['survey_' . $surveyid]['fieldmap'] as $sgqa => $details) {
@@ -1185,7 +1184,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid" => $surveyid));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
@@ -2074,4 +2073,32 @@ function cookieConsentLocalization()
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')
     );
+}
+
+/**
+ * Returns an array of URL parameters that can be forwarded
+ *
+ * @param LSHttpRequest $request the HTTP request
+ *
+ * @return array<string,mixed>
+ */
+function getForwardParameters($request)
+{
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed',
+        'index.php',
+    );
+
+    $parameters = [];
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
+    }
+    return $parameters;
 }

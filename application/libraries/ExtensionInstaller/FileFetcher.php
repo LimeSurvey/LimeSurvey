@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\ExtensionInstaller;
 
+use Exception;
+use ExtensionConfig;
+
 /**
  * Fetch files for the ExtensionInstaller to install.
  * Fetching files can happen in different ways:

@@ -32,6 +32,7 @@
     width: 60%;
     z-index: 3500;
     background: rgba(255, 255, 255, 0.1);
+    min-height: 0;
 }
 
 .bg-white {
@@ -4344,4 +4345,53 @@ table.dataTable thead .sorting_asc:after {
 table.dataTable thead .sorting_desc:after {
   content: "\f0dd" !important;
   /* sort-by-attributes-alt */
+}
+
+// Sticky topbar
+.menubar.sticky {
+    position: fixed !important;
+    top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Reduce margins for question editor */
+#edit-question-form {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+#advanced-question-editor {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+#advanced-question-editor > div > .container-center > .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+/* Scrollable subquestion/answer tables*/
+.subquestions-table-wrapper,
+.answeroptions-table-wrapper {
+    display: block;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+.subquestions-table,
+.answeroptions-table {
+    margin-bottom: 0px;
+}
+
+.subquestions-table input.code,
+.answeroptions-table input.code {
+    min-width: 70px;
+}
+
+.subquestions-table > tbody > tr > td:first-of-type,
+.answeroptions-table > tbody > tr > td:first-of-type {
+    padding-left: 0;
+}
+
+.subquestions-table > tbody > tr > td:last-of-type,
+.answeroptions-table > tbody > tr > td:last-of-type {
+    padding-right: 0;
 }

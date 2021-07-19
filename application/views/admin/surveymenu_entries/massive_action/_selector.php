@@ -22,7 +22,7 @@
 
             // modal
             'actionType'    => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-delete',
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete menu entries'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected menu entries?')
@@ -40,7 +40,7 @@
             'grid-reload' => 'yes',
             //modal
             'actionType' => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'cancel-apply',
             'keepopen'      => 'yes',
             'yes'           => gT('Apply'),
             'no'            => gT('Cancel'),

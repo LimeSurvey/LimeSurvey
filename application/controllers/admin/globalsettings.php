@@ -20,12 +20,14 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-
-
-
 class GlobalSettings extends Survey_Common_Action
 {
 
+    /**
+     * GlobalSettings Constructor
+     * @param $controller
+     * @param $id
+     **/
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -40,6 +42,7 @@ class GlobalSettings extends Survey_Common_Action
      *
      * @access public
      * @return void
+     * @throws CHttpException
      */
     public function index()
     {
@@ -49,6 +52,9 @@ class GlobalSettings extends Survey_Common_Action
         $this->_displaySettings();
     }
 
+    /**
+     * Show PHP Info
+     */
     public function showphpinfo()
     {
         if (!Yii::app()->getConfig('demoMode')) {
@@ -56,6 +62,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * Refresh Assets
+     */
     public function refreshAssets()
     {
         // Only people who can create or update themes should be allowed to refresh the assets
@@ -65,6 +74,10 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * Displays the settings.
+     * @throws CHttpException
+     */
     private function _displaySettings()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
@@ -77,10 +90,12 @@ class GlobalSettings extends Survey_Common_Action
         foreach ($this->_checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
+        Yii::app()->loadLibrary('Date_Time_Converter');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
-        $data['updatelastcheck'] = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i:s");
+        $datetimeobj = new Date_Time_Converter(dateShift(getGlobalSetting("updatelastcheck"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+        $data['updatelastcheck'] = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i:s");
 
+        // @todo getGlobalSetting is deprecated!
         $data['updateavailable'] = (getGlobalSetting("updateavailable") && Yii::app()->getConfig("updatable"));
         $data['updatable'] = Yii::app()->getConfig("updatable");
         $data['updateinfo'] = getGlobalSetting("updateinfo");
@@ -96,9 +111,10 @@ class GlobalSettings extends Survey_Common_Action
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
 
+        // Fullpage Bar
         $data['fullpagebar']['savebutton']['form'] = 'frmglobalsettings';
         $data['fullpagebar']['saveandclosebutton']['form'] = 'frmglobalsettings';
-        $data['fullpagebar']['closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
+        $data['fullpagebar']['white_closebutton']['url'] = Yii::app()->createUrl('admin/'); // Close button
 
         // List of available encodings
         $data['aEncodings'] = aEncodingsArray();
@@ -116,6 +132,9 @@ class GlobalSettings extends Survey_Common_Action
         $data['thischaracterset'] = getGlobalSetting('characterset');
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
+
+        // Green Bar Title
+        $data['pageTitle'] = gT("Global settings");
 
         $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
@@ -204,6 +223,9 @@ class GlobalSettings extends Survey_Common_Action
         return $templates;
     }
 
+    /**
+     * Save Settings
+     */
     private function _saveSettings()
     {
         if (Yii::app()->getRequest()->getPost('action') !== "globalsettingssave") {
@@ -262,10 +284,12 @@ class GlobalSettings extends Survey_Common_Action
             SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
         }
 
+        SettingGlobal::setSetting('createsample', (bool) Yii::app()->getRequest()->getPost('createsample'));
+
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, Template::getTemplateList())) {
-// Filter template name
+                // Filter template name
                 SettingGlobal::setSetting('defaulttheme', $sTemplate);
             }
             SettingGlobal::setSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
@@ -385,6 +409,9 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    /**
+     * Check Settings
+     */
     private function _checkSettings()
     {
         $surveycount = Survey::model()->count();
@@ -484,15 +511,38 @@ class GlobalSettings extends Survey_Common_Action
             ]
         ];
         $aData['partial'] = $sPartial;
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = gT('Global survey settings');
+
+        // White Top Bar
+        $aData['fullpagebar'] = [
+            'savebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+            'saveandclosebutton' => [
+                'form' => 'survey-settings-form',
+            ],
+            'white_closebutton' => [
+                'url' => 'admin/index',
+            ],
+        ];
+
         $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
+    /**
+     * Survey Setting Menues
+     */
     public function surveysettingmenues()
     {
         $menues = Surveymenu::model()->getMenuesForGlobalSettings();
         Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
+    /**
+     * Send Test Email
+     */
     public function sendTestEmail()
     {
         $sSiteName = Yii::app()->getConfig('sitename');
@@ -510,6 +560,13 @@ class GlobalSettings extends Survey_Common_Action
         $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
     }
 
+    /**
+     * Send Email and show result
+     * @param string $body
+     * @param string $sSubject
+     * @param string $sTo
+     * @param string $sFrom
+     */
     private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
     {
         $mailer = new \LimeMailer();
@@ -536,6 +593,9 @@ class GlobalSettings extends Survey_Common_Action
         $this->_renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
     }
 
+    /**
+     * Send Test Email Confirmation
+     */
     public function sendTestEmailConfirmation()
     {
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
@@ -555,9 +615,10 @@ class GlobalSettings extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string $sAction     Current action, the folder to fetch views from
+     * @param string $aViewUrls   View url(s)
+     * @param array  $aData       Data to be passed on. Optional.
+     * @param bool   $sRenderFile
      */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {

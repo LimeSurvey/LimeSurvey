@@ -12,10 +12,8 @@
 </script>
 
 <div class="col-lg-12 list-surveys">
-    <h3><?php if ($action == "newlabelset") { eT("Create or import new label set(s)");} else {eT("Edit label set"); } ?></h3>
     <?=// DO NOT REMOVE This is for automated testing to validate we see that page
     viewHelper::getViewTestTag('createLabelSets');?>
-
 
     <div class="row">
         <div class="col-lg-12 content-right">

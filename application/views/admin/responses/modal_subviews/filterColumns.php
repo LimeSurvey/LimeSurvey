@@ -13,10 +13,12 @@ $filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form action="<?= App()->createUrl('/admin/responses/sa/setfilteredcolumns/', ['surveyid' => $surveyid]) ?>" class="pjax" method="POST" data-filtered-columns=<?php echo json_encode($filteredColumns) ?>>
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT("Select columns") ?></h4>
-                </div>
+                <?php
+                Yii::app()->getController()->renderPartial(
+                    '/layouts/partial_modals/modal_header',
+                    ['modalTitle' => gT('Select columns')]
+                );
+                ?>
                 <div class="modal-body">
                     <div class="responses-column-filter-modal-checkbox-buttons">
                         <button id="responses-column-filter-modal-selectall" class="btn btn-default">
@@ -40,8 +42,8 @@ $filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Ok'); ?></button>
-                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                    <button id="responses-column-filter-modal-cancel" type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT("Cancel"); ?></button>
+                    <button id="responses-column-filter-modal-submit" class="btn btn-primary"><?php eT('Select'); ?></button>
                 </div>
             </form>
         </div>
