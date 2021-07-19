@@ -84,11 +84,10 @@ class UserManagementController extends LSBaseController
     /**
      * Open modal to edit, or create a new user
      *
-     * @param int $userid
-     * @return string
+     * @param int|null $userid
      * @throws CException
      */
-    public function actionAddEditUser(int $userid = 0): string
+    public function actionAddEditUser($userid = null)
     {
         if (
             ($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
@@ -193,10 +192,9 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
      * @throws CException
      */
-    public function actionAddDummyUser(): string
+    public function actionAddDummyUser()
     {
         return $this->renderPartial('partial/adddummyuser', []);
     }
@@ -594,7 +592,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionRenderUserImport(string $importFormat = 'csv'): string
+    public function actionRenderUserImport(string $importFormat = 'csv')
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->renderPartial(
