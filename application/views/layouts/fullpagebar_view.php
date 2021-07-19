@@ -16,7 +16,8 @@
                 <!-- Upload and Install -->
                 <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
                     <a  class="btn btn-default" 
-                        href="" 
+                        href=""
+                        id="btn-upload-install"
                         role="button" 
                         data-toggle="modal" 
                         data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"

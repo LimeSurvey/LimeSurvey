@@ -246,5 +246,14 @@ echo viewHelper::getViewTestTag('templateOptions');
     $('#themelist a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+
+        var target = $(e.target).attr("href");
+        if(target ==="#questionthemes"){
+            $("#btn-upload-install").attr('data-target', '#importQuestionModal');
+        }
+        if(target ==="#surveythemes"){
+            $("#btn-upload-install").attr('data-target', '#importSurveyModal');
+        }
+        $(this).tab('show');
     });
 </script>
