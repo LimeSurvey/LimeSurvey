@@ -347,7 +347,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionViewUser(int $userid): string
+    public function actionViewUser(int $userid)
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -523,7 +523,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionAddRole(): string
+    public function actionAddRole()
     {
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
