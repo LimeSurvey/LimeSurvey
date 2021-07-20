@@ -1496,7 +1496,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $sEditUrl     = App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid);
         $sAddGroup    = App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid);
-        $sAddquestion = App()->createUrl("/questionAdministration/view/surveyid/" . $this->sid);
+        $sAddquestion = App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid);
 
         $button = '';
 

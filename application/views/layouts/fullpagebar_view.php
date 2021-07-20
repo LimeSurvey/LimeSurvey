@@ -15,11 +15,12 @@
             <?php if (isset($fullpagebar['themes'])): ?>
                 <!-- Upload and Install -->
                 <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
-                    <a  class="btn btn-default" 
-                        href="" 
+                    <a  id="uploadandinstall"
+                        class="btn btn-default"
+                        href=""
                         role="button" 
                         data-toggle="modal" 
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                         style="margin-top: 10px;">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
@@ -111,7 +112,7 @@
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
 
                 <!-- Reset Boxes Button -->
-                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
                     <span class="fa fa-refresh"></span>
                     <?php eT("Reset");?>
                 </a>

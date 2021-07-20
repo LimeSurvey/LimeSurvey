@@ -9,7 +9,16 @@
 <div class="modal fade" tabindex="-1" role="dialog" id="<?php echo $importModal;?>">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo CHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>$importTemplate, 'name'=>$importTemplate, 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+            <?php echo CHtml::form(
+                    array('admin/themes/sa/upload'),
+                    'post',
+                    array(
+                            'id'=>$importTemplate,
+                            'name'=>$importTemplate,
+                            'enctype'=>'multipart/form-data',
+                            'onsubmit'=>'return window.LS.validatefilename(this,"'.gT('Please select a file to import!', 'js').'");'
+                    )
+            ); ?>
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
@@ -19,7 +28,7 @@
                 <div class="modal-body">
                     <input type='hidden' name='lid' value='$lid' />
                     <input type='hidden' name='action' value='templateupload' />
-                    <?php if (isset($themeType)): ?>
+                    <?php if (isset($themeType)) : ?>
                         <input type='hidden' name='theme' value='<?php echo $themeType; ?>'/>
                     <?php endif; ?>
                     <div class="form-group">

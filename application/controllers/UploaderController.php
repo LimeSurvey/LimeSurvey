@@ -24,6 +24,9 @@ class UploaderController extends SurveyController
     public function run($actionID)
     {
         $surveyid = Yii::app()->session['LEMsid'];
+        if(empty($surveyid)) {
+            throw new CHttpException(401, gT("We are sorry but your session has expired."));
+        }
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey) {
             throw new CHttpException(400);
