@@ -17,7 +17,7 @@
 <div class="privacy-block">
     {% set describeprivacy = "" %}
     {% if aSurveyInfo.datasecurity_notice %}
-        <div class="{{ aSurveyInfo.class.privacydatasectextbody }}" id="datasecurity_notice">
+        <div class="limit-text-window {{ aSurveyInfo.class.privacydatasectextbody }}" id="datasecurity_notice">
             {{ aSurveyInfo.datasecurity_notice }}
         </div>
         {% set describeprivacy = "datasecurity_notice" %}
