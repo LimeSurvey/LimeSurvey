@@ -43,7 +43,7 @@
                         'name' => 'survey_id',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->sid, Yii::app()->createUrl("surveyAdministration/view/",array("iSurveyID"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
@@ -61,7 +61,7 @@
                         'name' => 'running',
                         'value'=>'$data->running',
                         'type'=>'raw',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
@@ -71,7 +71,7 @@
                         'type' => 'raw',
                         'value'=>'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
                         'htmlOptions' => array('class' => 'col-md-2 has-link'),
-                        'headerHtmlOptions'=>array('class' => 'col-md-4'),
+                        'headerHtmlOptions'=>array('class' => 'col-md-4 text-nowrap'),
                     ),
 
                     array(
@@ -80,6 +80,7 @@
                         'type' => 'raw',
                         'value'=>'isset($data->surveygroup) ? CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
                         'htmlOptions' => array('class' => 'col-md-2 has-link'),
+                        'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
 
                     array(
@@ -87,7 +88,7 @@
                         'name' => 'creation_date',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->creationdate, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs text-nowrap'),
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
@@ -96,7 +97,7 @@
                         'name' => 'owner',
                         'type' => 'raw',
                         'value'=>'CHtml::link(CHtml::encode($data->ownerUserName), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs text-nowrap'),
                         'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
                     ),
 
