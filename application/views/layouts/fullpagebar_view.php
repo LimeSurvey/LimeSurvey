@@ -15,11 +15,12 @@
             <?php if (isset($fullpagebar['themes'])): ?>
                 <!-- Upload and Install -->
                 <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
-                    <a  class="btn btn-default" 
-                        href="" 
+                    <a  id="uploadandinstall"
+                        class="btn btn-default"
+                        href=""
                         role="button" 
                         data-toggle="modal" 
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                         style="margin-top: 10px;">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
@@ -38,23 +39,28 @@
             <!-- List Surveys - Create a new Survey -->
             <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
                 Permission::model()->hasGlobalPermission('surveys','create')):?>
-                <a class="btn btn-default"
+                <a class="btn btn-default tab-dependent-button"
+                   data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="margin-top: 10px; margin-bottom: 10px;">
+                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
                 </a>
             <?php endif;?>
 
-            <!-- List Surveys - Create a new Survey Group -->
-            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurveyGroups']) &&
-                     Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
+            <!-- List Surveys - Create a new Survey group -->
+            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
+                Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
+                <a class="btn btn-default tab-dependent-button"
+                   data-tab="#surveygroups"
+                   href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
+                   role="button"
+                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey group");?>
                 </a>
-            <?php endif; ?>
+            <?php endif;?>
         </div>
 
 
@@ -106,7 +112,7 @@
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
 
                 <!-- Reset Boxes Button -->
-                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
                     <span class="fa fa-refresh"></span>
                     <?php eT("Reset");?>
                 </a>

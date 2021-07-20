@@ -35,7 +35,9 @@ echo viewHelper::getViewTestTag('listSurveys');
                         'dataProvider' => $groupModel->search(),
                         'columns' => $groupModel->columns,
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' ',
+                        'itemsCssClass' =>'table-striped',
                         'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+                        'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id" ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     ));
                     ?>
                 </div>
@@ -48,6 +50,8 @@ echo viewHelper::getViewTestTag('listSurveys');
         window.location.hash = $(this).attr('href');
         e.preventDefault();
         $(this).tab('show');
+        $('.tab-dependent-button').hide();
+        $('.tab-dependent-button[data-tab="' + window.location.hash + '"]').show();
     });
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){
