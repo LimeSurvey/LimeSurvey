@@ -283,6 +283,7 @@ return array(
         'jquery-ace' => array(
             'devBaseUrl' => 'third_party/jquery-ace',
             'basePath' => 'third_party.jquery-ace',
+            'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.ace.js',
         ),

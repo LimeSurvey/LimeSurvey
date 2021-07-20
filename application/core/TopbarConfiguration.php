@@ -62,7 +62,12 @@ class TopbarConfiguration
         }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton']) || !empty($config['showCloseButton']) || !empty($config['showImportButton']) || !empty($config['showExportButton'])) {
+        } elseif (!empty($config['showSaveButton'])   ||
+                  !empty($config['showCloseButton'])  ||
+                  !empty($config['showImportButton']) ||
+                  !empty($config['showExportButton']) ||
+                  !empty($config['showBackButton'])   ||
+                  !empty($config['showWhiteCloseButton'])) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -308,7 +313,7 @@ class TopbarConfiguration
             'oSurvey' => $survey,
             'hasTokensReadPermission'   => $hasTokensReadPermission,
             'hasTokensCreatePermission' => $hasTokensCreatePermission,
-            'hasTokensExportPermission'  => $hasTokensExportPermission,
+            'hasTokensExportPermission' => $hasTokensExportPermission,
             'hasTokensImportPermission' => $hasTokensImportPermission,
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,

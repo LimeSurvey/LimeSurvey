@@ -469,6 +469,22 @@ class ThemeOptionsController extends LSBaseController
         $aData['importErrorMessage']  = $importErrorMessage;
         $aData['pageSize'] = App()->user->getState('pageSizeTemplateView', App()->params['defaultPageSize']); // Page size
 
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Themes');
+        
+        // White Bar with Buttons
+        $aData['fullpagebar']['returnbutton'] = [
+            'url' => 'index',
+            'text' => gT('Back'),
+        ];
+
+        // Upload and install button
+        $aData['fullpagebar']['themes']['canImport'] = true;
+        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalSurvey'] = 'importSurveyModal';
+        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalQuestion'] = 'importQuestionModal';
+        $aData['fullpagebar']['importErrorMessage'] = $importErrorMessage;
+        $this->aData = $aData;
+
         $this->render('index', $aData);
     }
 

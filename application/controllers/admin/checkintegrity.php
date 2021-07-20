@@ -42,7 +42,7 @@ class CheckIntegrity extends Survey_Common_Action
     public function index()
     {
         $aData = $this->_checkintegrity();
-        $aData['pageTitle'] = 'Check data integrity';
+        $aData['pageTitle'] = gT('Check data integrity');
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 

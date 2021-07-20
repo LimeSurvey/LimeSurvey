@@ -197,11 +197,11 @@
                     <?php eT('Users');?>
                 </li>
 
-                <!-- Manage survey administrators -->
+                <!-- User management -->
                 <?php if(Permission::model()->hasGlobalPermission('users','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("userManagement/index"); ?>">
-                            <?php eT("Survey administrators");?>
+                            <?php eT("User management");?>
                         </a>
                     </li>
                     <?php endif;?>
@@ -227,7 +227,7 @@
 
                 <?php endif;?>
 
-                <!-- Central participant database -->
+                <!-- Central participant management -->
                 <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')
                     || Permission::model()->hasGlobalPermission('participantpanel', 'create')
                     || Permission::model()->hasGlobalPermission('participantpanel', 'update')
@@ -236,7 +236,7 @@
                 ): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
-                            <?php eT("Central participant database"); ?>
+                            <?php eT("Central participant management"); ?>
                         </a>
                     </li>
                     <?php endif;?>
@@ -257,10 +257,10 @@
                 </li>
 
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
-                    <!-- Homepage -->
+                    <!-- Dashboard  -->
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("homepageSettings/index"); ?>">
-                            <?php eT("Homepage");?>
+                            <?php eT("Dashboard");?>
                         </a>
                     </li>
 
@@ -286,20 +286,11 @@
                     </li>
 
                 <!-- Surveymenu Editor -->
-                <!-- Menu -->
+                <!-- Survey Menu -->
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Menu");?>
-                        </a>
-                    </li>
-                <?php endif;?>
-                <!-- Surveymenu entry Editor -->
-                <!-- Menu entries -->
-                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
-                    <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
-                            <?php eT("Menu entries");?>
+                            <?php eT("Survey Menu");?>
                         </a>
                     </li>
                 <?php endif;?>

@@ -212,8 +212,19 @@ class SurveyAdministrationController extends LSBaseController
         $aData['model'] = new Survey('search');
         $aData['groupModel'] = new SurveysGroups('search');
 
-        $aData['pageTitle'] = 'Survey list';
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Survey list');
+
+        // Create Survey Button Url
         $aData['fullpagebar']['listSurveys']['buttons']['createSurvey']['url'] = $this->createUrl("surveyAdministration/newSurvey");
+        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroup']['url'] = $this->createUrl("admin/surveysgroups/sa/create");
+
+        // Create Survey Groups Button
+        $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
+        
+        // Return Button
+        $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 
         $this->aData = $aData;
         $this->render('listSurveys_view', $aData);
@@ -400,12 +411,14 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['oSurvey'] = $survey;
         $arrayed_data['data'] = $aData;
         $arrayed_data['title_bar']['title'] = gT('New survey');
+        $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
+        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
         // Green Bar Page Title
-        $aData['pageTitle'] = gT("Create a new survey");
+        $aData['pageTitle'] = gT("Create, import, or copy survey");
 
+        $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
         $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
-        //$aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
 
         $this->aData = $aData;
 
@@ -1968,7 +1981,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
-        if ($subaction === 'resources') {
+        if ($subaction === 'resources' || $subaction === 'panelintegration') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;

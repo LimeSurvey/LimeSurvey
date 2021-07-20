@@ -12,22 +12,6 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
-
-// Green Bar with Page Title
-$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Themes'));
-
-// White Bar with Button inside (visible in configuration pages)
-$this->renderPartial(
-    '../admin/super/fullpagebar_view',
-    array(
-        'fullpagebar' => array(
-            'returnbutton' => array(
-                'url' => 'index',
-                'text' => gT('Back'),
-            ),
-        ),
-    )
-);
 ?>
 
 <div class="meme ls-space margin left-15 right-15 row list-themes">
@@ -240,7 +224,16 @@ $this->renderPartial(
             <div class="col-lg-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-                <?php $this->renderPartial('./surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php $this->renderPartial(
+                        './surveythememenu',
+                        [
+                            'canImport' => $canImport,
+                            'importErrorMessage' => $importErrorMessage,
+                            'importModal' => 'importQuestionModal',
+                            'importTemplate' => 'importQuestionTemplate',
+                            'themeType' => 'question'
+                        ]
+                ); ?>
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
                 <!-- Available Quesiton Themes-->
                 <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
@@ -252,6 +245,15 @@ $this->renderPartial(
 <script>
     $('#themelist a').click(function (e) {
         e.preventDefault();
+        $(this).tab('show');
+
+        var target = $(e.target).attr("href");
+        if(target ==="#questionthemes"){
+            $("#uploadandinstall").attr('data-target', '#importQuestionModal');
+        }
+        if(target ==="#surveythemes"){
+            $("#uploadandinstall").attr('data-target', '#importSurveyModal');
+        }
         $(this).tab('show');
     });
 </script>
