@@ -249,10 +249,10 @@ echo viewHelper::getViewTestTag('templateOptions');
 
         var target = $(e.target).attr("href");
         if(target ==="#questionthemes"){
-            $("#btn-upload-install").attr('data-target', '#importQuestionModal');
+            $("#uploadandinstall").attr('data-target', '#importQuestionModal');
         }
         if(target ==="#surveythemes"){
-            $("#btn-upload-install").attr('data-target', '#importSurveyModal');
+            $("#uploadandinstall").attr('data-target', '#importSurveyModal');
         }
         $(this).tab('show');
     });
