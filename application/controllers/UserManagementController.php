@@ -223,7 +223,7 @@ class UserManagementController extends LSBaseController
 
         for (; $times > 0; $times--) {
             $name = $this->getRandomUsername($prefix);
-            $password = $this->getRandomPassword($passwordSize);
+            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
             $oUser = new User();
             $oUser->users_name = $name;
             $oUser->full_name = $name;
