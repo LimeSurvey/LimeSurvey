@@ -480,7 +480,8 @@ class ThemeOptionsController extends LSBaseController
 
         // Upload and install button
         $aData['fullpagebar']['themes']['canImport'] = true;
-        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modal'] = 'importSurveyModal';
+        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalSurvey'] = 'importSurveyModal';
+        $aData['fullpagebar']['themes']['buttons']['uploadAndInstall']['modalQuestion'] = 'importQuestionModal';
         $aData['fullpagebar']['importErrorMessage'] = $importErrorMessage;
         $this->aData = $aData;
 
