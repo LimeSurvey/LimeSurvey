@@ -51,6 +51,7 @@ export default {
             let classes = "ls-flex-row nowrap ";
             classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += (this.$store.state.lastMenuItemOpen==menuItem.id ? 'selected ' : ' ' );
+            classes += (menuItem.disabled ? 'disabled ' : ' ');
             return classes;
         },
         reConvertHTML(string) {
@@ -92,7 +93,7 @@ export default {
             :class="getLinkClass(menuItem)" >
 
             <div class="col-12" :class="menuItem.menu_class" 
-            v-bind:title="reConvertHTML(menuItem.menu_description)"  
+            v-bind:title="menuItem.disabled ? reConvertHTML(menuItem.disabled_tooltip) : reConvertHTML(menuItem.menu_description)"  
             data-toggle="tooltip" >
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
