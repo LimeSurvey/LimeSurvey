@@ -134,8 +134,8 @@
             <inputtype>text</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
-            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
+            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text</help>
+            <caption>Label for &#039;Other:&#039; option</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
@@ -391,8 +391,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only numerical input for &amp;#039;Other&amp;#039; text</help>
-            <caption>Numbers only for &amp;#039;Other&amp;#039;</caption>
+            <help>Allow only numerical input for &#039;Other&#039; text</help>
+            <caption>Numbers only for &#039;Other&#039;</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -538,8 +538,8 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039; option is active</help>
-            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
+            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039; option is active</help>
+            <caption>&#039;Other:&#039; comment mandatory</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
