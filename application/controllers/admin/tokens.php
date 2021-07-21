@@ -1351,6 +1351,8 @@ class tokens extends Survey_Common_Action
             $this->clearEmailSessionCache($iSurveyId);
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
+            $aData['topBar']['hide'] = true;
+
             $SQLemailstatuscondition   = $this->getSQLemailstatuscondition();
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
@@ -2241,7 +2243,7 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         if (!Yii::app()->request->getParam('ok')) {
             $aData['sidemenu']['state'] = false;
@@ -2308,7 +2310,7 @@ class tokens extends Survey_Common_Action
         $newtable = "old_tokens_{$iSurveyId}_$date";
         $newtableDisplay = Yii::app()->db->tablePrefix . $newtable;
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
@@ -2530,7 +2532,7 @@ class tokens extends Survey_Common_Action
         $aTokenencryptionoptions = $survey->getTokenEncryptionOptions();
         $aTokenencryptionoptions['enabled'] = 'Y';
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         // Update table, must be CRSF controlled
         if (Yii::app()->request->getPost('createtable') === "Y") {
@@ -2636,7 +2638,7 @@ class tokens extends Survey_Common_Action
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
             $aData['sidemenu']["token_menu"] = true;
-            $aData['topBar']['name'] = 'tokensTopbar_view';
+            $aData['topBar']['hide'] = true;
 
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }

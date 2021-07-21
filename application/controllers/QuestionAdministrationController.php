@@ -227,8 +227,9 @@ class QuestionAdministrationController extends LSBaseController
         // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
 
-        // Save Button
         $this->aData['showSaveButton'] = true;
+        $this->aData['showSaveAndCloseButton'] = true;
+        $this->aData['showCloseButton'] = true;
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;

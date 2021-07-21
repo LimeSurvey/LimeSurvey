@@ -15,11 +15,12 @@
             <?php if (isset($fullpagebar['themes'])): ?>
                 <!-- Upload and Install -->
                 <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
-                    <a  class="btn btn-default" 
-                        href="" 
+                    <a  id="uploadandinstall"
+                        class="btn btn-default"
+                        href=""
                         role="button" 
                         data-toggle="modal" 
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modal']; ?>"
+                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
                         style="margin-top: 10px;">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>

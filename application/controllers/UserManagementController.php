@@ -84,11 +84,10 @@ class UserManagementController extends LSBaseController
     /**
      * Open modal to edit, or create a new user
      *
-     * @param int $userid
-     * @return string
+     * @param int|null $userid
      * @throws CException
      */
-    public function actionAddEditUser(int $userid = 0): string
+    public function actionAddEditUser($userid = null)
     {
         if (
             ($userid === null && !Permission::model()->hasGlobalPermission('users', 'create'))
@@ -193,10 +192,9 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
      * @throws CException
      */
-    public function actionAddDummyUser(): string
+    public function actionAddDummyUser()
     {
         return $this->renderPartial('partial/adddummyuser', []);
     }
@@ -225,7 +223,7 @@ class UserManagementController extends LSBaseController
 
         for (; $times > 0; $times--) {
             $name = $this->getRandomUsername($prefix);
-            $password = $this->getRandomPassword($passwordSize);
+            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
             $oUser = new User();
             $oUser->users_name = $name;
             $oUser->full_name = $name;
@@ -346,10 +344,10 @@ class UserManagementController extends LSBaseController
      * Show some user detail and statistics
      *
      * @param $userid int
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionViewUser(int $userid): string
+    public function actionViewUser(int $userid) : ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -522,10 +520,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionAddRole(): string
+    public function actionAddRole(): ?string
     {
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
@@ -554,10 +552,10 @@ class UserManagementController extends LSBaseController
     /**
      * Save role of user
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionSaveRole(): string
+    public function actionSaveRole(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -594,7 +592,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionRenderUserImport(string $importFormat = 'csv'): string
+    public function actionRenderUserImport(string $importFormat = 'csv')
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->renderPartial(
