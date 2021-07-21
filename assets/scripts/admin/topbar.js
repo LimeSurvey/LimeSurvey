@@ -22,7 +22,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
         // Handle the topbar's parent element resizing.
         // Note that this resizing doesn't only happen when the window size changes, but also when the sidemenu is resized.
-        const resizeObserver = new ResizeObserver(entries => {
+        const resizeObserver = new ResizeObserver(() => {
             // Adjust the topbar width if it's floated
             if (topbar.hasClass('sticky')) {
                 topbar.css('width', topbar.parent().width());
