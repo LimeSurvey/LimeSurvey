@@ -138,7 +138,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 ),
 
                 array(
-                    'header' => gT('Name'),
+                    'header' => gT('Code'),
                     'name' => 'name',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type' => 'raw',
