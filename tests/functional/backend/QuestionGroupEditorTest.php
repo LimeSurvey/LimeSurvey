@@ -88,7 +88,6 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $groupRelevance->clear()->sendKeys("1");
 
             // Switch to German tab.
-            self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
             $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
             $germanTab->click();
 
@@ -160,7 +159,6 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $groupRelevance->clear()->sendKeys("1");
 
             // Switch to German tab.
-            self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
             $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
             $germanTab->click();
 
