@@ -1047,7 +1047,11 @@ class QuestionTheme extends LSActiveRecord
      */
     public function getDecodedSettings()
     {
-        return json_decode($this->settings);
+        if (is_object($this->settings)) {
+            return $this->settings;
+        } else {
+            return json_decode($this->settings);
+        }
     }
 
     /**

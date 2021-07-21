@@ -4677,13 +4677,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Fill column from question_attributes when it's not null or 'core'
             $oDB->createCommand("UPDATE {{questions}} q LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template'
                  SET q.question_theme_name = qt.value 
-                 WHERE qt.value IS NOT NULL AND qt.value <> 'core'")->execute();
+                 WHERE qt.value IS NOT NULL AND qt.value <> 'core' AND qt.value <> ''")->execute();
             // Fill null question_theme_name values using the proper theme name
-            $oDB->createCommand("UPDATE {{questions}} q LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = :true AND qt.extends = :extends
+            $oDB->createCommand("UPDATE {{questions}} q LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = 1 AND qt.extends = ''
                  SET q.question_theme_name = qt.name 
                  WHERE q.question_theme_name IS NULL")
-            ->bindValue(':true', 1)
-            ->bindValue(':extends', '')
             ->execute();
 
             // Also update 'preselectquestiontheme' user settings where the value is 'core'

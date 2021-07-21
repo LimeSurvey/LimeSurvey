@@ -127,11 +127,9 @@ class Question extends LSActiveRecord
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
-            // The 'question_theme' relation is possible but commented on purpose as to discourage its ussage.
             // This relation will fail for non saved questions, which is often the case
-            // when using question editor on create mode.
-            // So better use getQuestionTheme()
-            // 'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['type' => 'question_type', 'question_theme_name' => 'name']],
+            // when using question editor on create mode. Better use getQuestionTheme()
+            'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
         );
     }
 
@@ -1565,20 +1563,11 @@ class Question extends LSActiveRecord
      * Returns the QuestionTheme related to this question.
      * It's not implemented as a relation because relations only work on
      * persisted models.
-     * It also returns the proper theme when 'question_theme_name' is empty or 'core'.
      *
      * @return QuestionTheme|null
      */
     public function getQuestionTheme()
     {
-        $questionThemeName = $this->question_theme_name;
-        // If the model's question_theme_name attribute is empty or 'core', we get the name for the base theme
-        if (empty($questionThemeName) || $questionThemeName == 'core') {
-            $questionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
-        }
-        if (empty($this->relatedQuestionTheme) || $this->relatedQuestionTheme->name != $questionThemeName) {
-            $this->relatedQuestionTheme = QuestionTheme::model()->findByAttributes(['question_type' => $this->type, 'name' => $questionThemeName]);
-        }
-        return $this->relatedQuestionTheme;
+        return $this->getRelated("question_theme", $this->isNewRecord);
     }
 }
