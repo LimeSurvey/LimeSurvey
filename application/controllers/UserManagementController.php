@@ -344,10 +344,10 @@ class UserManagementController extends LSBaseController
      * Show some user detail and statistics
      *
      * @param $userid int
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionViewUser(int $userid)
+    public function actionViewUser(int $userid) : ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -520,10 +520,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionAddRole()
+    public function actionAddRole(): ?string
     {
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
@@ -552,10 +552,10 @@ class UserManagementController extends LSBaseController
     /**
      * Save role of user
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionSaveRole()
+    public function actionSaveRole(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
