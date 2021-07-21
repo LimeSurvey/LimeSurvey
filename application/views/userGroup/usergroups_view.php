@@ -39,17 +39,17 @@
                 ),
                 'columns' => [
                     [
-                        'header'      => gT('User group ID'),
-                        'name'        => 'usergroup_id',
-                        'value'       => '$data->ugid',
-                        'htmlOptions' => ['class' => 'col-md-2'],
-                    ],
-                    [
                         'header'      => gT('Actions'),
                         'name'        => 'actions',
                         'type'        => 'raw',
                         'value'       => '$data->buttons',
                         'htmlOptions' => ['class' => 'col-md-2 col-xs-1 text-left'],
+                    ],
+                    [
+                        'header'      => gT('User group ID'),
+                        'name'        => 'usergroup_id',
+                        'value'       => '$data->ugid',
+                        'htmlOptions' => ['class' => 'col-md-2'],
                     ],
                     [
                         'header'      => gT('Name'),
