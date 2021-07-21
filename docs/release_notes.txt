@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.9 (build 210722) to 5.0.10 (build 210723) July 21, 2021
+-Fixed issue: Show save and save-and-close button in edit question view (Olle Haerstedt)
+
+
 Changes from 5.0.8 (build 210712) to 5.0.9 (build 210722) July 21, 2021
 -Fixed issue: User clicks on Theme options icon and is redirected to a blank page (#1950) (Gabriel Jenik)
 -Fixed issue: Tables - User Group List - Move action buttons to the left and add balloon tooltips (Jessica Höck)
