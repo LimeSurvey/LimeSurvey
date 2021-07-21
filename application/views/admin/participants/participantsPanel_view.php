@@ -70,10 +70,10 @@
                 </a>
             <?php endif;?>
 
-            <!-- Information -->
+            <!-- Summary -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
                 <span class="fa fa-list-alt text-success" ></span>
-                <?php eT("Info");?>
+                <?php eT("Summary");?>
             </a>
 
             <!-- Import from CSV file -->
@@ -117,17 +117,18 @@
                     </a>
 
             <?php endif;?>
+
+             <!-- Add Participants -->
+             <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
+                <button class="btn btn-default" id="addParticipantToCPP">
+                    <i class="fa fa-plus-circle text-success"></i>&nbsp;
+                    <?php eT("Add participant"); ?>
+                </button>
+            <?php endif; ?>
         </div>
 
         <div class="col-md-3 text-right">
-            <!-- Add Participants -->
-            <?php if (isset($ownsAddParticipantsButton) && ($ownsAddParticipantsButton)): ?>
-                <button class="btn btn-default" id="addParticipantToCPP">
-                    <i class="fa fa-plus-circle text-success"></i>&nbsp;
-                    <?php eT("Add new participant"); ?>
-                </button>
-            <?php endif; ?>
-
+           
             <!-- Add Attribute -->
             <?php if(isset($ownsAddAttributeButton) && ($ownsAddAttributeButton)): ?>
                 <button class="btn btn-default" id="addParticipantAttributeName">
@@ -136,6 +137,7 @@
                     <?php eT("Add new attribute"); ?>
                 </button>
             <?php endif; ?>
+            
             <!-- Back -->
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                 <span class="fa fa-backward"></span>

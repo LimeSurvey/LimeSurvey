@@ -40,7 +40,15 @@
                         'header'      => gT('User group ID'),
                         'name'        => 'usergroup_id',
                         'value'       => '$data->ugid',
-                        'htmlOptions' => array('class' => 'col-md-1'),
+                        'htmlOptions' => array('class' => 'col-md-2'),
+                    ),
+
+                     array(
+                        'header'      => gT('Actions'),
+                        'name'        => 'actions',
+                        'type'        => 'raw',
+                        'value'       => '$data->buttons',
+                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-left'),
                     ),
 
                     array(
@@ -70,18 +78,9 @@
                         'value'       => '$data->countUsers',
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
-
-                    array(
-                        'header'      => '',
-                        'name'        => 'actions',
-                        'type'        => 'raw',
-                        'value'       => '$data->buttons',
-                        'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-                    ),
-
                 ),
 
-                'htmlOptions'      => array('style' => 'cursor: pointer;', 'class' => 'hoverAction'),
+                'htmlOptions'      => array('style' => 'cursor: pointer;'),
                 'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate'       => 'usergroups-grid-mine',
             ));

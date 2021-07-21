@@ -1,4 +1,6 @@
 <?php
+/** @var  User $oUser */
+
 $modalTitle = $oUser->isNewRecord ? gT('Add user') : gT('Edit user');
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',

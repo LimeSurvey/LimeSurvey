@@ -14,13 +14,14 @@ echo viewHelper::getViewTestTag('roles');
 
 ?>
 <?php $this->renderPartial('permissiontemplates/partials/_menubar', []); ?>
-<div class="container-fluid">
-    <div class="row" style="margin-top: 10px; margin-bottom: 100px">
-        <div class="container-fluid">
+<div class="col-lg-12">
+    <div class="row" style="margin-top: 8px; margin-bottom: 100px">
+        <div class="col-lg-12 content-right">
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id'              => 'RoleControl--identity-gridPanel',
-                'itemsCssClass'   => 'table table-striped items',
+                'itemsCssClass'   => 'table items',
+                'htmlOptions'     => array('style'=>'cursor: pointer;'),
                 'dataProvider'    => $model->search(),
                 'columns'         => $model->columns,
                 'filter'          => $model,
