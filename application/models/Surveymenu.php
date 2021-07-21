@@ -179,7 +179,8 @@ class Surveymenu extends LSActiveRecord
                         $aEntry['disabled'] = true;
                         $aEntry['disabled_tooltip'] = sprintf(gT("The %s section is not available yet. Please activate your survey to enable this section."), gT($aEntry['menu_title']));
                     } elseif ($oDataAttribute->isActive == false && $oSurvey->active == 'Y') {
-                        continue;
+                        $aEntry['disabled'] = true;
+                        $aEntry['disabled_tooltip'] = sprintf(gT("The %s section is not available while the survey is active."), gT($aEntry['menu_title']));
                     }
                 }
 

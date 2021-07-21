@@ -22,7 +22,13 @@ export default {
         },
     },
     methods:{
-        setActiveMenuItemIndex(menuItem){
+        setActiveMenuItemIndex(menuItem, event){
+            if (menuItem.disabled) {
+                if (event) {
+                    event.preventDefault();
+                }
+                return false;
+            }
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
             this.$log.log('Opened Menuitem', menuItem);
@@ -85,7 +91,7 @@ export default {
     <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">        
         <a  v-for="(menuItem) in sortedMenuEntries" 
             v-bind:key="menuItem.id" 
-            v-on:click.stop="setActiveMenuItemIndex(menuItem)"  
+            v-on:click.stop="setActiveMenuItemIndex(menuItem, $event)"  
             :href="menuItem.link" 
             :target="menuItem.link_external == true ? '_blank' : ''"
             :id="'sidemenu_'+menuItem.name" 
