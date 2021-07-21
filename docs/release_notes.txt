@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.8 (build 210712) to 5.0.9 (build 210722) July 21, 2021
+-Fixed issue: User clicks on Theme options icon and is redirected to a blank page (#1950) (Gabriel Jenik)
+-Fixed issue: Tables - User Group List - Move action buttons to the left and add balloon tooltips (Jessica Höck)
+-Fixed issue: Settings screen often flips to structure tab (#1954) (Gabriel Jenik)
+-Fixed issue: Separator showing in Chrome when clicking Back (Gabriel Jenik)
+-Fixed issue: Page Header and Topbar - My Account (Jessica Höck)
+-Fixed issue: On Survey List page when clicking on the action icon 'Add new question' the users gets a 404 (#1955) (Gabriel Jenik)
+-Fixed issue: Move Install & Upload Button to FullPageBar (left side) (Jessica Höck)
+-Fixed issue: Javascript bug when using Condition Editor and then navigating back to Question Summary and EDITING a question (#1961) (Gabriel Jenik)
+-Fixed issue: Hovering over disabled button (uninstall default theme) and also added icons to buttons in themes (Jessica Höck)
+-Fixed issue: Homepage settings give 500 error when you click on reset to default boxes (#1947) (Gabriel Jenik)
+-Fixed issue: Seperator - Chrome - When on back screens (#1956) (Gabriel Jenik)
+-Fixed issue #17451: Upload File link after session expire leads to a message unclear to users (Denis Chenu)
+-Fixed issue #17381: Missing evaluation of EM in CSS script field (#1945) (Gabriel Jenik)
+-Fixed issue #17378: Missing button: can not set permissions for survey group (encuestabizdevgit)
+-Fixed issue #17330: Ranking question mandatory validation is confusing (#1966) (Gabriel Jenik)
+-Fixed issue #17062: Restore-button, no error message if no old token table selected (#1940) (Gabriel Jenik)
+-Fixed issue #17046: When copying question cannot update text and help (#1923) (Gabriel Jenik)
+-Fixed issue #16843: Label set permission check was too tight (Carsten Schmitz)
+-Fixed issue #15663: Resources Manager does not import subfolders from zip file (Patrick Teichmann)
+
+
 Changes from 5.0.7 (build 210628) to 5.0.8 (build 210712) July 12, 2021
 +New feature: Hide question attributes with setting the hidden option to '1' in the xml file (Patrick Teichmann)
 -Fixed issue: Warning message on condition editor is showing if relevance is 1, but should not (Carsten Schmitz)
