@@ -34,6 +34,80 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.9 (build 210722) to 5.0.10 (build 210723) July 21, 2021
+-Fixed issue: Show save and save-and-close button in edit question view (Olle Haerstedt)
+
+
+Changes from 5.0.8 (build 210712) to 5.0.9 (build 210722) July 21, 2021
+-Fixed issue: User clicks on Theme options icon and is redirected to a blank page (#1950) (Gabriel Jenik)
+-Fixed issue: Tables - User Group List - Move action buttons to the left and add balloon tooltips (Jessica Höck)
+-Fixed issue: Settings screen often flips to structure tab (#1954) (Gabriel Jenik)
+-Fixed issue: Separator showing in Chrome when clicking Back (Gabriel Jenik)
+-Fixed issue: Page Header and Topbar - My Account (Jessica Höck)
+-Fixed issue: On Survey List page when clicking on the action icon 'Add new question' the users gets a 404 (#1955) (Gabriel Jenik)
+-Fixed issue: Move Install & Upload Button to FullPageBar (left side) (Jessica Höck)
+-Fixed issue: Javascript bug when using Condition Editor and then navigating back to Question Summary and EDITING a question (#1961) (Gabriel Jenik)
+-Fixed issue: Hovering over disabled button (uninstall default theme) and also added icons to buttons in themes (Jessica Höck)
+-Fixed issue: Homepage settings give 500 error when you click on reset to default boxes (#1947) (Gabriel Jenik)
+-Fixed issue: Seperator - Chrome - When on back screens (#1956) (Gabriel Jenik)
+-Fixed issue #17451: Upload File link after session expire leads to a message unclear to users (Denis Chenu)
+-Fixed issue #17381: Missing evaluation of EM in CSS script field (#1945) (Gabriel Jenik)
+-Fixed issue #17378: Missing button: can not set permissions for survey group (encuestabizdevgit)
+-Fixed issue #17330: Ranking question mandatory validation is confusing (#1966) (Gabriel Jenik)
+-Fixed issue #17062: Restore-button, no error message if no old token table selected (#1940) (Gabriel Jenik)
+-Fixed issue #17046: When copying question cannot update text and help (#1923) (Gabriel Jenik)
+-Fixed issue #16843: Label set permission check was too tight (Carsten Schmitz)
+-Fixed issue #15663: Resources Manager does not import subfolders from zip file (Patrick Teichmann)
+
+
+Changes from 5.0.7 (build 210628) to 5.0.8 (build 210712) July 12, 2021
++New feature: Hide question attributes with setting the hidden option to '1' in the xml file (Patrick Teichmann)
+-Fixed issue: Warning message on condition editor is showing if relevance is 1, but should not (Carsten Schmitz)
+-Fixed issue #17386: Missing curly brackets for expression input field(#1944) (Gabriel Jenik)
+-Fixed issue #17361: Upgrade from 3.14.6 to version 5.0.3 fails (Olle Haerstedt)
+-Fixed issue #17357: Database upgrade from 3.27.2 to latest 5.0.3 fails (missing default value) (Olle Haerstedt)
+-Fixed issue #17356: Error [SQL Server]IDENTITY_INSERT is already ON for table 'limesurvey_quota_languagesettings' when using quotas and MSSQL (Carsten Schmitz)
+-Fixed issue #14726: LanguageSelector national language (Olle Haerstedt)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Portugal) by cassiofs, femariso, fermacedo, holch, lucaspcs, marciojv, mauriciofurtado, samarta, tamiel
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+#Updated translation: Croatian by rovinj
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Azerbaijani by c_schmitz
+
+
+Changes from 5.0.6 (build 210625) to 5.0.7 (build 210628) June 28, 2021
+-Fixed issue #17394: Sharing a participant does not work in CPDB (Carsten Schmitz)
+-Fixed issue #17389: Giving Surveys in group permission didn't work (#1934) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by mauriciofurtado, jjesusfilho, femariso, marciojv, fermacedo, holch, educaticteced, marcelovincenzi, cassiofs, samarta
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.0.5 (build 210621) to 5.0.6 (build 210625) June 24, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Patrick Teichmann)
+-Fixed issue #17385: Ranking answer language issue (Olle Haerstedt)
+-Fixed issue #17372: Importing LSQ fails with files generated from LSv4+ (Olle Haerstedt)
+#Updated translation: Sami by c_schmitz
+#Updated translation: Sakha by c_schmitz
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: German by c_schmitz
+#Updated translation: German by RobinBur, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Azerbaijani by c_schmitz
+
+
 Changes from 5.0.4 (build 210614) to 5.0.5 (build 210621) June 21, 2021
 -Fixed issue #17371: Only a maximum of 100 characters can be entered in the heading for the question groups (Olle Haerstedt)
 -Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)

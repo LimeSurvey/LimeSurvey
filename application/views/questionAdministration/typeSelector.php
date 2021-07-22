@@ -30,6 +30,7 @@ $oQuestionSelector = $this->beginWidget(
         'value' => $question->type,
         'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
+        'buttonClasses' => ['btn-primary'],
         'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
             'selectedClass' => $questionTheme->getDecodedSettings()->class,//Question::getQuestionClass($question->type),

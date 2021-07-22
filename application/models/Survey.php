@@ -1488,6 +1488,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
     }
 
     /**
+     * Returns buttons for gridview.
      * @return string
      */
     public function getbuttons()
@@ -1495,32 +1496,28 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $sEditUrl     = App()->createUrl("/surveyAdministration/rendersidemenulink/subaction/generalsettings/surveyid/" . $this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/" . $this->sid);
         $sAddGroup    = App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid);
-        $sAddquestion = App()->createUrl("/questionAdministration/view/surveyid/" . $this->sid);
+        $sAddquestion = App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid);
 
         $button = '';
-
-        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
-        }
-
-        if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-default" href="' . $sStatUrl . '" role="button" data-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
-        }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-default" href="' . $sAddquestion . '" role="button" data-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-default" style="margin-right: 5px;" href="' . $sAddquestion . '" role="button" data-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-default" href="' . $sAddGroup . '" role="button" data-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-default" style="margin-right: 5px;" href="' . $sAddGroup . '" role="button" data-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
-        //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
-        //$previewUrl .= '/'.$this->sid;
-        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye"  ></span></a> ';
+        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
+            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
+        }
+
+        if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
+            $button .= '<a class="btn btn-default" href="' . $sStatUrl . '" role="button" data-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
+        }
 
         return $button;
     }
@@ -2270,7 +2267,7 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return true;
         }
         /* Inherited by SurveysInGroup */
-        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission($sPermission, $sGlobalCRUD, $iUserID)) {
+        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);

@@ -3378,7 +3378,7 @@ class LimeExpressionManager
         $this->runtimeTimings[] = [__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM', (microtime(true) - $now)];
         $now = microtime(true);
 
-        $this->qans = $this->getAnswerSetsForEM($surveyid, null, $_SESSION['LEMlang']);
+        $this->qans = $this->getAnswerSetsForEM($surveyid, $_SESSION['LEMlang']);
 
         $this->runtimeTimings[] = [__METHOD__ . ' - answers_model->getAnswerSetsForEM', (microtime(true) - $now)];
         $now = microtime(true);
@@ -6208,10 +6208,19 @@ class LimeExpressionManager
                     }
                     break;
                 case Question::QT_R_RANKING_STYLE:
-                    if (count($unansweredSQs) > 0) {
+                    $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                    // If min_answers or max_answers is set, we check that at least one answer is ranked.
+                    // But, if no limit is set, then all answers must be ranked.
+                    if (!empty($qattr['min_answers']) || !empty($qattr['max_answers'])) {
+                        $maxUnrankedAnswers = count($relevantSQs) - 1;
+                        $sMandatoryText = $LEM->gT('Please rank the items.');
+                    } else {
+                        $maxUnrankedAnswers = 0;
+                        $sMandatoryText = $LEM->gT('Please rank all items.');
+                    }
+                    if (count($unansweredSQs) > $maxUnrankedAnswers) {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
-                    $sMandatoryText = $LEM->gT('Please rank all items.');
                     $mandatoryTip .= App()->twigRenderer->renderPartial(
                         '/survey/questions/question_help/mandatory_tip.twig',
                         [
@@ -8269,7 +8278,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $where .= " and a.qid = q.qid and q.sid = " . $surveyid;
         }
         if (!is_null($lang)) {
-            $where .= " and a.language='" . $lang . "'";
+            $where .= " and l.language='" . $lang . "'";
         }
 
         $sQuery = "SELECT a.qid, a.code, l.answer, a.scale_id, a.assessment_value"

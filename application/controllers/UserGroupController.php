@@ -1,7 +1,12 @@
 <?php
-
+/**
+ * class UserGroupController
+ **/
 class UserGroupController extends LSBaseController
 {
+    /**
+     * @return array
+     **/
     public function accessRules()
     {
         return array(
@@ -59,7 +64,7 @@ class UserGroupController extends LSBaseController
         $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
         $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
 
-        $aData['pageTitle'] = 'User group list';
+        $aData['pageTitle'] = gT('User group list');
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -178,10 +183,13 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['usergroupbar']['edit'] = true;
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
+
+        // Return Button
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
 
         // Green Bar (SurveyManagerBar) Page Title
-        $basePageTitle = 'User group';
+        $basePageTitle = gT('User group');
         $userGroupName = $aData['groupname'];
         $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
@@ -236,7 +244,8 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT("Save");
 
@@ -286,13 +295,19 @@ class UserGroupController extends LSBaseController
             $this->redirect('index');
         }
 
+        // Save Button
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+
+        // Add User Group Button
         $aData['usergroupbar']['add'] = 'admin/usergroups';
 
         # Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = 'Add user group';
+        $aData['pageTitle'] = gT('Add user group');
 
         $this->aData = $aData;
 
@@ -478,10 +493,20 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        // Send Button
+        $aData['usergroupbar']['savebutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['savebutton']['text'] = gT('Send');
+
+        // Reset Button
+        $aData['usergroupbar']['resetbutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['resetbutton']['text'] = gT('Reset');
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = "Mail to all Members";
+        $aData['pageTitle'] = gT("Mail to all Members");
 
         $this->aData = $aData;
 

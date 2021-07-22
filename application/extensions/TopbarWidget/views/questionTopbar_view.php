@@ -9,26 +9,31 @@ $aData = get_defined_vars();
 $leftSideContentSummary = $this->render('includes/questionTopbarLeft_view', get_defined_vars(), true);
 $leftSideContentEditor = $this->render('includes/editQuestionTopbarLeft_view', get_defined_vars(), true);
 $rightSideContent = $this->render('includes/editQuestionTopbarRight_view', get_defined_vars(), true);
+$rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_view', get_defined_vars(), true);
 
 ?>
-
+<!-- Question Top Bar -->
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
     <?php if ($oQuestion->qid !== 0): ?>
-        <div id="question-summary-topbar" class='row container-fluid'>
+        <div id="question-summary-topbar" class='row container-fluid' style="margin-bottom: 8px;">
             <!-- Left Side -->
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <?= $leftSideContentSummary ?>
+            </div>
+
+            <div class="col-md-6 pull-right text-right">
+                <?= $rightSideContentSummary ?>
             </div>
         </div>
     <?php endif; ?>
-    <div id="question-create-edit-topbar" class='row container-fluid' style="display: none">
+    <div id="question-create-edit-topbar" class='row container-fluid' style="display: none; margin-bottom: 8px;">
         <!-- Left Side -->
-        <div class="<?= !empty($rightSideContent) ? 'col-md-8' : 'col-md-12'?>">
+        <div class="<?= !empty($rightSideContent) ? 'col-md-6' : 'col-md-12'?>">
             <?= $leftSideContentEditor ?>
         </div>
 
         <!-- Right Side -->
-        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-4' : 'col-md-12'?> pull-right text-right">
+        <div class="<?= !empty($leftSideContentEditor) ? 'col-md-6' : 'col-md-12'?> pull-right text-right">
             <?= $rightSideContent ?>
         </div>
     </div>

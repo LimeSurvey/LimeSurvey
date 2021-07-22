@@ -768,7 +768,7 @@ class TemplateConfiguration extends TemplateConfig
             . '\'
             data-text="' . gT('Please type in the new theme name above.') . '"
             data-button-no="' . gt('Cancel') . '" 
-            data-button-yes="' . gt('Apply') . '"
+            data-button-yes="' . gt('Extend') . '"
             title="' . sprintf(gT('Type in the new name to extend %s'), $this->template_name) . '"
             class="btn btn-primary btn-block selector--ConfirmModal">
                 <i class="fa fa-copy"></i>
@@ -785,7 +785,7 @@ class TemplateConfiguration extends TemplateConfig
             data-button-type="btn-danger" 
             title="' . gT('Uninstall this theme') . '"
             class="btn btn-danger btn-block selector--ConfirmModal">
-                <span class="icon-trash"></span>
+                <span class="fa fa-trash"></span>
                 ' . gT('Uninstall') . '
             </a>';
 
@@ -799,7 +799,7 @@ class TemplateConfiguration extends TemplateConfig
                 data-button-type="btn-warning" 
                 title="' . gT('Reset this theme') . '"
                 class="btn btn-warning btn-block selector--ConfirmModal">
-                    <span class="icon-trash"></span>
+                    <span class="fa fa-refresh"></span>
                     ' . gT('Reset') . '
             </a>';
 
@@ -813,12 +813,12 @@ class TemplateConfiguration extends TemplateConfig
             } else {
                 $sButtons .= '
                     <a
-                        class="btn btn-danger btn-block"
-                        disabled
+                        class="btn btn-danger btn-block disabled"
                         data-toggle="tooltip"
+                        data-placement="top"
                         title="' . gT('You cannot uninstall the default template.') . '"
                     >
-                        <span class="icon-trash"></span>
+                        <span class="fa fa-trash"></span>
                         ' . gT('Uninstall') . '
                     </a>
                 ';

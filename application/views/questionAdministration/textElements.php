@@ -17,6 +17,14 @@
             </a>
         </li>
     <?php endif; ?>
+    <!-- Language label -->
+    <li class="pull-right">
+        <?php foreach($oSurvey->allLanguages as $lang): ?>
+            <h5 class="lang-hide lang-<?= $lang; ?>" style="<?= $lang != $oSurvey->language ? 'display: none;' : '' ?>">
+                <span class="label label-default"><?= strtoupper($lang) ?></span>
+            </h5>
+        <?php endforeach; ?>
+    </li>
 </ul>
 <div class="tab-content">
     <!-- Question text tab content -->

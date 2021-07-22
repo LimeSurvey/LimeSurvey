@@ -667,34 +667,13 @@ class responses extends Survey_Common_Action
         }
 
         $aResponseId = (is_array($ResponseId)) ? $ResponseId : array($ResponseId);
-
         $errors = 0;
         $timingErrors = 0;
 
         foreach ($aResponseId as $iResponseId) {
-            $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
-            $beforeDataEntryDelete->set('iSurveyID', $iSurveyId);
-            $beforeDataEntryDelete->set('iResponseID', $iResponseId);
-            App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
-
-            $response = Response::model($iSurveyId)->findByPk($iResponseId);
-            if ($response) {
-                $result = $response->delete(true);
-                if (!$result) {
-                    $errors++;
-                } else {
-                    $oSurvey = Survey::model()->findByPk($iSurveyId);
-                    // TODO : add it to response->delete and response->afterDelete
-                    if ($oSurvey->savetimings == "Y") {
-                        $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
-                        if (!$result) {
-                            $timingErrors++;
-                        }
-                    }
-                }
-            } else {
-                $errors++;
-            }
+            $resultErrors = $this->deleteResponse($iSurveyId, $iResponseId);
+            $errors += $resultErrors['numberOfErrors'];
+            $timingErrors += $resultErrors['numberOfTimingErrors'];
         }
 
         if ($errors || $timingErrors) {
@@ -712,6 +691,73 @@ class responses extends Survey_Common_Action
         }
         App()->setFlashMessage(gT('Response(s) deleted.'), 'success');
         $this->getController()->redirect(array("admin/responses", "sa" => "browse", "surveyid" => $iSurveyId));
+    }
+
+    /**
+     * Deletes a single response and redirects to the gridview.
+     *
+     * @param $surveyid     -- the survey id
+     * @param $responseId   -- the response id to be deleted
+     * @throws CDbException
+     * @throws CHttpException
+     */
+    public function actionDeleteSingle($surveyid, $responseId)
+    {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+
+        $iSurveyId =(int) $surveyid;
+        $iResponseId = (int) $responseId;
+        $resultErrors = $this->deleteResponse($iSurveyId, $iResponseId);
+        if ($resultErrors['numberOfErrors'] > 0 || $resultErrors['numberOfTimingErrors']) {
+            $message = gt('Response could not be deleted');
+            App()->setFlashMessage($message, 'error');
+            $this->getController()->redirect(array("admin/responses", "sa" => "browse", "surveyid" => $iSurveyId));
+        }
+
+        App()->setFlashMessage(gT('Response deleted.'), 'success');
+        $this->getController()->redirect(array("admin/responses", "sa" => "browse", "surveyid" => $iSurveyId));
+    }
+
+    /**
+     * Deletes a response
+     *
+     * @param $iSurveyId
+     * @param $iResponseId
+     * @return int[]
+     * @throws CDbException
+     */
+    private function deleteResponse($iSurveyId, $iResponseId)
+    {
+        $errors = 0;
+        $timingErrors = 0;
+
+        $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+        $beforeDataEntryDelete->set('iSurveyID', $iSurveyId);
+        $beforeDataEntryDelete->set('iResponseID', $iResponseId);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
+        $response = Response::model($iSurveyId)->findByPk($iResponseId);
+        if ($response) {
+            $result = $response->delete(true);
+            if (!$result) {
+                $errors += 1;
+            } else {
+                $oSurvey = Survey::model()->findByPk($iSurveyId);
+                // TODO : add it to response->delete and response->afterDelete
+                if ($oSurvey->savetimings == "Y") {
+                    $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                    if (!$result) {
+                        $timingErrors += 1;
+                    }
+                }
+            }
+        } else {
+            $errors += 1;
+        }
+
+        return ['numberOfErrors' => $errors, 'numberOfTimingErrors' => $timingErrors];
     }
 
     /**

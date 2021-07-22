@@ -346,6 +346,11 @@ class Survey_Common_Action extends CAction
                 LimeExpressionManager::SetSurveyId($aData['surveyid']);
                 LimeExpressionManager::StartProcessingPage(false, true);
 
+                // If 'landOnSideMenuTab' is not set already, default to 'settings'.
+                if (empty($aData['sidemenu']['landOnSideMenuTab'])) {
+                    $aData['sidemenu']['landOnSideMenuTab'] = 'settings';
+                }
+
                 $renderFile = $basePath . '/layout_insurvey.php';
             } else {
                 $renderFile = $basePath . '/layout_main.php';

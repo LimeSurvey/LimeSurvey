@@ -293,7 +293,7 @@ class participantsaction extends Survey_Common_Action
         $aData['searchstring'] = $searchstring;
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = "Central participants database summary";
+        $aData['pageTitle'] = gT("Central participants database summary");
 
         // loads the participant panel and summary view
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
@@ -401,7 +401,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         // Green Bar (SurveyManagerBar) Page Title
-        $aData['pageTitle'] = 'Central participant management';
+        $aData['pageTitle'] = gT('Central participant management');
         $aData['ownsAddParticipantsButton'] = true;
 
         // Loads the participant panel view and display participant view
@@ -780,7 +780,7 @@ class participantsaction extends Survey_Common_Action
 
         $aData = array(
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => "Import CSV",
+            'pageTitle' => gT("Import CSV"),
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'), $aData);
@@ -1301,7 +1301,7 @@ class participantsaction extends Survey_Common_Action
             'deleteblacklisted' => Yii::app()->getConfig('deleteblacklisted'),
             'allowunblacklist' => Yii::app()->getConfig('allowunblacklist'),
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
-            'pageTitle' => "Blacklist settings",
+            'pageTitle' => gT("Blacklist settings"),
         );
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'), $aData);
@@ -1374,7 +1374,7 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Attribute'),
-            'pageTitle' => "Attribute management",
+            'pageTitle' => gT("Attribute management"),
             'ownsAddAttributeButton' => true,
         );
         // Page size
@@ -1976,7 +1976,7 @@ class participantsaction extends Survey_Common_Action
             'aAttributes' => ParticipantAttributeName::model()->getAllAttributes(),
             'model' => $model,
             'debug' => Yii::app()->request->getParam('Participant'),
-            'pageTitle' => "Share panel",
+            'pageTitle' => gT("Share panel"),
         );
         // Page size
         if (Yii::app()->request->getParam('pageSizeShareParticipantView')) {
@@ -2293,20 +2293,18 @@ class participantsaction extends Survey_Common_Action
         }
 
         $i = 0;
-        // $iShareUserId == 0 means any user
-        if ($iShareUserId !== '') {
-            foreach ($participantIds as $id) {
-                $time = time();
-                $aData = array(
-                    'participant_id' => (int) $id,
-                    'share_uid' => $iShareUserId,
-                    'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
-                );
-                ParticipantShare::model()->storeParticipantShare($aData, $permissions);
-                $i++;
-            }
+        foreach ($participantIds as $id) {
+            $time = time();
+            $aData = array(
+                'participant_id' => $id, //id is a UUID, not an integer
+                'share_uid' => $iShareUserId, // $iShareUserId == 0 means any user
+                'date_added' => date('Y-m-d H:i:s', $time),
+                'can_edit' => ($bCanEdit === false ? 0 : 1)
+            );
+            ParticipantShare::model()->storeParticipantShare($aData, $permissions);
+            $i++;
         }
+
         $this->ajaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 

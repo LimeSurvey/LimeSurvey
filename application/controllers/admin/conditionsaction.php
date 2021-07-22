@@ -116,32 +116,23 @@ class conditionsaction extends Survey_Common_Action
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
+
+        // Top Bar
         $aData['topBar']['name'] = 'baseTopbar_view';
-        $aData['topBar']['leftSideView'] = 'conditionDesignerTopbarLeft_view';
+        $aData['topBar']['leftSideView']  = 'conditionDesignerTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-        $aData['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid); // Close button
+        
+        $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
+
+        // Green Save and Close Button
+        $aData['showGreenSaveAndCloseButton'] = true;
+        $aData['closeUrl'] = $returnUrl;
+
+        // White Close Button
+        $aData['showWhiteCloseButton'] = true;
+        $aData['returnUrl'] = $returnUrl;
+
         $aData['currentMode'] = ($subaction == 'conditions' || $subaction == 'copyconditionsform') ? $subaction : 'edit';
-        //$aData['questionbar']['buttons']['conditions'] = true;
-
-        /*switch ($subaction) {
-            case 'editconditionsform':
-                $aData['questionbar']['buttons']['condition']['edit'] = true;
-                break;
-
-            case 'conditions':
-                $aData['questionbar']['buttons']['condition']['conditions'] = true;
-                break;
-
-            case 'copyconditionsform':
-                $aData['questionbar']['buttons']['condition']['copyconditionsform'] = true;
-                break;
-
-            default:
-                $aData['questionbar']['buttons']['condition']['edit'] = true;
-                break;
-        }*/
-
 
         $postSubaction = $request->getPost('subaction');
         if (!empty($postSubaction)) {
@@ -306,6 +297,7 @@ class conditionsaction extends Survey_Common_Action
         $oQuestion = Question::model()->find('qid=:qid', array(':qid' => $qid));
         $aData['oQuestion'] = $oQuestion;
 
+        // @todo why surveyid and iSurveyID will be used? Only use one!
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
         $aData['gid'] = $gid;
@@ -319,6 +311,7 @@ class conditionsaction extends Survey_Common_Action
 
         // Some extra args to getEditConditionForm
         $args['subaction'] = $subaction;
+        // @todo why surveyid and iSurveyID will be used? Only use one!
         $args['iSurveyID'] = $this->iSurveyID;
         $args['gid'] = $gid;
         $args['qcount'] = $this->getQCount($cquestions);
@@ -362,7 +355,7 @@ class conditionsaction extends Survey_Common_Action
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
-            //$aData['subaction'] = $subaction;
+            
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
                 $aViewUrls['conditionslist_view'][] = $aData;
@@ -413,13 +406,6 @@ class conditionsaction extends Survey_Common_Action
                         $aViewUrls['output'] = '';
                     }
 
-                /*
-                $aViewUrls['output'] .= $this->getController()->renderPartial(
-                '/admin/conditions/includes/conditions_scenario',
-                $aData,
-                true
-                );
-                 */
                     $aData['conditionHtml'] = '';
 
                     unset($currentfield);
@@ -450,17 +436,13 @@ class conditionsaction extends Survey_Common_Action
                             $data = array();
 
                             if (isset($currentfield) && $currentfield != $rows['cfieldname']) {
-                                //$aViewUrls['output'] .= gT("and");
                                 $data['andOrOr'] = gT('and');
                             } elseif (isset($currentfield)) {
-                                //$aViewUrls['output'] .= gT("or");
                                 $data['andOrOr'] = gT('or');
                             } else {
                                 $data['andOrOr'] = '';
                             }
 
-                            // TODO: Is this form needed?
-                            //$aViewUrls['output'] .= CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"conditionaction{$rows['cid']}",'name'=>"conditionaction{$rows['cid']}"));
                             $data['formAction'] = $this->getController()->createUrl(
                                 '/admin/conditions/sa/index/',
                                 array(
@@ -573,8 +555,6 @@ class conditionsaction extends Survey_Common_Action
                                 $aData['rows'] = $rows;
                                 $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
 
-                                //$aViewUrls['includes/conditions_edit'][] = $aData;
-
                                 $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit', $aData, true);
                                 $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
                             } else {
@@ -602,7 +582,7 @@ class conditionsaction extends Survey_Common_Action
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            } elseif(!empty(trim($oQuestion->relevance))) {
+            } elseif (!empty(trim($oQuestion->relevance)) ||  trim($oQuestion->relevance) == '1') {
                 $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/customized_conditions', $aData, true);
             } else {
                 // no condition ==> disable delete all conditions button, and display a simple comment
@@ -1229,7 +1209,6 @@ class conditionsaction extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        ////$aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
@@ -1371,7 +1350,6 @@ class conditionsaction extends Survey_Common_Action
             //Go through each question until we reach the current one
             if ($qrow["qid"] == $qid) {
                 $position = "after";
-                //break;
             } elseif ($qrow["qid"] != $qid && $position == "after") {
                 $postquestionlist[] = $qrow['qid'];
             }
@@ -1715,7 +1693,7 @@ class conditionsaction extends Survey_Common_Action
      * @return string html
      * @throws CException
      */
-    protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
+    protected function getCopyForm(int $qid, int $gid, array $conditionsList, array $pquestions): string
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'checkgroup.js', LSYii_ClientScript::POS_BEGIN);
 
@@ -1749,7 +1727,7 @@ class conditionsaction extends Survey_Common_Action
      * @return string
      * @throws CException
      */
-    protected function getEditConditionForm(array $args)
+    protected function getEditConditionForm(array $args): string
     {
         /** @var array $cquestions */
         /** @var string $p_cquestions */
@@ -1864,7 +1842,7 @@ class conditionsaction extends Survey_Common_Action
      * @param array $p_canswers E.g. array('A2')
      * @return string JS code
      */
-    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
+    protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers): string
     {
         $js_getAnswers_onload = "";
         foreach ($cquestions as $cqn) {
@@ -1886,7 +1864,7 @@ class conditionsaction extends Survey_Common_Action
      * @param string $subaction
      * @return string
      */
-    protected function getEDITConditionConst($subaction)
+    protected function getEDITConditionConst(string $subaction): string
     {
         $request = Yii::app()->request;
         $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst', ''));
@@ -1900,7 +1878,7 @@ class conditionsaction extends Survey_Common_Action
      * @param string $subaction
      * @return string
      */
-    protected function getEDITConditionRegexp($subaction)
+    protected function getEDITConditionRegexp(string $subaction): string
     {
         $request = Yii::app()->request;
         $EDITConditionRegexp = '';
@@ -1921,7 +1899,7 @@ class conditionsaction extends Survey_Common_Action
      * @param string $subaction
      * @return string JS
      */
-    protected function getEditFormJavascript($subaction)
+    protected function getEditFormJavascript(string $subaction): string
     {
         $request = Yii::app()->request;
         $aViewUrls = array('output' => '');
@@ -1930,7 +1908,6 @@ class conditionsaction extends Survey_Common_Action
             if ($request->getPost('EDITConditionConst', '') !== '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('EDITConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
             } elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='" . HTMLEscape($request->getPost('EDITprevQuestionSGQA')) . "';\n";
@@ -1941,7 +1918,6 @@ class conditionsaction extends Survey_Common_Action
             } elseif ($request->getPost('EDITConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('EDITConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
             } elseif (is_array($request->getPost('EDITcanswers'))) {
                 // was a predefined answers post
@@ -1960,7 +1936,6 @@ class conditionsaction extends Survey_Common_Action
             if ($request->getPost('ConditionConst', '') !== '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('ConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
             } elseif ($request->getPost('prevQuestionSGQA') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='" . HTMLEscape($request->getPost('prevQuestionSGQA')) . "';\n";
@@ -1971,7 +1946,6 @@ class conditionsaction extends Survey_Common_Action
             } elseif ($request->getPost('ConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
-                //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('ConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
             } else {
                 // was a predefined answers post
@@ -2036,7 +2010,7 @@ class conditionsaction extends Survey_Common_Action
      * @return string html
      * @throws CException
      */
-    protected function getQuestionNavOptions($theserows, $postrows, $args)
+    protected function getQuestionNavOptions(array $theserows, array $postrows, array $args): string
     {
         /** @var integer $gid */
         /** @var integer $qid */
@@ -2079,7 +2053,7 @@ class conditionsaction extends Survey_Common_Action
      * @param int $qid Questino id
      * @return string url
      */
-    protected function createNavigatorUrl($gid, $qid)
+    protected function createNavigatorUrl(int $gid, int $qid): string
     {
         return $this->getController()->createUrl(
             '/admin/conditions/sa/index/subaction/editconditionsform/',
@@ -2098,7 +2072,7 @@ class conditionsaction extends Survey_Common_Action
      * @param boolean $surveyIsAnonymized
      * @return string js
      */
-    protected function getJavascriptForMatching(array $canswers, array $cquestions, $surveyIsAnonymized)
+    protected function getJavascriptForMatching(array $canswers, array $cquestions, bool $surveyIsAnonymized): string
     {
         $javascriptpre = ""
             . "\tvar Fieldnames = new Array();\n"
@@ -2141,7 +2115,7 @@ class conditionsaction extends Survey_Common_Action
      * @param string[] $extractedTokenAttr
      * @return string
      */
-    protected function getAttributeName($extractedTokenAttr)
+    protected function getAttributeName($extractedTokenAttr): string
     {
         if (isset($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])])) {
             $thisAttrName = HTMLEscape($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])]['description']);
@@ -2164,7 +2138,7 @@ class conditionsaction extends Survey_Common_Action
      * @param string $rightOperandType
      * @return string html
      */
-    protected function getHiddenFields(array $rows, $leftOperandType, $rightOperandType)
+    protected function getHiddenFields(array $rows, string $leftOperandType, string $rightOperandType): string
     {
         $html = '';
 
@@ -2228,7 +2202,7 @@ class conditionsaction extends Survey_Common_Action
      * @param int $qid
      * @return CActiveRecord[] Conditions
      */
-    protected function getAllScenarios($qid)
+    protected function getAllScenarios(int $qid)
     {
         $criteria = new CDbCriteria();
         $criteria->select = 'scenario'; // only select the 'scenario' column
@@ -2246,7 +2220,7 @@ class conditionsaction extends Survey_Common_Action
      * @param int $gid
      * @return void
      */
-    protected function redirectToConditionStart($qid, $gid)
+    protected function redirectToConditionStart(int $qid, int $gid)
     {
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/editconditionsform/',
@@ -2265,7 +2239,7 @@ class conditionsaction extends Survey_Common_Action
      * @param int $scenariocount
      * @return boolean
      */
-    protected function shouldShowScenario($subaction, $scenariocount)
+    protected function shouldShowScenario(string $subaction, int $scenariocount): bool
     {
         return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount == 0);
     }
@@ -2276,7 +2250,7 @@ class conditionsaction extends Survey_Common_Action
      * @param array $cquestions
      * @return int
      */
-    protected function getQCount(array $cquestions)
+    protected function getQCount(array $cquestions): int
     {
         if (count($cquestions) > 0 && count($cquestions) <= 10) {
             $qcount = count($cquestions);

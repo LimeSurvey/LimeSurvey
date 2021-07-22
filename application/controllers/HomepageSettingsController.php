@@ -58,10 +58,10 @@ class HomepageSettingsController extends LSBaseController
                 'boxbuttons' => true,
                 'returnbutton' => [
                     'url'=>'admin/index',
-                    'text'=>gT('Close'),
+                    'text'=>gT('Back'),
                 ],
             ],
-            'pageTitle' => 'Home page settings',
+            'pageTitle' => gT('Dashboard'),
         ];
 
         $this->render('index', [
@@ -108,7 +108,7 @@ class HomepageSettingsController extends LSBaseController
         }
 
         $this->aData = [
-            'pageTitle' => 'New box',
+            'pageTitle' => gT('New box'),
             'fullpagebar' => [
                 'savebutton' => [
                     'form' => 'boxes-form',
@@ -116,9 +116,9 @@ class HomepageSettingsController extends LSBaseController
                 'saveandclosebutton' => [
                     'form' => 'boxes-form'
                 ],
-                'closebutton' => [
-                    'url' => Yii::app()->createUrl('homepageSettings/index')
-                ]
+                'white_closebutton' => [
+                    'url' => Yii::app()->createUrl('homepageSettings/index'),
+                ],
             ],
             'model' => $model,
         ];
@@ -165,7 +165,7 @@ class HomepageSettingsController extends LSBaseController
             }
         }
         $this->aData = [
-            'pageTitle' => 'Update box ' . $model->title,
+            'pageTitle' => gT('Update box ') . $model->title,
             'fullpagebar' => [
                 'savebutton' => [
                     'form' => 'boxes-form',
@@ -173,7 +173,7 @@ class HomepageSettingsController extends LSBaseController
                 'saveandclosebutton' => [
                     'form' => 'boxes-form'
                 ],
-                'closebutton' => [
+                'white_closebutton' => [
                     'url' => Yii::app()->createUrl('homepageSettings/index'),
                 ],
              ],

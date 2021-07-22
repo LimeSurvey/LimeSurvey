@@ -3748,7 +3748,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
         }
         reset($langs);
     }
-    switchMSSQLIdentityInsert('quota_languagesettings', true);
+    switchMSSQLIdentityInsert('quota_languagesettings', false);
 
     return true;
 }

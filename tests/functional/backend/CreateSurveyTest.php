@@ -97,7 +97,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $titleInput->clear()->sendKeys($title);
 
             // Click save.
-            $save = self::$webDriver->findElement(WebDriverBy::id('save-form-button'));
+            $save = self::$webDriver->findElement(WebDriverBy::id('create-survey-submit'));
             $save->click();
 
             sleep(1);

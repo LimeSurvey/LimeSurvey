@@ -23,7 +23,7 @@ $isAllAnswersSelected = ($oQuestion->type != "*" && count($question_answers) == 
                 <?php if ($oQuestion->type == '*'): ?>
                     <?php $this->renderPartial('/admin/quotas/_newanswer_equation',['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]);?>
                 <?php else:?>
-                        <h2><?php echo sprintf(gT("New answer for quota '%s'"), $oQuota->name);?></h2>
+                        <h2><?php echo sprintf(gT("New answer for quota '%s'"), CHtml::encode($oQuota->name));?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
                         <div class='form-group'>
                             <div class='col-sm-5 col-sm-offset-4'>

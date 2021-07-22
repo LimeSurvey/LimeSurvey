@@ -346,17 +346,20 @@ class SurveyDynamic extends LSActiveRecord
         $gridButtons['deleteresponse'] = array(
             'label' => '<span class="sr-only">' . gT("Delete this response") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/responses/sa/actionDelete",array("surveyid"=>' . self::$sid . ',"sResponseId"=>$data->id));',
             'visible' => 'boolval(' . $baseVisible . ')',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-delete",
-                'data-toggle' => "tooltip",
+                'data-toggle' => "modal",
+                'data-target' => '#confirmation-modal',
+                'data-btnclass' => 'btn-danger',
+                'data-btntext' => gt('Delete'),
+                'data-href' => 'App()->createUrl("admin/responses/sa/actionDeleteSingle",array("surveyid"=>' . self::$sid . ',"responseId"=>$data->id));',
+                'evaluateOptions' => array('data-href'),
                 'title' => gT("Delete this response"),
-                'data-confirm-text' => gT('Do you want to delete this response?')
+                'data-message' => gT('Do you want to delete this response?')
                 . '<br/>'
                 . gT('Please note that if you delete an incomplete response during a running survey, the participant will not be able to complete it.')
             ),
-            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         return $gridButtons;
     }

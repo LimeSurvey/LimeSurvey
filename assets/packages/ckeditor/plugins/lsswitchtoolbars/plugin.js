@@ -25,14 +25,16 @@
                     if (isMaximized) {
                         editor.execCommand('maximize');
                     }
+                    var switchToFull = config.toolbar == config.basicToolbar;
                     editor.destroy();
-                    config.toolbar = config.toolbar == config.basicToolbar ? config.fullToolbar : config.basicToolbar;
+                    config.toolbar = switchToFull ? config.fullToolbar : config.basicToolbar;
                     var newEditor = CKEDITOR.replace(name, config);
                     if (isMaximized) {
                         newEditor.on('instanceReady', function(event) {
                             this.execCommand('maximize');
                         });
                     }
+                    CKEDITOR.tools.setCookie('LS_CKE_TOOLBAR', switchToFull ? 'full' : 'basic');
                 },
 
                 editorFocus: false,
