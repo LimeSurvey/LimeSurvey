@@ -1,6 +1,9 @@
 $(document).on('ready pjax:scriptcomplete', function () {
     function makeTopbarSticky() {
         const topbar = $('.menubar:not(.surveymanagerbar)');
+        if (topbar.length == 0) {
+            return;
+        }
         const topbarOffset = topbar.offset().top;
 
         // When the topbar is floated, the space it occupies is released, so the rest of the content "jumps" up.
