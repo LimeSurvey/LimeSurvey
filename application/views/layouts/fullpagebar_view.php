@@ -43,7 +43,7 @@
                    data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
+                   style="margin-top: 10px; margin-bottom: 10px;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
                 </a>
