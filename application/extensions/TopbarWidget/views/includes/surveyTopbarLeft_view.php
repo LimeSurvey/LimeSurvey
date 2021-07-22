@@ -218,61 +218,6 @@
     </div>
 <?php endif; ?>
 
-<!-- Token -->
-<?php if($hasSurveyTokensPermission || $hasSurveyTokensReadPermission):?>
-    <a class="btn btn-default pjax btntooltip hidden-xs" href="<?php echo App()->createUrl("admin/tokens/sa/index/surveyid/$sid"); ?>" role="button">
-        <span class="fa fa-user"></span>
-        <?php eT("Survey participants"); ?>
-    </a>
-<?php endif; ?>
-
-<!-- Responses & Statistics -->
-<?php if ($hasResponsesStatisticsReadPermission || $hasResponsesCreatePermission || $hasResponsesReadPermission): ?>
-    <?php if ($oSurvey->isActive): ?>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="icon-responses" ></span>
-                <?php eT("Responses"); ?> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <?php if ($hasResponsesStatisticsReadPermission):?>
-                    <!-- Responses & statistics -->
-                    <li>
-                        <a class="pjax" href='<?php echo App()->createUrl("admin/responses/sa/index/surveyid/$sid/");?>' >
-                            <span class="icon-browse"></span>
-                            <?php eT("Responses & statistics"); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <?php if ($hasResponsesCreatePermission): ?>
-                    <!-- Data entry screen -->
-                    <li>
-                        <a href='<?php echo App()->createUrl("admin/dataentry/sa/view/surveyid/$sid"); ?>' >
-                            <span class="fa fa-keyboard-o"></span>
-                            <?php eT("Data entry screen"); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <?php if ($hasResponsesReadPermission): ?>
-                    <!-- Partial (saved) responses -->
-                    <li>
-                        <a href='<?php echo App()->createUrl("admin/saved/sa/view/surveyid/$sid"); ?>' >
-                            <span class="icon-saved"></span>
-                            <?php eT("Partial (saved) responses"); ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    <?php else: ?>
-        <a href="#" class="btn btn-default btntooltip disabled" data-toggle="tooltip" data-placement="bottom" title="<?php eT('This survey is not active - no responses are available.'); ?>">
-            <span class="icon-responses" ></span>
-            <?php eT("Responses"); ?>
-        </a>
-    <?php endif; ?>
-<?php endif; ?>
-
 <?php if (!empty($beforeSurveyBarRender)): ?>
     <?php foreach ($beforeSurveyBarRender as $menu): ?>
         <div class='btn-group'>
