@@ -17,17 +17,8 @@ class QuestionTest extends TestCase
      */
     public function testGetQuestionThemeOnNewQuestion()
     {
-        // Test without setting a question theme name.
-        // Should return the base theme for the question type.
         $question = new Question();
         $question->type = "S";
-
-        $questionTheme = $question->questionTheme;
-
-        $this->assertNotEmpty($questionTheme);
-        $this->assertEquals("shortfreetext", $questionTheme->name);
-
-        // Test after setting a question theme name
         $question->question_theme_name = 'browserdetect';
 
         $questionTheme = $question->questionTheme;
