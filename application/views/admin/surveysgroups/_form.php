@@ -28,15 +28,11 @@
     <?php echo $form->hiddenField($model,'owner_id'); ?>
     <?php echo $form->hiddenField($model,'gsid'); ?>
 
-    <?php if($model->isNewRecord): ?>
-        <div class="row">
-            <?php echo $form->labelEx($model,'name'); ?>
-            <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100,'readonly' => !$updateRigth)); ?>
-            <?php echo $form->error($model,'name', array('errorCssClass' => 'text-danger')); ?>
-        </div>
-    <?php else: ?>
-        <?php echo $form->hiddenField($model,'name'); ?>
-    <?php endif; ?>
+    <div class="row">
+        <?php echo $form->labelEx($model,'name'); ?>
+        <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100,'readonly' => !$model->isNewRecord || !$updateRigth)); ?>
+        <?php echo $form->error($model,'name', array('errorCssClass' => 'text-danger')); ?>
+    </div>
     <div class="row">
         <?php echo $form->labelEx($model,'title'); ?>
         <?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>100,'readonly' => !$updateRigth)); ?>
