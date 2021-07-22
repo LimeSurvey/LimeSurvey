@@ -48,8 +48,14 @@ var UserManagement = function () {
         $('#UserManagement-action-modal').modal('hide');
     };
 
-    var startModalLoader = function (html) {
+    var startModalLoader = function (modalsize) {
         $('#UserManagement-action-modal').find('.modal-content').html(loaderHtml);
+        let modalDialog = $('#usermanagement-modal-doalog');
+        if(modalsize===''){
+            modalDialog.removeClass('modal-lg');
+        }else{
+            modalDialog.addClass(modalsize);
+        }
         $('#UserManagement-action-modal').modal('show');
     };
     var startSubmit = function () {
@@ -270,7 +276,8 @@ var UserManagement = function () {
         });
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            openModal(href);
+            var modalsize = $(this).data('modalsize');
+            openModal(href, modalsize);
         });
         bindListItemclick();
     };
@@ -285,8 +292,8 @@ var UserManagement = function () {
         });
     };
 
-    var openModal = function(href) {
-        startModalLoader();
+    var openModal = function (href, modalsize='') {
+        startModalLoader(modalsize);
         $.ajax({
             url: href,
             success: function (html) {

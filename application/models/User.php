@@ -584,7 +584,9 @@ class User extends LSActiveRecord
                 data-toggle='tooltip' 
                 title='" . gT("User details") . "'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
-                data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
+                data-href='" . $detailUrl . "'
+                data-modalsize='modal-lg'
+                ><i class='fa fa-search'></i></button>";
 
         $editPermissionButton = ""
             . "<button 
@@ -592,21 +594,26 @@ class User extends LSActiveRecord
                 title='" . gT("Edit permissions") . "'  
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                  style='margin-left: 5px;'
-                data-href='" . $setPermissionsUrl . "'><i class='fa fa-lock'></i></button>";
+                data-href='" . $setPermissionsUrl . "'
+                data-modalsize='modal-lg'
+                ><i class='fa fa-lock'></i></button>";
         $addRoleButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("User role") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
                 style='margin-left: 5px;'
-                data-href='" . $setRoleUrl . "'><i class='fa fa-users'></i></button>";
+                data-href='" . $setRoleUrl . "'
+                data-modalsize='modal-lg'
+                ><i class='fa fa-users'></i></button>";
         $editUserButton = ""
             . "<button 
                 data-toggle='tooltip' 
                 title='" . gT("Edit user") . "'
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser green-border' 
                 style='margin-left: 5px;'
-                data-href='" . $editUrl . "'><i class='fa fa-pencil'></i></button>";
+                data-href='" . $editUrl . "'
+                data-modalsize='modal-lg'><i class='fa fa-pencil'></i></button>";
         $takeOwnershipButton = ""
         . "<button 
                 id='UserManagement--takeown-" . $this->uid . "'
