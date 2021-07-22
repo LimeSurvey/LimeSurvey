@@ -10,6 +10,7 @@
         {
             if (parent::beforeDelete()) {
                 $this->deleteFiles();
+                $this->deleteTimings();
                 return true;
             }
             return false;
@@ -130,6 +131,16 @@
             }
 
             return $errors;
+        }
+
+        /**
+         * Delete timings if savetimings is set.
+         */
+        public function deleteTimings()
+        {
+          if (Survey::model()->findByPk($this->dynamicId)->isSaveTimings) {
+              SurveyTimingDynamic::model($this->dynamicId)->deleteByPk($this->id);
+          }
         }
 
         /**
