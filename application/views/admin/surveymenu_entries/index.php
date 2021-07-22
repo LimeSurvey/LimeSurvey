@@ -10,8 +10,8 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 
 ?>
 
-<div class="container-fluid ls-space padding left-50 right-50">
-    <div class="ls-flex-column ls-space padding left-35 right-35">
+<div class="container-fluid ls-space">
+    <div class="ls-flex-column ls-space">
     </div>
 
         <div class="ls-flex-row">
@@ -31,9 +31,9 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                             array('class'=>'changePageSize form-control', 'id'=>'pageSize', 'style'=>'display: inline; width: auto')
                         )
                     ),
-                    'itemsCssClass' =>'table table-striped',
+                    'itemsCssClass' =>'table table-hover',
                     'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-                    'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
+                    'htmlOptions'=>array('class'=>'table-responsive'),
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => 'bindAction',
                     'afterAjaxUpdate'=>'bindAction',

@@ -2,7 +2,7 @@
 <div id="trigger_<?=$this->widgetsJsName?>_button">
     <button
         type="button"
-        class="btn btn-block btn-primary"
+        class="btn btn-block <?= implode(" ", $this->buttonClasses) ?>"
         data-target="#selector__<?=$this->widgetsJsName?>-modal"
         data-toggle="modal"
         aria-haspopup="true"

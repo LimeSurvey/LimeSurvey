@@ -8,6 +8,7 @@
 <div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
+            <!-- Plugin Manager -->
             <?php if(isset($fullpagebar['pluginManager'])): ?>
 
                 <!-- Install Plugin Zip -->
@@ -43,13 +44,26 @@
                 <?php endif; ?>
             <?php endif; ?>
 
+            <!-- Add new Menu -->
+            <?php if(isset($fullpagebar['menus'])): ?>
+                <?php if(isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
+                    <a class="btn btn-default tab-dependent-button"
+                       id="createnewmenu"
+                       data-tab="#surveymenues"
+                       style="margin-top: 10px; margin-bottom: 10px;">
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+
             <!-- Add new Menu entry -->
             <?php if(isset($fullpagebar['menus'])): ?>
                 <?php if(isset($fullpagebar['menus']['buttons']['addMenuEntry']) && $fullpagebar['menus']['buttons']['addMenuEntry']): ?>
-                    <a class="btn btn-default"
-                       id="createnewmenu"
-                       style="margin-top: 10px; margin-bottom: 10px;">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New') ?>
+                    <a class="btn btn-default tab-dependent-button"
+                       id="createnewmenuentry"
+                       data-tab="#surveymenuentries"
+                       style="margin-top: 10px; margin-bottom: 10px; display:none;">
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu Entry') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -57,12 +71,30 @@
 
         <!-- Right actions -->
         <div class="col-md-6 text-right" style="margin-bottom: 10px;">
+
+            <!-- White Close button -->
+            <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
+                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                     <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Return -->
+            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
+                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top: 10px;">
+                    <span class="fa fa-backward"></span>
+                    &nbsp;&nbsp;
+                    <?php echo $fullpagebar['returnbutton']['text']; ?>
+                </a>
+            <?php endif;?>
+
             <!-- Reset -->
             <?php if(isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']):?>
-                <a class="btn btn-danger"
+                <a class="btn btn-warning"
                    href="#restoremodal"
                    data-toggle="modal"
-                style="margin-top: 10px;">
+                   style="margin-top: 10px;">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset') ?>
                 </a>
@@ -78,14 +110,6 @@
                 </a>
             <?php endif; ?>
 
-            <!-- Close -->
-            <?php if(isset($fullpagebar['closebutton']['url'])):?>
-                <a class="btn btn-default" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
-                    <span class="fa fa-close"></span>
-                    <?php eT("Close");?>
-                </a>
-            <?php endif;?>
-
             <!-- Save and Close -->
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>" style="margin-top: 10px;">
@@ -97,8 +121,16 @@
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
-                    <span class="fa fa-floppy-o"></span>
+                    <span class="fa fa-check"></span>
                     <?php eT("Save");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Close -->
+            <?php if(isset($fullpagebar['closebutton']['url'])):?>
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                    <span class="fa fa-close"></span>
+                    <?php eT("Close");?>
                 </a>
             <?php endif;?>
 
@@ -119,15 +151,6 @@
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
-                </a>
-            <?php endif;?>
-
-            <!-- Return -->
-            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top: 10px;">
-                    <span class="fa fa-backward"></span>
-                    &nbsp;&nbsp;
-                    <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
         </div>

@@ -31,6 +31,7 @@ $oQuestionSelector = $this->beginWidget(
         'value' => $question->type,
         'theme' => $questionThemeName,
         'debug' => YII_DEBUG,
+        'buttonClasses' => ['btn-primary'],
         'currentSelected' => $questionThemeTitle, //todo: use questiontheme instead ...
         'optionArray' => [
             'selectedClass' => $questionThemeClass,//Question::getQuestionClass($question->type),

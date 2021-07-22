@@ -114,6 +114,10 @@ class SurveymenuController extends Survey_Common_Action
             false
         );
     }
+
+    /**
+     * Batch Edit.
+     **/
     public function batchEdit()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -351,12 +355,16 @@ class SurveymenuController extends Survey_Common_Action
         }
     }
 
+    /**
+     * Index
+     **/
     public function index()
     {
         $this->getController()->redirect(array('admin/menus/sa/view'));
     }
 
     /**
+     * View.
      * @throws CHttpException
      */
     public function view()
@@ -364,23 +372,43 @@ class SurveymenuController extends Survey_Common_Action
         $aData = array();
         $aData['model'] = Surveymenu::model();
         
+        // Survey Menue Entries Data
+        $filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
+        $aData['entries_model'] = SurveymenuEntries::model();
+        $aData['entries_model']->setAttributes($filterAndSearch);
+
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
-        $aData['pageTitle'] = 'Survey menus';
+
+        // Page Title Green Bar
+        $aData['pageTitle'] = gT('Survey menus');
+
+        // White Bar
         $aData['fullpagebar'] = [
             'menus' => [
                 'buttons' => [
+                    'addMenu' => true,
                     'addMenuEntry' => true,
                     'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
+                    'reorder' => true,
                 ],
             ],
+            'returnbutton' => [
+                'text' => gT('Back'),
+                'url' => 'admin/index',
+            ],
         ];
+
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
 
+    /**
+     * Get SurveyMenuForm
+     * @param $menuid
+     **/
     public function getsurveymenuform($menuid = null)
     {
         $menuid = Yii::app()->request->getParam('menuid', null);
