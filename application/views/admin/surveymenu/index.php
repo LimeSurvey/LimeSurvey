@@ -15,12 +15,12 @@ echo viewHelper::getViewTestTag('surveyMenus');
 		<!-- Tabs -->
 		<ul class="nav nav-tabs" id="menueslist" role="tablist">
 			<li class="active">
-				<a href="#surveymenues">
+				<a href="#surveymenues" aria-controls="surveymenues" role="tab" data-toggle="tab">
 					<?php eT('Survey menus'); ?>
 				</a>
 			</li>
 			<li>
-				<a href="#surveymenuentries">
+				<a href="#surveymenuentries" aria-controls="surveymenuentries" role="tab" data-toggle="tab">
 					<?php eT('Survey menu entries'); ?>
 				</a>
 			</li>
@@ -123,10 +123,10 @@ echo viewHelper::getViewTestTag('surveyMenus');
   </div>
 
 <script>
-	$('#menueslist a').click(function (e) {
-        window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
+	$('#menueslist a').on('shown.bs.tab', function () {
+        var tabId = $(this).attr('href');
+        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
+        $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
     });
     $(document).on('ready pjax:scriptcomplete', function() {
         if (window.location.hash) {

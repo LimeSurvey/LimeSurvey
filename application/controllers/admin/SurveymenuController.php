@@ -389,6 +389,7 @@ class SurveymenuController extends Survey_Common_Action
         $aData['fullpagebar'] = [
             'menus' => [
                 'buttons' => [
+                    'addMenu' => true,
                     'addMenuEntry' => true,
                     'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
                     'reorder' => true,
