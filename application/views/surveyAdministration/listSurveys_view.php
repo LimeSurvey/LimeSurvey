@@ -13,8 +13,8 @@ echo viewHelper::getViewTestTag('listSurveys');
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="ls-space row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-        <li class="active"><a href="#surveys"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups"><?php eT('Survey groups'); ?></a></li>
+        <li class="active"><a href="#surveys" aria-controls="surveys" role="tab" data-toggle="tab"><?php eT('Survey list'); ?></a></li>
+        <li><a href="#surveygroups" aria-controls="surveygroups" role="tab" data-toggle="tab"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
         <div id="surveys" class="tab-pane active">
@@ -46,12 +46,10 @@ echo viewHelper::getViewTestTag('listSurveys');
     </div>
 </div>
 <script>
-    $('#surveysystem a').click(function (e) {
-        window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
-        $('.tab-dependent-button').hide();
-        $('.tab-dependent-button[data-tab="' + window.location.hash + '"]').show();
+    $('#surveysystem a').on('shown.bs.tab', function () {
+        var tabId = $(this).attr('href');
+        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
+        $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
     });
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){

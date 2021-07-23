@@ -68,6 +68,8 @@ class SurveysGroupsController extends Survey_Common_Action
                     App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
                 );
             }
+        } else {
+            $model->name = SurveysGroups::getNewCode();
         }
 
         $aData = array(
