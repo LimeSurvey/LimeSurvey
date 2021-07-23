@@ -62,6 +62,7 @@ $aActionsArray = array(
         ),
 
         // Template Permission
+        /* Decision: take this out and reimplement the action button (this massive action was never working/implemented correctly)
         array(
             'type' => 'action',
             'action' => 'templatePermission',
@@ -77,7 +78,7 @@ $aActionsArray = array(
             'selectedUrl' => '',
             'sModalTitle' => gT("Template permissions"),
              'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true),
-        ),
+        ),*/
         
     ),
 );

@@ -454,10 +454,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens a modal to edit user template permissions
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionUserTemplatePermissions(): string
+    public function actionUserTemplatePermissions(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
