@@ -125,6 +125,11 @@ class WhDateTimePicker extends CInputWidget
 
 		$this->getApi()->registerPlugin('datetimepicker', $selector, $this->pluginOptions, LSYii_ClientScript::POS_POSTSCRIPT);
 
+		$showEventScript = $this->getShowEventScript($selector);
+		$cs->registerScript("datetimepicker_show_handler_" . $this->getId(true), $showEventScript, CClientScript::POS_BEGIN);
+		$hideEventScript = $this->getHideEventScript($selector);
+		$cs->registerScript("datetimepicker_hide_handler_" . $this->getId(true), $hideEventScript, CClientScript::POS_BEGIN);
+
 		if($this->events)
 		{
 			$this->getApi()->registerEvents($selector, $this->events);
@@ -140,5 +145,23 @@ class WhDateTimePicker extends CInputWidget
         $id = str_replace('[', '\\\\[',$this->getId());
         $id = str_replace(']', '\\\\]',$id);
         return $id;
-    }
+	}
+
+	protected function getShowEventScript($selector)
+	{
+		$script = '$(document).on("dp.show", "' . $selector . '", function () {
+			$("#pjax-content").addClass("overflow-visible");
+			$("#in_survey_common").addClass("overflow-visible");
+		});';
+		return $script;
+	}
+
+	protected function getHideEventScript($selector)
+	{
+		$script = '$(document).on("dp.hide", "' . $selector . '", function () {
+			$("#pjax-content").removeClass("overflow-visible");
+			$("#in_survey_common").removeClass("overflow-visible");
+		});';
+		return $script;
+	}
 }
