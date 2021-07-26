@@ -4909,11 +4909,13 @@ function decryptArchivedTables450($oDB)
                 }
 
                 // custom attributes
-                foreach ($aCustomAttributes as $attributeName) {
-                    if (isset(json_decode($survey['attributedescriptions'])->$attributeName->encrypted)) {
-                        $columnEncryptions[$attributeName]['encrypted'] = json_decode($survey['attributedescriptions'], true)[$attributeName]['encrypted'];
-                    } else {
-                        $columnEncryptions[$attributeName]['encrypted'] = 'N';
+                if ($survey) {
+                    foreach ($aCustomAttributes as $attributeName) {
+                        if (isset(json_decode($survey['attributedescriptions'])->$attributeName->encrypted)) {
+                            $columnEncryptions[$attributeName]['encrypted'] = json_decode($survey['attributedescriptions'], true)[$attributeName]['encrypted'];
+                        } else {
+                            $columnEncryptions[$attributeName]['encrypted'] = 'N';
+                        }
                     }
                 }
                 if (isset($columnEncryptions) && $columnEncryptions) {
