@@ -435,10 +435,8 @@ class LSActiveRecord extends CActiveRecord
         // TODO: Use OOP polymorphism instead of switching on class names.
         if ($class === 'ParticipantAttribute') {
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
-            foreach ($aParticipantAttributes as $attribute => $value) {
-                if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
-                    $this->value = $sodium->$action($this->value);
-                }
+            if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
+                $this->value = $sodium->$action($this->value);
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
