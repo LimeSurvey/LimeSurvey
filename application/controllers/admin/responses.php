@@ -640,7 +640,7 @@ class responses extends Survey_Common_Action
                 $sFileRealName = $sDir . $aFile['filename'];
                 $sRealUserPath = realpath($sFileRealName);
                 if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
-                    throw new Exception('Directory traversal detected, aborted');
+                    throw new CHttpException(403, "Disable for security reasons.");
                 } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
