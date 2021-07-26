@@ -1280,7 +1280,7 @@ class dataentry extends Survey_Common_Action
 
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $id = $_REQUEST['id'];
+        $id = (int) $_REQUEST['id'];
 
         $aData = array(
         'surveyid' => $surveyid,
@@ -1292,7 +1292,7 @@ class dataentry extends Survey_Common_Action
             $surveytable = $survey->responsesTableName;
             $aData['thissurvey'] = getSurveyInfo($surveyid);
 
-            $delquery = "DELETE FROM $surveytable WHERE id=$id";
+            $delquery = "DELETE FROM $surveytable WHERE id= " . (int) $id;
             Yii::app()->loadHelper('database');
 
             $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
