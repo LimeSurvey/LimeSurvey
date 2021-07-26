@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.8 (build 210721) to 3.27.9 (build 210726) July 26, 2021
+-Fixed issue #17470 [security]: Arbitrary file read in participant functionality (Olle Haerstedt)
+-Fixed issue #17469 [security]: SQL injection in participants (editShareInfo) (Olle Haerstedt)
+-Fixed issue #17468 [security]: SQL injection in survey data entries (Olle Haerstedt)
+-Fixed issue #17467 [security]: SQL injection in survey data entries (Olle Haerstedt)
+-Fixed issue #17471 [security]: Update PHPMailer to 6.5.0
+-Fixed issue #17373: Misuse of progress bar (#1953) (Denis Chenu)
+
+
 Changes from 3.27.7 (build 210713) to 3.27.8 (build 210721) July 21, 2021
 -Fixed issue: Seperator showing in Chrome when clicking back (Gabriel Jenik)
 -Fixed issue #17451: Upload file link after session expire leads to a message unclear to users (Denis Chenu)
