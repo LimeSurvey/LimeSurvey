@@ -1660,7 +1660,7 @@ class dataentry extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
 
                 $new_response->save();
-                $last_db_id = $new_response->getPrimaryKey();
+                $last_db_id = (int) $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
                     // submittoken
                     // get submit date
@@ -1695,7 +1695,7 @@ class dataentry extends Survey_Common_Action
                     dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                     // save submitdate into survey table
-                    $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
+                    $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate=" . App()->db->quoteValue($submitdate) . " WHERE id={$last_db_id}\n";
                     dbExecuteAssoc($sdquery) or safeDie("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                 }
                 if (isset($_POST['save']) && $_POST['save'] == "on") {
