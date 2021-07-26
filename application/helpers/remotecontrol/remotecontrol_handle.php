@@ -2676,7 +2676,7 @@ class remotecontrol_handle
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
      *
      * If only token and id are provided then token is updated
-     * In this condition routine will be applicable whether or not survey is alloweditaftercompletion
+     * In this condition, routine will be applicable whether or not survey is alloweditaftercompletion
      *
      * @access public
      * @param string $sSessionKey Auth credentials
