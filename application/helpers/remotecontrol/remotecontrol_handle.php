@@ -2675,6 +2675,9 @@ class remotecontrol_handle
      * Response to update will be identified either by the response id, or the token if response id is missing.
      * Routine is only applicable for active surveys with alloweditaftercompletion = Y.
      *
+     * If only token and id are provided then token is updated
+     * In this condition routine will be applicable whether or not survey is alloweditaftercompletion
+     *
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID Id of the Survey to update response
@@ -2697,6 +2700,25 @@ class remotecontrol_handle
 
         if ($oSurvey->getAttribute('alloweditaftercompletion') !== 'Y') {
             return 'Error: Survey does not allow edit after completion.';
+        }
+
+        if (count($aResponseData)==2 && isset($aResponseData['id']) && isset($aResponseData['token']))
+        {
+            SurveyDynamic::sid($iSurveyID);
+            $oSurveyDynamic = new SurveyDynamic;
+
+            if (isset($aResponseData['id'])) {
+                $aResponses = $oSurveyDynamic->findAllByPk((int) $aResponseData['id']);
+            }
+
+            $aResponses[0]->setAttribute("token", $aResponseData['token']);
+            $bResult = $aResponses[0]->save(true);
+
+            if ($bResult) {
+                return $bResult;
+            } else {
+                return 'Unable to edit response';
+            }
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
