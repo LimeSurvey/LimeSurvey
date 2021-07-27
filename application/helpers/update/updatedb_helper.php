@@ -4649,7 +4649,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ->queryAll();
             $nrOfAttributes = count($encryptedAttributes);
             foreach ($encryptedAttributes as $encryptedAttribute) {
-                $attributes= $oDB->createCommand()
+                $attributes = $oDB->createCommand()
                     ->select('*')
                     ->from('{{participant_attribute}}')
                     ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
