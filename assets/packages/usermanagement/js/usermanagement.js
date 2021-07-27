@@ -48,16 +48,23 @@ var UserManagement = function () {
         $('#UserManagement-action-modal').modal('hide');
     };
 
-    var startModalLoader = function (modalsize) {
+    /**
+     *
+     * @param {string} modalSize empty string means ---> a default size (modal-dialog) 600px is taken
+     *                           otherwise it could be 'modal-lg' or 'modal-sm' defining the size of
+     *                           modal view
+     */
+    var startModalLoader = function (modalSize) {
         $('#UserManagement-action-modal').find('.modal-content').html(loaderHtml);
         let modalDialog = $('#usermanagement-modal-doalog');
-        if(modalsize===''){
+        if(modalSize===''){
             modalDialog.removeClass('modal-lg');
         }else{
-            modalDialog.addClass(modalsize);
+            modalDialog.addClass(modalSize);
         }
         $('#UserManagement-action-modal').modal('show');
     };
+
     var startSubmit = function () {
         $('#submitForm').append(
             '<i class="fa fa-spinner fa-pulse UserManagement-spinner"></i>'
@@ -276,8 +283,8 @@ var UserManagement = function () {
         });
         $('.UserManagement--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            var modalsize = $(this).data('modalsize');
-            openModal(href, modalsize);
+            var modalSize = $(this).data('modalsize');
+            openModal(href, modalSize);
         });
         bindListItemclick();
     };
@@ -292,8 +299,15 @@ var UserManagement = function () {
         });
     };
 
-    var openModal = function (href, modalsize='') {
-        startModalLoader(modalsize);
+    /**
+     *
+     * @param href
+     * @param {string} modalSize empty string means ---> a default size (modal-dialog) 600px is taken
+     *                           otherwise it could be 'modal-lg' or 'modal-sm' defining the size of
+     *                           modal view
+     */
+    var openModal = function (href, modalSize='') {
+        startModalLoader(modalSize);
         $.ajax({
             url: href,
             success: function (html) {
