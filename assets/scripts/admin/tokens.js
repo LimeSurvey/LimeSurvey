@@ -188,11 +188,11 @@ function showError(msg) {
 function validateAdditionalAttributes() {
     const validationErrorMsg = $('#edittoken').attr('data-validation-error');
 
-    $valid = true;
+    let valid = true;
     $('.mandatory-attribute').each(function () {
-        $value = $(this).val();
-        if ($value === null || $value === "") {
-            $valid = false;
+        let value = $(this).val();
+        if (value === null || value === "") {
+            valid = false;
             if (!$('#custom').is(':visible')) {
                 $('.nav-tabs a[href="#custom"]').tab('show');
             }
@@ -201,7 +201,7 @@ function validateAdditionalAttributes() {
             return false;
         }
     });
-    return $valid;
+    return valid;
 }
 
 /**
