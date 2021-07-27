@@ -341,7 +341,7 @@ class SurveyRuntimeHelper
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                if ($gid == $qa[6] || ( isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster']) && $this->sSurveyMode != 'survey' ) ) {
+                if ($gid == $qa['finalgroup']) {
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
