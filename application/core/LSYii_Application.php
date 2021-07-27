@@ -404,14 +404,15 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-     * Check if a file (with a full path) is inside a specific directory
+     * Check if a file (with a full path) is inside a specific directory 
+     * return checked filepath if OK, false if not
      * @var string $filePath complete file path
      * @var string $baseDir the directory where it must be, default to upload dir
      * @var boolean|null $throwException if security issue
      * Throw Exception
-     * @return boolean
+     * @return false|string
      */
-    public function is_file($filePath,$baseDir = null,$throwException = null)
+    public function is_file($filePath, $baseDir = null, $throwException = null)
     {
         if(is_null($baseDir)) {
             $baseDir = $this->getConfig('uploaddir');
@@ -421,7 +422,6 @@ class LSYii_Application extends CWebApplication
         }
         $realFilePath = realpath($filePath);
         $baseDir = realpath($baseDir);
-        
         if(!is_file($realFilePath)) {
             /* Not existing file */
             Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
