@@ -637,9 +637,8 @@ class responses extends Survey_Common_Action
                 $aFile = $aQuestionFiles[$iIndex];
                 // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
                 $surveyDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
-                $sFileRealName = $sDir . $aFile['filename'];
-                $filePath = App()->is_file($sFileRealName, $surveyDir, true);
-                if(!$filePath) {
+                $sFileRealName = App()->is_file($surveyDir . $aFile['filename'], $surveyDir, true);
+                if(!$sFileRealName) {
                     throw new CHttpException(404, gT("Sorry, this file was not found."));
                 }
                 $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
