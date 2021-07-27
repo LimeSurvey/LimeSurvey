@@ -4765,6 +4765,7 @@ function updateEncryptedValues450(CDbConnection $oDB)
  *
  * @param CDbConnection $oDB
  * @return void
+ * @throws CException
  */
 function decryptCPDBTable450($oDB)
 {
@@ -4778,11 +4779,29 @@ function decryptCPDBTable450($oDB)
         ->from('{{participant_attribute_names}}')
         ->queryAll();
     foreach ($CPDBParticipants as $CPDBParticipant) {
+        $extraAttributes = $oDB->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute}}')
+            ->where('participant_id =:participant_id', ['participant_id' => $CPDBParticipant['participant_id']])
+            ->queryAll();
         $recryptedParticipant = [];
-        foreach ($participantAttributeNames as $participantAttributeName => $participantAttributeValue) {
+        foreach ($participantAttributeNames as $key => $participantAttributeValue) {
             if ($participantAttributeValue['encrypted'] === 'Y') {
-                $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($CPDBParticipant[$participantAttributeValue['defaultname']]);
-                $recryptedParticipant[$participantAttributeValue['defaultname']] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                if ($participantAttributeValue['core_attribute'] === 'N') {
+                    foreach ($extraAttributes as $extraAttribute) {
+                        if ($extraAttribute['attribute_id'] === $participantAttributeValue['attribute_id']) {
+                            $encryptedValue = $extraAttribute['value'];
+                            $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($encryptedValue);
+                            $recryptedParticipantAttribute['value'] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                            $oDB->createCommand()->update('{{participant_attribute}}', $recryptedParticipantAttribute, 'participant_id=' . $oDB->quoteValue($CPDBParticipant['participant_id']) . 'AND attribute_id=' . $oDB->quoteValue($extraAttribute['attribute_id']));
+                            break;
+                        }
+                    }
+                } else {
+                    $encryptedValue = $CPDBParticipant[$participantAttributeValue['defaultname']];
+                    $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($encryptedValue);
+                    $recryptedParticipant[$participantAttributeValue['defaultname']] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                }
             }
         }
         if ($recryptedParticipant) {
