@@ -110,6 +110,7 @@
                 <button 
                     id="sendtestemailbutton"
                     class='btn btn-large btn-primary' 
+                    type="button"
                     data-href='<?= \Yii::app()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmailConfirmation")) ?>'>
                     <?php eT("Send email");?>
                 </button>
