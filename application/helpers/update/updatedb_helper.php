@@ -4890,23 +4890,37 @@ function decryptResponseTables450($oDB)
         if (!isset($tableSchema)) {
             continue;
         }
-        $responses = $oDB->createCommand()
-            ->select('*')
+        $responsesCount = $oDB->createCommand()
+            ->select('count(*)')
             ->from("{{survey_{$survey['sid']}}}")
-            ->queryAll();
-        $fieldmapFields = createFieldMap450($survey);
-        foreach ($responses as $response) {
-            $recryptedResponse = [];
-            foreach ($fieldmapFields as $fieldname => $field) {
-                if (array_key_exists('encrypted', $field) && $field['encrypted'] === 'Y') {
-                    $decryptedResponseField = LSActiveRecord::decryptSingleOld($response[$fieldname]);
-                    $recryptedResponse[$fieldname] = LSActiveRecord::encryptSingle($decryptedResponseField);
+            ->queryScalar();
+        if ($responsesCount) {
+            $maxRows = 100;
+            $maxPages = ceil($responsesCount / $maxRows);
+
+            for ($i = 0; $i < $maxPages; $i++) {
+                $offset = $i * $maxRows;
+                $responses = $oDB->createCommand()
+                    ->select('*')
+                    ->from("{{survey_{$survey['sid']}}}")
+                    ->offset($offset)
+                    ->limit($maxRows)
+                    ->queryAll();
+                $fieldmapFields = createFieldMap450($survey);
+                foreach ($responses as $response) {
+                    $recryptedResponse = [];
+                    foreach ($fieldmapFields as $fieldname => $field) {
+                        if (array_key_exists('encrypted', $field) && $field['encrypted'] === 'Y') {
+                            $decryptedResponseField = LSActiveRecord::decryptSingleOld($response[$fieldname]);
+                            $recryptedResponse[$fieldname] = LSActiveRecord::encryptSingle($decryptedResponseField);
+                        }
+                    }
+                    if ($recryptedResponse) {
+                        // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
+                        $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
+                        $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
+                    }
                 }
-            }
-            if ($recryptedResponse) {
-                // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
-                $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
-                $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
             }
         }
     }
@@ -4929,11 +4943,6 @@ function decryptArchivedTables450($oDB)
             continue;
         }
         $surveyId = $archivedTableSettings['survey_id'];
-        $archivedTableRows = $oDB
-            ->createCommand()
-            ->select('*')
-            ->from("{{{$archivedTableSettings['tbl_name']}}}")
-            ->queryAll();
         $survey = $oDB
             ->createCommand()
             ->select('*')
@@ -4947,7 +4956,13 @@ function decryptArchivedTables450($oDB)
                 continue 2;
             }
         }
+
         if ($archivedTableSettings['tbl_type'] === 'token') {
+            $archivedTableRows = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                ->queryAll();
             if ($archivedTableSettings['properties']) {
                 $tokenencryptionoptions = json_decode($archivedTableSettings['properties'], true);
 
@@ -4992,29 +5007,48 @@ function decryptArchivedTables450($oDB)
         }
 
         if ($archivedTableSettings['tbl_type'] === 'response') {
-            $responseTableSchema = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
-            $encryptedResponseAttributes = json_decode($archivedTableSettings['properties'], true);
+            $responsesCount = $oDB->createCommand()
+                ->select('count(*)')
+                ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                ->queryScalar();
+            if ($responsesCount) {
+                $responseTableSchema = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
+                $encryptedResponseAttributes = json_decode($archivedTableSettings['properties'], true);
 
-            $fieldMap = [];
-            foreach ($responseTableSchema->getColumnNames() as $name) {
-                // Skip id field.
-                if ($name === 'id') {
-                    continue;
-                }
-                $fieldMap[$name] = $name;
-            }
-            foreach ($archivedTableRows as $archivedResponse) {
-                $recryptedResponseValues = [];
-                foreach ($fieldMap as $column) {
-                    if (in_array($column, $encryptedResponseAttributes, false)) {
-                        $decryptedColumnValue = LSActiveRecord::decryptSingleOld($archivedResponse[$column]);
-                        $recryptedResponseValues[$column] = LSActiveRecord::encryptSingle($decryptedColumnValue);
+                $fieldMap = [];
+                foreach ($responseTableSchema->getColumnNames() as $name) {
+                    // Skip id field.
+                    if ($name === 'id') {
+                        continue;
                     }
+                    $fieldMap[$name] = $name;
                 }
-                if ($recryptedResponseValues) {
-                    // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
-                    $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $archivedResponse['id']]);
-                    $oDB->getCommandBuilder()->createUpdateCommand("{{{$archivedTableSettings['tbl_name']}}}", $recryptedResponseValues, $criteria)->execute();
+
+                $maxRows = 100;
+                $maxPages = ceil($responsesCount / $maxRows);
+                for ($i = 0; $i < $maxPages; $i++) {
+                    $offset = $i * $maxRows;
+                    $archivedTableRows = $oDB
+                        ->createCommand()
+                        ->select('*')
+                        ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                        ->offset($offset)
+                        ->limit($maxRows)
+                        ->queryAll();
+                    foreach ($archivedTableRows as $archivedResponse) {
+                        $recryptedResponseValues = [];
+                        foreach ($fieldMap as $column) {
+                            if (in_array($column, $encryptedResponseAttributes, false)) {
+                                $decryptedColumnValue = LSActiveRecord::decryptSingleOld($archivedResponse[$column]);
+                                $recryptedResponseValues[$column] = LSActiveRecord::encryptSingle($decryptedColumnValue);
+                            }
+                        }
+                        if ($recryptedResponseValues) {
+                            // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
+                            $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $archivedResponse['id']]);
+                            $oDB->getCommandBuilder()->createUpdateCommand("{{{$archivedTableSettings['tbl_name']}}}", $recryptedResponseValues, $criteria)->execute();
+                        }
+                    }
                 }
             }
         }
