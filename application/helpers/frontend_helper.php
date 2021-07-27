@@ -38,21 +38,25 @@ function loadanswers()
         }
         $oCriteria->addCondition("saved_control.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
+        $oCriteria->params = $aParams;
+        /* relations saved_control is needed: force */
+        $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
     } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
         $oCriteria = new CDbCriteria();
         $oCriteria->condition = "id=:id";
         $aParams = [':id' => $_SESSION['survey_' . $surveyid]['srid']];
+        $oCriteria->params = $aParams;
+        /* relations saved_control is not needed : only lazy load */
+        $oResponses = SurveyDynamic::model($surveyid)->find($oCriteria);
     } else {
         return false;
     }
-    $oCriteria->params = $aParams;
-    $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
 
     if (!$oResponses) {
         return false;
     }
-
-    if (isset($oResponses->saved_control) && $oResponses->saved_control) {
+    /* If we came from reload : check access_code */
+    if (!empty($sLoadName) && !empty($oResponses->saved_control)) {
         $saved_control = $oResponses->saved_control;
         $access_code = $oResponses->saved_control->access_code;
         $md5_code = md5($sLoadPass);
@@ -74,7 +78,6 @@ function loadanswers()
         } else {
             return false;
         }
-
     }
     // Get if survey is been answered
     $submitdate = $oResponses->submitdate;
