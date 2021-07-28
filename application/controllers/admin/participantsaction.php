@@ -2064,6 +2064,7 @@ class participantsaction extends Survey_Common_Action
     public function editShareInfo()
     {
         $operation = Yii::app()->request->getPost('oper');
+        // NB: Comma-separated list.
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') {
             // If operation is delete , it will delete, otherwise edit it

@@ -86,7 +86,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </script>
 </div>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>
