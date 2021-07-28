@@ -1591,6 +1591,10 @@ fieldset[disabled] .btn-link:focus {
   box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
   background-color: #ffffff; }
 
+#fullpagebar {
+  background-color: #ffffff;
+}
+
 .navbar {
   background-color: #ffffff;
   box-shadow: 0 3px 3px rgba(132, 136, 138, 0.1);
