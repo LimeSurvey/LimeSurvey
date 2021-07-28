@@ -137,8 +137,8 @@
             <inputtype>text</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
-            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
+            <help>Replaces the label of the &#039;Other:&#039; answer option with a custom text</help>
+            <caption>Label for &#039;Other:&#039; option</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
         </attribute>
@@ -282,10 +282,10 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Make the &amp;#039;Other:&amp;#039; comment field mandatory when the &amp;#039;Other:&amp;#039;
+            <help>Make the &#039;Other:&#039; comment field mandatory when the &#039;Other:&#039;
                 option is active
             </help>
-            <caption>&amp;#039;Other:&amp;#039; comment mandatory</caption>
+            <caption>&#039;Other:&#039; comment mandatory</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -467,8 +467,8 @@
             <category>Timer</category>
             <sortorder>102</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display the &amp;#039;time limit expiry message&amp;#039; for this many seconds before performing
-                the &amp;#039;time limit action&amp;#039; (defaults to 1 second if left blank)
+            <help>Display the &#039;time limit expiry message&#039; for this many seconds before performing
+                the &#039;time limit action&#039; (defaults to 1 second if left blank)
             </help>
             <caption>Time limit expiry message display time</caption>
             <i18n></i18n>
@@ -495,7 +495,7 @@
             <category>Timer</category>
             <sortorder>106</sortorder>
             <inputtype>textarea</inputtype>
-            <help>CSS style for the &amp;#039;time limit expiry message&amp;#039;</help>
+            <help>CSS style for the &#039;time limit expiry message&#039;</help>
             <caption>Time limit message CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -507,7 +507,7 @@
             <category>Timer</category>
             <sortorder>108</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display a &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining in the
+            <help>Display a &#039;time limit warning&#039; when there are this many seconds remaining in the
                 countdown (warning will not display if left blank)
             </help>
             <caption>1st time limit warning message timer</caption>
@@ -521,7 +521,7 @@
             <category>Timer</category>
             <sortorder>110</sortorder>
             <inputtype>integer</inputtype>
-            <help>The &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not turn
+            <help>The &#039;time limit warning&#039; will stay visible for this many seconds (will not turn
                 off if this setting is left blank)
             </help>
             <caption>1st time limit warning message display time</caption>
@@ -537,7 +537,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>The message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will display
+            <help>The message to display as a &#039;time limit warning&#039; (a default warning will display
                 if this is left blank)
             </help>
             <caption>1st time limit warning message</caption>
@@ -549,7 +549,7 @@
             <category>Timer</category>
             <sortorder>114</sortorder>
             <inputtype>textarea</inputtype>
-            <help>CSS style used when the &amp;#039;time limit warning&amp;#039; message is displayed</help>
+            <help>CSS style used when the &#039;time limit warning&#039; message is displayed</help>
             <caption>1st time limit warning CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -561,7 +561,7 @@
             <category>Timer</category>
             <sortorder>116</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display the 2nd &amp;#039;time limit warning&amp;#039; when there are this many seconds remaining
+            <help>Display the 2nd &#039;time limit warning&#039; when there are this many seconds remaining
                 in the countdown (warning will not display if left blank)
             </help>
             <caption>2nd time limit warning message timer</caption>
@@ -575,7 +575,7 @@
             <category>Timer</category>
             <sortorder>118</sortorder>
             <inputtype>integer</inputtype>
-            <help>The 2nd &amp;#039;time limit warning&amp;#039; will stay visible for this many seconds (will not
+            <help>The 2nd &#039;time limit warning&#039; will stay visible for this many seconds (will not
                 turn off if this setting is left blank)
             </help>
             <caption>2nd time limit warning message display time</caption>
@@ -591,7 +591,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>The 2nd message to display as a &amp;#039;time limit warning&amp;#039; (a default warning will
+            <help>The 2nd message to display as a &#039;time limit warning&#039; (a default warning will
                 display if this is left blank)
             </help>
             <caption>2nd time limit warning message</caption>
@@ -603,7 +603,7 @@
             <category>Timer</category>
             <sortorder>122</sortorder>
             <inputtype>textarea</inputtype>
-            <help>CSS style used when the 2nd &amp;#039;time limit warning&amp;#039; message is displayed</help>
+            <help>CSS style used when the 2nd &#039;time limit warning&#039; message is displayed</help>
             <caption>2nd time limit warning CSS style</caption>
             <i18n></i18n>
             <readonly></readonly>
