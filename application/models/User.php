@@ -585,7 +585,10 @@ class User extends LSActiveRecord
                 data-toggle='tooltip' 
                 title='" . gT("User details") . "'    
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
-                data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
+                data-href='" . $detailUrl . "'
+                >
+                <i class='fa fa-search'></i>
+                </button>";
 
         $editPermissionButton = ""
             . "<button 
@@ -603,8 +606,9 @@ class User extends LSActiveRecord
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
                 style='margin-left: 5px;'
                 data-href='" . $setRoleUrl . "'
-                data-modalsize='modal-lg'
-                ><i class='fa fa-users'></i></button>";
+                >
+                <i class='fa fa-users'></i>
+                </button>";
         $editUserButton = ""
             . "<button 
                 data-toggle='tooltip' 

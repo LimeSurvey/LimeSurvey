@@ -96,7 +96,6 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         //modal
         'actionType'        => 'modal',
         'modalType'         => 'cancel-apply',
-        'largeModalView'    => true,
         'keepopen'          => 'yes',
         'showSelected'      => 'yes',
         'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),
