@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('createSurvey');
     standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
     templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
-<div class="row" style="margin-top: 10px; margin-bottom: 100px">
+<div class="row">
     <div class="col-lg-12">
         <!-- tabs -->
         <?php $this->renderPartial('tab_survey_view', $data); ?>

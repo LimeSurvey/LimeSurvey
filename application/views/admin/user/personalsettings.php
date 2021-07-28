@@ -81,7 +81,7 @@ echo $oQuestionSelector->getModal();
 <div class="container">
 <?php echo TbHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 ', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
     <div class="row">
-        <div class="col-xs-12" style="margin-top: 20px;">
+        <div class="col-xs-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("My profile"); ?></a></li>
                 <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("My personal settings"); ?></a></li>

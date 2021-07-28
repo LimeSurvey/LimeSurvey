@@ -3,8 +3,8 @@
 /** @var UserGroup $userGroup */
 ?>
 <!-- User Group Bar -->
-<div class='menubar surveybar' id="usergroupbar" style="box-shadow: 3px 3px 3px #35363f;">
-    <div class='row' style="margin-bottom: 8px;">
+<div class='menubar surveybar' id="usergroupbar">
+    <div class='row'>
         <!-- Left side -->
         <div class="col-lg-6 col-sm-8">
 
@@ -34,7 +34,7 @@
 
             <!-- Delete current user group -->
             <?php if(isset($usergroupbar['edit']) &&  (Yii::app()->session['loginID'] == $userGroup->owner_id || Permission::model()->hasGlobalPermission('superadmin','read')) ):?>
-                <a class="btn btn-default" style="margin-top: 5px; margin-bottom: 10px;" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid='.$userGroup->ugid)); ?>}'>
+                <a class="btn btn-default" href='#' onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl('userGroup/deleteGroup?ugid='.$userGroup->ugid)); ?>}'>
                     <span class="fa fa-trash text-success"></span>
                     <?php eT("Delete current user group"); ?>
                 </a>

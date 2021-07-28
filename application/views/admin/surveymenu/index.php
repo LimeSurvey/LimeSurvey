@@ -10,7 +10,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
 
-<div class="col-lg-12" style="margin-top: 20px;">
+<div class="col-lg-12">
 	<div class="row">
 		<!-- Tabs -->
 		<ul class="nav nav-tabs" id="menueslist" role="tablist">

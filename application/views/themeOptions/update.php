@@ -8,9 +8,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 ?>
 <?php if (empty($model->sid)): ?>
 <!-- This is only visible when we're not in survey view. -->
-    <div class='menubar' id='theme-options-bar' style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;" >
+    <div class='menubar surveybar' id='theme-options-bar'>
         <div class='row'>
-            <div class='text-right' style="margin: 10px 0 10px 0;">
+            <div class='text-right'>
 
                 <?php
                   $sThemeOptionUrl = App()->createUrl("themeOptions");
@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 <?php endif; ?>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12" id="theme-options-tabs" style="margin-top: 10px;">
+        <div class="col-sm-12" id="theme-options-tabs">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <?php

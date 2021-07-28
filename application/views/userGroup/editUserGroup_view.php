@@ -5,7 +5,7 @@
 
 ?>
 
-<div class="col-lg-12 list-surveys" style="margin-top: 30px;">
+<div class="col-lg-12 list-surveys">
 
     <div class="row">
         <?php echo CHtml::form(array("userGroup/edit/ugid/{$ugid}"), 'post', array('class'=>'col-md-6 col-md-offset-3', 'id'=>'usergroupform', 'name'=>'usergroupform')); ?>

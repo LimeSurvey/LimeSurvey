@@ -6,17 +6,17 @@
 </script>
 
 <!-- Label Bar menu -->
-<div class='menubar' id="labelbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
-    <div class='row container-fluid'>
+<div class='menubar surveybar' id="labelbar">
+    <div class='row'>
 
-        <div class="col-lg-6" style="margin-bottom: 10px;">
+        <div class="col-lg-6">
 
             <!-- View buttons -->
             <?php if (isset($labelbar['buttons']['view'])):?>
                 <?php if (Permission::model()->hasGlobalPermission('labelsets','create') || Permission::model()->hasGlobalPermission('labelsets','import')):?>
 
                     <!-- Create or Import -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button" style="margin-top: 10px;">
+                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/newlabelset");?>" role="button">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create or import new label set(s)"); ?>
                     </a>
@@ -60,8 +60,7 @@
                            data-btnclass='btn-danger'
                            data-btntext="<?= gt('Delete')?>"
                            data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $lid])); ?> })'
-                           data-message="<?php eT("Do you really want to delete this label set?","js"); ?>"
-                           style="margin-top: 10px;">
+                           data-message="<?php eT("Do you really want to delete this label set?","js"); ?>">
                             <span class="fa fa-trash text-danger"></span>
                             <?php eT("Delete label set"); ?>
                         </button>
@@ -79,7 +78,6 @@
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                         <a class="btn btn-default"
                            href="<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>"
-                           style="margin-top: 10px;"
                            role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export"); ?>
@@ -88,7 +86,7 @@
                     <?php else:?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','export')):?>
                         <span title="<?php eT("No label sets available"); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
-                            <a class="btn btn-default disabled" role="button" style="margin-top: 10px;">
+                            <a class="btn btn-default disabled" role="button">
                                 <span class="icon-export text-success"></span>
                                 <?php eT("Export multiple label sets"); ?>
                             </a>
@@ -98,7 +96,7 @@
 
             <!-- return to admin panel -->
             <?php if (isset($labelbar['buttons']['return'])):?>
-              <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="margin-right: 5px;">
+              <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php eT('Back'); ?>
@@ -107,7 +105,7 @@
 
             <!-- Close -->
             <?php if(isset($labelbar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button" style="margin: 10px 0 10px 0;">
+                <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
@@ -131,14 +129,14 @@
 
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <!-- Save -->
-                <a class="btn btn-success" 
-                   href="#" 
-                   role="button" 
-                   id="save-form-button" 
+                <a class="btn btn-success"
+                   href="#"
+                   role="button"
+                   id="save-form-button"
                    data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
-                   style="margin: 10px 0 10px 0;">
+                >
                     <span class="fa fa-floppy-o"></span>
-                    <?php echo $labelbar['savebutton']['text'];?>
+                    <?php echo $labelbar['savebutton']['text']; ?>
                 </a>
             <?php endif;?>
         </div>

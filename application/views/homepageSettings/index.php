@@ -16,7 +16,7 @@ LS.renderBootstrapSwitch();
     strOK='<?php eT('OK','js');?>';
 </script>
 
-<div class="col-lg-12 list-surveys" style="margin-top: 20px;">
+<div class="col-lg-12 list-surveys">
 
     <div class="row">
 

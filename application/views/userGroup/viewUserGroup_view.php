@@ -1,5 +1,5 @@
 <div class="col-lg-12 list-surveys">
-    <div class="row" style="margin-top: 20px;">
+    <div class="row">
         <div class="col-lg-12 content-right text-center">
             <div class="h4"><?php eT("Group members"); ?></div>
 

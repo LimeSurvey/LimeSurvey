@@ -6,7 +6,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
 
 ?>
 <div id="pjax-content">
-    <div class="row" style="margin-top: 30px;margin-bottom: 100px;">
+    <div class="row">
     <div class="container-fluid">
             <?php 
             $hiddenFilterValues = "";

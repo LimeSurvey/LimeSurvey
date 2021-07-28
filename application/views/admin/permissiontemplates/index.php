@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('roles');
 ?>
 <?php $this->renderPartial('permissiontemplates/partials/_menubar', []); ?>
 <div class="col-lg-12">
-    <div class="row" style="margin-top: 8px; margin-bottom: 100px">
+    <div class="row">
         <div class="col-lg-12 content-right">
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(

@@ -51,7 +51,7 @@
 </script>
 
 <!-- Participant Bar -->
-<div class='menubar surveybar' id="participantbar" style="box-shadow: 3px 3px 3px #35363f;">
+<div class='menubar surveybar' id="participantbar">
     <div class='row'>
 
         <div class="col-md-9">

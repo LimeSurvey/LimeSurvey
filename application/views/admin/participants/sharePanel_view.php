@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
 ?>
 <div id="pjax-content">
     <div class="col-lg-12 list-surveys">
-        <div class="row" style="margin-top: 10px; margin-bottom: 100px">
+        <div class="row">
             <div class="container-fluid">
                 <div class="row">
                     <?php

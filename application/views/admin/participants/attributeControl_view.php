@@ -5,7 +5,7 @@
 echo viewHelper::getViewTestTag('participantsAttributeControl');
 
 ?>
-<div id="pjax-content" style="margin-top: 20px;">
+<div id="pjax-content">
 
         <div class="row">
             <div class="container-fluid">

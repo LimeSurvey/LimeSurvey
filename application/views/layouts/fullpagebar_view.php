@@ -7,8 +7,8 @@
 ?>
 
 <!-- Full page menu bar -->
-<div class='menubar' id="fullpagebar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
-    <div class='row container-fluid'>
+<div class="menubar surveybar" id="fullpagebar">
+    <div class="row">
         <div class="col-md-6 text-left">
 
             <!-- Themes -->
@@ -21,7 +21,6 @@
                         role="button" 
                         data-toggle="modal" 
                         data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
-                        style="margin-top: 10px;">
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
                     </a>
@@ -43,7 +42,7 @@
                    data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="margin-top: 10px; margin-bottom: 10px;">
+                   style="display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
                 </a>
@@ -56,7 +55,7 @@
                    data-tab="#surveygroups"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
                    role="button"
-                   style="margin-top: 10px; margin-bottom: 10px; display: none;">
+                   style="display: none;">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey group");?>
                 </a>
@@ -65,11 +64,11 @@
 
 
         <!-- Right actions -->
-        <div class="col-md-6 text-right" style="margin-bottom: 10px;">
+        <div class="col-md-6 text-right">
 
             <!-- Close -->
             <?php if (isset($fullpagebar['closebutton']['url'])) :?>
-                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
@@ -77,7 +76,7 @@
 
             <!-- White Close button -->
             <?php if (isset($fullpagebar['white_closebutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button" style="margin-top: 10px;">
+                <a class="btn btn-default" href="<?php echo $fullpagebar['white_closebutton']['url']; ?>" role="button">
                      <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
@@ -85,7 +84,7 @@
 
             <!-- Return -->
             <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button" style="margin-top:10px;" >
+                <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
@@ -94,7 +93,7 @@
 
             <!-- Save and Close -->
             <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
-                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>" style="margin-top: 10px;">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
@@ -102,7 +101,7 @@
 
             <!-- Save -->
             <?php if (isset($fullpagebar['savebutton']['form'])) :?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>" style="margin-top: 10px;">
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-check"></span>
                     <?php eT("Save");?>
                 </a>
@@ -112,12 +111,12 @@
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
 
                 <!-- Reset Boxes Button -->
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>" style="margin-top: 10px;">
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
                     <span class="fa fa-refresh"></span>
                     <?php eT("Reset");?>
                 </a>
 
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default" style="margin-top: 10px;">
+                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create box");?>
                 </a>
@@ -125,7 +124,7 @@
 
             <!-- Manage your Key -->
             <?php if (isset($fullpagebar['update'])) :?>
-                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
+                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
                 </a>

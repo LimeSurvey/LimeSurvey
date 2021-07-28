@@ -56,11 +56,11 @@ echo viewHelper::getViewTestTag('themeEditor');
 </script>
 
 <!-- Template Editor Bar -->
-<div class='menubar' id="templateeditorbar" style="box-shadow: 3px 3px 3px #35363f; margin-bottom: 10px;">
-    <div class='row container-fluid'>
+<div class='menubar surveybar' id="templateeditorbar">
+    <div class='row'>
 
         <!-- Left Menu -->
-        <div class="col-md-5" style="margin-top: 10px; margin-bottom: 10px;">
+        <div class="col-md-5">
 
             <?php $importModal=false;?>
             <?php if(is_writable($tempdir)):?>
@@ -161,12 +161,12 @@ echo viewHelper::getViewTestTag('themeEditor');
         </div>
 
         <!-- Right Menu -->
-        <div class="col-md-7 text-right form-inline" style="margin-top: 10px; margin-bottom: 10px;">
+        <div class="col-md-7 text-right form-inline">
 
             <!-- Theme Select Box -->
             <div class="form-group">
                 <label for='templatedir'><?php eT("Theme:"); ?></label>
-                <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
+                <select class="listboxtemplates form-control btn" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                     <?php echo themeoptions($templates, $templatename); ?>
@@ -178,7 +178,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
                 <?php echo CHtml::dropDownList('screenname',$screenname,$screens,array(
                     'id'=>'listboxtemplates',
-                    'class'=>"listboxtemplates form-control",
+                    'class'=>"listboxtemplates form-control btn",
                     'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                 )); ?>
             </div>
@@ -215,7 +215,7 @@ echo viewHelper::getViewTestTag('themeEditor');
 <?php endif;?>
 
 <!-- Template Editor -->
-<div class="col-lg-12 templateeditor" style="margin: 10px 0 0 0;">
+<div class="col-lg-12 templateeditor">
 
     <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">

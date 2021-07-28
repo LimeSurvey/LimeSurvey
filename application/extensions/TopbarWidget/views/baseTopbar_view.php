@@ -12,7 +12,7 @@
 ?>
 
 <div class='menubar surveybar' id="<?= !(empty($topbarId)) ? $topbarId : 'surveybarid' ?>">
-    <div class='row container-fluid' style="margin-bottom: 8px;">
+    <div class='row'>
         <?php if (!empty($leftSideContent)): ?>
             <!-- Left Side -->
             <div class="<?= !empty($rightSideContent) ? 'col-md-6' : 'col-md-12'?>">
@@ -22,7 +22,7 @@
 
         <?php if (!empty($rightSideContent)): ?>
             <!-- Right Side -->
-            <div class="<?= !empty($leftSideContent) ? 'col-md-6' : 'col-md-12'?> pull-right text-right">
+            <div class="<?= !empty($leftSideContent) ? 'col-md-6' : 'col-md-12' ?> pull-right text-right">
                 <?= $rightSideContent ?>
             </div>
         <?php endif; ?>

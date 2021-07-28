@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
 ?>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 <div id="pjax-content">
-    <div class="col-lg-12 list-surveys" style="margin-top: 20px;">
+    <div class="col-lg-12 list-surveys">
         <div class="row">
             <div class="col-lg-12 content-right">
 
