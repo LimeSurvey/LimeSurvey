@@ -1,6 +1,6 @@
 ![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
 # Sophisticated online survey software
-[![Build Status](https://travis-ci.org/LimeSurvey/LimeSurvey.svg?branch=master)](https://travis-ci.org/LimeSurvey/LimeSurvey/)
+![Build status](https://github.com/LimeSurvey/LimeSurvey/actions/workflows/main.yml/badge.svg)
 
 
 ## About
