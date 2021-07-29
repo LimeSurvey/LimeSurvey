@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.11 (build 210727) to 5.0.12 (build 210729) July 29, 2021
+-Fixed issue: Security issues found by Michael Mazzolini (Olle Haerstedt)
+-Fixed issue #17460: Themes permission action button is shown now (Patricia Stelling)
+-Fixed issue #17423: Fix database custom port not being used (#1980) (grayot)
+-Fixed issue #17410: String "Label for 'Other:' option" showing entities (#1975) (Gabriel Jenik)
+
+
 Changes from 5.0.10 (build 210723) to 5.0.11 (build 210727) July 27, 2021
 -Fixed issue #17470 [security]: Arbitrary file read in participant functionality (Olle Haerstedt, Michael Mazzolini)
 -Fixed issue #17469 [security]: SQL injection in Participants (editShareInfo) (Olle Haerstedt, Michael Mazzolini)
