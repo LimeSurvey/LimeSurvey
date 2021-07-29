@@ -55,7 +55,7 @@ var RoleControl = function () {
         let modalDialog = $('#userrole-modal-dialog');
         if(modalSize===''){
             modalDialog.removeClass('modal-lg');
-        }else{
+        } else {
             modalDialog.addClass(modalSize);
         }
         $('#RoleControl-action-modal').modal('show');
@@ -188,7 +188,7 @@ var RoleControl = function () {
         });
         $('.RoleControl--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            var modalSize = $(this).data('modalSize');
+            var modalSize = $(this).data('modalsize');
             startModalLoader(modalSize);
             $.ajax({
                 url: href,

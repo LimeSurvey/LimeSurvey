@@ -171,7 +171,7 @@ class Permissiontemplates extends CActiveRecord
                 data-placement='top'
                 title='" . gT('Edit Permission') . "'
                 data-href='" . $setPermissionsUrl . "'
-                data-modalSize='modal-lg'>
+                data-modalsize='modal-lg'>
                     <i class='fa fa-lock'></i>
                 </button>";
 
