@@ -3,8 +3,8 @@
 /** @var UserGroup $userGroup */
 ?>
 <!-- User Group Bar -->
-<div class='menubar' id="usergroupbar" style="box-shadow: 3px 3px 3px #35363f;">
-    <div class='row container-fluid' style="margin-top: 10px;">
+<div class='menubar surveybar' id="usergroupbar" style="box-shadow: 3px 3px 3px #35363f;">
+    <div class='row' style="margin-bottom: 8px;">
         <!-- Left side -->
         <div class="col-lg-6 col-sm-8">
 
@@ -42,7 +42,7 @@
         </div>
 
         <!-- Right side -->
-        <div class="col-lg-6 col-sm-4 text-right" style="margin-bottom: 10px;">
+        <div class="col-lg-6 col-sm-4 text-right">
 
             <!-- Close -->
             <?php if(isset($usergroupbar['closebutton']['url'])):?>

@@ -1483,6 +1483,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
     };
   }
 
+  /**
+   * Makes the answer's table sortable
+   */
+  function makeAnswersTableSortable() /*: void */ {
+    $('.answertable tbody').sortable({
+      containment: 'parent',
+      start: startmove,
+      stop: endmove,
+      update: aftermove,
+      handle: '.move-icon',
+      distance: 3,
+    });
+  }
+
   // Public functions for LS.questionEditor module.
   LS.questionEditor = {
     /**
@@ -1552,6 +1566,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         // TODO: Double check HTML injected here. Extra div?
         $('#advanced-options-container').replaceWith(advancedSettingsHtml);
         $('#extra-options-container').replaceWith(extraOptionsHtml);
+        makeAnswersTableSortable();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -1856,14 +1871,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
   // Below, things run on pjax:scriptcomplete.
 
-    $('.answertable tbody').sortable({
-      containment: 'parent',
-      start: startmove,
-      stop: endmove,
-      update: aftermove,
-      handle: '.move-icon',
-      distance: 3,
-    });
+    makeAnswersTableSortable();
 
     $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
     $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
@@ -1973,23 +1981,4 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
     
     $('#relevance').on('keyup', showConditionsWarning);
-
-  function makeTopbarSticky() {
-    const topbar = $('#pjax-content > .menubar');
-    const editor = $('#in_survey_common');
-    const topbarOffset = topbar.offset().top;
-
-    $(window).on('scroll', () => {
-      if (window.pageYOffset >= topbarOffset) {
-        topbar.addClass('sticky');
-        topbar.css('width', topbar.parent().width());
-        editor.css('padding-top', topbar.outerHeight(true));
-      } else {
-        topbar.removeClass('sticky');
-        topbar.css('width', '');
-        editor.css('padding-top', '');
-      }
-    });
-  }
-  makeTopbarSticky();
 });

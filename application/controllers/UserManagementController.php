@@ -454,10 +454,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens a modal to edit user template permissions
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionUserTemplatePermissions(): string
+    public function actionUserTemplatePermissions(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -861,7 +861,7 @@ class UserManagementController extends LSBaseController
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function actionBatchSendAndResetLoginData(): string
+    public function actionBatchSendAndResetLoginData()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -911,7 +911,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionBatchPermissions(): string
+    public function actionBatchPermissions()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -955,11 +955,11 @@ class UserManagementController extends LSBaseController
     /**
      * Mass edition apply roles
      *
-     * @return string
+     * @return string|null|void
      * @throws CException
      * @throws CHttpException
      */
-    public function actionBatchAddGroup(): string
+    public function actionBatchAddGroup()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -1013,7 +1013,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionBatchApplyRoles(): string
+    public function actionBatchApplyRoles()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(

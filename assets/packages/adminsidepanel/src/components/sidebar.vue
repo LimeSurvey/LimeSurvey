@@ -172,7 +172,9 @@ export default {
             LS.ld.each(this.questiongroups, (itm, i) => {
                 let regTest = new RegExp(
                     'questionGroupsAdministration/view\\?surveyid=\\d*&gid=' + itm.gid +
-                    '|questionGroupsAdministration/edit\\?surveyid=\\d*&gid=' + itm.gid
+                    '|questionGroupsAdministration/edit\\?surveyid=\\d*&gid=' + itm.gid +
+                    '|questionGroupsAdministration/view/surveyid/\\d*/gid/' + itm.gid +
+                    '|questionGroupsAdministration/edit/surveyid/\\d*/gid/' + itm.gid
                 );
                 lastQuestionGroupObject =
                     regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
@@ -186,13 +188,18 @@ export default {
                 LS.ld.each(itm.questions, (itmm, j) => {
                     let regTest = new RegExp(
                         'questionAdministration/edit\\?questionId=' + itmm.qid +
-                        '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid
+                        '|questionAdministration/view\\?surveyid=\\d*&gid=\\d*&qid=' + itmm.qid +
+                        '|questionAdministration/edit/questionId/' + itmm.qid +
+                        '|questionAdministration/view/surveyid/\\d*/gid/\\d*/qid/' + itmm.qid
                     );
                     lastQuestionObject =
                         LS.ld.endsWith(currentUrl, itmm.link) ||
                         regTest.test(currentUrl)
                             ? itmm
                             : lastQuestionObject;
+                    if (lastQuestionObject != false) {
+                        lastQuestionGroupObject = itm;
+                    }
                 });
             });
 
