@@ -635,8 +635,13 @@ class responses extends Survey_Common_Action
             $aQuestionFiles = $oResponse->getFiles($iQID);
             if (isset($aQuestionFiles[$iIndex])) {
                 $aFile = $aQuestionFiles[$iIndex];
-                $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyId."/files/".$aFile['filename'];
-                if (file_exists($sFileRealName)) {
+                // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
+                $sDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
+                $sFileRealName = $sDir . $aFile['filename'];
+                $sRealUserPath = realpath($sFileRealName);
+                if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
+                    throw new CHttpException(403, "Disable for security reasons.");
+                } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";

@@ -676,6 +676,10 @@ div.yes-no .btn-group label {
   white-space:normal;
 }
 
+.privacy {
+    padding-top: 20px;
+}
+
 .privacy-header{
     font-weight: bold;
     font-style: italic;

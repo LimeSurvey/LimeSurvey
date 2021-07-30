@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'd37ae7daf2130c469d874471db3ead26f8302904',
+        'reference' => 'eb35e3b54e26ce616e202de1c1074346fb9fa2e2',
         'name' => 'limesurvey/limesurvey',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'd37ae7daf2130c469d874471db3ead26f8302904',
+            'reference' => 'eb35e3b54e26ce616e202de1c1074346fb9fa2e2',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-ctype' => array(

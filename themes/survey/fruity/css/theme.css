@@ -32,8 +32,6 @@ body {
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
 
-
-
 element.style {
 }
 
@@ -719,6 +717,10 @@ div.yes-no .btn-group label {
   white-space:normal;
 }
 
+.privacy {
+    padding-top: 20px;
+}
+
 .privacy-header{
     font-weight: bold;
     font-style: italic;
@@ -836,8 +838,6 @@ p.return-to-survey{
     font-size: 50%;
     vertical-align: top;
 }
-}
-
 
 /* Remove question container*/
 #navbar {

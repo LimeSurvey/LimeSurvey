@@ -382,7 +382,14 @@ class ParticipantShare extends LSActiveRecord
             list($participantId, $uId) = explode("--", $row);
             Yii::app()->db
                 ->createCommand()
-                ->delete('{{participant_shares}}', "participant_id = '$participantId' AND share_uid = $uId");
+                ->delete(
+                    '{{participant_shares}}',
+                    sprintf(
+                        "participant_id = '%d' AND share_uid = %d",
+                        (int) $participantId,
+                        (int) $uId
+                    )
+                );
         }
     }
 
