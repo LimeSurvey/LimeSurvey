@@ -188,7 +188,10 @@ var RoleControl = function () {
         });
         $('.RoleControl--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            var modalSize = $(this).data('modalsize');
+            var modalSize = '';
+            if (typeof $(this).data('modalsize') !== 'undefined') {
+                modalSize = $(this).data('modalsize');
+            }
             startModalLoader(modalSize);
             $.ajax({
                 url: href,
