@@ -1,6 +1,11 @@
 <?php
 /* @var SurveysGroupsController $this */
 /* @var SurveysGroups $model */
+/* @var array $jsData */
+/* @var SurveysGroupsettings $oSurvey */
+/* @var string $partial */
+/* @var array $users */
+/* @var array $aDateFormatDetails */
 
 $optionsOnOff = [
     'Y' => gT('On', 'unescaped'),
@@ -31,7 +36,7 @@ Yii::app()->getClientScript()->registerScript(
                 <?php endif; ?>
                 <?php echo CHtml::form(["admin/surveysgroups/sa/surveysettings/id/" . $oSurvey->gsid . "/#surveySettingsGeneral"], 'post', ['id' => 'survey-settings-options-form']); ?>
                 <div class="tab-content col-md-10">
-                    <?php if ($partial == '_generaloptions_panel') { ?>
+                    <?php if ($partial === '_generaloptions_panel') { ?>
                         <div id="surveySettingsGeneral" class="row">
                             <?php $this->renderPartial(
                                 'survey/subview/accordion/_generaloptions_panel',
@@ -45,7 +50,7 @@ Yii::app()->getClientScript()->registerScript(
                                 ]
                             ); ?>
                         </div>
-                    <?php } elseif ($partial == '_presentation_panel') { ?>
+                    <?php } elseif ($partial === '_presentation_panel') { ?>
                         <div id="surveySettingsPresentation">
                             <?php $this->renderPartial(
                                 'survey/subview/accordion/_presentation_panel',
@@ -57,7 +62,7 @@ Yii::app()->getClientScript()->registerScript(
                                 ]
                             ); ?>
                         </div>
-                    <?php } elseif ($partial == '_tokens_panel') { ?>
+                    <?php } elseif ($partial === '_tokens_panel') { ?>
                         <div id="surveySettingsParticipants">
                             <?php $this->renderPartial(
                                 'survey/subview/accordion/_tokens_panel',
@@ -69,7 +74,7 @@ Yii::app()->getClientScript()->registerScript(
                                 ]
                             ); ?>
                         </div>
-                    <?php } elseif ($partial == '_notification_panel') { ?>
+                    <?php } elseif ($partial === '_notification_panel') { ?>
                         <div id="surveySettingsNotification">
                             <?php $this->renderPartial(
                                 'survey/subview/accordion/_notification_panel',
@@ -82,7 +87,7 @@ Yii::app()->getClientScript()->registerScript(
                                 ]
                             ); ?>
                         </div>
-                    <?php } elseif ($partial == '_publication_panel') { ?>
+                    <?php } elseif ($partial === '_publication_panel') { ?>
                         <div id="surveySettingsPublication">
                             <?php $this->renderPartial(
                                 'survey/subview/accordion/_publication_panel',
@@ -103,7 +108,7 @@ Yii::app()->getClientScript()->registerScript(
                     </div>
 
                 </div>
-                </form>
+                <?php echo CHtml::endForm()?>
             </div>
         </div>
     </div>

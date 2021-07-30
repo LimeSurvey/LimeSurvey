@@ -1,6 +1,14 @@
+<?php
+/**
+ * @var Survey $oSurvey
+ * @var string $qid
+ */
+
+?>
+
 <!-- Delete -->
 <?php if (!empty($showDeleteButton)) : ?>
-    <?php if ($oSurvey->active != 'Y') : ?>
+    <?php if ($oSurvey->active !== 'Y') : ?>
         <button class="btn btn-danger"
                 data-toggle="modal"
                 data-target="#confirmation-modal"

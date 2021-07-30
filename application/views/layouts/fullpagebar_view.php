@@ -12,19 +12,20 @@
         <div class="col-md-6 text-left">
 
             <!-- Themes -->
-            <?php if (isset($fullpagebar['themes'])): ?>
+            <?php if (isset($fullpagebar['themes'])) : ?>
                 <!-- Upload and Install -->
-                <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']): ?>
-                    <a  id="uploadandinstall"
-                        class="btn btn-default"
-                        href=""
-                        role="button" 
-                        data-toggle="modal" 
-                        data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
+                <?php if (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && $fullpagebar['themes']['canImport']) : ?>
+                    <a id="uploadandinstall"
+                       class="btn btn-default"
+                       href=""
+                       role="button"
+                       data-toggle="modal"
+                       data-target="#<?php echo $fullpagebar['themes']['buttons']['uploadAndInstall']['modalSurvey']; ?>"
+                    >
                         <span class="icon-import text-success"></span>
                         <?php eT("Upload & install"); ?>
                     </a>
-                <?php elseif(isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])): ?>
+                <?php elseif (isset($fullpagebar['themes']['buttons']['uploadAndInstall']) && !$fullpagebar['themes']['canImport'] && isset($fullpagebar['themes']['importErrorMessage'])) : ?>
                     <!-- import disabled -->
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $fullpagebar['themes']['importErrorMessage']['importErrorMessage']; ?>" style="display: inline-block">
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
@@ -36,26 +37,32 @@
             <?php endif; ?>
 
             <!-- List Surveys - Create a new Survey -->
-            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
-                Permission::model()->hasGlobalPermission('surveys','create')):?>
+            <?php if (
+                isset($fullpagebar['listSurveys']['buttons']['createSurvey']) &&
+                Permission::model()->hasGlobalPermission('surveys', 'create')
+            ) : ?>
                 <a class="btn btn-default tab-dependent-button"
                    data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="display: none;">
+                   style="display: none;"
+                >
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
                 </a>
             <?php endif;?>
 
             <!-- List Surveys - Create a new Survey group -->
-            <?php if(isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
-                Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
+            <?php if (
+                isset($fullpagebar['listSurveys']['buttons']['createSurveyGroup']) &&
+                Permission::model()->hasGlobalPermission('surveysgroups', 'create')
+            ) : ?>
                 <a class="btn btn-default tab-dependent-button"
                    data-tab="#surveygroups"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurveyGroup']['url']; ?>"
                    role="button"
-                   style="display: none;">
+                   style="display: none;"
+                >
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey group");?>
                 </a>
@@ -109,7 +116,6 @@
 
             <!-- Box Buttons -->
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
-
                 <!-- Reset Boxes Button -->
                 <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
                     <span class="fa fa-refresh"></span>

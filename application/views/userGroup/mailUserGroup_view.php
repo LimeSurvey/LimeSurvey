@@ -1,19 +1,19 @@
 <?php
-
-/**  @var  $ugid integer */
-
+/**  @var  integer $ugid */
 ?>
 
 <div class="col-lg-12 list-surveys">
 
     <div class="row">
-        <?php echo CHtml::form(array("userGroup/MailToAllUsersInGroup/ugid/{$ugid}"), 'post',
-            array('class' => 'col-md-6 col-md-offset-3', 'id' => 'mailusergroup', 'name' => 'mailusergroup')); ?>
+        <?php echo CHtml::form(
+            ["userGroup/MailToAllUsersInGroup/ugid/{$ugid}"],
+            'post',
+            ['class' => 'col-md-6 col-md-offset-3', 'id' => 'mailusergroup', 'name' => 'mailusergroup']
+        ); ?>
         <div class="form-group">
             <label for='copymail'>
                 <?php eT("Send me a copy:"); ?>
-                <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1'
-                       class="form-control"/>
+                <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1'/>
             </label>
         </div>
         <div class="form-group">
@@ -31,6 +31,6 @@
 
         <input type='hidden' name='action' value='mailsendusergroup'/>
         <input type='hidden' name='ugid' value='<?php echo $ugid; ?>'/>
-        </form>
+        <?php echo CHtml::endForm() ?>
     </div>
 </div>

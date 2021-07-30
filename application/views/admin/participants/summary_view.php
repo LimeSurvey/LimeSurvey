@@ -1,5 +1,12 @@
 <?php
-/* @var $this AdminController */
+/**
+ * @var AdminController $this
+ * @var string $totalrecords
+ * @var string $owned
+ * @var string $shared
+ * @var string $blacklisted
+ * @var string $attributecount
+ */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('participantsSummary');
@@ -9,7 +16,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
     <div class="col-lg-12 list-surveys">
         <div class="row">
             <div class="col-lg-12 content-right">
-                <table class='statisticssummary table table-striped'>
+                <table class='statisticssummary table table-hover'>
                     <tr>
                         <th>
                             <?php eT("Total participants in central table"); ?>

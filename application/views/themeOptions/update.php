@@ -1,21 +1,21 @@
 <?php
-/* @var $this ThemeOptionsController */
-/* @var $model TemplateConfiguration  */
+/* @var ThemeOptionsController $this */
+/* @var TemplateConfiguration $model */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
-<?php if (empty($model->sid)): ?>
-<!-- This is only visible when we're not in survey view. -->
+<?php if (empty($model->sid)) : ?>
+    <!-- This is only visible when we're not in survey view. -->
     <div class='menubar surveybar' id='theme-options-bar'>
         <div class='row'>
             <div class='text-right'>
 
                 <?php
-                  $sThemeOptionUrl = App()->createUrl("themeOptions");
-                  $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$gsid, "#" => 'templateSettingsFortThisGroup'));
-                  $sUrl = (is_null($gsid))?$sThemeOptionUrl:$sGroupEditionUrl;
+                $sThemeOptionUrl = App()->createUrl("themeOptions");
+                $sGroupEditionUrl = App()->createUrl("admin/surveysgroups/sa/update", ["id" => $gsid, "#" => 'templateSettingsFortThisGroup']);
+                $sUrl = (is_null($gsid)) ? $sThemeOptionUrl : $sGroupEditionUrl;
                 ?>
 
                 <!-- Back -->
@@ -32,8 +32,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
-<?php else: ?>
-<div class="col-sm-12 side-body <?=getSideBodyClass(false)?>" id="theme-option-sidebody">
+<?php else : ?>
+<div class="col-sm-12 side-body <?= getSideBodyClass(false) ?>" id="theme-option-sidebody">
 <?php endif; ?>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
@@ -41,14 +41,14 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <?php
-                    if ($aOptionAttributes['optionsPage'] == 'core'){
-                        foreach($aOptionAttributes['categories'] as $key => $category){ ?>
-                        <li role="presentation" class="<?php echo $key==0 ? 'active' : 'action_hide_on_inherit'; ?>"><a href="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-toggle="tab"><?php echo $category; ?></a></li>
+                if ($aOptionAttributes['optionsPage'] == 'core') {
+                    foreach ($aOptionAttributes['categories'] as $key => $category) { ?>
+                        <li role="presentation" class="<?php echo $key == 0 ? 'active' : 'action_hide_on_inherit'; ?>"><a href="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-toggle="tab"><?php echo $category; ?></a></li>
                     <?php } ?>
                 <?php } else { ?>
-                        <li role="presentation" class="active"><a href="#simple" aria-controls="home" role="tab" data-toggle="tab"><?php eT('Simple options')?></a></li>
+                    <li role="presentation" class="active"><a href="#simple" aria-controls="home" role="tab" data-toggle="tab"><?php eT('Simple options') ?></a></li>
                 <?php } ?>
-                <li role="presentation"><a href="#advanced" aria-controls="profile" role="tab" data-toggle="tab" class="<?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>"><?php eT('Advanced options')?></a></li>
+                <li role="presentation"><a href="#advanced" aria-controls="profile" role="tab" data-toggle="tab" class="<?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>"><?php eT('Advanced options') ?></a></li>
             </ul>
         </div>
     </div>
@@ -57,49 +57,46 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <!-- Tab panes -->
             <?php /* Begin theme option form */ ?>
             <form class='form action_update_options_string_form' action=''>
-            <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), [ 'id' => 'theme-options--submit', 'class'=> 'hidden action_update_options_string_button']); ?>
+                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['id' => 'theme-options--submit', 'class' => 'hidden action_update_options_string_button']); ?>
                 <div class="tab-content">
                     <?php
-                        /***
-                         * Here we render just the options as a simple form.
-                         * On save, the options are parsed to a JSON string and put into the relevant field in the "real" form
-                         * before saving that to database.
+                    /*
+                     * Here we render just the options as a simple form.
+                     * On save, the options are parsed to a JSON string and put into the relevant field in the "real" form
+                     * before saving that to database.
+                     */
+
+                    //First convert options to json and check if it is valid
+                    $oOptions = json_decode($model->options);
+                    $jsonError = json_last_error();
+                    //if it is not valid, render message
+                    if ($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit') {
+                        //return
+                        echo "<div class='ls-flex-column fill'><h4>" . gT('There are no simple options in this survey theme.') . "</h4></div>";
+                    } else {
+                        //if however there is no error in the parsing of the json string go forth and render the form
+                        /*
+                         * The form element needs to hold the class "action_update_options_string_form" to be correctly bound
+                         * To be able to change the value in the "real" form, the input needs to now what to change.
+                         * So the name attribute should contain the object key we want to change
                          */
 
-                        //First convert options to json and check if it is valid
-                        $oOptions = json_decode($model->options);
-                        $jsonError = json_last_error();
-                        //if it is not valid, render message
-                        if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
-                        {
-                            //return
-                            echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this survey theme.')."</h4></div>";
-                        }
-                        //if however there is no error in the parsing of the json string go forth and render the form
-                        else
-                        {
-                            /**
-                             * The form element needs to hold the class "action_update_options_string_form" to be correctly bound
-                             * To be able to change the value in the "real" form, the input needs to now what to change.
-                             * So the name attribute should contain the object key we want to change
-                             */
-
-                            if ($aOptionAttributes['optionsPage'] == 'core'){
-                                $this->renderPartial('./options_core', array(
-                                    'aOptionAttributes' => $aOptionAttributes,
+                        if ($aOptionAttributes['optionsPage'] == 'core') {
+                            $this->renderPartial(
+                                './options_core',
+                                [
+                                    'aOptionAttributes'      => $aOptionAttributes,
                                     'aTemplateConfiguration' => $aTemplateConfiguration,
-                                    'oParentOptions' => $oParentOptions,
-                                    'sPackagesToLoad' => $sPackagesToLoad
-                                    )
-                                );
-                            } else {
-                                echo '<div role="tabpanel" class="tab-pane active" id="simple">';
-                                echo $templateOptionPage;
-                                echo '</div>';
-                            }
+                                    'oParentOptions'         => $oParentOptions,
+                                    'sPackagesToLoad'        => $sPackagesToLoad
+                                ]
+                            );
+                        } else {
+                            echo '<div role="tabpanel" class="tab-pane active" id="simple">';
+                            echo $templateOptionPage;
+                            echo '</div>';
                         }
-
-                        //
+                    }
                     ?>
                 </div>
             </form>
@@ -116,45 +113,45 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     </div>
 
                     <?php
-                        $actionBaseUrl = 'themeOptions/update/';
-                        $actionUrlArray = array('id' => $model->id);
+                    $actionBaseUrl = 'themeOptions/update/';
+                    $actionUrlArray = ['id' => $model->id];
 
-                        if($model->sid) {
-                            unset($actionUrlArray['id']);
-                            $actionUrlArray['sid'] = $model->sid;
-                            $actionUrlArray['surveyd'] = $model->sid;
-                            $actionUrlArray['gsid'] = $model->gsid;
-                            $actionBaseUrl = 'themeOptions/updateSurvey/';
-                            }
-                        if($model->gsid) {
-                            unset($actionUrlArray['id']);
-                            $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
-                            $actionUrlArray['gsid'] = $model->gsid;
-                            $actionUrlArray['id'] = $model->id;
-                        }
+                    if ($model->sid) {
+                        unset($actionUrlArray['id']);
+                        $actionUrlArray['sid'] = $model->sid;
+                        $actionUrlArray['surveyd'] = $model->sid;
+                        $actionUrlArray['gsid'] = $model->gsid;
+                        $actionBaseUrl = 'themeOptions/updateSurvey/';
+                    }
+                    if ($model->gsid) {
+                        unset($actionUrlArray['id']);
+                        $actionBaseUrl = 'themeOptions/updateSurveyGroup/';
+                        $actionUrlArray['gsid'] = $model->gsid;
+                        $actionUrlArray['id'] = $model->id;
+                    }
 
-                        $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
+                    $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
                     ?>
                     <div class="container-fluid">
                         <div class="row ls-space margin bottom-15">
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-sm-6 h4">
-                                        <?php printf(gT("Upload an image (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
+                                        <?php printf(gT("Upload an image (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                                     </div>
                                     <div class="col-sm-6">
-                                    <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'uploadimage', 'name'=>'uploadimage', 'enctype'=>'multipart/form-data')); ?>
+                                        <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'uploadimage', 'name' => 'uploadimage', 'enctype' => 'multipart/form-data']); ?>
                                         <span id="fileselector">
                                             <label class="btn btn-default col-xs-8" for="upload_image">
-                                                <input class="hidden" id="upload_image" name="upload_image" type="file" >
+                                                <input class="hidden" id="upload_image" name="upload_image" type="file">
                                                 <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                                             </label>
                                         </span>
 
-                                            <input type='hidden' name='templatename' value='<?php echo $model->template_name; ?>' />
-                                            <input type='hidden' name='templateconfig' value='<?php echo $model->id; ?>' />
-                                            <input type='hidden' name='action' value='templateuploadimagefile' />
-                                        </form>
+                                        <input type='hidden' name='templatename' value='<?php echo $model->template_name; ?>'/>
+                                        <input type='hidden' name='templateconfig' value='<?php echo $model->id; ?>'/>
+                                        <input type='hidden' name='action' value='templateuploadimagefile'/>
+                                        <?php echo TbHtml::endForm() ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -171,84 +168,87 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                         </div>
                         <div class="row">
                             <div class="container-fluid">
-                                <?php $form=$this->beginWidget('TbActiveForm', array(
-                                    'id'=>'template-options-form',
-                                    'enableAjaxValidation'=>false,
-                                    'htmlOptions' => ['class' => 'form '],
-                                    'action' => $actionUrl
-                                )); ?>
+                                <?php $form = $this->beginWidget(
+                                    'TbActiveForm',
+                                    [
+                                        'id'                   => 'template-options-form',
+                                        'enableAjaxValidation' => false,
+                                        'htmlOptions'          => ['class' => 'form '],
+                                        'action'               => $actionUrl
+                                    ]
+                                ); ?>
                                 <p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
                                 <?php echo $form->errorSummary($model); ?>
 
 
-                                <?php echo $form->hiddenField($model,'template_name'); ?>
-                                <?php echo $form->hiddenField($model,'sid'); ?>
-                                <?php echo $form->hiddenField($model,'gsid'); ?>
-                                <?php echo $form->hiddenField($model,'uid'); ?>
+                                <?php echo $form->hiddenField($model, 'template_name'); ?>
+                                <?php echo $form->hiddenField($model, 'sid'); ?>
+                                <?php echo $form->hiddenField($model, 'gsid'); ?>
+                                <?php echo $form->hiddenField($model, 'uid'); ?>
 
-                                <?php echo CHtml::hiddenField('optionInheritedValues' , json_encode($optionInheritedValues)); ?>
-                                <?php echo CHtml::hiddenField('optionCssFiles' , json_encode($optionCssFiles)); ?>
-                                <?php echo CHtml::hiddenField('optionCssFramework' , json_encode($optionCssFramework)); ?>
-                                <?php echo CHtml::hiddenField('translationInheritedValue' , gT("Inherited value:").' '); ?>
+                                <?php echo CHtml::hiddenField('optionInheritedValues', json_encode($optionInheritedValues)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFiles', json_encode($optionCssFiles)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFramework', json_encode($optionCssFramework)); ?>
+                                <?php echo CHtml::hiddenField('translationInheritedValue', gT("Inherited value:") . ' '); ?>
 
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'files_css'); ?>
-                                        <?php echo $form->textArea($model,'files_css',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'files_css'); ?>
+                                        <?php echo $form->labelEx($model, 'files_css'); ?>
+                                        <?php echo $form->textArea($model, 'files_css', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'files_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'files_js'); ?>
-                                        <?php echo $form->textArea($model,'files_js',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'files_js'); ?>
+                                        <?php echo $form->labelEx($model, 'files_js'); ?>
+                                        <?php echo $form->textArea($model, 'files_js', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'files_js'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'files_print_css'); ?>
-                                        <?php echo $form->textArea($model,'files_print_css',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'files_print_css'); ?>
+                                        <?php echo $form->labelEx($model, 'files_print_css'); ?>
+                                        <?php echo $form->textArea($model, 'files_print_css', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'files_print_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'options'); ?>
-                                        <?php echo $form->textArea($model,'options',array('rows'=>6, 'cols'=>50 )); ?>
-                                        <?php echo $form->error($model,'options'); ?>
+                                        <?php echo $form->labelEx($model, 'options'); ?>
+                                        <?php echo $form->textArea($model, 'options', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'options'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'cssframework_name'); ?>
-                                        <?php echo $form->textField($model,'cssframework_name',array('size'=>45,'maxlength'=>45)); ?>
-                                        <?php echo $form->error($model,'cssframework_name'); ?>
+                                        <?php echo $form->labelEx($model, 'cssframework_name'); ?>
+                                        <?php echo $form->textField($model, 'cssframework_name', ['size' => 45, 'maxlength' => 45]); ?>
+                                        <?php echo $form->error($model, 'cssframework_name'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'cssframework_css'); ?>
-                                        <?php echo $form->textArea($model,'cssframework_css',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'cssframework_css'); ?>
+                                        <?php echo $form->labelEx($model, 'cssframework_css'); ?>
+                                        <?php echo $form->textArea($model, 'cssframework_css', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'cssframework_css'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'cssframework_js'); ?>
-                                        <?php echo $form->textArea($model,'cssframework_js',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'cssframework_js'); ?>
+                                        <?php echo $form->labelEx($model, 'cssframework_js'); ?>
+                                        <?php echo $form->textArea($model, 'cssframework_js', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'cssframework_js'); ?>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <?php echo $form->labelEx($model,'packages_to_load'); ?>
-                                        <?php echo $form->textArea($model,'packages_to_load',array('rows'=>6, 'cols'=>50)); ?>
-                                        <?php echo $form->error($model,'packages_to_load'); ?>
+                                        <?php echo $form->labelEx($model, 'packages_to_load'); ?>
+                                        <?php echo $form->textArea($model, 'packages_to_load', ['rows' => 6, 'cols' => 50]); ?>
+                                        <?php echo $form->error($model, 'packages_to_load'); ?>
                                     </div>
                                 </div>
                                 <div class="row buttons hidden">
-                                    <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class'=> 'btn-success']); ?>
+                                    <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn-success']); ?>
                                 </div>
 
                                 <?php $this->endWidget(); ?>
@@ -259,24 +259,26 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             </div>
         </div>
     </div>
-<?php if (!empty($model->sid)): // If we are in survey view, we have an additional div that we need to close ?>
+    <?php if (!empty($model->sid)) : // If we are in survey view, we have an additional div that we need to close  ?>
 </div>
-<?php endif; ?>
+    <?php endif; ?>
 
 <!-- Form for image file upload -->
 <div class="hidden">
-    <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'upload_frontend', 'name'=>'upload_frontend', 'enctype'=>'multipart/form-data')); ?>
-        <?php if(isset($aTemplateConfiguration['sid']) && !empty($aTemplateConfiguration['sid'])): ?>
-            <input type='hidden' name='surveyid' value='<?= $aTemplateConfiguration['sid'] ?>' />
-        <?php endif; ?>
-        <input type='hidden' name='templatename' value='<?php echo $aTemplateConfiguration['template_name']; ?>' />
-        <input type='hidden' name='templateconfig' value='<?php echo $aTemplateConfiguration['id']; ?>' />
-        <input type='hidden' name='action' value='templateuploadimagefile' />
-    </form>
+    <?php echo TbHtml::form(['admin/themes/sa/upload'], 'post', ['id' => 'upload_frontend', 'name' => 'upload_frontend', 'enctype' => 'multipart/form-data']); ?>
+    <?php if (isset($aTemplateConfiguration['sid']) && !empty($aTemplateConfiguration['sid'])) : ?>
+        <input type='hidden' name='surveyid' value='<?= $aTemplateConfiguration['sid'] ?>'/>
+    <?php endif; ?>
+    <input type='hidden' name='templatename' value='<?php echo $aTemplateConfiguration['template_name']; ?>'/>
+    <input type='hidden' name='templateconfig' value='<?php echo $aTemplateConfiguration['id']; ?>'/>
+    <input type='hidden' name='action' value='templateuploadimagefile'/>
+    <?php echo TbHtml::endForm() ?>
 </div>
 
 <?php
-Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
+Yii::app()->getClientScript()->registerScript(
+    "themeoptions-scripts",
+    '
 
         var bindUpload = function(options){
             var $activeForm = $(options.form);
@@ -367,5 +369,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
             
 
         });
-    ', LSYii_ClientScript::POS_END);
+    ',
+    LSYii_ClientScript::POS_END
+);
 ?>

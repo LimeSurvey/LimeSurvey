@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Menu Bar show for full pages (without sidemenu, inside configuration menus)
  */
+
 ?>
 
 <!-- Full page menu bar -->
@@ -9,11 +11,12 @@
     <div class='row'>
         <div class="col-md-6 text-left">
             <!-- Plugin Manager -->
-            <?php if(isset($fullpagebar['pluginManager'])): ?>
-
+            <?php if (isset($fullpagebar['pluginManager'])) : ?>
                 <!-- Install Plugin Zip -->
-                <?php if (isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
-                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']): ?>
+                <?php if (
+                    isset($fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']) &&
+                    !$fullpagebar['pluginManager']['buttons']['installPluginZipModal']['hasConfigDemoMode']
+                ) : ?>
                     <a
                         href=''
                         class='btn btn-default'
@@ -28,7 +31,7 @@
                 <?php endif; ?>
 
                  <!-- Scan Files -->
-                <?php if(isset($fullpagebar['pluginManager']['buttons']['scanFiles'])): ?>
+                <?php if (isset($fullpagebar['pluginManager']['buttons']['scanFiles'])) : ?>
                     <a
                         href='<?php echo $fullpagebar["pluginManager"]["buttons"]["scanFiles"]["url"]; ?>'
                         class='btn btn-default'
@@ -54,8 +57,8 @@
             <?php endif; ?>
 
             <!-- Add new Menu entry -->
-            <?php if(isset($fullpagebar['menus'])): ?>
-                <?php if(isset($fullpagebar['menus']['buttons']['addMenuEntry']) && $fullpagebar['menus']['buttons']['addMenuEntry']): ?>
+            <?php if (isset($fullpagebar['menus'])) : ?>
+                <?php if (isset($fullpagebar['menus']['buttons']['addMenuEntry']) && $fullpagebar['menus']['buttons']['addMenuEntry']) : ?>
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenuentry"
                        data-tab="#surveymenuentries"
@@ -78,7 +81,7 @@
             <?php endif;?>
 
             <!-- Return -->
-            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
+            <?php if (isset($fullpagebar['returnbutton']['url'])) :?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
@@ -87,7 +90,7 @@
             <?php endif;?>
 
             <!-- Reset -->
-            <?php if(isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']):?>
+            <?php if (isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']) :?>
                 <a class="btn btn-warning"
                    href="#restoremodal"
                    data-toggle="modal">
@@ -97,7 +100,7 @@
             <?php endif; ?>
 
             <!-- Reorder -->
-            <?php if(isset($fullpagebar['menus']['buttons']['reorder']) && $fullpagebar['menus']['buttons']['reorder']): ?>
+            <?php if (isset($fullpagebar['menus']['buttons']['reorder']) && $fullpagebar['menus']['buttons']['reorder']) : ?>
                 <a class="btn btn-warning"
                    id="reorderentries">
                     <i class="fa fa-sort"></i>&nbsp;
@@ -106,7 +109,7 @@
             <?php endif; ?>
 
             <!-- Save and Close -->
-            <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
+            <?php if (isset($fullpagebar['saveandclosebutton']['form'])) :?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
@@ -114,7 +117,7 @@
             <?php endif; ?>
 
             <!-- Save -->
-            <?php if(isset($fullpagebar['savebutton']['form'])):?>
+            <?php if (isset($fullpagebar['savebutton']['form'])) :?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-check"></span>
                     <?php eT("Save");?>
@@ -122,7 +125,7 @@
             <?php endif;?>
 
             <!-- Close -->
-            <?php if(isset($fullpagebar['closebutton']['url'])):?>
+            <?php if (isset($fullpagebar['closebutton']['url'])) :?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button" style="box-shadow: 3px 3px 3px;">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
@@ -130,7 +133,7 @@
             <?php endif;?>
 
             <!-- Box Buttons -->
-            <?php if(isset($fullpagebar['boxbuttons'])):?>
+            <?php if (isset($fullpagebar['boxbuttons'])) :?>
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
                     <span class="icon-add  text-success"></span>
                     <?php eT("Create a new box");?>
@@ -142,7 +145,7 @@
             <?php endif;?>
 
             <!-- Manage your Key -->
-            <?php if(isset($fullpagebar['update'])):?>
+            <?php if (isset($fullpagebar['update'])) :?>
                 <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default" style="margin-top:10px;">
                     <span class="fa fa-key text-success"></span>
                     <?php eT("Manage your key");?>
