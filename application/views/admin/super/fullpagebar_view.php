@@ -44,13 +44,26 @@
                 <?php endif; ?>
             <?php endif; ?>
 
+            <!-- Add new Menu -->
+            <?php if(isset($fullpagebar['menus'])): ?>
+                <?php if(isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
+                    <a class="btn btn-default tab-dependent-button"
+                       id="createnewmenu"
+                       data-tab="#surveymenues"
+                       style="margin-top: 10px; margin-bottom: 10px;">
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
+                    </a>
+                <?php endif; ?>
+            <?php endif; ?>
+
             <!-- Add new Menu entry -->
             <?php if(isset($fullpagebar['menus'])): ?>
                 <?php if(isset($fullpagebar['menus']['buttons']['addMenuEntry']) && $fullpagebar['menus']['buttons']['addMenuEntry']): ?>
-                    <a class="btn btn-default"
-                       id="createnewmenu"
-                       style="margin-top: 10px; margin-bottom: 10px;">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
+                    <a class="btn btn-default tab-dependent-button"
+                       id="createnewmenuentry"
+                       data-tab="#surveymenuentries"
+                       style="margin-top: 10px; margin-bottom: 10px; display:none;">
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu Entry') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>

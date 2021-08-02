@@ -806,6 +806,8 @@ $config['pluginWhitelist'] = [];
 $config['encryptionkeypair'] = '';
 $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
+$config['encryptionnonce'] = '';
+$config['encryptionsecretboxkey'] = '';
 
 $config['passwordValidationRules'] = array(
     'min' => 4,
