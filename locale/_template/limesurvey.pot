@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-07-29 09:52:56+00:00\n"
+"POT-Creation-Date: 2021-08-03 08:41:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:33
-#: application/helpers/SurveyRuntimeHelper.php:1034
+#: application/helpers/SurveyRuntimeHelper.php:1042
 #: application/helpers/admin/import_helper.php:977
 #: application/helpers/admin/import_helper.php:1019
 #: application/helpers/admin/import_helper.php:1096
@@ -475,7 +475,7 @@ msgid "ID"
 msgstr ""
 
 #: application/controllers/RegisterController.php:167
-#: application/helpers/SurveyRuntimeHelper.php:1529
+#: application/helpers/SurveyRuntimeHelper.php:1537
 msgid "Your answer to the security question was not correct - please try again."
 msgstr ""
 
@@ -1684,7 +1684,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:644
 #: application/controllers/admin/tokens.php:1572
 #: application/controllers/admin/useraction.php:163
-#: application/helpers/SurveyRuntimeHelper.php:1043
+#: application/helpers/SurveyRuntimeHelper.php:1051
 #: application/views/admin/dataentry/import.php:29
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/Question/question_view.php:105
@@ -1778,7 +1778,7 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:33
-#: application/helpers/SurveyRuntimeHelper.php:445
+#: application/helpers/SurveyRuntimeHelper.php:453
 #: application/helpers/admin/statistics_helper.php:1244
 #: application/helpers/admin/statistics_helper.php:1366
 #: application/helpers/common_helper.php:1162
@@ -1938,7 +1938,7 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:41
-#: application/helpers/SurveyRuntimeHelper.php:445
+#: application/helpers/SurveyRuntimeHelper.php:453
 #: application/helpers/admin/statistics_helper.php:1245
 #: application/helpers/admin/statistics_helper.php:1367
 #: application/helpers/common_helper.php:1168
@@ -3217,8 +3217,8 @@ msgstr ""
 #: application/controllers/admin/themes.php:340
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
-#: application/helpers/SurveyRuntimeHelper.php:1319
-#: application/helpers/frontend_helper.php:2212
+#: application/helpers/SurveyRuntimeHelper.php:1327
+#: application/helpers/frontend_helper.php:2215
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -4033,7 +4033,7 @@ msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:372
 #: application/controllers/admin/useraction.php:157
-#: application/helpers/SurveyRuntimeHelper.php:1028
+#: application/helpers/SurveyRuntimeHelper.php:1036
 #: application/helpers/update/update_helper.php:35
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
@@ -4201,7 +4201,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1579
 #: application/controllers/admin/tokens.php:2380
 #: application/extensions/LimeScript/LimeScript.php:26
-#: application/helpers/SurveyRuntimeHelper.php:1318
+#: application/helpers/SurveyRuntimeHelper.php:1326
 #: application/views/admin/conditions/deleteAllConditions.php:23
 #: application/views/admin/conditions/includes/conditions_scenario.php:42
 #: application/views/admin/dataentry/import.php:21
@@ -7911,84 +7911,84 @@ msgstr ""
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:740
+#: application/helpers/SurveyRuntimeHelper.php:748
 msgid "Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:946
+#: application/helpers/SurveyRuntimeHelper.php:954
 msgid "To continue please first accept our survey data policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:950
+#: application/helpers/SurveyRuntimeHelper.php:958
 msgid "We are sorry but you can't proceed without first agreeing to our survey data policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1029
+#: application/helpers/SurveyRuntimeHelper.php:1037
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1035
+#: application/helpers/SurveyRuntimeHelper.php:1043
 msgid "Your responses were not saved. Please contact the survey administrator."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1044
+#: application/helpers/SurveyRuntimeHelper.php:1052
 msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1149
+#: application/helpers/SurveyRuntimeHelper.php:1157
 #: tmp/runtime/twig_cache/9e/9e6a9166ae256de5df38140e38820f64b23ab66e0b0509e10c0283beebd50cb3.php:197
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1150
 #: application/helpers/SurveyRuntimeHelper.php:1158
+#: application/helpers/SurveyRuntimeHelper.php:1166
 msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1157
+#: application/helpers/SurveyRuntimeHelper.php:1165
 #: tmp/runtime/twig_cache/9e/9e6a9166ae256de5df38140e38820f64b23ab66e0b0509e10c0283beebd50cb3.php:235
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1232
+#: application/helpers/SurveyRuntimeHelper.php:1240
 msgid "Note: Automatically loading the end URL works only if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1342
+#: application/helpers/SurveyRuntimeHelper.php:1350
 #: application/helpers/qanda_helper.php:423
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1347
+#: application/helpers/SurveyRuntimeHelper.php:1355
 #: application/helpers/qanda_helper.php:445
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1352
+#: application/helpers/SurveyRuntimeHelper.php:1360
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1532
+#: application/helpers/SurveyRuntimeHelper.php:1540
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1648
+#: application/helpers/SurveyRuntimeHelper.php:1656
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1654
+#: application/helpers/SurveyRuntimeHelper.php:1662
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1664
+#: application/helpers/SurveyRuntimeHelper.php:1672
 msgid "This group is empty"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1683
+#: application/helpers/SurveyRuntimeHelper.php:1691
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1684
+#: application/helpers/SurveyRuntimeHelper.php:1692
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
@@ -9718,86 +9718,86 @@ msgstr ""
 msgid "Usage of + with numeric value, see manual about usage of sum."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:312
+#: application/helpers/frontend_helper.php:315
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:323
-#: application/helpers/frontend_helper.php:327
+#: application/helpers/frontend_helper.php:326
+#: application/helpers/frontend_helper.php:330
 msgid "Sorry, only %s extensions are allowed!"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:338
+#: application/helpers/frontend_helper.php:341
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:697
+#: application/helpers/frontend_helper.php:700
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:699
+#: application/helpers/frontend_helper.php:702
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:703
+#: application/helpers/frontend_helper.php:706
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:708
+#: application/helpers/frontend_helper.php:711
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:709
+#: application/helpers/frontend_helper.php:712
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:717
+#: application/helpers/frontend_helper.php:720
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:720
+#: application/helpers/frontend_helper.php:723
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:723
+#: application/helpers/frontend_helper.php:726
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:725
+#: application/helpers/frontend_helper.php:728
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1237
+#: application/helpers/frontend_helper.php:1240
 msgid "You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1250
+#: application/helpers/frontend_helper.php:1253
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1409
-#: application/helpers/frontend_helper.php:1434
+#: application/helpers/frontend_helper.php:1412
+#: application/helpers/frontend_helper.php:1437
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1413
+#: application/helpers/frontend_helper.php:1416
 #: tmp/runtime/twig_cache/b1/b109e969d1cb41841db97c84f4166ca9cd12b44e40f83b85bce239e297263eb0.php:128
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1417
+#: application/helpers/frontend_helper.php:1420
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2211
+#: application/helpers/frontend_helper.php:2214
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2213
+#: application/helpers/frontend_helper.php:2216
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2214
+#: application/helpers/frontend_helper.php:2217
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
