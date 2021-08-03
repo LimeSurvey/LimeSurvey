@@ -34,6 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.12 (build 210729) to 5.0.13 (build 210804) August 3, 2021
+-Fixed issue #17480: Unable to reload with token + persistence + allow edit (#1986) (Denis Chenu)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Portugal) by cassiofs, femariso, holch, jbfloripa, marcelovincenzi, marciojv, mauriciofurtado, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz, RobinBur
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
 Changes from 5.0.11 (build 210727) to 5.0.12 (build 210729) July 29, 2021
 -Fixed issue: Security issues found by Michael Mazzolini (Olle Haerstedt)
 -Fixed issue #17460: Themes permission action button is shown now (Patricia Stelling)
