@@ -95,22 +95,25 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
             <?php endif; ?>
         <?php endif; ?>
 
+        <!-- Export -->
+        <?php if($hasSurveyContentExportPermission):?>
+            <li>
+                <a href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
+                    <span class="icon-export"></span>
+                    <?php eT("Export"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <!-- Copy -->
+        <?php if($hasSurveyContentCreatePermission && ($oSurvey->active!='Y')):?>
+            <li>
+                <a id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
+                    <span class="icon-copy icon"></span>
+                    <?php eT("Copy"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
     </ul>
 </div>
-
-<!-- Export -->
-<?php if($hasSurveyContentExportPermission):?>
-    <a class="btn btn-default " href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>" role="button">
-        <span class="icon-export"></span>
-        <?php eT("Export"); ?>
-    </a>
-<?php endif; ?>
-
-<!-- Copy -->
-<?php if($hasSurveyContentCreatePermission && ($oSurvey->active!='Y')):?>
-    <a class="btn btn-default" id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
-        <span class="icon-copy icon"></span>
-        <?php eT("Copy"); ?>
-    </a>
-<?php endif; ?>
-
