@@ -13,21 +13,38 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     </a>
 <?php endif; ?>
 
-<!-- Check survey logic -->
-<?php if($hasSurveyContentReadPermission): ?>
-    <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
-        <span class="icon-expressionmanagercheck"></span>
-        <?php eT("Check logic"); ?>
-    </a>
-<?php endif; ?>
+<!-- Tools  -->
+<div class="btn-group hidden-xs">
 
-<?php if($hasSurveyContentExportPermission):?>
-    <!-- Export -->
-    <a class="btn btn-default " href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
-        <span class="icon-export"></span>
-        <?php eT("Export"); ?>
-    </a>
-<?php endif; ?>
+    <!-- Main button dropdown -->
+    <button id="ls-question-group-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="icon-tools" ></span>
+        <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
+    </button>
+
+    <!-- dropdown -->
+    <ul class="dropdown-menu">
+        <?php if($hasSurveyContentReadPermission): ?>
+            <!-- Check survey logic -->
+            <li>
+                <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
+                    <span class="icon-expressionmanagercheck"></span>
+                    <?php eT("Check logic"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php if($hasSurveyContentExportPermission):?>
+            <!-- Export -->
+            <li>
+                <a href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
+                    <span class="icon-export"></span>
+                    <?php eT("Export"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
 
 <?php if($hasSurveyContentDeletePermission):?>
     <!-- Delete -->
