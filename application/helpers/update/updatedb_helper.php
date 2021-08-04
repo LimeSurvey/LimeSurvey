@@ -4635,7 +4635,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             updateEncryptedValues450($oDB);
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 450], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 451) {
@@ -4671,7 +4671,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     );
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 451), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 451], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 452) {
@@ -4733,15 +4733,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $oDB->createCommand()->update(
                         "{{plugins}}",
                         [
-                            'plugin_type'        => 'core',
-                            'version'            => '1.0.0',
+                            'plugin_type' => 'core',
+                            'version'     => '1.0.0',
                         ],
                         App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
                     );
                 }
             };
             $insertPlugin('ExportSPSSsav', 1);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 460), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 460], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
@@ -4976,7 +4976,7 @@ function decryptResponseTables450($oDB)
                     ->offset($offset)
                     ->limit($maxRows)
                     ->queryAll();
-        $fieldmapFields = createFieldMap450($survey);
+                $fieldmapFields = createFieldMap450($survey);
                 foreach ($responses as $response) {
                     $recryptedResponse = [];
                     foreach ($fieldmapFields as $fieldname => $field) {
