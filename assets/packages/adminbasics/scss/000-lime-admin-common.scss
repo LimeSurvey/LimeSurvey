@@ -306,10 +306,32 @@ html {
     font-size: 1.5em;
 }
 
+.menubar {
+    position: relative;
+}
+
 .surveybar {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    z-index: 1000;
+    width: 100%;
+    padding: 13px 0 8px;
+    margin: 0 auto 15px;
+    z-index: 100;
+    box-shadow: 3px 3px 3px #35363f;
+}
+
+.surveybar .btn, .surveybar button {
+    margin-bottom: 5px;
+}
+
+.btn.pull-right {
+    margin-left: 5px;
+}
+
+.list-surveys {
+    margin-top: 10px;
+}
+
+#fullpagebar {
+    z-index: 100;
 }
 
 .tab-content {
@@ -4352,6 +4374,12 @@ table.dataTable thead .sorting_desc:after {
     position: fixed !important;
     top: 0 !important;
     margin-top: 0 !important;
+}
+#sticky-topbar-placeholder {
+    display: none;
+}
+.menubar.sticky + #sticky-topbar-placeholder {
+    display: block;
 }
 
 /* Reduce margins for question editor */

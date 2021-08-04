@@ -713,6 +713,10 @@ class Survey_Common_Action extends CAction
                 $sAlternativeUrl = '/admin/index';
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
+            App()->getClientScript()->registerScriptFile(
+                App()->getConfig('adminscripts') . 'topbar.js',
+                CClientScript::POS_END
+            );
             $this->getController()->renderPartial("/admin/super/fullpagebar_view", $aData);
         }
     }

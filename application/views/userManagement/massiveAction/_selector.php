@@ -60,24 +60,6 @@ $aActionsArray = array(
             //'htmlFooterButtons' => [],
             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true)
         ),
-
-        // Template Permission
-        array(
-            'type' => 'action',
-            'action' => 'templatePermission',
-            'url' => Yii::app()->getController()->createUrl('userManagement/userTemplatePermissions', ['userid' => $userid]),
-            'iconClasses' => 'fa fa-paint-brush',
-            'text' => gT("Template permissions"),
-            'grid-reload' => 'yes',
-            'actionType' => 'modal',
-            'modalType' => 'cancel-apply',
-            'largeModalView' => true,
-            'keepopen' => 'yes',
-            'showSelected' => 'yes',
-            'selectedUrl' => '',
-            'sModalTitle' => gT("Template permissions"),
-             'htmlModalBody'     => App()->getController()->renderPartial('/userManagement/massiveAction/_updatepermissions', [], true),
-        ),
         
     ),
 );
@@ -114,7 +96,6 @@ if(Permission::model()->hasGlobalPermission('superadmin','read')) {
         //modal
         'actionType'        => 'modal',
         'modalType'         => 'cancel-apply',
-        'largeModalView'    => true,
         'keepopen'          => 'yes',
         'showSelected'      => 'yes',
         'selectedUrl'       => App()->createUrl('userManagement/renderSelectedItems/'),

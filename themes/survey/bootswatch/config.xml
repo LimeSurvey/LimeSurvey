@@ -70,7 +70,7 @@
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/bootswatch/files/logo.png</brandlogofile>
         <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
-        <cssframework type="dropdown" category="Simple options" width="12" title="Variations" parent="cssframework">
+        <cssframework type="dropdown" category="Simple options" title="Variations" parent="cssframework">
             <dropdownoptions>
                 <option data-mode="replace" value="css/variations/basic.min.css">Basic Bootstrap</option>
                 <option data-mode="replace" value="css/variations/cerulean.min.css">Cerulean</option>
