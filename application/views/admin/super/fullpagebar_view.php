@@ -99,6 +99,29 @@
                 </a>
             <?php endif; ?>
 
+            <!-- Reset Survey Menus -->
+            <?php if (isset($fullpagebar['menus']['buttons']['resetMenus']) && $fullpagebar['menus']['buttons']['resetMenus']) :?>
+                <a class="btn btn-warning tab-dependent-button"
+                   href="#restoremodal_menus"
+                   data-toggle="modal"
+                   data-tab="#surveymenues">
+                    <i class="fa fa-refresh"></i>&nbsp;
+                    <?php eT('Reset') ?>
+                </a>
+            <?php endif; ?>
+
+            <!-- Reset Survey Menu Entries -->
+            <?php if (isset($fullpagebar['menus']['buttons']['resetMenuEntries']) && $fullpagebar['menus']['buttons']['resetMenuEntries']) :?>
+                <a class="btn btn-warning tab-dependent-button"
+                   href="#restoremodal_menuentries"
+                   data-toggle="modal"
+                   data-tab="#surveymenuentries"
+                   style="display:none;">
+                    <i class="fa fa-refresh"></i>&nbsp;
+                    <?php eT('Reset') ?>
+                </a>
+            <?php endif; ?>
+
             <!-- Reorder -->
             <?php if (isset($fullpagebar['menus']['buttons']['reorder']) && $fullpagebar['menus']['buttons']['reorder']) : ?>
                 <a class="btn btn-warning"

@@ -391,7 +391,8 @@ class SurveymenuController extends Survey_Common_Action
                 'buttons' => [
                     'addMenu' => true,
                     'addMenuEntry' => true,
-                    'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
+                    'resetMenus' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
+                    'resetMenuEntries' => true, // TODO: Is this OK? It wasn't checking any permission on SurveymenuEntryController
                     'reorder' => true,
                 ],
             ],
