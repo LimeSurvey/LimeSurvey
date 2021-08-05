@@ -20,7 +20,6 @@
             $data['language']                   = Yii::app()->language;
             $data['replacementFields']['path']  = App()->createUrl("limereplacementfields/index");
             $json = json_encode($data, JSON_FORCE_OBJECT);
-            // TODO: CSRF should not be passed on GET requests. Test with subquestion quick-add to confirm fix (uses POST).
             $script = "LS.data = $json;\n"
                     . "LS.lang = {
                         confirm: {
@@ -28,7 +27,14 @@
                             confirm_ok: '".gT('OK')."'
                         }
                     };\n"
-                    . "$.ajaxSetup({data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}});";
+
+                    . "$.ajaxSetup({
+                        beforeSend: function(jqXHR, settings) {
+                            if(settings.method != 'GET') {
+                                {data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}}
+                            }
+                        }
+                    });";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }
