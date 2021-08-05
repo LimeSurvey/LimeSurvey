@@ -3631,10 +3631,29 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                 // to catch all occurrences.
                 $arQuestion->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
                 $bModified = $bModified || $iCount;
+                // Apply the replacement on question help text
+                $arQuestion->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->help, -1, $iCount);
+                $bModified = $bModified || $iCount;
             }
         }
         if ($bModified) {
             $arQuestion->save();
+        }
+        // Also apply on question's default values
+        $defaultValues = DefaultValue::model()->findAllByAttributes(['qid' => $arQuestion->qid]);
+        foreach ($defaultValues as $defaultValue) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                    continue;
+                }
+                $sOldCode = preg_quote($sOldCode, '~');
+                $defaultValue->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValue->defaultvalue, -1, $iCount);
+                $bModified = $bModified || $iCount;
+            }
+            if ($bModified > 0) {
+                $defaultValue->save();
+            }
         }
     }
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
@@ -3649,6 +3668,23 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         }
         if ($bModified) {
             $arGroup->save();
+        }
+    }
+
+    // Apply the replacement on survey's end message
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $bModified = false;
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+            if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                continue;
+            }
+            $sOldCode = preg_quote($sOldCode, '~');
+            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+            $bModified = $bModified || $iCount;
+        }
+        if ($bModified) {
+            $surveyLanguageSetting->save();
         }
     }
 }
