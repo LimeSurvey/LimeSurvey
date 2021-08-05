@@ -4744,6 +4744,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 460], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 470) {
+            $oTransaction = $oDB->beginTransaction();
+            // Add the new column to questions table
+            $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
+            // Fill column from question_attributes when it's not null or 'core'
+            $oDB->createCommand("UPDATE {{questions}} q LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template'
+                 SET q.question_theme_name = qt.value 
+                 WHERE qt.value IS NOT NULL AND qt.value <> 'core' AND qt.value <> ''")->execute();
+            // Fill null question_theme_name values using the proper theme name
+            $oDB->createCommand("UPDATE {{questions}} q LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = 1 AND qt.extends = ''
+                 SET q.question_theme_name = qt.name 
+                 WHERE q.question_theme_name IS NULL")
+            ->execute();
+
+            // Also update 'preselectquestiontheme' user settings where the value is 'core'
+            $oDB->createCommand("UPDATE {{settings_user}} su
+                JOIN {{settings_user}} su2 ON su2.uid = su.uid AND su2.stg_name = 'preselectquestiontype'
+                JOIN {{question_themes}} qt ON qt.question_type = su2.stg_value
+                SET su.stg_value = qt.name
+                WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'")->execute();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

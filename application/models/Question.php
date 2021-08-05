@@ -89,6 +89,9 @@ class Question extends LSActiveRecord
     /** Set defaut relevance **/
     public $relevance ='';
 
+    /** @var QuestionTheme cached question theme*/
+    private $relatedQuestionTheme;
+
     /**
      * @inheritdoc
      * @return Question
@@ -124,6 +127,9 @@ class Question extends LSActiveRecord
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
+            // This relation will fail for non saved questions, which is often the case
+            // when using question editor on create mode. Better use getQuestionTheme()
+            'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
         );
     }
 
@@ -214,6 +220,8 @@ class Question extends LSActiveRecord
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
+            /* Don't save empty or 'core' question theme name */
+            $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
         } else {
             $aRules[] = array('title', 'compare', 'compareValue' => 'time', 'operator' => '!=',
                 'message' => gT("'time' is a reserved word and can not be used for a subquestion."),
@@ -1535,13 +1543,31 @@ class Question extends LSActiveRecord
     }
 
     /**
-     * Get the question theme name
-     *
-     * @return string
+     * Validates the question theme name, making sure it's not empty or 'core'
      */
-    public function getQuestionThemeName()
+    public function questionThemeNameValidator()
     {
-        $questionTheme = $this->getQuestionAttribute('question_template');
-        return !empty($questionTheme) ? $questionTheme : self::DEFAULT_QUESTION_THEME;
+        // As long as there is a question theme name, and it's not 'core', it's ok.
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            return;
+        }
+
+        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
+        if (!empty($baseQuestionThemeName)) {
+            $this->question_theme_name = $baseQuestionThemeName;
+        }
+    }
+
+    /**
+     * Returns the QuestionTheme related to this question.
+     * It's not implemented as a relation because relations only work on
+     * persisted models.
+     *
+     * @return QuestionTheme|null
+     */
+    public function getQuestionTheme()
+    {
+        return $this->getRelated("question_theme", $this->isNewRecord);
     }
 }

@@ -1,8 +1,7 @@
 <?php
 
-/**@var Question $question */
-/**@var string $questionThemeTitle */
-/**@var string $questionThemeClass */
+/** @var Question $question */
+/** @var QuestionTheme $questionTheme */
 
 $generalSettingsUrl = $this->createUrl(
     'questionAdministration/getGeneralSettingsHTML',
@@ -29,18 +28,18 @@ $oQuestionSelector = $this->beginWidget(
         'groupStructureArray' => $aQuestionTypeGroups,
         'survey_active' => $question->survey->active=='Y',
         'value' => $question->type,
-        'theme' => $questionThemeName,
+        'theme' => $questionTheme->name,
         'debug' => YII_DEBUG,
         'buttonClasses' => ['btn-primary'],
-        'currentSelected' => $questionThemeTitle, //todo: use questiontheme instead ...
+        'currentSelected' => gT($questionTheme->title), //todo: use questiontheme instead ...
         'optionArray' => [
-            'selectedClass' => $questionThemeClass,//Question::getQuestionClass($question->type),
+            'selectedClass' => $questionTheme->getDecodedSettings()->class,//Question::getQuestionClass($question->type),
             'onUpdate' => [
                 'value',
                 'theme',
                 // NB: updateQuestionAttributes is defined in assets/scripts/admin/questionEditor.js"
                 "$('#question_type').val(value);
-                 $('#question_template').val(theme); 
+                 $('#question_theme_name').val(theme);
                 LS.questionEditor.updateQuestionAttributes(value, theme, '$generalSettingsUrl', '$advancedSettingsUrl', '$extraOptionsUrl');"
             ]
         ]
@@ -57,5 +56,5 @@ $oQuestionSelector = $this->beginWidget(
     </div>
     <input type="hidden" id="questionTypeVisual" name="questionTypeVisual" />
     <input type="hidden" id="question_type" name="question[type]" value="<?= $question->type; ?>" />
-    <input type="hidden" id="question_template" name="question[question_template]" value="<?= $questionThemeName; ?>" />
+    <input type="hidden" id="question_theme_name" name="question[question_theme_name]" value="<?= $questionTheme->name; ?>" />
 </div>
