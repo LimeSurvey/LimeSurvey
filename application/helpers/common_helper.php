@@ -3627,7 +3627,9 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                 $sOldCode = preg_quote($sOldCode, '~');
                 $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
+                // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursivelly
+                // to catch all occurrences.
+                $arQuestion->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -3640,9 +3642,9 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode) {
             $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $arGroup->grelevance=recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
+            $arGroup->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -5083,4 +5085,27 @@ function safecount($element)
         return count($element);
     }
     return 0;
+}
+
+/**
+ * Applies preg_replace recursively until $recursion_limit is exceeded or no more replacements are done.
+ * @param array|string $pattern
+ * @param array|string $replacement
+ * @param array|string $subject
+ * @param int $limit
+ * @param int $count    If specified, this variable will be filled with the total number of replacements done (including all iterations)
+ * @param int $recursion_limit  Max number of iterations allowed
+ * @return string
+ */
+function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 0, $recursion_limit = 50)
+{
+    if ($recursion_limit < 0) {
+        return $subject;
+    }
+    $result = preg_replace($pattern, $replacement, $subject, $limit, $auxCount);
+    $count += $auxCount;
+    if ($auxCount > 0) {
+        $result = recursive_preg_replace($pattern, $replacement, $result, $limit, $count, --$recursion_limit);
+    }
+    return $result;
 }
