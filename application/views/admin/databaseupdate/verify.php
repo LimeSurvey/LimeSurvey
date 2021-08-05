@@ -1,5 +1,6 @@
 <div class="jumbotron message-box">
     <h2 class=""><?php eT('Database upgrade'); ?></h2>
+    <p class="lead"><?php eT('Make sure to make a database backup before proceeding.'); ?></p>
     <p class="lead"><?php eT('Please verify the following information before continuing with the database upgrade:'); ?></p>
     <div class="row">
         <div class="col-md-offset-4 col-md-4">
@@ -21,18 +22,13 @@
                 <br>
                 <?php eT("Please first update to Version 2.6.4 or any later 2.x version before you update to Version 3.x."); ?>
             </div>
-
-
     <?php } 
     else
     { ?>
-
-
         <p>
             <a class="btn btn-lg btn-success" href="<?php echo Yii::app()->getController()->createUrl("admin/databaseupdate/sa/db/continue/yes"); ?>" role="button">
                 <?php eT('Start database upgrade'); ?>
             </a>
         </p>
     <?php } ?>
-
 </div>

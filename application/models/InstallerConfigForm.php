@@ -47,6 +47,8 @@ class InstallerConfigForm extends CFormModel
     public $dbtype;
     /** @var string $dblocation */
     public $dblocation = 'localhost';
+    /** @var string $dbport */
+    public $dbport;
     /** @var  string $dbname */
     public $dbname;
 
@@ -577,10 +579,11 @@ class InstallerConfigForm extends CFormModel
         if (strpos($this->dblocation, ':') !== false) {
             $pieces = explode(':', $this->dblocation, 2);
             if (isset($pieces[1]) && is_numeric($pieces[1])) {
-                return $pieces[1];
+                $this->dblocation = str_replace(":" . $pieces[1], "", $this->dblocation);
+                $this->dbport = $pieces[1];
             }
         }
-        return $this->getDbDefaultPort();
+        return $this->dbport ?? $this->getDbDefaultPort();
     }
 
     /**

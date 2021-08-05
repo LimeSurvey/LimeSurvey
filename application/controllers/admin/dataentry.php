@@ -1312,7 +1312,7 @@ class dataentry extends Survey_Common_Action
 
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-        $id = $_REQUEST['id'];
+        $id = (int) $_REQUEST['id'];
 
         $aData = array(
             'surveyid' => $surveyid,

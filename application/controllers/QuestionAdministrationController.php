@@ -296,9 +296,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
         $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
-        $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
-            "/surveyAdministration/listsurveys"
-        );
+        $aData['surveybar']['returnbutton']['url']      = "/surveyAdministration/listsurveys";
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
@@ -1227,10 +1225,10 @@ class QuestionAdministrationController extends LSBaseController
 
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView'] = 'editQuestionTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'questionTopbarRight_view';
+        $aData['topBar']['rightSideView'] = 'surveyTopbarRight_view';
         $aData['showSaveButton'] = true;
         $aData['showSaveAndCloseButton'] = true;
-        $aData['showCloseButton'] = true;
+        $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
             [

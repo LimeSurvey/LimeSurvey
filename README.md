@@ -1,6 +1,6 @@
 ![LimeSurvey Logo](https://account.limesurvey.org/images/logos/logo_main.png)
 # Sophisticated online survey software
-[![Build Status](https://travis-ci.org/LimeSurvey/LimeSurvey.svg?branch=master)](https://travis-ci.org/LimeSurvey/LimeSurvey/)
+![Build status](https://github.com/LimeSurvey/LimeSurvey/actions/workflows/main.yml/badge.svg)
 
 
 ## About
@@ -57,11 +57,10 @@ We are using BrowserStack to run manual tests on different browsers and devices
 
 [![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
 
-We are using Scrutinizer to static check our code
+We are using Scrutinizer to statically check our code
 
 [![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
 
-We are using TravisCI to run automated tests before release:
+We are using Github Actions to run automated tests before release.
 
-[![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
-
+![Main workflow](https://github.com/LimeSurvey/LimeSurvey/actions/workflows/main.yml/badge.svg)

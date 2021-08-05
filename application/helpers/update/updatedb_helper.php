@@ -50,7 +50,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310, 400, 451);
+    $aCriticalDBVersions = array(310, 400, 450);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -4630,8 +4630,81 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 449), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 450) {
+            $oTransaction = $oDB->beginTransaction();
 
-        if ($iOldDBVersion < 450) { //ExportSPSSsav plugin
+            updateEncryptedValues450($oDB);
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 450], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 451) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // update wrongly encrypted custom attribute values for cpdb participants
+            $encryptedAttributes = $oDB->createCommand()
+                ->select('attribute_id')
+                ->from('{{participant_attribute_names}}')
+                ->where('encrypted = :encrypted AND core_attribute <> :core_attribute', ['encrypted' => 'Y', 'core_attribute' => 'Y'])
+                ->queryAll();
+            $nrOfAttributes = count($encryptedAttributes);
+            foreach ($encryptedAttributes as $encryptedAttribute) {
+                $attributes = $oDB->createCommand()
+                    ->select('*')
+                    ->from('{{participant_attribute}}')
+                    ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
+                    ->queryAll();
+                foreach ($attributes as $attribute) {
+                    $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
+                    // This extra decrypt loop is needed because of wrongly encrypted attributes.
+                    // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
+                    for ($i = 1; $i < $nrOfAttributes; $i++) {
+                        $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                    }
+                    $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
+                    $updateArray['value'] = $recryptedValue;
+                    $oDB->createCommand()->update(
+                        '{{participant_attribute}}',
+                        $updateArray,
+                        'participant_id = :participant_id AND attribute_id = :attribute_id',
+                        ['participant_id' => $attribute['participant_id'], 'attribute_id' => $attribute['attribute_id']]
+                    );
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 451], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 452) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // update encryption for smtppassword
+            $emailsmtppassword = $oDB->createCommand()
+                ->select('*')
+                ->from('{{settings_global}}')
+                ->where('stg_name = :stg_name', ['stg_name' => 'emailsmtppassword'])
+                ->queryRow();
+            if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
+                $decryptedValue = LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
+                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
+            }
+
+            // update encryption for bounceaccountpass
+            $bounceaccountpass = $oDB->createCommand()
+                ->select('*')
+                ->from('{{settings_global}}')
+                ->where('stg_name = :stg_name', ['stg_name' => 'bounceaccountpass'])
+                ->queryRow();
+            if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
+                $decryptedValue = LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
+                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 460) { //ExportSPSSsav plugin
             $oTransaction = $oDB->beginTransaction();
             $installedPlugins = array_map(
                 function ($v) {
@@ -4660,28 +4733,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $oDB->createCommand()->update(
                         "{{plugins}}",
                         [
-                            'plugin_type'        => 'core',
-                            'version'            => '1.0.0',
+                            'plugin_type' => 'core',
+                            'version'     => '1.0.0',
                         ],
                         App()->db->quoteColumnName('name') . " = " . dbQuoteAll($name)
                     );
                 }
             };
             $insertPlugin('ExportSPSSsav', 1);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 450), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 460], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 451) {
-            $oTransaction = $oDB->beginTransaction();
-
-            updateEncryptedValues451($oDB);
-
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 451), "stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
-
-        if ($iOldDBVersion < 452) {
+        if ($iOldDBVersion < 470) {
             $oTransaction = $oDB->beginTransaction();
             // Add the new column to questions table
             $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
@@ -4702,7 +4766,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 SET su.stg_value = qt.name
                 WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'")->execute();
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 452), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
@@ -4781,13 +4845,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
  * @param CDbConnection $oDB
  * @throws CException
  */
-function updateEncryptedValues451(CDbConnection $oDB)
+function updateEncryptedValues450(CDbConnection $oDB)
 {
     Yii::app()->sodium;
-    decryptarchivedtables451($oDB);
-    decryptResponseTables451($oDB);
-    decryptParticipantTables451($oDB);
-    decryptCPDBTable451($oDB);
+    // All these functions decrypt and then re-encrypt the values.
+    decryptarchivedtables450($oDB);
+    decryptResponseTables450($oDB);
+    decryptParticipantTables450($oDB);
+    decryptCPDBTable450($oDB);
 }
 
 /**
@@ -4795,8 +4860,9 @@ function updateEncryptedValues451(CDbConnection $oDB)
  *
  * @param CDbConnection $oDB
  * @return void
+ * @throws CException
  */
-function decryptCPDBTable451($oDB)
+function decryptCPDBTable450($oDB)
 {
     // decrypt CPDB participants
     $CPDBParticipants = $oDB->createCommand()
@@ -4808,11 +4874,29 @@ function decryptCPDBTable451($oDB)
         ->from('{{participant_attribute_names}}')
         ->queryAll();
     foreach ($CPDBParticipants as $CPDBParticipant) {
+        $extraAttributes = $oDB->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute}}')
+            ->where('participant_id =:participant_id', ['participant_id' => $CPDBParticipant['participant_id']])
+            ->queryAll();
         $recryptedParticipant = [];
-        foreach ($participantAttributeNames as $participantAttributeName => $participantAttributeValue) {
+        foreach ($participantAttributeNames as $key => $participantAttributeValue) {
             if ($participantAttributeValue['encrypted'] === 'Y') {
-                $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($CPDBParticipant[$participantAttributeValue['defaultname']]);
-                $recryptedParticipant[$participantAttributeValue['defaultname']] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                if ($participantAttributeValue['core_attribute'] === 'N') {
+                    foreach ($extraAttributes as $extraAttribute) {
+                        if ($extraAttribute['attribute_id'] === $participantAttributeValue['attribute_id']) {
+                            $encryptedValue = $extraAttribute['value'];
+                            $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($encryptedValue);
+                            $recryptedParticipantAttribute['value'] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                            $oDB->createCommand()->update('{{participant_attribute}}', $recryptedParticipantAttribute, 'participant_id=' . $oDB->quoteValue($CPDBParticipant['participant_id']) . 'AND attribute_id=' . $oDB->quoteValue($extraAttribute['attribute_id']));
+                            break;
+                        }
+                    }
+                } else {
+                    $encryptedValue = $CPDBParticipant[$participantAttributeValue['defaultname']];
+                    $decrypedParticipantAttribute = LSActiveRecord::decryptSingleOld($encryptedValue);
+                    $recryptedParticipant[$participantAttributeValue['defaultname']] = LSActiveRecord::encryptSingle($decrypedParticipantAttribute);
+                }
             }
         }
         if ($recryptedParticipant) {
@@ -4826,7 +4910,7 @@ function decryptCPDBTable451($oDB)
  * @param CDbConnection $oDB
  * @return void
  */
-function decryptParticipantTables451($oDB)
+function decryptParticipantTables450($oDB)
 {
     // decrypt survey participants
     $surveys = $oDB->createCommand()
@@ -4889,7 +4973,7 @@ function decryptParticipantTables451($oDB)
  * @return void
  * @throws CException
  */
-function decryptResponseTables451($oDB)
+function decryptResponseTables450($oDB)
 {
     $surveys = $oDB->createCommand()
         ->select('*')
@@ -4901,23 +4985,37 @@ function decryptResponseTables451($oDB)
         if (!isset($tableSchema)) {
             continue;
         }
-        $responses = $oDB->createCommand()
-            ->select('*')
+        $responsesCount = $oDB->createCommand()
+            ->select('count(*)')
             ->from("{{survey_{$survey['sid']}}}")
-            ->queryAll();
-        $fieldmapFields = createFieldMap451($survey);
-        foreach ($responses as $response) {
-            $recryptedResponse = [];
-            foreach ($fieldmapFields as $fieldname => $field) {
-                if (array_key_exists('encrypted', $field) && $field['encrypted'] === 'Y') {
-                    $decryptedResponseField = LSActiveRecord::decryptSingleOld($response[$fieldname]);
-                    $recryptedResponse[$fieldname] = LSActiveRecord::encryptSingle($decryptedResponseField);
+            ->queryScalar();
+        if ($responsesCount) {
+            $maxRows = 100;
+            $maxPages = ceil($responsesCount / $maxRows);
+
+            for ($i = 0; $i < $maxPages; $i++) {
+                $offset = $i * $maxRows;
+                $responses = $oDB->createCommand()
+                    ->select('*')
+                    ->from("{{survey_{$survey['sid']}}}")
+                    ->offset($offset)
+                    ->limit($maxRows)
+                    ->queryAll();
+                $fieldmapFields = createFieldMap450($survey);
+                foreach ($responses as $response) {
+                    $recryptedResponse = [];
+                    foreach ($fieldmapFields as $fieldname => $field) {
+                        if (array_key_exists('encrypted', $field) && $field['encrypted'] === 'Y') {
+                            $decryptedResponseField = LSActiveRecord::decryptSingleOld($response[$fieldname]);
+                            $recryptedResponse[$fieldname] = LSActiveRecord::encryptSingle($decryptedResponseField);
+                        }
+                    }
+                    if ($recryptedResponse) {
+                        // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
+                        $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
+                        $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
+                    }
                 }
-            }
-            if ($recryptedResponse) {
-                // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
-                $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $response['id']]);
-                $oDB->getCommandBuilder()->createUpdateCommand("{{survey_{$survey['sid']}}}", $recryptedResponse, $criteria)->execute();
             }
         }
     }
@@ -4931,7 +5029,7 @@ function decryptResponseTables451($oDB)
  * @throws CDbException
  * @throws CException
  */
-function decryptArchivedTables451($oDB)
+function decryptArchivedTables450($oDB)
 {
     $archivedTablesSettings = $oDB->createCommand('SELECT * FROM {{archived_table_settings}}')->queryAll();
     foreach ($archivedTablesSettings as $archivedTableSettings) {
@@ -4940,11 +5038,6 @@ function decryptArchivedTables451($oDB)
             continue;
         }
         $surveyId = $archivedTableSettings['survey_id'];
-        $archivedTableRows = $oDB
-            ->createCommand()
-            ->select('*')
-            ->from("{{{$archivedTableSettings['tbl_name']}}}")
-            ->queryAll();
         $survey = $oDB
             ->createCommand()
             ->select('*')
@@ -4958,7 +5051,13 @@ function decryptArchivedTables451($oDB)
                 continue 2;
             }
         }
+
         if ($archivedTableSettings['tbl_type'] === 'token') {
+            $archivedTableRows = $oDB
+                ->createCommand()
+                ->select('*')
+                ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                ->queryAll();
             if ($archivedTableSettings['properties']) {
                 $tokenencryptionoptions = json_decode($archivedTableSettings['properties'], true);
 
@@ -5003,29 +5102,48 @@ function decryptArchivedTables451($oDB)
         }
 
         if ($archivedTableSettings['tbl_type'] === 'response') {
-            $responseTableSchema = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
-            $encryptedResponseAttributes = json_decode($archivedTableSettings['properties'], true);
+            $responsesCount = $oDB->createCommand()
+                ->select('count(*)')
+                ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                ->queryScalar();
+            if ($responsesCount) {
+                $responseTableSchema = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
+                $encryptedResponseAttributes = json_decode($archivedTableSettings['properties'], true);
 
-            $fieldMap = [];
-            foreach ($responseTableSchema->getColumnNames() as $name) {
-                // Skip id field.
-                if ($name === 'id') {
-                    continue;
-                }
-                $fieldMap[$name] = $name;
-            }
-            foreach ($archivedTableRows as $archivedResponse) {
-                $recryptedResponseValues = [];
-                foreach ($fieldMap as $column) {
-                    if (in_array($column, $encryptedResponseAttributes, false)) {
-                        $decryptedColumnValue = LSActiveRecord::decryptSingleOld($archivedResponse[$column]);
-                        $recryptedResponseValues[$column] = LSActiveRecord::encryptSingle($decryptedColumnValue);
+                $fieldMap = [];
+                foreach ($responseTableSchema->getColumnNames() as $name) {
+                    // Skip id field.
+                    if ($name === 'id') {
+                        continue;
                     }
+                    $fieldMap[$name] = $name;
                 }
-                if ($recryptedResponseValues) {
-                    // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
-                    $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $archivedResponse['id']]);
-                    $oDB->getCommandBuilder()->createUpdateCommand("{{{$archivedTableSettings['tbl_name']}}}", $recryptedResponseValues, $criteria)->execute();
+
+                $maxRows = 100;
+                $maxPages = ceil($responsesCount / $maxRows);
+                for ($i = 0; $i < $maxPages; $i++) {
+                    $offset = $i * $maxRows;
+                    $archivedTableRows = $oDB
+                        ->createCommand()
+                        ->select('*')
+                        ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                        ->offset($offset)
+                        ->limit($maxRows)
+                        ->queryAll();
+                    foreach ($archivedTableRows as $archivedResponse) {
+                        $recryptedResponseValues = [];
+                        foreach ($fieldMap as $column) {
+                            if (in_array($column, $encryptedResponseAttributes, false)) {
+                                $decryptedColumnValue = LSActiveRecord::decryptSingleOld($archivedResponse[$column]);
+                                $recryptedResponseValues[$column] = LSActiveRecord::encryptSingle($decryptedColumnValue);
+                            }
+                        }
+                        if ($recryptedResponseValues) {
+                            // use createUpdateCommand() because the update() function does not properly escape auto generated params causing errors
+                            $criteria = $oDB->getCommandBuilder()->createCriteria('id=:id', ['id' => $archivedResponse['id']]);
+                            $oDB->getCommandBuilder()->createUpdateCommand("{{{$archivedTableSettings['tbl_name']}}}", $recryptedResponseValues, $criteria)->execute();
+                        }
+                    }
                 }
             }
         }
@@ -5039,7 +5157,7 @@ function decryptArchivedTables451($oDB)
  * @return array
  * @throws CException
  */
-function createFieldMap451($survey): array
+function createFieldMap450($survey): array
 {
     // Main query
     $style = 'full';
