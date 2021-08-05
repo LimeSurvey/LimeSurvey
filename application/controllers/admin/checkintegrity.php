@@ -23,6 +23,12 @@
 class CheckIntegrity extends Survey_Common_Action
 {
 
+    /**
+     * Constructor
+     * 
+     * @param $controller
+     * @param $id
+     */
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -37,6 +43,8 @@ class CheckIntegrity extends Survey_Common_Action
     }
 
     /**
+     * Index
+     * 
      * @throws Exception
      */
     public function index()

@@ -288,7 +288,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             <?php } else {?>
                 <br /><?php eT("Should we proceed with the delete?"); ?> <br />
                 <?php echo CHtml::form(array("admin/checkintegrity","sa" => 'fixintegrity'), 'post');?>
-                    <button type='submit' value='Y' name='ok' class="btn btn-default" ><?php eT("Yes - Delete Them!"); ?></button>
+                    <button type='submit' value='Y' name='ok' class="btn btn-danger" ><?php eT("Yes - Delete Them!"); ?></button>
                 </form>
                 <?php
             } ?>
@@ -330,7 +330,8 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         } ?>
                     </ul><p>
                         <input type='hidden' name='ok' value='Y' />
-                        <input type='submit' value='<?php eT("Delete checked items!"); ?>' class="btn btn-default" /> <br />
+                        <input type='submit' value='<?php eT("Delete checked items!"); ?>' class="btn btn-danger" />
+                        <br />
                         <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
                 </form><?php
             } ?>
