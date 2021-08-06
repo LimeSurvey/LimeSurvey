@@ -86,7 +86,11 @@ class CheckIntegrity extends Survey_Common_Action
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
     }
-
+    
+    /**
+     * Fix integrity
+     * 
+     */
     public function fixintegrity()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
@@ -98,8 +102,8 @@ class CheckIntegrity extends Survey_Common_Action
         $aDelete = $this->_checkintegrity();
         $aData = array([
             'messsages' => array(),
-            'warnings' => array(),
-            'errors' => array(),
+            'warnings'  => array(),
+            'errors'    => array(),
         ]);
         // TMSW Condition->Relevance:  Update this to process relevance instead
         if (isset($aDelete['conditions'])) {
@@ -177,6 +181,13 @@ class CheckIntegrity extends Survey_Common_Action
         $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
     }
 
+    /**
+     * Delete orphan token tables
+     * 
+     * @param array $tokenTables
+     * @param array $aData
+     * @return array
+     */
     private function deleteOrphanTokenTables(array $tokenTables, array $aData)
     {
         foreach ($tokenTables as $aTokenTable) {
@@ -186,6 +197,13 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * Drop orphan survey tables
+     * 
+     * @param array $surveyTables
+     * @param array $aData
+     * @return array
+     */
     private function _dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
         foreach ($surveyTables as $aSurveyTable) {
@@ -354,7 +372,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function deletes answers
      * @param array[] $answers to be deleted
-     * @param array $aData for view generation
+     * @param array   $aData   for view generation
      * @return array
      */
     private function deleteAnswers(array $answers, array $aData)
@@ -379,7 +397,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function deletes answers localizations
      * @param array[] $answers localizations to be deleted
-     * @param array $aData for view generation
+     * @param array   $aData   for view generation
      * @return array
      */
     private function deleteAnswerL10ns(array $answers, array $aData)
@@ -401,8 +419,8 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * This function deletes Assessments
-     * @param array[] $Assessments to be deleted
-     * @param array $aData for view generation
+     * @param array[] $assessments to be deleted
+     * @param array   $aData       for view generation
      * @return array
      */
     private function deleteAssessments(array $assessments, array $aData)
@@ -496,7 +514,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function deletes questionAttributes
      * @param array[] $questionAttributes to be deleted
-     * @param array $aData for view generation
+     * @param array   $aData              for view generation
      * @return array
      */
     private function deleteQuestionAttributes(array $questionAttributes, array $aData)
@@ -518,7 +536,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function deletes conditions
      * @param array[] $conditions to be deleted
-     * @param array $aData for view generation
+     * @param array   $aData      for view generation
      * @return array
      */
     private function deleteConditions(array $conditions, array $aData)
@@ -599,11 +617,10 @@ class CheckIntegrity extends Survey_Common_Action
                     // Question columns start with the SID
                     if (strpos($oColumn->name, (string)$oSurvey->sid) !== false) {
                         // Fileds are separated by X
-                        $aFields   = explode('X', $oColumn->name);
-
+                        $aFields = explode('X', $oColumn->name);
 
                         if (isset($aFields[1])) {
-                            $sGid      = $aFields[1];
+                            $sGid = $aFields[1];
 
                             // QID field can be more than just QID, like: 886other or 886A1
                             // So we clean it by finding the first alphabetical character
@@ -611,10 +628,10 @@ class CheckIntegrity extends Survey_Common_Action
                             preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
                             if (isset($match[0][1])) {
-                                $sQID      =  substr($sDirtyQid, 0, $match[0][1]);
+                                $sQID = substr($sDirtyQid, 0, $match[0][1]);
                             } else {
                                 // It was just the QID....
-                                $sQID      =  $sDirtyQid;
+                                $sQID = $sDirtyQid;
                             }
                             if ((string) intval($sQID) !== $sQID) {
                                 throw new \Exception('sQID is not an integer: ' . $sQID);
@@ -711,7 +728,7 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr($aRow, strlen($sDBPrefix));
             $aTableName = explode('_', $sTableName);
-            $iSurveyID = (int) substr($sTableName, strpos($sTableName, '_') + 1);
+            $iSurveyID  = (int) substr($sTableName, strpos($sTableName, '_') + 1);
             if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
                     $sDate = (string) date('YmdHis') . rand(1, 1000);
@@ -750,22 +767,29 @@ class CheckIntegrity extends Survey_Common_Action
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid' => $gid)));
                     if (!$iRowCount) {
-                        $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})");
+                        $aDelete['conditions'][] = array(
+                            'cid'    => $condition['cid'],
+                            'reason' => gT('No matching CFIELDNAME group!') . " ($gid) ({$condition['cfieldname']})"
+                        );
                     }
                 }
             } elseif (!$condition['cfieldname']) {
-                $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => gT('No CFIELDNAME field set!') . " ({$condition['cfieldname']})");
+                $aDelete['conditions'][] = array(
+                    'cid'    => $condition['cid'],
+                    'reason' => gT('No CFIELDNAME field set!') . " ({$condition['cfieldname']})"
+                );
             }
         }
         unset($okQuestion);
         unset($aConditions);
+
         /**********************************************************************/
         /*     Check question attributes                                      */
         /**********************************************************************/
         $question_attributes = QuestionAttribute::model()->findAllBySql('select qid from {{question_attributes}} where qid not in (select qid from {{questions}})');
         foreach ($question_attributes as $question_attribute) {
             $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
-        } // foreach
+        }
 
         /**********************************************************************/
         /*     Check default values                                           */

@@ -286,23 +286,30 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <?php
             } ?>
         </div>
-
+        
+        <!-- Data redundancy check -->
         <div class="jumbotron message-box">
                 <h2><?php eT("Data redundancy check"); ?></h2>
-                <p class="lead"><?php eT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."); ?></p>
+                <p class="lead">
+                    <?php eT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."); ?>
+                </p>
                 <p>
             <?php if ($redundancyok) { ?>
                 <br /> <?php eT("No database action required!"); ?>
             <?php } else {?>
                 <?php echo CHtml::form(array("admin/checkintegrity",'sa' => 'fixredundancy'), 'post');?>
-                    <ul class='data-redundancy-list list-unstyled'>
+                    <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                         <?php
                         if (isset($redundantsurveytables)) {?>
                             <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
                                 <ul class='response-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundantsurveytables as $surveytable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
+                                    <li>
+                                        <input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]'  onclick="addDisabledState()"/>
+                                        <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label>
+                                    </li>
+                                <?php
                                 }?>
                                 </ul>
                             </li>
@@ -315,19 +322,40 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                                 <ul class='token-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundanttokentables as $tokentable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
+                                    <li>
+                                        <input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' />
+                                        <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label>
+                                    </li>
+                                <?php
                                 }?>
                                 </ul>
                             </li>
                             <?php
                         } ?>
-                    </ul><p>
+                    </ul>
+                    <p>
                         <input type='hidden' name='ok' value='Y' />
-                        <input type='submit' value='<?php eT("Delete checked items!"); ?>' class="btn btn-danger" />
+                        <input type='submit' disabled="true" id='delete-checked-items-button' value='<?php eT("Delete checked items!"); ?>' class="btn btn-danger" />
                         <br />
-                        <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
+                        <span class='hint warning'>
+                            <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
+                        </span>
+                    </p>
                 </form><?php
             } ?>
         </div>
     </div>
 </div>
+
+<script>
+    function addDisabledState() {
+        let isChecked =  $('input:checkbox').is(':checked');
+        let delete_checked_items_button = document.getElementById('delete-checked-items-button');
+        if (isChecked) {
+            delete_checked_items_button.removeAttribute("disabled");
+        } else {
+            delete_checked_items_button.setAttribute("disabled","disabled");
+        }
+    }
+
+  </script>
