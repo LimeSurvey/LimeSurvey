@@ -5138,10 +5138,10 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
     if ($recursion_limit < 0) {
         return $subject;
     }
-    $result = preg_replace($pattern, $replacement, $subject, $limit, $auxCount);
-    $count += $auxCount;
-    if ($auxCount > 0) {
-        $result = recursive_preg_replace($pattern, $replacement, $result, $limit, $count, --$recursion_limit);
+    $result = preg_replace($pattern, $replacement, $subject, $limit, $count);
+    if ($count > 0) {
+        $result = recursive_preg_replace($pattern, $replacement, $result, $limit, $auxCount, --$recursion_limit);
+        $count += $auxCount;
     }
     return $result;
 }
