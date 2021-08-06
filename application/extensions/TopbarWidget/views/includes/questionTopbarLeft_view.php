@@ -71,6 +71,26 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
             </li>
         <?php endif;?>
 
+        <?php if($hasSurveyContentExportPermission):?>
+            <!-- Export -->
+            <li>
+                <a href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
+                    <span class="icon-export"></span>
+                    <?php eT("Export"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php if($hasSurveyContentCreatePermission && ($oSurvey->active!='Y')):?>
+            <!-- Copy -->
+            <li>
+                <a id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
+                    <span class="icon-copy icon"></span>
+                    <?php eT("Copy"); ?>
+                </a>
+            </li>
+        <?php endif; ?>
+
         <?php if($hasSurveyContentReadPermission): ?>
             <?php if (count($surveyLanguages) > 1): ?>
                 <!-- Check survey logic multilanguage -->
@@ -93,26 +113,6 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
                     </a>
                 </li>
             <?php endif; ?>
-        <?php endif; ?>
-
-        <!-- Export -->
-        <?php if($hasSurveyContentExportPermission):?>
-            <li>
-                <a href="<?php echo Yii::App()->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/{$qid}");?>">
-                    <span class="icon-export"></span>
-                    <?php eT("Export"); ?>
-                </a>
-            </li>
-        <?php endif; ?>
-
-        <!-- Copy -->
-        <?php if($hasSurveyContentCreatePermission && ($oSurvey->active!='Y')):?>
-            <li>
-                <a id="copy_button" href='<?php echo Yii::App()->createUrl("questionAdministration/copyQuestion/surveyId/{$oQuestion->sid}/questionGroupId/{$oQuestion->gid}/questionId/{$oQuestion->qid}");?>'>
-                    <span class="icon-copy icon"></span>
-                    <?php eT("Copy"); ?>
-                </a>
-            </li>
         <?php endif; ?>
 
     </ul>
