@@ -13,6 +13,11 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     </a>
 <?php endif; ?>
 
+<?php
+    // Tools dropdown button
+    $toolsDropdownItems = $this->render('includes/groupToolsDropdownItems', get_defined_vars(), true);
+    if (!empty(trim($toolsDropdownItems))):
+?>
 <!-- Tools  -->
 <div class="btn-group hidden-xs">
 
@@ -24,27 +29,10 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 
     <!-- dropdown -->
     <ul class="dropdown-menu">
-        <?php if($hasSurveyContentReadPermission): ?>
-            <!-- Check survey logic -->
-            <li>
-                <a class="pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>">
-                    <span class="icon-expressionmanagercheck"></span>
-                    <?php eT("Check logic"); ?>
-                </a>
-            </li>
-        <?php endif; ?>
-
-        <?php if($hasSurveyContentExportPermission):?>
-            <!-- Export -->
-            <li>
-                <a href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>">
-                    <span class="icon-export"></span>
-                    <?php eT("Export"); ?>
-                </a>
-            </li>
-        <?php endif; ?>
+        <?= $toolsDropdownItems ?>
     </ul>
 </div>
+<?php endif; ?>
 
 <?php if($hasSurveyContentDeletePermission):?>
     <!-- Delete -->
