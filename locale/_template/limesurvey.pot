@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-03 08:42:06+00:00\n"
+"POT-Creation-Date: 2021-08-09 11:49:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2543,7 +2543,7 @@ msgstr ""
 #: application/views/admin/user/setuserpermissions.php:82
 #: application/views/assessment/assessments_edit.php:128
 #: application/views/assessment/assessments_edit.php:145
-#: application/views/layouts/fullpagebar_view.php:113
+#: application/views/layouts/fullpagebar_view.php:112
 #: application/views/questionAdministration/_copyQuestionTabsLanguages.php:39
 #: application/views/questionAdministration/editdefaultvalues.php:189
 #: application/views/questionAdministration/topbars/editQuestiontopbar_view.php:41
@@ -3181,7 +3181,7 @@ msgstr ""
 #: application/views/admin/themes/templatesummary_view.php:165
 #: application/views/admin/tutorialentries/index.php:20
 #: application/views/admin/user/editusers.php:36
-#: application/views/layouts/fullpagebar_view.php:122
+#: application/views/layouts/fullpagebar_view.php:121
 #: application/views/questionAdministration/listquestions.php:85
 #: application/views/questionGroupsAdministration/listquestiongroups.php:44
 msgid "Reset"
@@ -3609,7 +3609,7 @@ msgstr ""
 #: application/views/admin/super/fullpagebar_view.php:115
 #: application/views/admin/survey/Question/questionbar_view.php:207
 #: application/views/admin/survey/Question/questionbar_view.php:255
-#: application/views/layouts/fullpagebar_view.php:105
+#: application/views/layouts/fullpagebar_view.php:104
 #: application/views/questionAdministration/_copyQuestionTabsLanguages.php:40
 #: application/views/questionAdministration/topbars/copyQuestiontopbar_view.php:22
 #: application/views/questionAdministration/topbars/editQuestiontopbar_view.php:55
@@ -3666,8 +3666,8 @@ msgstr ""
 #: application/views/admin/surveysgroups/index.php:12
 #: application/views/admin/themes/templateeditorbar_view.php:192
 #: application/views/admin/themes/templatesummary_view.php:221
-#: application/views/layouts/fullpagebar_view.php:80
-#: application/views/layouts/fullpagebar_view.php:88
+#: application/views/layouts/fullpagebar_view.php:79
+#: application/views/layouts/fullpagebar_view.php:87
 #: application/views/questionAdministration/listquestions.php:146
 #: application/views/questionAdministration/topbars/copyQuestiontopbar_view.php:28
 #: application/views/questionAdministration/topbars/editQuestiontopbar_view.php:64
@@ -3810,6 +3810,7 @@ msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:78
+#: application/views/layouts/fullpagebar_view.php:66
 msgid "Create survey group"
 msgstr ""
 
@@ -7576,6 +7577,7 @@ msgstr ""
 #: application/views/admin/super/adminmenu.php:63
 #: application/views/admin/super/welcome.php:13
 #: application/views/layouts/adminmenu.php:64
+#: application/views/layouts/fullpagebar_view.php:50
 #: application/views/surveyAdministration/tabCreate_view.php:127
 msgid "Create survey"
 msgstr ""
@@ -7583,7 +7585,6 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:880
 #: application/views/admin/super/welcome.php:14
 #: application/views/admin/super/welcome.php:81
-#: application/views/layouts/fullpagebar_view.php:51
 msgid "Create a new survey"
 msgstr ""
 
@@ -19898,7 +19899,7 @@ msgid "Create a new box"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:141
-#: application/views/layouts/fullpagebar_view.php:120
+#: application/views/layouts/fullpagebar_view.php:119
 msgid "This will delete all current boxes to restore the default ones. Are you sure you want to continue?"
 msgstr ""
 
@@ -19907,7 +19908,7 @@ msgid "Reset to default boxes"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:151
-#: application/views/layouts/fullpagebar_view.php:135
+#: application/views/layouts/fullpagebar_view.php:134
 msgid "Manage your key"
 msgstr ""
 
@@ -23290,11 +23291,7 @@ msgstr ""
 msgid "Start installation"
 msgstr ""
 
-#: application/views/layouts/fullpagebar_view.php:67
-msgid "Create a new survey group"
-msgstr ""
-
-#: application/views/layouts/fullpagebar_view.php:127
+#: application/views/layouts/fullpagebar_view.php:126
 msgid "Create box"
 msgstr ""
 
