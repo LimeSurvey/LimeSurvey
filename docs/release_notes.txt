@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.10 (build 210803) to 3.27.11 (build 210809) August 9, 2021
+-Fixed issue #17285: "Resume later" not working after "Load unfinished survey" (#1988) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 3.27.9 (build 210726) to 3.27.10 (build 210803) August 3, 2021
 -Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
 -Fixed issue: Security issues found by Michael Mazzolini (Olle Haerstedt)
