@@ -57,9 +57,12 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
   <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really delete this survey menu entry?");?></h4>
-        </div>
+          <?php
+          Yii::app()->getController()->renderPartial(
+              '/layouts/partial_modals/modal_header',
+              ['modalTitle' => gT('Delete this survey menu entry')]
+          );
+          ?>
         <div class="modal-body">
           <?php eT("Please be careful - if you delete default entries you may not be able access some parts of the application."); ?>
         </div>
@@ -67,7 +70,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
           <button type="button" class="btn btn-default" data-dismiss="modal">
             <?php eT('Cancel'); ?>
           </button>
-          <button type="button" id="deletemodal-confirm" class="btn btn-danger">
+          <button type="button" id="deletemodalentry-confirm" class="btn btn-danger">
             <?php eT('Delete'); ?>
           </button>
         </div>
@@ -76,11 +79,14 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
   </div>
 
   <div class="modal fade" id="restoremodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really restore the default survey menu entries?");?></h4>
-        </div>
+          <?php
+          Yii::app()->getController()->renderPartial(
+              '/layouts/partial_modals/modal_header',
+              ['modalTitle' => gT('Restore default survey menu entries')]
+          );
+          ?>
         <div class="modal-body">
           <p>
             <?php eT("All custom menu entries will be lost."); ?>
@@ -94,20 +100,11 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
             <?php eT('Cancel'); ?>
           </button>
           <button type="button" id="reset-menu-entries-confirm" class="btn btn-danger">
-            <?php eT('Yes, restore default'); ?>
+            <?php eT('Restore default'); ?>
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
-      loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
-      restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>",
-      reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
-      deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
-    }),
-    bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
-    bindAction();
-  </script>
+

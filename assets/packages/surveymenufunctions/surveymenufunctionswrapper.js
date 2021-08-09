@@ -39,10 +39,18 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
             postData
         );
     },
-    runDeleteModal =  function (postData) {
-        $('#deletemodal').modal('show');
-        $('#deletemodal').on('shown.bs.modal', function () {
-            $('#deletemodal-confirm').on('click', function () {
+        /**
+         * This function works with two different modals, doing the same for survemenu
+         * and surveymenuentries
+         *
+         * @param idDeleteModal  id of the modal
+         * @param postData  data for ajax request
+         * @param idDeleteBtn id of the delete btn in the modal
+         */
+    runDeleteModal =  function (idDeleteModal, postData,idDeleteBtn) {
+            idDeleteModal.modal('show');
+            idDeleteModal.on('shown.bs.modal', function () {
+                idDeleteBtn.on('click', function () {
                 $.ajax({
                     url: urls.deleteEntryUrl,
                     data: postData,
@@ -53,8 +61,8 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                     error: function (err) {
                         window.location.reload();
                     }
-                })
-            })
+                });
+            });
         });
     },
     runReorderEntries = function(){
@@ -128,15 +136,17 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                         menuentryid: $(this).closest('tr').data('surveymenu-entry-id'),
                         ajax: true
                     });
-                })
+                });
         
                 $('.action_surveymenuEntries_deleteModal').on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    runDeleteModal({
+                    var idDeleteModal = $('#deletemodal');
+                    var idDeleteModalBtn = $('#deletemodalentry-confirm');
+                    runDeleteModal(idDeleteModal,{
                         menuEntryid: $(this).closest('tr').data('surveymenu-entry-id'),
                         ajax: true
-                    });
+                    }, idDeleteModalBtn);
                 });
 
                 $('#pageSize').on("change", function(e){
@@ -176,15 +186,17 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                         menuid: $(this).closest('tr').data('surveymenu-id'),
                         ajax: true
                     });
-                })
+                });
         
                 $('.action_surveymenu_deleteModal').on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    runDeleteModal({
+                    var idDeleteModal = $('#deletesurveymenumodal');
+                    var idDeleteModalBtn = $('#deletemodal-confirm');
+                    runDeleteModal(idDeleteModal,{
                         menuid: $(this).closest('tr').data('surveymenu-id'),
                         ajax: true
-                    });
+                    },idDeleteModalBtn);
                 });
 
                 $('#pageSize').on("change", function(e){
