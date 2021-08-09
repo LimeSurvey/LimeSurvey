@@ -32,14 +32,6 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
     <?php endif; ?>
 <?php endif; ?>
 
-<!-- Edit button -->
-<?php if($hasSurveyContentUpdatePermission): ?>
-    <a id="questionEditorButton" class="btn btn-success pjax" href="#" role="button" onclick="LS.questionEditor.showEditor(); return false;">
-        <span class="icon-edit"></span>
-        <?php eT("Edit");?>
-    </a>
-<?php endif; ?>
-
 <?php
     // Tools dropdown button
     $toolsDropdownItems = $this->render('includes/questionToolsDropdownItems', get_defined_vars(), true);
