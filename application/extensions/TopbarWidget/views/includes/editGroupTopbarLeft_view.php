@@ -7,7 +7,7 @@ $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 
 <?php
     // Tools dropdown button
-    $toolsDropdownItems = $this->render('includes/groupToolsDropdownItems', get_defined_vars(), true);
+    $toolsDropdownItems = $this->render('includes/editGroupToolsDropdownItems', get_defined_vars(), true);
     if (!empty(trim($toolsDropdownItems))):
 ?>
 <!-- Tools  -->
