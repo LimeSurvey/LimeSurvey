@@ -83,8 +83,8 @@ echo viewHelper::getViewTestTag('surveyMenus');
         </div>
     </div>
 </div>
-<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="deletesurveymenumodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><?php eT("Delete this survey menu?"); ?></h4>
@@ -138,12 +138,21 @@ echo viewHelper::getViewTestTag('surveyMenus');
         }
     });
 
-    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu', 'surveymenu-grid', {
+    var surveyMenuFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu', 'surveymenu-grid', {
             loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menus/sa/getsurveymenuform') ?>",
             restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/restore'); ?>",
             deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/delete'); ?>"
         }),
-        bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenus();
+        bindAction = surveyMenuFunctions.getBindActionForSurveymenus();
+
+    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
+            loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
+            restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>",
+            reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
+            deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
+        }),
+        bindActionEntry = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
 
     $(document).on('ready pjax:scriptcomplete', bindAction);
+    $(document).on('ready pjax:scriptcomplete', bindActionEntry);
 </script>
