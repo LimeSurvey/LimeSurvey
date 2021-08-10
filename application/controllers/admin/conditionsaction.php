@@ -307,6 +307,12 @@ class conditionsaction extends Survey_Common_Action
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
+
+        // Back Button
+        $aData['showBackButton'] = true;
+        // White Close Button
+        $aData['showWhiteCloseButton'] = false;
+
         $scenarios = $this->getAllScenarios($qid);
 
         // Some extra args to getEditConditionForm
