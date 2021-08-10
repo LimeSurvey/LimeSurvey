@@ -89,7 +89,7 @@ class QuestionTheme extends LSActiveRecord
             // 'base' themes are the ones that don't extend any question type/theme. 
             'base' => array(
                 'condition' => 'core_theme = :true AND extends = :extends',
-                'params' => array(':true' => 1, ':extends' => '')
+                'params' => array(':true' => true, ':extends' => '')
             ),
         );
     }
