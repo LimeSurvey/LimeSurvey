@@ -310,6 +310,7 @@ class conditionsaction extends Survey_Common_Action
 
         // Back Button
         $aData['showBackButton'] = true;
+
         // White Close Button
         $aData['showWhiteCloseButton'] = false;
 
@@ -350,6 +351,11 @@ class conditionsaction extends Survey_Common_Action
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
+
+            // Show Save Button instead of green Save and Close Button
+            $aData['showSaveButton'] = true;
+            $aData['showGreenSaveAndCloseButton'] = false;
+
             //3: Get other conditions currently set for this question
             $s = 0;
 
