@@ -51,7 +51,7 @@ echo viewHelper::getViewTestTag('roles');
         </div>
     </div>
     <div id='RoleControl-action-modal' class="modal fade RoleControl--selector--modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-xl" role="document">
+        <div id="userrole-modal-dialog" class="modal-dialog" role="document">
             <div class="modal-content">
             </div>
         </div>

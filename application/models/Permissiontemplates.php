@@ -170,7 +170,8 @@ class Permissiontemplates extends CActiveRecord
                 data-toggle='tooltip' 
                 data-placement='top'
                 title='" . gT('Edit Permission') . "'
-                data-href='" . $setPermissionsUrl . "'>
+                data-href='" . $setPermissionsUrl . "'
+                data-modalsize='modal-lg'>
                     <i class='fa fa-lock'></i>
                 </button>";
 

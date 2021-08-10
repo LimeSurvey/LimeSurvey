@@ -46,8 +46,18 @@ var RoleControl = function () {
         $('#RoleControl-action-modal').modal('hide');
     };
 
-    var startModalLoader = function (html) {
+    /**
+     *
+     * @param modalSize
+     */
+    var startModalLoader = function (modalSize) {
         $('#RoleControl-action-modal').find('.modal-content').html(loaderHtml);
+        let modalDialog = $('#userrole-modal-dialog');
+        if(modalSize===''){
+            modalDialog.removeClass('modal-lg');
+        } else {
+            modalDialog.addClass(modalSize);
+        }
         $('#RoleControl-action-modal').modal('show');
     };
     var startSubmit = function () {
@@ -178,7 +188,11 @@ var RoleControl = function () {
         });
         $('.RoleControl--action--openmodal').on('click', function () {
             var href = $(this).data('href');
-            startModalLoader();
+            var modalSize = '';
+            if (typeof $(this).data('modalsize') !== 'undefined') {
+                modalSize = $(this).data('modalsize');
+            }
+            startModalLoader(modalSize);
             $.ajax({
                 url: href,
                 success: function (html) {
