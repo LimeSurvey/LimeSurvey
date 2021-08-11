@@ -34,6 +34,28 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.0.13 (build 210804) to 5.1.0 (build 210811) August 11, 2021
++New feature: Add RPC function to delete a response using its ID (#1928) (arnaudbore)
++New feature #17226: Ability to export to SPSS .sav format (#1877) (Adam Zammit)
+-Fixed issue: Wrong save button icon in edit label sets view. (Jessica Höck)
+-Fixed issue: Create Survey button is missing in survcey list (Carsten Schmitz)
+-Fixed issue #17484: After installing plugins through web interface, some files are missing (#1992) (Gabriel Jenik)
+-Fixed issue #17457: Close button on the survey groups creation screen takes you to the wrong screen (Gabriel Jenik)
+-Fixed issue #17457: Close button on the survey groups creation screen takes you to the wrong screen (#1979) (Gabriel Jenik)
+-Fixed issue #17422: Survey Deletion view/read permission seems to be granted (#1959) (Denis Chenu)
+-Fixed issue #17376: Remove duplicate of pclzip (Olle Haerstedt)
+-Fixed issue #17350b: Update fails on pgsql and mssql after 17350 (#1999) (Gabriel Jenik)
+-Fixed issue #17339: Administrator email address given during installation process not used in backend (#1991) (Gabriel Jenik)
+-Fixed issue #17285: "Resume later" not working after "Load unfinished survey" (#1995) (Gabriel Jenik)
+-Fixed issue #14726: LanguageSelector national language (Olle Haerstedt)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+
+
 Changes from 5.0.12 (build 210729) to 5.0.13 (build 210804) August 3, 2021
 -Fixed issue #17480: Unable to reload with token + persistence + allow edit (#1986) (Denis Chenu)
 #Updated translation: Turkish by kayazeren
