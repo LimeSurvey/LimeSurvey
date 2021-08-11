@@ -526,6 +526,10 @@ class InstallerController extends CController
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
 
+                        // Save survey global settings
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['admin' => $model->adminName], "gsid=0");
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['adminemail' => $model->adminEmail], "gsid=0");
+
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
 

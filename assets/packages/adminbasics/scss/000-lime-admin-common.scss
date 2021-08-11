@@ -2469,9 +2469,6 @@ iframe#dialog {
     overflow-x: hidden;
 }
 
-#labelsetbrowserModal .modal-dialog {
-    width: 80%;
-}
 
 .question-filter-container {
     border: 1px solid #efefef;
@@ -2906,10 +2903,6 @@ table#responsedetail tr td {
 #editconditions .tab-content,
 #quick-add-conditions-form .tab-content {
     padding-top: 0;
-}
-
-#quick-add-condition-modal .modal-dialog {
-    width: 800px;
 }
 
 #login-panel {
