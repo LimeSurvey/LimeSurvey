@@ -34,7 +34,7 @@ class QuestionThemeGeneralOption extends GeneralOption
     public static function make(Question $question, $questionType, $currentSetQuestionTheme)
     {
         $aQuestionTemplateList = QuestionTemplate::getQuestionTemplateList($questionType);
-        $aQuestionTemplateAttributes = $question->getAdvancedSettingsWithValues()['question_template'];
+        $aQuestionTemplateAttributes = $question->question_theme_name;
 
         $aOptionsArray = [];
         foreach ($aQuestionTemplateList as $code => $value) {

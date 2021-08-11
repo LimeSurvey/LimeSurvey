@@ -212,29 +212,36 @@
   //   Note that no real action is taken, if the archive does not exist it is not
   //   created. Use create() for that.
   // --------------------------------------------------------------------------------
-  public function __construct($p_zipname, $bCheckZipBomb=true)
+  public function __construct($params, $bCheckZipBomb=true)
   {
+      if (is_array($params) && isset($params['p_zipname'])) {
+          $p_zipname = $params['p_zipname'];
+      } elseif (isset($params)) {
+          $p_zipname = $params;
+      } else {
+          trigger_error("Missing argument p_zipname", E_USER_ERROR);
+      }
 
-    // ----- Tests the zlib
-    if (!function_exists('gzopen'))
-    {
-      die('Abort '.basename(__FILE__).' : Missing zlib extensions');
-    }
+      // ----- Tests the zlib
+      if (!function_exists('gzopen'))
+      {
+          die('Abort '.basename(__FILE__).' : Missing zlib extensions');
+      }
 
 
-    // Added by LS Team to prevent Zip Bombing
-    if ($bCheckZipBomb && isZipBomb($p_zipname)){
-        die('Abort '.basename(__FILE__).' : Unzipped file is bigger than upload_max_filesize or post_max_size');
-    }
+      // Added by LS Team to prevent Zip Bombing
+      if ($bCheckZipBomb && isZipBomb($p_zipname)){
+          die('Abort '.basename(__FILE__).' : Unzipped file is bigger than upload_max_filesize or post_max_size');
+      }
 
 
-    // ----- Set the attributes
-    $this->zipname = $p_zipname;
-    $this->zip_fd = 0;
-    $this->magic_quotes_status = -1;
+      // ----- Set the attributes
+      $this->zipname = $p_zipname;
+      $this->zip_fd = 0;
+      $this->magic_quotes_status = -1;
 
-    // ----- Return
-    return;
+      // ----- Return
+      return;
   }
   // --------------------------------------------------------------------------------
 

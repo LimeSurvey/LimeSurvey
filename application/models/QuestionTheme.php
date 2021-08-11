@@ -82,6 +82,18 @@ class QuestionTheme extends LSActiveRecord
         return array();
     }
 
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            // 'base' themes are the ones that don't extend any question type/theme. 
+            'base' => array(
+                'condition' => 'core_theme = :true AND extends = :extends',
+                'params' => array(':true' => true, ':extends' => '')
+            ),
+        );
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -504,34 +516,39 @@ class QuestionTheme extends LSActiveRecord
             };
         }
 
-        // transform theme name compatible with question attributes for core/default theme_template
-        $sThemeName = empty($oQuestionTheme->extends) ? 'core' : $oQuestionTheme->name;
-
         // todo optimize function for very big surveys, eventually in yii 2 or 3 with batch processing / if this is breaking in Yii 1 use CDbDataReader $query = new CDbDataReader($command), $query->read()
-        $aQuestions = Question::model()->with('questionattributes')->findAll(
-            'type = :type AND parent_qid = :parent_qid',
+        $aQuestions = Question::model()->findAll(
+            'type = :type AND question_theme_name = :theme AND parent_qid = :parent_qid',
             [
                 ':type'       => $oQuestionTheme->question_type,
+                ':theme'      => $oQuestionTheme->name,
                 ':parent_qid' => 0
             ]
         );
-        foreach ($aQuestions as $oQuestion) {
-            if (isset($oQuestion['questionattributes']['question_template'])) {
-                if ($sThemeName === $oQuestion['questionattributes']['question_template']['value']) {
-                    $bDeleteTheme = false;
-                    break;
-                }
-            } else {
-                if ($sThemeName === 'core') {
-                    $bDeleteTheme = false;
-                    break;
-                }
+        if (!empty($aQuestions)) {
+            // There are questions using this theme. Don't delete it
+            $bDeleteTheme = false;
+        }
+
+        // Just in case, if this is a core (base) theme we also check if there are any questions without theme name (this shouldn't happen)
+        if (empty($oQuestionTheme->extends) && $bDeleteTheme !== false) {
+            $aQuestions = Question::model()->findAll(
+                "type = :type AND (question_theme_name = '' OR question_theme_name IS NULL) AND parent_qid = :parent_qid",
+                [
+                    ':type'       => $oQuestionTheme->question_type,
+                    ':parent_qid' => 0
+                ]
+            );
+            if (!empty($aQuestions)) {
+                // There are questions using this theme. Don't delete it
+                $bDeleteTheme = false;
             }
         }
+
         // if this questiontheme is used, it cannot be deleted
         if (isset($bDeleteTheme) && !$bDeleteTheme) {
             return [
-                'error'  => gT('Question type is used in a Survey and cannot be uninstalled'),
+                'error'  => gT('Question theme is used in a Survey and cannot be uninstalled'),
                 'result' => false
             ];
         }
@@ -574,44 +591,27 @@ class QuestionTheme extends LSActiveRecord
      * Returns all QuestionTheme settings
      *
      * @param string $question_type
-     * @param string $question_template 'core' OR question theme name
+     * @param string $question_theme_name
      * @param string $language
      * @return QuestionTheme
      */
-    public static function findQuestionMetaData($question_type, $question_template = 'core', $language = '')
+    public static function findQuestionMetaData($question_type, $question_theme_name = null, $language = '')
     {
         if (empty($question_type)) {
             throw new InvalidArgumentException('question_type cannot be empty');
         }
 
-        if (empty($question_template)) {
-            throw new InvalidArgumentException('question_template cannot be empty');
-        }
-
-        $criteria = new CDbCriteria();
-
-        if ($question_template === 'core') {
-            $criteria->condition = 'extends = :extends';
-            $criteria->addCondition('question_type = :question_type', 'AND');
-            $criteria->params = [':extends' => '', ':question_type' => $question_type];
+        if (empty($question_theme_name) || $question_theme_name === 'core') {
+            $questionTheme = self::model()->base()->findByAttributes(['question_type' => $question_type]);
         } else {
+            $criteria = new CDbCriteria();
             $criteria->addCondition('question_type = :question_type AND name = :name');
-            $criteria->params = [':question_type' => $question_type, ':name' => $question_template];
+            $criteria->params = [':question_type' => $question_type, ':name' => $question_theme_name];
+            $questionTheme = self::model()->query($criteria, false);
         }
-
-        $questionTheme = self::model()->query($criteria, false);
 
         if (empty($questionTheme)) {
-            $settings = new StdClass();
-            $settings->class = '';
-            $settings->answerscales = 0;
-            $settings->subquestions = 0;
-            $questionTheme = new self();
-            $questionTheme->title = gT('Question theme error: Missing metadata');
-            $questionTheme->name = gT('Question theme error: Missing metadata');
-            $questionTheme->question_type = $question_type;
-            $questionTheme->settings = $settings;
-            return $questionTheme;
+            return self::getDummyInstance($question_type);
         }
 
         // language settings
@@ -663,10 +663,6 @@ class QuestionTheme extends LSActiveRecord
             // decode settings json
             $baseQuestion['settings'] = json_decode($baseQuestion['settings']);
 
-            // if its a core question change name to core for rendering Default rendering in the selector
-            if (empty($baseQuestion['extends'])) {
-                $baseQuestion['name'] = 'core';
-            }
             $baseQuestion['image_path'] = str_replace(
                 '//',
                 '/',
@@ -774,8 +770,8 @@ class QuestionTheme extends LSActiveRecord
             return $cacheMemo[$cacheKey];
         }
 
-        if ($name == 'core') {
-            $questionTheme = self::model()->findByAttributes([], 'question_type=:question_type AND extends=:extends', ['question_type' => $type, 'extends' => '']);
+        if (empty($name) || $name == 'core') {
+            $questionTheme = self::model()->base()->findByAttributes(['question_type' => $type, 'extends' => '']);
         } else {
             $questionTheme = self::model()->findByAttributes([], 'name=:name AND question_type=:question_type', ['name' => $name, 'question_type' => $type]);
         }
@@ -1029,5 +1025,54 @@ class QuestionTheme extends LSActiveRecord
             $sThemeDirectoryName = $aMatches[1];
         }
         return $sThemeDirectoryName;
+    }
+
+    /**
+     * Returns the name of the base question theme for the question type $questionType
+     *
+     * @param string $questionType
+     * @return string|null question theme name or null if no question theme is found
+     */
+    public function getBaseThemeNameForQuestionType($questionType)
+    {
+        $questionTheme = $this->base()->findByAttributes(['question_type' => $questionType]);
+        if (!empty($questionTheme)) {
+            return $questionTheme->name;
+        }
+    }
+
+    /**
+     * Returns the settings attribute decoded
+     * @return mixed
+     */
+    public function getDecodedSettings()
+    {
+        if (is_object($this->settings)) {
+            return $this->settings;
+        } else {
+            return json_decode($this->settings);
+        }
+    }
+
+    /**
+     * Returns a dummy instance of QuestionTheme, with
+     * the question type $questionType.
+     *
+     * @param string $questionType
+     * @return QuestionTheme
+     */
+    public static function getDummyInstance($questionType)
+    {
+        $settings = new StdClass();
+        $settings->class = '';
+        $settings->answerscales = 0;
+        $settings->subquestions = 0;
+
+        $questionTheme = new self();
+        $questionTheme->title = gT('Question theme error: Missing metadata');
+        $questionTheme->name = gT('Question theme error: Missing metadata');
+        $questionTheme->question_type = $questionType;
+        $questionTheme->settings = $settings;
+        return $questionTheme;
     }
 }
