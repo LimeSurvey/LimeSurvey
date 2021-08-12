@@ -3072,9 +3072,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
                 $oDB->createCommand()->dropTable('{{groups_update400}}');
             }
-            $oDB->createCommand()->renameTable($quotedGroups, '{{groups_update400}}');
+            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
             $oDB->createCommand()->createTable(
-                $quotedGroups,
+                '{{groups}}',
                 array(
                     'gid' => "pk",
                     'sid' => "integer NOT NULL default '0'",
@@ -3084,7 +3084,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 $options
             );
-            switchMSSQLIdentityInsert($quotedGroups, true); // Untested
+            switchMSSQLIdentityInsert('groups', true); // Untested
             $oDB->createCommand(
                 "INSERT INTO " . $quotedGroups . "
                 (gid, sid, group_order, randomization_group, grelevance)
@@ -3093,9 +3093,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
                 "
             )->execute();
-            switchMSSQLIdentityInsert($quotedGroups, false); // Untested
+            switchMSSQLIdentityInsert('groups', false); // Untested
             $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
-            $oDB->createCommand()->createIndex('{{idx1_groups}}', $quotedGroups, 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{[groups}}', 'sid', false);
 
             // Answers table
             if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
