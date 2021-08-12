@@ -3529,7 +3529,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                                 $aSurvey->bounceaccountpass
                             )
                         ],
-                        "sid=" . $aSurvey[sid]
+                        "sid=" . $aSurvey['sid']
                     );
                 }
             }
