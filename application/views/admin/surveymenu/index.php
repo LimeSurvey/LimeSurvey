@@ -100,7 +100,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     </div>
 </div>
 
-<div class="modal fade" id="restoremodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="restoremodalsurveymenu" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

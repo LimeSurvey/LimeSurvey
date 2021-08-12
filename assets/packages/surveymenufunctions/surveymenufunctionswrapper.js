@@ -74,21 +74,45 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
             success: function (result) {
                 $.fn.yiiGridView.update(targetGrid);
             },
-            error: function(error){
+            error: function (error) {
                 console.log(error);
             }
         });
     },
+        /**
+         * Returns the correct modal for restoring data
+         *  (surveymenu or surveymenuentry
+         * @returns {*}
+         */
+        getModal = function () {
+            let active_tab = $("ul.tabs li a.active").attr('href');
+            let restoreModal = '';
+            switch (active_tab) {
+                case '#surveymenues':
+                    restoreModal = $('#restoremodalsurveymenu');
+                    break;
+                case '#surveymenuentries':
+                default:
+                    restoreModal = $('#restoreModalSurveyMenuEntry');
+            }
+            return restoreModal;
+        },
+        openRestoreModal = function () {
+            let restoreModal = getModal();
+            restoreModal.modal('show');
+        },
     runRestoreModal =  function () {
-        $('#restoremodal').find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
+        //depending on which tab is active, the correct modal must be taken
+        // restoremodalsurveymenu and restoremodal
+        let restoreModal = getModal();
+        restoreModal.find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
         $.ajax({
             url: urls.restoreEntriesUrl,
             data: {},
             method: 'POST',
             dataType: 'json',
             success: function (result) {
-                console.log(result);
-                $('#restoremodal').find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px">' + result.message + '</div>');
+                restoreModal.find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px">' + result.message + '</div>');
 
                 if (result.success)
                     setTimeout(function () {
@@ -104,6 +128,10 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                 $('#reset-menu-entries-confirm').on('click', function (e) {
                     e.preventDefault();
                     runRestoreModal();
+                });
+
+                $('#restoreBtn').on('click', function (e) {
+                    openRestoreModal();
                 });
         
                 $('#createnewmenuentry').on('click', function (e) {
@@ -160,6 +188,10 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                 $('#reset-menus-confirm').on('click', function (e) {
                     e.preventDefault();
                     runRestoreModal();
+                });
+
+                $('#restoreBtn').on('click', function (e) {
+                    openRestoreModal();
                 });
         
                 $('#createnewmenu').on('click', function (e) {

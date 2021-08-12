@@ -92,8 +92,9 @@
             <!-- Reset -->
             <?php if (isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']) :?>
                 <a class="btn btn-warning"
-                   href="#restoremodal"
-                   data-toggle="modal">
+                   id="restoreBtn"
+                   href="#"
+                >
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset') ?>
                 </a>
