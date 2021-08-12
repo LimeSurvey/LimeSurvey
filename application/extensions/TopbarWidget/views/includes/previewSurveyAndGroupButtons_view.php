@@ -2,10 +2,11 @@
 <?php if (count($surveyLanguages) > 1): ?>
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="icon-do" ></span>
             <?php if($oSurvey->active=='N'):?>
+                <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
+                <span class="icon-do" ></span>
                 <?php eT('Execute survey');?>
             <?php endif;?>
             <span class="caret"></span>
@@ -22,10 +23,11 @@
     </div>
 <?php else: ?>
     <a class="btn btn-default  btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
-        <span class="icon-do" ></span>
         <?php if($oSurvey->active=='N'):?>
+            <span class="fa fa-eye" ></span>
             <?php eT('Preview survey');?>
         <?php else: ?>
+            <span class="icon-do" ></span>
             <?php eT('Execute survey');?>
         <?php endif;?>
     </a>
@@ -36,8 +38,8 @@
         <!-- Preview group multilanguage -->
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="icon-do"></span>
-            <?php eT("Preview question group"); ?> <span class="caret"></span>
+                <span class="fa fa-eye" ></span>
+                <?php eT("Preview question group"); ?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" style="min-width : 252px;">
                 <?php foreach ($surveyLanguages as $languageCode => $languageName): ?>
@@ -52,7 +54,7 @@
     <?php else:?>
         <!-- Preview group single language -->
         <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
-            <span class="icon-do"></span>
+            <span class="fa fa-eye" ></span>
             <?php eT("Preview question group");?>
         </a>
     <?php endif; ?>

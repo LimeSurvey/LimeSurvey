@@ -43,9 +43,14 @@
     <?php if (count($oSurvey->allLanguages) > 1): ?>
         <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-            <span class="icon-do" ></span>
-            <?php echo $context; ?> <span class="caret"></span>
+            <?php if($oSurvey->active=='N'):?>
+                <span class="fa fa-eye" ></span>
+                <?php eT('Preview survey');?>
+            <?php else: ?>
+                <span class="icon-do" ></span>
+                <?php eT('Execute survey');?>
+            <?php endif;?>
+            <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" style="min-width : 252px;">
             <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
@@ -61,8 +66,13 @@
     <!-- uniq language -->
     <?php else: ?>
         <a class="btn btn-default  btntooltip" id='<?= $contextbutton ?>_button' href="<?php echo App()->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
-            <span class="icon-do" ></span>
-            <?php echo $context; ?>
+            <?php if($oSurvey->active=='N'):?>
+                <span class="fa fa-eye" ></span>
+                <?php eT('Preview survey');?>
+            <?php else: ?>
+                <span class="icon-do" ></span>
+                <?php eT('Execute survey');?>
+            <?php endif;?>
             <i class="icon fa fa-external-link"></i>
         </a>
     <?php endif; ?>
