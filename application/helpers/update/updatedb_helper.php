@@ -4955,10 +4955,11 @@ function decryptParticipantTables450($oDB)
         ->from('{{surveys}}')
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableSchema = $oDB->getSchema()->getTable("{{tokens_{$survey['sid']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{tokens_{$survey['sid']}}}");
+        if (!$tableExists) {
             continue;
         }
+        $tableSchema = $oDB->getSchema()->getTable("{{tokens_{$survey['sid']}}}");
         $tokens = $oDB->createCommand()
             ->select('*')
             ->from("{{tokens_{$survey['sid']}}}")
@@ -4971,11 +4972,7 @@ function decryptParticipantTables450($oDB)
         }
 
         // find custom attribute column names
-        if (!$tableSchema) {
-            $aCustomAttributes = [];
-        } else {
-            $aCustomAttributes = array_filter(array_keys($tableSchema->columns), 'filterForAttributes');
-        }
+        $aCustomAttributes = array_filter(array_keys($tableSchema->columns), 'filterForAttributes');
 
         // custom attributes
         foreach ($aCustomAttributes as $attributeName) {
@@ -5018,8 +5015,8 @@ function decryptResponseTables450($oDB)
         ->where('active =:active', ['active' => 'Y'])
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableSchema = $oDB->getSchema()->getTable("{{survey_{$survey['sid']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{survey_{$survey['sid']}}}");
+        if (!$tableExists) {
             continue;
         }
         $responsesCount = $oDB->createCommand()
@@ -5070,8 +5067,8 @@ function decryptArchivedTables450($oDB)
 {
     $archivedTablesSettings = $oDB->createCommand('SELECT * FROM {{archived_table_settings}}')->queryAll();
     foreach ($archivedTablesSettings as $archivedTableSettings) {
-        $tableSchema = $oDB->getSchema()->getTable("{{{$archivedTableSettings['tbl_name']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
+        if (!$tableExists) {
             continue;
         }
         $surveyId = $archivedTableSettings['survey_id'];
@@ -5104,11 +5101,11 @@ function decryptArchivedTables450($oDB)
                 }
 
                 // find custom attribute column names
-                $table = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
+                $table = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
                 if (!$table) {
                     $aCustomAttributes = [];
                 } else {
-                    $aCustomAttributes = array_filter(array_keys($table->columns), 'filterForAttributes');
+                    $aCustomAttributes = array_filter(array_keys($oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}")->columns), 'filterForAttributes');
                 }
 
                 // custom attributes
