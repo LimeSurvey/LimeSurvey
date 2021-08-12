@@ -4648,6 +4648,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 450) {
             $oTransaction = $oDB->beginTransaction();
 
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
             if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
                 updateEncryptedValues450($oDB);
             }
@@ -4658,6 +4659,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 451) {
             $oTransaction = $oDB->beginTransaction();
 
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
             if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
                 // update wrongly encrypted custom attribute values for cpdb participants
                 $encryptedAttributes = $oDB->createCommand()
@@ -4696,6 +4698,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 452) {
             $oTransaction = $oDB->beginTransaction();
 
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
             if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
                 // update encryption for smtppassword
                 $emailsmtppassword = $oDB->createCommand()
@@ -4720,10 +4723,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
                     $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
                 }
-
-                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
-                $oTransaction->commit();
             }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
         if ($iOldDBVersion < 460) { //ExportSPSSsav plugin
             $oTransaction = $oDB->beginTransaction();
