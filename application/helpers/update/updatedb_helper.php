@@ -2988,8 +2988,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 array(
                     'id' => "pk",
                     'qid' => "integer NOT NULL",
-                    'question' => "text NOT NULL",
-                    'help' => "text",
+                    'question' => "mediumtext NOT NULL",
+                    'help' => "mediumtext",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
