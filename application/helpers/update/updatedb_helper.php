@@ -3106,7 +3106,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 array(
                     'id' => "pk",
                     'aid' => "integer NOT NULL",
-                    'answer' => "text NOT NULL",
+                    'answer' => "mediumtext NOT NULL",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
