@@ -79,40 +79,23 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
             }
         });
     },
-        /**
-         * Returns the correct modal for restoring data
-         *  (surveymenu or surveymenuentry
-         * @returns {*}
-         */
-        getModal = function () {
-            let active_tab = $("ul.tabs li a.active").attr('href');
-            let restoreModal = '';
-            switch (active_tab) {
-                case '#surveymenues':
-                    restoreModal = $('#restoremodalsurveymenu');
-                    break;
-                case '#surveymenuentries':
-                default:
-                    restoreModal = $('#restoreModalSurveyMenuEntry');
-            }
-            return restoreModal;
-        },
-        openRestoreModal = function () {
-            let restoreModal = getModal();
-            restoreModal.modal('show');
-        },
-    runRestoreModal =  function () {
-        //depending on which tab is active, the correct modal must be taken
-        // restoremodalsurveymenu and restoremodal
-        let restoreModal = getModal();
-        restoreModal.find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
+    runRestoreModal =  function (urlMenu, urlMenuEntry) {
+        $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
+        //url is depending on which tab is active
+        let active_tab = $('#menueslist li.active a').attr('href');
+        var urlRestore = $('#reset-menus-confirm').attr('data-urlmenu');
+        if (active_tab === '#surveymenues') {
+            urlRestore = urlMenu;
+        } else if (active_tab === '#surveymenuentries') {
+            urlRestore = urlMenuEntry;
+        }
         $.ajax({
-            url: urls.restoreEntriesUrl,
+            url: urlRestore,
             data: {},
             method: 'POST',
             dataType: 'json',
             success: function (result) {
-                restoreModal.find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px">' + result.message + '</div>');
+                $('#restoremodalsurveymenu').find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px">' + result.message + '</div>');
 
                 if (result.success)
                     setTimeout(function () {
@@ -122,17 +105,21 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
         });
     };
 
+    $('#restoreBtn').on('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('#restoremodalsurveymenu').modal('show');
+    });
+
+    $('#reset-menus-confirm').on('click', function (e) {
+        e.preventDefault();
+
+        runRestoreModal($(this).attr('data-urlmenu'), $(this).attr('data-urlmenuentry'));
+    });
+
     return {
         getBindActionForSurveymenuEntries : function () {
             return function () {
-                $('#reset-menu-entries-confirm').on('click', function (e) {
-                    e.preventDefault();
-                    runRestoreModal();
-                });
-
-                $('#restoreBtn').on('click', function (e) {
-                    openRestoreModal();
-                });
         
                 $('#createnewmenuentry').on('click', function (e) {
                     e.stopPropagation();
@@ -185,14 +172,6 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
         },
         getBindActionForSurveymenus : function () {
             return function () {
-                $('#reset-menus-confirm').on('click', function (e) {
-                    e.preventDefault();
-                    runRestoreModal();
-                });
-
-                $('#restoreBtn').on('click', function (e) {
-                    openRestoreModal();
-                });
         
                 $('#createnewmenu').on('click', function (e) {
                     e.stopPropagation();
