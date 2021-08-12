@@ -2782,6 +2782,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 }
                 $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
+            unset($aDefaultSurveyMenuEntries);
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 354], "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -3663,6 +3664,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
                 $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
             }
+            unset($baseQuestionThemeEntries);
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 421), "stg_name='DBVersion'");
             $oTransaction->commit();
