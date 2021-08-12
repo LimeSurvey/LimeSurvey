@@ -78,33 +78,5 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
     </div>
   </div>
 
-  <div class="modal fade" id="restoreModalSurveyMenuEntry" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <?php
-          Yii::app()->getController()->renderPartial(
-              '/layouts/partial_modals/modal_header',
-              ['modalTitle' => gT('Restore default survey menu entries')]
-          );
-          ?>
-        <div class="modal-body">
-          <p>
-            <?php eT("All custom menu entries will be lost."); ?>
-          </p>
-          <p>
-            <?php eT("Please do a backup of the menu entries you want to keep."); ?>
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            <?php eT('Cancel'); ?>
-          </button>
-          <button type="button" id="reset-menu-entries-confirm" class="btn btn-danger">
-            <?php eT('Restore default'); ?>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
