@@ -37,7 +37,19 @@ class PluginManagerController extends Survey_Common_Action
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = [];
-        foreach ($aoPlugins as $oPlugin) {
+        foreach ($aoPlugins as $key => $oPlugin) {
+            // If plugin is missing or is not compatible, it will be uninstalled
+            if (!$oPlugin->isCompatible()) {
+                $oPlugin->delete();
+                if ($oPlugin->dirExists()) {
+                    Yii::app()->setFlashMessage(sprintf(gT("Plugin '%s' was uninstalled because it is not compatible with your LimeSurvey version."), $oPlugin->name));
+                } else {
+                    Yii::app()->setFlashMessage(sprintf(gT("Plugin '%s' was uninstalled because it was missing."), $oPlugin->name));
+                }
+                unset($aoPlugins[$key]);
+                continue;
+            }
+
             $data[] = [
                 'id'          => $oPlugin->id,
                 'name'        => $oPlugin->name,

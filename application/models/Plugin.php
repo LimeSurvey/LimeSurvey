@@ -87,8 +87,12 @@ class Plugin extends LSActiveRecord
      */
     public function isCompatible()
     {
-        $config = $this->getExtensionConfig();
-        return $config->isCompatible();
+        try {
+            $config = $this->getExtensionConfig();
+            return $config->isCompatible();
+        } catch (\Exception $ex) {
+            return false;
+        }
     }
 
     /**
@@ -335,5 +339,16 @@ class Plugin extends LSActiveRecord
 
         // NB: Name is same as plugin folder and plugin main class.
         return $folder . DIRECTORY_SEPARATOR . $this->name;
+    }
+
+    /**
+     * Returns true if the installation folder of this plugin exists.
+     * @return boolean
+     * @throws Exception
+     */
+    public function dirExists()
+    {
+        $dir = $this->getDir();
+        return file_exists($dir);
     }
 }
