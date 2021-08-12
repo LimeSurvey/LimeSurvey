@@ -3056,21 +3056,25 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'id' => "pk",
                     'gid' => "integer NOT NULL",
                     'group_name' => "text NOT NULL",
-                    'description' => "text",
+                    'description' => "mediumtext",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
             );
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+            $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
             $oDB->createCommand(
-                "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}"
+                sprintf(
+                    "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
+                    $quotedGroups
+                )
             )->execute();
             if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
                 $oDB->createCommand()->dropTable('{{groups_update400}}');
             }
-            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
+            $oDB->createCommand()->renameTable($quotedGroups, '{{groups_update400}}');
             $oDB->createCommand()->createTable(
-                '{{groups}}',
+                $quotedGroups,
                 array(
                     'gid' => "pk",
                     'sid' => "integer NOT NULL default '0'",
@@ -3080,18 +3084,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ),
                 $options
             );
-            switchMSSQLIdentityInsert('groups', true); // Untested
+            switchMSSQLIdentityInsert($quotedGroups, true); // Untested
             $oDB->createCommand(
-                "INSERT INTO {{groups}}
+                "INSERT INTO " . $quotedGroups . "
                 (gid, sid, group_order, randomization_group, grelevance)
                 SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
                 FROM {{groups_update400}}
                     INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
                 "
             )->execute();
-            switchMSSQLIdentityInsert('groups', false); // Untested
+            switchMSSQLIdentityInsert($quotedGroups, false); // Untested
             $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
-            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', $quotedGroups, 'sid', false);
 
             // Answers table
             if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
