@@ -3095,7 +3095,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             )->execute();
             switchMSSQLIdentityInsert('groups', false); // Untested
             $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
-            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{[groups}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
 
             // Answers table
             if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
