@@ -5198,6 +5198,7 @@ function createFieldMap450($survey): array
 {
     // Main query
     $style = 'full';
+    $defaultValues = null;
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $aquery = 'SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value'
         . " FROM $quotedGroups g"
@@ -7467,7 +7468,7 @@ function upgradeQuestionAttributes142()
             $record['value'] = implode(';', $attributevalues);
             $record['attribute'] = 'exclude_all_other';
             $record['qid'] = $questionid;
-            Yii::app()->getDb()->createCommand()->insert('{{question_attributes}}', $record)->execute();
+            Yii::app()->getDb()->createCommand()->insert('{{question_attributes}}', $record);
         }
     }
 }
