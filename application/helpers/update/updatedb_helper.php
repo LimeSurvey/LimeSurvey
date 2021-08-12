@@ -4648,7 +4648,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 450) {
             $oTransaction = $oDB->beginTransaction();
 
-            updateEncryptedValues450($oDB);
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                updateEncryptedValues450($oDB);
+            }
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 450], "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -4656,34 +4658,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 451) {
             $oTransaction = $oDB->beginTransaction();
 
-            // update wrongly encrypted custom attribute values for cpdb participants
-            $encryptedAttributes = $oDB->createCommand()
-                ->select('attribute_id')
-                ->from('{{participant_attribute_names}}')
-                ->where('encrypted = :encrypted AND core_attribute <> :core_attribute', ['encrypted' => 'Y', 'core_attribute' => 'Y'])
-                ->queryAll();
-            $nrOfAttributes = count($encryptedAttributes);
-            foreach ($encryptedAttributes as $encryptedAttribute) {
-                $attributes = $oDB->createCommand()
-                    ->select('*')
-                    ->from('{{participant_attribute}}')
-                    ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                // update wrongly encrypted custom attribute values for cpdb participants
+                $encryptedAttributes = $oDB->createCommand()
+                    ->select('attribute_id')
+                    ->from('{{participant_attribute_names}}')
+                    ->where('encrypted = :encrypted AND core_attribute <> :core_attribute', ['encrypted' => 'Y', 'core_attribute' => 'Y'])
                     ->queryAll();
-                foreach ($attributes as $attribute) {
-                    $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
-                    // This extra decrypt loop is needed because of wrongly encrypted attributes.
-                    // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
-                    for ($i = 1; $i < $nrOfAttributes; $i++) {
-                        $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                $nrOfAttributes = count($encryptedAttributes);
+                foreach ($encryptedAttributes as $encryptedAttribute) {
+                    $attributes = $oDB->createCommand()
+                        ->select('*')
+                        ->from('{{participant_attribute}}')
+                        ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
+                        ->queryAll();
+                    foreach ($attributes as $attribute) {
+                        $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
+                        // This extra decrypt loop is needed because of wrongly encrypted attributes.
+                        // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
+                        for ($i = 1; $i < $nrOfAttributes; $i++) {
+                            $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                        }
+                        $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
+                        $updateArray['value'] = $recryptedValue;
+                        $oDB->createCommand()->update(
+                            '{{participant_attribute}}',
+                            $updateArray,
+                            'participant_id = :participant_id AND attribute_id = :attribute_id',
+                            ['participant_id' => $attribute['participant_id'], 'attribute_id' => $attribute['attribute_id']]
+                        );
                     }
-                    $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
-                    $updateArray['value'] = $recryptedValue;
-                    $oDB->createCommand()->update(
-                        '{{participant_attribute}}',
-                        $updateArray,
-                        'participant_id = :participant_id AND attribute_id = :attribute_id',
-                        ['participant_id' => $attribute['participant_id'], 'attribute_id' => $attribute['attribute_id']]
-                    );
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 451], "stg_name='DBVersion'");
@@ -4692,32 +4696,34 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 452) {
             $oTransaction = $oDB->beginTransaction();
 
-            // update encryption for smtppassword
-            $emailsmtppassword = $oDB->createCommand()
-                ->select('*')
-                ->from('{{settings_global}}')
-                ->where('stg_name = :stg_name', ['stg_name' => 'emailsmtppassword'])
-                ->queryRow();
-            if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
-                $decryptedValue = LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
-                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
-                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
-            }
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                // update encryption for smtppassword
+                $emailsmtppassword = $oDB->createCommand()
+                    ->select('*')
+                    ->from('{{settings_global}}')
+                    ->where('stg_name = :stg_name', ['stg_name' => 'emailsmtppassword'])
+                    ->queryRow();
+                if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
+                    $decryptedValue = LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
+                    $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                    $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
+                }
 
-            // update encryption for bounceaccountpass
-            $bounceaccountpass = $oDB->createCommand()
-                ->select('*')
-                ->from('{{settings_global}}')
-                ->where('stg_name = :stg_name', ['stg_name' => 'bounceaccountpass'])
-                ->queryRow();
-            if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
-                $decryptedValue = LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
-                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
-                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
-            }
+                // update encryption for bounceaccountpass
+                $bounceaccountpass = $oDB->createCommand()
+                    ->select('*')
+                    ->from('{{settings_global}}')
+                    ->where('stg_name = :stg_name', ['stg_name' => 'bounceaccountpass'])
+                    ->queryRow();
+                if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
+                    $decryptedValue = LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
+                    $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                    $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
+                }
 
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
-            $oTransaction->commit();
+                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
+                $oTransaction->commit();
+            }
         }
         if ($iOldDBVersion < 460) { //ExportSPSSsav plugin
             $oTransaction = $oDB->beginTransaction();
