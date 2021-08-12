@@ -78,7 +78,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
     </div>
   </div>
 
-  <div class="modal fade" id="restoremodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal fade" id="restoreModalSurveyMenuEntry" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
           <?php
