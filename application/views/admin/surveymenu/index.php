@@ -83,8 +83,8 @@ echo viewHelper::getViewTestTag('surveyMenus');
         </div>
     </div>
 </div>
-<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="deletesurveymenumodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title"><?php eT("Delete this survey menu?"); ?></h4>
@@ -100,26 +100,32 @@ echo viewHelper::getViewTestTag('surveyMenus');
     </div>
 </div>
 
-<div class="modal fade" id="restoremodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="restoremodalsurveymenu" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"><?php eT("Really restore the default survey menus?"); ?></h4>
+                <h4 class="modal-title"><?php eT("Really restore the default survey menus (survey menu entries?"); ?></h4>
             </div>
             <div class="modal-body">
                 <p>
                     <?php eT("All custom menus will be lost."); ?>
                 </p>
                 <p>
-                    <?php eT("Please do a backup of the menus you want to keep."); ?>
+                    <?php eT("Please do a backup of the menu (menu entries) you want to keep."); ?>
                 </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <?php eT('Cancel'); ?>
                 </button>
-                <button type="button" id="reset-menus-confirm" class="btn btn-danger">
-                    <?php eT('Yes, restore default'); ?>
+                <button
+                        type="button"
+                        id="reset-menus-confirm"
+                        class="btn btn-danger"
+                        data-urlmenu="<?=Yii::app()->getController()->createUrl('/admin/menus/sa/restore');?>"
+                        data-urlmenuentry="<?= Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore');?>"
+                >
+                    <?php eT('Restore default'); ?>
                 </button>
             </div>
         </div>
@@ -138,12 +144,19 @@ echo viewHelper::getViewTestTag('surveyMenus');
         }
     });
 
-    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu', 'surveymenu-grid', {
+    var surveyMenuFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu', 'surveymenu-grid', {
             loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menus/sa/getsurveymenuform') ?>",
-            restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/restore'); ?>",
             deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/delete'); ?>"
         }),
-        bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenus();
+        bindAction = surveyMenuFunctions.getBindActionForSurveymenus();
+
+    var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
+            loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
+            reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
+            deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
+        }),
+        bindActionEntry = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
 
     $(document).on('ready pjax:scriptcomplete', bindAction);
+    $(document).on('ready pjax:scriptcomplete', bindActionEntry);
 </script>

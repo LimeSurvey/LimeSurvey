@@ -36,7 +36,7 @@ $aFunctions = ExpressionManager::GetAllowableFunctions();
                                 <?=$aFuncDefinition[3]?>
                             </td>
                             <td>
-                                <?=(!empty($aFuncDefinition[4]) ? '<a href="'.$aFuncDefinition[4].'">'.$aFuncDefinition[4].'</a>' : "&nbsp;")?>
+                                <?=(!empty($aFuncDefinition[4]) ? '<a target="_blank" href="'.$aFuncDefinition[4].'">'.$aFuncDefinition[4].'</a>' : "&nbsp;")?>
                             </td>
                         </tr>
                     <?php } ?> 
