@@ -222,7 +222,9 @@ class QuestionGroupsAdministrationController extends LSBaseController
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
         
-        $aData['closeBtnUrl'] = $this->createUrl(
+        // White Close Button
+        $aData['showWhiteCloseButton'] = true;
+        $aData['closeUrl'] = $this->createUrl(
             'questionGroupsAdministration/view',
             [
                 'surveyid' => $surveyid,
