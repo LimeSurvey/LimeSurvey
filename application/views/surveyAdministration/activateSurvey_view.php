@@ -93,13 +93,7 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <p>
-                    <?php eT("Once a survey has been activated you can no longer "); ?>
-                    <strong><?php eT("add"); ?></strong>
-                    <?php eT("or ") ?>
-                    <strong><?php eT("delete"); ?></strong>
-                    <?php eT("questions, questions groups, or subquestions. You will be "); ?>
-                    <strong><?php eT("still able to edit"); ?></strong>
-                    <?php eT("questions, questions groups, or subquestions."); ?>
+                    <?php eT("Once a survey has been activated you can no longer <strong>add</strong> or <strong>delete</strong> questions, questions groups, or subquestions. You will be <strong>still able to edit</strong> questions, questions groups, or subquestions.", 'unescaped'); ?>
                 </p>
             </div>
         </div>
@@ -259,15 +253,7 @@
             <div class='row'>
                 <div class='col-sm-8 col-sm-offset-2'>
                     <div class="alert alert-info">
-                        <?php eT("Tip: Please note that you need to "); ?>
-                        <strong> <?php eT("deactivate"); ?> </strong>
-                        <?php eT(" a survey if you want to "); ?>
-                        <strong> <?php eT("add"); ?> </strong>
-                        <?php eT("or "); ?>
-                        <strong> <?php eT("delete"); ?> </strong>
-                        <?php eT("groups/questions or "); ?>
-                        <strong> <?php eT("change"); ?> </strong>
-                        <?php eT("any of the settings above. The changes will cause all collected data from respondents to be moved and archived."); ?>
+                        <?php eT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'); ?>
                     </div>
                     <br><br>
                 </div>
