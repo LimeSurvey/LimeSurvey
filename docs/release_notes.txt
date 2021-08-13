@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.1 (build 210812) to 5.1.2 (build 210813) August 12, 2021
+
+
+Changes from 5.1.0 (build 210811) to 5.1.1 (build 210812) August 12, 2021
+-Fixed issue: Error while upgrading the database (Carsten Schmitz)
+-Fixed issue: ComfortUpdate not working when one of the files to back up has 0 size (Carsten Schmitz)
+-Fixed issue #17506: Error while upgrading a database when using MSSQL (Carsten Schmitz)
+
+
 Changes from 5.0.13 (build 210804) to 5.1.0 (build 210811) August 11, 2021
 +New feature: Add RPC function to delete a response using its ID (#1928) (arnaudbore)
 +New feature #17226: Ability to export to SPSS .sav format (#1877) (Adam Zammit)
