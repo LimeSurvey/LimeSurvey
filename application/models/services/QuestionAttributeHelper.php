@@ -146,32 +146,6 @@ class QuestionAttributeHelper
     }
 
     /**
-     * Returns the question attributes added by plugins ('newQuestionAttributes' event) for
-     * the specified question type.
-     *
-     * @param string $questionType     the question type to retrieve the attributes for.
-     *
-     * @return array    the question attributes added by plugins
-     */
-    public function getAttributesFromPlugin($questionType)
-    {
-        $allPluginAttributes = \QuestionAttribute::getOwnQuestionAttributesViaPlugin();
-        if (empty($allPluginAttributes)) {
-            return [];
-        }
-
-        // Filter to get this question type setting
-        $questionTypeAttributes = $this->filterAttributesByQuestionType($allPluginAttributes, $questionType);
-
-        // Complete category if missing
-        $questionTypeAttributes = $this->fillMissingCategory($questionTypeAttributes, gT('Plugin'));
-
-        $questionTypeAttributes = $this->sanitizeQuestionAttributes($questionTypeAttributes);
-
-        return $questionTypeAttributes;
-    }
-
-    /**
      * Filters an array of question attribute definitions by question type
      *
      * @param array $attributes    array of question attribute definitions to filter
@@ -232,74 +206,16 @@ class QuestionAttributeHelper
      */
     public function getQuestionAttributesWithValues($question, $language = null, $questionThemeOverride = null, $advancedOnly = false)
     {
-        $survey = $question->survey;
-        if (empty($survey)) {
-            throw new \Exception('This question has no survey - qid = ' . json_encode($question->qid));
+        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+        $questionAttributeFetcher->setQuestion($question);
+        $questionAttributeFetcher->setAdvancedOnly($advancedOnly);
+        if (!empty($questionThemeOverride)) {
+            $questionAttributeFetcher->setTheme($questionThemeOverride);
         }
 
-        // Get attribute values
-        $attributeValues = $this->getAttributeValuesFromDB($question->qid);
+        $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
+        $questionAttributesWithValues = $questionAttributeFetcher->populateValues($questionAttributeDefinitions, $language);
 
-        // Get question theme name if not specified
-        $questionTheme = !empty($attributeValues['question_template']['']) ? $attributeValues['question_template'][''] : 'core';
-        $questionTheme = !empty($questionThemeOverride) ? $questionThemeOverride : $questionTheme;
-
-        // Get advanced attribute definitions for the question type
-        $questionTypeAttributes = $this->getAttributesFromQuestionType($question->type, $advancedOnly);
-
-        // Get question theme attribute definitions
-        $questionThemeAttributes = $this->getAttributesFromQuestionTheme($questionTheme, $question->type);
-
-        // Merge the attributes with the question theme ones
-        $attributes = $this->mergeQuestionAttributes($questionTypeAttributes, $questionThemeAttributes);
-
-        // Get question attributes from plugins ('newQuestionAttributes' event)
-        $pluginAttributes = $this->getAttributesFromPlugin($question->type);
-        $attributes = $this->mergeQuestionAttributes($attributes, $pluginAttributes);
-
-        uasort($attributes, 'categorySort');
-
-        // Fill attributes with values
-        $languages = is_null($language) ? $survey->allLanguages : [$language];
-        $attributes = $this->fillAttributesWithValues($attributes, $attributeValues, $languages);
-
-        return $attributes;
-    }
-
-    /**
-     * Get all saved attribute values for one question as array
-     *
-     * @param int $questionId  the question id
-     * @return array the returning array structure will be like
-     *               array(attributeName => array(languageCode => value, ...), ...)
-     *               where languageCode is '' if no language is specified.
-     */
-    public function getAttributeValuesFromDB($questionId)
-    {
-        return \QuestionAttribute::model()->getAttributesAsArrayFromDB($questionId);
-    }
-
-    /**
-     * Get the definitions of question attributes from Question Theme
-     *
-     * @param string $questionTheme    the name of the question theme
-     * @param string $questionType     the base question type
-     * @return array    all question attribute definitions provided by the question theme
-     */
-    public function getAttributesFromQuestionTheme($questionTheme, $questionType)
-    {
-        return \QuestionTheme::getAdditionalAttrFromExtendedTheme($questionTheme, $questionType);
-    }
-
-    /**
-     * Get the definitions of question attributes from base question type
-     *
-     * @param string $questionType     the base question type
-     * @param boolean $advancedOnly     if true, general attributes ('question_template', 'gid', ...) are excluded
-     * @return array    all question attribute definitions provided by the question type
-     */
-    public function getAttributesFromQuestionType($questionType, $advancedOnly = false)
-    {
-        return \QuestionAttribute::getQuestionAttributesSettings($questionType, $advancedOnly);
+        return $questionAttributesWithValues;
     }
 }

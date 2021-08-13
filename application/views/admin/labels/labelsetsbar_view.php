@@ -141,7 +141,7 @@
                    id="save-form-button"
                    data-form-id="<?php echo $labelbar['savebutton']['form']; ?>"
                 >
-                    <span class="fa fa-floppy-o"></span>
+                    <span class="fa fa-check"></span>
                     <?php echo $labelbar['savebutton']['text']; ?>
                 </a>
             <?php endif; ?>

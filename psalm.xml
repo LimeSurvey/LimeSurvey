@@ -14,6 +14,7 @@
         <file name="application/models/QuestionAttribute.php" />
         <file name="application/libraries/PluginManager/LimesurveyApi.php" />
         <file name="application/models/ArchivedTableSettings.php" />
+        <file name="application/helpers/update/updatedb_helper.php" />
         <ignoreFiles>
             <directory name="third_party" />
             <directory name="framework" />

@@ -23,7 +23,7 @@
             <td><?= $aCurrentPermissions['title'] ?></td>
             <td><?php echo CHtml::checkBox("all_$sPermission",false, array('class' => 'markrow')) ?></td>
             <?php foreach ($aCurrentPermissions['current'] as $sKey =>$aValues): ?>
-            <td class='extended'><?php if($aCurrentPermissions[$sKey]) {
+            <td class='extended'><?php if($aCurrentPermissions[$sKey] && !$aValues['forced']) {
                 echo CHtml::checkBox(
                     "set[{$aCurrentPermissions['entity']}][{$sPermission}][$sKey]",
                     $aValues['checked'],

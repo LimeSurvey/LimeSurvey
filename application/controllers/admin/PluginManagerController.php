@@ -757,10 +757,6 @@ function pluginExtractFilter($p_event, &$p_header)
         Yii::app()->getConfig('allowedpluginuploads')
     );
     $info = pathinfo($p_header['filename']);
-    // Deny files with multiple extensions in general
-    if (substr_count($info['basename'], '.') > 1) {
-        return 0;
-    }
 
     if (
         $p_header['folder']

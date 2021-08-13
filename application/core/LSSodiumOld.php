@@ -144,7 +144,7 @@ class LSSodiumOld
     {
         if (is_file(APPPATH . 'config/security.php')) {
             // Never replace an existing file
-            throw new CException(500, gT("Configuration file already exist"));
+            throw new CHttpException(500, gT("Configuration file already exist"));
         }
         $sEncryptionKeypair = ParagonIE_Sodium_Compat::crypto_sign_keypair();
         $sEncryptionPublicKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_publickey($sEncryptionKeypair));

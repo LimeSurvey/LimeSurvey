@@ -162,7 +162,6 @@ class surveypermission extends Survey_Common_Action
                         if (
                             $sPDetailValue
                             && Permission::model()->hasSurveyPermission($iSurveyID, $sPKey, $sPDetailKey, $PermissionRow['uid'])
-                            && !($sPKey == 'survey' && $sPDetailKey == 'read')
                         ) {
                             $iCount++;
                             $sTooltip .= $sPDetailKey . ", ";
@@ -171,11 +170,6 @@ class surveypermission extends Survey_Common_Action
                             $iPermissionCount++;
                         }
                     }
-
-                    if ($sPKey == 'survey') {
-                        $iPermissionCount--;
-                    }
-
                     // Remove last ',' and make first char upper-case
                     $sTooltip = substr($sTooltip, 0, -2);
                     $sTooltip = ucfirst($sTooltip);

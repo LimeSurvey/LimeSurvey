@@ -2,6 +2,8 @@
 
 namespace ls\tests;
 
+use QuestionCreate;
+
 /**
  * @group questionattribute
  */
@@ -32,75 +34,84 @@ class QuestionAttributeTest extends TestBaseClassWeb
 
     }
 
-    public function testPluginAttributes()
+    public function testPluginQuestionAttributeProvider()
     {
-        $questionAttributeHelper = new \LimeSurvey\Models\Services\QuestionAttributeHelper();
+        // Test PluginQuestionAttributeProvider with a question object
+        $question = new \Question();
+        $question->type = 'S';
+        $provider = new \LimeSurvey\Models\Services\PluginQuestionAttributeProvider();
+        $questionAttributes = $provider->getDefinitions(['question' => $question]);
 
-        // Get attributes for question type 'S', which is used by the test plugin
-        $aQuestionAttributes = $questionAttributeHelper->getAttributesFromPlugin('S');
-        $this->assertNotEmpty($aQuestionAttributes);
+        $this->assertNotEmpty($questionAttributes);
 
-        // Check the test attribute exists within the attributes received
-        $aAttribute = null;
-        foreach ($aQuestionAttributes as $item) {
-            if (isset($item['name']) && $item['name'] == 'testAttribute') {
-                $aAttribute = $item;
-                break;
-            }
-        }
-        $this->assertNotEmpty($aAttribute);
+        // The test plugin provides a 'testAttribute' for question type 'S'. It should be present.
+        $this->assertArrayHasKey('testAttribute', $questionAttributes);
 
-        // Check a core attribute does NOT exist within the attributes received
-        $aAttribute = null;
-        foreach ($aQuestionAttributes as $item) {
-            if (isset($item['name']) && $item['name'] == 'question_template') {
-                $aAttribute = $item;
-                break;
-            }
-        }
-        $this->assertEmpty($aAttribute);
+        // The test plugin provides a 'testAttributeForArray' for question type 'F'. It should not be present.
+        $this->assertArrayNotHasKey('testAttributeForArray', $questionAttributes);
 
-        // Get attributes for question type 'T', which is NOT used by the test plugin
-        $aQuestionAttributes = $questionAttributeHelper->getAttributesFromPlugin('T');
-
-        // Check the test attribute does NOT exist within the attributes received
-        $aAttribute = null;
-        if (!empty($aQuestionAttributes)) {
-            foreach ($aQuestionAttributes as $item) {
-                if (isset($item['name']) && $item['name'] == 'testAttribute') {
-                    $aAttribute = $item;
-                    break;
-                }
-            }
-        }
-        $this->assertEmpty($aAttribute);
+        // Test again but passing only a question type
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'F']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('testAttributeForArray', $questionAttributes);
     }
 
-    public function testCoreAttributes()
+    public function testCoreQuestionAttributeProvider()
     {
-        // Get attributes for question type 'S', which is used by the test plugin
-        $aQuestionAttributes = \QuestionAttribute::getQuestionAttributesSettings('S', true);
-        $this->assertNotEmpty($aQuestionAttributes);
+        // Test CoreQuestionAttributeProvider with a question object
+        $question = new \Question();
+        $question->type = 'S';
+        $provider = new \LimeSurvey\Models\Services\CoreQuestionAttributeProvider();
+        $questionAttributes = $provider->getDefinitions(['question' => $question]);
 
-        // Check the test attribute (from plugin) does NOT exist within the attributes received
-        $aAttribute = null;
-        foreach ($aQuestionAttributes as $item) {
-            if (isset($item['name']) && $item['name'] == 'testAttribute') {
-                $aAttribute = $item;
-                break;
-            }
-        }
-        $this->assertEmpty($aAttribute);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('hide_tip', $questionAttributes);
 
-        // Check a core attribute exists within the attributes received
-        $aAttribute = null;
-        foreach ($aQuestionAttributes as $item) {
-            if (isset($item['name']) && $item['name'] == 'hide_tip') {
-                $aAttribute = $item;
-                break;
-            }
-        }
-        $this->assertNotEmpty($aAttribute);
+        // Test again but passing only a question type
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'M']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('max_answers', $questionAttributes);
+    }
+
+    public function testThemeQuestionAttributeProvider()
+    {
+        // Test ThemeQuestionAttributeProvider with a question object
+        $question = new \Question();
+        $question->type = 'S';
+        $provider = new \LimeSurvey\Models\Services\ThemeQuestionAttributeProvider();
+        $questionAttributes = $provider->getDefinitions(['question' => $question, 'questionTheme' => 'browserdetect']);
+
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('add_platform_info', $questionAttributes);
+
+        $questionAttributes = $provider->getDefinitions(['question' => $question]);
+        $this->assertEmpty($questionAttributes);
+
+        // Test again but passing only a question type and theme
+        $questionAttributes = $provider->getDefinitions(['questionType' => 'L', 'questionTheme' => 'bootstrap_buttons']);
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('button_size', $questionAttributes);
+    }
+
+    public function testFetcher()
+    {
+        // Import survey
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_QuestionAttributeTestSurvey.lss';
+        self::importSurvey($surveyFile);
+
+        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+
+        $question = QuestionCreate::getInstance(self::$surveyId, 'S');
+
+        $questionAttributeFetcher->setQuestion($question);
+        $questionAttributeFetcher->setTheme('browserdetect');
+        $questionAttributeFetcher->setAdvancedOnly(true);
+
+        $questionAttributes = $questionAttributeFetcher->fetch();
+        $this->assertNotEmpty($questionAttributes);
+        $this->assertArrayHasKey('hide_tip', $questionAttributes);          // Core attribute
+        $this->assertArrayHasKey('add_platform_info', $questionAttributes); // Theme attribute
+        $this->assertArrayHasKey('testAttribute', $questionAttributes);     // Plugin attribute
     }
 
     /**
