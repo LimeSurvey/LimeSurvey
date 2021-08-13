@@ -83,7 +83,7 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
         $('#restoremodalsurveymenu').find('.modal-content').html('<div ' + 'class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
         //url is depending on which tab is active
         let active_tab = $('#menueslist li.active a').attr('href');
-        var urlRestore = $('#reset-menus-confirm').attr('data-urlmenu');
+        var urlRestore = '';
         if (active_tab === '#surveymenues') {
             urlRestore = urlMenu;
         } else if (active_tab === '#surveymenuentries') {
