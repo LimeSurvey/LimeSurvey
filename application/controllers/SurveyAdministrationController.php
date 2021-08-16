@@ -192,7 +192,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $this->aData = $aData;
         $this->render('sidebody', [
-            //'content' => $content,
             'sideMenuOpen' => true
         ]);
     }
