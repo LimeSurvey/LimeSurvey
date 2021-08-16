@@ -271,7 +271,7 @@
     <?php endforeach; ?>
 <?php endif; ?>
 
-<!-- Display/export -->
+<!-- Export -->
 <?php if (Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export')): ?>
     <?php App()->getController()->renderPartial(
         '/admin/survey/surveybar_displayexport',

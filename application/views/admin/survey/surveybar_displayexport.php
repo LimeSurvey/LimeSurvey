@@ -161,7 +161,7 @@
         'optionArray' => [
             'onModalClose' => [
                 "
-                $('#selector__exportTypeSelector--buttonText').html('".gT("Display/Export")."');
+                $('#selector__exportTypeSelector--buttonText').html('".gT("Export")."');
                 "
             ],
             'onUpdate' => [
@@ -185,7 +185,7 @@
                         $(document).trigger('pjax:load', {url: loadUrl});
                     }
                 }
-                $('#selector__exportTypeSelector--buttonText').html('".gT("Display/Export")."');
+                $('#selector__exportTypeSelector--buttonText').html('".gT("Export")."');
                 "
             ],
         ]
