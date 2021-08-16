@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.11 (build 210809) to 3.27.12 (build 210816) August 16, 2021
+-Fixed issue: LTS branch shown as unstable in ComfortUpdate (Carsten Schmitz)
+-Fixed issue: ComfortUpdate not working when one of the files to back up has 0 size (Carsten Schmitz)
+-Fixed issue #17513: System information modal duplicates database server info (Carsten Schmitz)
+-Fixed issue #17223: With mandatory attribute : lost all current value when create a token (#1942) (Gabriel Jenik)
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.27.10 (build 210803) to 3.27.11 (build 210809) August 9, 2021
 -Fixed issue #17285: "Resume later" not working after "Load unfinished survey" (#1988) (Gabriel Jenik)
 #Updated translation: Polish by elissa
