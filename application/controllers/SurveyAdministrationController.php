@@ -2023,6 +2023,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData = $this->showReorderForm($iSurveyID);
 
+        // Display 'Reorder question/question groups' in Green Bar
+        $aData['subaction'] = gT('Reorder question/question groups');
+        
         $this->aData = $aData;
         $this->render('/admin/survey/organizeGroupsAndQuestions_view', $aData);
     }
