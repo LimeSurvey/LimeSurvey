@@ -2654,7 +2654,7 @@ function tsvSurveyExport($surveyid)
             }
 
             // Converting the XML to array has the disadvantage that if only there is one child it will not be properly nested in the array
-            if (!isset($xmlData['group_l10ns']['rows']['row'][0]) ||!array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])) {
+            if (!isset($xmlData['group_l10ns']['rows']['row'][0]) || !array_key_exists('gid', $xmlData['group_l10ns']['rows']['row'][0])) {
                 $aSaveData = $xmlData['group_l10ns']['rows']['row'];
                 unset($xmlData['group_l10ns']['rows']['row']);
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
@@ -2672,7 +2672,7 @@ function tsvSurveyExport($surveyid)
                 $aSaveData = $xmlData['questions']['rows']['row'];
                 unset($xmlData['questions']['rows']['row']);
                 $xmlData['questions']['rows']['row'][0] = $aSaveData;
-            }            
+            }
             foreach ($xmlData['questions']['rows']['row'] as $question) {
                 $questions_data[$question['qid']] = $question;
             }
@@ -2681,7 +2681,7 @@ function tsvSurveyExport($surveyid)
                 $aSaveData = $xmlData['question_l10ns']['rows']['row'];
                 unset($xmlData['question_l10ns']['rows']['row']);
                 $xmlData['question_l10ns']['rows']['row'][0] = $aSaveData;
-            }                 
+            }
             foreach ($xmlData['question_l10ns']['rows']['row'] as $question_l10ns) {
                 if (array_key_exists($question_l10ns['qid'], $questions_data)) {
                     if ($question_l10ns['language'] === $language) {
@@ -2702,6 +2702,9 @@ function tsvSurveyExport($surveyid)
             foreach ($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns) {
                 if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)) {
                     if ($subquestion_l10ns['language'] === $language) {
+                        if (is_array($subquestion_l10ns['question'])) {
+                            $subquestion_l10ns['question'] = '';
+                        }
                         $subquestions[$language][$subquestions_data[$subquestion_l10ns['qid']]['parent_qid']][] = array_merge($subquestion_l10ns, $subquestions_data[$subquestion_l10ns['qid']]);
                     }
                 }
@@ -2716,7 +2719,7 @@ function tsvSurveyExport($surveyid)
                 $aSaveData = $xmlData['answers']['rows']['row'];
                 unset($xmlData['answers']['rows']['row']);
                 $xmlData['answers']['rows']['row'][0] = $aSaveData;
-            }    
+            }
             foreach ($xmlData['answers']['rows']['row'] as $answer) {
                 $answers_data[$answer['aid']] = $answer;
             }
@@ -2725,7 +2728,7 @@ function tsvSurveyExport($surveyid)
                 $aSaveData = $xmlData['answer_l10ns']['rows']['row'];
                 unset($xmlData['answer_l10ns']['rows']['row']);
                 $xmlData['answer_l10ns']['rows']['row'][0] = $aSaveData;
-            }               
+            }
             foreach ($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns) {
                 if (array_key_exists($answer_l10ns['aid'], $answers_data)) {
                     if ($answer_l10ns['language'] === $language) {
