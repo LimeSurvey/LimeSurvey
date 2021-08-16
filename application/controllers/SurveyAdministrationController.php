@@ -187,6 +187,9 @@ class SurveyAdministrationController extends LSBaseController
 
         $this->surveysummary($aData);
 
+        // Display 'Overview' in Green Bar
+        $aData['subaction'] = gT('Overview');
+
         $this->aData = $aData;
         $this->render('sidebody', [
             //'content' => $content,
@@ -2049,7 +2052,6 @@ class SurveyAdministrationController extends LSBaseController
             }
 
             if ($oSurveyParameter->targetsqid != '') {
-                //$row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
                 $row['questionTitle'] .= (' - ' . ellipsize(flattenText($oSurveyParameter->subquestion->questionl10ns[$sBaseLanguage]->question, false, true), 30, .75));
             }
 
@@ -2332,7 +2334,6 @@ class SurveyAdministrationController extends LSBaseController
         if (trim($expires) == "") {
             $expires = null;
         } else {
-            //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
             $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
             $expires = $datetimeobj->convert("Y-m-d H:i:s");
         }
@@ -2604,7 +2605,6 @@ class SurveyAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             if (!empty($bReturn)) {
                 $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
@@ -2796,10 +2796,8 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if (trim($oSurvey->expires) != '') {
-            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
-            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
@@ -2812,7 +2810,13 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
-            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">" . flattenText($oSurvey->currentLanguageSettings->surveyls_url) . "</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"" .
+                                htmlspecialchars($aSurveyInfo['surveyls_url']) . 
+                                "\" title=\"" .
+                                 htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                                 "\">" .
+                                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
+                                "</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -2863,16 +2867,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subviewData'] = $aData;
 
         Yii::app()->getClientScript()->registerPackage('surveysummary');
-
-        /*
-        return $aData;
-
-        $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
-        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
-            'content' => $content,
-            'sideMenuOpen' => true
-        ));
-        */
     }
 
     /**
