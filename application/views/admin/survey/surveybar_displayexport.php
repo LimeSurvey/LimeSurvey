@@ -150,10 +150,8 @@
         'widgetsJsName' => "exportTypeSelector",
         'renderType' =>  "modal",
         'selectButton' => gT("Export"),
-        'modalTitle' => gT("Display/Export"),
-        'currentSelected' => gT("Display/Export"),
-        'debugKeyCheck' => gT("Export type"),
-        'previewWindowTitle' => gT("Export type"),
+        'modalTitle' => gT("Export"),
+        'currentSelected' => gT("Export"),
         'iconPosition' => "front",
         'itemsArray' => $aExportItemsArray,
         'value' => '',
@@ -191,9 +189,6 @@
         ]
     ));
 ?>
-    <?php
-    // echo '<pre>'.htmlentities($oExportSelector->getModal(true)).'</pre>'
-    ?>
 <div class="btn-group hidden-xs">
     <?=$oExportSelector->getModal(); ?>
 
