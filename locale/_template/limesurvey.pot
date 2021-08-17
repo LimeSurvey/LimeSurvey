@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-17 14:48:50+00:00\n"
+"POT-Creation-Date: 2021-08-17 15:00:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5143,7 +5143,7 @@ msgid "Edit label set"
 msgstr ""
 
 #: application/controllers/admin/labels.php:315
-msgid "Save and Close"
+msgid "Save & close"
 msgstr ""
 
 #: application/controllers/admin/labels.php:334
@@ -19891,11 +19891,11 @@ msgid "Scan files"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:54
-msgid "New Menu"
+msgid "New menu"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:66
-msgid "New Menu Entry"
+msgid "New menu entry"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:108
@@ -20482,6 +20482,7 @@ msgid "Publication & access control"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:89
+#: application/views/surveyAdministration/activateSurvey_view.php:102
 msgid "Notification & data management"
 msgstr ""
 
@@ -23870,10 +23871,6 @@ msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:96
 msgid "Once a survey has been activated you can no longer <strong>add</strong> or <strong>delete</strong> questions, questions groups, or subquestions. You will be <strong>still able to edit</strong> questions, questions groups, or subquestions."
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:102
-msgid "Notification and Data management"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:104
