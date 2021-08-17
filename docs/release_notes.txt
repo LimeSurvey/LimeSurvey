@@ -34,6 +34,19 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.2 (build 210813) to 5.1.3 (build 210817) August 16, 2021
+-Fixed issue #17508: Links at ExpressionEngine descriptions not opening in new window/tab (Carsten Schmitz)
+-Fixed issue #17409: Exporting responses with big data sets and activated encryption will timeout php memory limit, even with high settings (512M) (Patrick Teichmann)
+-Fixed issue #17501: TSV export of survey with empty subquestion text has word "array" inserted instead (Carsten Schmitz)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.1.1 (build 210812) to 5.1.2 (build 210813) August 12, 2021
 
 

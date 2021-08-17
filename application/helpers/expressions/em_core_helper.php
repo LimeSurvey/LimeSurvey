@@ -554,6 +554,10 @@ class ExpressionManager
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
+        // If argmument is empty, then assume it is 0
+        if ($arg1[0] == '') {
+             $arg1[0] = 0;
+        };
         // TODO:  try to determine datatype?
         switch ($token[0]) {
             case '+':
