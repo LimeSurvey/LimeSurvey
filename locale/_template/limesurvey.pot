@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-17 14:30:14+00:00\n"
+"POT-Creation-Date: 2021-08-17 14:48:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2984,7 +2984,6 @@ msgstr ""
 #: application/models/Assessment.php:111 application/models/Box.php:149
 #: application/models/LabelSet.php:153 application/models/LabelSet.php:155
 #: application/models/ParticipantAttributeName.php:134
-#: application/models/ParticipantShare.php:172
 #: application/models/Permission.php:863
 #: application/models/Permissiontemplates.php:211
 #: application/models/SavedControl.php:143
@@ -14638,13 +14637,15 @@ msgid "Encryption is disabled because Sodium library isn't installed"
 msgstr ""
 
 #: application/models/ParticipantShare.php:170
-#: application/views/admin/participants/massive_actions/_selector_share.php:26
-msgid "Delete sharing"
+msgid "Unshare this participant"
+msgstr ""
+
+#: application/models/ParticipantShare.php:172
+msgid "Unshare"
 msgstr ""
 
 #: application/models/ParticipantShare.php:173
-#: application/views/admin/participants/massive_actions/_selector_share.php:27
-msgid "Do you really want to delete the sharing of this participant?"
+msgid "Do you really want to unshare this participant?"
 msgstr ""
 
 #: application/models/ParticipantShare.php:243
@@ -14755,19 +14756,19 @@ msgid "Permission to create participants in the central participants database (f
 msgstr ""
 
 #: application/models/Permissiontemplates.php:163
-msgid "View Role Details"
+msgid "View role details"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:172
-msgid "Edit Permission"
+msgid "Edit permission"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:184
-msgid "Edit Role"
+msgid "Edit role"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:194
-msgid "Export Role"
+msgid "Export role"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:207
@@ -18743,6 +18744,14 @@ msgstr ""
 
 #: application/views/admin/participants/massive_actions/_selector_share.php:8
 msgid "Selected participant share(s)..."
+msgstr ""
+
+#: application/views/admin/participants/massive_actions/_selector_share.php:26
+msgid "Delete sharing"
+msgstr ""
+
+#: application/views/admin/participants/massive_actions/_selector_share.php:27
+msgid "Do you really want to delete the sharing of this participant?"
 msgstr ""
 
 #: application/views/admin/participants/massive_actions/_update.php:16
@@ -23876,7 +23885,7 @@ msgid "Please check these settings now:"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:117
-msgid "If enabled, reponses will be anonymized - there will be no way to connect answers and participants."
+msgid "If enabled, reponses will be anonymized - there will be no way to connect responses and participants."
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:124
@@ -23888,7 +23897,7 @@ msgid "Date stamp"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:152
-msgid "If enabled, the time when the answers were submitted can be seen."
+msgid "If enabled, the submission time of a response will be recorded."
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:173
@@ -23896,7 +23905,7 @@ msgid "Save IP address"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:174
-msgid "If enabled, the IP address of the survey respondent will be stored together with his or her answers."
+msgid "If enabled, the IP address of the survey respondent will be stored together with the response."
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:193
@@ -23920,7 +23929,7 @@ msgid "Save referrer URL"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:236
-msgid "If enabled, the referrer URL will be stored together with the answers."
+msgid "If enabled, the referrer URL will be stored together with the response."
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:256
