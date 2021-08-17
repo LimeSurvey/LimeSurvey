@@ -312,7 +312,7 @@ class labels extends Survey_Common_Action
 
             // Save and Close Button
             $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
-            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save and Close');
+            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
 
             // White Close Button
             $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));;
