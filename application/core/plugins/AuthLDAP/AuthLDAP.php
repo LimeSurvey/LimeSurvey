@@ -22,7 +22,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         'server' => array(
             'type' => 'string',
             'label' => 'LDAP server',
-            'help' => 'e.g. ldap://ldap.example.com or ldaps://ldap.example.com'
+            'help' => 'e.g. ldap.example.com'
         ),
         'ldapport' => array(
             'type' => 'string',
@@ -344,7 +344,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
-        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0) {
+        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3) {
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
                 ldap_close($ldapconn); // all done? close connection
