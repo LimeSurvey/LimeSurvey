@@ -23,7 +23,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'actionType'    => 'modal',
             'modalType'     => 'cancel-delete',
             'keepopen'      => 'no',
-            'sModalTitle'   => gT('Delete sharing'),
+            'sModalTitle'   => gT('Unshare participant'),
             'htmlModalBody' => gT('Do you really want to delete the sharing of this participant?'),
             'aCustomDatas'  => array()
         ),
