@@ -306,7 +306,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                                 <?php
                                 foreach ($redundantsurveytables as $surveytable) {?>
                                     <li>
-                                        <input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]'  onclick="addDisabledState()"/>
+                                        <input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]'  onclick="addDisabledState(this)"/>
                                         <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label>
                                     </li>
                                 <?php
@@ -350,11 +350,11 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 <script>
     function addDisabledState() {
         let isChecked =  $('input:checkbox').is(':checked');
-        let delete_checked_items_button = document.getElementById('delete-checked-items-button');
+        let deleteCheckedItemsButton = document.getElementById('delete-checked-items-button');
         if (isChecked) {
-            delete_checked_items_button.removeAttribute("disabled");
+            deleteCheckedItemsButton.removeAttribute("disabled");
         } else {
-            delete_checked_items_button.setAttribute("disabled","disabled");
+            deleteCheckedItemsButton.setAttribute("disabled","disabled");
         }
     }
 
