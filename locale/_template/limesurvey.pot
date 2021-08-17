@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-17 15:00:50+00:00\n"
+"POT-Creation-Date: 2021-08-17 15:10:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18747,7 +18747,7 @@ msgid "Selected participant share(s)..."
 msgstr ""
 
 #: application/views/admin/participants/massive_actions/_selector_share.php:26
-msgid "Delete sharing"
+msgid "Unshare participant"
 msgstr ""
 
 #: application/views/admin/participants/massive_actions/_selector_share.php:27
