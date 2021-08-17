@@ -804,6 +804,10 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] = '';
 
+        // Soft Mandatory Checkbox
+        $aClassAndAttributes['class']['mandsoftcheckbox'] = '';
+        $aClassAndAttributes['class']['mandsoftcheckboxlabel'] = '';
+
         // Assessments
         $aClassAndAttributes['class']['assessmenttable']      = ' assessment-table ';
         $aClassAndAttributes['class']['assessmentstable']     = ' assessments ';
