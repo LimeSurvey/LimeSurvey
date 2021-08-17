@@ -160,7 +160,7 @@ class Permissiontemplates extends CActiveRecord
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
                 data-toggle='tooltip'
                 data-placement='top'
-                title='" . gT('View Role Details') . "'
+                title='" . gT('View role details') . "'
                 data-href='" . $detailUrl . "'><i class='fa fa-search'></i></button>";
 
         // Edit Permission
@@ -169,7 +169,7 @@ class Permissiontemplates extends CActiveRecord
                 class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions'
                 data-toggle='tooltip' 
                 data-placement='top'
-                title='" . gT('Edit Permission') . "'
+                title='" . gT('Edit permission') . "'
                 data-href='" . $setPermissionsUrl . "'
                 data-modalsize='modal-lg'>
                     <i class='fa fa-lock'></i>
@@ -181,7 +181,7 @@ class Permissiontemplates extends CActiveRecord
                 class='btn btn-sm btn-default green-border RoleControl--action--openmodal RoleControl--action--edituser' 
                 data-toggle='tooltip'
                 data-placement='top'
-                title='" . gT('Edit Role') . "'
+                title='" . gT('Edit role') . "'
                 data-href='" . $editUrl . "'>
                     <i class='fa fa-pencil'></i>
                 </button>";
@@ -191,7 +191,7 @@ class Permissiontemplates extends CActiveRecord
             . "<a class='btn btn-sm btn-default RoleControl--action--link'
                 data-toggle='tooltip'
                 data-placement='top'
-                title='" . gT('Export Role') . "'
+                 title='" . gT('Export role') . "'
                 href='" . $exportRoleUrl . "'
                 role='button'>
                     <i class='fa fa-download'></i>

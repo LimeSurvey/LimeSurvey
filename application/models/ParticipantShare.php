@@ -167,10 +167,10 @@ class ParticipantShare extends LSActiveRecord
             return "<a href='#' 
             data-toggle='modal' 
             data-target='#confirmation-modal'
-            data-title='". gt('Delete sharing')."'
+            data-title='". gt('Unshare this participant')."'
             data-btnclass='btn-danger'
-            data-btntext='". gt('Delete') ."'
-            data-message='" . gT('Do you really want to delete the sharing of this participant?') . "' 
+            data-btntext='". gt('Unshare') ."'
+            data-message='" . gT('Do you really want to unshare this participant?') . "' 
             data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
                 . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
                 . "</a>";
