@@ -37,8 +37,10 @@ class PluginManagerController extends Survey_Common_Action
 
         // Uninstall missing or incompatible plugins
         $pluginCleaner = new LimeSurvey\PluginManager\PluginCleaner();
-        $pluginCleaner->setEnableFlashMessages(true);
-        $pluginCleaner->clean();
+        $removedPluginCount = $pluginCleaner->clean();
+        if ($removedPluginCount) {
+            $pluginCleaner->showFlashMessages();
+        }
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
         $data      = [];
