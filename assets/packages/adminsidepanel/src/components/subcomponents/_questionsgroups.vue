@@ -5,19 +5,21 @@
             v-if="createAllowance != ''"
         >
             <div class="scoped-toolbuttons-left">
+                <!-- Add Group Button -->
                 <a 
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
                     v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
-                    :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
+                    :href="createQuestionGroupLink" class="btn btn-small btn-default pjax"
                 >
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
                 </a>
+                <!-- Create Question Button -->
                 <a 
                     id="adminsidepanel__sidebar--selectorCreateQuestion" 
                     v-if="createQuestionAllowed" 
                     :href="createFullQuestionLink()" 
-                    class="btn btn-small btn-default ls-space margin right-10 pjax"
+                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}
