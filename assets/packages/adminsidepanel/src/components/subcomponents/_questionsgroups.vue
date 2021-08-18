@@ -1,9 +1,7 @@
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <div 
-           class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
-            v-if="createAllowance != ''"
-        >
+           class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar">
             <div class="scoped-toolbuttons-left">
                 <!-- Add Group Button -->
                 <a 
