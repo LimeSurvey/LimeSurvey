@@ -1098,7 +1098,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($fatalerror != '') {
             unlink($sFullFilepath);
             App()->setFlashMessage($fatalerror, 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1117,7 +1117,7 @@ class QuestionAdministrationController extends LSBaseController
             );
         } else {
             App()->setFlashMessage(gT('Unknown file extension'), 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1125,7 +1125,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (isset($aImportResults['fatalerror'])) {
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1347,7 +1347,6 @@ class QuestionAdministrationController extends LSBaseController
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
             $this->redirect($redirect);
-            $this->redirect(['questionAdministration/listQuestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
