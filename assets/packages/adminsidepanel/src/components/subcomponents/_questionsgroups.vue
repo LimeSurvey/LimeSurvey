@@ -168,7 +168,7 @@ export default {
             return window.SideMenuData.createQuestionLink 
         },
         buttonDisabledTooltip() {
-            if (this.surveyIsActive()) {
+            if (this.surveyIsActive) {
                 return window.SideMenuData.buttonDisabledTooltip
             }
             return "";
