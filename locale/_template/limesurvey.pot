@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-16 11:48:14+00:00\n"
+"POT-Creation-Date: 2021-08-17 15:10:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,7 +33,7 @@ msgstr ""
 #: application/core/plugins/TwoFactorAdminLogin/views/_partial/error.php:11
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
-#: application/helpers/SurveyRuntimeHelper.php:1133
+#: application/helpers/SurveyRuntimeHelper.php:1135
 #: application/helpers/admin/import_helper.php:97
 #: application/helpers/admin/import_helper.php:204
 #: application/helpers/admin/import_helper.php:302
@@ -1336,7 +1336,7 @@ msgid "You can't reorder in an active survey"
 msgstr ""
 
 #: application/controllers/RegisterController.php:166
-#: application/helpers/SurveyRuntimeHelper.php:1627
+#: application/helpers/SurveyRuntimeHelper.php:1629
 msgid "Your answer to the security question was not correct - please try again."
 msgstr ""
 
@@ -1691,7 +1691,7 @@ msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:830
 #: application/controllers/admin/useraction.php:173
-#: application/helpers/SurveyRuntimeHelper.php:1127
+#: application/helpers/SurveyRuntimeHelper.php:1129
 #: application/helpers/update/update_helper.php:37
 #: application/models/services/PasswordManagement.php:93
 #: application/views/admin/dataentry/insert.php:37
@@ -1852,7 +1852,7 @@ msgstr ""
 #: application/controllers/admin/themes.php:390
 #: application/core/Survey_Common_Action.php:1160
 #: application/extensions/LimeScript/LimeScript.php:28
-#: application/helpers/SurveyRuntimeHelper.php:1420
+#: application/helpers/SurveyRuntimeHelper.php:1422
 #: application/helpers/frontend_helper.php:2076
 #: application/models/services/FilterImportedResources.php:70
 #: application/views/admin/participants/participantsPanel_view.php:14
@@ -1990,7 +1990,7 @@ msgstr ""
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:165
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:44
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:44
-#: application/helpers/SurveyRuntimeHelper.php:547
+#: application/helpers/SurveyRuntimeHelper.php:549
 #: application/helpers/admin/statistics_helper.php:1207
 #: application/helpers/admin/statistics_helper.php:1317
 #: application/helpers/common_helper.php:1031
@@ -2111,12 +2111,12 @@ msgstr ""
 #: application/views/questionAdministration/summary.php:152
 #: application/views/questionAdministration/summary.php:170
 #: application/views/survey/frontpage/clearallForm/form.php:14
-#: application/views/surveyAdministration/activateSurvey_view.php:148
-#: application/views/surveyAdministration/activateSurvey_view.php:167
-#: application/views/surveyAdministration/activateSurvey_view.php:189
-#: application/views/surveyAdministration/activateSurvey_view.php:209
-#: application/views/surveyAdministration/activateSurvey_view.php:231
-#: application/views/surveyAdministration/activateSurvey_view.php:250
+#: application/views/surveyAdministration/activateSurvey_view.php:142
+#: application/views/surveyAdministration/activateSurvey_view.php:161
+#: application/views/surveyAdministration/activateSurvey_view.php:183
+#: application/views/surveyAdministration/activateSurvey_view.php:203
+#: application/views/surveyAdministration/activateSurvey_view.php:225
+#: application/views/surveyAdministration/activateSurvey_view.php:244
 #: application/views/themeOptions/options_core.php:82
 #: application/views/userManagement/partial/addedituser.php:66
 #: tmp/runtime/twig_cache/25/25db9d6705fec19efc74aca5c86a6768175cb0d233a35796791b0da06e2379ba.php:94
@@ -2149,7 +2149,7 @@ msgstr ""
 #: application/core/plugins/expressionFixedDbVar/expressionFixedDbVar.php:164
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no-lg.php:36
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:36
-#: application/helpers/SurveyRuntimeHelper.php:547
+#: application/helpers/SurveyRuntimeHelper.php:549
 #: application/helpers/admin/statistics_helper.php:1206
 #: application/helpers/admin/statistics_helper.php:1316
 #: application/helpers/common_helper.php:1021
@@ -2274,12 +2274,12 @@ msgstr ""
 #: application/views/questionAdministration/summary.php:150
 #: application/views/questionAdministration/summary.php:168
 #: application/views/survey/frontpage/clearallForm/form.php:11
-#: application/views/surveyAdministration/activateSurvey_view.php:143
-#: application/views/surveyAdministration/activateSurvey_view.php:163
-#: application/views/surveyAdministration/activateSurvey_view.php:186
-#: application/views/surveyAdministration/activateSurvey_view.php:206
-#: application/views/surveyAdministration/activateSurvey_view.php:227
-#: application/views/surveyAdministration/activateSurvey_view.php:247
+#: application/views/surveyAdministration/activateSurvey_view.php:137
+#: application/views/surveyAdministration/activateSurvey_view.php:157
+#: application/views/surveyAdministration/activateSurvey_view.php:180
+#: application/views/surveyAdministration/activateSurvey_view.php:200
+#: application/views/surveyAdministration/activateSurvey_view.php:221
+#: application/views/surveyAdministration/activateSurvey_view.php:241
 #: application/views/themeOptions/options_core.php:78
 #: application/views/userManagement/partial/addedituser.php:62
 #: tmp/runtime/twig_cache/25/25db9d6705fec19efc74aca5c86a6768175cb0d233a35796791b0da06e2379ba.php:94
@@ -2555,7 +2555,7 @@ msgstr ""
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/extensions/TopbarWidget/views/tokensTopbar_view.php:34
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:44
-#: application/helpers/SurveyRuntimeHelper.php:1419
+#: application/helpers/SurveyRuntimeHelper.php:1421
 #: application/models/Box.php:148
 #: application/models/TemplateConfiguration.php:770
 #: application/models/TemplateConfiguration.php:783
@@ -2612,7 +2612,7 @@ msgstr ""
 #: application/views/homepageSettings/index.php:17
 #: application/views/layouts/partial_modals/modal_footer_cancelapply.php:7
 #: application/views/layouts/partial_modals/modal_footer_canceldelete.php:7
-#: application/views/surveyAdministration/activateSurvey_view.php:289
+#: application/views/surveyAdministration/activateSurvey_view.php:275
 #: application/views/surveyAdministration/addPanelIntegrationParameter_view.php:43
 #: application/views/surveyAdministration/deactivateSurvey_view.php:64
 #: application/views/surveyAdministration/deleteSurvey_view.php:37
@@ -2984,7 +2984,6 @@ msgstr ""
 #: application/models/Assessment.php:111 application/models/Box.php:149
 #: application/models/LabelSet.php:153 application/models/LabelSet.php:155
 #: application/models/ParticipantAttributeName.php:134
-#: application/models/ParticipantShare.php:172
 #: application/models/Permission.php:863
 #: application/models/Permissiontemplates.php:211
 #: application/models/SavedControl.php:143
@@ -3249,7 +3248,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:533
 #: application/controllers/admin/useraction.php:148
 #: application/core/LsDefaultDataSets.php:2875
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:369
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:372
 #: application/core/plugins/Authdb/Authdb.php:128
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUser.php:117
 #: application/core/plugins/TwoFactorAdminLogin/models/TFAUserKey.php:102
@@ -4236,7 +4235,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:653
 #: application/controllers/admin/tokens.php:1496
 #: application/controllers/admin/useraction.php:179
-#: application/helpers/SurveyRuntimeHelper.php:1142
+#: application/helpers/SurveyRuntimeHelper.php:1144
 #: application/views/admin/dataentry/import.php:34
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:191
@@ -4244,7 +4243,7 @@ msgstr ""
 #: application/views/admin/token/emailwarning.php:3
 #: application/views/questionAdministration/summary.php:118
 #: application/views/questionAdministration/summary.php:132
-#: application/views/surveyAdministration/activateSurvey_view.php:130
+#: application/views/surveyAdministration/activateSurvey_view.php:124
 #: application/views/surveyAdministration/deleteSurvey_view.php:16
 msgid "Warning"
 msgstr ""
@@ -4789,7 +4788,7 @@ msgstr ""
 #: application/controllers/admin/useraction.php:155
 #: application/controllers/admin/useraction.php:420
 #: application/controllers/admin/useraction.php:430
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:370
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:373
 #: application/core/plugins/Authdb/Authdb.php:129
 #: application/libraries/Save.php:282 application/models/User.php:125
 #: application/views/admin/authentication/newPassword.php:41
@@ -5144,7 +5143,7 @@ msgid "Edit label set"
 msgstr ""
 
 #: application/controllers/admin/labels.php:315
-msgid "Save and Close"
+msgid "Save & close"
 msgstr ""
 
 #: application/controllers/admin/labels.php:334
@@ -7631,7 +7630,7 @@ msgstr ""
 #: application/views/installer/optconfig_view.php:82
 #: application/views/installer/precheck_view.php:157
 #: application/views/survey/system/actionButton/moveNext.php:11
-#: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:123
+#: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:143
 msgid "Next"
 msgstr ""
 
@@ -8767,15 +8766,15 @@ msgstr ""
 msgid "The email address is not valid."
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:335
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:338
 msgid "Error creating LDAP connection"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:538
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:541
 msgid "Valid username but not authorized by group restriction"
 msgstr ""
 
-#: application/core/plugins/AuthLDAP/AuthLDAP.php:565
+#: application/core/plugins/AuthLDAP/AuthLDAP.php:568
 msgid "Credentials are valid but we failed to create a user"
 msgstr ""
 
@@ -9922,7 +9921,7 @@ msgid "Owner"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:105
-#: application/views/surveyAdministration/activateSurvey_view.php:122
+#: application/views/surveyAdministration/activateSurvey_view.php:116
 msgid "Anonymized responses"
 msgstr ""
 
@@ -10158,84 +10157,84 @@ msgstr ""
 msgid "You have completed %s%% of this survey"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:841
+#: application/helpers/SurveyRuntimeHelper.php:843
 msgid "Please use the survey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1044
+#: application/helpers/SurveyRuntimeHelper.php:1046
 msgid "To continue please first accept our survey data policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1048
+#: application/helpers/SurveyRuntimeHelper.php:1050
 msgid "We are sorry but you can't proceed without first agreeing to our survey data policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1128
+#: application/helpers/SurveyRuntimeHelper.php:1130
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1134
+#: application/helpers/SurveyRuntimeHelper.php:1136
 msgid "Your responses were not saved. Please contact the survey administrator."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1143
+#: application/helpers/SurveyRuntimeHelper.php:1145
 msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1248
+#: application/helpers/SurveyRuntimeHelper.php:1250
 #: tmp/runtime/twig_cache/f2/f23bb3aa8bdc2bbcf141f5c0397749d6788ffaa770e2bbe341501df3350d26cf.php:174
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1249
-#: application/helpers/SurveyRuntimeHelper.php:1257
+#: application/helpers/SurveyRuntimeHelper.php:1251
+#: application/helpers/SurveyRuntimeHelper.php:1259
 msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1256
+#: application/helpers/SurveyRuntimeHelper.php:1258
 #: tmp/runtime/twig_cache/f2/f23bb3aa8bdc2bbcf141f5c0397749d6788ffaa770e2bbe341501df3350d26cf.php:212
 msgid "View the statistics for this survey."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1333
+#: application/helpers/SurveyRuntimeHelper.php:1335
 msgid "Note: Automatically loading the end URL works only if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1443
+#: application/helpers/SurveyRuntimeHelper.php:1445
 #: application/helpers/qanda_helper.php:317
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1448
+#: application/helpers/SurveyRuntimeHelper.php:1450
 #: application/helpers/qanda_helper.php:339
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1453
+#: application/helpers/SurveyRuntimeHelper.php:1455
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1629
+#: application/helpers/SurveyRuntimeHelper.php:1631
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1728
+#: application/helpers/SurveyRuntimeHelper.php:1730
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1734
+#: application/helpers/SurveyRuntimeHelper.php:1736
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1744
+#: application/helpers/SurveyRuntimeHelper.php:1746
 msgid "This group is empty"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1762
+#: application/helpers/SurveyRuntimeHelper.php:1764
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1763
+#: application/helpers/SurveyRuntimeHelper.php:1765
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
@@ -11435,95 +11434,95 @@ msgstr ""
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:599
+#: application/helpers/expressions/em_core_helper.php:603
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:610
+#: application/helpers/expressions/em_core_helper.php:614
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:614
+#: application/helpers/expressions/em_core_helper.php:618
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:664
-#: application/helpers/expressions/em_core_helper.php:998
-#: application/helpers/expressions/em_core_helper.php:1065
+#: application/helpers/expressions/em_core_helper.php:668
+#: application/helpers/expressions/em_core_helper.php:1002
+#: application/helpers/expressions/em_core_helper.php:1069
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:696
-#: application/helpers/expressions/em_core_helper.php:1779
+#: application/helpers/expressions/em_core_helper.php:700
+#: application/helpers/expressions/em_core_helper.php:1783
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:774
+#: application/helpers/expressions/em_core_helper.php:778
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:778
+#: application/helpers/expressions/em_core_helper.php:782
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:819
+#: application/helpers/expressions/em_core_helper.php:823
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:826
+#: application/helpers/expressions/em_core_helper.php:830
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:841
-#: application/helpers/expressions/em_core_helper.php:1775
+#: application/helpers/expressions/em_core_helper.php:845
+#: application/helpers/expressions/em_core_helper.php:1779
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:846
+#: application/helpers/expressions/em_core_helper.php:850
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:863
+#: application/helpers/expressions/em_core_helper.php:867
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1010
+#: application/helpers/expressions/em_core_helper.php:1014
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1768
+#: application/helpers/expressions/em_core_helper.php:1772
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1784
+#: application/helpers/expressions/em_core_helper.php:1788
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1791
+#: application/helpers/expressions/em_core_helper.php:1795
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1794
+#: application/helpers/expressions/em_core_helper.php:1798
 msgid "Missing %s closing left parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2130
+#: application/helpers/expressions/em_core_helper.php:2134
 msgid "Function must have at least %s argument|Function must have at least %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2209
+#: application/helpers/expressions/em_core_helper.php:2213
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2210
+#: application/helpers/expressions/em_core_helper.php:2214
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2422
+#: application/helpers/expressions/em_core_helper.php:2426
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:3201
+#: application/helpers/expressions/em_core_helper.php:3205
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -11760,6 +11759,10 @@ msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:5226
 msgid "An error happened when trying to submit your response."
+msgstr ""
+
+#: application/helpers/expressions/em_manager_helper.php:6094
+msgid "Please notice you haven't answered this question. Still, you can continue without answering."
 msgstr ""
 
 #: application/helpers/expressions/em_manager_helper.php:6094
@@ -14634,13 +14637,15 @@ msgid "Encryption is disabled because Sodium library isn't installed"
 msgstr ""
 
 #: application/models/ParticipantShare.php:170
-#: application/views/admin/participants/massive_actions/_selector_share.php:26
-msgid "Delete sharing"
+msgid "Unshare this participant"
+msgstr ""
+
+#: application/models/ParticipantShare.php:172
+msgid "Unshare"
 msgstr ""
 
 #: application/models/ParticipantShare.php:173
-#: application/views/admin/participants/massive_actions/_selector_share.php:27
-msgid "Do you really want to delete the sharing of this participant?"
+msgid "Do you really want to unshare this participant?"
 msgstr ""
 
 #: application/models/ParticipantShare.php:243
@@ -14751,19 +14756,19 @@ msgid "Permission to create participants in the central participants database (f
 msgstr ""
 
 #: application/models/Permissiontemplates.php:163
-msgid "View Role Details"
+msgid "View role details"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:172
-msgid "Edit Permission"
+msgid "Edit permission"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:184
-msgid "Edit Role"
+msgid "Edit role"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:194
-msgid "Export Role"
+msgid "Export role"
 msgstr ""
 
 #: application/models/Permissiontemplates.php:207
@@ -16836,7 +16841,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:38
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
-#: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:106
+#: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:126
 msgid "Submit"
 msgstr ""
 
@@ -18741,6 +18746,14 @@ msgstr ""
 msgid "Selected participant share(s)..."
 msgstr ""
 
+#: application/views/admin/participants/massive_actions/_selector_share.php:26
+msgid "Unshare participant"
+msgstr ""
+
+#: application/views/admin/participants/massive_actions/_selector_share.php:27
+msgid "Do you really want to delete the sharing of this participant?"
+msgstr ""
+
 #: application/views/admin/participants/massive_actions/_update.php:16
 #: application/views/admin/surveymenu/massive_action/_update.php:16
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:16
@@ -19878,11 +19891,11 @@ msgid "Scan files"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:54
-msgid "New Menu"
+msgid "New menu"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:66
-msgid "New Menu Entry"
+msgid "New menu entry"
 msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:108
@@ -20469,6 +20482,7 @@ msgid "Publication & access control"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:89
+#: application/views/surveyAdministration/activateSurvey_view.php:102
 msgid "Notification & data management"
 msgstr ""
 
@@ -23856,125 +23870,74 @@ msgid "Note: Please review your survey carefully before activating"
 msgstr ""
 
 #: application/views/surveyAdministration/activateSurvey_view.php:96
-msgid "Once a survey has been activated you can no longer "
+msgid "Once a survey has been activated you can no longer <strong>add</strong> or <strong>delete</strong> questions, questions groups, or subquestions. You will be <strong>still able to edit</strong> questions, questions groups, or subquestions."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:97
-#: application/views/surveyAdministration/activateSurvey_view.php:265
-msgid "add"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:98
-#: application/views/surveyAdministration/activateSurvey_view.php:266
-msgid "or "
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:99
-#: application/views/surveyAdministration/activateSurvey_view.php:267
-msgid "delete"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:100
-msgid "questions, questions groups, or subquestions. You will be "
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:101
-msgid "still able to edit"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:102
-msgid "questions, questions groups, or subquestions."
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:108
-msgid "Notification and Data management"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:110
+#: application/views/surveyAdministration/activateSurvey_view.php:104
 msgid "Additionally, the following settings cannot be changed once a survey has been activated."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:112
+#: application/views/surveyAdministration/activateSurvey_view.php:106
 msgid "Please check these settings now:"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:123
-msgid "If enabled, reponses will be anonymized - there will be no way to connect answers and participants."
+#: application/views/surveyAdministration/activateSurvey_view.php:117
+msgid "If enabled, reponses will be anonymized - there will be no way to connect responses and participants."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:130
+#: application/views/surveyAdministration/activateSurvey_view.php:124
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:157
+#: application/views/surveyAdministration/activateSurvey_view.php:151
 msgid "Date stamp"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:158
-msgid "If enabled, the time when the answers were submitted can be seen."
+#: application/views/surveyAdministration/activateSurvey_view.php:152
+msgid "If enabled, the submission time of a response will be recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:179
+#: application/views/surveyAdministration/activateSurvey_view.php:173
 msgid "Save IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:180
-msgid "If enabled, the IP address of the survey respondent will be stored together with his or her answers."
+#: application/views/surveyAdministration/activateSurvey_view.php:174
+msgid "If enabled, the IP address of the survey respondent will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:199
+#: application/views/surveyAdministration/activateSurvey_view.php:193
 msgid "Anonymize IP address"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:200
+#: application/views/surveyAdministration/activateSurvey_view.php:194
 msgid "If enabled, the IP address of the respondent is not recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:221
+#: application/views/surveyAdministration/activateSurvey_view.php:215
 msgid "Save timings"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:222
+#: application/views/surveyAdministration/activateSurvey_view.php:216
 msgid "If enabled, the time spent on each page of the survey by each survey participant is recorded."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:241
+#: application/views/surveyAdministration/activateSurvey_view.php:235
 msgid "Save referrer URL"
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:242
-msgid "If enabled, the referrer URL will be stored together with the answers."
+#: application/views/surveyAdministration/activateSurvey_view.php:236
+msgid "If enabled, the referrer URL will be stored together with the response."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:262
-msgid "Tip: Please note that you need to "
+#: application/views/surveyAdministration/activateSurvey_view.php:256
+msgid "Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:263
-msgid "deactivate"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:264
-msgid " a survey if you want to "
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:268
-msgid "groups/questions or "
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:269
-msgid "change"
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:270
-msgid "any of the settings above. The changes will cause all collected data from respondents to be moved and archived."
-msgstr ""
-
-#: application/views/surveyAdministration/activateSurvey_view.php:279
+#: application/views/surveyAdministration/activateSurvey_view.php:265
 msgid "Note: This survey has a past expiration date configured and is currently not available to participants. Please remember to update/remove the expiration date in the survey settings after activation."
 msgstr ""
 
-#: application/views/surveyAdministration/activateSurvey_view.php:287
+#: application/views/surveyAdministration/activateSurvey_view.php:273
 msgid "Save & activate survey"
 msgstr ""
 
@@ -24931,6 +24894,7 @@ msgid "This survey is currently not active. You will not be able to save your re
 msgstr ""
 
 #: tmp/runtime/twig_cache/a8/a8fbce92f24599e93150c2f15bf3dbb56db77e13d225ea1b037f788558794dce.php:121
+#: tmp/runtime/twig_cache/d5/d503e1bd048930f4e5245735b4feaa9dfbc371848916c3c6b6ece1fa5978f9b9.php:109
 msgid "Continue without answering"
 msgstr ""
 

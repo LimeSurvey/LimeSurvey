@@ -51,7 +51,7 @@
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenu"
                        data-tab="#surveymenues">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -63,7 +63,7 @@
                        id="createnewmenuentry"
                        data-tab="#surveymenuentries"
                        style="display:none;">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu Entry') ?>
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu entry') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
