@@ -49,6 +49,7 @@
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
+            buttonDisabledTooltip: "'. gt('Button disbaled when survey is active') .'",
             gid: '.(isset($gid) ? $gid : 'null').',
             options: [],
             surveyid: '.$surveyid.',

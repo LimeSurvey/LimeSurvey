@@ -9,7 +9,10 @@
                 <a 
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
                     :disabled="!( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink" class="btn btn-small btn-default ls-space margin right-5 pjax"
+                    :href="createQuestionGroupLink"
+                    class="btn btn-small btn-default ls-space margin right-5 pjax"
+                    data-toggle="tooltip"
+                    :title="buttonDisabledTooltip"
                 >
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
@@ -18,8 +21,10 @@
                 <a 
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
                     :disabled="!createQuestionAllowed"
-                    :href="createFullQuestionLink(createQuestionAllowed)"
+                    :href="createFullQuestionLink()"
                     class="btn btn-small btn-primary ls-space margin right-10 pjax"
+                    data-toggle="tooltip"
+                    :title="buttonDisabledTooltip"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}
@@ -162,6 +167,12 @@ export default {
         createQuestionLink() { 
             return window.SideMenuData.createQuestionLink 
         },
+        buttonDisabledTooltip() {
+            if (this.surveyIsActive()) {
+                return window.SideMenuData.buttonDisabledTooltip
+            }
+            return "";
+        },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return containerHeight - 100;
@@ -202,8 +213,8 @@ export default {
         collapseAll() {
             this.active = [];
         },
-        createFullQuestionLink(createQuestionAllowed) {
-          if(createQuestionAllowed) {
+        createFullQuestionLink() {
+          if(this.createQuestionAllowed) {
             if (LS.reparsedParameters().combined.gid) {
               return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid});
             }
