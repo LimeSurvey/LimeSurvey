@@ -5648,7 +5648,7 @@
                     }
                     elseif ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                     {
-                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
+                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$_SESSION[$this->sessid]['step']));
                     }
                     // Check Quotas
                     $aQuotas = checkCompletedQuota($this->sid,true);

@@ -326,7 +326,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         // Try to connect
-        $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
+        if (str_pos($ldapserver, 'ldaps://') === false && str_pos($ldapserver, 'ldap://') === false) {
+            $ldapserver = 'ldap://' . $ldapserver;
+        }
+        $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
         if (false == $ldapconn) {
             return array("errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection'));
         }
