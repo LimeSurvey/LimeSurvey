@@ -1,24 +1,24 @@
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <div 
-            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar" 
+           class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar"
             v-if="createAllowance != ''"
         >
             <div class="scoped-toolbuttons-left">
                 <!-- Add Group Button -->
                 <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
-                    v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
-                    :href="createQuestionGroupLink" class="btn btn-small btn-default pjax"
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
+                    :disabled="!( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
+                    :href="createQuestionGroupLink" class="btn btn-small btn-default ls-space margin right-5 pjax"
                 >
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
                 </a>
                 <!-- Create Question Button -->
                 <a 
-                    id="adminsidepanel__sidebar--selectorCreateQuestion" 
-                    v-if="createQuestionAllowed" 
-                    :href="createFullQuestionLink()" 
+                    id="adminsidepanel__sidebar--selectorCreateQuestion"
+                    :disabled="!createQuestionAllowed"
+                    :href="createFullQuestionLink(createQuestionAllowed)"
                     class="btn btn-small btn-primary ls-space margin right-10 pjax"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
@@ -28,6 +28,7 @@
             <div class="scoped-toolbuttons-right">
                 <button
                     class="btn btn-default"
+                    v-if="createQuestionAllowed"
                     @click="toggleOrganizer"
                     :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
                 >
@@ -35,6 +36,7 @@
                 </button>
                 <button
                     class="btn btn-default"
+                    v-if="createQuestionAllowed"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >
@@ -200,11 +202,14 @@ export default {
         collapseAll() {
             this.active = [];
         },
-        createFullQuestionLink() { 
-            if(LS.reparsedParameters().combined.gid) {
-                return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid}); 
+        createFullQuestionLink(createQuestionAllowed) {
+          if(createQuestionAllowed) {
+            if (LS.reparsedParameters().combined.gid) {
+              return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid});
             }
-            return LS.createUrl(this.createQuestionLink, {}); 
+            return LS.createUrl(this.createQuestionLink, {});
+          }
+          return "";
         },
         questionHasCondition(question) {
             return question.relevance !== '1';
