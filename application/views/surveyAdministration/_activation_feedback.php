@@ -16,7 +16,9 @@
     <div class="row welcome survey-action">
         <div class="col-lg-12 content-right">
             <div class='jumbotron message-box'>
-                <h3><?php eT("Activate Survey");?> (<?php echo $iSurveyID; ?>)</h3>
+                <h3>
+                    <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
+                </h3>
                 <p class='lead'>
                     <?php eT("Survey has been activated. Results table has been successfully created."); ?>
                 </p>
@@ -41,15 +43,22 @@
                     </p>
                     <?php else:?>
                     <p>
-                        <?php eT("This survey is now active, and responses can be recorded."); ?>
+                        <?php eT("This survey is now active and responses can be recorded."); ?>
                         <br />
                         <br />
                         <?php if(!tableExists('tokens_'.$iSurveyID)):?>
-
-                            <strong><?php eT("Open-access mode:");?></strong>
-                            <?php eT("No invitation code is needed to complete the survey."); ?>
+                            <!-- Open Access Mode -->
+                            <?php eT("By default, your survey has been activated in "); ?><strong><?php eT("open-access mode"); ?></strong>
+                            <?php eT(". This means that no invitation code is needed to complete the survey and you can share it via URL, QR code or social media in the sharing panel."); ?>
                             <br />
-                            <?php eT("You can switch to the closed-access mode by initialising a survey participants table by using the button below."); ?>
+                            <br />
+                            <!-- Closed Access Mode -->
+                            <?php eT("If you want your survey to be only accessible for people who have been invited, please switch to "); ?><strong><?php eT("closed-access mode"); ?></strong>
+                            <?php eT("by clicking the following button."); ?>
+
+                            <br />
+                            <br />
+                            <?php eT("If you change your mind at any later point, you can switch to closed-access mode by navigating ba to 'Survey participants' and initialising the participants table at any time.");?>
                             <br />
                             <br />
                             <input
@@ -62,7 +71,7 @@
                                 type='submit'
                                 class='btn btn-default'
                                 id='activateTokenTable__selector--no'
-                                value='<?php eT("No, thanks."); ?>'
+                                value='<?php eT("Continue in open-access mode"); ?>'
                                 />
                             <?php else:?>
                             <input
