@@ -207,8 +207,9 @@ class LSSodium
 
         Yii::app()->setConfig("encryptionnonce", $sEncryptionNonce);
         Yii::app()->setConfig("encryptionsecretboxkey", $sEncryptionSecretBoxKey);
-        if (is_writable(APPPATH . 'config')) {
-            file_put_contents(APPPATH . 'config/security.php', $sConfig);
+        $configdir = \Yii::app()->getConfig('configdir');
+        if (is_writable($configdir)) {
+            file_put_contents($configdir . '/security.php', $sConfig);
         } else {
             throw new CHttpException(500, gT("Configuration directory is not writable"));
         }
