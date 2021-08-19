@@ -1596,6 +1596,6 @@ class TemplateConfiguration extends TemplateConfig
      */
     private function getAttributeValue($attributeName)
     {
-        return $this->getTemplateConfigurationForAttribute($this, $attributeName)->$attributeName;
+        return $this->getTemplateConfigurationForAttribute($this, $attributeName)->template->$attributeName;
     }
 }
