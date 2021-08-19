@@ -4,10 +4,19 @@
            class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar">
             <div class="scoped-toolbuttons-left">
                 <!-- Add Group Button -->
-                <a 
+                <!-- Survey is not active -->
+                <a v-if="!(surveyIsActive)"
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    :disabled="!( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )"
-                    :href="createQuestionGroupLink"
+                    class="btn btn-small btn-default ls-space margin right-5 pjax"
+                    :href="createQuestionGroupLink">
+                    <i class="fa fa-plus"></i>&nbsp;
+                    {{"createPage"|translate}}
+                </a>
+
+                <!-- Survey is active -->
+                <a v-else
+                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
+                    :disabled="!(createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1)"
                     class="btn btn-small btn-default ls-space margin right-5 pjax"
                     data-toggle="tooltip"
                     :title="buttonDisabledTooltip"
@@ -15,6 +24,7 @@
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
                 </a>
+
                 <!-- Create Question Button -->
                 <a 
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
@@ -153,7 +163,7 @@ export default {
             draggedQuestionGroup: null,
             questionDragging: false,
             draggedQuestion: null,
-            draggedQuestionsGroup: null
+            draggedQuestionsGroup: null,
         };
     },
     computed: {
