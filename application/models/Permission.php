@@ -813,8 +813,8 @@ class Permission extends LSActiveRecord
                 'img' => ' fa fa-users',
             ),
             'templates' => array(
-                'title' => gT("Templates"),
-                'description' => gT("Permission to create, view, update, delete, export and import templates"),
+                'title' => gT("Themes"),
+                'description' => gT("Permission to create, view, update, delete, export and import themes"),
                 'img' => ' fa fa-paint-brush',
             ),
             'labelsets' => array(
