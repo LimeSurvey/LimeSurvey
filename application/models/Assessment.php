@@ -91,16 +91,16 @@ class Assessment extends LSActiveRecord
 
     public function getButtons()
     {
-        $buttons = "<div style='white-space: nowrap'>";
+        $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' title='%s' type='button'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' type='button'>" //extra class //title
             . "<i class='fa fa-%s' aria-hidden='true' ></i><span class='sr-only'>%s</span>" //icon class
             . "</button>";
         $editData = array(
             'action_assessments_editModal',
             'text-info',
             gT("Edit this assessment rule"),
-            'edit',
+            'pencil',
             gT("Edit")
         );
         $deleteData = array(
@@ -110,11 +110,11 @@ class Assessment extends LSActiveRecord
             'trash text-danger',
             gT("Delete")
         );
-        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'delete')) {
-            $buttons .= vsprintf($raw_button_template, $deleteData);
-        }
         if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'update')) {
             $buttons .= vsprintf($raw_button_template, $editData);
+        }
+        if (Permission::model()->hasSurveyPermission($this->sid, 'assessments', 'delete')) {
+            $buttons .= vsprintf($raw_button_template, $deleteData);
         }
         $buttons .= '</div>';
 
@@ -125,19 +125,19 @@ class Assessment extends LSActiveRecord
     {
         return array(
             array(
-                'name' => 'id',
-                'filter' => false
-                ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
+                "name"   => 'buttons',
+                "type"   => 'raw',
                 "header" => gT("Action"),
                 "filter" => false
             ),
             array(
+                'name'   => 'id',
+                'filter' => false
+            ),
+            array(
                 'name' => 'scope',
                 'value' => '$data->scope == "G" ? eT("Group") : eT("Total")',
-                'htmlOptions' => ['class' => 'col-sm-1'],
+                'htmlOptions' => ['class' => ''],
                 'filter' => TbHtml::dropDownList(
                     'Assessment[scope]',
                     $this->scope,
@@ -146,19 +146,19 @@ class Assessment extends LSActiveRecord
             ),
             array(
                 'name' => 'name',
-                'htmlOptions' => ['class' => 'col-sm-2']
+                'htmlOptions' => ['class' => '']
             ),
             array(
                 'name' => 'minimum',
-                'htmlOptions' => ['class' => 'col-sm-1']
+                'htmlOptions' => ['class' => '']
             ),
             array(
                 'name' => 'maximum',
-                'htmlOptions' => ['class' => 'col-sm-1']
+                'htmlOptions' => ['class' => '']
             ),
             array(
                 'name' => 'message',
-                'htmlOptions' => ['class' => 'col-sm-5'],
+                'htmlOptions' => ['class' => ''],
                 'value' => 'viewHelper::flatEllipsizeText($data->message,true,0)',
                 "type" => 'raw'
             )

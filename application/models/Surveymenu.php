@@ -349,9 +349,9 @@ class Surveymenu extends LSActiveRecord
      **/
     public function getButtons()
     {
-        $buttons = "<div style='white-space: nowrap'>";
+        $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' style='margin-right: 5px;' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>"
             . "</button>";
 
@@ -366,7 +366,7 @@ class Surveymenu extends LSActiveRecord
                 'action_surveymenu_deleteModal',
                 'red-border',
                 gT("Delete this survey menu"),
-                'trash'
+                'trash text-danger'
             );
 
             $buttons .= vsprintf($raw_button_template, $editData);

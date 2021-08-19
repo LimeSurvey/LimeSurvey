@@ -36,7 +36,7 @@
             'type' => 'action',
             'action' => 'delete',
             'url' => App()->createUrl('questionAdministration/deleteMultiple/'),
-            'iconClasses' => 'text-danger fa fa-trash',
+            'iconClasses' => 'fa fa-trash text-danger',
             'text' => gT('Delete'),
             'grid-reload' => 'yes',
 

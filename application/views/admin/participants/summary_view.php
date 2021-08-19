@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
 <div id="pjax-content">
     <div class="col-lg-12 list-surveys">
         <div class="row">
-            <div class="col-lg-12 content-right">
+            <div class="col-lg-12 content-right table-responsive">
                 <table class='statisticssummary table table-hover'>
                     <tr>
                         <th>

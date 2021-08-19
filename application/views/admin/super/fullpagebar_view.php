@@ -50,7 +50,9 @@
                 <?php if(isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenu"
-                       data-tab="#surveymenues">
+                       data-tab="#surveymenues"
+                       title="<?php eT('Add new menu'); ?>"
+                    >
                         <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu') ?>
                     </a>
                 <?php endif; ?>
@@ -62,7 +64,9 @@
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenuentry"
                        data-tab="#surveymenuentries"
-                       style="display:none;">
+                       style="display:none;"
+                       title="<?php eT('Add new menu entry'); ?>"
+                    >
                         <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu entry') ?>
                     </a>
                 <?php endif; ?>

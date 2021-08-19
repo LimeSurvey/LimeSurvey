@@ -278,11 +278,11 @@ class SurveyDynamic extends LSActiveRecord
         $sBrowseLanguage = sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
         /* detail button */
         $gridButtons['detail'] = array(
-            'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/responses/sa/view",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("View response details")
@@ -294,7 +294,7 @@ class SurveyDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/responses/sa/viewquexmlpdf",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("View response details as queXML PDF")
@@ -307,7 +307,7 @@ class SurveyDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>' . self::$sid . ',"id"=>$data->id,"browselang"=>"' . $sBrowseLanguage . '"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("Edit this response")
@@ -322,7 +322,7 @@ class SurveyDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("admin/responses/sa/actionDownloadfiles",array("surveyid"=>' . self::$sid . ',"sResponseId"=>$data->id));',
             'visible' => 'boolval(' . $baseVisible . ') && Response::model(' . self::$sid . ')->findByPk($data->id)->someFileExists()',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("Download all files in this response as a zip file")
@@ -335,7 +335,7 @@ class SurveyDynamic extends LSActiveRecord
             'url' => 'App()->createUrl("admin/responses/sa/actionDeleteAttachments",array("surveyid"=>' . self::$sid . ',"sResponseId"=>$data->id));',
             'visible' => 'boolval(' . $baseVisible . ') && Response::model(' . self::$sid . ')->findByPk($data->id)->someFileExists()',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-deletefiles",
+                'class' => "btn btn-default btn-sm btn-deletefiles",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete all files of this response"),
             ),
@@ -348,7 +348,7 @@ class SurveyDynamic extends LSActiveRecord
             'imageUrl' => false,
             'visible' => 'boolval(' . $baseVisible . ')',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-delete",
+                'class' => "btn btn-default btn-sm btn-delete",
                 'data-toggle' => "modal",
                 'data-target' => '#confirmation-modal',
                 'data-btnclass' => 'btn-danger',

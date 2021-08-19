@@ -1498,27 +1498,27 @@ class Survey extends LSActiveRecord implements PermissionInterface
         $sAddGroup    = App()->createUrl("/questionGroupsAdministration/add/surveyid/" . $this->sid);
         $sAddquestion = App()->createUrl("/questionAdministration/create/surveyid/" . $this->sid);
 
-        $button = '';
+        $button = "<div class='icon-btn-row'>";
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid));
                 if ($groupCount > 0) {
-                    $button .= '<a class="btn btn-default" style="margin-right: 5px;" href="' . $sAddquestion . '" role="button" data-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddquestion . '" role="button" data-toggle="tooltip" title="' . gT('Add new question') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new question') . '</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-default" style="margin-right: 5px;" href="' . $sAddGroup . '" role="button" data-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
+                    $button .= '<a class="btn btn-sm btn-default" href="' . $sAddGroup . '" role="button" data-toggle="tooltip" title="' . gT('Add new group') . '"><span class="icon-add text-success" ></span><span class="sr-only">' . gT('Add new group') . '</span></a>';
                 }
             }
         }
 
-        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
-        }
-
         if (Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active == 'Y') {
-            $button .= '<a class="btn btn-default" href="' . $sStatUrl . '" role="button" data-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-default" href="' . $sStatUrl . '" role="button" data-toggle="tooltip" title="' . gT('Statistics') . '"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">' . gT('Statistics') . '</span></a>';
+        }
+        if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
+            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('General settings & texts') . '"><span class="fa fa-cog" ></span><span class="sr-only">' . gT('General settings & texts') . '</span></a>';
         }
 
+        $button .= "</div>";
         return $button;
     }
 

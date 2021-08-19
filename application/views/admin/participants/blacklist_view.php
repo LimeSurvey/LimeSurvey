@@ -135,9 +135,10 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
                         </div>
                         <div class="row ls-space margin top-25 bottom-10">
                             <div class="form-group">
-                                <div class='col-sm-6'></div>
-                                <div class='col-sm-4'>
-                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-default col-sm-12']); ?>
+                                <div class='col-sm-8'>
+                                </div>
+                                <div class='col-sm-3'>
+                                    <?php echo CHtml::submitButton('submit', ['value' => gT('Save'), 'class' => 'btn btn-success col-sm-12']); ?>
                                 </div>
                             </div>
                         </div>

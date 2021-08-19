@@ -8,7 +8,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <div class="container-fluid col-12">
+    <div class="col-12">
         <h3><?php eT('Survey responses'); ?></h3>
         <!-- Display mode -->
         <div class="text-right in-title">
@@ -81,9 +81,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                 'selectableRows' => '100',
                             ),
                             array(
+                                'header' => gT('Action'),
                                 'class'=>'bootstrap.widgets.TbButtonColumn',
-                                'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}{deleteresponse}',
-                                //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
+                                'template'=>'{edit}{detail}{quexmlpdf}{downloadfiles}{deletefiles}<span data-toggle="tooltip" title="' . gT("Delete this response") . '">{deleteresponse}</span>',
+                                'htmlOptions' => array('class' => 'icon-btn-row'),
                                 'buttons'=> $model->getGridButtons('responses-grid'),
                             ),
                             array(
@@ -218,16 +219,16 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         $filterColumns = App()->getController()->renderPartial('/admin/responses/modal_subviews/filterColumns', array('filterableColumns' => $filterableColumns, 'filteredColumns' => $filteredColumns), true, false);
 
                         $this->widget('ext.LimeGridView.LimeGridView', array(
-                            'dataProvider'  => $model->search(),
-                            'filter'        => $model,
-                            'columns'       => $aColumns,
-                            'itemsCssClass' =>'table-striped',
-                            'id'            => 'responses-grid',
-                            'ajaxUpdate'    => 'responses-grid',
-                            'ajaxType'      => 'POST',
-                            'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                            'template'      => "<div class='push-grid-pager'>{items}\n</div><div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
-                            'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            'dataProvider'    => $model->search(),
+                            'filter'          => $model,
+                            'columns'         => $aColumns,
+                            'htmlOptions'     => ['class' => 'table-responsive'],
+                            'id'              => 'responses-grid',
+                            'ajaxUpdate'      => 'responses-grid',
+                            'ajaxType'        => 'POST',
+                            'afterAjaxUpdate' => 'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
+                            'template'        => "{items}\n<div id='reponsesListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $pageSize,

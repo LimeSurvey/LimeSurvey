@@ -1371,6 +1371,38 @@ div.panel.disabled a {
     color: #fff;
 }
 
+.icon-btn-row {
+    display: flex;
+
+    .btn.btn-lg {
+        width: 46px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .btn {
+        width: 34px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .btn.btn-sm {
+        width: 30px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .btn.btn-xs {
+        width: 22px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    :not(:first-child).btn, :not(:first-child) .btn {
+        margin-left: 5px;
+    }
+    :not(:first-child).btn.btn-xs, :not(:first-child) .btn.btn-xs {
+        margin-left: 3px;
+    }
+}
+
 /**
 *  Radio / Check box buttons
 */

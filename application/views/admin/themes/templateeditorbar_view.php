@@ -148,7 +148,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                         data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                         title="<?php eT('Delete'); ?>"
                         class="btn btn-danger selector--ConfirmModal">
-                            <span class="fa fa-trash "></span>
+                            <span class="fa fa-trash"></span>
                             <?php eT('Delete'); ?>
                         </a>
                 <?php endif;?>

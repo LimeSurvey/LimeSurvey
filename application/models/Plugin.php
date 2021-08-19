@@ -181,6 +181,7 @@ class Plugin extends LSActiveRecord
     {
         $output = '';
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
+            $output .= "<div class='icon-btn-row'>";
             if ($this->load_error == 1) {
                 $reloadUrl = Yii::app()->createUrl(
                     'admin/pluginmanager',
@@ -189,16 +190,17 @@ class Plugin extends LSActiveRecord
                         'pluginId' => $this->id
                     ]
                 );
-                $output = "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-default btn-xs btntooltip'><span class='fa fa-refresh'></span></a>";
+                $output .= "<a href='" . $reloadUrl . "' data-toggle='tooltip' title='" . gT('Attempt plugin reload') . "' class='btn btn-default btn-sm btntooltip'><span class='fa fa-refresh'></span></a>";
             } elseif ($this->active == 0) {
-                $output = $this->getActivateButton();
+                $output .= $this->getActivateButton();
             } else {
-                $output = $this->getDeactivateButton();
+                $output .= $this->getDeactivateButton();
             }
 
             if ($this->active == 0) {
                 $output .= $this->getUninstallButton();
             }
+            $output .= "</div>";
         }
 
         return $output;
@@ -215,7 +217,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'activate'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = CHtml::beginForm(
             $activateUrl,
             'post',
             [
@@ -224,7 +226,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-default btn-xs'>
+                <button data-toggle='tooltip' title='" . gT('Activate plugin') . "' class='btntooltip btn btn-default btn-sm'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -243,7 +245,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'deactivate'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = CHtml::beginForm(
             $deactivateUrl,
             'post',
             [
@@ -252,7 +254,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-xs'>
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to deactivate this plugin?') . "\");' title='" . gT('Deactivate plugin') . "' class='btntooltip btn btn-warning btn-sm'>
                     <i class='fa fa-power-off'></i>
                 </button>
             </form>
@@ -272,7 +274,7 @@ class Plugin extends LSActiveRecord
                 'sa' => 'uninstallPlugin'
             ]
         );
-        $output = '&nbsp;' . CHtml::beginForm(
+        $output = CHtml::beginForm(
             $uninstallUrl,
             'post',
             [
@@ -281,7 +283,7 @@ class Plugin extends LSActiveRecord
         );
         $output .= "
                 <input type='hidden' name='pluginId' value='" . $this->id . "' />
-                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-xs'>
+                <button data-toggle='tooltip' onclick='return confirm(\"" . gT('Are you sure you want to uninstall this plugin?') . "\");' title='" . gT('Uninstall plugin') . "' class='btntooltip btn btn-danger btn-sm'>
                     <i class='fa fa-times-circle'></i>
                 </button>
             </form>
