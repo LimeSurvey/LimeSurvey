@@ -138,6 +138,12 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_timer_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_timer_style']['value'], '');
         $time_limit_timer_class = "ls-timer-content ls-timer-countdown ls-no-js-hidden";
 
+        // Escape messages to avoid XSS attacks, based on how LS3 does this (see return_timer_script() on qanda_helper)
+        $time_limit_message = htmlspecialchars($time_limit_message, ENT_QUOTES);
+        $time_limit_countdown_message = htmlspecialchars($time_limit_countdown_message, ENT_QUOTES);
+        $time_limit_warning_message = htmlspecialchars($time_limit_warning_message, ENT_QUOTES);
+        $time_limit_warning_2_message = htmlspecialchars($time_limit_warning_2_message, ENT_QUOTES);
+
         $timersessionname = "timer_question_" . $oQuestion->qid;
         if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname])) {
             $time_limit = $_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname];
