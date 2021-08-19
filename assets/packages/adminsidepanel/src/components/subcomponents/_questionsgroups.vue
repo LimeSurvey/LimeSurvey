@@ -12,7 +12,6 @@
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
                 </a>
-
                 <!-- Survey is active -->
                 <a v-else
                     id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
@@ -26,17 +25,26 @@
                 </a>
 
                 <!-- Create Question Button -->
-                <a 
+                <!-- Survey is not active -->
+                <a v-if="!(surveyIsActive)"
                     id="adminsidepanel__sidebar--selectorCreateQuestion"
-                    :disabled="!createQuestionAllowed"
                     :href="createFullQuestionLink()"
                     class="btn btn-small btn-primary ls-space margin right-10 pjax"
-                    data-toggle="tooltip"
-                    :title="buttonDisabledTooltip"
                 >
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}
                 </a>
+                <!-- Survey is active -->
+                <a v-else
+                    id="adminsidepanel__sidebar--selectorCreateQuestion"
+                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
+                    :disabled="!createQuestionAllowed"
+                    data-toggle="tooltip"
+                    :title="buttonDisabledTooltip">
+                    <i class="fa fa-plus-circle"></i>&nbsp;
+                    {{"createQuestion"|translate}}
+                </a>
+
             </div>
             <div class="scoped-toolbuttons-right">
                 <button
