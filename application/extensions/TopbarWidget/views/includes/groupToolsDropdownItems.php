@@ -31,7 +31,7 @@
                     data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
                 >
                     <span class="fa fa-trash"></span>
-                    <?php eT("Delete"); ?>
+                    <?php eT("Delete group"); ?>
                 </a>
             </li>
         <?php else: ?>
@@ -39,7 +39,7 @@
             <li class="disabled">
                 <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
                     <span class="fa fa-trash"></span>
-                    <?php eT("Delete"); ?>
+                    <?php eT("Delete group"); ?>
                 </a>
             </li>
         <?php endif; ?>
