@@ -10,6 +10,7 @@ function updateParameters()
 {
 if ($('#bounceprocessing input:radio:checked').val()!='L'){
         $("#bounceaccounttype label").addClass('disabled');
+        $("#bounce_email").attr('disabled','disabled');
         $("#bounceaccounthost").attr('disabled','disabled');
         $("#bounceaccountuser").attr('disabled','disabled');
         $("#bounceaccountpass").attr('disabled','disabled');
@@ -17,6 +18,7 @@ if ($('#bounceprocessing input:radio:checked').val()!='L'){
     }
     else {
         $("#bounceaccounttype label").removeClass('disabled');
+        $("#bounce_email").removeAttr('disabled');
         $("#bounceaccounthost").removeAttr('disabled');
         $("#bounceaccountuser").removeAttr('disabled');
         $("#bounceaccountpass").removeAttr('disabled');
