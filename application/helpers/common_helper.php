@@ -5073,7 +5073,7 @@ function resourceExtractFilter($p_event, &$p_header)
  * @param int $limit
  * @param int $count    If specified, this variable will be filled with the total number of replacements done (including all iterations)
  * @param int $recursion_limit  Max number of iterations allowed
- * @return string
+ * @return string|array
  */
 function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 0, $recursion_limit = 50)
 {
