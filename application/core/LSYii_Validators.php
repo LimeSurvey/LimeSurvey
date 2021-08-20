@@ -111,7 +111,8 @@ class LSYii_Validators extends CValidator
         $filter = LSYii_HtmlPurifier::getXssPurifier();
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
-        $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $filter->purify($value));
+        $sFiltered = $filter->purify($value);
+        $sFiltered = preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#', '{$1}', $sFiltered);
         $sFiltered = str_replace("html_entity_decode", "", $sFiltered);
         Yii::import('application.helpers.expressions.em_core_helper', true); // Already imported in em_manager_helper.php ?
         $oExpressionManager = new ExpressionManager;
