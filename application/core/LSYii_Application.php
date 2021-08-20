@@ -256,6 +256,24 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
+     * Sets multiple 'flash messages'.
+     *
+     * This is a convenience method to set multiple flash messaged of the same type at the same time.
+     * @see LSYii_Application::setFlashMessage()
+     *
+     * @param string[] $messages The messages you want to show on next page load
+     * @param string $type Type can be 'success','info','warning','danger','error' which relate to the particular bootstrap alert classes - see http://getbootstrap.com/components/#alerts . Note: Option 'error' is synonymous to 'danger'
+     * @return LSYii_Application Provides a fluent interface
+     */
+    public function setFlashMessages($messages, $type = 'success')
+    {
+        foreach ($messages as $message) {
+            $this->setFlashMessage($message, $type);
+        }
+        return $this;
+    }
+
+    /**
      * Loads a config from a file
      *
      * @access public

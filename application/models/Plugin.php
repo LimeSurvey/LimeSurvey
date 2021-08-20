@@ -325,7 +325,9 @@ class Plugin extends LSActiveRecord
     protected function getDir()
     {
         $pluginManager = App()->getPluginManager();
-        $alias = $pluginManager->pluginDirs[$this->plugin_type];
+        // Check that $this->plugin_type is found on $pluginManager->pluginDirs because, if debug mode
+        // is off, a PHP error is generated instead of an exception.
+        $alias = array_key_exists($this->plugin_type, $pluginManager->pluginDirs) ? $pluginManager->pluginDirs[$this->plugin_type] : null;
 
         if (empty($alias)) {
             throw new \Exception('Unknown plugin type: ' . json_encode($this->plugin_type));

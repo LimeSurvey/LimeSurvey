@@ -39,7 +39,7 @@ class PluginManagerController extends Survey_Common_Action
         $pluginCleaner = new LimeSurvey\PluginManager\PluginCleaner();
         $removedPluginCount = $pluginCleaner->clean();
         if ($removedPluginCount) {
-            $pluginCleaner->showFlashMessages();
+            Yii::app()->setFlashMessages($pluginCleaner->getMessages());
         }
 
         $aoPlugins = Plugin::model()->findAll(array('order' => 'name'));
