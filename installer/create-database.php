@@ -1083,7 +1083,8 @@ function populateDatabase($oDB)
             'created' => "datetime",
             'modified' => "datetime",
             'validation_key' => 'string(38)',
-            'validation_key_expiration' => 'datetime'
+            'validation_key_expiration' => 'datetime',
+            'lastForgotPwEmail' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);

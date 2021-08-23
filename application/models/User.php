@@ -33,6 +33,7 @@
  * @property string $validation_key  used for email link to reset or create a password for a survey participant
  *                                   Link is send when user is created or password has been reset
  * @property string $validation_key_expiration datetime when the validation key expires
+ * @property string $lastForgotPwEmail datetime when user send email for forgot pw the last time (prevent bot)
  *
  * @property Permission[] $permissions
  * @property User $parentUser Parent user
@@ -111,9 +112,12 @@ class User extends LSActiveRecord
             array('templateeditormode', 'default', 'value' => 'default'),
             array('templateeditormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('dateformat', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
+
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
             array('validation_key', 'length','max' => self::MAX_VALIDATION_KEY_LENGTH),
+            //todo: write a rule for date (can also be null)
+            //array('lastForgotPwEmail', 'numerical', 'integerOnly' => true, 'allowEmpty' => true),
         );
     }
 

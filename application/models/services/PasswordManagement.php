@@ -2,6 +2,8 @@
 
 namespace LimeSurvey\Models\Services;
 
+use DateTime;
+
 /**
  * This class contains all functions for the process of password reset and creating new administration users
  * and sending email to those with a link to set the password.
@@ -14,6 +16,7 @@ class PasswordManagement
     const MIN_PASSWORD_LENGTH = 8;
     const EMAIL_TYPE_REGISTRATION = 'registration';
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
+    const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
 
     /** @var $user \User */
     private $user;
@@ -73,7 +76,6 @@ class PasswordManagement
      */
     public function sendPasswordLinkViaEmail(string $emailType): array
     {
-
         $success = true;
         $this->user->setValidationKey();
         $this->user->setValidationExpiration();
@@ -81,21 +83,29 @@ class PasswordManagement
 
         if ($mailer->getError()) {
             $sReturnMessage = \CHtml::tag("h4", array(), gT("Error"));
-            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(
-                gT("Email to %s (%s) failed."),
-                "<strong>" . $this->user->users_name . "</strong>",
-                $this->user->email
-            ));
+            $sReturnMessage .= \CHtml::tag(
+                "p",
+                array(),
+                sprintf(
+                    gT("Email to %s (%s) failed."),
+                    "<strong>" . $this->user->users_name . "</strong>",
+                    $this->user->email
+                )
+            );
             $sReturnMessage .= \CHtml::tag("p", array(), $mailer->getError());
             $success = false;
         } else {
             // has to be sent again or no other way
             $sReturnMessage = \CHtml::tag("h4", array(), gT("Success"));
-            $sReturnMessage .= \CHtml::tag("p", array(), sprintf(
-                gT("Username : %s - Email : %s."),
-                $this->user->users_name,
-                $this->user->email
-            ));
+            $sReturnMessage .= \CHtml::tag(
+                "p",
+                array(),
+                sprintf(
+                    gT("Username : %s - Email : %s."),
+                    $this->user->users_name,
+                    $this->user->email
+                )
+            );
             $sReturnMessage .= \CHtml::tag("p", array(), gT("An email with a generated link was sent to the user."));
         }
 
@@ -103,6 +113,32 @@ class PasswordManagement
             'success' => $success,
             'sReturnMessage' => $sReturnMessage
         ];
+    }
+
+    /**
+     * Checks if user is allowed to do the next sending of email for forgotten password.
+     * This should only be the case all 5min (see self::MIN_TIME_NEXT_FORGOT_PW_EMAIL)
+     *
+     * @return bool true if user can send another email for forgotten pw, false otherwise
+     * @throws \Exception
+     */
+    public function isAllowedToSendForgotPwEmail(\User $user): bool
+    {
+        $sendForgotPwIsAllowed = true;
+        if ($user->lastForgotPwEmail !== null) { //null means user has never clicked "Forget pw" before
+            $now = new DateTime();
+            $lastForgotPwEmail = new DateTime($user->lastForgotPwEmail);
+            $dateDiff = $now->diff($lastForgotPwEmail);
+            //if time difference is greater then self::MIN_TIME_NEXT_FORGOT_PW_EMAIL, user can send new email
+            $differenceDays = $dateDiff->format('%d');
+            $differenceHours = $dateDiff->format('%h');
+            $differenceMin = $dateDiff->format('%i');
+            //calculate time difference in minutes
+            $differenceInMinutes = ((int)$differenceDays * 24 * 60) + ((int)$differenceHours *60) + (int)$differenceMin;
+            $sendForgotPwIsAllowed = $differenceInMinutes > self::MIN_TIME_NEXT_FORGOT_PW_EMAIL;
+        }
+
+        return $sendForgotPwIsAllowed;
     }
 
     /**
@@ -118,24 +154,38 @@ class PasswordManagement
         $mailer->Subject = gT('User data');
 
         /* Body construct */
-        $this->user->setValidationKey();
-        $this->user->setValidationExpiration();
-        $username = sprintf(gT('Username: %s'), $this->user->users_name);
+        //before setting new validationKey and date,check when was the last attempt
+        if ($this->isAllowedToSendForgotPwEmail($this->user)) {
+            $this->user->setValidationKey();
+            $this->user->setValidationExpiration();
+            $now = new DateTime();
+            $this->user->lastForgotPwEmail = $now->format('Y-m-d H:i:s');
+            $this->user->save();
+            $username = sprintf(gT('Username: %s'), $this->user->users_name);
 
-        $linkToResetPage = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
-        $linkText = gT("Click here to set your password: ") . $linkToResetPage;
-        $body   = array();
-        $body[] = sprintf(gT('Your link to reset password %s'), \Yii::app()->getConfig('sitename'));
-        $body[] = $username;
-        $body[] = $linkText;
-        $body   = implode("\n", $body);
-        $mailer->Body = $body;
-        /* Go to send email and set password*/
-        if ($mailer->sendMessage()) {
-            // For security reasons, we don't show a successful message
-            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
+            $linkToResetPage = \Yii::app()->getController()->createAbsoluteUrl(
+                'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+            );
+            $linkText = gT("Click here to set your password: ") . $linkToResetPage;
+            $body = array();
+            $body[] = sprintf(gT('Your link to reset password %s'), \Yii::app()->getConfig('sitename'));
+            $body[] = $username;
+            $body[] = $linkText;
+            $body = implode("\n", $body);
+            $mailer->Body = $body;
+            /* Go to send email and set password*/
+            if ($mailer->sendMessage()) {
+                // For security reasons, we don't show a successful message
+                $sMessage = gT(
+                    'If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.'
+                );
+            } else {
+                $sMessage = gT('Email failed');
+            }
         } else {
-            $sMessage = gT('Email failed');
+            $sMessage = gT(
+                'If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.'
+            );
         }
 
         return $sMessage;
@@ -161,7 +211,7 @@ class PasswordManagement
     /**
      * Send the registration email to a new survey administrator
      *
-     * @param string $type   two types are available 'resetPassword' or 'registration', default is 'registration'
+     * @param string $type two types are available 'resetPassword' or 'registration', default is 'registration'
      *
      * @return \LimeMailer if send is successful
      *
@@ -173,22 +223,36 @@ class PasswordManagement
 
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
-                $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl('admin/authentication/sa/newPassword/param/' . $this->user->validation_key);
+                $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
+                    'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+                );
                 $renderArray = [
                     'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
                     'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
-                        . sprintf(gT("This is an automated email to notify you that your login credentials for '%s' have been reset."), \Yii::app()->getConfig("sitename")),
+                        . sprintf(
+                            gT(
+                                "This is an automated email to notify you that your login credentials for '%s' have been reset."
+                            ),
+                            \Yii::app()->getConfig("sitename")
+                        ),
                     'credentialsText' => gT("Here are your new credentials."),
                     'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
                     'linkToAdminpanel' => $absolutUrl,
                     'username' => $this->user->users_name,
                     'password' => $passwordResetUrl,
                     'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
+                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model(
+                        )->hasGlobalPermission('auth_db', 'read', $this->user->uid),
                     'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),
                 ];
-                $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT("Your login credentials have been reset");
-                $body = \Yii::app()->getController()->renderPartial('partial/usernotificationemail', $renderArray, true);
+                $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
+                        "Your login credentials have been reset"
+                    );
+                $body = \Yii::app()->getController()->renderPartial(
+                    'partial/usernotificationemail',
+                    $renderArray,
+                    true
+                );
                 break;
             case self::EMAIL_TYPE_REGISTRATION:
             default:
