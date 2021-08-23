@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.12 (build 210816) to 3.27.13 (build 210823) August 23, 2021
+-Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
+-Fixed issue #16720:  Invalid question codes during lss import do not get replaced (#1994) (Gabriel Jenik)
+-Fixed issue [security]: Disallow XML upload in survey resources (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+-Fixed issue #17519: LDAP not working when using URI with port (Carsten Schmitz)
+-Fixed issue #17517: Doctype, title and other details seem to be filtered at email sending (Carsten Schmitz)
+-Fixed issue #17515: Getting an error when changing the language on the data entry page (Carsten Schmitz)
+-Fixed issue #17489: No question relevance field for array-by-column question type (#2014) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: German by c_schmitz
+
+
 Changes from 3.27.11 (build 210809) to 3.27.12 (build 210816) August 16, 2021
 -Fixed issue: LTS branch shown as unstable in ComfortUpdate (Carsten Schmitz)
 -Fixed issue: ComfortUpdate not working when one of the files to back up has 0 size (Carsten Schmitz)
