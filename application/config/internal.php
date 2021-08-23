@@ -295,6 +295,7 @@ $internalConfig = array(
                     'upper',
                     'strip_tags',
                     'number_format',
+                    'url_encode',
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
