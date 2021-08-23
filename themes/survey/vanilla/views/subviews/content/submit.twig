@@ -77,7 +77,8 @@
             {% block endurl %}
             {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
             {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
-                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
+<h1>here</h1>
+                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl | url_encode }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
             {% endif %}
             {% endblock %}
         </div>
