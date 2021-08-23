@@ -34,6 +34,30 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.3 (build 210817) to 5.1.4 (build 210824) August 23, 2021
+-Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
+-Fixed issue [security]: Disallow XML upload in survey resources (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+-Fixed issue [security]: Add missing url_encode filter to URL in Twig template (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+-Fixed issue #17521: HTML is not escaped in timer messages (Gabriel Jenik)
+-Fixed issue #17519: LDAP not working when using URI with port (Carsten Schmitz)
+-Fixed issue #17517: Doctype, title and other details seem to be filtered at email sending (Carsten Schmitz)
+-Fixed issue #17495: Error when importing a question fails (#2013) (Gabriel Jenik)
+-Fixed issue #17379: Question types can be uninstalled (#1939) (Gabriel Jenik)
+-Fixed issue #17334: Soft mandantory question work only with popup (#1998) (Gabriel Jenik)
+-Fixed issue #17333: Soft mandatory show as mandatory : produces an incomprehensible form (#1997) (Gabriel Jenik)
+-Fixed issue #16720: Old/invalid question codes adjusted during LSS import do not get replaced (#2011) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by effgarces, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz, Hyperion
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.1.2 (build 210813) to 5.1.3 (build 210817) August 16, 2021
 -Fixed issue #17508: Links at ExpressionEngine descriptions not opening in new window/tab (Carsten Schmitz)
 -Fixed issue #17409: Exporting responses with big data sets and activated encryption will timeout php memory limit, even with high settings (512M) (Patrick Teichmann)
