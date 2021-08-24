@@ -330,7 +330,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         // Try to connect
-        if (str_pos($ldapserver, 'ldaps://') === false && str_pos($ldapserver, 'ldap://') === false) {
+        if (strpos($ldapserver, 'ldaps://') === false && strpos($ldapserver, 'ldap://') === false) {
             $ldapserver = 'ldap://' . $ldapserver;
         }
         $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
