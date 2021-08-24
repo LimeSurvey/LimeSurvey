@@ -134,9 +134,7 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
-                may use expressions - remember this part is static.
-            </help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -176,9 +174,7 @@
             <category>Logic</category>
             <sortorder>180</sortorder>
             <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified
-                group will appear in a random order
-            </help>
+            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
             <caption>Randomization group name</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -204,9 +200,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a hint text that will be shown to the participant describing the question validation
-                equation.
-            </help>
+            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

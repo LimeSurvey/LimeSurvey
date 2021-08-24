@@ -134,9 +134,7 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
-                may use expressions - remember this part is static.
-            </help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -211,10 +209,7 @@
             <sortorder>110</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
-            <help>Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression
-                Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date
-                use variable not in same page.
-            </help>
+            <help>Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.</help>
             <caption>Minimum date</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -226,10 +221,7 @@
             <sortorder>111</sortorder>
             <inputtype>text</inputtype>
             <expression>2</expression>
-            <help>Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example).
-                Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is
-                restricted if date use variable not in same page.
-            </help>
+            <help>Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.</help>
             <caption>Maximum date</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -242,9 +234,7 @@
             <category>Logic</category>
             <sortorder>180</sortorder>
             <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified
-                group will appear in a random order
-            </help>
+            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
             <caption>Randomization group name</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -270,9 +260,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a hint text that will be shown to the participant describing the question validation
-                equation.
-            </help>
+            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

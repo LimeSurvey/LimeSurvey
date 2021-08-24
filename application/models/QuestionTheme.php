@@ -499,6 +499,18 @@ class QuestionTheme extends LSActiveRecord
             return false;
         }
 
+        // Don't allow deletion of core question themes (themes delivered with Lime)
+        if ($oQuestionTheme->core_theme == 1) {
+            return [
+                'error'  => gT('Core question themes cannot be uninstalled.'),
+                'result' => false
+            ];
+        }
+
+        // TODO: Now that core question themes can't be deleted, the following check
+        //       doesn't seem necessary because, at least for now, user question themes
+        //       always extend a question type.
+
         // if this questiontype is extended, it cannot be deleted
         if (empty($oQuestionTheme->extends)) {
             $aQuestionThemes = self::model()->findAll(

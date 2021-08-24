@@ -211,7 +211,7 @@
                 <tr>
                     <td>
                         <strong>
-                            <?php echo $setting['caption'];?>:
+                            <?php eT($setting['caption']);?>:
                         </strong>
                     </td>
                     <td>

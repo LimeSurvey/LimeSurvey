@@ -718,7 +718,7 @@ class export extends Survey_Common_Action
             foreach ($result as $row) {
                 $oResponse = Response::model($iSurveyId);
                 $oResponse->setAttributes($row, false);
-                $oResponse->decrypt();
+                $row = $oResponse->decrypt();
 
                 foreach ($fieldnames as $field) {
                     if (is_null($row[$field])) {

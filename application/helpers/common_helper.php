@@ -3510,7 +3510,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestion->relevance = preg_replace("/\b{$sOldCode}/", $sNewCode, $arQuestion->relevance, -1, $iCount);
+                $arQuestion->relevance = preg_replace("~\b{$sOldCode}~", $sNewCode, $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -3523,12 +3523,38 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
                 // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
                 if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0])) {
                     $sOldCode = preg_quote($sOldCode, '~');
-                    $arQuestionLS->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursively
+                    // to catch all occurrences.
+                    $arQuestionLS->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->question, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+                    // Apply the replacement on question help text
+                    $arQuestionLS->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionLS->help, -1, $iCount);
                     $bModified = $bModified || $iCount;
                 }
             }
             if ($bModified) {
                 $arQuestionLS->save();
+            }
+        }
+        // Also apply on question's default values
+        $defaultValues = DefaultValue::model()->with('defaultvaluel10ns')->findAllByAttributes(['qid' => $arQuestion->qid]);
+        foreach ($defaultValues as $defaultValue) {
+            if (empty($defaultValue->defaultvaluel10ns)) {
+                continue;
+            }
+            foreach ($defaultValue->defaultvaluel10ns as $defaultValueL10n) {
+                $bModified = false;
+                foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                    if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                        continue;
+                    }
+                    $sOldCode = preg_quote($sOldCode, '~');
+                    $defaultValueL10n->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValueL10n->defaultvalue, -1, $iCount);
+                    $bModified = $bModified || $iCount;
+                }
+                if ($bModified > 0) {
+                    $defaultValueL10n->save();
+                }
             }
         }
     }
@@ -3537,7 +3563,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode => $sNewCode) {
             $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
+            $arGroup->grelevance = preg_replace("~\b{$sOldCode}~", $sNewCode, $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
@@ -3546,12 +3572,28 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         foreach ($arGroup->questiongroupl10ns as $arQuestionGroupLS) {
             foreach ($aCodeMap as $sOldCode => $sNewCode) {
                 $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestionGroupLS->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
+                $arQuestionGroupLS->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestionGroupLS->description, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
             if ($bModified) {
                 $arQuestionGroupLS->save();
             }
+        }
+    }
+    // Apply the replacement on survey's end message
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $bModified = false;
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+            if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                continue;
+            }
+            $sOldCode = preg_quote($sOldCode, '~');
+            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+            $bModified = $bModified || $iCount;
+        }
+        if ($bModified) {
+            $surveyLanguageSetting->save();
         }
     }
 }
@@ -5021,4 +5063,27 @@ function resourceExtractFilter($p_event, &$p_header)
     } else {
         return 0;
     }
+}
+
+/**
+ * Applies preg_replace recursively until $recursion_limit is exceeded or no more replacements are done.
+ * @param array|string $pattern
+ * @param array|string $replacement
+ * @param array|string $subject
+ * @param int $limit
+ * @param int $count    If specified, this variable will be filled with the total number of replacements done (including all iterations)
+ * @param int $recursion_limit  Max number of iterations allowed
+ * @return string|array
+ */
+function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 0, $recursion_limit = 50)
+{
+    if ($recursion_limit < 0) {
+        return $subject;
+    }
+    $result = preg_replace($pattern, $replacement, $subject, $limit, $count);
+    if ($count > 0) {
+        $result = recursive_preg_replace($pattern, $replacement, $result, $limit, $auxCount, --$recursion_limit);
+        $count += $auxCount;
+    }
+    return $result;
 }
