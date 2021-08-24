@@ -169,9 +169,7 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
-                may use expressions - remember this part is static.
-            </help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -354,9 +352,7 @@
             <category>Logic</category>
             <sortorder>180</sortorder>
             <inputtype>text</inputtype>
-            <help>Place questions into a specified randomization group, all questions included in the specified
-                group will appear in a random order
-            </help>
+            <help>Place questions into a specified randomization group, all questions included in the specified group will appear in a random order</help>
             <caption>Randomization group name</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -407,9 +403,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>This is a hint text that will be shown to the participant describing the question validation
-                equation.
-            </help>
+            <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -576,9 +570,7 @@
             <category>Timer</category>
             <sortorder>102</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display the &#039;time limit expiry message&#039; for this many seconds before performing
-                the &#039;time limit action&#039; (defaults to 1 second if left blank)
-            </help>
+            <help>Display the &#039;time limit expiry message&#039; for this many seconds before performing the &#039;time limit action&#039; (defaults to 1 second if left blank)</help>
             <caption>Time limit expiry message display time</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -592,9 +584,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>The message to display when the time limit has expired (a default message will display if this
-                setting is left blank)
-            </help>
+            <help>The message to display when the time limit has expired (a default message will display if this setting is left blank)</help>
             <caption>Time limit expiry message</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -616,9 +606,7 @@
             <category>Timer</category>
             <sortorder>108</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display a &#039;time limit warning&#039; when there are this many seconds remaining in the
-                countdown (warning will not display if left blank)
-            </help>
+            <help>Display a &#039;time limit warning&#039; when there are this many seconds remaining in the countdown (warning will not display if left blank)</help>
             <caption>1st time limit warning message timer</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -630,9 +618,7 @@
             <category>Timer</category>
             <sortorder>110</sortorder>
             <inputtype>integer</inputtype>
-            <help>The &#039;time limit warning&#039; will stay visible for this many seconds (will not turn
-                off if this setting is left blank)
-            </help>
+            <help>The &#039;time limit warning&#039; will stay visible for this many seconds (will not turn off if this setting is left blank)</help>
             <caption>1st time limit warning message display time</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -646,9 +632,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>The message to display as a &#039;time limit warning&#039; (a default warning will display
-                if this is left blank)
-            </help>
+            <help>The message to display as a &#039;time limit warning&#039; (a default warning will display if this is left blank)</help>
             <caption>1st time limit warning message</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -670,9 +654,7 @@
             <category>Timer</category>
             <sortorder>116</sortorder>
             <inputtype>integer</inputtype>
-            <help>Display the 2nd &#039;time limit warning&#039; when there are this many seconds remaining
-                in the countdown (warning will not display if left blank)
-            </help>
+            <help>Display the 2nd &#039;time limit warning&#039; when there are this many seconds remaining in the countdown (warning will not display if left blank)</help>
             <caption>2nd time limit warning message timer</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -684,9 +666,7 @@
             <category>Timer</category>
             <sortorder>118</sortorder>
             <inputtype>integer</inputtype>
-            <help>The 2nd &#039;time limit warning&#039; will stay visible for this many seconds (will not
-                turn off if this setting is left blank)
-            </help>
+            <help>The 2nd &#039;time limit warning&#039; will stay visible for this many seconds (will not turn off if this setting is left blank)</help>
             <caption>2nd time limit warning message display time</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -700,9 +680,7 @@
             <inputtype>textarea</inputtype>
             <expression>1</expression>
             <i18n>1</i18n>
-            <help>The 2nd message to display as a &#039;time limit warning&#039; (a default warning will
-                display if this is left blank)
-            </help>
+            <help>The 2nd message to display as a &#039;time limit warning&#039; (a default warning will display if this is left blank)</help>
             <caption>2nd time limit warning message</caption>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
