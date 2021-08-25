@@ -34,6 +34,68 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.12 (build 210816) to 3.27.13 (build 210823) August 23, 2021
+-Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
+-Fixed issue #16720:  Invalid question codes during lss import do not get replaced (#1994) (Gabriel Jenik)
+-Fixed issue [security]: Disallow XML upload in survey resources (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+-Fixed issue #17519: LDAP not working when using URI with port (Carsten Schmitz)
+-Fixed issue #17517: Doctype, title and other details seem to be filtered at email sending (Carsten Schmitz)
+-Fixed issue #17515: Getting an error when changing the language on the data entry page (Carsten Schmitz)
+-Fixed issue #17489: No question relevance field for array-by-column question type (#2014) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: German by c_schmitz
+
+
+Changes from 3.27.11 (build 210809) to 3.27.12 (build 210816) August 16, 2021
+-Fixed issue: LTS branch shown as unstable in ComfortUpdate (Carsten Schmitz)
+-Fixed issue: ComfortUpdate not working when one of the files to back up has 0 size (Carsten Schmitz)
+-Fixed issue #17513: System information modal duplicates database server info (Carsten Schmitz)
+-Fixed issue #17223: With mandatory attribute : lost all current value when create a token (#1942) (Gabriel Jenik)
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.27.10 (build 210803) to 3.27.11 (build 210809) August 9, 2021
+-Fixed issue #17285: "Resume later" not working after "Load unfinished survey" (#1988) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 3.27.9 (build 210726) to 3.27.10 (build 210803) August 3, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
+-Fixed issue: Security issues found by Michael Mazzolini (Olle Haerstedt)
+-Fixed issue #17432: Group randomization shuffles only questions from first group (Gabriel Jenik)
+-Fixed issue #17432: Group randomization shuffles only questions from first group (#1987) (Gabriel Jenik)
+-Fixed issue #17148: Publication & access control settings - Start Date / Expiry Date Picker inaccessible in resized browser window (#1984) (Gabriel Jenik)
+-Fixed issue #17480: Unable to reload with token + persistence + allow edit (Denis Chenu)
+-Fixed issue #17367: Survey policy error not show in vanilla (Denis Chenu)
+-Fixed issue: Privacy was not shown in all in one survey (Denis Chenu)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni, Microchip
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
+Changes from 3.27.8 (build 210721) to 3.27.9 (build 210726) July 26, 2021
+-Fixed issue #17470 [security]: Arbitrary file read in participant functionality (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17469 [security]: SQL injection in participants (editShareInfo) (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17468 [security]: SQL injection in survey data entries (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17467 [security]: SQL injection in survey data entries (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17471 [security]: Update PHPMailer to 6.5.0 (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17373: Misuse of progress bar (#1953) (Denis Chenu)
+
+
+Changes from 3.27.7 (build 210713) to 3.27.8 (build 210721) July 21, 2021
+-Fixed issue: Seperator showing in Chrome when clicking back (Gabriel Jenik)
+-Fixed issue #17451: Upload file link after session expire leads to a message unclear to users (Denis Chenu)
+-Fixed issue #17381: Missing evaluation of EM in CSS script field (#1946) (Gabriel Jenik)
+-Fixed issue #17330: Ranking Question issue with mandatory setting (#1941) (Gabriel Jenik)
+
+
 Changes from 3.27.6 (build 210629) to 3.27.7 (build 210713) July 12, 2021
 +New feature: Delete response by id in remote API (#1932) (arnaudbore)
 -Fixed issue #14726: LanguageSelector national language (Olle Haerstedt)

@@ -2469,7 +2469,7 @@ function languageDropdown($surveyid, $selected)
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
 
     foreach ($slangs as $lang) {
-        $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
+        $link = $this->getController()->createUrl("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) {
             $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang, false)."</option>\n";
         }
@@ -3625,14 +3625,35 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $arQuestion->relevance=preg_replace("~\b{$sOldCode}~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
+                // The following regex only matches the last occurrence of the old code within each pair of brackets, so we apply the replace recursivelly
+                // to catch all occurrences.
+                $arQuestion->question = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
+                $bModified = $bModified || $iCount;
+                // Apply the replacement on question help text
+                $arQuestion->help = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->help, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
         if ($bModified) {
             $arQuestion->save();
+        }
+        // Also apply on question's default values
+        $defaultValues = DefaultValue::model()->findAllByAttributes(['qid' => $arQuestion->qid]);
+        foreach ($defaultValues as $defaultValue) {
+            $bModified = false;
+            foreach ($aCodeMap as $sOldCode => $sNewCode) {
+                if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                    continue;
+                }
+                $sOldCode = preg_quote($sOldCode, '~');
+                $defaultValue->defaultvalue = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $defaultValue->defaultvalue, -1, $iCount);
+                $bModified = $bModified || $iCount;
+            }
+            if ($bModified > 0) {
+                $defaultValue->save();
+            }
         }
     }
     $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
@@ -3640,13 +3661,30 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode) {
             $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $arGroup->grelevance=recursive_preg_replace("~\b{$sOldCode}~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
+            $arGroup->description = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified) {
             $arGroup->save();
+        }
+    }
+
+    // Apply the replacement on survey's end message
+    $surveyLanguageSettings = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    foreach ($surveyLanguageSettings as $surveyLanguageSetting) {
+        $bModified = false;
+        foreach ($aCodeMap as $sOldCode => $sNewCode) {
+            if (strlen($sOldCode) <= 1 || is_numeric($sOldCode)) {
+                continue;
+            }
+            $sOldCode = preg_quote($sOldCode, '~');
+            $surveyLanguageSetting->surveyls_endtext = recursive_preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $surveyLanguageSetting->surveyls_endtext, -1, $iCount);
+            $bModified = $bModified || $iCount;
+        }
+        if ($bModified) {
+            $surveyLanguageSetting->save();
         }
     }
 }
@@ -5083,4 +5121,27 @@ function safecount($element)
         return count($element);
     }
     return 0;
+}
+
+/**
+ * Applies preg_replace recursively until $recursion_limit is exceeded or no more replacements are done.
+ * @param array|string $pattern
+ * @param array|string $replacement
+ * @param array|string $subject
+ * @param int $limit
+ * @param int $count    If specified, this variable will be filled with the total number of replacements done (including all iterations)
+ * @param int $recursion_limit  Max number of iterations allowed
+ * @return string
+ */
+function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &$count = 0, $recursion_limit = 50)
+{
+    if ($recursion_limit < 0) {
+        return $subject;
+    }
+    $result = preg_replace($pattern, $replacement, $subject, $limit, $count);
+    if ($count > 0) {
+        $result = recursive_preg_replace($pattern, $replacement, $result, $limit, $auxCount, --$recursion_limit);
+        $count += $auxCount;
+    }
+    return $result;
 }

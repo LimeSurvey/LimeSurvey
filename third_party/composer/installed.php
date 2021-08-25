@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
+    'reference' => '0c1a0c59ff5c3f2827685d56513aa858a612b6a5',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '598bedfe12463e7ff38f3fbfa2d47ad127da73e0',
+      'reference' => '0c1a0c59ff5c3f2827685d56513aa858a612b6a5',
     ),
     'symfony/polyfill-ctype' => 
     array (

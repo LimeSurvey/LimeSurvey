@@ -87,7 +87,8 @@ $config['customassetversionnumber']  = 1;        // Used to generate the path of
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
 $config['allowedthemeimageformats'] = 'gif,ico,jpg,png'; // Image file types allowed to be uploaded in the themes section.
 $config['allowedthemeuploads'] = 'css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig'; // Other file types allowed to be uploaded in the themes section.
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+// NB: Allowing XML enables XSS, since XML can be an HTML page.
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 

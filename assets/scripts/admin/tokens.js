@@ -149,8 +149,11 @@ function submitEditToken(){
         success : function(result, stat) {
             if (result.success) {
                 $modal.modal('hide');
-            }
-            else {
+            } else {
+                var errorMsg = result.error.message ? result.error.message : result.error;
+                if (!errorMsg) errorMsg = "Unexpected error";
+                showError(errorMsg);
+                return;
             }
 
             // Using Try/Catch here to catch errors if there is no grid
@@ -172,6 +175,33 @@ function submitEditToken(){
             $('#modal-content').empty().append(html);
         }
     });
+}
+
+function showError(msg) {
+    $('#edittoken-error-container .alert-content').html(msg);
+    $('#edittoken-error-container').show();
+}
+
+/**
+ * Validates that mandatory additional attributes are filled
+ */
+function validateAdditionalAttributes() {
+    const validationErrorMsg = $('#edittoken').attr('data-validation-error');
+
+    let valid = true;
+    $('.mandatory-attribute').each(function () {
+        let value = $(this).val();
+        if (value === null || value === "") {
+            valid = false;
+            if (!$('#custom').is(':visible')) {
+                $('.nav-tabs a[href="#custom"]').tab('show');
+            }
+            showError(validationErrorMsg);
+            $(this).trigger('invalid');
+            return false;
+        }
+    });
+    return valid;
 }
 
 /**
@@ -267,14 +297,21 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         if($('#editTokenModal').length > 0 ){
             event.preventDefault();
             submitEditToken();
+            return;
+        }
+        if (!validateAdditionalAttributes()) {
+            event.preventDefault();
+            return false;
         }
     });
 
     /**
      * Save token
      */
-    $("#save-edittoken").click(function(){
-        submitEditToken();
+    $("#save-edittoken").off('click.token-save').on('click.token-save', function() {
+        if (validateAdditionalAttributes()) {
+            submitEditToken();
+        }
     });
 
 
