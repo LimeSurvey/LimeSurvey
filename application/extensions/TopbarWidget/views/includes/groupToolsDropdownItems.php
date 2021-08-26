@@ -46,7 +46,7 @@
     <?php else:?>
         <!-- Activated -->
         <li class="disabled">
-            <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
+            <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add or delete a group on an active survey."); ?>" >
                 <span class="fa fa-trash"></span>
                 <?php eT("Delete"); ?>
             </a>
