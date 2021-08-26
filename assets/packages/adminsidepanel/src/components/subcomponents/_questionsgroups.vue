@@ -18,7 +18,7 @@
                     :disabled="!(createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1)"
                     class="btn btn-small btn-default ls-space margin right-5 pjax"
                     data-toggle="tooltip"
-                    :title="buttonDisabledTooltip"
+                    :title="buttonDisabledTooltipGroups"
                 >
                     <i class="fa fa-plus"></i>&nbsp;
                     {{"createPage"|translate}}
@@ -40,7 +40,7 @@
                     class="btn btn-small btn-primary ls-space margin right-10 pjax"
                     :disabled="!createQuestionAllowed"
                     data-toggle="tooltip"
-                    :title="buttonDisabledTooltip">
+                    :title="buttonDisabledTooltipQuestions">
                     <i class="fa fa-plus-circle"></i>&nbsp;
                     {{"createQuestion"|translate}}
                 </a>
@@ -183,9 +183,15 @@ export default {
         createQuestionLink() { 
             return window.SideMenuData.createQuestionLink 
         },
-        buttonDisabledTooltip() {
+        buttonDisabledTooltipQuestions() {
             if (this.surveyIsActive) {
-                return window.SideMenuData.buttonDisabledTooltip
+                return window.SideMenuData.buttonDisabledTooltipQuestions
+            }
+            return "";
+        },
+        buttonDisabledTooltipGroups() {
+            if (this.surveyIsActive) {
+                return window.SideMenuData.buttonDisabledTooltipGroups
             }
             return "";
         },
