@@ -17,6 +17,9 @@ class PasswordManagement
     const EMAIL_TYPE_REGISTRATION = 'registration';
     const EMAIL_TYPE_RESET_PW = 'resetPassword';
     const MIN_TIME_NEXT_FORGOT_PW_EMAIL = 5; //forgot pw email is send again, only after 5 min delay
+    const USER_NOTIFICATION_MSG = 'If the username and email address is valid and you are allowed to use the internal 
+                    database authentication a new password has been sent to you. Email is send only once in ' .
+    self::MIN_TIME_NEXT_FORGOT_PW_EMAIL . ' minutes.';
 
     /** @var $user \User */
     private $user;
@@ -176,20 +179,12 @@ class PasswordManagement
             /* Go to send email and set password*/
             if ($mailer->sendMessage()) {
                 // For security reasons, we don't show a successful message
-                $sMessage = gT(
-                    'If the username and email address is valid and you are allowed to use the internal 
-                    database authentication a new password has been sent to you.'
-                    ) . gT('Email is send only once in 5 minutes. You have to wait ') .
-                    self::MIN_TIME_NEXT_FORGOT_PW_EMAIL . gt(' minutes to try again');
+                $sMessage = gT(self::USER_NOTIFICATION_MSG);
             } else {
                 $sMessage = gT('Email failed');
             }
         } else {
-            $sMessage = gT(
-                'If the username and email address is valid and you are allowed to use the internal 
-                database authentication a new password has been sent to you.'
-            ) . gT('Email is send only once in 5 minutes. You have to wait ') .
-                self::MIN_TIME_NEXT_FORGOT_PW_EMAIL . gt(' minutes to try again');
+            $sMessage = gT(self::USER_NOTIFICATION_MSG);
         }
 
         return $sMessage;
