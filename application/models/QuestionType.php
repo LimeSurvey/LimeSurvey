@@ -526,9 +526,9 @@ class QuestionType extends StaticModel
     {
         if ($this->isString) {
             if ($this->isChar) {
-                return Field::TYPE_CHAR;
+                return 'char';
             } else {
-                return Field::TYPE_STRING;
+                return 'string';
             }
         }
         return $this->getFieldDataType();
@@ -540,10 +540,10 @@ class QuestionType extends StaticModel
     public function getFieldDataType()
     {
         if ($this->isString) {
-            return Field::TYPE_STRING;
+            return 'string';
         }
         if ($this->isInteger) {
-            return Field::TYPE_INTEGER;
+            return 'integer';
         }
 
         throw new \Exception("Undefined field data type for QuestionType {$this->code}");
