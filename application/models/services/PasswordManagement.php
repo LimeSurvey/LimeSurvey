@@ -177,15 +177,19 @@ class PasswordManagement
             if ($mailer->sendMessage()) {
                 // For security reasons, we don't show a successful message
                 $sMessage = gT(
-                    'If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.'
-                );
+                    'If the username and email address is valid and you are allowed to use the internal 
+                    database authentication a new password has been sent to you.'
+                    ) . gT('Email is send only once all 5 minutes. You have to wait ') .
+                    self::MIN_TIME_NEXT_FORGOT_PW_EMAIL . gt(' minutes to try again');
             } else {
                 $sMessage = gT('Email failed');
             }
         } else {
             $sMessage = gT(
-                'If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.'
-            );
+                'If the username and email address is valid and you are allowed to use the internal 
+                database authentication a new password has been sent to you.'
+            ) . gT('Email is send only once all 5 minutes. You have to wait ') .
+                self::MIN_TIME_NEXT_FORGOT_PW_EMAIL . gt(' minutes to try again');
         }
 
         return $sMessage;
