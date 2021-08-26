@@ -176,12 +176,12 @@ class QuestionTemplate extends CFormModel
     /**
      * Register a core css file
      * @param string $sCssFile
-     * @param int $pos
+     * @param int $media
      */
-    public function registerCssFile($sCssFile, $pos = CClientScript::POS_HEAD)
+    public function registerCssFile($sCssFile, $media = '')
     {
         if ($this->templateLoadsCoreCss) {
-            Yii::app()->getClientScript()->registerCssFile($sCssFile, $pos);
+            Yii::app()->getClientScript()->registerCssFile($sCssFile, $media);
         }
     }
 
@@ -327,7 +327,7 @@ class QuestionTemplate extends CFormModel
                 } else {
                     $templateurl = $this->getTemplateUrl();
                     foreach ($aCssFiles as $sCssFile) {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile", LSYii_ClientScript::POS_BEGIN);
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
                     }
                     foreach ($aJsFiles as $sJsFile) {
                         Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile", LSYii_ClientScript::POS_BEGIN);
