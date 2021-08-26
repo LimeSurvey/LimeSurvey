@@ -35,6 +35,8 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
 
     var sReplacementFieldTitle = '".gT('Placeholder fields','js')."';
     var sReplacementFieldButton = '".gT('Insert/edit placeholder field','js')."';
+    var sSwitchToolbarFullTitle = '".gT('Show full toolbar','js')."';
+    var sSwitchToolbarBasicTitle = '".gT('Show basic toolbar','js')."';
     var editorwindowsHash = new Object();
 
     function find_popup_editor(fieldname)
@@ -60,10 +62,19 @@ $script.="CKEDITOR.on('instanceReady', function(event) {
 
         if (activepopup == null)
         {
-            document.getElementById(fieldname).readOnly=true;
+            var targetField = document.getElementById(fieldname);
+            targetField.readOnly=true;
             document.getElementById(controlidena).style.display='none';
             document.getElementById(controliddis).style.display='';
-            popup = window.open('".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+            var editorurl = '".$this->createUrl('admin/htmleditor_pop/sa/index')."/name/'+fieldname+'/text/'+fieldtext+'/type/'+fieldtype+'/action/'+action+'/sid/'+sid+'/gid/'+gid+'/qid/'+qid+'/lang/".App()->language."';
+            
+            // Override language direction if 'data-contents-dir' attribute is set in the target field
+            if (targetField.hasAttribute('data-contents-dir')) {
+                var inputLangDirection = targetField.getAttribute('data-contents-dir');
+                editorurl = editorurl + '/contdir/' + (inputLangDirection ? inputLangDirection : '');
+            }
+
+            popup = window.open(editorurl,'', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
 
             editorwindowsHash[fieldname] = popup;
         }

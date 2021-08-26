@@ -108,6 +108,7 @@ class Participant extends LSActiveRecord
         );
     }
 
+    // @todo do we need this?
     // public function getCountActiveSurveys(){
 
     //     $count =  count($this->surveylinks);
@@ -116,25 +117,54 @@ class Participant extends LSActiveRecord
     // }
 
     /**
+     * Returns buttons for grid view
      * @return string
      */
     public function getButtons()
     {
-        $buttons = "<div style='white-space: nowrap'>";
+        $buttons = "<div style='white-space: nowrap;'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;' style='margin-left: 5px;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
         if ($this->userHasPermissionToEdit()) {
             // Edit button
             $editData = array(
-                'action_participant_editModal',
+                'green-border action_participant_editModal',
                 '',
                 gT("Edit this participant"),
-                'edit'
+                'pencil'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
+
+            // Add participant to survey
+            $addParticipantData = array(
+                'action_participant_addToSurvey',
+                '',
+                gT("Add participant to survey"),
+                'user-plus'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $addParticipantData);
+
+            // Survey information
+            $listActiveSurveysData = array(
+                'action_participant_infoModal',
+                '',
+                gT("List active surveys"),
+                'search'
+            );
+            $buttons .= vsprintf($raw_button_template, $listActiveSurveysData);
+
+            // Share this participant
+            $shareParticipantData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $shareParticipantData);
 
             // Only owner or superadmin can delete
             $userId = Yii::app()->user->id;
@@ -143,30 +173,21 @@ class Participant extends LSActiveRecord
             if ($this->owner_uid == $userId || $isSuperAdmin || $deletePermission) {
                 // Delete button
                 $deleteData = array(
-                    'action_participant_deleteModal',
+                    'red-border action_participant_deleteModal',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'trash'
                 );
-                $buttons .= vsprintf($raw_button_template, $deleteData);
             } else {
                 // Invisible button
                 $deleteData = array(
-                    'action_participant_deleteModal invisible',
+                    'red-border action_participant_deleteModal invisible',
                     'text-danger',
                     gT("Delete this participant"),
-                    'trash text-danger'
+                    'trash'
                 );
-                $buttons .= vsprintf($raw_button_template, $deleteData);
             }
-            // Share this participant
-            $infoData = array(
-                'action_participant_shareParticipant',
-                '',
-                gT("Share this participant"),
-                'share'
-            );
-            $buttons .= vsprintf($raw_button_template, $infoData);
+            $buttons .= vsprintf($raw_button_template, $deleteData);
         } else {
             // Three empty buttons for correct alignment
             // TODO: For some reason, the delete button is smaller than the others
@@ -193,7 +214,17 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
             }
-            $buttons .= vsprintf($raw_button_template, $deleteData);
+
+            // Share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
+
+           
             $infoData = array(
                 'action_participant_shareParticipant invisible',
                 '',
@@ -202,24 +233,6 @@ class Participant extends LSActiveRecord
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
         }
-
-        // Survey information
-        $infoData = array(
-            'action_participant_infoModal',
-            '',
-            gT("List active surveys"),
-            'search'
-        );
-        $buttons .= vsprintf($raw_button_template, $infoData);
-
-        // Add participant to survey
-        $infoData = array(
-            'action_participant_addToSurvey',
-            '',
-            gT("Add participant to survey"),
-            'user-plus'
-        );
-        $buttons .= vsprintf($raw_button_template, $infoData);
 
         $buttons .= "</div>";
         return $buttons;
@@ -356,92 +369,94 @@ class Participant extends LSActiveRecord
      */
     public function getColumns()
     {
-        $cols = array(
-            array(
-                "name" => 'checkbox',
-                "type" => 'raw',
+        $cols = [
+            [
+                "name"   => 'checkbox',
+                "type"   => 'raw',
                 "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
                 "filter" => false
-            ),
-            array(
-                "name" => 'buttons',
-                "type" => 'raw',
+            ],
+            [
+                "name"   => 'buttons',
+                "type"   => 'raw',
                 "header" => gT("Action"),
                 "filter" => false
-            ),
-            array(
+            ],
+            [
                 "name" => 'lastname'
-            ),
-            array(
+            ],
+            [
                 "name" => 'firstname'
-            ),
-            array(
+            ],
+            [
                 "name" => 'email'
-            ),
-            array(
-                "name" => 'language',
-                "value" => 'getLanguageNameFromCode($data->language, false)',
+            ],
+            [
+                "name"   => 'language',
+                "value"  => 'getLanguageNameFromCode($data->language, false)',
                 'filter' => $this->allUsedLanguagesWithRealName
-            ),
-            array(
-                "name" => 'countActiveSurveys',
-                "value" => '$data->getCountActiveSurveys()',
-                "header" => gT("Active surveys"),
-                "htmlOptions" => array('width' => '80px')
-            ),
-            array(
-                "name" => 'owner.full_name',
+            ],
+            [
+                "name"        => 'countActiveSurveys',
+                "value"       => '$data->getCountActiveSurveys()',
+                "header"      => gT("Active surveys"),
+                "htmlOptions" => ['width' => '80px']
+            ],
+            [
+                "name"   => 'owner.full_name',
                 "header" => gT("Owner"),
                 "filter" => $this->getOwnersList($this->owner_uid)
-            ),
-            array(
-                "name" => 'blacklisted',
-                "value" => '$data->getBlacklistSwitchbutton()',
-                "type" => "raw",
-                "filter" => array('N' => gT("No"), 'Y' => gT('Yes'))
-            ),
-            array(
-                'name' => 'created',
+            ],
+            [
+                "name"   => 'blacklisted',
+                "value"  => '$data->getBlacklistSwitchbutton()',
+                "type"   => "raw",
+                "filter" => ['N' => gT("No"), 'Y' => gT('Yes')]
+            ],
+            [
+                'name'  => 'created',
                 'value' => '$data->createdFormatted',
-                'type' => 'raw',
-            )
-        );
+                'type'  => 'raw',
+            ]
+        ];
 
         $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
         foreach ($this->allExtraAttributes as $name => $attribute) {
-            if ($attribute['visible'] == "FALSE") {
+            if ($attribute['visible'] === "FALSE") {
                 continue;
             }
-            $col_array = array(
-                "value" => '$data->getParticipantAttribute($this->id)',
-                "id" => $name,
-                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
-                "type" => "html",
-            );
-            //textbox
-            if ($attribute['attribute_type'] == "TB") {
-                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+            if (!isset($extraAttributeParams[$name])) {
+                $extraAttributeParams[$name] = '';
             }
-            //dropdown
-            elseif ($attribute['attribute_type'] == "DD") {
+            $col_array = [
+                "value"  => '$data->getParticipantAttribute($this->id)',
+                "id"     => $name,
+                "header" => $attribute['defaultname'] . $this->setEncryptedAttributeLabel(0, 'Participant', $attribute['defaultname']),
+                "type"   => "html",
+            ];
+            //textbox
+            if ($attribute['attribute_type'] === "TB") {
+                $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
+            } elseif ($attribute['attribute_type'] === "DD") {
+                //dropdown
                 $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
-                $options_array = array(
+                $options_array = [
                     '' => ''
-                );
+                ];
                 foreach ($options_raw as $option) {
                     $options_array[$option['value']] = $option['value'];
                 }
 
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[" . $name . "]", $extraAttributeParams[$name], $options_array);
-            }
-            //date -> still a text field, too many errors with the gridview
-            elseif ($attribute['attribute_type'] == "DP") {
+            } elseif ($attribute['attribute_type'] === "DP") {
+                //date -> still a text field, too many errors with the gridview
                 $col_array["filter"] = TbHtml::textField("extraAttribute[" . $name . "]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
         }
         return $cols;
     }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -521,7 +536,7 @@ class Participant extends LSActiveRecord
             // See: https://forum.yiiframework.com/t/show-sql-generated-from-cdbcriteria/45021
 
             // Use "LIKE" for text-box, equal for other types
-            if ($attributeType == 'TB') {
+            if ($attributeType === 'TB') {
                 $bindKey = ':attribute_id' . $attributeId;
                 $callParticipantAttributes->where("attribute_id = " . $bindKey . " AND value LIKE '%" . $value . "%'", array($bindKey => $attributeId));
                 $criteria->params[$bindKey] = $attributeId;
@@ -595,6 +610,10 @@ class Participant extends LSActiveRecord
         return TbHtml::dropDownList('Participant[owner_uid]', $selected, $ownerList);
     }
 
+    /**
+     * Add Survey Filter
+     * @param $conditions
+     */
     public function addSurveyFilter($conditions)
     {
         $this->extraCondition = $this->getParticipantsSearchMultipleCondition($conditions);
@@ -812,7 +831,7 @@ class Participant extends LSActiveRecord
      * @param string|null $order
      * @return CDbCommand
      */
-    private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
+    private function getParticipantsSelectCommand($count, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
         $joinValue = array();
@@ -1472,7 +1491,6 @@ class Participant extends LSActiveRecord
         }
     }
 
-
     /**
      * This function is responsible for showing all the participant's shared by a particular user based on the user id
      * @param int $userid
@@ -1482,7 +1500,6 @@ class Participant extends LSActiveRecord
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
-
 
     /**
      * This function is responsible for showing all the participant's shared to the superadmin
@@ -2193,6 +2210,9 @@ class Participant extends LSActiveRecord
         }
     }
 
+    /** 
+     * Get Language Options.
+     **/
     public function getLanguageOptions()
     {
         $allLanguages = getLanguageData();
@@ -2209,6 +2229,10 @@ class Participant extends LSActiveRecord
         });
         return $returner;
     }
+
+    /**
+     * Get Owner Options 
+     **/
     public function getOwnerOptions()
     {
         return CHtml::listData(User::model()->findAll(), 'uid', 'full_name');
@@ -2242,6 +2266,10 @@ class Participant extends LSActiveRecord
         return $aOptionReturn;
     }
 
+    /**
+     * Return Default Encryption Options
+     * @return array
+     */
     public static function getDefaultEncryptionOptions()
     {
         return array(
@@ -2262,7 +2290,7 @@ class Participant extends LSActiveRecord
      *
      * @return array
      */
-    public function permissionCheckedActionsArray($aActions, $permissions)
+    public function permissionCheckedActionsArray(array $aActions, array $permissions): array
     {
         $checkedActions = [];
         foreach ($aActions as $aAction) {

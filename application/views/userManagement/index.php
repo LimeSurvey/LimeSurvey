@@ -18,16 +18,7 @@ echo viewHelper::getViewTestTag('usersIndex');
 <?php App()->end();?>
 <?php endif; ?>
 
-
-<div class="menubar surveymanagerbar">
-    <div class="row container-fluid">
-        <div class="col-xs-12 col-md-12">
-            <div class="h2"><?php eT("User management panel")?></div>
-        </div>
-    </div>
-</div>
 <?php $this->renderPartial('partial/_menubar'); ?>
-<div class="pagetitle h3"><?php eT("User control");?></div>
 
 <div class="row">
     <?php
@@ -61,12 +52,12 @@ echo viewHelper::getViewTestTag('usersIndex');
         <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'usermanagement--identity-gridPanel',
-                'itemsCssClass' => 'table table-striped items',
+                'itemsCssClass' => 'table items',
                 'dataProvider' => $model->search(),
                 'columns' => $columnDefinition,
                 'filter' => $model,
                 'afterAjaxUpdate' => 'LS.UserManagement.bindButtons',
-                'summaryText'   => "<div class='row' style='text-align:left; color:#000'>"
+                'summaryText'   => "<div class='row'>"
                 ."<div class='col-xs-6 content-left'>".$massiveAction."</div>"
                 ."<div class='col-xs-6'>"
                 .gT('Displaying {start}-{end} of {count} result(s).').' '
@@ -95,7 +86,7 @@ echo viewHelper::getViewTestTag('usersIndex');
         </script>
 </div>
 <div id='UserManagement-action-modal' class="modal fade UserManagement--selector--modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div id="usermanagement-modal-doalog" class="modal-dialog" role="document">
         <div class="modal-content">
         </div>
     </div>

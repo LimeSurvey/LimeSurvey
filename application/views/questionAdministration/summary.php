@@ -1,4 +1,4 @@
-<?php /**@var array $questionTheme */ ?>
+<?php /** @var QuestionTheme $questionTheme */ ?>
 
 <div class="col-lg-12 content-right">
 
@@ -102,14 +102,14 @@
             </td>
             <td>
                 <?php
-                    echo $questionTheme['title'] . ' (Type: ' .$questionTheme['question_type'] . ')';
+                    echo gT($questionTheme->title) . ' (Type: ' . $questionTheme->question_type . ')';
                 //echo $questionTypes[$question->type]['description'];
                 ?>
             </td>
         </tr>
 
         <!-- Warning : You need to add answer -->
-        <?php if ($answersCount == 0 && (int)$questionTheme['settings']->answerscales > 0):?>
+        <?php if ($answersCount == 0 && (int) ($questionTheme->getDecodedSettings()->answerscales) > 0):?>
         <tr>
             <td>
             </td>
@@ -124,7 +124,7 @@
         <?php endif; ?>
 
         <!--  Warning : You need to add subquestions to this question -->
-        <?php  if ($subquestionsCount == 0 && (int)$questionTheme['settings']->subquestions > 0): ?>
+        <?php  if ($subquestionsCount == 0 && (int) ($questionTheme->getDecodedSettings()->subquestions) > 0): ?>
             <tr>
                 <td></td>
                 <td>
@@ -193,7 +193,7 @@
         <!-- Group Relevance equation -->
         <?php if (trim($question->group->grelevance)!=''): ?>
             <tr>
-                <td><?php eT("Group relevance:"); ?></td>
+                <td><strong><?php eT("Group relevance:"); ?></strong></td>
                 <td>
                     <?php
                     LimeExpressionManager::ProcessString("{" . $question->group->grelevance . "}", $question->qid);
@@ -211,13 +211,17 @@
                 <tr>
                     <td>
                         <strong>
-                            <?php echo $setting['caption'];?>:
+                            <?php eT($setting['caption']);?>:
                         </strong>
                     </td>
                     <td>
                         <?php
-                            if (isset($setting['expression']) && $setting['expression'] == 2) {
-                                LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                            if (isset($setting['expression']) && $setting['expression'] > 0) {
+                                if ($setting['expression'] == 1) {
+                                    LimeExpressionManager::ProcessString($setting['value'], $question->qid);
+                                } else {
+                                    LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                                }
                                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             } else {
                                 if (($setting['i18n'] ==null) || ($setting['i18n'] == false)) {

@@ -1,18 +1,20 @@
 <?php
 
-/*
-   * LimeSurvey
-   * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
-   * All rights reserved.
-   * License: GNU/GPL License v2 or later, see LICENSE.php
-   * LimeSurvey is free software. This version may have been modified pursuant
-   * to the GNU General Public License, and as distributed it includes or
-   * is derivative of works licensed under the GNU General Public License or
-   * other free or open source software licenses.
-   * See COPYRIGHT.php for copyright notices and details.
-   *
-   * Files Purpose: lots of common functions
-*/
+/**
+ * LimeSurvey
+ * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ * Files Purpose: lots of common functions
+ */
+
+use LimeSurvey\Models\Services\QuestionAttributeHelper;
 
 /**
  * Class QuestionAttribute
@@ -34,13 +36,12 @@ class QuestionAttribute extends LSActiveRecord
     protected static $questionAttributesSettings = array();
 
     /**
-     * @inheritdoc
-     * @return QuestionAttribute
+     * @return static
      */
-    public static function model($class = __CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model = parent::model($className);
         return $model;
     }
 
@@ -56,7 +57,10 @@ class QuestionAttribute extends LSActiveRecord
         return 'qaid';
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @todo Remove?
+     */
     public function relations()
     {
         return array(
@@ -93,6 +97,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sValue
      * @param string $sLanguage
      * @return CDbDataReader
+     * @todo A function should not both set and get something; split into two functions
      */
     public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
     {
@@ -121,6 +126,7 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sAttributeName
      * @param string $sValue
      * @return CDbDataReader|boolean
+     * @todo A function should not both set and get something; split into two functions
      */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
@@ -153,6 +159,7 @@ class QuestionAttribute extends LSActiveRecord
      * @var array $aQids                    an array containing the list of primary keys for questions
      * @var array $aAttributesToUpdate    array continaing the list of attributes to update
      * @var array $aValidQuestionTypes    the question types we can update for those attributes
+     * @todo Missign noun in function name - set multiple what?
      */
     public function setMultiple($iSid, $aQids, $aAttributesToUpdate, $aValidQuestionTypes)
     {
@@ -203,10 +210,9 @@ class QuestionAttribute extends LSActiveRecord
      * @access public
      * @param int $iQuestionID
      * @param string $sLanguage restrict to this language (if null $oQuestion->survey->allLanguages will be used)
-     * @return array|boolean
+     * @return array|false
      *
      * @throws CException throws exception if questiontype is null
-     * @todo this function is doing to much things to prepare just an array. Find a better solution (maybe service class)
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
@@ -226,7 +232,7 @@ class QuestionAttribute extends LSActiveRecord
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
 
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aQuestionAttributes = $questionAttributeHelper->getQuestionAttributesWithValues($oQuestion, $sLanguage);
 
         $aLanguages = empty($sLanguage) ? $oQuestion->survey->allLanguages : [$sLanguage];
@@ -286,15 +292,11 @@ class QuestionAttribute extends LSActiveRecord
     public static function addAdditionalAttributesFromExtendedTheme($aAttributeNames, $oQuestion)
     {
         $retAttributeNamesExtended = $aAttributeNames;
-        /* @var $oAttributeValue QuestionAttribute*/
-        $oAttributeValue = self::model()->resetScope()->find(
-            "qid=:qid and attribute=:attribute",
-            ['qid' => $oQuestion->qid, 'attribute' => 'question_template']
-        );
-        if ($oAttributeValue !== null) {
-            $sQuestionTheme = $oAttributeValue->value;
-            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($sQuestionTheme, $oQuestion->type);
-            $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        /** @var string|null */
+        $questionThemeName = $oQuestion->question_theme_name;
+        if (!empty($questionThemeName)) {
+            $aThemeAttributes = QuestionTheme::getAdditionalAttrFromExtendedTheme($questionThemeName, $oQuestion->type);
+            $questionAttributeHelper = new QuestionAttributeHelper();
             $retAttributeNamesExtended = $questionAttributeHelper->mergeQuestionAttributes($retAttributeNamesExtended, $aThemeAttributes);
         }
 
@@ -302,23 +304,9 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * @param $data
-     * @return bool
-     * @deprecated at 2018-01-29 use $model->attributes = $data && $model->save()
-     */
-    public static function insertRecords($data)
-    {
-        $attrib = new self();
-        foreach ($data as $k => $v) {
-            $attrib->$k = $v;
-        }
-        return $attrib->save();
-    }
-
-    /**
      * @param string $fields
      * @param mixed $condition
-     * @param string $orderby
+     * @param string|false $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
@@ -327,7 +315,7 @@ class QuestionAttribute extends LSActiveRecord
             ->select($fields)
             ->from($this->tableName())
             ->where($condition);
-        if ($orderby != false) {
+        if ($orderby !== false) {
             $command->order($orderby);
         }
         return $command->queryAll();
@@ -360,7 +348,9 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Get default settings for an attribute, return an array of string|null
-     * @return (string|bool|null)[]
+     *
+     * @todo Move to static property?
+     * @return array<string, mixed>
      */
     public static function getDefaultSettings()
     {
@@ -434,15 +424,18 @@ class QuestionAttribute extends LSActiveRecord
      * the attribute is missing. In those cases, the deault "core" is used.
      *
      * @return string question_template or 'core' if it not exists
+     * 
+     * @deprecated use $question->question_theme_name instead (Question model)
      */
     public static function getQuestionTemplateValue($questionID)
     {
-        $question_template = QuestionAttribute::model()->findByAttributes([
-            'qid' => $questionID,
-            'attribute' => 'question_template'
-        ]);
-
-        return !empty($question_template) ? $question_template->value : 'core';
+        /**
+         * TODO: This method was modified to get the theme name from the proper place, but it should be deprecated,
+         *       as it no longer makes sense (question theme is not a QuestionAttribute anymore).
+         */
+        $question = Question::model()->findByPk($questionID);
+        $value = !empty($question) && !empty($question->question_theme_name) ? $question->question_theme_name : 'core';
+        return $value;
     }
 
     /**
@@ -450,7 +443,7 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return array The advanced attribute settings for this question type
+     * @return ?array The advanced attribute settings for this question type
      */
     protected static function getAdvancedAttributesFromXml($sXmlFilePath)
     {
@@ -465,7 +458,7 @@ class QuestionAttribute extends LSActiveRecord
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), true);
             // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
@@ -503,7 +496,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
 
         return $aAttributes;
@@ -514,7 +507,8 @@ class QuestionAttribute extends LSActiveRecord
      *
      * @param string $sXmlFilePath Path to XML
      *
-     * @return array The general attribute settings for this question type
+     * @return ?array The general attribute settings for this question type
+     * @todo What's the opposite of a "general" attribute? How many types of attributes are there?
      */
     protected static function getGeneralAttibutesFromXml($sXmlFilePath)
     {
@@ -528,7 +522,7 @@ class QuestionAttribute extends LSActiveRecord
             $xml_config = simplexml_load_file($sXmlFilePath);
             $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), true);
             // if only one attribute, then it doesn't return numeric index
-            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))) {
+            if (!empty($aXmlAttributes) && !array_key_exists('0', $aXmlAttributes['attribute'])) {
                 $aTemp = $aXmlAttributes['attribute'];
                 unset($aXmlAttributes);
                 $aXmlAttributes['attribute'][0] = $aTemp;
@@ -551,7 +545,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // Filter all pesky '[]' values (empty values should be null, e.g. <default></default>).
-        $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
+        $questionAttributeHelper = new QuestionAttributeHelper();
         $aAttributes = $questionAttributeHelper->sanitizeQuestionAttributes($aAttributes);
 
         return $aAttributes;
@@ -584,5 +578,4 @@ class QuestionAttribute extends LSActiveRecord
 
         return (array) $result->get('questionAttributes');
     }
-
 }

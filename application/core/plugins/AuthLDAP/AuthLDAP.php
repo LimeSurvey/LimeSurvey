@@ -330,7 +330,10 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         // Try to connect
-        $ldapconn = ldap_connect($ldapserver, (int) $ldapport);
+        if (strpos($ldapserver, 'ldaps://') === false && strpos($ldapserver, 'ldap://') === false) {
+            $ldapserver = 'ldap://' . $ldapserver;
+        }
+        $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
         if (false == $ldapconn) {
             return array("errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection'));
         }
@@ -347,7 +350,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0) {
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
-                ldap_close($ldapconn); // all done? close connection
+                ldap_unbind($ldapconn); // all done? close connection
                 return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
             }
         }

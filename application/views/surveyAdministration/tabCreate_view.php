@@ -8,6 +8,7 @@
 */
 ?>
 <?php
+// TODO: Don't do this
 extract($data);
 
 Yii::app()->loadHelper('admin.htmleditor');
@@ -37,7 +38,7 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
-            <div class="tab-content">
+            <div class="">
                 <div class="tab-pane active" id="texts" data-count="1">
                     <?php
 
@@ -57,85 +58,83 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
 
                     ?>
 
-                    <div class="container-center">
-                        <div class="row">
-                            <div class="form-group col-md-4 col-sm-6">
-                                <label for="surveyTitle"><?= gT('Survey title')?></label>
-                                <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
-                            </div>
-                            <div class="form-group col-md-4 col-md-6">
-                                <label for="createsample" class="control-label"><?= gT('Create example question group and question?')?></label>
-                                <div>
-                                    <input type="checkbox" name="createsample" />
-                                </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label for="surveyTitle"><?= gT('Survey title:')?></label>
+                            <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" required="required" maxlength="200">
+                            <div class="form-control-static">
+                                <span class='annotation text-warning'><?php echo  gT("Required"); ?> </span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-4 col-md-6" >
-                                <label class="control-label" for="language"><?= gT('Base language')?></label>
-                                <div class="">
-                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                                        'asDropDownList' => true,
-                                        'htmlOptions'=>array('style'=>"width: 100%"),
-                                        'data' => isset($listLanguagesCode) ?  $listLanguagesCode : [],
-                                        'value' => $defaultLanguage, //or better user language ...
-                                        'name' => 'language',
-                                        'pluginOptions' => array()
-                                    ));?>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-4 col-md-6">
-                                <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
-                                <div class="">
-                                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                                        'asDropDownList' => true,
-                                        'htmlOptions'=>array('style'=>"width: 100%"),
-                                        'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
-                                        'value' => $oSurvey->gsid,
-                                        'name' => 'gsid',
-                                        'pluginOptions' => array()
-                                    ));?>
-                                </div>
+                        <div class="form-group col-4">
+                            <label class="control-label" for="language"><?= gT('Base language:')?></label>
+                            <div class="">
+                                <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                    'asDropDownList' => true,
+                                    'htmlOptions'=>array('style'=>"width: 100%"),
+                                    'data' => isset($listLanguagesCode) ?  $listLanguagesCode : [],
+                                    'value' => $defaultLanguage, //or better user language ...
+                                    'name' => 'language',
+                                    'pluginOptions' => array()
+                                ));?>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-4 col-md-6">
-                                <label class="control-label" for="administrator"><?= gT("Administrator:")?></label>
-                                <div class="">
-                                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                                        'name' => 'administrator',
-                                        'value'=> 'default',
-                                        'selectOptions' => isset($optionsAdmin) ?  $optionsAdmin : [],
-                                    ));?>
-                                </div>
+                        <div class="form-group col-4">
+                            <label class=" control-label" for='gsid'><?php  eT("Survey group:"); ?></label>
+                            <div class="">
+                                <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                                    'asDropDownList' => true,
+                                    'htmlOptions'=>array('style'=>"width: 100%"),
+                                    'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
+                                    'value' => $oSurvey->gsid,
+                                    'name' => 'gsid',
+                                    'pluginOptions' => array()
+                                ));?>
                             </div>
-                            <div id="conditional-administrator-fields" style="display: none;">
-                                <div class="form-group col-md-4 col-md-6">
-                                    <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
-                                    <?php echo CHtml::textField('admin', '', array(
-                                        'class' => 'form-control',
-                                        'id' => 'admin',
-                                        'size' => '50',
-                                        'maxlength' => '50',
-                                    ));?>
-                                </div>
-                                <div class="form-group col-md-4 col-md-6">
-                                    <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
-                                    <?php echo CHtml::textField('adminemail', '', array(
-                                        'class' => 'form-control',
-                                        'id' => 'adminemail',
-                                        'size' => '50',
-                                    ));?>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="administrator"><?= gT("Administrator:")?></label>
+                            <div class="">
+                                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                                    'name' => 'administrator',
+                                    'value'=> 'default',
+                                    'selectOptions' => isset($optionsAdmin) ?  $optionsAdmin : [],
+                                ));?>
+                            </div>
+                        </div>
+                        <div id="conditional-administrator-fields" style="display: none;">
+                            <div class="form-group col-4">
+                                <label class="control-label" for="admin"><?= gT("Administrator name")?></label>
+                                <?php echo CHtml::textField('admin', '', array(
+                                    'class' => 'form-control',
+                                    'id' => 'admin',
+                                    'size' => '50',
+                                    'maxlength' => '50',
+                                ));?>
+                            </div>
+                            <div class="form-group col-4">
+                                <label class=" control-label" for='adminemail'><?php  eT("Administrator email"); ?></label>
+                                <?php echo CHtml::textField('adminemail', '', array(
+                                    'class' => 'form-control',
+                                    'id' => 'adminemail',
+                                    'size' => '50',
+                                ));?>
+                            </div>
+                        </div>
+                        <!-- Submit -->
+                        <div class='form-group col-4 text-center'>
+                            <div class=''>
+                                <input id="create-survey-submit" type='submit' class="btn btn-primary col-6" value='<?php  eT("Create survey"); ?>' />
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-            <input type="hidden" name="saveandclose" id="submitaddnesurvey" value="1" />
+        <input type="hidden" name="saveandclose" id="submitaddnesurvey" value="1" />
     </div>
 </form>
 

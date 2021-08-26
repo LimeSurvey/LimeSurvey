@@ -148,6 +148,16 @@ if (isset($aSettings['config']['debug'])) {
         define('YII_DEBUG', true);
         if ($aSettings['config']['debug']>1) {
             error_reporting(E_ALL);
+
+            // @see https://manual.limesurvey.org/Code_quality_guide#Assertions
+            assert_options(ASSERT_ACTIVE, true);
+            assert_options(ASSERT_WARNING, false);
+            assert_options(
+                ASSERT_CALLBACK,
+                function ($file, $line, $assertion, $message) {
+                    throw new Exception("The assertion $assertion in $file on line $line has failed: $message");
+                }
+            );
         } else {
             error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
         }

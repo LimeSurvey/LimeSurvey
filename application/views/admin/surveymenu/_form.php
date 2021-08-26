@@ -14,10 +14,14 @@
 	'enableAjaxValidation'=>false,
 	'htmlOptions' => ['class' =>'form '],
 	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
-)); ?>
-	<div class="modal-header">
-		<?php $model->isNewRecord ? eT('Create new survey menu') : eT('Edit survey menu') ?>
-	</div>
+));
+
+ $modalTitle = $model->isNewRecord ? gT('Create new survey menu') : gT('Edit survey menu');
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => $modalTitle]
+);
+?>
 	<div class="modal-body">
 		<div class="container-fluid">
 			<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
@@ -88,8 +92,9 @@
 		<?php echo $form->hiddenField($model, 'created_by', ['value' => (empty($model->created_by) ? $user : $model->created_by)]);?>
 		<?php echo $form->hiddenField($model, 'id');?>
 	</div>
+    </div>
 	<div class="modal-footer">
+        <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel');?></button>
 		<?php echo TbHtml::submitButton((empty($model->id) ? gT('Create') : gT('Save')), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
-		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT('Close');?></button>
 	</div>
 <?php $this->endWidget(); ?>

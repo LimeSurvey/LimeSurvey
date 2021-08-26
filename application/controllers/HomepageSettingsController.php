@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class HomepageSettingsController
+ */
 class HomepageSettingsController extends LSBaseController
 {
     /**
@@ -50,7 +53,16 @@ class HomepageSettingsController extends LSBaseController
 
         $dataProviderBox = new CActiveDataProvider('Box');
 
-        $this->aData = [];
+        $this->aData = [
+            'fullpagebar' => [
+                'boxbuttons' => true,
+                'returnbutton' => [
+                    'url'=>'admin/index',
+                    'text'=>gT('Back'),
+                ],
+            ],
+            'pageTitle' => gT('Dashboard'),
+        ];
 
         $this->render('index', [
             'dataProviderBox' => $dataProviderBox,
@@ -95,11 +107,25 @@ class HomepageSettingsController extends LSBaseController
             }
         }
 
+        $this->aData = [
+            'pageTitle' => gT('New box'),
+            'fullpagebar' => [
+                'savebutton' => [
+                    'form' => 'boxes-form',
+                ],
+                'saveandclosebutton' => [
+                    'form' => 'boxes-form'
+                ],
+                'white_closebutton' => [
+                    'url' => Yii::app()->createUrl('homepageSettings/index'),
+                ],
+            ],
+            'model' => $model,
+        ];
+
         $this->render(
             'create',
-            [
-                'model' => $model
-            ]
+            $this->aData
         );
     }
 
@@ -138,10 +164,23 @@ class HomepageSettingsController extends LSBaseController
                 Yii::app()->user->setFlash('error', gT('Could not update box'));
             }
         }
+        $this->aData = [
+            'pageTitle' => gT('Update box ') . $model->title,
+            'fullpagebar' => [
+                'savebutton' => [
+                    'form' => 'boxes-form',
+                ],
+                'saveandclosebutton' => [
+                    'form' => 'boxes-form'
+                ],
+                'white_closebutton' => [
+                    'url' => Yii::app()->createUrl('homepageSettings/index'),
+                ],
+             ],
+            'model' => $model,
+        ];
 
-        $this->render('update', [
-           'model' =>  $model
-        ]);
+        $this->render('update', $this->aData);
     }
 
     /**

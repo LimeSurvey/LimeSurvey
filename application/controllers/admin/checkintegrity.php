@@ -36,13 +36,15 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
     }
 
+    /**
+     * @throws Exception
+     */
     public function index()
     {
         $aData = $this->_checkintegrity();
-
-
+        $aData['pageTitle'] = gT('Check data integrity');
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
-        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 
         $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
@@ -532,6 +534,7 @@ class CheckIntegrity extends Survey_Common_Action
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
      * @return array Array with all found issues.
+     * @throws CDbException
      */
     protected function _checkintegrity()
     {
@@ -661,8 +664,6 @@ class CheckIntegrity extends Survey_Common_Action
 
         unset($oSurveys);
 
-
-
         // Fix subquestions
         fixSubquestions();
 
@@ -757,7 +758,6 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($question_attributes as $question_attribute) {
             $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
         } // foreach
-
 
         /**********************************************************************/
         /*     Check default values                                           */
@@ -893,7 +893,6 @@ class CheckIntegrity extends Survey_Common_Action
             $aDelete['questions'][] = array('qid' => $question['qid'], 'reason' => gT('No matching group') . " ({$question['gid']})");
         }
 
-
         /**********************************************************************/
         /*     Check question localizations
         /**********************************************************************/
@@ -995,8 +994,9 @@ class CheckIntegrity extends Survey_Common_Action
                     $sDate = (string) date('Y-m-d H:i:s', (int) mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
 
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-                    $datetimeobj = DateTime::createFromFormat('Y-m-d H:i:s', dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')));
-                    $sDate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
+                    Yii::app()->loadLibrary('Date_Time_Converter');
+                    $datetimeobj = new Date_Time_Converter(dateShift($sDate, 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s');
+                    $sDate = $datetimeobj->convert($dateformatdetails['phpdate'] . " H:i");
 
                     $sQuery = 'SELECT count(*) as recordcount FROM ' . $sTableName;
                     $aFirstRow = Yii::app()->db->createCommand($sQuery)->queryRow();
@@ -1018,7 +1018,6 @@ class CheckIntegrity extends Survey_Common_Action
         //3: If it doesn't offer it for deletion
         $sQuery = dbSelectTablesLike('{{old_token}}%');
         $aTables = Yii::app()->db->createCommand($sQuery)->queryColumn();
-
 
         $aTokenSIDs = array();
         $aFullOldTokenSIDs = array();

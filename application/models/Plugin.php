@@ -108,7 +108,13 @@ class Plugin extends LSActiveRecord
             }
             return new ExtensionConfig($config);
         } else {
-            throw new \Exception('Missing configuration file for plugin ' . $this->name);
+            throw new \Exception(
+                sprintf(
+                    'Missing configuration file for plugin %s, looked in location %s',
+                    $this->name,
+                    $file
+                )
+            );
         }
     }
 

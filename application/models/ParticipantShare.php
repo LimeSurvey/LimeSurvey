@@ -164,7 +164,14 @@ class ParticipantShare extends LSActiveRecord
                 )
             );
 
-            return "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
+            return "<a href='#' 
+            data-toggle='modal' 
+            data-target='#confirmation-modal'
+            data-title='". gt('Unshare this participant')."'
+            data-btnclass='btn-danger'
+            data-btntext='". gt('Unshare') ."'
+            data-message='" . gT('Do you really want to unshare this participant?') . "' 
+            data-onclick='(function() { LS.CPDB.deleteSingleParticipantShare(\"" . $url . "\"); })'>"
                 . "<button class='btn btn-xs btn-default action_delete_shareParticipant'><i class='fa fa-trash text-danger'></i></button>"
                 . "</a>";
         } else {
@@ -217,23 +224,23 @@ class ParticipantShare extends LSActiveRecord
             array(
                 "name" => 'participant.lastname',
                 "header" => gT("Last name"),
-                "filter" => TbHtml::textField("Participant[lastname]", $participantFilter['lastname'])
+                "filter" => TbHtml::textField("Participant[lastname]", isset($participantFilter['lastname'])?$participantFilter['lastname']:'')
             ),
             array(
                 "name" => 'participant.firstname',
                 "header" => gT("First name"),
-                "filter" => TbHtml::textField("Participant[firstname]", $participantFilter['firstname'])
+                "filter" => TbHtml::textField("Participant[firstname]", isset($participantFilter['firstname'])?$participantFilter['firstname']:'')
             ),
             array(
                 "name" => 'participant.email',
                 "header" => gT("Email address"),
-                "filter" => TbHtml::textField("Participant[email]", $participantFilter['email'])
+                "filter" => TbHtml::textField("Participant[email]", isset($participantFilter['email'])?$participantFilter['email']:'')
             ),
             array(
                 "name" => 'share_uid',
                 "value" => '$data->sharedBy',
                 "type" => 'raw',
-                "header" => gT("Shared by"),
+                "header" => gT("Shared with"),
                 "filter" => $this->getSharedByList($this->share_uid)
             ),
             array(
@@ -304,9 +311,11 @@ class ParticipantShare extends LSActiveRecord
         $criteria->compare('share_uid', $this->share_uid);
         $criteria->compare('date_added', $this->date_added, true);
         $criteria->compare('can_edit', $this->can_edit, true);
-        $criteria->compare('participant.lastname', $participantFilter['lastname'], true);
-        $criteria->compare('participant.firstname', $participantFilter['firstname'], true);
-        $criteria->compare('participant.email', $participantFilter['email'], true);
+        if (!empty($participantFilter)){
+            $criteria->compare('participant.lastname', $participantFilter['lastname'], true);
+            $criteria->compare('participant.firstname', $participantFilter['firstname'], true);
+            $criteria->compare('participant.email', $participantFilter['email'], true);
+        }
 
         $pageSize = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
         return new LSCActiveDataProvider($this, array(
@@ -379,7 +388,14 @@ class ParticipantShare extends LSActiveRecord
             list($participantId, $uId) = explode("--", $row);
             Yii::app()->db
                 ->createCommand()
-                ->delete('{{participant_shares}}', "participant_id = '$participantId' AND share_uid = $uId");
+                ->delete(
+                    '{{participant_shares}}',
+                    sprintf(
+                        "participant_id = '%d' AND share_uid = %d",
+                        (int) $participantId,
+                        (int) $uId
+                    )
+                );
         }
     }
 

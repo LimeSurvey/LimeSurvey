@@ -153,7 +153,12 @@
                                             $defaultValue = DefaultValue::model()->findByAttributes(['qid' => $questionrow['qid']]);
                                             if($defaultValue !== null){
                                                 $defaultValueLanguage = DefaultValueL10n::model()->findByAttributes(['dvid' => $defaultValue->dvid, 'language' => $language]);
-                                                $defaultValueLanguageText = $defaultValueLanguage->defaultvalue;
+                                                // TODO: Small bug when importing survey with default answer, and then adding a new language after.
+                                                if ($defaultValueLanguage) {
+                                                    $defaultValueLanguageText = $defaultValueLanguage->defaultvalue;
+                                                } else {
+                                                    $defaultValueLanguageText = '';
+                                                }
                                             }else{
                                                 $defaultValueLanguageText = '';
                                             }

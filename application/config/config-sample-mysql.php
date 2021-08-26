@@ -29,7 +29,7 @@ return array(
             'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey;',
             'emulatePrepare' => true,
             'username' => 'root',
-            'password' => '',
+            'password' => 'root',
             'charset' => 'utf8mb4',
             'tablePrefix' => 'lime_',
         ),

@@ -246,7 +246,7 @@ class LSActiveRecord extends CActiveRecord
      * TODO: Should be split into seperate functions in the appropiate model or helper class
      * TODO: Make an interface for records that support encryption.
      */
-    public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName)
+    public function getAllEncryptedAttributes($iSurveyId, $sClassName)
     {
         $aAttributes = [];
         if ($sClassName == 'ParticipantAttribute') {
@@ -344,8 +344,9 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Decrypt single value
      * @param string $value String value which needs to be decrypted
+     * @return string the decrypted string
      */
-    public static function decryptSingle($value = '')
+    public static function decryptSingle($value = ''): string
     {
         // if $value is provided, it would decrypt
         if (!empty($value)) {
@@ -353,6 +354,37 @@ class LSActiveRecord extends CActiveRecord
             $sodium = Yii::app()->sodium;
             return $sodium->decrypt($value);
         }
+        return '';
+    }
+
+    /**
+     * Decrypt single value
+     * @param string $value String value which needs to be decrypted
+     * @return string the decrypted string
+     */
+    public static function decryptSingleOld($value = ''): string
+    {
+        static $sodium = null;
+        if (!isset($sodium)) {
+            // load sodium library
+            $sodium = Yii::app()->sodiumOld;
+        }
+        // if $value is provided, it would decrypt
+        if ($value) {
+            try {
+                return $sodium->decrypt($value);
+            } catch (throwable $e) {
+                // if decryption with oldDecrypt fails try it with new decryption
+                try {
+                    return LSActiveRecord::decryptSingle($value);
+                } catch (throwable $e) {
+                    // if decryption with new decryption fails just return the current value
+                    // this should not happen
+                    return $value;
+                }
+            }
+        }
+        return '';
     }
 
 
@@ -414,10 +446,8 @@ class LSActiveRecord extends CActiveRecord
         // TODO: Use OOP polymorphism instead of switching on class names.
         if ($class === 'ParticipantAttribute') {
             $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(["select" => "attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'"]), 'attribute_id', '');
-            foreach ($aParticipantAttributes as $attribute => $value) {
-                if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
-                    $this->value = $sodium->$action($this->value);
-                }
+            if (array_key_exists($this->attribute_id, $aParticipantAttributes)) {
+                $this->value = $sodium->$action($this->value);
             }
         } else {
             $attributes = $this->encryptAttributeValues($this->attributes, true, false);
@@ -440,7 +470,7 @@ class LSActiveRecord extends CActiveRecord
      * @return string
      * @throws CException
      */
-    public function setEncryptedAttributeLabel(int $surveyId = 0, string $className, string $attributeName)
+    public function setEncryptedAttributeLabel(int $surveyId, string $className, string $attributeName)
     {
         $encryptedAttributes = $this->getAllEncryptedAttributes($surveyId, $className);
         $encryptionNotice = gT("This field is encrypted and can only be searched by exact match. Please enter the exact value you are looking for.");

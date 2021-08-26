@@ -11,22 +11,13 @@ echo viewHelper::getViewTestTag('listSurveys');
 
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
-<div class="ls-space margin left-15 right-15 row list-surveys">
+<div class="ls-space row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
-        <li class="active"><a href="#surveys"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups"><?php eT('Survey groups'); ?></a></li>
+        <li class="active"><a href="#surveys" aria-controls="surveys" role="tab" data-toggle="tab"><?php eT('Survey list'); ?></a></li>
+        <li><a href="#surveygroups" aria-controls="surveygroups" role="tab" data-toggle="tab"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
         <div id="surveys" class="tab-pane active">
-            <?php if(Permission::model()->hasGlobalPermission('surveys','create')):?>
-                <div class="col-12">
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("surveyAdministration/newSurvey"); ?>" role="button">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Create a new survey");?>
-                    </a>
-                </div>
-            <?php endif;?>
-            <div class="pagetitle h3 ls-space margin top-25"><?php eT('Survey list'); ?></div>
             <!-- Survey List widget -->
             <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                         'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
@@ -36,14 +27,6 @@ echo viewHelper::getViewTestTag('listSurveys');
         </div>
 
         <div id="surveygroups" class="tab-pane">
-            <?php if(Permission::model()->hasGlobalPermission('surveysgroups','create')):?>
-                <div class="col-12">
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Create a new survey group");?>
-                    </a>
-                </div>
-            <?php endif;?>
             <div class="pagetitle h3 ls-space margin top-25"><?php eT('Survey groups'); ?></div>
             <div class="row">
                 <div class="col-sm-12 content-right">
@@ -51,7 +34,10 @@ echo viewHelper::getViewTestTag('listSurveys');
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider' => $groupModel->search(),
                         'columns' => $groupModel->columns,
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' ',
+                        'itemsCssClass' =>'table-striped',
+                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+                        'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id" ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     ));
                     ?>
                 </div>
@@ -60,10 +46,10 @@ echo viewHelper::getViewTestTag('listSurveys');
     </div>
 </div>
 <script>
-    $('#surveysystem a').click(function (e) {
-        window.location.hash = $(this).attr('href');
-        e.preventDefault();
-        $(this).tab('show');
+    $('#surveysystem a').on('shown.bs.tab', function () {
+        var tabId = $(this).attr('href');
+        $('.tab-dependent-button:not([data-tab="' + tabId + '"])').hide();
+        $('.tab-dependent-button[data-tab="' + tabId + '"]').show();
     });
     $(document).on('ready pjax:scriptcomplete', function(){
         if(window.location.hash){

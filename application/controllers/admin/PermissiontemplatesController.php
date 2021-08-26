@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class PermissiontemplatesController
+ */
 class PermissiontemplatesController extends Survey_Common_Action
 {
 
@@ -34,15 +37,18 @@ class PermissiontemplatesController extends Survey_Common_Action
         if ($aPermissiontemplatesParam) {
             $model->setAttributes($aPermissiontemplatesParam, false);
         }
+
         $this->_renderWrappedTemplate(
             null,
             'permissiontemplates/index',
             array(
                 'model'         => $model,
-                'massiveAction' => $massiveAction
+                'massiveAction' => $massiveAction,
+                'pageTitle'     => gT('User roles'),
             )
         );
     }
+
     /**
      * Displays a particular model.
      * @param integer $ptid the ID of the model to be displayed
@@ -62,6 +68,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
+    /**
+     * Edit Role Modal.
+     */
     public function editrolemodal($ptid = null)
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -114,7 +123,7 @@ class PermissiontemplatesController extends Survey_Common_Action
      *
      * @return string $errorDiv
      */
-    private function renderErrors($errors)
+    private function renderErrors(array $errors)
     {
         $errorDiv = '<ul class="list-unstyled">';
         foreach ($errors as $key => $error) {
@@ -126,6 +135,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         return (string)$errorDiv;
     }
 
+    /**
+     * Show Import XML
+     */
     public function showImportXML()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -136,16 +148,17 @@ class PermissiontemplatesController extends Survey_Common_Action
         Yii::app()->getController()->renderPartial('permissiontemplates/partials/_import', []);
     }
 
+    /**
+     * Import XML
+     */
     public function importXML()
     {
-        
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
         $aPathinfo = pathinfo($_FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
         
- 
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('/admin/roles'));
@@ -190,6 +203,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         return;
     }
 
+    /**
+     * Set Permissions
+     */
     public function setpermissions()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -248,6 +264,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
+    /**
+     * Save Permissions
+     */
     public function savepermissions()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -304,6 +323,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         );
     }
 
+    /**
+     * Batch Delete
+     */
     public function batchDelete()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -338,8 +360,13 @@ class PermissiontemplatesController extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
         }
-        $ptid = Yii::app()->request->getPost('ptid', 0);
-        $this->loadModel($ptid)->delete();
+        $ptid = Yii::app()->request->getParam('ptid', 0);
+        try {
+            $this->loadModel((int)$ptid)->delete();
+            Yii::app()->setFlashMessage(gT("Role was successfully deleted."), 'success');
+        } catch (Exception $e) {
+            Yii::app()->setFlashMessage(gT("Role could not be deleted."), 'error');
+        }
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
@@ -347,6 +374,10 @@ class PermissiontemplatesController extends Survey_Common_Action
         }
     }
 
+    /**
+     * Run Export
+     * @param $ptids ?
+     */
     public function runexport($ptid)
     {
         $oModel = $this->loadModel($ptid);
@@ -359,6 +390,9 @@ class PermissiontemplatesController extends Survey_Common_Action
         Yii::app()->end();
     }
     
+    /**
+     * Batch Export
+     */
     public function batchExport()
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
@@ -468,6 +502,12 @@ class PermissiontemplatesController extends Survey_Common_Action
         return $results;
     }
 
+    /**
+     * Apply Permission from XML.
+     * @param int   $iRoleId           Role ID
+     * @param array $oPermissionObject Permission
+     * @return array
+     */
     private function applyPermissionFromXML($iRoleId, $oPermissionObject)
     {
         $oCriteria = new CDbCriteria();

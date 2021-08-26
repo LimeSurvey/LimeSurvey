@@ -248,17 +248,26 @@ class tokens extends Survey_Common_Action
     }
 
     /**
-     * @return boolean
+     * Deletes a participant from survey.
+     *
+     * The parameter 'sItem' can either be an array of ids or just a single id (int)
+     *
+     * @todo separate this function in two: one for single delete and one for multiple delete
+     *
+     * @return bool
+     * @throws CHttpException
      */
     public function deleteToken()
     {
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
-        $iSid = Yii::app()->getRequest()->getParam('sid');
+        $iSid = (int) Yii::app()->getRequest()->getParam('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
+            TokenDynamic::model($iSid)->deleteToken((int)$aTokenId); //in this case it's no an array ...
+            App()->setFlashMessage(gT('Participant has been deleted.'), 'success');
+            $this->getController()->redirect(array("admin/tokens", "sa" => "browse", "surveyid" => $iSid));
         }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
@@ -304,6 +313,7 @@ class tokens extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
+        Yii::import('application.libraries.Date_Time_Converter', true);
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
         $limit = (int) $limit;
@@ -354,7 +364,6 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title']            = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"]        = true;
         $aData['sidemenu']['state'] = false;
-        $aData['token_bar']['buttons']['view']  = true;
 
         /// FOR GRID View
         $model = TokenDynamic::model($iSurveyId);
@@ -490,7 +499,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws CException
      */
-    public function addnew($iSurveyId)
+    public function addnew(int $iSurveyId)
     {
         $aData = array();
         App()->getClientScript()->registerScriptFile(App()
@@ -515,33 +524,33 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " ("
             . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['buttons']['view'] = true;
         App()->getClientScript()->registerScriptFile(App()
                 ->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = App()->request;
         $subAction = $request->getPost('subaction');
         if ($subAction == 'inserttoken') {
             // TODO: This part could be refactored into function like "insertToken()"
+            Yii::import('application.libraries.Date_Time_Converter');
 
             // Fix up dates and match to database format
             if (trim($request->getPost('validfrom')) == '') {
                 $validfrom = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat(
-                    $dateformatdetails['phpdate'] . ' H:i',
-                    trim($request->getPost('validfrom'))
+                $datetimeobj = new Date_Time_Converter(
+                    trim($request->getPost('validfrom')),
+                    $dateformatdetails['phpdate'] . ' H:i'
                 );
-                $validfrom = $datetimeobj->format('Y-m-d H:i:s');
+                $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             if (trim(App()->request->getPost('validuntil')) == '') {
                 $validuntil = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat(
-                    $dateformatdetails['phpdate'] . ' H:i',
-                    trim($request->getPost('validuntil'))
+                $datetimeobj = new Date_Time_Converter(
+                    trim($request->getPost('validuntil')),
+                    $dateformatdetails['phpdate'] . ' H:i'
                 );
-                $validuntil = $datetimeobj->format('Y-m-d H:i:s');
+                $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
             /** @var string : used to find if token already exist */
             $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
@@ -647,22 +656,23 @@ class tokens extends Survey_Common_Action
 
         if ($request->getPost('subaction')) {
             Yii::import('application.helpers.admin.ajax_helper', true);
+            Yii::import('application.libraries.Date_Time_Converter', true);
             $aTokenData = [];
 
             // validfrom
             if (trim($request->getPost('validfrom')) == '') {
                 $_POST['validfrom'] = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('validfrom')));
-                $_POST['validfrom'] = $datetimeobj->format('Y-m-d H:i:s');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // validuntil
             if (trim($request->getPost('validuntil')) == '') {
                 $_POST['validuntil'] = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim($request->getPost('validuntil')));
-                $_POST['validuntil'] = $datetimeobj->format('Y-m-d H:i:s');
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             // completed
@@ -781,7 +791,7 @@ class tokens extends Survey_Common_Action
      * @return void
      * @throws Exception
      */
-    public function addDummies($iSurveyId, $subaction = '')
+    public function addDummies(int $iSurveyId, string $subaction = '')
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -801,27 +811,32 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['savebutton']['form'] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
+
+        // Save Button
         $aData['topBar']['showSaveButton'] = true;
-        $aData['topBar']['closeButtonUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        // Save And Close Button
+        $aData['topBar']['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['topBar']['showWhiteCloseButton'] = true;
+        $aData['topBar']['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
 
         if (!empty($subaction) && $subaction == 'add') {
             $message = '';
+            $this->getController()->loadLibrary('Date_Time_Converter');
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
             if (trim(Yii::app()->request->getPost('validfrom')) == '') {
                 $aData['validfrom'] = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim(Yii::app()->request->getPost('validfrom')));
-                $aData['validfrom'] = $datetimeobj->format('Y-m-d H:i:s');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i');
+                $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '') {
                 $aData['validuntil'] = null;
             } else {
-                $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', trim(Yii::app()->request->getPost('validuntil')));
-                $aData['validuntil'] = $datetimeobj->format('Y-m-d H:i:s');
+                $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i');
+                $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             $aData['firstname'] = App()->request->getPost('firstname');
@@ -887,7 +902,6 @@ class tokens extends Survey_Common_Action
                 $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
                 $aData['showSaveButton'] = true;
-                $aData['showCloseButton'] = true;
                 $aData['topBar']['name'] = 'tokensTopbar_view';
                 $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -935,7 +949,6 @@ class tokens extends Survey_Common_Action
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
 
             $aData['showSaveButton'] = true;
-            $aData['showCloseButton'] = true;
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -969,7 +982,6 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
 
         $aData['thissurvey'] = $oSurvey->attributes;
         $aData['surveyid'] = $iSurveyId;
@@ -1276,10 +1288,9 @@ class tokens extends Survey_Common_Action
     /**
      * Handle email action
      * @param int $iSurveyId
-     * @param string $tokenids Int list separated with |?
      * @return void
      */
-    public function email($iSurveyId)
+    public function email(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $aData = array();
@@ -1298,7 +1309,6 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/' . $iSurveyId; // Close button
 
         $aTokenIds = $this->getTokenIds();
         $sSubAction = $this->getSubAction();
@@ -1341,6 +1351,8 @@ class tokens extends Survey_Common_Action
             $this->clearEmailSessionCache($iSurveyId);
             $this->showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData);
         } else {
+            $aData['topBar']['hide'] = true;
+
             $SQLemailstatuscondition   = $this->getSQLemailstatuscondition();
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
@@ -1502,7 +1514,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function exportdialog($iSurveyId)
+    public function exportdialog(int $iSurveyId)
     {
         $iSurveyId = (int)$iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -1528,7 +1540,6 @@ class tokens extends Survey_Common_Action
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         } else {
-            //$aData['resultr'] = Token::model($iSurveyId)->findAll(array('select' => 'language', 'group' => 'language'));
 
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
@@ -1600,7 +1611,15 @@ class tokens extends Survey_Common_Action
                 ),
             );
 
-            $aData['showCloseButton'] = true;
+            // Save Button
+            $aData['showSaveButton'] = true;
+
+            // Save and Close Button
+            $aData['showSaveAndCloseButton'] = true;
+
+            // White Close Button
+            $aData['showWhiteCloseButton'] = true;
+            
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -1907,12 +1926,14 @@ class tokens extends Survey_Common_Action
             $aModelErrorList = array();
             $aFirstLine = array();
 
+            // Check file size and redirect on error
+            $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+            $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('admin/tokens', array('sa' => 'import', 'surveyid' => $iSurveyId)));
+
             $oFile = CUploadedFile::getInstanceByName("the_file");
             $sPath = Yii::app()->getConfig('tempdir');
             $sFileName = $sPath . '/' . randomChars(20);
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            } elseif (strtolower($oFile->getExtensionName()) != 'csv') {
+            if (strtolower($oFile->getExtensionName()) != 'csv') {
                 Yii::app()->setFlashMessage(gT("Only CSV files are allowed."), 'error');
             } elseif (!@$oFile->saveAs($sFileName)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
@@ -2222,7 +2243,7 @@ class tokens extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         if (!Yii::app()->request->getParam('ok')) {
             $aData['sidemenu']['state'] = false;
@@ -2289,7 +2310,7 @@ class tokens extends Survey_Common_Action
         $newtable = "old_tokens_{$iSurveyId}_$date";
         $newtableDisplay = Yii::app()->db->tablePrefix . $newtable;
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
@@ -2332,10 +2353,11 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * Bounce Settings Action.
      * @param int $iSurveyId
      * @return void
      */
-    public function bouncesettings($iSurveyId)
+    public function bouncesettings(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -2380,8 +2402,12 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
-        $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        
+        // Save Button
+        $aData['topBar']['showSaveButton'] = true;
+        // Back Button
+        $aData['topBar']['showBackButton'] = true;
+        $aData['topBar']['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2455,8 +2481,13 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['sidemenu']["token_menu"] = true;
 
+        // Save Button
         $aData['showSaveButton'] = true;
-        $aData['showCloseButton'] = true;
+        // Save and Close Button
+        $aData['showSaveAndCloseButton'] = true;
+        // White Close Button
+        $aData['showWhiteCloseButton'] = true;
+
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2501,7 +2532,7 @@ class tokens extends Survey_Common_Action
         $aTokenencryptionoptions = $survey->getTokenEncryptionOptions();
         $aTokenencryptionoptions['enabled'] = 'Y';
 
-        $aData['topBar']['name'] = 'tokensTopbar_view';
+        $aData['topBar']['hide'] = true;
 
         // Update table, must be CRSF controlled
         if (Yii::app()->request->getPost('createtable') === "Y") {
@@ -2607,7 +2638,7 @@ class tokens extends Survey_Common_Action
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
             $aData['sidemenu']["token_menu"] = true;
-            $aData['topBar']['name'] = 'tokensTopbar_view';
+            $aData['topBar']['hide'] = true;
 
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
@@ -2762,10 +2793,15 @@ class tokens extends Survey_Common_Action
             }
         }
 
-        $aData['showCloseButton'] = true;
+        // Back Button
+        $aData['showBackButton'] = true;
+        $aData['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+
         if (Yii::app()->request->getParam('action') == "remind") {
+            // Send Reminders Button
             $aData['showSendReminderButton'] = true;
         } else {
+            // Send Invitation Button
             $aData['showSendInvitationButton'] = true;
         }
         $aData['topBar']['name'] = 'tokensTopbar_view';

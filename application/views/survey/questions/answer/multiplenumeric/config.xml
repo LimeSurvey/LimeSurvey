@@ -5,7 +5,7 @@
     <metadata>
         <name>multiplenumeric</name>
         <type>question_theme</type>
-        <title>Multiple Numerical Input</title>
+        <title>Multiple numerical input</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -26,6 +26,7 @@
 
     <compatibility>
         <version>4.0</version>
+        <version>5.0</version>
     </compatibility>
 
     <!--
@@ -135,7 +136,7 @@
             <sortorder>210</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>This is a hint text that will be shown to the participant describing the question validation equation.</help>
             <caption>Question validation tip</caption>
             <readonly></readonly>
@@ -159,7 +160,7 @@
             <sortorder>230</sortorder>
             <inputtype>textarea</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>This is a tip shown to the participant describing the sub-question validation equation.</help>
             <caption>Sub-question validation tip</caption>
             <readonly></readonly>
@@ -411,7 +412,7 @@
             <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
-            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
+            <help>Set the size of the input or textarea. The input will be displayed approximately this size in width.</help>
             <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -447,7 +448,7 @@
             <sortorder>10</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>Add a prefix to the answer field</help>
             <caption>Answer prefix</caption>
             <readonly></readonly>
@@ -459,7 +460,7 @@
             <sortorder>201</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <default></default>
             <help>In the printable version the condition is being replaced with this explanation text.</help>
             <caption>Relevance help for printable survey</caption>
@@ -676,7 +677,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Set the handle shape. &amp;#039;Custom&amp;#039; is defined in CSS using the Font Awesome font.</help>
+            <help>Set the handle shape. &#039;Custom&#039; is defined in CSS using the Font Awesome font.</help>
             <caption>Handle shape</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -784,7 +785,7 @@
             <sortorder>11</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <i18n>true</i18n>
+            <i18n>1</i18n>
             <help>Add a suffix to the answer field</help>
             <caption>Answer suffix</caption>
             <readonly></readonly>
@@ -956,7 +957,7 @@
                 </option>
             </options>
             <default>1</default>
-            <help>Is no answer (missing) allowed when either &amp;#039;Equals sum value&amp;#039; or &amp;#039;Minimum sum value&amp;#039; are set?</help>
+            <help>Is no answer (missing) allowed when either &#039;Equals sum value&#039; or &#039;Minimum sum value&#039; are set?</help>
             <caption>Value range allows missing</caption>
             <i18n></i18n>
             <readonly></readonly>

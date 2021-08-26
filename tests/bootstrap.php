@@ -102,18 +102,16 @@ $application_folder = dirname(__FILE__) . "/../application";
  *  Resolve the system path for increased reliability
  * ---------------------------------------------------------------
  */
-if (realpath($system_path) !== FALSE)
-{
-    $system_path = realpath($system_path).'/';
+if (realpath($system_path) !== false) {
+    $system_path = realpath($system_path) . '/';
 }
 
 // ensure there's a trailing slash
-$system_path = rtrim($system_path, '/').'/';
+$system_path = rtrim($system_path, '/') . '/';
 
 // Is the system path correct?
-if (!is_dir($system_path))
-{
-    exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
+if (!is_dir($system_path)) {
+    exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: " . pathinfo(__FILE__, PATHINFO_BASENAME));
 }
 
 /*
@@ -142,51 +140,39 @@ define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
 
 // The path to the "application" folder
-if (is_dir($application_folder))
-{
-    define('APPPATH', $application_folder.'/');
-}
-else
-{
-    if (!is_dir(BASEPATH . $application_folder . '/'))
-    {
-        exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: ".SELF);
+if (is_dir($application_folder)) {
+    define('APPPATH', $application_folder . '/');
+} else {
+    if (!is_dir(BASEPATH . $application_folder . '/')) {
+        exit("Your application folder path does not appear to be set correctly. Please open the following file and correct this: " . self);
     }
 
     define('APPPATH', BASEPATH . $application_folder . '/');
 }
-if (file_exists(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php'))
-{
-    $aSettings= include(APPPATH.'config'.DIRECTORY_SEPARATOR.'config.php');
-}
-else
-{
-    $aSettings=array();
+if (file_exists(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php')) {
+    $aSettings = include(APPPATH . 'config' . DIRECTORY_SEPARATOR . 'config.php');
+} else {
+    $aSettings = array();
 }
 // Set debug : if not set : set to default from PHP 5.3
-if (isset($aSettings['config']['debug']))
-{
-    if ($aSettings['config']['debug']>0)
-    {
+if (isset($aSettings['config']['debug'])) {
+    if ($aSettings['config']['debug'] > 0) {
         define('YII_DEBUG', true);
-        if($aSettings['config']['debug']>1)
+        if ($aSettings['config']['debug'] > 1) {
             error_reporting(E_ALL);
-        else
+        } else {
             error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-    }
-    else
-    {
+        }
+    } else {
         define('YII_DEBUG', false);
         error_reporting(0);
     }
-}
-else
-{
+} else {
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);// Not needed if user don't remove his 'debug'=>0, for application/config/config.php (Installation is OK with E_ALL)
 }
 
 if (version_compare(PHP_VERSION, '5.3.3', '<')) {
-    echo ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
+    echo ('This script can only be run on PHP version 5.3.3 or later! Your version: ' . PHP_VERSION . '<br />');
     exit(11);
 }
 
@@ -208,7 +194,7 @@ $config = require_once(APPPATH . 'config/internal' . EXT);
 
 if (!file_exists(APPPATH . 'config/config' . EXT)) {
     // If Yii can not start due to unwritable runtimePath, present an error
-    $sDefaultRuntimePath = dirname(__FILE__).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime';
+    $sDefaultRuntimePath = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'runtime';
     if (!is_dir($sDefaultRuntimePath) || !is_writable($sDefaultRuntimePath)) {
         // @@TODO: present html page styled like the installer
         echo (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
@@ -236,22 +222,17 @@ if (substr(sprintf('%o', fileperms(BASEPATH . '../tests/tmp/')), -4) != '0777') 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
 
-set_error_handler(function($no, $msg, $file, $line, $context) {
-    //error_log($file . ':' . $line . ': ' . $msg);
-    throw new ErrorException($msg, 0, $no, $file, $line);
-}, E_ERROR & E_WARNING & E_PARSE & E_NOTICE);
 
 // TODO: Edit composer.json to add autoloading with proper namespaces.
-require_once(__DIR__ . '/LimeSurveyWebDriver.php');
-require_once(__DIR__ . '/TestHelper.php');
-require_once(__DIR__ . '/TestBaseClass.php');
-require_once(__DIR__ . '/TestBaseClassWeb.php');
-require_once(__DIR__ . '/TestBaseClassView.php');
-require_once(__DIR__ . '/DummyController.php');
+require_once __DIR__ . '/LimeSurveyWebDriver.php';
+require_once __DIR__ . '/TestHelper.php';
+require_once __DIR__ . '/TestBaseClass.php';
+require_once __DIR__ . '/TestBaseClassWeb.php';
+require_once __DIR__ . '/TestBaseClassView.php';
+require_once __DIR__ . '/DummyController.php';
 require_once __DIR__ . '/unit/helpers/remotecontrol/BaseTest.php';
 
 define('PHP_ENV', 'test');
-
 // TODO: Move this logic to installater test.
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
@@ -259,7 +240,9 @@ $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 // Enable if phpunit fails.
 // error_reporting(E_ALL);
 
-@copy($configFile, $configBackupFile);
+if (file_exists($configFile)) {
+    copy($configFile, $configBackupFile);
+}
 
 register_shutdown_function(
     function () {

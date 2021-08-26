@@ -285,7 +285,19 @@ class QuestionGroup extends LSActiveRecord
         // Delete
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
-            if (is_null($condarray)) {
+            if ($oSurvey->groupsCount == 1) {
+                $button .= '<span data-toggle="tooltip" title="' . gT("Cannot delete this group because it's the only group in the survey.") . '">'
+                . '<button class="btn btn-default" '
+                . ' disabled '
+                . ' role="button"'
+                . ' data-toggle="popover"'
+                . ' data-tooltip="true"'
+                . ' title="' . gT("Cannot delete this group because it's the only group in the survey.", "js") . '">'
+                    . '<i class="fa fa-trash text-muted "></i>'
+                    . '<span class="sr-only">' . gT('Deleting question group not possible') . '</span>'
+                . '</button>'
+                . '</span>';
+            } elseif (is_null($condarray)) {
                 $button .= '<span data-toggle="tooltip" title="' . gT('Delete question group') . '">'
                     . '<button class="btn btn-default" '
                     . ' data-onclick="(function() { ' . CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["gid" => $this->gid]))) . ' })" '

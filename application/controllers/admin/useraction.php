@@ -24,6 +24,11 @@ use LimeSurvey\PluginManager\AuthPluginBase;
 */
 class UserAction extends Survey_Common_Action
 {
+    /**
+     * Constructor
+     * @param $controller
+     * @param $id
+     */
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -36,7 +41,7 @@ class UserAction extends Survey_Common_Action
      * @param string $param
      * @return string
      */
-    private function _getPostOrParam($param)
+    private function _getPostOrParam(string $param)
     {
         $value = Yii::app()->request->getPost($param);
         if (!$value) {
@@ -68,6 +73,7 @@ class UserAction extends Survey_Common_Action
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
 
+        // Title Bar
         $aData['title_bar']['title'] = gT('User administration');
         $model = new User();
 
@@ -133,9 +139,6 @@ class UserAction extends Survey_Common_Action
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
                 // add default usersettings to the user
                 SettingsUser::applyBaseSettings($iNewUID);
-                
-                // add new user to userlist
-                //$sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
 
                 // send Mail
                 /* @todo : must move this to Plugin (or sendMail as boolean in plugin event) */
@@ -443,7 +446,9 @@ class UserAction extends Survey_Common_Action
         $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
-
+    /**
+     * Save Permissions
+     */
     public function savepermissions()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
@@ -486,6 +491,9 @@ class UserAction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Set User permissions
+     */
     public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
@@ -531,6 +539,7 @@ class UserAction extends Survey_Common_Action
                 App()->getClientScript()->registerPackage('jquery-tablesorter');
                 App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'userpermissions.js');
 
+                // Fullpage Bar
                 $aData['fullpagebar']['savebutton']['form'] = 'savepermissions';
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
@@ -545,6 +554,9 @@ class UserAction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Set User Templates
+     */
     public function setusertemplates()
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
@@ -574,6 +586,9 @@ class UserAction extends Survey_Common_Action
         $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
+    /**
+     * User Templates
+     */
     public function usertemplates()
     {
         $postuserid = (int) Yii::app()->request->getPost('uid');
@@ -618,7 +633,7 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-            $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
+            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
             $uresult = true;
 
             if (Yii::app()->request->getPost('newpasswordshown') == "1") {
@@ -631,14 +646,14 @@ class UserAction extends Survey_Common_Action
 
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
-                $oUserModel->email                = Yii::app()->request->getPost('email');
+                $oUserModel->email = Yii::app()->request->getPost('email');
 
                 //if only email should be changed, then just check the current password
                 $currentPasswordOk = $oUserModel->checkPassword($oldPassword);
                 if ($currentPasswordOk) {
                     $uresult = $oUserModel->save();
                 } else {
-                    Yii::app()->setFlashMessage(gT('The current password you entered is wrong!'), 'error');
+                    Yii::app()->setFlashMessage(gT('The current password is not correct.'), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
@@ -677,11 +692,13 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
                 
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
+                SettingsUser::setUserSetting('preselectquestiontheme', Yii::app()->request->getPost('preselectquestiontheme'));
                 SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
                 SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
                 SettingsUser::setUserSetting('answeroptionprefix', Yii::app()->request->getPost('answeroptionprefix'));
                 SettingsUser::setUserSetting('subquestionprefix', Yii::app()->request->getPost('subquestionprefix'));
                 SettingsUser::setUserSetting('lock_organizer', Yii::app()->request->getPost('lock_organizer'));
+                SettingsUser::setUserSetting('createsample', Yii::app()->request->getPost('createsample'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -710,10 +727,14 @@ class UserAction extends Survey_Common_Action
         $aData['sFullname'] = $oUser->full_name;
         $aData['sEmailAdress'] = $oUser->email;
         $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
+
+        // Fullpager Bar
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
-        $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
+        $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
+
+        // Green Bar Page Title 
+        $aData['pageTitle'] = gT('My Account');
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();
@@ -728,11 +749,13 @@ class UserAction extends Survey_Common_Action
         });
 
         $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : App()->getConfig('preselectquestiontype');
+        $currentPreselectedQuestionTheme = array_key_exists('preselectquestiontheme', $aUserSettings) ? $aUserSettings['preselectquestiontheme'] : App()->getConfig('preselectquestiontheme');
 
         $aData['currentPreselectedQuestiontype'] = $currentPreselectedQuestiontype;
+        $aData['currentPreselectedQuestionTheme'] = $currentPreselectedQuestionTheme;
         $aData['aUserSettings'] = $aUserSettings;
         $aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype);
+        $aData['selectedQuestion'] = QuestionTheme::findQuestionMetaData($currentPreselectedQuestiontype, $currentPreselectedQuestionTheme);
 
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
@@ -744,6 +767,10 @@ class UserAction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Toggle Setting
+     * @param int $surveyid
+     */
     public function togglesetting($surveyid = 0)
     {
         $setting  = Yii::app()->request->getPost('setting');
@@ -760,7 +787,7 @@ class UserAction extends Survey_Common_Action
      * @param int $uid
      * @return string|boolean
      */
-    private function _getUserNameFromUid($uid)
+    private function _getUserNameFromUid(int $uid)
     {
         $uid = sanitize_int($uid);
         $result = User::model()->findByPk($uid);
@@ -772,6 +799,9 @@ class UserAction extends Survey_Common_Action
         }
     }
 
+    /**
+     * Refresh templates
+     */
     private function _refreshtemplates()
     {
         $template_a = Template::getTemplateList();
@@ -803,9 +833,12 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
+     * Escape string
      * @param string $str
+     * @param bool   $like Default is false.
+     * @return string
      */
-    private function escape_str($str, $like = false)
+    private function escape_str(string $str, bool $like = false)
     {
         if (is_array($str)) {
             foreach ($str as $key => $val) {
@@ -822,7 +855,10 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
+     * Remove invisible characters.
      * @param string $str
+     * @param bool   $url_encoded Default is true.
+     * @return string
      */
     private function remove_invisible_characters($str, $url_encoded = true)
     {
@@ -846,7 +882,15 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
+     * Message Box with redirect
+     * @param string $title
+     * @param string $message
      * @param string $classMsg
+     * @param string $extra   
+     * @param string $urlText
+     * @param array  $hiddenVars
+     * @param string $classMbTitle
+     * @todo to many arguments
      */
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
@@ -869,9 +913,10 @@ class UserAction extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string       $sAction     Current action, the folder to fetch views from
+     * @param string|array $aViewUrls   View url(s)
+     * @param array        $aData       Data to be passed on. Optional.
+     * @param bool         $sRenderFile
      */
     protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {

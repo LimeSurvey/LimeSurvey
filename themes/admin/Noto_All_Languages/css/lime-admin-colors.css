@@ -1588,8 +1588,12 @@ fieldset[disabled] .btn-link:focus {
 
 .surveybar {
   border-bottom: 1px solid #e3e3e3;
-  box-shadow: 0 3px 3px rgba(99, 49, 48, 0.1);
+  box-shadow: 3px 3px 3px #35363f;
   background-color: #ffffff; }
+
+#fullpagebar {
+  background-color: #ffffff;
+}
 
 .navbar {
   background-color: #ffffff;
@@ -2349,3 +2353,13 @@ ol.breadcrumb.title-bar-breadcrumb {
   --LS-admintheme-lighthovercolor: #2cba35;
   --LS-admintheme-dangercolor: #a0352f;
   --LS-admintheme-infocolor: #40ab82; }
+
+.green-border {
+  border-color: green;
+  border-style: solid;
+}
+
+.red-border {
+  border-color: red;
+  border-style: solid;
+}

@@ -1748,6 +1748,7 @@ class LsDefaultDataSets
             $addRow('Authwebserver'),
             $addRow('ExportR', 1),
             $addRow('ExportSTATAxml', 1),
+            $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
             $addRow('expressionQuestionHelp'),
             $addRow('expressionQuestionForAll'),
@@ -2078,7 +2079,7 @@ class LsDefaultDataSets
                 "core_theme" => 1,
                 "extends" => "",
                 "group" => "Arrays",
-                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-duel-scale\"}",
+                "settings" => "{\"subquestions\":\"1\",\"answerscales\":\"2\",\"hasdefaultvalues\":\"0\",\"assessable\":\"1\",\"class\":\"array-flexible-dual-scale\"}",
             ),
             array(
                 "name" => "arrays/increasesamedecrease",

@@ -22,7 +22,7 @@ class CreateSurveyTest extends TestBaseClassWeb
     private const HTTP_STRING = 'http://';
     private const INDEX_SITE = '/index.php';
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(): void
     {
         parent::setupBeforeClass();
         $username = getenv('ADMINUSERNAME');
@@ -97,7 +97,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $titleInput->clear()->sendKeys($title);
 
             // Click save.
-            $save = self::$webDriver->findElement(WebDriverBy::id('save-form-button'));
+            $save = self::$webDriver->findElement(WebDriverBy::id('create-survey-submit'));
             $save->click();
 
             sleep(1);

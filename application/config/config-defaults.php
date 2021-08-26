@@ -82,6 +82,7 @@ $config['allowunblacklist']          = 'N'; // Allow participant to unblacklist 
 $config['userideditable']            = 'N'; // Allow editing of user IDs
 
 $config['defaulttheme']              = 'fruity'; // This setting specifys the default theme used for the 'public list' of surveys
+$config['createsample']              = true;
 $config['customassetversionnumber']  = 1;        // Used to generate the path of tmp assets (see: LSYii_AssetManager::generatePath()  )
 
 // Please be very careful if you want to allow SVG files - there are several XSS dangerous security issues
@@ -99,7 +100,8 @@ $config['allowedfileuploads'] = [
     //videos
     'mp4', 'avi', 'mkv', 'mpeg', 'mpg', 'wmv', 'h264', 'h265', 'mov', 'webm', 'divx', 'xvid',
 ];
-$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+// NB: Allowing XML enables XSS, since XML can be an HTML page.
+$config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,css,js'; // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 $config['allowedpluginuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,ttf,woff,txt,md,xml,woff2,twig,php,html';
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
@@ -762,6 +764,7 @@ $config['defaultquestionselectormode'] = 'default';
 
 // Preselected Question Type
 $config['preselectquestiontype'] = 'T';
+$config['preselectquestiontheme'] = 'longfreetext';
 
 // theme editor mode
 $config['defaultthemeteeditormode'] = 'default';
@@ -790,6 +793,7 @@ $config['pluginCoreList'] = [
     'AuditLog',
     'ExportR',
     'ExportSTATAxml',
+    'ExportSPSSsav',
     'extendedStartPage',
     'oldUrlCompat',
     'AuthLDAP',
@@ -803,6 +807,8 @@ $config['pluginWhitelist'] = [];
 $config['encryptionkeypair'] = '';
 $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
+$config['encryptionnonce'] = '';
+$config['encryptionsecretboxkey'] = '';
 
 $config['passwordValidationRules'] = array(
     'min' => 4,

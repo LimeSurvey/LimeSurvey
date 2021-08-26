@@ -58,10 +58,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     return;
   }
 
-  $('.ace:not(.none)').ace({
-    'mode': 'javascript',
-    'highlightActiveLine': false
-  });
+  const isCopyMode = $('#form_copy_question').length > 0;
+
+  // Initialice Ace editors if needed
+  const aceInputs = $('.ace:not(.none)');
+  if (aceInputs.length) {
+    aceInputs.ace({
+      'mode': 'javascript',
+      'highlightActiveLine': false
+    });
+  }
 
   // TODO: Remove this when Vue topbar is removed.
   $('#vue-topbar-container').hide();
@@ -95,8 +101,8 @@ $(document).on('ready pjax:scriptcomplete', function () {
    */
   function updateRowProperties() {
     var sID = $('input[name=sid]').val();
-    var gID = $('input[name=gid]').val();
-    var qID = $('input[name=qid]').val();
+    var gID = $('[name=question\\[gid\\]]').val();
+    var qID = $('[name=question\\[qid\\]]').val();
     sID = $.isNumeric(sID) ? sID : '';
     gID = $.isNumeric(gID) ? gID : '';
     qID = $.isNumeric(qID) ? qID : '';
@@ -1477,6 +1483,20 @@ $(document).on('ready pjax:scriptcomplete', function () {
     };
   }
 
+  /**
+   * Makes the answer's table sortable
+   */
+  function makeAnswersTableSortable() /*: void */ {
+    $('.answertable tbody').sortable({
+      containment: 'parent',
+      start: startmove,
+      stop: endmove,
+      update: aftermove,
+      handle: '.move-icon',
+      distance: 3,
+    });
+  }
+
   // Public functions for LS.questionEditor module.
   LS.questionEditor = {
     /**
@@ -1485,12 +1505,13 @@ $(document).on('ready pjax:scriptcomplete', function () {
      *
      * @param {string} questionType - One-letter string of question type
      * @param {string} questionTheme - One-letter string of question type
-     * @param {string} generalSettingsUrl - URL to controller to fetch new HTML
-     * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML
+     * @param {string} generalSettingsUrl - URL to controller to fetch new HTML for General Settings
+     * @param {string} advancedSettingsUrl - URL to controller to fetch new HTML for Advanced Settings
+     * @param {string} extraOptionsUrl - URL to controller to fetch new HTML for Extra Options (Subquestions/Answers)
      * @return {Promise}
      */
     // eslint-disable-next-line no-unused-vars
-    updateQuestionAttributes: async function (questionType, questionTheme, generalSettingsUrl, advancedSettingsUrl) {  // jshint ignore:line
+    updateQuestionAttributes: async function (questionType, questionTheme, generalSettingsUrl, advancedSettingsUrl, extraOptionsUrl) {  // jshint ignore:line
       // If same question type, do nothing.
       // Else, fetch new HTML from server.
       $('#ls-loading').show();
@@ -1499,7 +1520,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme }, //todo add question_template (e.g. 'bootstrap_buttons' it's the theme) here
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);
@@ -1523,13 +1544,29 @@ $(document).on('ready pjax:scriptcomplete', function () {
           },
         });
       });
+      const extraOptionsPromise = new Promise((resolve, reject) => {
+        $.ajax({
+          url: extraOptionsUrl,
+          method: 'GET',
+          data: { questionType },
+          dataType: 'html',
+          success: (data) => {
+            resolve(data);
+          },
+          error: (data) => {
+            reject(data);
+          },
+        });
+      });
       try {
-        const [html, html2] = await Promise.all([generalSettingsPromise, advancedSettingsPromise]);
+        const [generalSettingsHtml, advancedSettingsHtml, extraOptionsHtml] = await Promise.all([generalSettingsPromise, advancedSettingsPromise, extraOptionsPromise]);
         const currentGroup = $('#gid').children("option:selected").val();
-        $('#general-settings').replaceWith(html);
+        $('#general-settings').replaceWith(generalSettingsHtml);
         $('#gid').val(currentGroup);
         // TODO: Double check HTML injected here. Extra div?
-        $('#advanced-options-container').replaceWith(html2);
+        $('#advanced-options-container').replaceWith(advancedSettingsHtml);
+        $('#extra-options-container').replaceWith(extraOptionsHtml);
+        makeAnswersTableSortable();
         $('.question-option-help').hide();
         $('#ls-loading').hide();
 
@@ -1671,6 +1708,41 @@ $(document).on('ready pjax:scriptcomplete', function () {
         }
       }
 
+      const updateQuestionSummary = () => {
+        const form = document.getElementById('edit-question-form');
+        if (!(form instanceof HTMLFormElement)) {
+          throw 'form is not HTMLFormElement';
+        }
+        $.ajax({
+          url: form.dataset.summaryUrl,
+          method: 'GET',
+          data: {},
+          dataType: 'html',
+          success: (summaryHtml) => {
+            const isVisible = $('#question-overview').is(':visible');
+            const newSummary = $(summaryHtml);
+            if (isVisible) {
+              newSummary.show();
+            } else {
+              newSummary.hide();
+            }
+            $('#question-overview').replaceWith(newSummary);
+            // Quick action buttons are hidden in the html, and normally made visible by panelsAnimation() function of adminbasics.js,
+            // which is triggered on document ready or pjax:scriptcomplete. To avoid messing with other things, we just do the animation
+            // again here.
+            $('.panel').each(function (i) {
+              $(this).delay(i++ * 200).animate({
+                opacity: 1,
+                top: '0px'
+              }, 200);
+            });
+          },
+          error: (response) => {
+            alert('Internal error in updateQuestionSummary: ' + response);
+          },
+        });
+      };
+
       // Helper function after unique check.
       const saveFormWithAjax /*: (void) => (void) */ = () => {
         const data = {};
@@ -1722,6 +1794,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
                 'well-lg bg-danger text-center'
               );
             }
+            updateQuestionSummary();
           },
           error: (data) => {
             $('#ls-loading').hide();
@@ -1789,16 +1862,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
     showAnswerOptionCodeUniqueError: createCheckUniqueFunction(languageJson.answeroptions.duplicateanswercode)
   };
 
+  function showConditionsWarning(e) {
+    if (!$(this).data('hasConditions')) {
+      return;
+    }
+    $('#general-setting-help-relevance').show();
+  }
+
   // Below, things run on pjax:scriptcomplete.
 
-    $('.answertable tbody').sortable({
-      containment: 'parent',
-      start: startmove,
-      stop: endmove,
-      update: aftermove,
-      handle: '.move-icon',
-      distance: 3,
-    });
+    makeAnswersTableSortable();
 
     $('.btnaddsubquestion').on('click.subquestions', addSubquestionInput);
     $('.btndelsubquestion').on('click.subquestions', deleteSubquestionInput);
@@ -1809,7 +1882,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
 
     $('#quickaddModal').on('show.bs.modal', (e) => {
       const scaleId = parseInt($(e.relatedTarget).data('scale-id'));
-      const tableId = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+      const tableId = $(e.relatedTarget).closest('div.action-buttons').parent().find('table.answertable').attr('id');
       if (tableId === '') {
         alert('Internal error: Did not find tableId');
         throw 'abort';
@@ -1839,9 +1912,9 @@ $(document).on('ready pjax:scriptcomplete', function () {
     });
 
     // Init Ace script editor.
-    $('.ace:not(.none)').ace({
+    /*$('.ace:not(.none)').ace({
       mode: 'javascript',
-    });
+    });*/
 
     // Hide help tips by default.
     $('.question-option-help').hide();
@@ -1852,11 +1925,18 @@ $(document).on('ready pjax:scriptcomplete', function () {
      });
 
     // Hide all language except the selected one.
-    $('.lang-switch-button').on('click', function langSwitchOnClick() {
+    $('.lang-switch-button').on('click', function langSwitchOnClick(e) {
+      e.preventDefault();
       const lang = $(this).data('lang');
       const langClass = `.lang-${lang}`;
       $('.lang-hide').hide();
       $(langClass).show();
+      $('#language-dropdown-text').text($(this).text());
+      // Mark the selected option
+      $(this).closest('ul').find('li').each(function removeActiveClassFromLanguageListItems() {
+        $(this).removeClass('active');
+      });
+      $(this).closest('li').addClass('active');
     });
 
     // Hide all languages except main.
@@ -1867,25 +1947,38 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // Land on summary page if qid != 0 (not new question).
     // TODO: Fix
 
-    const qidInput = document.querySelector('input[name="question[qid]"]');
-    if (qidInput === null) {
-      alert('Internal error: Could not find qidInput');
-      throw 'abort';
-    }
-    if (qidInput instanceof HTMLInputElement) {
-      if (parseInt(qidInput.value) === 0) {
-        $('#question-create-edit-topbar').show();
-      } else {
-        if($('#tab-overview-editor-input').val() === 'editor'){
-            $('#question-create-edit-topbar').show();
-            $('#question-summary-topbar').hide();
-        }else{
-            $('#question-summary-topbar').show();
-            $('#question-create-edit-topbar').hide();
-        }
+    if (!isCopyMode) {
+      const qidInput = document.querySelector('input[name="question[qid]"]');
+      if (qidInput === null) {
+        alert('Internal error: Could not find qidInput');
+        throw 'abort';
       }
-    } else {
-      alert('Internal error: qidInput is not an HTMLInputElement');
-      throw 'abort';
+      if (qidInput instanceof HTMLInputElement) {
+        if (parseInt(qidInput.value) === 0) {
+          $('#question-create-edit-topbar').show();
+        } else {
+          if($('#tab-overview-editor-input').val() === 'editor'){
+              $('#question-create-edit-topbar').show();
+              $('#question-summary-topbar').hide();
+          }else{
+              $('#question-summary-topbar').show();
+              $('#question-create-edit-topbar').hide();
+          }
+        }
+      } else {
+        alert('Internal error: qidInput is not an HTMLInputElement');
+        throw 'abort';
+      }
     }
+
+    // Fix ace editor size for script fields
+    $('textarea.ace:not(.none)').each(function() {
+      var id = $(this).attr('id') + '__ace';
+      var width = '100%';
+      var height = 225;
+      $('#' + id).width(width).height(height);
+      $('#' + id).closest('.jquery-ace-wrapper').width(width).height(height);
+    });
+    
+    $('#relevance').on('keyup', showConditionsWarning);
 });

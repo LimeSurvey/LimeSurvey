@@ -249,7 +249,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -526,6 +526,10 @@ class InstallerController extends CController
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
 
+                        // Save survey global settings
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['admin' => $model->adminName], "gsid=0");
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['adminemail' => $model->adminEmail], "gsid=0");
+
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
 
@@ -598,7 +602,7 @@ class InstallerController extends CController
     /**
      * @param string $sDirectory
      */
-    public function is_writable_recursive($sDirectory)
+    public function isWritableRecursive($sDirectory)
     {
         $sFolder = opendir($sDirectory);
         if ($sFolder === false) {
@@ -608,7 +612,7 @@ class InstallerController extends CController
             if (
                 $sFile != '.' && $sFile != '..' &&
                 (!is_writable($sDirectory . "/" . $sFile) ||
-                (is_dir($sDirectory . "/" . $sFile) && !$this->is_writable_recursive($sDirectory . "/" . $sFile)))
+                (is_dir($sDirectory . "/" . $sFile) && !$this->isWritableRecursive($sDirectory . "/" . $sFile)))
             ) {
                 closedir($sFolder);
                 return false;
@@ -619,18 +623,19 @@ class InstallerController extends CController
     }
 
     /**
-     * check for a specific PHPFunction, return HTML image
+     * Check for a specific PHP Function or class, updates HTML image
      *
-     * @param string $sFunctionName
-     * @param string $sImage return
-     * @return bool result
+     * @param string $sFunctionName Function or class name
+     * @param string $sImage HTML string for related image to show
+     * @return bool True if exists, otherwise false
      */
-    public function checkPHPFunction($sFunctionName, &$sImage)
+    public function checkPHPFunctionOrClass($sFunctionName, &$sImage)
     {
-        $bExists = function_exists($sFunctionName);
+        $bExists = function_exists($sFunctionName) || class_exists($sFunctionName);
         $sImage = $this->check_HTML_image($bExists);
         return $bExists;
     }
+    
 
     /**
      * check if file or directory exists and is writeable, returns via parameters by reference
@@ -659,7 +664,7 @@ class InstallerController extends CController
         }
         if ($exists) {
             $aData[$base . 'Present'] = 'Found';
-            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->is_writable_recursive($path))) {
+            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->isWritableRecursive($path))) {
                 $aData[$base . 'Writable'] = 'Writable';
                 $bResult = true;
             } else {
@@ -721,17 +726,17 @@ class InstallerController extends CController
 
 
         // mbstring library check
-        if (!$this->checkPHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('mb_convert_encoding', $aData['mbstringPresent'])) {
                     $bProceed = false;
         }
 
         // zlib library check
-        if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent'])) {
             $bProceed = false;
         }
 
         // JSON library check
-        if (!$this->checkPHPFunction('json_encode', $aData['bJSONPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('json_encode', $aData['bJSONPresent'])) {
                     $bProceed = false;
         }
 
@@ -772,19 +777,19 @@ class InstallerController extends CController
             $aData['gdPresent'] = $this->check_HTML_image(false);
         }
         // ldap library check
-        $this->checkPHPFunction('ldap_connect', $aData['ldapPresent']);
+        $this->checkPHPFunctionOrClass('ldap_connect', $aData['ldapPresent']);
 
         // php zip library check
-        $this->checkPHPFunction('zip_open', $aData['zipPresent']);
+        $this->checkPHPFunctionOrClass('ZipArchive', $aData['zipPresent']);
 
         // zlib php library check
-        $this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
+        $this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent']);
 
         // imap php library check
-        $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
+        $this->checkPHPFunctionOrClass('imap_open', $aData['bIMAPPresent']);
 
         // Sodium php check
-        $this->checkPHPFunction('sodium_crypto_sign_open', $aData['sodiumPresent']);
+        $this->checkPHPFunctionOrClass('sodium_crypto_sign_open', $aData['sodiumPresent']);
 
         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();
@@ -1022,6 +1027,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dbuser']) ? $model->dbuser = Yii::app()->session['dbuser'] : null;
         isset(Yii::app()->session['dbpwd']) ? $model->dbpwd = Yii::app()->session['dbpwd'] : null;
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
+        isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
@@ -1038,6 +1044,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dbuser']);
         unset(Yii::app()->session['dbpwd']);
         unset(Yii::app()->session['dblocation']);
+        unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
         unset(Yii::app()->session['dbExists']);
     }

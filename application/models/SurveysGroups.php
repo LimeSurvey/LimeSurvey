@@ -62,7 +62,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
             array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 45),
-            array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group name can contain only alphanumeric character, underscore or dot.')),
+            array('name', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => gT('Group code can contain only alphanumeric character, underscore or dot. Spaces are not allowed.')),
             array('title', 'length', 'max' => 100),
             array('alwaysavailable', 'boolean'),
             array('description, created, modified', 'safe'),
@@ -92,7 +92,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     {
         return array(
             'gsid'              => gT('ID'),
-            'name'              => gT('Name'),
+            'name'              => gT('Code'),
             'title'             => gT('Title'),
             'description'       => gT('Description'),
             'sortorder'         => gT('Sort order'),
@@ -105,6 +105,10 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         );
     }
 
+    /**
+     * Returns Columns for grid view
+     * @param array
+     **/
     public function getColumns()
     {
         return array(
@@ -125,7 +129,16 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 ),
 
                 array(
-                    'header' => gT('Name'),
+                    'header' => gT('Action'),
+                    'name' => 'sortorder',
+                    'type' => 'raw',
+                    'value' => '$data->buttons',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
+                ),
+
+                array(
+                    'header' => gT('Code'),
                     'name' => 'name',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->name',
                     'type' => 'raw',
@@ -178,17 +191,6 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'headerHtmlOptions' => array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
-
-
-                array(
-                    'header' => gT('Actions'),
-                    'name' => 'sortorder',
-                    'type' => 'raw',
-                    'value' => '$data->buttons',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
-                ),
-
             );
     }
 
@@ -289,9 +291,8 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         return $aParents;
     }
 
-
-
     /**
+     * Returns the buttons for gridview
      * @return string
      */
     public function getButtons()
@@ -302,13 +303,13 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
         $button = '';
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-edit" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
+            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
+            $button .= '<a class="btn btn-default" href="' . $sSurveySettingsUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
         }
         if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sPermissionUrl . '" role="button" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+            $button .= '<a class="btn btn-default" href="' . $sPermissionUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
@@ -427,7 +428,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $aPermission = array(
             'group' => array(
                 'create' => false,
-                'read' => false, /* Minimal : forced to true when edit, see survey for Survey model */
+                'read' => true, /* Minimal : forced to true when edit */
                 'update' => true,
                 'delete' => true,
                 'import' => false,
@@ -495,5 +496,27 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         }
         /* Finally : return specific one */
         return Permission::model()->hasPermission($this->gsid, 'surveysgroups', $sPermission, $sCRUD, $iUserID);
+    }
+
+    /**
+     * Returns an available code based on the current group count.
+     * @return string
+     */
+    public static function getNewCode()
+    {
+        $attempts = 0;
+        $surveyGroupCount = self::model()->count();
+        $groupNumber = $surveyGroupCount + 1;
+        $groupCode = "SG" . str_pad($groupNumber, 2, '0', STR_PAD_LEFT);
+        while (self::model()->countByAttributes(['name' => $groupCode]) > 0) {
+            $attempts++;
+            $groupNumber++;
+            $groupCode = "SG" . str_pad($groupNumber, 2, '0', STR_PAD_LEFT);
+            // We only try a number of times, based on the record count.
+            if ($attempts > $surveyGroupCount + 1) {
+                throw new \Exception("Unable to get a valid survey group code after " . ($surveyGroupCount + 1) . " attempts");
+            }
+        }
+        return $groupCode;
     }
 }

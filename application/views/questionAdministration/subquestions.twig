@@ -26,61 +26,57 @@
 
             <!-- Subquestions table -->
             <!-- NB: Both questions and answer options uses class "answertable". -->
-            <table
-                class='answertable subquestions-table table table-responsive'
-                id='subquestions_{{lang}}_{{scale_id}}'
-                data-scaleid='{{ scale_id }}'
-                data-input-data-id='add-subquestion-input-javascript-datas'
-            >
+            <div class="subquestions-table-wrapper" style="max-height: 414px;">
+                <table
+                    class='answertable subquestions-table table table-responsive'
+                    id='subquestions_{{lang}}_{{scale_id}}'
+                    data-scaleid='{{ scale_id }}'
+                    data-input-data-id='add-subquestion-input-javascript-datas'
+                >
 
-                <!-- Headers -->
-                <thead>
-                    <tr>
-                        <th class="col-md-1">
-                            {% if first and activated != 'Y' %}
-                                {{ gT("Position") }}
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        </th>
-                        <th class='col-md-1'>{{ gT("Code") }}</th>
-                        <th>
-                            {{ gT("Subquestion") }}
-                            <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
-                        </th>
-                        {% if first %}
-                            {% if scale_id == 0 %}
-                                <th id='rel-eq-th' class='col-md-1'>
-                                    {{ gT("Relevance equation") }}
+                    <!-- Headers -->
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class='col-md-1'>{{ gT("Code") }}</th>
+                            <th>
+                                {{ gT("Subquestion") }}
+                                <i class="fa fa-globe" data-toggle="tooltip" title="{{ "This setting is localized" | gT }}"></i>
+                            </th>
+                            {% if first %}
+                                {% if scale_id == 0 %}
+                                    <th id='rel-eq-th' class='col-md-1'>
+                                        {{ gT("Relevance equation") }}
+                                    </th>
+                                {% endif %}
+                                <th class="col-md-1">
+                                    {{ gT("Action") }}
                                 </th>
                             {% endif %}
-                            <th class="col-md-1">
-                                {{ gT("Action") }}
-                            </th>
-                        {% endif %}
-                    </tr>
-                </thead>
+                        </tr>
+                    </thead>
 
-                <!-- Body -->
-                <tbody>
-                    {% for subquestion in subquestions[scale_id] %}
-                        <!-- Line tag -->
-                        {% include 'subquestionRow.twig' with {
-                            'position'  : position,
-                            'scale_id'  : scale_id,
-                            'activated' : activated,
-                            'first'     : first,
-                            'subquestion': subquestion,
-                            'subquestionl10n': subquestion.questionl10ns[lang],
-                            'language'  : lang,
-                            'oldCode'   : true,
-                        } %}
+                    <!-- Body -->
+                    <tbody>
+                        {% for subquestion in subquestions[scale_id] %}
+                            <!-- Line tag -->
+                            {% include 'subquestionRow.twig' with {
+                                'position'  : position,
+                                'scale_id'  : scale_id,
+                                'activated' : activated,
+                                'first'     : first,
+                                'subquestion': subquestion,
+                                'subquestionl10n': subquestion.questionl10ns[lang],
+                                'language'  : lang,
+                                'oldCode'   : true,
+                            } %}
 
-                        {% set position = position + 1 %}
+                            {% set position = position + 1 %}
 
-                    {% endfor %}
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="action-buttons" style="padding-bottom: 10px;">
                 {% if activated == 'Y' %}
@@ -96,11 +92,7 @@
                     type='button'
                     onclick="LS.questionEditor.showLabelSetPicker(event, 'subquestions');"
                 >
-                    {{ gT('Predefined label sets...') }}
-                </button>
-
-                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button' data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
-                    {{ gT('Quick add...') }}
+                    {{ gT('Load label set') }}
                 </button>
 
                 {% if hasLabelSetPermission %}
@@ -111,9 +103,13 @@
                         onclick="LS.questionEditor.showLabelSetSaver(event, 'subquestions-table');"
                         data-target="#saveaslabelModal"
                     >
-                        {{ gT('Save as label set') }}
+                        {{ gT('Save label set') }}
                     </button>
                 {% endif %}
+
+                <button {{ disabled }} id='btnquickadd_{{ lang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd pull-right' type='button' data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                    {{ gT('Quick add') }}
+                </button>
             </div>
             {% set position=sprintf("%05d", position) %}
         {% endfor %}

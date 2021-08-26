@@ -1,0 +1,12 @@
+/vendor
+/tests/tmp
+/tmp
+/nbproject/*
+*.DS_Store
+.idea
+.env
+coverage.xml
+.phpunit.result.cache
+.php_cs.cache
+*.swp
+*.swo

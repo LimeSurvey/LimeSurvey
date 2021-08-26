@@ -126,6 +126,15 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     }
 
     /**
+     * @param string $name Name of <input>
+     * @return \Facebook\WebDriver\Remote\RemoteWebElement?
+     */
+    public function findByName($name)
+    {
+        return $this->findElement(WebDriverBy::name($name));
+    }
+
+    /**
      * @param string $css
      * @return \Facebook\WebDriver\Remote\RemoteWebElement
      */
@@ -141,6 +150,15 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     public function findByLinkText($text)
     {
         return $this->findElement(WebDriverBy::linkText($text));
+    }
+
+    /**
+     * @param string $text
+     * @return \Facebook\WebDriver\Remote\RemoteWebElement
+     */
+    public function findByPartialLinkText($text)
+    {
+        return $this->findElement(WebDriverBy::partialLinkText($text));
     }
 
     /**

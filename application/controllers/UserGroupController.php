@@ -1,7 +1,12 @@
 <?php
-
+/**
+ * class UserGroupController
+ **/
 class UserGroupController extends LSBaseController
 {
+    /**
+     * @return array
+     **/
     public function accessRules()
     {
         return array(
@@ -57,7 +62,9 @@ class UserGroupController extends LSBaseController
         $model = UserGroup::model();
 
         $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
-        $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        $aData['pageTitle'] = gT('User group list');
 
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int)$_GET['pageSize']);
@@ -79,7 +86,7 @@ class UserGroupController extends LSBaseController
      * @param $ugid
      * @param bool $header
      */
-    public function actionViewGroup($ugid, $header = false)
+    public function actionViewGroup($ugid, bool $header = false)
     {
         if (!Permission::model()->hasGlobalPermission('usergroups', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -176,7 +183,15 @@ class UserGroupController extends LSBaseController
         }
 
         $aData['usergroupbar']['edit'] = true;
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('userGroup/index'); // Close button
+
+        // Return Button
+        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $basePageTitle = gT('User group');
+        $userGroupName = $aData['groupname'];
+        $aData['pageTitle'] = $basePageTitle . ' : ' . $userGroupName;
 
         $this->aData = $aData;
 
@@ -196,10 +211,10 @@ class UserGroupController extends LSBaseController
      *
      * Load edit user group screen.
      *
-     * @param mixed $ugid
+     * @param int $ugid
      * @return void
      */
-    public function actionEdit($ugid)
+    public function actionEdit(int $ugid)
     {
         $ugid = (int) $ugid;
 
@@ -229,10 +244,13 @@ class UserGroupController extends LSBaseController
             $this->redirect(App()->createUrl("/admin"));
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text'] = gT("Update user group");
+        $aData['usergroupbar']['savebutton']['text'] = gT("Save");
 
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']);
         $this->aData = $aData;
 
         $this->render('editUserGroup_view', [
@@ -277,10 +295,19 @@ class UserGroupController extends LSBaseController
             $this->redirect('index');
         }
 
+        // Save Button
         $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
         $aData['usergroupbar']['savebutton']['text'] = gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index');
+
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
+
+        // Add User Group Button
         $aData['usergroupbar']['add'] = 'admin/usergroups';
+
+        # Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = gT('Add user group');
 
         $this->aData = $aData;
 
@@ -427,9 +454,9 @@ class UserGroupController extends LSBaseController
     /**
      *  Sends email to all users in a group
      *
-     * @param $ugid
+     * @param int $ugid
      */
-    public function actionMailToAllUsersInGroup($ugid)
+    public function actionMailToAllUsersInGroup(int $ugid)
     {
         $ugid = sanitize_int($ugid);
         $action = Yii::app()->request->getPost("action");
@@ -466,7 +493,20 @@ class UserGroupController extends LSBaseController
             $aData['ugid'] = $ugid;
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createAbsoluteUrl('userGroup/index'); // Close button, UrlReferrer
+        // Back Button
+        $aData['usergroupbar']['returnbutton']['url'] = 'userGroup/index';
+        $aData['usergroupbar']['returnbutton']['text'] = gT('Back');
+
+        // Send Button
+        $aData['usergroupbar']['savebutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['savebutton']['text'] = gT('Send');
+
+        // Reset Button
+        $aData['usergroupbar']['resetbutton']['form'] = 'mailusergroup';
+        $aData['usergroupbar']['resetbutton']['text'] = gT('Reset');
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = gT("Mail to all Members");
 
         $this->aData = $aData;
 

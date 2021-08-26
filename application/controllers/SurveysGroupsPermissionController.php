@@ -16,6 +16,9 @@
 
 use LimeSurvey\Models\Services\PermissionManager;
 
+/**
+ * Class SurveysGroupsPermissionController
+ */
 class SurveysGroupsPermissionController extends LSBaseController
 {
     /** By default : just view */
@@ -51,8 +54,9 @@ class SurveysGroupsPermissionController extends LSBaseController
      * No action done
      * @param integer $id SurveysGroups id
      * @return void
+     * @throws CHttpException
      */
-    public function actionIndex($id)
+    public function actionIndex(int $id)
     {
         /** @var SurveysGroups $model */
         $model = $this->loadModel($id);
@@ -69,6 +73,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         foreach ($aDefinitionPermissions as $permissionKey => $aPermission) {
             $aDefinitionPermissions[$permissionKey]['maxCrud'] = count(array_filter(array_intersect_key($aPermission, array_flip($aCruds)))); // Used for mixed class
         }
+
         /* Find all current user list with rights */
         /* @todo : move this to : SurveysGroups ? Permission ? User ?*/
         $oCriteria = new CDbCriteria();
@@ -135,11 +140,6 @@ class SurveysGroupsPermissionController extends LSBaseController
             $oAddGroupList = UserGroup::model()->findAll($oCriteria);
         }
         $aData['subview'] = 'viewCurrents';
-        $aData['buttons'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
-            ),
-        );
         $aData['aPermissionData'] = array(
             'aDefinitionPermissions' => $aDefinitionPermissions,
             'oExistingUsers' => $oExistingUsers,
@@ -148,6 +148,19 @@ class SurveysGroupsPermissionController extends LSBaseController
             'oAddGroupList' => $oAddGroupList,
             'model' => $model,
         );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        // White Top Bar
+        $aData['fullpagebar'] = array(
+            'returnbutton' => array(
+                'text' => gT('Back'),
+                'url'  => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+            ),
+        );
+        $this->aData = $aData;
+
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 
@@ -175,11 +188,16 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model
         );
         $aData['subview'] = 'addUserResult';
-        $aData['buttons'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl("SurveysGroupsPermission/index", array("id" => $id)),
-            ),
-        );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
+            ],
+        ];
         $aData['aPermissionData'] = array(
             'result' => array(),
             'uid' => $uid,
@@ -198,6 +216,8 @@ class SurveysGroupsPermissionController extends LSBaseController
         }
 
         $aData['aPermissionData']['result'] = $result;
+
+        $this->aData = $aData;
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 
@@ -226,11 +246,16 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model
         );
         $aData['subview'] = 'addUserGroupResult';
-        $aData['buttons'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl("SurveysGroupsPermission/index", array("id" => $id)),
-            ),
-        );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
+            ],
+        ];
         $aData['aPermissionData'] = array(
             'result' => array(),
             'ugid' => $ugid,
@@ -257,6 +282,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         // Did we check something ? Some warning if group is empty for example ?
         $result['success'] = gT("User group added.");
         $aData['aPermissionData']['result'] = $result;
+        $this->aData = $aData;
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 
@@ -407,15 +433,21 @@ class SurveysGroupsPermissionController extends LSBaseController
             'model' => $model
         );
         $aData['subview'] = 'deleteUserResult';
-        $aData['buttons'] = array(
-            'closebutton' => array(
-                'url' => App()->createUrl("SurveysGroupsPermission/index", array("id" => $id)),
-            ),
-        );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
+        $aData['fullpagebar'] = [
+            'closebutton' => [
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
+            ],
+        ];
         $aData['aPermissionData'] = array(
             'model' => $model,
             'oUser' => $oUser,
         );
+        $this->aData = $aData;
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 
@@ -460,7 +492,8 @@ class SurveysGroupsPermissionController extends LSBaseController
         );
         $buttons = array(
             'closebutton' => array(
-                'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+                'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                'url_keep' => true,
             )
         );
         if ($model->hasPermission('permission', 'update')) {
@@ -472,15 +505,20 @@ class SurveysGroupsPermissionController extends LSBaseController
                     'form' => 'permissionsSave'
                 ),
                 'closebutton' => array(
-                    'url' => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+                    'url' => App()->createUrl("SurveysGroupsPermission/index", ["id" => $id]),
+                    'url_keep' => true,
                 )
             );
         }
         $aData = array(
             'model' => $model,
             'subview' => 'setPermissionForm',
-            'buttons' => $buttons
+            'fullpagebar' => $buttons
         );
+
+        // Green Bar Page Title
+        $aData['pageTitle'] = gT('Permission for group: ') . $model->title;
+
         $aData['aPermissionData'] = array(
             'aPermissions' => $aPermissions,
             'model' => $model,
@@ -490,6 +528,7 @@ class SurveysGroupsPermissionController extends LSBaseController
             'oUser' => $oUser,
             'oUserGroup' => $oUserGroup,
         );
+        $this->aData = $aData;
         App()->getController()->render('/SurveysGroupsPermission/index', $aData);
     }
 

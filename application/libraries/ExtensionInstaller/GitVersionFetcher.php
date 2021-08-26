@@ -9,19 +9,18 @@ namespace LimeSurvey\ExtensionInstaller;
 class GitVersionFetcher extends VersionFetcher
 {
     /**
-     * @param string $extensionName
-     * @return string
+     * @inherit
      */
     public function getLatestVersion()
     {
-        // todo
+        return 'todo';
     }
 
     /**
-     * 
+     * @inherit
      */
     public function getLatestSecurityVersion()
     {
-        // todo
+        return 'todo';
     }
 }

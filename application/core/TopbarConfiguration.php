@@ -17,6 +17,9 @@ class TopbarConfiguration
     /** @var string Name of the view used to render the right side of the topbar */
     private $rightSideView = '';
 
+    /** @var boolean Flag to hide the whole topbar */
+    private $hide = false;
+
     /** @var array Maps views to the methods used to get their extra data */
     private $extraDataMapping = [
         'surveyTopbar_view' => 'TopbarConfiguration::getSurveyTopbarData',
@@ -43,6 +46,7 @@ class TopbarConfiguration
      *  'topbarId' => The topbar ID. Will normally be used as ID for container html element of the topbar.
      *  'leftSideView' => The name of the view to use for the left side of the topbar.
      *  'rightSideView' => The name of the view to use for the right side of the topbar.
+     *  'hide' => Boolean indicating if the topbar should be hidden (used to hide the controller's default topbar on some actions)
      *
      * @param array $config
      */
@@ -51,13 +55,19 @@ class TopbarConfiguration
         // Set defaults
         $this->viewName = isset($config['name']) ? $config['name'] : 'surveyTopbar_view';
         $this->id = isset($config['topbarId']) ? $config['topbarId'] : 'surveybarid';
+        $this->hide = isset($config['hide']) ? $config['hide'] : false;
 
         if (isset($config['leftSideView'])) {
             $this->leftSideView = $config['leftSideView'];
         }
         if (isset($config['rightSideView'])) {
             $this->rightSideView = $config['rightSideView'];
-        } elseif (!empty($config['showSaveButton']) || !empty($config['showCloseButton']) || !empty($config['showImportButton']) || !empty($config['showExportButton'])) {
+        } elseif (!empty($config['showSaveButton'])   ||
+                  !empty($config['showCloseButton'])  ||
+                  !empty($config['showImportButton']) ||
+                  !empty($config['showExportButton']) ||
+                  !empty($config['showBackButton'])   ||
+                  !empty($config['showWhiteCloseButton'])) {
             // If no right side view has been specified, and one of the default buttons must be shown, use the default right side view.
             $this->rightSideView = "surveyTopbarRight_view";
         }
@@ -303,7 +313,7 @@ class TopbarConfiguration
             'oSurvey' => $survey,
             'hasTokensReadPermission'   => $hasTokensReadPermission,
             'hasTokensCreatePermission' => $hasTokensCreatePermission,
-            'hasTokensExportPermission'  => $hasTokensExportPermission,
+            'hasTokensExportPermission' => $hasTokensExportPermission,
             'hasTokensImportPermission' => $hasTokensImportPermission,
             'hasTokensUpdatePermission' => $hasTokensUpdatePermission,
             'hasTokensDeletePermission' => $hasTokensDeletePermission,
@@ -404,5 +414,10 @@ class TopbarConfiguration
     public function getSurveyData()
     {
         return $this->surveyData;
+    }
+
+    public function shouldHide()
+    {
+        return $this->hide;
     }
 }

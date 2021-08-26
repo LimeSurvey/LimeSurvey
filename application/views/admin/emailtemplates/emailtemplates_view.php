@@ -71,7 +71,7 @@ var LS = LS || {};  // namespace
 </div>
 
 <div class="modal modal-large fade" tabindex="-1" role="dialog" id="kc-modal-open">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -80,6 +80,9 @@ var LS = LS || {};  // namespace
       <div class="modal-body" style="padding: 0;">
         <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
       </div>
+        <div class='modal-footer'>
+            <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Cancel");?></button>
+        </div>
     </div>
   </div>
 </div>

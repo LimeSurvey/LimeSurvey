@@ -5,19 +5,23 @@
 $this->render('includes/previewSurveyAndGroupButtons_view', get_defined_vars());
 ?>
 
-<!-- Check survey logic -->
-<?php if($hasSurveyContentReadPermission): ?>
-    <a class="btn btn-default pjax" href="<?php echo Yii::App()->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
-        <span class="icon-expressionmanagercheck"></span>
-        <?php eT("Check logic for current group"); ?>
-    </a>
-<?php endif; ?>
+<?php
+    // Tools dropdown button
+    $toolsDropdownItems = $this->render('includes/groupToolsDropdownItems', get_defined_vars(), true);
+    if (!empty(trim($toolsDropdownItems))):
+?>
+<!-- Tools  -->
+<div class="btn-group hidden-xs">
 
-<?php if($hasSurveyContentExportPermission):?>
-    <!-- Export -->
-    <a class="btn btn-default " href="<?php echo Yii::App()->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
-        <span class="icon-export"></span>
-        <?php eT("Export this question group"); ?>
-    </a>
-<?php endif; ?>
+    <!-- Main button dropdown -->
+    <button id="ls-question-group-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="icon-tools" ></span>
+        <?php eT('Tools'); ?>&nbsp;<span class="caret"></span>
+    </button>
 
+    <!-- dropdown -->
+    <ul class="dropdown-menu">
+        <?= $toolsDropdownItems ?>
+    </ul>
+</div>
+<?php endif; ?>

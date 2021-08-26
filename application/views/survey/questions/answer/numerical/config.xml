@@ -5,7 +5,7 @@
     <metadata>
         <name>numerical</name>
         <type>question_theme</type>
-        <title>Numerical Input</title>
+        <title>Numerical input</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -26,6 +26,7 @@
 
     <compatibility>
         <version>4.0</version>
+        <version>5.0</version>
     </compatibility>
 
     <!--
@@ -135,9 +136,7 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
-                may use expressions - remember this part is static.
-            </help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -229,7 +228,7 @@
             <sortorder>100</sortorder>
             <inputtype>integer</inputtype>
             <default></default>
-            <help>Set the size to the input or textarea, the input will be displayed with approximately this size in width.</help>
+            <help>Set the size of the input or textarea. The input will be displayed approximately this size in width.</help>
             <caption>Text input box size</caption>
             <i18n></i18n>
             <readonly></readonly>

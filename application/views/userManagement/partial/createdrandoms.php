@@ -1,7 +1,10 @@
 
-<div class="modal-header">
-    <h3><?=gT('Created random users')?></h3>
-</div>
+<?php
+Yii::app()->getController()->renderPartial(
+    '/layouts/partial_modals/modal_header',
+    ['modalTitle' => 'Created random users']
+);
+?>
 <div class="modal-body">
     <div class="container-center">
         <div class="row">
@@ -42,13 +45,13 @@
             <?php } ?>
             </ul>
         </div>
-        <div class="row ls-space margin top-35">
-            <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1">
-            <i class="fa fa-file-excel-o"></i>&nbsp;<?=gT('Export as CSV')?>
-            </button>
-            <button id="exitForm" class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1">
-            <i class="fa fa-times"></i>&nbsp;<?=gT('Close')?>
-            </button>
-        </div>
     </div>
+</div>
+<div class="modal-footer">
+    <button id="exitForm" class="btn btn-default">
+        <?=gT('Close')?>
+        </button>
+    <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-success">
+        &nbsp;<?=gT('Export as CSV')?>
+    </button>
 </div>

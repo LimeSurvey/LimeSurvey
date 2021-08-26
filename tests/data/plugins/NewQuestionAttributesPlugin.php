@@ -16,11 +16,21 @@ class NewQuestionAttributesPlugin extends PluginBase
         $questionAttributes = [
             'testAttribute' => [
                 'types'     => 'S',
-                'category'  => gT('Test'),
+                'category'  => 'Test',
                 'sortorder' => 1,
                 'inputtype' => 'text',
                 'default'   => '',
                 'caption'   => 'Test Attribute',
+                'help'      => 'This is a dummy attribute for testing purposes.',
+                'expression'=> 1,
+            ],
+            'testAttributeForArray' => [
+                'types'     => 'F',
+                'category'  => gT('Test'),
+                'sortorder' => 1,
+                'inputtype' => 'text',
+                'default'   => '',
+                'caption'   => 'Test Attribute for Array type',
                 'help'      => 'This is a dummy attribute for testing purposes.',
                 'expression'=> 1,
             ],

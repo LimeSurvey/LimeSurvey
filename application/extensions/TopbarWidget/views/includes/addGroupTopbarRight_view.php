@@ -1,23 +1,28 @@
+<?php
+/**
+ * @var string $backUrl
+ */
+
+?>
+
 <!-- Save -->
-<a id="save-button" class="btn btn-success" role="button">
-    <i class="fa fa-floppy-o"></i>
-    <?php eT("Save");?>
+<a id="save-button" class="btn btn-success pull-right" role="button">
+    <i class="fa fa-check"></i>
+    <?php eT('Save'); ?>
 </a>
-
-<!-- Save and new group -->
-<a class="btn btn-default" id='save-and-new-button' role="button">
-    <span class="fa fa-plus-square"></span>
-    <?php eT("Save & add new group"); ?>
+<!-- Back Button -->
+<a class="btn btn-default" href="<?php echo $backUrl ?>" role="button">
+    <span class="fa fa-backward"></span>
+    &nbsp;&nbsp;
+    <?php eT('Back') ?>
 </a>
-
 <!-- Save and add question -->
 <a class="btn btn-default" id='save-and-new-question-button' role="button">
     <span class="fa fa-plus"></span>
-    <?php eT("Save & add new question"); ?>
+    <?php eT('Save & add question'); ?>
 </a>
-
-<!-- Close -->
-<a class="btn btn-danger" href="<?php echo $closeBtnUrl; ?>" role="button">
-    <span class="fa fa-close"></span>
-    <?php eT("Close");?>
+<!-- Save and new group -->
+<a class="btn btn-default" id='save-and-new-button' role="button">
+    <span class="fa fa-plus"></span>
+    <?php eT('Save & add group'); ?>
 </a>

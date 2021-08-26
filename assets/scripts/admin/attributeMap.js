@@ -4,26 +4,33 @@ var LS = LS || {  onDocumentReady: {} };
 
 $(document).on('ready  pjax:scriptcomplete', function(){
 
-    var height = $(document).height();
-    var width = $(document).width();
+    var windowHeight = $(window).height();
     var tokencurrentarray = {};
     var newcurrentarray = {};
-    
+
+    var centralattribute = $('#centralattribute');
+    var newcreated = $('#newcreated');
+    var tokenattribute = $('#tokenattribute');
+
     if($("#overwrite").is(':checked')) {var attoverwrite=true;} else {var attoverwrite=false;}
     if($("#overwriteman").is(':checked')) {var attoverwriteman=true;} else {var attoverwriteman=false;}
     if($("#createautomap").is(':checked')) {var attcreateautomap=true;} else {var attcreateautomap=false;}
     if($("#overwritest").is(':checked')) {var attoverwritest=true;} else {var attoverwritest=false;}
 
-    $('#tokenattribute').css({'height' : height-200});
-    $('#centralattribute').css({'height' : height-200});
-    $('#newcreated').css({'height' : height-200});
-	var ncHeadingHeight = $('#newcreated .heading').outerHeight();
-	$('.newcreate').css({
-		'padding-bottom':0,
-		'min-height':$('#newcreated').height()-ncHeadingHeight-5
-	});
-	
-    $("#overwrite").click(function(){
+    centralattribute.css({'min-height': windowHeight * 0.5});
+    newcreated.css({'min-height': windowHeight * 0.5});
+    tokenattribute.css({'min-height': windowHeight * 0.5});
+    var ncHeadingHeight = $('#newcreated .panel-heading').outerHeight();
+    $('.newcreate').css({
+        'padding-bottom': 0,
+        'min-height': (windowHeight * 0.5) - ncHeadingHeight - 30
+    });
+    $('#cpdbatt').css({
+        'padding-bottom': 0,
+        'min-height': (windowHeight * 0.5) - ncHeadingHeight - 30
+    });
+
+    $("#overwrite").click(function (){
         if($("#overwrite").is(':checked')) {attoverwrite=true;} else {attoverwrite=false;}
     });
     $("#overwriteman").click(function(){

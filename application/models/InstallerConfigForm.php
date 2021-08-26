@@ -28,25 +28,27 @@
  */
 class InstallerConfigForm extends CFormModel
 {
-    const ENGINE_TYPE_MYISAM = 'MYISAM';
-    const ENGINE_TYPE_INNODB = 'INNODB';
+    public const ENGINE_TYPE_MYISAM = 'MYISAM';
+    public const ENGINE_TYPE_INNODB = 'INNODB';
 
-    const DB_TYPE_MYSQL = 'mysql';
-    const DB_TYPE_MYSQLI = 'mysqli';
-    const DB_TYPE_SQLSRV = 'sqlsrv';
-    const DB_TYPE_MSSQL = 'mssql';
-    const DB_TYPE_DBLIB = 'dblib';
-    const DB_TYPE_PGSQL = 'pgsql';
-    const DB_TYPE_ODBC = 'odbc';
+    public const DB_TYPE_MYSQL = 'mysql';
+    public const DB_TYPE_MYSQLI = 'mysqli';
+    public const DB_TYPE_SQLSRV = 'sqlsrv';
+    public const DB_TYPE_MSSQL = 'mssql';
+    public const DB_TYPE_DBLIB = 'dblib';
+    public const DB_TYPE_PGSQL = 'pgsql';
+    public const DB_TYPE_ODBC = 'odbc';
 
-    const MINIMUM_MEMORY_LIMIT = 128;
-    const MINIMUM_PHP_VERSION = '7.0.0';
+    public const MINIMUM_MEMORY_LIMIT = 128;
+    public const MINIMUM_PHP_VERSION = '7.2.5';
 
     // Database
     /** @var string $dbtype */
     public $dbtype;
     /** @var string $dblocation */
     public $dblocation = 'localhost';
+    /** @var string $dbport */
+    public $dbport;
     /** @var  string $dbname */
     public $dbname;
 
@@ -112,6 +114,9 @@ class InstallerConfigForm extends CFormModel
 
     /** @var bool */
     public $isPhpGdPresent = false;
+
+    /** @var bool */
+    public $phpGdHasJpegSupport = false;
 
     /** @var bool */
     public $isPhpLdapPresent = false;
@@ -204,11 +209,13 @@ class InstallerConfigForm extends CFormModel
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
         $this->isPhpLdapPresent = function_exists('ldap_connect');
         $this->isPhpImapPresent = function_exists('imap_open');
-        $this->isPhpZipPresent = function_exists('zip_open');
+        $this->isPhpZipPresent = class_exists('ZipArchive');
         $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
 
         if (function_exists('gd_info')) {
-            $this->isPhpGdPresent = array_key_exists('FreeType Support', gd_info());
+            $gdInfo = gd_info();
+            $this->phpGdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            $this->isPhpGdPresent = true;
         }
         $this->isPhpVersionOK = version_compare(PHP_VERSION, self::MINIMUM_PHP_VERSION, '>=');
     }
@@ -275,9 +282,11 @@ class InstallerConfigForm extends CFormModel
         if ($this->isMysql && $this->dbengine === self::ENGINE_TYPE_INNODB) {
             $mariadb = preg_match('/MariaDB/i', $this->getMySqlConfigValue('version'));
             $match = preg_match('/^\d+\.\d+\.\d+/', $this->getMySqlConfigValue('version'), $version);
-            if (!$match
+            if (
+                !$match
                     || (!$mariadb && version_compare($version[0], '5.7.0') <= 0)
-                    || ($mariadb && version_compare($version[0], '10.2.0') < 0)) {
+                    || ($mariadb && version_compare($version[0], '10.2.0') < 0)
+            ) {
                 // Only for older db-engine
                 if (!$this->isInnoDbLargeFilePrefixEnabled()) {
                     $this->addError($attribute, gT('You need to enable large_file_prefix setting in your database configuration in order to use InnoDB engine for LimeSurvey!'));
@@ -329,7 +338,7 @@ class InstallerConfigForm extends CFormModel
      */
     public function getIsTmpDirWriteable()
     {
-        return self::is_writable_recursive(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR);
+        return self::isWritableRecursive(Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -337,7 +346,7 @@ class InstallerConfigForm extends CFormModel
      */
     public function getIsUploadDirWriteable()
     {
-        return self::is_writable_recursive(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR);
+        return self::isWritableRecursive(Yii::app()->getConfig('uploaddir') . DIRECTORY_SEPARATOR);
     }
 
 
@@ -345,7 +354,7 @@ class InstallerConfigForm extends CFormModel
      * @param string $sDirectory
      * @return boolean
      */
-    public static function is_writable_recursive($sDirectory)
+    public static function isWritableRecursive($sDirectory)
     {
         $sFolder = opendir($sDirectory);
         if ($sFolder === false) {
@@ -355,7 +364,7 @@ class InstallerConfigForm extends CFormModel
             if (
                 $sFile != '.' && $sFile != '..' &&
                 (!is_writable($sDirectory . DIRECTORY_SEPARATOR . $sFile) ||
-                    (is_dir($sDirectory . DIRECTORY_SEPARATOR . $sFile) && !self::is_writable_recursive($sDirectory . DIRECTORY_SEPARATOR . $sFile)))
+                    (is_dir($sDirectory . DIRECTORY_SEPARATOR . $sFile) && !self::isWritableRecursive($sDirectory . DIRECTORY_SEPARATOR . $sFile)))
             ) {
                 closedir($sFolder);
                 return false;
@@ -436,7 +445,7 @@ class InstallerConfigForm extends CFormModel
             if (in_array($this->dbtype, [ self::DB_TYPE_SQLSRV, self::DB_TYPE_DBLIB, self::DB_TYPE_MSSQL])) {
                 $this->db->initSQLs = ['SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'];
             }
-            
+
             $this->db->tablePrefix = $this->dbprefix;
             $this->setMySQLDefaultEngine($this->dbengine);
         } catch (\Exception $e) {
@@ -570,10 +579,11 @@ class InstallerConfigForm extends CFormModel
         if (strpos($this->dblocation, ':') !== false) {
             $pieces = explode(':', $this->dblocation, 2);
             if (isset($pieces[1]) && is_numeric($pieces[1])) {
-                return $pieces[1];
+                $this->dblocation = str_replace(":" . $pieces[1], "", $this->dblocation);
+                $this->dbport = $pieces[1];
             }
         }
-        return $this->getDbDefaultPort();
+        return $this->dbport ?? $this->getDbDefaultPort();
     }
 
     /**

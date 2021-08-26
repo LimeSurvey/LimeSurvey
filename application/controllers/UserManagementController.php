@@ -1,9 +1,15 @@
 <?php
 
 //LSYii_Controller
+/**
+ * Class UserManagementController
+ */
 class UserManagementController extends LSBaseController
 {
 
+    /**
+     * @return array
+     **/
     public function accessRules()
     {
         return array(
@@ -55,10 +61,13 @@ class UserManagementController extends LSBaseController
 
         $aData['massiveAction'] = $this->renderPartial(
             'massiveAction/_selector',
-            [],
+            ['userid' => $model->uid],
             true,
             false
         );
+
+        // Green Bar (SurveyManagerBar) Page Title
+        $aData['pageTitle'] = gT('User management');
 
         //this is really important, so we have the aData also before rendering the content
         $this->aData = $aData;
@@ -75,8 +84,7 @@ class UserManagementController extends LSBaseController
     /**
      * Open modal to edit, or create a new user
      *
-     * @param int $userid
-     * @return string
+     * @param int|null $userid
      * @throws CException
      */
     public function actionAddEditUser($userid = null)
@@ -184,7 +192,6 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
      * @throws CException
      */
     public function actionAddDummyUser()
@@ -216,7 +223,7 @@ class UserManagementController extends LSBaseController
 
         for (; $times > 0; $times--) {
             $name = $this->getRandomUsername($prefix);
-            $password = $this->getRandomPassword($passwordSize);
+            $password = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
             $oUser = new User();
             $oUser->users_name = $name;
             $oUser->full_name = $name;
@@ -337,10 +344,10 @@ class UserManagementController extends LSBaseController
      * Show some user detail and statistics
      *
      * @param $userid int
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionViewUser($userid)
+    public function actionViewUser(int $userid) : ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -417,7 +424,7 @@ class UserManagementController extends LSBaseController
      * @return string | JSON
      * @throws CException
      */
-    public function actionSaveUserPermissions()
+    public function actionSaveUserPermissions(): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -447,10 +454,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens a modal to edit user template permissions
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionUserTemplatePermissions()
+    public function actionUserTemplatePermissions(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -485,7 +492,7 @@ class UserManagementController extends LSBaseController
      * @return string | JSON
      * @throws CException
      */
-    public function actionSaveThemePermissions()
+    public function actionSaveThemePermissions(): string
     {
         if (
             !(Permission::model()->hasGlobalPermission('users', 'update') &&
@@ -513,10 +520,10 @@ class UserManagementController extends LSBaseController
     /**
      * Opens the modal to add dummy users
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionAddRole()
+    public function actionAddRole(): ?string
     {
         $userId = Yii::app()->request->getParam('userid');
         $oUser = User::model()->findByPk($userId);
@@ -545,10 +552,10 @@ class UserManagementController extends LSBaseController
     /**
      * Save role of user
      *
-     * @return string
+     * @return string|null
      * @throws CException
      */
-    public function actionSaveRole()
+    public function actionSaveRole(): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->renderPartial(
@@ -616,7 +623,7 @@ class UserManagementController extends LSBaseController
      * @return string
      * @throws CException
      */
-    public function actionImportUsers(string $importFormat = 'csv')
+    public function actionImportUsers(string $importFormat = 'csv'): string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return $this->renderPartial(
@@ -948,7 +955,7 @@ class UserManagementController extends LSBaseController
     /**
      * Mass edition apply roles
      *
-     * @return string
+     * @return string|null|void
      * @throws CException
      * @throws CHttpException
      */
@@ -1074,7 +1081,7 @@ class UserManagementController extends LSBaseController
      * @return boolean
      * @throws CException
      */
-    public function deleteUser(int $uid)
+    public function deleteUser(int $uid): bool
     {
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return $this->renderPartial(
@@ -1103,7 +1110,7 @@ class UserManagementController extends LSBaseController
      * @return User|null  object
      * @throws CHttpException
      */
-    public function loadModel($id)
+    public function loadModel(int $id): User
     {
         $model = User::model()->findByPk($id);
 
@@ -1123,7 +1130,7 @@ class UserManagementController extends LSBaseController
      * @return object user - updated user object
      * @throws CException
      */
-    public function updateAdminUser($aUser)
+    public function updateAdminUser(array $aUser): User
     {
         $oUser = User::model()->findByPk($aUser['uid']);
         //If the user id of the post is spoofed somehow it would be possible to edit superadmin users
@@ -1159,7 +1166,7 @@ class UserManagementController extends LSBaseController
      * @throws CException
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    private function createAdminUser($aUser, $sendEmail=true)
+    private function createAdminUser(array $aUser, bool $sendEmail = true): array
     {
         if (!isset($aUser['uid']) || $aUser['uid'] == null) {
             $newUser = $this->createNewUser($aUser);
@@ -1193,7 +1200,7 @@ class UserManagementController extends LSBaseController
 
         return [
             'success' => false,
-            'errors' => CHtml::tag("p", array(), gT("Error: no user was created"))
+            'errors' => CHtml::tag("p", array(), gT("Error: User was not created"))
         ];
     }
 
@@ -1204,7 +1211,7 @@ class UserManagementController extends LSBaseController
      * @return array returns all attributes from model user as an array
      * @throws CException
      */
-    public function createNewUser($aUser)
+    public function createNewUser(array $aUser): array
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
@@ -1247,14 +1254,29 @@ class UserManagementController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors'  => $event->get('errorMessageTitle') . '<br/>' . $event->get('errorMessageBody'),
-                    'debug'   => ['title' => $event->get('errorMessageTitle'), 'body' => $event->get('errorMessageBody'), 'code' => $event->get('errorCode'), 'event' => $event],
+                    'errors'  => $event->get('errorMessageTitle') 
+                                    . '<br/>'
+                                    . $event->get('errorMessageBody'),
+                    'debug'   => [
+                        'title' => $event->get('errorMessageTitle'),
+                        'body'  => $event->get('errorMessageBody'),
+                        'code'  => $event->get('errorCode'),
+                        'event' => $event
+                    ],
                 ]
             ]);
         }
         $iNewUID = $event->get('newUserID');
         // add default template to template rights for user
-        Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => App()->getConfig('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
+        Permission::model()->insertSomeRecords(
+            array(
+                'uid'         => $iNewUID,
+                'permission'  => App()->getConfig('defaulttheme'),
+                'entity'      => 'template',
+                'read_p'      => 1,
+                'entity_id'   => 0
+            )
+        );
         // add default usersettings to the user
         SettingsUser::applyBaseSettings($iNewUID);
 
@@ -1269,7 +1291,7 @@ class UserManagementController extends LSBaseController
      *
      * @return string $errorDiv
      */
-    private function renderErrors($errors)
+    private function renderErrors(array $errors): string
     {
         $errorDiv = '<ul class="list-unstyled">';
         foreach ($errors as $key => $error) {
@@ -1289,7 +1311,7 @@ class UserManagementController extends LSBaseController
      * @param string $prefix the prefix to be used
      * @return string
      */
-    protected function getRandomUsername($prefix)
+    protected function getRandomUsername(string $prefix): string
     {
         do {
             $rand = $this->getRandomString();
@@ -1306,7 +1328,7 @@ class UserManagementController extends LSBaseController
      *
      * @return string
      */
-    protected function getRandomString()
+    protected function getRandomString(): string
     {
         if (is_callable('openssl_random_pseudo_bytes')) {
             $uiq = openssl_random_pseudo_bytes(128);
@@ -1326,7 +1348,7 @@ class UserManagementController extends LSBaseController
      * @param array $aPermissionArray
      * @return array
      */
-    protected function applyPermissionFromArray($iUserId, $aPermissionArray)
+    protected function applyPermissionFromArray(int $iUserId, array $aPermissionArray): array
     {
         //Delete all current Permissions
         $oCriteria = new CDbCriteria();

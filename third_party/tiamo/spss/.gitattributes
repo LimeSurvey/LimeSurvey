@@ -1,0 +1,7 @@
+docs export-ignore
+tests export-ignore
+.travis.* export-ignore
+composer.lock export-ignore
+CHANGELOG.md export-ignore
+README.md export-ignore
+* text=auto

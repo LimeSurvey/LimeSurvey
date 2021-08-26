@@ -151,7 +151,7 @@ $( document ).ready(function() {
 
         o.login_submit = 'login';
 
-        LS.ajax({
+        LS.AjaxHelper.ajax({
             url: url + '&ajax=1',
             data: o,
             method: 'post',

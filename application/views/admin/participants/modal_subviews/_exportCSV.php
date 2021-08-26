@@ -28,8 +28,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close'); ?></button>
-                <button type="button" class="btn btn-default exportButton"><?php eT('Export'); ?></button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal"><?php eT('Cancel'); ?></button>
+                <button type="button" class="btn btn-success exportButton"><?php eT('Apply'); ?></button>
             </div>
         </div>
     </div>

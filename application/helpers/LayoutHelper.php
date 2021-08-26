@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * Class LayoutHelper
+ */
 class LayoutHelper
 {
     /**
      * Header
      *
      * @param array $aData
+     * @param bool $sendHTTPHeader
      */
-    public function showHeaders($aData, $sendHTTPHeader = true)
+    public function showHeaders(array $aData, bool $sendHTTPHeader = true)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
@@ -18,7 +22,6 @@ class LayoutHelper
         }
     }
 
-
     /**
      * Prints Admin Header
      *
@@ -26,9 +29,8 @@ class LayoutHelper
      * @param bool $meta
      * @param bool $return
      * @return string|null
-     * @throws CException
      */
-    public function getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader(bool $meta = false, bool $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -78,7 +80,6 @@ class LayoutHelper
         }
     }
 
-
     /**
      * _showadminmenu() function returns html text for the administration button bar
      *
@@ -93,7 +94,7 @@ class LayoutHelper
      * @global int $surveyid
      * @global string $homedir
      */
-    public function showadminmenu($aData)
+    public function showadminmenu($aData): ?string
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
@@ -162,7 +163,7 @@ class LayoutHelper
      * @param array $aData
      * @return array<ExtraMenu>
      */
-    protected function fetchExtraMenus(array $aData)
+    protected function fetchExtraMenus(array $aData): array
     {
         //todo this is different from Survey_Common_Action (no second parameter $this ...) correct usage?
         $event = new PluginEvent('beforeAdminMenuRender');
@@ -182,11 +183,9 @@ class LayoutHelper
     /**
      * This is for rendering a particular Menubar (e.g. the userGroupBar)
      *
-     * @param $viewPathName
-     * @param $data
-     * @throws CException
+     * @param array $aData
      */
-    public function renderMenuBar($aData)
+    public function renderMenuBar(array $aData)
     {
         if (isset($aData['menubar_pathname'])) {
             Yii::app()->getController()->renderPartial($aData['menubar_pathname'], $aData);
@@ -197,17 +196,31 @@ class LayoutHelper
      * Renders specific button bar with buttons like (saveBtn, saveAndCloseBtn, closeBtn)
      * If rendered or not depends on aData['fullpagebar'] is set to true in a specific action
      *
-     * @param $aData
-     * @throws CException
+     * @param array $aData
      */
-    public function fullpagebar($aData)
+    public function fullpagebar(array $aData)
     {
         if ((isset($aData['fullpagebar']))) {
             if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
                 $sAlternativeUrl = '/admin/index';
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
+            App()->getClientScript()->registerScriptFile(
+                App()->getConfig('adminscripts') . 'topbar.js',
+                CClientScript::POS_END
+            );
             Yii::app()->getController()->renderPartial("/layouts/fullpagebar_view", $aData);
+        }
+    }
+
+    /**
+     * Renders the green bar.
+     * @param array $aData
+     */
+    public function surveyManagerBar(array $aData)
+    {
+        if (isset($aData['pageTitle'])) {
+            Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
         }
     }
 
@@ -263,9 +276,7 @@ class LayoutHelper
 
     /**
      *
-     *
      * @return bool|string|string[]|null
-     * @throws CException
      */
     public function loadEndScripts()
     {
@@ -292,7 +303,7 @@ class LayoutHelper
      * @param bool $return
      * @return string|null
      */
-    public function getAdminFooter($url, $return = false)
+    public function getAdminFooter(string $url, bool $return = false): ?string
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
@@ -316,25 +327,6 @@ class LayoutHelper
     }
 
     /**
-     * Shows a message box
-     *
-     * @access public
-     * @param string $title
-     * @param string $message
-     * @param string $class
-     * @param boolean $return
-     * @return string|null
-     * @throws CException
-     */
-    public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
-    {
-        $aData['title'] = $title;
-        $aData['message'] = $message;
-        $aData['class'] = $class;
-        return Yii::app()->getController()->renderPartial('/layouts/messagebox', $aData, $return);
-    }
-
-    /**
      * Renders the titlebar of question editor page
      *
      * @param $aData
@@ -351,7 +343,7 @@ class LayoutHelper
      *
      * @param array $aData all the needed data
      */
-    public function renderSurveySidemenu($aData)
+    public function renderSurveySidemenu(array $aData)
     {
         $iSurveyID = $aData['surveyid'];
 
@@ -372,7 +364,6 @@ class LayoutHelper
 
         if (!is_null($sumresult1)) {
             $aData['activated'] = $survey->isActive;
-
             // Tokens
             $bTokenExists = $survey->hasTokensTable;
             if (!$bTokenExists) {
@@ -415,7 +406,7 @@ class LayoutHelper
      * @return string
      * @todo Make quick-menu user configurable
      */
-    protected function renderQuickmenu(array $aData)
+    protected function renderQuickmenu(array $aData): string
     {
         $event = new PluginEvent('afterQuickMenuLoad', $this);
         $event->set('aData', $aData);
@@ -453,10 +444,15 @@ class LayoutHelper
 
     /**
      * New Topbar
-     * @param $aData
+     * @param array $aData
+     * @return mixed
      */
-    public static function renderTopbar($aData)
+    public static function renderTopbar(array $aData)
     {
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'topbar.js',
+            CClientScript::POS_END
+        );
 
         $oTopbarConfig = TopbarConfiguration::createFromViewData($aData);
 
@@ -472,11 +468,10 @@ class LayoutHelper
 
     /**
      * Vue Topbar
-     * @param $aData
+     * @param array $aData
      */
-    public function renderGeneraltopbar($aData)
+    public function renderGeneraltopbar(array $aData)
     {
-
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
             [
@@ -509,10 +504,9 @@ class LayoutHelper
 
     /**
      *
+     * @param $aData
      * @deprecated rendered now directly in QuestionAdministration see action listquestions ...
      *
-     * @param $aData
-     * @throws CException
      */
     public function renderListQuestions($aData)
     {
@@ -552,9 +546,9 @@ class LayoutHelper
     /**
      * todo: document me...
      *
-     * @param $aData
+     * @param array $aData
      */
-    public function renderGeneralTopbarAdditions($aData)
+    public function renderGeneralTopbarAdditions(array $aData)
     {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(

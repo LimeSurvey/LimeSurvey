@@ -282,10 +282,9 @@ class CWebApplication extends CApplication
 			$controller->run($actionID);
 			$this->_controller=$oldController;
 		}
-		else {
+		else
 			throw new CHttpException(404,Yii::t('yii','Unable to resolve the request "{route}".',
-				array('{route}'=>$route===''?substr($this->defaultController,0,20).'...':substr($route,0,20).'...')));
-        }
+				array('{route}'=>$route===''?$this->defaultController:$route)));
 	}
 
 	/**

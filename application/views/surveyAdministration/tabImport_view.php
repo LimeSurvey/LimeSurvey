@@ -3,8 +3,10 @@
  * Import survey
  */
 ?>
-<div class="ls-flex-row wrap align-content-center align-items-center">
-<div class="container-fluid col-sm-10 col-md-8">
+<!--<div class="ls-flex-row wrap align-content-center align-items-center">-->
+<div class="ls-flex-row">
+        <div class="grow-10 ls-space padding left-10 right-10">
+            <div class="">
 <!-- tab import survey -->
     <!-- import form -->
     <?php echo CHtml::form(array('surveyAdministration/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
@@ -16,7 +18,13 @@
                     <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class=''>
-                    <input id='the_file' name="the_file" type="file" accept='.lss,.lsa,.tsv,.txt'/>
+                    <input
+                        id='the_file'
+                        name="the_file"
+                        type="file"
+                        accept='.lss,.lsa,.tsv,.txt'
+                        onchange="$('#import-submit').attr('disabled', false).attr('data-toggle', false);"
+                    />
                 </div>
             </div>
 
@@ -35,9 +43,17 @@
             </div>
 
             <!-- Submit -->
-            <div class='form-group col-12'>
+            <div class='form-group col-4 text-center'>
                 <div class=''>
-                    <input type='submit' class="btn btn-primary col-6" value='<?php  eT("Import survey"); ?>' />
+                    <input
+                        type='submit'
+                        id="import-submit"
+                        class="btn btn-primary col-6"
+                        value='<?php  eT("Import survey"); ?>'
+                        disabled="disabled"
+                        data-toggle="tooltip"
+                        data-title="<?= gT('Please choose a file'); ?>"
+                    />
                 </div>
             </div>
 
@@ -47,6 +63,8 @@
     </form>
 </div>
 </div>
+</div>
+
     <div id='pleaseselectfile-popup' class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

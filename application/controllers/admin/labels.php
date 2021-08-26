@@ -44,7 +44,7 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        if (!Permission::model()->hasGlobalPermission('labelsets', 'edit')) {
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
@@ -128,17 +128,16 @@ class labels extends Survey_Common_Action
         $action = returnGlobal('action');
         $aViewUrls = array();
 
+        // Check file size and redirect on error
+        $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
+        $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl("/admin/labels/sa/newlabelset"));
+
         if ($action == 'importlabels') {
             Yii::app()->loadHelper('admin/import');
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
-
-            if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-                $this->getController()->redirect(App()->createUrl("/admin/labels/sa/newlabelset"));
-            }
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
@@ -164,10 +163,11 @@ class labels extends Survey_Common_Action
      * Function to load new/edit labelset screen.
      *
      * @access public
+     * @param string  $sa
      * @param integer $lid
      * @return
      */
-    public function index($sa, $lid = 0)
+    public function index(string $sa, $lid = 0)
     {
         Yii::app()->loadHelper('surveytranslator');
 
@@ -190,16 +190,18 @@ class labels extends Survey_Common_Action
             if ($sa == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = gT("New label set");
+                $pageTitle = gT('Create or import new label set(s)');
             } else {
-                            $tabitem = gT("Edit label set");
+                $tabitem = gT("Edit label set");
+                $pageTitle = gT('Edit label set');
             }
 
             $langidsarray = explode(" ", trim($langids)); // Make an array of it
 
             if (isset($row['lid'])) {
-                            $panecookie = $row['lid'];
+                $panecookie = $row['lid'];
             } else {
-                            $panecookie = 'new';
+                $panecookie = 'new';
             }
 
             $aData['langids'] = $langids;
@@ -210,12 +212,19 @@ class labels extends Survey_Common_Action
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
-
+        // Label Bar
         $aData['labelbar']['buttons']['delete'] = ($sa != "newlabelset") ? true : false;
+        // Save button
         $aData['labelbar']['buttons']['edition'] = true;
+        // Return button
+        $aData['labelbar']['buttons']['return'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
-        $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view')); // Close button, UrlReferrer
+       
+
+        // Green SurveyManagerBar
+        $aData['pageTitle'] = $pageTitle;
+
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -226,7 +235,7 @@ class labels extends Survey_Common_Action
      * @param int $lid
      * @return void
      */
-    public function view($lid = 0)
+    public function view(int $lid = 0)
     {
         if (!Permission::model()->hasGlobalPermission('labelsets', 'read')) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
@@ -249,8 +258,7 @@ class labels extends Survey_Common_Action
         $model = LabelSet::model()->findByPk($lid);
         // If there is label id in the variable $lid and there are labelset records in the database
         $labelset_exists = $model !== null;
-        
-        
+
         if ($lid > 0 && $labelset_exists) {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
@@ -273,7 +281,6 @@ class labels extends Survey_Common_Action
                 },
                 0
             );
-
 
             Yii::app()->loadHelper("surveytranslator");
             $results = $model->labels;
@@ -298,9 +305,19 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['view'] = true;
         } else {
             $aData['labelbar']['buttons']['delete'] = true;
+
+            // Save Button 
             $aData['labelbar']['savebutton']['form'] = 'mainform';
-            $aData['labelbar']['savebutton']['text'] = gT("Save changes");
-            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
+            $aData['labelbar']['savebutton']['text'] = gT("Save");
+
+            // Save and Close Button
+            $aData['labelbar']['saveandclosebutton']['form'] = 'mainform';
+            $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
+
+            // White Close Button
+            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));;
+            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
+
             $aData['labelbar']['buttons']['edition'] = true;
 
             $aData['labelbar']['buttons']['edit'] = true;
@@ -312,6 +329,9 @@ class labels extends Survey_Common_Action
         if (isset($_GET['pageSize'])) {
             Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
+
+        // Green SurveyManagerBar Page Title
+        $aData['pageTitle'] = gT('Label sets list');
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -382,9 +402,6 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        if (!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("Invalid action"));
-        }
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }
@@ -411,10 +428,22 @@ class labels extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $aData = [];
-            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
-            $aData['labelbar']['savebutton']['text'] = gT("Export multiple label sets");
-            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
+
+            // Save Button
             $aData['labelbar']['buttons']['edition'] = true;
+            $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
+            $aData['labelbar']['savebutton']['text'] = gT("Save");
+            
+            // Save and Close Button
+            $aData['labelbar']['saveandclosebutton']['form'] = 'exportlabelset';
+
+            // White Close Button
+            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
+            $aData['labelbar']['white_closebutton']['text'] = gT('Close');
+
+            // Green Page Title
+            $aData['pageTitle'] = gT('Export multiple label sets');
+            
             $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
