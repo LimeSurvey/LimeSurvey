@@ -309,7 +309,7 @@ class Authentication extends Survey_Common_Action
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>' . gT('If the username and email address is valid and you are 
                 allowed to use the internal database authentication a new password has been sent to you.')
-                    . gT('Email is send only once all 5 minutes. You have to wait ') .
+                    . gT('Email is send only once in 5 minutes. You have to wait ') .
                     \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL .
                     gt(' minutes to try again') . '<br>';
             } else {
