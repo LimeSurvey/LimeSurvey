@@ -225,11 +225,6 @@ class labels extends Survey_Common_Action
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
 
-        App()->getClientScript()->registerScriptFile(
-            App()->getConfig('adminscripts') . 'topbar.js',
-            CClientScript::POS_END
-        );
-
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
@@ -337,11 +332,6 @@ class labels extends Survey_Common_Action
 
         // Green SurveyManagerBar Page Title
         $aData['pageTitle'] = gT('Label sets list');
-
-        App()->getClientScript()->registerScriptFile(
-            App()->getConfig('adminscripts') . 'topbar.js',
-            CClientScript::POS_END
-        );
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
@@ -453,12 +443,7 @@ class labels extends Survey_Common_Action
 
             // Green Page Title
             $aData['pageTitle'] = gT('Export multiple label sets');
-
-            App()->getClientScript()->registerScriptFile(
-                App()->getConfig('adminscripts') . 'topbar.js',
-                CClientScript::POS_END
-            );
-
+            
             $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
