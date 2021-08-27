@@ -32160,7 +32160,7 @@
       }
     },
         runAjaxRequest = function runAjaxRequest() {
-      return LS.ajax({
+      return LS.AjaxHelper.ajax({
         url: postUrl,
         type: 'POST',
         data: modalObject.find('form').serialize(),

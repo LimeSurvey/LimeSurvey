@@ -1,72 +1,4 @@
 @charset "UTF-8";
-#cpdbatt {
-  min-height: 100px;
-}
-
-#selectable .ui-selecting {
-  background: #8CCE00;
-}
-
-#selectable .ui-selected {
-  background: #C1DD7F;
-  color: #000000;
-}
-
-#selectable {
-  list-style-type: none;
-  margin: 2px;
-  padding: 0;
-  width: 90%;
-}
-
-#selectable li {
-  padding: 1em;
-  font-size: 1em;
-  height: 9px;
-  text-align: center;
-  margin: 4px;
-}
-
-.ui-icon.exporticon {
-  background-image: url("images/export.gif");
-}
-
-#feedback {
-  font-size: 1.4em;
-}
-
-#selectableadd .ui-selecting {
-  background: #0066CC;
-}
-
-#selectableadd .ui-selected {
-  background: #0066CC;
-  color: white;
-}
-
-#selectableadd {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  text-align: center;
-}
-
-#selectableadd li {
-  margin: 3px;
-  padding: 0.4em;
-  font-size: 1 em;
-  height: 18px;
-  text-align: center;
-}
-
-.popupgroup {
-  border: 1px solid #DAE5F4;
-  padding: 10px;
-  border-radius: 3px;
-  margin: 8px;
-}
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -291,242 +223,8 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
   min-height: 100px;
 }
 
-.grid-view .table td.button-column, .grid-view .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
-}
-
-.grid-view .table th > .sort-link .caret {
-  left: -10px;
-}
-
-.dropdown-menu.larger-dropdown {
-  min-width: 240px;
-}
-
-.dropdown-submenu {
-  position: relative;
-}
-
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  right: 100%;
-  margin-top: -6px;
-  margin-right: -1px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
-}
-
-.dropdown-submenu:hover > a:after {
-  border-right-color: #555;
-}
-
-.dropdown-submenu.pull-left {
-  float: none;
-}
-
-.dropdown-submenu.pull-left > .dropdown-menu {
-  right: -100%;
-  margin-right: 10px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
-}
-
-#vue-apps-main-container {
-  min-height: 75vh;
-}
-
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-}
-
-.fa-stack-1x.halfed {
-  font-size: 0.5em;
-}
-
-.fa-1x.halfed {
-  font-size: 0.5em;
-}
-
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em;
-}
-
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em;
-}
-
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s;
-}
-
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s;
-}
-
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1.0s;
-}
-
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-.simpleWrapper {
-  padding: 0;
-  margin: 0;
-  border: none;
-  display: inline-block;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
-#responses-column-filter-modal .checkbox label {
-  vertical-align: text-bottom;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-.responses-multiselect-checkboxes {
-  overflow-y: scroll;
-  height: 60vh;
-}
-
-.responses-column-filter-modal-checkbox-buttons {
-  text-align: right;
-  padding-bottom: 15px;
-}
-
-.grid-view .table td.button-column, .grid-view .table th.button-column {
-  white-space: nowrap;
-  text-align: initial;
-}
-
-.grid-view .table th > .sort-link .caret {
-  left: -10px;
-}
-
-.dropdown-menu.larger-dropdown {
-  min-width: 240px;
-}
-
-.dropdown-submenu {
-  position: relative;
-}
-
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  right: 100%;
-  margin-top: -6px;
-  margin-right: -1px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
-}
-
-.dropdown-submenu:hover > a:after {
-  border-right-color: #555;
-}
-
-.dropdown-submenu.pull-left {
-  float: none;
-}
-
-.dropdown-submenu.pull-left > .dropdown-menu {
-  right: -100%;
-  margin-right: 10px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px 6px;
-  border-radius: 0 6px 6px 6px;
-}
-
-#vue-apps-main-container {
-  min-height: 75vh;
-}
-
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-}
-
-.fa-stack-1x.halfed {
-  font-size: 0.5em;
-}
-
-.fa-1x.halfed {
-  font-size: 0.5em;
-}
-
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em;
-}
-
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em;
-}
-
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s;
-}
-
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s;
-}
-
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1.0s;
-}
-
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s;
-}
-
-.simpleWrapper {
-  padding: 0;
-  margin: 0;
-  border: none;
-  display: inline-block;
+#cpdbatt {
+  min-height: 100px;
 }
 
 /**
@@ -1661,7 +1359,7 @@ div.panel.disabled a {
   max-height: initial;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .main-content-container {
     max-width: 100%;
   }
@@ -1991,7 +1689,7 @@ fieldset[disabled] .checkbox label {
   color: #e51c23;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .form-inline .radio,
   .form-inline .checkbox {
     display: inline-block;
@@ -3439,173 +3137,110 @@ input[type="file"].form-control {
   display: none;
 }
 
-/* To make Statistics printable really easy */
+/* Some printing optimization */
 @media print {
-  @page {
-    size: A4 portrait;
-    margin-right: 1.0cm;
-    margin-left: 1.5cm;
-    margin-top: 1.2cm;
-    margin-bottom: 1cm;
-    overflow: visible;
-  }
-  * {
-    overflow: visible !important;
-  }
-  html,
-  body {
+  html, body {
     margin: 0;
-    max-width: 0%;
+    padding: 0;
+    max-width: none;
   }
   body {
     text-align: right;
     margin: 0;
     padding: 0;
-    overflow: visible;
-    min-width: 19.0cm !important;
-    min-height: 27.7cm;
     width: 100% !important;
-    height: 100%;
   }
-  body.onStatistics a:not(.printable),
-  body.onStatistics p:not(.printable),
-  body.onStatistics button:not(.printable),
-  body.onStatistics nav:not(.printable),
-  body.onStatistics form:not(.printable),
-  body.onStatistics footer:not(.printable),
-  body.onStatistics h1:not(.printable),
-  body.onStatistics h2:not(.printable),
-  body.onStatistics h3:not(.printable),
-  body.onStatistics h4:not(.printable),
-  body.onStatistics h5:not(.printable),
-  body.onStatistics .jumbotron,
-  body.onStatistics .menubar,
-  body.onStatistics > div:not(#vue-apps-main-container),
-  body.onStatistics div#vue-apps-main-container > div:not(#pjax-content),
-  body.onStatistics div#vue-apps-main-container > div#pjax-content > div:not(#in_survey_common),
-  body.onStatistics div#in_survey_common > div:not(#statisticsview) {
-    display: none !important;
-    visibility: hidden !important;
-    overflow: hidden !important;
+  .side-body {
+    margin: 0;
     padding: 0;
-    position: absolute;
-    right: -1000px;
-    top: -1000px;
-    margin: 0 !important;
-    width: 0px !important;
   }
-  body.onStatistics div.row {
-    display: block !important;
-    position: static;
+  #sidebar {
+    display: none;
   }
-  body.onStatistics div[class^="col-"] {
-    display: block !important;
-    float: none !important;
-    position: static;
+  #browsermenubarid {
+    display: none;
   }
-  body.onStatistics > div#vue-apps-main-container,
-  body.onStatistics div#in_survey_common,
-  body.onStatistics > div#vue-apps-main-container > div#pjax-content,
-  body.onStatistics #statisticsview {
-    display: block;
-    position: static;
-    width: 99% !important;
-    max-width: 95% !important;
-    min-width: 19.6cm !important;
-    min-height: 29.7cm !important;
-    height: 100% !important;
-    overflow: visible;
-    page-break-inside: auto;
-    break-inside: auto;
+  .surveymanagerbar {
+    display: none;
   }
-  body.onStatistics #statisticsview div,
-  body.onStatistics #statisticsview table {
-    position: static;
+  #vue-apps-main-container #vue-sidebar-container {
+    display: none;
   }
-  /*body.onStatistics td:not(.printable),
-  body.onStatistics th:not(.printable),*/
-  /*body.onStatistics table:not(.printable),*/
-  body.onStatistics #statisticsview div:not(#statsContainerLoading) {
-    width: 99% !important;
-    max-width: 100% !important;
-    float: none !important;
-    display: block;
-  }
-  body.onStatistics #statisticsview a.printable,
-  body.onStatistics #statisticsview p.printable,
-  body.onStatistics #statisticsview span.printable,
-  body.onStatistics #statisticsview table.printable,
-  body.onStatistics #statisticsview table.statisticstable,
-  body.onStatistics #statisticsview h1.printable,
-  body.onStatistics #statisticsview h2.printable,
-  body.onStatistics #statisticsview h3.printable,
-  body.onStatistics #statisticsview h4.printable,
-  body.onStatistics #statisticsview h5.printable {
-    width: 95% !important;
-    max-width: 100%;
+  #statisticsview .col-lg-12 {
     float: none;
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    position: static;
+    width: 100%;
+    display: block;
   }
-  body.onStatistics div.printable {
-    position: static;
-    page-break-after: auto;
-    break-after: auto;
-    page-break-inside: avoid;
+  #pjax-content .side-body {
+    float: none;
+    width: 100%;
+    display: block;
+  }
+  #pjax-content {
+    max-width: none !important;
+  }
+  footer.footer {
+    display: none;
+  }
+  /* Some stat specific */
+  .statisticsbloc {
+    float: none;
+    width: auto;
+    display: block;
+  }
+  .statisticstable {
     break-inside: avoid;
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    padding: 0 !important;
-  }
-  body.onStatistics div.printable table {
-    position: static;
     page-break-inside: avoid;
+    break-after: always;
+    page-break-after: always;
+  }
+  .canvas-chart {
     break-inside: avoid;
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-    margin-top: 1cm;
-    margin-bottom: 1cm;
-    padding: 0 !important;
-  }
-  body.onStatistics table.printable thead,
-  body.onStatistics table.printable tbody,
-  body.onStatistics table.printable tr {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  body.onStatistics table.printable * {
-    page-break-after: avoid;
-    break-after: avoid;
-    page-break-before: avoid;
-    break-before: avoid;
     page-break-inside: avoid;
-    break-inside: avoid;
-  }
-  body.onStatistics .side-body {
     max-width: 100%;
-    margin: 0 !important;
-    padding: 0 !important;
+    height: auto;
   }
-  body.onStatistics .side-menu {
-    display: none !important;
-    visibility: none !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    margin-right: 0 px !important;
+  /* Only for stat ? */
+  .statisticsbrowsebutton {
+    display: none;
   }
-  body.onStatistics .absolute-wrapper {
-    display: none !important;
-    visibility: none !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  body.onStatistics .btn {
+    display: none;
+  }
+  /* Chartjs and legend width */
+  body.onStatistics .chartjs-container {
+    width: 70%;
+    float: right;
+  }
+  body.onStatistics .legend {
+    width: 30%;
+    float: right;
+  }
+  body.onStatistics .legend .col-sm-1 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
+    padding-left: 3pt;
+    padding-right: 3pt;
+  }
+  body.onStatistics .legend .col-sm-10 {
+    display: inline-block;
+    width: auto;
+    padding: 0;
+  }
+  /* Relaced in adminsidepanel */
+  body.onStatistics .ls-flex,
+  body.onStatistics .ls-flex-column,
+  body.onStatistics .ls-flex-row {
+    display: block;
+  }
+  body.onStatistics #sidebar {
+    display: none;
+  }
+  body.onStatistics .ls-flex-column .col-11,
+  body.onStatistics .ls-flex-row .col-11,
+  body.onStatistics .ls-flex .col-11 {
+    width: auto;
   }
 }
 
@@ -4726,4 +4361,187 @@ table.dataTable thead .sorting_desc:after {
 .subquestions-table > tbody > tr > td:last-of-type,
 .answeroptions-table > tbody > tr > td:last-of-type {
   padding-left: 0;
+}
+
+#responses-column-filter-modal .checkbox label {
+  vertical-align: text-bottom;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.responses-multiselect-checkboxes {
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.responses-column-filter-modal-checkbox-buttons {
+  text-align: right;
+  padding-bottom: 15px;
+}
+
+#selectable .ui-selecting {
+  background: #8CCE00;
+}
+
+#selectable .ui-selected {
+  background: #C1DD7F;
+  color: #000000;
+}
+
+#selectable {
+  list-style-type: none;
+  margin: 2px;
+  padding: 0;
+  width: 90%;
+}
+
+#selectable li {
+  padding: 1em;
+  font-size: 1em;
+  height: 9px;
+  text-align: center;
+  margin: 4px;
+}
+
+.ui-icon.exporticon {
+  background-image: url("images/export.gif");
+}
+
+#feedback {
+  font-size: 1.4em;
+}
+
+#selectableadd .ui-selecting {
+  background: #0066CC;
+}
+
+#selectableadd .ui-selected {
+  background: #0066CC;
+  color: white;
+}
+
+#selectableadd {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  text-align: center;
+}
+
+#selectableadd li {
+  margin: 3px;
+  padding: 0.4em;
+  font-size: 1 em;
+  height: 18px;
+  text-align: center;
+}
+
+.popupgroup {
+  border: 1px solid #DAE5F4;
+  padding: 10px;
+  border-radius: 3px;
+  margin: 8px;
+}
+
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial;
+}
+
+.grid-view .table th > .sort-link .caret {
+  left: -10px;
+}
+
+.dropdown-menu.larger-dropdown {
+  min-width: 240px;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  right: 100%;
+  margin-top: -6px;
+  margin-right: -1px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-submenu:hover > a:after {
+  border-right-color: #555;
+}
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+  right: -100%;
+  margin-right: 10px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px 6px;
+  border-radius: 0 6px 6px 6px;
+}
+
+#vue-apps-main-container {
+  min-height: 75vh;
+}
+
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+}
+
+.fa-stack-1x.halfed {
+  font-size: 0.5em;
+}
+
+.fa-1x.halfed {
+  font-size: 0.5em;
+}
+
+.contain-pulse {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: bottom;
+  height: 3em;
+}
+
+.square {
+  background: #0f3e12;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: 2em;
+  margin: 0.2em;
+  overflow: hidden;
+  padding: 0.5em;
+  width: 2em;
+}
+
+.animate-pulse .square:nth-of-type(1) {
+  animation: pulse ease-in-out 1.8s infinite 0.2s;
+}
+
+.animate-pulse .square:nth-of-type(2) {
+  animation: pulse ease-in-out 1.8s infinite 0.6s;
+}
+
+.animate-pulse .square:nth-of-type(3) {
+  animation: pulse ease-in-out 1.8s infinite 1.0s;
+}
+
+.animate-pulse .square:nth-of-type(4) {
+  animation: pulse ease-in-out 1.8s infinite 1.4s;
+}
+
+.simpleWrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: inline-block;
 }

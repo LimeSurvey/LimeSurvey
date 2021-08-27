@@ -231,7 +231,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     
         $('#btnSaveParams').click(saveParameter); 
         $('#addnewsurvey').submit(PostParameterGrid); 
-        $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form 
+        $('#globalsetting').submit(PostParameterGrid);  // This is the name of survey settings update form
+        $('#panelintegration').submit(PostParameterGrid);
     }
-     
 });
