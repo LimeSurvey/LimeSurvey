@@ -335,7 +335,7 @@ class translate extends Survey_Common_Action
         $baselang = $oSurvey->language;
         $langs = $oSurvey->additionalLanguages;
 
-        $menutext = ($oSurvey->active == "N") ? gT("Preview survey") : gT("Execute survey");
+        $menutext = ($oSurvey->active == "N") ? gT("Preview survey") : gT("Run survey");
 
         if (count($langs) == 0) {
             $survey_button .= $this->menuItem(

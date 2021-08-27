@@ -768,7 +768,7 @@ class Survey_Common_Action extends CAction
             if (!$oSurvey->isActive) {
                 $aData['icontext'] = gT("Preview survey");
             } else {
-                $aData['icontext'] = gT("Execute survey");
+                $aData['icontext'] = gT("Run survey");
             }
 
             $aData['onelanguage'] = (count($oSurvey->allLanguages) == 1);

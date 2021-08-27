@@ -177,7 +177,7 @@ class TopbarConfiguration
             $context = gT("Preview survey");
             $contextbutton = 'preview_survey';
         } else {
-            $context = gT("Execute survey");
+            $context = gT("Run survey");
             $contextbutton = 'execute_survey';
         }
 

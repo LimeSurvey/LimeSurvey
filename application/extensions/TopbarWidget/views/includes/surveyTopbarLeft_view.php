@@ -37,7 +37,7 @@
     <?php endif; ?>
 <?php endif; ?>
 
-<!-- Preview/Execute survey -->
+<!-- Preview/Run survey -->
 <?php if ($hasSurveyContentPermission) : ?>
     <!-- Multinlinguage -->
     <?php if (count($oSurvey->allLanguages) > 1): ?>
@@ -47,8 +47,8 @@
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
-                <span class="icon-do" ></span>
-                <?php eT('Execute survey');?>
+                <span class="fa fa-play"></span>
+                <?php eT('Run survey');?>
             <?php endif;?>
             <span class="caret"></span>
         </button>
@@ -70,8 +70,8 @@
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
-                <span class="icon-do" ></span>
-                <?php eT('Execute survey');?>
+                <span class="fa fa-play"></span>
+                <?php eT('Run survey');?>
             <?php endif;?>
             <i class="icon fa fa-external-link"></i>
         </a>

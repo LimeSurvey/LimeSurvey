@@ -25,7 +25,7 @@ $topbarextended = [
 
 // Preview Survey Button
 $title = ($oSurvey->active == 'N') ? 'preview_survey' : 'execute_survey';
-$name = ($oSurvey->active == 'N') ? gT('Preview survey') : gT('Execute survey');
+$name = ($oSurvey->active == 'N') ? gT('Preview survey') : gT('Run survey');
 
 if (count($languages) > 1) {
     foreach ($languages as $language) {

@@ -6,8 +6,8 @@
                 <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
-                <span class="icon-do" ></span>
-                <?php eT('Execute survey');?>
+                <span class="fa fa-play" ></span>
+                <?php eT('Run survey');?>
             <?php endif;?>
             <span class="caret"></span>
         </button>
@@ -27,8 +27,8 @@
             <span class="fa fa-eye" ></span>
             <?php eT('Preview survey');?>
         <?php else: ?>
-            <span class="icon-do" ></span>
-            <?php eT('Execute survey');?>
+            <span class="fa fa-play" ></span>
+            <?php eT('Run survey');?>
         <?php endif;?>
     </a>
 <?php endif;?>

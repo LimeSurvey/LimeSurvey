@@ -65,7 +65,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(1);
 
-        // Click "Execute survey".
+        // Click "Run survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
         $exceuteBtn->click();
 
@@ -132,7 +132,7 @@ class IpAddressAnonymizeTest extends TestBaseClassWeb
 
         sleep(1);
 
-        // Click "Execute survey".
+        // Click "Run survey".
         $exceuteBtn = self::$webDriver->findById('execute_survey_button') ;
         $exceuteBtn->click();
 

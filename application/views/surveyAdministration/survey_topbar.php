@@ -60,7 +60,7 @@ if (!$isActive) {
 if ($hasSurveyContentPermission) {
     // Preview Survey Button
     $title = (!$isActive) ? 'preview_survey' : 'execute_survey';
-    $name = (!$isActive) ? gT('Preview survey') : gT('Execute survey');
+    $name = (!$isActive) ? gT('Preview survey') : gT('Run survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
         $preview_buttons = [];
