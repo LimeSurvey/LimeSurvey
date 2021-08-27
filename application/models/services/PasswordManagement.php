@@ -176,12 +176,12 @@ class PasswordManagement
             /* Go to send email and set password*/
             if ($mailer->sendMessage()) {
                 // For security reasons, we don't show a successful message
-                $sMessage = sprintf(gt('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you. Email is send only once in %d minutes'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
+                $sMessage = sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
             } else {
                 $sMessage = gT('Email failed');
             }
         } else {
-            $sMessage = sprintf(gt('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you. Email is send only once in %d minutes'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
+            $sMessage = sprintf(gt('If the username and email address is valid a password reminder email has been sent to you. This email can only be requested once in %d minutes.'), self::MIN_TIME_NEXT_FORGOT_PW_EMAIL);
         }
 
         return $sMessage;
