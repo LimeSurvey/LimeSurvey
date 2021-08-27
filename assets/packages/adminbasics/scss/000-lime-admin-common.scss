@@ -4246,6 +4246,14 @@ table.dataTable thead .sorting_desc:after {
     display: block;
 }
 
+// Fix alignment of form-groups (like condition designer's navigator) on the topbar
+.baseline-align > * {
+    vertical-align: baseline;
+}
+.baseline-align > .form-group {
+    display: inline-block;
+}
+
 /* Reduce margins for question editor */
 #edit-question-form {
     margin-left: -15px;
