@@ -7,6 +7,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverDimension;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Exception\UnrecognizedExceptionException;
 
 /**
  * Create and edit a question group.
@@ -89,7 +90,6 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
 
             // Switch to German tab.
             self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
-            sleep(2);
             $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
             $germanTab->click();
 
@@ -119,7 +119,10 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $this->assertEquals("1", $oGroup->randomization_group);
             $this->assertEquals("1", $oGroup->grelevance);
 
-        } catch (Exception $ex) {
+        } catch (UnrecognizedExceptionException $ex) {
+            $windowSize = self::$webDriver->manage()->window()->getSize();
+            throw new \Exception("Window size: " . $windowSize->getWidth() . " x " . $windowSize->getHeight() . "\nException: " . self::$testHelper->javaTrace($ex));
+        } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
@@ -162,7 +165,6 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
 
             // Switch to German tab.
             self::$webDriver->executeScript("window.scrollTo(0, 0);");  // Scroll to top because otherwise the tabs may be hidden under the topbar
-            sleep(2);
             $germanTab = self::$webDriver->findElement(WebDriverBy::partialLinkText('German'));
             $germanTab->click();
 
@@ -188,7 +190,10 @@ class QuestionGroupEditorTest extends TestBaseClassWeb
             $this->assertEquals("1", $oGroup->randomization_group);
             $this->assertEquals("1", $oGroup->grelevance);
 
-        } catch (Exception $ex) {
+        } catch (UnrecognizedExceptionException $ex) {
+            $windowSize = self::$webDriver->manage()->window()->getSize();
+            throw new \Exception("Window size: " . $windowSize->getWidth() . " x " . $windowSize->getHeight() . "\nException: " . self::$testHelper->javaTrace($ex));
+        } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
