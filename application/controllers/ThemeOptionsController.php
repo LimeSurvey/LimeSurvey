@@ -756,6 +756,11 @@ class ThemeOptionsController extends LSBaseController
         // Green Bar (SurveyManagerBar) Page Title
         $aData['pageTitle'] = $pageTitle;
 
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'topbar.js',
+            CClientScript::POS_END
+        );
+
         $this->aData = $aData;
         $this->render('update', $aData);
     }

@@ -558,6 +558,10 @@ class themes extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'templates.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
+        App()->getClientScript()->registerScriptFile(
+            App()->getConfig('adminscripts') . 'topbar.js',
+            CClientScript::POS_END
+        );
 
         // Green SurveyManagerBar Page Title
         $pageTitle = gT('Theme editor:') . ' ' . $templatename;
