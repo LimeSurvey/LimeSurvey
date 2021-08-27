@@ -307,7 +307,13 @@ class Authentication extends Survey_Common_Action
             $aData = [];
             if (($user === null) || ($user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>' . gT(\LimeSurvey\Models\Services\PasswordManagement::USER_NOTIFICATION_MSG) . '<br>';
+                $aData['message'] = '<br>' . $sMessage = gT(
+                            'If the username and email address is valid and you are allowed to use the internal 
+                database authentication a new password has been sent to you.'
+                        ) .
+                        gT('Email is send only once in ') .
+                        \LimeSurvey\Models\Services\PasswordManagement::MIN_TIME_NEXT_FORGOT_PW_EMAIL .
+                        gt(' minutes') . '<br>';
             } else {
                 $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($user);
                 $aData['message'] = $passwordManagement->sendForgotPasswordEmailLink();
