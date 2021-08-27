@@ -5,7 +5,12 @@
  * @var bool $aAttributes
  */
 ?>
-
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
 
 <script type="text/javascript">

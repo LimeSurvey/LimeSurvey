@@ -1,3 +1,9 @@
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
 <div class='menubar surveybar' id="usermanagementbar">
     <div class='row'>
         <div class="col-md-9">
