@@ -5,6 +5,12 @@
  * @var array $labelbar
  */
 ?>
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
 
 <script type="text/javascript">
     var sImageURL = ''; // in 2.06, used to display the icon in jQgrid, not necessary anymore
