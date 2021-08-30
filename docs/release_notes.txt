@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.13 (build 210823) to 3.27.14 (build 210831) August 30, 2021
+-Fixed issue [security]: Add missing url_encode filter to URL in Twig template (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.27.12 (build 210816) to 3.27.13 (build 210823) August 23, 2021
 -Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
 -Fixed issue #16720:  Invalid question codes during lss import do not get replaced (#1994) (Gabriel Jenik)
