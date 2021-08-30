@@ -34,6 +34,24 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.4 (build 210824) to 5.1.5 (build 210830) August 30, 2021
+-Fixed issue #17538: Incorrect attribute applied to custom question theme style tag (Carsten Schmitz)
+-Fixed issue #17535: Login with LDAP not working (Patrick Teichmann)
+-Fixed issue #17535: Error when logging in with LDAP (#2019) (wolbernd)
+-Fixed issue #17532: Panel Integration URL-Parameters not changeable (Patrick Teichmann)
+-Fixed issue #17453: Strings not available for translation in GlotPress (#2010) (Gabriel Jenik)
+-Fixed issue #17430: Untranslatable hint texts (#2018) (Gabriel Jenik)
+-Fixed issue #17391: exporting responses as vv-file does not decrypt values (Patrick Teichmann)
+-Fixed issue #17271: Print statistics are totally broken (near empty) (#1882) (Denis Chenu)
+#Updated translation: Portuguese (Portugal) by cmonteiro, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1, slansky
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.1.3 (build 210817) to 5.1.4 (build 210824) August 23, 2021
 -Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
 -Fixed issue [security]: Disallow XML upload in survey resources (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
