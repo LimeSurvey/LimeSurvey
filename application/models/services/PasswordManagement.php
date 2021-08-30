@@ -125,9 +125,9 @@ class PasswordManagement
     public function isAllowedToSendForgotPwEmail(\User $user): bool
     {
         $sendForgotPwIsAllowed = true;
-        if ($user->lastForgotPwEmail !== null) { //null means user has never clicked "Forget pw" before
+        if ($user->last_forgot_email_password !== null) { //null means user has never clicked "Forget pw" before
             $now = new DateTime();
-            $lastForgotPwEmail = new DateTime($user->lastForgotPwEmail);
+            $lastForgotPwEmail = new DateTime($user->last_forgot_email_password);
             $dateDiff = $now->diff($lastForgotPwEmail);
             //if time difference is greater then self::MIN_TIME_NEXT_FORGOT_PW_EMAIL, user can send new email
             $differenceDays = $dateDiff->format('%d');
@@ -159,7 +159,7 @@ class PasswordManagement
             $this->user->setValidationKey();
             $this->user->setValidationExpiration();
             $now = new DateTime();
-            $this->user->lastForgotPwEmail = $now->format('Y-m-d H:i:s');
+            $this->user->last_forgot_email_password = $now->format('Y-m-d H:i:s');
             $this->user->save();
             $username = sprintf(gT('Username: %s'), $this->user->users_name);
 

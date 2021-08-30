@@ -4857,7 +4857,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 472) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->addColumn('{{users}}', 'lastForgotPwEmail', 'datetime');
+            $oDB->createCommand()->addColumn('{{users}}', 'last_forgot_email_password', 'datetime');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 472), "stg_name='DBVersion'");
             $oTransaction->commit();

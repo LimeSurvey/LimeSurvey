@@ -33,7 +33,7 @@
  * @property string $validation_key  used for email link to reset or create a password for a survey participant
  *                                   Link is send when user is created or password has been reset
  * @property string $validation_key_expiration datetime when the validation key expires
- * @property string $lastForgotPwEmail datetime when user send email for forgot pw the last time (prevent bot)
+ * @property string $last_forgot_email_password datetime when user send email for forgot pw the last time (prevent bot)
  *
  * @property Permission[] $permissions
  * @property User $parentUser Parent user
