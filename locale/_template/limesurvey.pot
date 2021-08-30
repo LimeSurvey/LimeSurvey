@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-08-17 14:30:07+00:00\n"
+"POT-Creation-Date: 2021-08-30 09:19:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1330,39 +1330,39 @@ msgid "Logout successful."
 msgstr ""
 
 #: application/controllers/admin/authentication.php:238
-#: application/controllers/admin/authentication.php:287
+#: application/controllers/admin/authentication.php:288
 msgid "If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:270
+#: application/controllers/admin/authentication.php:271
 msgid "User data"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:275
+#: application/controllers/admin/authentication.php:276
 msgid "Username: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:276
+#: application/controllers/admin/authentication.php:277
 msgid "New password: %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:279
+#: application/controllers/admin/authentication.php:280
 msgid "Your user data for accessing %s"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:289
+#: application/controllers/admin/authentication.php:290
 msgid "Email failed"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:309
+#: application/controllers/admin/authentication.php:310
 msgid "Please log in first."
 msgstr ""
 
-#: application/controllers/admin/authentication.php:314
+#: application/controllers/admin/authentication.php:315
 msgid "Welcome %s!"
 msgstr ""
 
-#: application/controllers/admin/authentication.php:318
+#: application/controllers/admin/authentication.php:319
 msgid "Reloading screen. Please wait."
 msgstr ""
 
