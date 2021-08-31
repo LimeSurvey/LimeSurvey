@@ -149,4 +149,14 @@ class ConsoleApplication extends CConsoleApplication
         return $this->getComponent('pluginManager');
     }
 
+    public function getAssetManager()
+    {
+        return $this->getComponent('assetManager');
+    }
+
+    public function getClientScript()
+    {
+        return $this->getComponent('clientScript');
+    }
+
 }
