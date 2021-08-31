@@ -8,7 +8,7 @@
     <?php endif;?>
     <?php if ($hasResponsesDeletePermission && isset($rlanguage)): ?>
     <a class="btn btn-default" href='#' role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST(Yii::App()->createUrl("admin/dataentry/sa/delete/", ['id' => $id, 'sid' => $surveyid])); ?>}'>
-        <span class="fa fa-trash text-warning"></span>
+        <span class="fa fa-trash text-danger"></span>
         <?php eT("Delete this entry"); ?>
     </a>
     <?php endif;?>

@@ -62,7 +62,7 @@ class surveypermission extends Survey_Common_Action
         $result2 = Permission::model()->getUserDetails($iSurveyID);
         if (count($result2) > 0) {
                 $surveysecurity .= ""
-                . "<table class='surveysecurity table table-striped'><thead>"
+                . "<table class='surveysecurity table table-hover'><thead>"
                 . "<tr>\n"
                 . "<th>" . gT("Action") . "</th>\n"
                 . "<th>" . gT("Username") . "</th>\n"
@@ -111,13 +111,13 @@ class surveypermission extends Survey_Common_Action
                 //                  else {break;} //TODO Commented by lemeur
                 $surveysecurity .= "<tr>\n";
 
-                $surveysecurity .= "<td class='col-xs-1'>\n";
+                $surveysecurity .= "<td class='icon-btn-row'>\n";
 
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'update')) {
                     if ($PermissionRow['uid'] != Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                         // Can not update own security
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style' => "display:inline;"))
-                        . "<button type='submit' class='btn btn-default btn-xs'><span class='fa fa-pencil text-success' data-toggle='tooltip' title='" . gT("Edit permissions") . "'></span></button>";
+                        . "<button type='submit' class='btn btn-default btn-sm' data-toggle='tooltip' title='" . gT("Edit permissions") . "'><span class='fa fa-pencil text-success'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action', 'setsurveysecurity');
                         $surveysecurity .= \CHtml::hiddenField('user', $PermissionRow['users_name']);
                         $surveysecurity .= \CHtml::hiddenField('uid', $PermissionRow['uid']);
@@ -131,9 +131,9 @@ class surveypermission extends Survey_Common_Action
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
-                        <span class='fa fa-trash text-warning' data-toggle='tooltip' title='" . gT("Delete") . "'></span>
-                        </a>";
+                    $surveysecurity .= "<span data-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
+                        <span class='fa fa-trash text-danger'></span>
+                        </a></span>";
                 }
 
                 $surveysecurity .= "</td>\n";

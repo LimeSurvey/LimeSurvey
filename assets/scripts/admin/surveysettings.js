@@ -1,23 +1,24 @@
 
 var defineActions = function (dataArray) {
-    var buttonEdit = $('<button><i class="fa fa-edit"></i></button>');
-    var buttonDelete = $('<button><i class="fa fa-trash"></i></button>');
-    var container = $('<div></div>');
+    var iconRow = $('<div class="icon-btn-row"></div>');
+    var buttonEdit = $('<button><i class="fa fa-pencil"></i></button>');
+    var buttonDelete = $('<button><i class="fa fa-trash text-danger"></i></button>');
+    var container = $('<div><div class="icon-btn-row"></div></div>');
     buttonEdit
-        .addClass('btn btn-xs btn-default surveysettings_edit_intparameter')
+        .addClass('btn btn-sm btn-default surveysettings_edit_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
-        .appendTo(container);
+        .appendTo(iconRow);
     buttonDelete
-        .addClass('btn btn-xs btn-danger surveysettings_delete_intparameter')
+        .addClass('btn btn-sm btn-default surveysettings_delete_intparameter')
         .data('id', dataArray.id)
         .data('sid', dataArray.sid)
         .data('qid', (dataArray.qid || null))
         .data('sqid', (dataArray.qid || null))
-        .appendTo(container);
-
+        .appendTo(iconRow);
+    iconRow.appendTo(container);
     return container.html();
 };
 

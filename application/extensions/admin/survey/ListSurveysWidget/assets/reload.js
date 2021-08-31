@@ -7,7 +7,7 @@
 $(document).on('ready  pjax:scriptcomplete', function() {
     jQuery(function($)
     {
-        jQuery(document).on("change", '#pageSize', function()
+        jQuery(document).on("change", '#surveygrid--pageSize', function()
         {
             $('#survey-grid').yiiGridView('update',{ data:{ pageSize: $(this).val() }});
         });

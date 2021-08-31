@@ -69,12 +69,14 @@ class TFAUserKey extends LSActiveRecord {
     }
 
     /** @inheritdoc */
-    public function getButtons(){
-        return ''
-        .'<button class="btn btn-icon btn-sm"><i class="fa fa-refresh"></i></button>&nbsp;'
-        .'<button class="btn btn-icon btn-sm"><i class="fa fa-edit"></i></button>&nbsp;'
-        .'<button class="btn btn-icon btn-sm"><i class="fa fa-trash"></i></button>&nbsp;'
-        .'';
+    public function getButtons()
+    {
+        $buttons = "<div class='icon-btn-row'>";
+        $buttons .= '<button class="btn btn-icon btn-sm"><i class="fa fa-refresh"></i></button>'
+            . '<button class="btn btn-icon btn-sm"><i class="fa fa-edit"></i></button>'
+            . '<button class="btn btn-icon btn-sm"><i class="fa fa-trash text-danger"></i></button>';
+        $buttons .= "</div>";
+        return $buttons;
     }
     /**
      * Get the description for the current auth type

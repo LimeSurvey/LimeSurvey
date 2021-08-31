@@ -31,21 +31,21 @@
                 <?php
                     $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider' => $model->search(),
-                        'filter'=>$model,
-                        'id' => 'token-grid',
-                        'emptyText'=>gT('No survey participants found.'),
-                        'template'  => "<div class='push-grid-pager'>{items}\n</div><div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'filter'       => $model,
+                        'id'           => 'token-grid',
+                        'emptyText'    => gT('No survey participants found.'),
+                        'template'     => "<div class='push-grid-pager'>{items}\n</div><div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSizeTokenView',
                                 $pageSizeTokenView,
                                 Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                        'itemsCssClass' =>'table-striped',
-                        'columns' => $model->attributesForGrid,
-                        'ajaxUpdate' => 'token-grid',
-                        'ajaxType'=>'POST',
-                        'afterAjaxUpdate' => 'onUpdateTokenGrid'
+                        'htmlOptions'              => ['class' => 'table-responsive'],
+                        'columns'                  => $model->attributesForGrid,
+                        'ajaxUpdate'               => 'token-grid',
+                        'ajaxType'                 => 'POST',
+                        'afterAjaxUpdate'          => 'onUpdateTokenGrid'
                     ));
                 ?>
             </div>

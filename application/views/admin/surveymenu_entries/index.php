@@ -2,59 +2,58 @@
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
-$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
-$massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
+$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+$massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', [], true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyMenuEntries');
 
 ?>
 
-<div class="container-fluid ls-space">
-    <div class="ls-flex-column ls-space">
-    </div>
 
-        <div class="ls-flex-row">
-            <div class="col-12 ls-flex-item">
-                <?php
-                $this->widget('bootstrap.widgets.TbGridView', array(
-                    'dataProvider' => $model->search(),
-                    'id' => 'surveymenu-entries-grid',
-                    'columns' => $model->getColumns(),
-                    'filter' => $model,
-                    'emptyText'=>gT('No customizable entries found.'),
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+<div class="ls-flex-row">
+    <div class="col-12 ls-flex-item">
+        <?php
+        $this->widget(
+            'bootstrap.widgets.TbGridView',
+            [
+                'dataProvider'             => $model->search(),
+                'id'                       => 'surveymenu-entries-grid',
+                'columns'                  => $model->getColumns(),
+                'filter'                   => $model,
+                'emptyText'                => gT('No customizable entries found.'),
+                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                        gT('%s rows per page'),
                         CHtml::dropDownList(
-                            'pageSize',
+                            'surveymenuentriesPageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
-                            array('class'=>'changePageSize form-control', 'id'=>'pageSize', 'style'=>'display: inline; width: auto')
+                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
                         )
                     ),
-                    'itemsCssClass' =>'table table-hover',
-                    'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
-                    'htmlOptions'=>array('class'=>'table-responsive'),
-                    'ajaxType' => 'POST',
-                    'ajaxUpdate' => 'bindAction',
-                    'afterAjaxUpdate'=>'bindAction',
-                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                ));
-            ?>
-            </div>
+                'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
+                'htmlOptions'              => ['class' => 'table-responsive'],
+                'ajaxType'                 => 'POST',
+                'ajaxUpdate'               => 'surveymenu-entries-grid',
+                'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                'afterAjaxUpdate'          => 'surveyMenuEntryFunctions',
+            ]
+        );
+        ?>
     </div>
 </div>
 
-  <input type="hidden" id="surveymenu_open_url_selected_entry" value="" />
-  <!-- modal! -->
+<input type="hidden" id="surveymenu_open_url_selected_entry" value=""/>
+<!-- modal! -->
 
-  <div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
+<div class="modal fade" id="editcreatemenuentry" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-      </div>
+        <div class="modal-content">
+        </div>
     </div>
-  </div>
+</div>
 
-  <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
           <?php
@@ -76,7 +75,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
         </div>
       </div>
     </div>
-  </div>
+</div>
 
 
 

@@ -10,7 +10,7 @@
 
             <!-- Add -->
             <?php if (Permission::model()->hasGlobalPermission('usergroups', 'create') && isset($usergroupbar['returnbutton']['url'])) :?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("userGroup/addGroup"); ?>" role="button" title="<?php eT('Add a new user group'); ?>">
                     <span class="icon-add text-success"></span>
                     <?php eT("Add user group"); ?>
                 </a>

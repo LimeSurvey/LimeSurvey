@@ -25,11 +25,15 @@
                 'emptyText'=>gT('No surveys found.'),
                 'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
-                        'pageSize',
+                        'surveygrid--pageSize',
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
+                'htmlOptions' => ['class' => 'table-responsive'],
+                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                'ajaxUpdate' => 'survey-grid',
+                'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
+                'template'  => $this->template,
                 'columns' => array(
 
                     array(
@@ -38,6 +42,13 @@
                         'selectableRows' => '100',
                     ),
 
+                     array(
+                        'header' => gT('Action'),
+                        'name' => 'actions',
+                        'value'=>'$data->buttons',
+                        'type'=>'raw',
+                        'htmlOptions' => array('class' => 'text-center'),
+                    ),
                     array(
                         'header' => gT('Survey ID'),
                         'name' => 'survey_id',
@@ -47,14 +58,6 @@
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
-                     array(
-                        'header' => gT('Action'),
-                        'name' => 'actions',
-                        'value'=>'$data->buttons',
-                        'type'=>'raw',
-                        'htmlOptions' => array('class' => 'text-center col-md-2'),
-                        'headerHtmlOptions'=>array('style'=>'text-align:center;'),
-                    ),
 
                     array(
                         'header' => gT('Status'),
@@ -70,8 +73,8 @@
                         'name' => 'title',
                         'type' => 'raw',
                         'value'=>'isset($data->defaultlanguage) ? CHtml::link(flattenText($data->defaultlanguage->surveyls_title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
-                        'htmlOptions' => array('class' => 'col-md-2 has-link'),
-                        'headerHtmlOptions'=>array('class' => 'col-md-4 text-nowrap'),
+                        'htmlOptions' => array('class' => 'has-link'),
+                        'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
 
                     array(
@@ -79,7 +82,7 @@
                         'name' => 'group',
                         'type' => 'raw',
                         'value'=>'isset($data->surveygroup) ? CHtml::link(flattenText($data->surveygroup->title), Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid))) : ""',
-                        'htmlOptions' => array('class' => 'col-md-2 has-link'),
+                        'htmlOptions' => array('class' => 'has-link'),
                         'headerHtmlOptions'=>array('class' => 'text-nowrap'),
                     ),
 
@@ -106,8 +109,8 @@
                         'name' => 'anonymized_responses',
                         'type' => 'raw',
                         'value'=>'CHtml::link($data->anonymizedResponses, Yii::app()->createUrl("surveyAdministration/view/",array("surveyid"=>$data->sid)))',
-                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm col-md-1'),
-                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm col-md-1 has-link'),
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs hidden-sm'),
+                        'htmlOptions' => array('class' => 'hidden-xs hidden-sm has-link'),
                     ),
 
 
@@ -144,11 +147,6 @@
                     ),
 
                 ),
-                'htmlOptions'=>array('class'=>'table table-hover'),
-                'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                'ajaxUpdate' => 'survey-grid',
-                'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
-                'template'  => $this->template,
             ));
         ?>
     </div>

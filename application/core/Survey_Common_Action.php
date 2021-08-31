@@ -511,7 +511,7 @@ class Survey_Common_Action extends CAction
             Yii::import('application.controllers.admin.NotificationController');
             $aData['adminNotifications'] = NotificationController::getMenuWidget($surveyId, true /* show spinner */);
 
-            $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
+            $this->getController()->renderPartial("/layouts/adminmenu", $aData);
         }
         return null;
     }

@@ -74,7 +74,7 @@
                     href='#'
                     onclick='(function() { LS.deleteAllNotifications("<?php echo $clearAllNotificationsUrl ?>", "<?php echo $updateUrl; ?>"); })()'
                 >
-                    <span class='fa fa-trash text-warning'></span>&nbsp;
+                    <span class='fa fa-trash text-danger'></span>&nbsp;
                     <?php eT('Delete all notifications'); ?>
                 </a>
             </li>

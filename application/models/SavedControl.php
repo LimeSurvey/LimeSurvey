@@ -117,11 +117,11 @@ class SavedControl extends LSActiveRecord
     {
         $gridButtons = array();
         $gridButtons['editresponse'] = array(
-            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT("Edit") . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-edit",
+                'class' => "btn btn-default btn-sm btn-edit",
                 'data-toggle' => "tooltip",
                 'title' => gT("Edit response"),
             ),
@@ -132,7 +132,7 @@ class SavedControl extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/saved/sa/resend_accesscode",array("surveyid"=>$data->sid,"id"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-edit",
+                'class' => "btn btn-default btn-sm btn-edit",
                 'data-toggle' => "tooltip",
                 'title' => gT("Resend access code"),
             ),
@@ -140,12 +140,12 @@ class SavedControl extends LSActiveRecord
             'visible' => false,
         );
         $gridButtons['delete'] = array(
-            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT("Delete") . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             'icon' => false,
             'url' => 'App()->createUrl("admin/saved/sa/actionDelete",array("surveyid"=>$data->sid,"scid"=>$data->scid,"srid"=>$data->srid));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-delete",
+                'class' => "btn btn-default btn-sm btn-delete",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete this entry and related response"),
             ),
@@ -159,15 +159,16 @@ class SavedControl extends LSActiveRecord
     {
         return array(
             array(
+                'header' => gT('Action'),
+                'class' => 'bootstrap.widgets.TbButtonColumn',
+                'template' => '{editresponse}{delete}',
+                'htmlOptions' => array('class' => 'icon-btn-row'),
+                'buttons' => $this->gridButtons,
+            ),
+            array(
                 'header' => gT("ID"),
                 'name' => 'scid',
                 'filter' => false,
-            ),
-            array(
-                'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{editresponse}{delete}',
-                //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
-                'buttons' => $this->gridButtons,
             ),
             array(
                 'header' => gT("Identifier"),

@@ -124,39 +124,39 @@ class LabelSet extends LSActiveRecord
      */
     public function getbuttons()
     {
+        $button = "<div class='icon-btn-row'>";
         // Edit labelset
         if (Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
-            $button = ' <a class="btn btn-default btn-sm green-border" style="margin-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . gT('Edit label set') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-default btn-sm green-border" data-toggle="tooltip" data-placement="top" title="' . gT('Edit label set') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // View labelset
         $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
-        $button .= '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="left" title="' . gT('View labels') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('View labels') . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Export labelset
         if (Permission::model()->hasGlobalPermission('labelsets', 'export')) {
             $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
-            $button .= ' <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="left" title="' . gT('Export label set') . '" href="' . $url . '" role="button"><span class="icon-export" ></span></a>';
+            $button .= ' <a class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="' . gT('Export label set') . '" href="' . $url . '" role="button"><span class="icon-export" ></span></a>';
         }
 
         // Delete labelset
         if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             $url = Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]);
             $message = gT("Are you sure you want to delete this label set?");
-            $button .= '<a 
-            class="btn btn-danger btn-sm red-border"  
+            $button .= '<span data-toggle="tooltip" data-placement="top" title="' . gT('Delete label set') . '"><a 
+            class="btn btn-default btn-sm"  
             data-toggle="modal"
-            data-href ="' . $url.'"
-            data-message="'. $message .'"
-            data-btnclass="btn-danger"
-            data-btntext="' . gt('Delete') . '"
+            data-href ="' . $url . '"
+            data-message="' . $message . '"
             data-target="#confirmation-modal" 
             title="' . gT("Delete") . '" 
             href="#" >
-                    <i class="text-danger fa fa-trash"></i>
-                    </a>';
+                    <i class="fa fa-trash text-danger"></i>
+                    </a></span>';
         }
+        $button .= "</div>";
             return $button;
     }
 

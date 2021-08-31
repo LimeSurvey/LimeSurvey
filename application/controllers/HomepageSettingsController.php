@@ -51,6 +51,11 @@ class HomepageSettingsController extends LSBaseController
             $this->redirect($this->createUrl("/admin"));
         }
 
+        // Page size
+        if (App()->request->getParam('pageSize')) {
+            App()->user->setState('pageSize', (int) App()->request->getParam('pageSize'));
+        }
+
         $dataProviderBox = new CActiveDataProvider('Box');
 
         $this->aData = [
@@ -65,7 +70,7 @@ class HomepageSettingsController extends LSBaseController
         ];
 
         $this->render('index', [
-            'dataProviderBox' => $dataProviderBox,
+            'dataProviderBox' => $dataProviderBox->model,
             'bShowLogo' => App()->getConfig('show_logo') == "show",
             'bShowLastSurveyAndQuestion' => App()->getConfig('show_last_survey_and_question') == "show",
             'bShowSurveyList' => App()->getConfig('show_survey_list') == "show",

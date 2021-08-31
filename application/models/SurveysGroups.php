@@ -120,6 +120,14 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                 ),
 
                 array(
+                    'header' => gT('Action'),
+                    'name' => 'sortorder',
+                    'type' => 'raw',
+                    'value' => '$data->buttons',
+                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
+                ),
+                array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
                     'value' => '$data->hasViewSurveyGroupRight ? CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid))) : $data->gsid',
@@ -128,14 +136,6 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
-                array(
-                    'header' => gT('Action'),
-                    'name' => 'sortorder',
-                    'type' => 'raw',
-                    'value' => '$data->buttons',
-                    'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
-                ),
 
                 array(
                     'header' => gT('Code'),
@@ -219,7 +219,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
     public function search()
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
-
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria();
 
         $criteria->select = array('DISTINCT t.*');
@@ -241,9 +241,11 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
 
         $dataProvider = new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
         ));
 
-        $dataProvider->setTotalItemCount(count($dataProvider->getData()));
 
         return $dataProvider;
     }
@@ -301,21 +303,21 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id" => $this->gsid));
         $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id" => $this->gsid));
         $sPermissionUrl = App()->createUrl("surveysGroupsPermission/index", array("id" => $this->gsid));
-        $button = '';
+        $button = "<div class='icon-btn-row'>";
         if ($this->hasPermission('group', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sEditUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
-        }
-        if ($this->hasPermission('surveysettings', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sSurveySettingsUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-default" href="' . $sEditUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit survey group') . '"><i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only">' . gT('Edit survey group') . '</span></a>';
         }
         if ($this->hasPermission('permission', 'read')) {
-            $button .= '<a class="btn btn-default" href="' . $sPermissionUrl . '" role="button" style="margin-right: 5px;" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+            $button .= '<a class="btn btn-sm btn-default" href="' . $sPermissionUrl . '" role="button" data-toggle="tooltip" title="' . gT('Permission') . '"><i class="fa fa-lock" aria-hidden="true"></i><span class="sr-only">' . gT('Permission') . '</span></a>';
+        }
+        if ($this->hasPermission('surveysettings', 'read')) {
+            $button .= '<a class="btn btn-sm btn-default" href="' . $sSurveySettingsUrl . '" role="button" data-toggle="tooltip" title="' . gT('Survey settings') . '"><i class="fa fa-cog" aria-hidden="true"></i><span class="sr-only">' . gT('Survey settings') . '</span></a>';
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
-            $button .= '<a class="btn btn-default" href="#" data-href="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '" data-tooltip="true" title="' . gT('Delete survey group') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i><span class="sr-only">' . gT('Delete survey group') . '</span></a>';
+            $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-href="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
         }
-
+        $button .= "</div>";
         return $button;
     }
 
