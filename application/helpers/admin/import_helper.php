@@ -2860,6 +2860,7 @@ function TSVImportSurvey($sFullFilePath)
                 $question['help'] = (isset($row['help']) ? $row['help'] : '');
                 $question['language'] = (isset($row['language']) ? $row['language'] : $baselang);
                 $question['mandatory'] = (isset($row['mandatory']) ? $row['mandatory'] : '');
+                $question['encrypted'] = (isset($row['encrypted']) ? $row['encrypted'] : 'N');
                 $lastother = $question['other'] = (isset($row['other']) ? $row['other'] : 'N'); // Keep trace of other settings for sub question
                 $question['same_default'] = (isset($row['same_default']) ? $row['same_default'] : 0);
                 $question['parent_qid'] = 0;

@@ -2523,6 +2523,7 @@ function tsvSurveyExport($surveyid)
         'language',
         'validation',
         'mandatory',
+        'encrypted',
         'other',
         'default',
         'same_default',
@@ -2838,6 +2839,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];
                         $tsv_output['mandatory'] = !empty($question['mandatory']) ? $question['mandatory'] : '';
+                        $tsv_output['encrypted'] = !empty($question['encrypted']) ? $question['encrypted'] : 'N';
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
 
@@ -2860,6 +2862,7 @@ function tsvSurveyExport($surveyid)
                             }
                         }
                         fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
+
 
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])) {
