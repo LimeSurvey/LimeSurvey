@@ -2587,7 +2587,7 @@ function tsvSurveyExport($surveyid)
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
 
-    foreach ($language_data as $key => $language) {  //echo $key.'---'; print_r($language); die;
+    foreach ($language_data as $language_data_key => $language) {  //echo $key.'---'; print_r($language); die;
         $current_language = !empty($language['surveyls_language']) ? $language['surveyls_language'] : '';
         foreach ((array)$language as $key => $value) {
             if (is_array($value)) {
@@ -2620,7 +2620,7 @@ function tsvSurveyExport($surveyid)
         $attributes[$attribute['qid']][] = $attribute;
     }
 
-    // default values data
+    // defaultvalues_data
     if (array_key_exists('defaultvalues', $xmlData)) {
         $defaultvalues_data = $xmlData['defaultvalues']['rows']['row'];
         if (!array_key_exists('0', $defaultvalues_data)) {
@@ -2629,8 +2629,26 @@ function tsvSurveyExport($surveyid)
     } else {
         $defaultvalues_data = array();
     }
+    // insert translations to defaultvalues_datas
+    if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
+        $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
+        $defaultvalues_datas = [];
+        foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
+            foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
+                if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
+                    $defaultvalues_datas[] = $defaultvalue_data;
+                    $defaultvalues_datas_last = array_key_last($defaultvalues_datas);
+                    $defaultvalues_datas[$defaultvalues_datas_last]['language'] = $defaultvalue_l10ns_data['language'];
+                    $defaultvalues_datas[$defaultvalues_datas_last]['defaultvalue'] = $defaultvalue_l10ns_data['defaultvalue'];
+                    continue 2;
+                }
+            }
+        }
+    }
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
     $defaultvalues = array();
-    foreach ($defaultvalues_data as $key => $defaultvalue) {
+    foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
         } else {
