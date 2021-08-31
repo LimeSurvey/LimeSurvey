@@ -2679,7 +2679,9 @@ function tsvSurveyExport($surveyid)
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
             }
             foreach ($xmlData['group_l10ns']['rows']['row'] as $group_l10ns) {
-                $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                if ($group_l10ns['language'] === $language) {
+                    $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                }
             }
         } else {
             $groups_data = array();
