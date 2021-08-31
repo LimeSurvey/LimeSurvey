@@ -3110,5 +3110,8 @@ function MaskFormula($sValue)
     if (isset($sValue[0]) && $sValue[0] == '=') {
         $sValue = "'" . $sValue;
     }
+    if (is_array($sValue) && empty($sValue)) {
+        $sValue = '';
+    }
     return $sValue;
 }
