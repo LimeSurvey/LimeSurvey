@@ -2904,7 +2904,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['related_id'] = $condition['cqid'];
                                 $tsv_output['name'] = $condition['cfieldname'];
                                 $tsv_output['relevance'] = $condition['method'];
-                                $tsv_output['text'] = !empty($assessment['value']) ? $condition['value'] : '';
+                                $tsv_output['text'] = !empty($condition['value']) ? $condition['value'] : '';
                                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
                             }
                         }

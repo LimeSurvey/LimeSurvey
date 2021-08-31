@@ -3069,7 +3069,7 @@ function TSVImportSurvey($sFullFilePath)
                 $condition['cqid'] = isset($row['related_id']) ? $row['related_id'] : '';
                 $condition['cfieldname'] = $row['name'];
                 $condition['method'] = $row['relevance'];
-                $condition['value'] = $row['text'];
+                $condition['value'] = isset($row['text']) ? $row['text'] : '';
                 $conditions[] = $condition;
                 break;
         }
