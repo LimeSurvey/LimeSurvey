@@ -683,8 +683,6 @@ class statistics extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$oSurveyid}"));
         }
 
-
-        
         // Set language for questions and answers to base language of this survey
         $language = $oSurvey->language;
         $summary = array();
@@ -783,7 +781,6 @@ class statistics extends Survey_Common_Action
             }
         }
 
-
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
         Yii::app()->loadHelper('admin/statistics');
@@ -802,7 +799,8 @@ class statistics extends Survey_Common_Action
         $aData['summary'] = $summary;
         $aData['oStatisticsHelper'] = $helper;
         $aData['expertstats'] = true;
-        
+
+        $aData['subaction'] = gT('Statistics');
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
