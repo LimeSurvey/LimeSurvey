@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - '*'
+      - 'bug/**'
 
 jobs:
   CI-pipeline:
