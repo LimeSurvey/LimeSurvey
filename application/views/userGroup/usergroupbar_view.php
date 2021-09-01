@@ -2,6 +2,12 @@
 /** @var AdminController $this */
 /** @var UserGroup $userGroup */
 ?>
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
 <!-- User Group Bar -->
 <div class='menubar surveybar' id="usergroupbar">
     <div class='row'>
