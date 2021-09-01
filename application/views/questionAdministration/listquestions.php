@@ -101,26 +101,23 @@ $baseLanguage = $oSurvey->language;
                         );
                         $this->widget('ext.LimeGridView.LimeGridView', array(
                             'dataProvider' => $model->search(),
-                            'id' => 'question-grid',
-                            'type' => 'striped',
-                            'emptyText' => gT('No questions found.'),
-                            'summaryText' => "<div class='row'>"
-                                ."<div class='col-xs-6'>".$massiveAction."</div>"
-                                ."<div class='col-xs-6'>"
-                                .gT('Displaying {start}-{end} of {count} result(s).').' '
-                                    . sprintf(
-                                        gT('%s rows per page'),
-                                        CHtml::dropDownList(
-                                            'pageSize',
-                                            $pageSize,
-                                            App()->params['pageSizeOptions'],
-                                            array(
-                                                'class'=>'changePageSize form-control',
-                                                'style'=>'display: inline; width: auto'
-                                            )
+                            'id'           => 'question-grid',
+                            'emptyText'    => gT('No questions found.'),
+                            'htmlOptions'  => ['class' => 'table-responsive'],
+                            'template'     => "{items}\n<div id='questionListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                            'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                                . sprintf(
+                                    gT('%s rows per page'),
+                                    CHtml::dropDownList(
+                                        'pageSize',
+                                        $pageSize,
+                                        App()->params['pageSizeOptions'],
+                                        array(
+                                            'class' => 'changePageSize form-control',
+                                            'style' => 'display: inline; width: auto'
                                         )
                                     )
-                                ."</div></div>",
+                                ),
                             'columns' => $model->questionListColumns,
                             'ajaxUpdate' => 'question-grid',
                             'afterAjaxUpdate' => "bindPageSizeChange"

@@ -199,27 +199,30 @@ class Permissiontemplates extends CActiveRecord
 
         // Delete Role
         $deleteUrl .= '/ptid/' . $this->ptid;
-        $deleteRoleButton = ""
+        $deleteRoleButton = '<span data-toggle="tooltip" title="' . gT('Delete user role') . '">'
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
-                class='btn btn-sm btn-default red-border' 
+                class='btn btn-sm btn-default' 
                 data-toggle='modal' 
-                data-title='".gt('Delete user role') . "'
+                data-title='" . gt('Delete user role') . "'
                 data-target='#confirmation-modal'
                 data-href ='" . $deleteUrl . "' 
-                data-btnclass='btn-danger'
                 data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
-                    <i class='fa fa-trash'></i>
-              </button>";
+                    <i class='fa fa-trash text-danger'></i>
+              </button>"
+            . '</span>';
 
-        return join("\n", [
+        $buttons = "<div class='icon-btn-row'>";
+        $buttons .= implode("\n", [
             $editRoleButton,
             $editPermissionButton,
             $roleDetail,
             $exportRoleButton,
             $deleteRoleButton
         ]);
+        $buttons .= "</div>";
+        return $buttons;
     }
 
     /**

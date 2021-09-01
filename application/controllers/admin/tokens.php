@@ -1032,7 +1032,7 @@ class tokens extends Survey_Common_Action
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
         // load sodium library
-        $aData['showCloseButton'] = true;
+        $aData['showBackButton'] = true;
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2662,7 +2662,7 @@ class tokens extends Survey_Common_Action
         $aData['subaction'] = gT('Survey participants');
 
         if (!empty($aData['surveyid'])) {
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $aData['surveyid']);
+            $aData['returnUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $aData['surveyid']);
         }
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);

@@ -41,52 +41,64 @@ App()->getClientScript()->registerScript(
                 <?php $this->widget(
                     'bootstrap.widgets.TbGridView',
                     [
-                        'dataProvider' => $dataProviderBox,
-                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).'),
+                        'id'           => 'boxes-grid',
+                        'dataProvider' => $dataProviderBox->search(),
+                        'htmlOptions'  => ['class' => 'table-responsive'],
+                        'template'     => "{items}\n<div id='boxListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                            . sprintf(
+                                gT('%s rows per page'),
+                                CHtml::dropDownList(
+                                    'boxes-pageSize',
+                                    Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
+                                    Yii::app()->params['pageSizeOptions'],
+                                    array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
+                                )
+                            ),
                         'columns'      => [
-                            [
-                                'header'      => gT('Position'),
-                                'name'        => 'position',
-                                'value'       => '$data->position',
-                                'htmlOptions' => ['class' => 'col-md-1'],
-                            ],
                             [
                                 'header'      => gT('Action'),
                                 'name'        => 'actions',
                                 'value'       => '$data->buttons',
                                 'type'        => 'raw',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
+                            ],
+                            [
+                                'header'      => gT('Position'),
+                                'name'        => 'position',
+                                'value'       => '$data->position',
+                                'htmlOptions' => ['class' => ''],
                             ],
                             [
                                 'header'      => gT('Title'),
                                 'name'        => 'title',
                                 'value'       => '$data->title',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
                             ],
                             [
                                 'header'      => gT('Icon'),
                                 'name'        => 'icon',
                                 'value'       => '$data->spanicon',
                                 'type'        => 'raw',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
                             ],
                             [
                                 'header'      => gT('Description'),
                                 'name'        => 'desc',
                                 'value'       => '$data->desc',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
                             ],
                             [
                                 'header'      => gT('URL'),
                                 'name'        => 'url',
                                 'value'       => '$data->url',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
                             ],
                             [
                                 'header'      => gT('User group'),
                                 'name'        => 'url',
                                 'value'       => '$data->usergroupname',
-                                'htmlOptions' => ['class' => 'col-md-1'],
+                                'htmlOptions' => ['class' => ''],
                             ],
                         ],
                     ]
@@ -179,5 +191,13 @@ App()->getClientScript()->registerScript(
         if (window.location.hash) {
             $('#boxeslist').find('a[href=' + window.location.hash + ']').trigger('click');
         }
+    });
+</script>
+<script type="text/javascript">
+    jQuery(function($) {
+        // To update rows per page via ajax
+        $(document).on("change", '#boxes-pageSize', function() {
+            $.fn.yiiGridView.update('boxes-grid', {data:{pageSize: $(this).val()}});
+        });
     });
 </script>

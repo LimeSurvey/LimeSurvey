@@ -35,8 +35,8 @@
                 <?php endif; ?>
 
                 <?php if (isset($scannedPlugin['deleteUrl'])) : ?>
-                    <a href='#' class='btn btn-danger' data-target='#confirmation-modal' data-toggle='modal' data-href='<?= $scannedPlugin['deleteUrl'] ?>' data-message='<?php eT('Are you sure you want to delete this plugin from the file system?'); ?>' type='submit'>
-                        <i class='fa fa-trash'></i>&nbsp;
+                    <a href='#' class='btn btn-default' data-target='#confirmation-modal' data-toggle='modal' data-href='<?= $scannedPlugin['deleteUrl'] ?>' data-message='<?php eT('Are you sure you want to delete this plugin from the file system?'); ?>' type='submit'>
+                        <i class='fa fa-trash text-danger'></i>&nbsp;
                         <span data-toggle='tooltip' title='<?php eT('Delete this plugin from the file system'); ?>'>Delete files</span>
                     </a>
                 <?php endif; ?>

@@ -12,7 +12,6 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
   <div class="side-body <?=getSideBodyClass(false)?>">
     <?=viewHelper::getViewTestTag('surveyAssessments');?>
       <h3 class="page-title"><?=gT("Assessments")?></h3>
-      <div class="container-fluid">
         <?php
             $messageLink = gT("Assessment mode for this survey is not activated.").'<br/>'
                 . gT("If you want to activate it, click here:").'<br/>'
@@ -27,15 +26,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
               <?php echo $messageLink; ?>
             </div>
           </div>
-        </div>
-          
+
         <?php
         } else {
         ?>
             <h4><?php eT("Assessment rules");?></h4>
             <div class="row">
-              <div class="col-sm-12">
-                  <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
+                <a href="#" id="loadEditUrl_forModalView" data-editurl="<?=$this->createUrl("assessment/edit/", ["surveyid" => $surveyid]);?>"></a>
                 <?php
                     $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider' => $model->search(),
@@ -53,16 +50,13 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             )
                         ),
                         'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
-                        //'htmlOptions' => array('class'=> 'table-responsive'),
-                        'itemsCssClass' => 'table table-responsive table-striped',
-                        'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-                        'ajaxType' => 'POST',
-                        'ajaxUpdate' => 'assessments-grid',
-                        'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'afterAjaxUpdate'=>'bindAction',
+                        'htmlOptions'              => ['class' => 'table-responsive'],
+                        'ajaxType'                 => 'POST',
+                        'ajaxUpdate'               => 'assessments-grid',
+                        'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'afterAjaxUpdate'          => 'bindAction',
                     ));
                 ?>
-              </div>
             </div>
             <?php if ( Permission::model()->hasSurveyPermission($surveyid, 'assessments', 'create') ) { ?>
               <div class="row">
@@ -88,7 +82,6 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                     );
                 ?>
             <?php } ?>
-      </div>
   <!-- opened in controller -->
     <?php 
     };

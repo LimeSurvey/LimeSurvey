@@ -8,7 +8,7 @@
  * @var int $deactivatedsurveys
  * @var int $activetokens
  * @var int $deactivatedtokens
- *
+ * @var int TODO: seems to be deprecated see modules/admin/globalsettings/views/_overview.php
  */
 ?>
 <br /><table class='table table-hover'>

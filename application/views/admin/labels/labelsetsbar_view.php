@@ -38,7 +38,7 @@
                 <?php if (isset($labelbar['buttons']['edit'])) : ?>
                     <!-- Edit label set -->
                     <?php if (Permission::model()->hasGlobalPermission('labelsets', 'update')) : ?>
-                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid); ?>" role="button" style="margin-top:10px;">
+                        <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/" . $lid); ?>" role="button">
                             <span class="fa fa-pencil  text-success"></span>
                             <?php eT("Edit label set"); ?>
                         </a>

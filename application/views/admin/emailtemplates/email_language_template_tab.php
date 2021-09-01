@@ -96,8 +96,8 @@ $script = array();
 <table id="rowTemplate" class="hidden">
     <tr>
         <td>
-            <button class="btn btn-xs btn-danger btnattachmentremove" title="<?php eT('Remove attachment')?>" data-toggle="tooltip" data-placement="bottom">
-                <i class="fa fa-trash" aria-hidden="true"></i><span class="sr-only"><?php eT('Remove attachment')?></span>
+            <button class="btn btn-default btn-xs btnattachmentremove" title="<?php eT('Remove attachment') ?>" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-trash text-danger" aria-hidden="true"></i><span class="sr-only"><?php eT('Remove attachment') ?></span>
             </button>
         </td>
         <td>

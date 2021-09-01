@@ -16,7 +16,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('/admin/menus/sa/massDelete/'),
-            'iconClasses' => 'text-danger fa fa-trash',
+            'iconClasses' => 'fa fa-trash text-danger',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
 

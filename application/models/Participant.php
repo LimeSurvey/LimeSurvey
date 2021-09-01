@@ -122,9 +122,9 @@ class Participant extends LSActiveRecord
      */
     public function getButtons()
     {
-        $buttons = "<div style='white-space: nowrap;'>";
+        $buttons = "<div class='icon-btn-row'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;' style='margin-left: 5px;'>" //extra class //title
+            . "<button class='btn btn-default btn-sm %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
@@ -174,17 +174,17 @@ class Participant extends LSActiveRecord
                 // Delete button
                 $deleteData = array(
                     'red-border action_participant_deleteModal',
-                    'text-danger',
+                    '',
                     gT("Delete this participant"),
-                    'trash'
+                    'trash text-danger'
                 );
             } else {
                 // Invisible button
                 $deleteData = array(
                     'red-border action_participant_deleteModal invisible',
-                    'text-danger',
+                    '',
                     gT("Delete this participant"),
-                    'trash'
+                    'trash text-danger'
                 );
             }
             $buttons .= vsprintf($raw_button_template, $deleteData);
