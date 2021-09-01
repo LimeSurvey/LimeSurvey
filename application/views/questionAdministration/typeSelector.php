@@ -24,7 +24,7 @@ $oQuestionSelector = $this->beginWidget(
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
         'debugKeyCheck' => gT("Type:") . " ",
-        'previewWindowTitle' => gT("Preview question type"),
+        'previewWindowTitle' => "",
         'groupStructureArray' => $aQuestionTypeGroups,
         'survey_active' => $question->survey->active=='Y',
         'value' => $question->type,
