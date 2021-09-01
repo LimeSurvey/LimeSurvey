@@ -352,9 +352,10 @@ echo viewHelper::getViewTestTag('checkIntegrity');
      * If checkbox with to-be-deleted items is selected, 
      * the 'delete' button will be enabled,
      * otherwise its disabled.
+     * @param {string} checkbox Name of checkbox 
      */
-    function toggleDisableState() {
-        let isChecked =  $('input:checkbox').is(':checked');
+    function toggleDisableState(checkbox) {
+        let isChecked = $(checkbox).is(':checked');
         let deleteCheckedItemsButton = document.getElementById('delete-checked-items-button');
         if (isChecked) {
             deleteCheckedItemsButton.removeAttribute("disabled");
