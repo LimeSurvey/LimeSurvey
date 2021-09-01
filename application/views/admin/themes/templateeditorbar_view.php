@@ -55,6 +55,13 @@ echo viewHelper::getViewTestTag('themeEditor');
     });
 </script>
 
+<?php
+    App()->getClientScript()->registerScriptFile(
+        App()->getConfig('adminscripts') . 'topbar.js',
+        CClientScript::POS_END
+    );
+?>
+
 <!-- Template Editor Bar -->
 <div class='menubar surveybar' id="templateeditorbar">
     <div class='row'>
