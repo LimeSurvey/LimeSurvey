@@ -1448,11 +1448,14 @@ class database extends Survey_Common_Action
                     /* Date management */
                     Yii::app()->loadHelper('surveytranslator');
 
-
+                    $oValidator = new LSYii_Validators;
                     foreach ($validAttributes as $validAttribute) {
                         if ($validAttribute['i18n']) {
                             foreach ($aLanguages as $sLanguage) {
                                 $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
+                                if ($oValidator->xssfilter) {
+                                    $value = $oValidator->xssFilter($value);
+                                }
                                 $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
                                 if (count($iInsertCount) > 0) {
                                     if ($value != '') {
@@ -1471,7 +1474,9 @@ class database extends Survey_Common_Action
                             }
                         } else {
                             $value = Yii::app()->request->getPost($validAttribute['name']);
-
+                            if ($oValidator->xssfilter) {
+                                $value = $oValidator->xssFilter($value);
+                            }
                             if ($validAttribute['name'] == 'multiflexible_step' && trim($value) != '') {
                                 $value = floatval($value);
                                 if ($value == 0) {
