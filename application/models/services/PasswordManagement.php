@@ -134,7 +134,7 @@ class PasswordManagement
             $differenceHours = $dateDiff->format('%h');
             $differenceMin = $dateDiff->format('%i');
             //calculate time difference in minutes
-            $differenceInMinutes = ((int)$differenceDays * 24 * 60) + ((int)$differenceHours *60) + (int)$differenceMin;
+            $differenceInMinutes = ((int)$differenceDays * 24 * 60) + ((int)$differenceHours * 60) + (int)$differenceMin;
             $sendForgotPwIsAllowed = $differenceInMinutes > self::MIN_TIME_NEXT_FORGOT_PW_EMAIL;
         }
 
@@ -237,13 +237,13 @@ class PasswordManagement
                     'username' => $this->user->users_name,
                     'password' => $passwordResetUrl,
                     'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false && \Permission::model(
-                        )->hasGlobalPermission('auth_db', 'read', $this->user->uid),
+                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false &&
+                        \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
                     'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),
                 ];
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
-                        "Your login credentials have been reset"
-                    );
+                    "Your login credentials have been reset"
+                );
                 $body = \Yii::app()->getController()->renderPartial(
                     'partial/usernotificationemail',
                     $renderArray,
