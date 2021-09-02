@@ -353,8 +353,8 @@ class SurveyDynamic extends LSActiveRecord
                 'data-target' => '#confirmation-modal',
                 'data-btnclass' => 'btn-danger',
                 'data-btntext' => gt('Delete'),
-                'data-href' => 'App()->createUrl("admin/responses/sa/actionDeleteSingle",array("surveyid"=>' . self::$sid . ',"responseId"=>$data->id));',
-                'evaluateOptions' => array('data-href'),
+                'data-post-url' => 'App()->createUrl("admin/responses/sa/actionDeleteSingle",array("surveyid"=>' . self::$sid . ',"responseId"=>$data->id));',
+                'evaluateOptions' => array('data-post-url'),
                 'title' => gT("Delete this response"),
                 'data-message' => gT('Do you want to delete this response?')
                 . '<br/>'

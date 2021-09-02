@@ -48,6 +48,12 @@ class SurveysGroupsPermissionController extends LSBaseController
         ];
     }
 
+    public function filters()
+    {
+        return array(
+            'postOnly + DeleteUser'
+        );
+    }
 
     /**
      * Shown permissions list, allow to add user and group,

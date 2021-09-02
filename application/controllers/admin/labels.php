@@ -402,6 +402,8 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }

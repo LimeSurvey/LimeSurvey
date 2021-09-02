@@ -259,6 +259,8 @@ class tokens extends Survey_Common_Action
      */
     public function deleteToken()
     {
+        $this->requirePostRequest();
+
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
         $iSid = (int) Yii::app()->getRequest()->getParam('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {

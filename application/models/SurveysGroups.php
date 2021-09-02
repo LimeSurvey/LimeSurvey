@@ -125,7 +125,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
                     'type' => 'raw',
                     'value' => '$data->buttons',
                     'headerHtmlOptions' => array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs button-column'),   // Cells that include buttons need the 'button-column' class to avoid triggering the 'selectionChanged' event
                 ),
                 array(
                     'header' => gT('Survey group ID'),
@@ -315,7 +315,7 @@ class SurveysGroups extends LSActiveRecord implements PermissionInterface
         }
         /* Can not delete group #1 + with survey (or move it to hasPermission function ?) */
         if ($this->gsid != 1 && !$this->hasSurveys && $this->hasPermission('group', 'delete')) {
-            $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-href="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
+            $button .= '<span data-toggle="tooltip" title="' . gT('Delete survey group') . '"><a class="btn btn-sm btn-default" href="#" data-post-url="' . $sDeleteUrl . '" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="' . gT('Do you want to continue?') . '"><i class="fa fa-trash text-danger " aria-hidden="true"></i></a></span>';
         }
         $button .= "</div>";
         return $button;

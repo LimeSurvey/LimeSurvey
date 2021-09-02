@@ -15,7 +15,7 @@
 <?php } ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','delete')) { ?>
     <a
-            data-href="<?php echo $deleteUrl; ?>"
+            data-post-url="<?php echo $deleteUrl; ?>"
             class="btn btn-default"
             data-toggle="modal"
             data-target="#confirmation-modal"
