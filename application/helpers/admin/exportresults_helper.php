@@ -107,9 +107,9 @@ class ExportSurveyResultsService
         $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
         $countResponsesCommand->order = null;
         $countResponsesCommand->select('count(*)');
-        $reponsesCount = $countResponsesCommand->queryScalar();
+        $responseCount = $countResponsesCommand->queryScalar();
         $maxRows = 100;
-        $maxPages = ceil($reponsesCount / $maxRows);
+        $maxPages = ceil($responseCount / $maxRows);
         for ($i = 0; $i < $maxPages; $i++) {
             $offset = $i * $maxRows;
             $responsesQuery = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
