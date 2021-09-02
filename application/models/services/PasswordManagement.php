@@ -237,9 +237,9 @@ class PasswordManagement
                     'username' => $this->user->users_name,
                     'password' => $passwordResetUrl,
                     'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false &&
-                        \Permission::model()->hasGlobalPermission('auth_db', 'read', $this->user->uid),
-                    'showPassword' => (\Yii::app()->getConfig("display_user_password_in_email") === true),
+                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
+                        && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
+                    'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,
                 ];
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
