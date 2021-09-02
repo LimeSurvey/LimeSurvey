@@ -235,11 +235,12 @@ class Authentication extends Survey_Common_Action
             $aData = [];
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.').'<br>';
+                $aData['message'] = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
             } else {
-                $aData['message'] = '<br>'.$this->_sendPasswordEmail($aFields[0]).'</br>';
+                $aData['message'] = $this->_sendPasswordEmail($aFields[0]);
             }
-            $this->_renderWrappedTemplate('authentication', 'message', $aData);
+            Yii::app()->user->setFlash('success', $aData['message']);
+            Yii::app()->getController()->redirect(array('/admin'));
         }
     }
 
