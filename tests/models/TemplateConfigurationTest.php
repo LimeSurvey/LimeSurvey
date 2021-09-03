@@ -34,9 +34,13 @@ class TemplateConfigurationTest extends TestBaseClass
 
         $templateConfiguration = \TemplateConfiguration::checkAndcreateSurveyConfig(self::$surveyId);
 
+        // Generate test path with path traversal beyond instance root (eg. ../../../../var/www/html/limesurvey/themes/survey/fruity/files/logo.png)
+        $limeroot = dirname(ROOT);
+        $testPath = preg_replace("/\w+/", "..", ltrim($limeroot, "/\\")) . $limeroot . "/themes/survey/fruity/files/logo.png";
+
         // Prepare dataset
         $options = [
-            'realThemeFile' => 'themes/survey/fruity/files/logo.png',
+            'realThemeFile' => $testPath,
             'realGeneralFile' => 'upload/themes/survey/generalfiles/index.html',
             'realRelativeThemeFile' => './files/logo.png',
             'virtualThemeFile' => 'image::theme::files/logo.png',

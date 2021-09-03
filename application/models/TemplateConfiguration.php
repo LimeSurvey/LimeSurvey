@@ -1476,14 +1476,15 @@ class TemplateConfiguration extends TemplateConfig
                 return null;    // No category matched the path's prefix
             }
             $category = reset($filteredCategories);
+            $categoryPath = realpath($category->path) . '/';
 
             // Validate that the file exists
-            $realPath = realpath($category->path . '/' . substr($path, strlen($prefix)));
+            $realPath = realpath($categoryPath . '/' . substr($path, strlen($prefix)));
 
             // If the file exists and no traversing is done (the real path starts with the category's base path),
             // return the file info
-            if ($realPath !== false && strpos($realPath, $category->path) === 0) {
-                $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
+            if ($realPath !== false && strpos($realPath, $categoryPath) === 0) {
+                $virtualPath = str_replace($categoryPath, $category->pathPrefix, $realPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
             } else {
                 return null;
@@ -1492,8 +1493,9 @@ class TemplateConfiguration extends TemplateConfig
 
         // Path doesn't match the virtual path category format, so we try the determine if it belongs to a category.
         foreach ($categoryList as $category) {
+            $categoryPath = realpath($category->path). '/';
             // Get the realpath for the file. Test whether it is relative to the category, rootdir or absolute.
-            $realPath = realpath($category->path . '/' . $path);
+            $realPath = realpath($categoryPath . '/' . $path);
             if ($realPath === false) {
                 $realPath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
             }
@@ -1505,8 +1507,8 @@ class TemplateConfiguration extends TemplateConfig
             }
 
             // If the real path is within a category's path, we return the file info.
-            if (strpos($realPath, $category->path) === 0) {
-                $virtualPath = str_replace($category->path, $category->pathPrefix, $realPath);
+            if (strpos($realPath, $categoryPath) === 0) {
+                $virtualPath = str_replace($categoryPath, $category->pathPrefix, $realPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
             }
         }
