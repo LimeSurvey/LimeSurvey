@@ -1493,6 +1493,33 @@ class TemplateConfiguration extends TemplateConfig
 
         // Path doesn't match the virtual path category format, so we try the determine if it belongs to a category.
 
+        // Handle the case of absolute paths and paths relative to the root dir.
+        $result = $this->getThemeFileInfoFromAbsolutePath($path, $categoryList);
+        if ($result !== false) {
+            return $result;
+        }
+
+        // If we got here, the path was not absolute (nor relative to the root dir), so we check
+        // if it's relative to a category.
+        $result = $this->getThemeFileInfoFromRelativePath($path, $categoryList);
+        if ($result !== false) {
+            return $result;
+        }
+
+        // The path didn't belong to any category
+        return null;
+    }
+
+    /**
+     * Returns a path's ThemeFileInfo if it's an absolute path or relative to the root dir.
+     * The function returns false if the path is not found, and null if it's found but doesn't
+     * match a category.
+     * @param string $path
+     * @param LimeSurvey\Datavalueobjects\ThemeFileCategory[] $categoryList
+     * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null|false
+     */
+    private function getThemeFileInfoFromAbsolutePath($path, $categoryList)
+    {
         // Check if the path is relative to the root dir or an absolute path
         $absolutePath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
         if ($absolutePath === false && strpos($path, '/') === 0) {
@@ -1512,9 +1539,18 @@ class TemplateConfiguration extends TemplateConfig
             // The path didn't belong to any category
             return null;
         }
+        return false;
+    }
 
-        // If we got here, the path was not absolute (nor relative to the root dir), so we check
-        // if it's relative to a category.
+    /**
+     * Returns a path's ThemeFileInfo if it's relative to a category.
+     * The function returns false if the path is not relative to any category.
+     * @param string $path
+     * @param LimeSurvey\Datavalueobjects\ThemeFileCategory[] $categoryList
+     * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|false
+     */
+    private function getThemeFileInfoFromRelativePath($path, $categoryList)
+    {
         foreach ($categoryList as $category) {
             // Get real path for the category
             $categoryPath = realpath($category->path) . '/';
@@ -1537,9 +1573,7 @@ class TemplateConfiguration extends TemplateConfig
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
             }
         }
-
-        // The path didn't belong to any category
-        return null;
+        return false;
     }
 
     /**
