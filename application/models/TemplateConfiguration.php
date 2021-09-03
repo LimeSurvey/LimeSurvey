@@ -1492,21 +1492,46 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         // Path doesn't match the virtual path category format, so we try the determine if it belongs to a category.
+
+        // Check if the path is relative to the root dir or an absolute path
+        $absolutePath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
+        if ($absolutePath === false && strpos($path, '/') === 0) {
+            $absolutePath = realpath($path);
+        }
+        // If the path was absolute (or relative to the root dir), we check if it's within
+        // a category's bounds.
+        if (!empty($absolutePath)) {
+            foreach ($categoryList as $category) {
+                // Get real path for the category
+                $categoryPath = realpath($category->path) . '/';
+                if (strpos($absolutePath, $categoryPath) === 0) {
+                    $virtualPath = str_replace($categoryPath, $category->pathPrefix, $absolutePath);
+                    return new ThemeFileInfo($absolutePath, $virtualPath, $category);
+                }
+            }
+            // The path didn't belong to any category
+            return null;
+        }
+
+        // If we got here, the path was not absolute (nor relative to the root dir), so we check
+        // if it's relative to a category.
         foreach ($categoryList as $category) {
-            $categoryPath = realpath($category->path). '/';
-            // Get the realpath for the file. Test whether it is relative to the category, rootdir or absolute.
+            // Get real path for the category
+            $categoryPath = realpath($category->path) . '/';
+
+            // Get the realpath for the file. 
             $realPath = realpath($categoryPath . '/' . $path);
-            if ($realPath === false) {
-                $realPath = realpath(Yii::app()->getConfig('rootdir') . '/' . $path);
-            }
-            if ($realPath === false && strpos($path, '/') === 0) {
-                $realPath = realpath($path);
-            }
+
+            // If the path is not found try with next category
             if ($realPath === false) {
                 continue;
             }
 
-            // If the real path is within a category's path, we return the file info.
+            // Ok, now we know the path exists and is relative to the category, but
+            // it could be traversing out.
+            // Now let's check if it's within this category's bounds.
+
+            // If the real path starts with category's path, we return the file info.
             if (strpos($realPath, $categoryPath) === 0) {
                 $virtualPath = str_replace($categoryPath, $category->pathPrefix, $realPath);
                 return new ThemeFileInfo($realPath, $virtualPath, $category);
