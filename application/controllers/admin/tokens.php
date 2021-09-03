@@ -686,14 +686,14 @@ class tokens extends Survey_Common_Action
             if (trim($request->getPost('sent')) === 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $_POST['completed'] = 'Y';
+                 $_POST['sent'] = 'Y';
             }
 
             // remindersent
             if (trim($request->getPost('remindersent')) === 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $_POST['completed'] = 'Y';
+                $_POST['remindersent'] = 'Y';
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
