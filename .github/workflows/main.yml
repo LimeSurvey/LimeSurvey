@@ -6,8 +6,9 @@ on:
     branches:
       - '*'
       - '**'
-      - 'bug/**'
       - 'dev/**'
+      - 'bug/**'
+      - 'feature/**'
       - 'zoho/**'
 
 jobs:
