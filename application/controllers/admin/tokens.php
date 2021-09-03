@@ -2559,7 +2559,8 @@ class tokens extends Survey_Common_Action
                 foreach ($tokenencryptionoptionsArray as $tokenencryptionoption) {
                     // if the encryption status is unknown
                     if ($tokenencryptionoption === 'unknown') {
-                        $tokenencryptionoptions = json_encode($tokenencryptionoptionsOld);
+                        // for later use in refactoring
+                        // $tokenencryptionoptions = json_encode($tokenencryptionoptionsOld);
                         $tokenencryptionoptionsArray = $tokenencryptionoptionsOld;
                     }
                 }
