@@ -1591,18 +1591,28 @@ class TemplateConfiguration extends TemplateConfig
                 if (empty($value) || $value == 'inherit') {
                     continue;
                 }
-                // Alternative A - If option value is a path that matches a virtual path, transform the value to the virtual path
+                // Validation A - If option value is a path that matches a virtual path, transform the value to the virtual path
                 $virtualPath = $this->getVirtualThemeFilePath($value);
                 if (!empty($virtualPath)) {
                     $value = $virtualPath;
                     continue;
                 }
-                // Alternative B - If any of the following:
+                // Validation B - If any of the following:
                 // - option value matches a virtual path format or
                 // - option value matches a real existing path to a file either relative to the root LS installation or to the current workgin dir or absolute
                 // Mark the value as invalid, as that's not allowed
                 if ($this->isVirtualPath($value) || realpath($value) !== false || realpath(Yii::app()->getConfig('rootdir') . '/' . $value) !== false) {
                     $value = 'invalid:' . $value;
+                    continue;
+                }
+                // Validation C - If the value contains one of the 'forbidden' substrings, we asume it's a path and, since it wasn't
+                // caught by validation A, we mark it as invalid.
+                $forbiddenStrings = ['themes/surveys', 'themes\surveys'];
+                foreach ($forbiddenStrings as $forbiddenString) {
+                    if (stripos($value, $forbiddenString, 0) !== false) {
+                        $value = 'invalid:' . $value;
+                        continue 2;
+                    }
                 }
             }
             $this->$attribute = json_encode($decodedOptions);
