@@ -389,6 +389,20 @@ class QuestionAdministrationController extends LSBaseController
             }
         }
 
+        // Check the POST data is not truncated
+        if (!$request->getPost('bFullPOST')) {
+            $message = gT("The data received seems incomplete. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+
+            if ($calledWithAjax) {
+                echo json_encode(['message' => $message]);
+                Yii::app()->end();
+            } else {
+                $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                Yii::app()->setFlashMessage($message, 'error');
+                $this->redirect($sRedirectUrl);
+            }
+        }
+
         // Rollback at failure.
         $transaction = Yii::app()->db->beginTransaction();
         try {
