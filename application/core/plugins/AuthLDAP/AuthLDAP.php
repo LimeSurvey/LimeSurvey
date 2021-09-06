@@ -335,7 +335,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         $ldapconn = ldap_connect($ldapserver . ':' . (int) $ldapport);
         if (false == $ldapconn) {
-            return array("errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection'));
+            // LDAP connect does not connect, but just checks the URI
+            // A real connection is only created on the first following ldap_* command
+            return array("errorCode" => 2, "errorMessage" => gT('LDAP URI could not be parsed.'));
         }
 
         // using LDAP version
@@ -344,13 +346,16 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $ldapver = 2;
         }
 
-        ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
+        $connectionSuccessful = ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, $ldapver);
+        if (!$connectionSuccessful) {
+            return array("errorCode" => 1, "errorMessage" => gT('Error creating LDAP connection'));
+        }
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
         if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0) {
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
-                ldap_unbind($ldapconn); // all done? close connection
+                ldap_unbind($ldapconn); // Could not properly connect, unbind everything.
                 return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
             }
         }
