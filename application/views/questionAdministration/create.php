@@ -153,6 +153,8 @@
                     </div>
                 </div>
             </div>
+            <?php // Hidden field 'bFullPOST' is used to confirm the POST data is complete (it could be truncated if max_input_vars is exceeded) ?>
+            <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
         </form>
     </div>
 

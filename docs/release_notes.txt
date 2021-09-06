@@ -34,6 +34,20 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.5 (build 210830) to 5.1.6 (build 210906) September 6, 2021
+-Fixed issue #17573: No confirmation email is sent if email is encrypted (Carsten Schmitz)
+-Fixed issue #17563: When editing 'reminder sent' and set to yes, 'Completed' is automatically set to yes (Carsten Schmitz)
+-Fixed issue #17522: SQL error when exporting responses (Olle Haerstedt)
+-Fixed issue #17481: Error adding a large number of answer options (#2026) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.1.4 (build 210824) to 5.1.5 (build 210830) August 30, 2021
 -Fixed issue #17538: Incorrect attribute applied to custom question theme style tag (Carsten Schmitz)
 -Fixed issue #17535: Login with LDAP not working (Patrick Teichmann)

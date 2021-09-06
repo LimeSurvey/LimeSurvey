@@ -113,8 +113,9 @@ jobs:
 
       - name: Set up Selenium with firefox
         run: |
-          which firefox
-          firefox -v
+          echo `which firefox`
+          echo `firefox -v`
+          echo `geckodriver --version`
 
           # Setup Selenium with Firefox headless mode, Gecko driver already installed
           wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
