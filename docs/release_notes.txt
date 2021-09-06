@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.14 (build 210831) to 3.27.15 (build 210907) September 6, 2021
+-Fixed issue #17541: PDF export via plugin not possible (#2025) (pop1989_bb)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.27.13 (build 210823) to 3.27.14 (build 210831) August 30, 2021
 -Fixed issue [security]: Add missing url_encode filter to URL in Twig template (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
 #Updated translation: Polish by elissa
