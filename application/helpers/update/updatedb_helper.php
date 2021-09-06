@@ -3161,6 +3161,60 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
+            /**
+             * Regenerate codes for problematic label sets
+             * Helper function (TODO: Put in separate class)
+             * Fails silently
+             *
+             * @param int $lid Label set id
+             * @return void
+             */
+            $regenerateCodes = function (int $lid) {
+                $oDB = Yii::app()->getDb();
+
+                $labelSet = $oDB->createCommand(
+                    sprintf("SELECT * FROM {{labelsets}} WHERE lid = %d", (int) $lid)
+                )->queryRow();
+                if (empty($labelSet)) {
+                    return;
+                }
+
+                foreach (explode(',', $labelSet['languages']) as $lang) {
+                    $labels = $oDB->createCommand(
+                        sprintf(
+                            "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
+                            (int) $lid,
+                            $oDB->quoteValue($lang)
+                        )
+                    )->queryAll();
+                    if (empty($labels)) {
+                        continue;
+                    }
+                    foreach ($labels as $key => $label) {
+                        $oDB->createCommand(
+                            sprintf(
+                                "UPDATE {{labels}} SET code = %s WHERE id = %d",
+                                // Use simply nr as label code
+                                $oDB->quoteValue((string) $key + 1),
+                                $label['id']
+                            )
+                        )->execute();
+                    }
+                }
+            };
+
+            // Apply integrity fix before starting label set update.
+            // List of label set ids which contain code duplicates.
+            $lids = $oDB->createCommand(
+                "SELECT lime_labels.lid AS lid
+                FROM lime_labels
+                GROUP BY lime_labels.lid, lime_labels.language
+                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+            )->queryAll();
+            foreach ($lids as $lid) {
+                $regenerateCodes($lid['lid']);
+            }
+
             // Labels table
             if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{label_l10ns}}');

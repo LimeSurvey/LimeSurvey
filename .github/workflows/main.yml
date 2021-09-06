@@ -5,7 +5,10 @@ on:
   push:
     branches:
       - '*'
+      - '**'
       - 'bug/**'
+      - 'dev/**'
+      - 'zoho/**'
 
 jobs:
   CI-pipeline:
