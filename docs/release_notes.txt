@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.15 (build 210907) to 3.27.16 (build 210909) September 7, 2021
+-Fixed issue: Remove debug code from theme file
+-Fixed issue #17535: Error when logging in with LDAP (Carsten Schmitz)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Ilocano by c_schmitz
+#Updated translation: Hiligaynon by c_schmitz
+#Updated translation: Cebuano by c_schmitz
+
+
 Changes from 3.27.14 (build 210831) to 3.27.15 (build 210907) September 6, 2021
 -Fixed issue #17541: PDF export via plugin not possible (#2025) (pop1989_bb)
 #Updated translation: Xhosa by erik.lamontagne
