@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-09-06 08:53:16+00:00\n"
+"POT-Creation-Date: 2021-09-07 10:08:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11581,85 +11581,89 @@ msgid "Catalan"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:180
-msgid "Chichewa"
+msgid "Cebuano"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:187
+msgid "Chichewa"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:194
 msgid "Chinese (Simplified)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:195
+#: application/helpers/surveytranslator_helper.php:202
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:203
+#: application/helpers/surveytranslator_helper.php:210
 msgid "Chinese (Traditional - Taiwan)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:211
+#: application/helpers/surveytranslator_helper.php:218
 msgid "Croatian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:219
+#: application/helpers/surveytranslator_helper.php:226
 msgid "Czech"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:227
+#: application/helpers/surveytranslator_helper.php:234
 msgid "Czech (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:236
+#: application/helpers/surveytranslator_helper.php:243
 msgid "Danish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:244
+#: application/helpers/surveytranslator_helper.php:251
 msgid "Dari"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:253
+#: application/helpers/surveytranslator_helper.php:260
 msgid "Dutch"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:261
+#: application/helpers/surveytranslator_helper.php:268
 msgid "Dutch (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:270
+#: application/helpers/surveytranslator_helper.php:277
 #: application/models/TemplateManifest.php:224
 #: application/models/TemplateManifest.php:349
 #: application/models/TemplateManifest.php:388
 msgid "English"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:278
+#: application/helpers/surveytranslator_helper.php:285
 msgid "Estonian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:286
+#: application/helpers/surveytranslator_helper.php:293
 msgid "Filipino"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:294
+#: application/helpers/surveytranslator_helper.php:301
 msgid "Finnish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:302
+#: application/helpers/surveytranslator_helper.php:309
 msgid "French"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:310
+#: application/helpers/surveytranslator_helper.php:317
 msgid "Fula"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:319
+#: application/helpers/surveytranslator_helper.php:326
 msgid "Galician"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:327
+#: application/helpers/surveytranslator_helper.php:334
 msgid "Georgian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:335
+#: application/helpers/surveytranslator_helper.php:342
 #: application/models/TemplateManifest.php:225
 #: application/models/TemplateManifest.php:350
 #: application/models/TemplateManifest.php:389
@@ -11667,315 +11671,323 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:343
+#: application/helpers/surveytranslator_helper.php:350
 msgid "German (easy)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:352
+#: application/helpers/surveytranslator_helper.php:359
 msgid "German (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:361
+#: application/helpers/surveytranslator_helper.php:368
 msgid "Gujarati"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:369
+#: application/helpers/surveytranslator_helper.php:376
 msgid "Greek"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:377
+#: application/helpers/surveytranslator_helper.php:384
 msgid "Greenlandic"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:385
+#: application/helpers/surveytranslator_helper.php:392
 msgid "Hebrew"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:393
+#: application/helpers/surveytranslator_helper.php:400
 msgid "Hindi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:401
+#: application/helpers/surveytranslator_helper.php:408
+msgid "Hiligaynon"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:415
 msgid "Hungarian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:409
+#: application/helpers/surveytranslator_helper.php:423
 msgid "Icelandic"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:417
+#: application/helpers/surveytranslator_helper.php:431
 msgid "Indonesian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:425
+#: application/helpers/surveytranslator_helper.php:439
 msgid "Irish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:434
+#: application/helpers/surveytranslator_helper.php:448
+msgid "Ilocano"
+msgstr ""
+
+#: application/helpers/surveytranslator_helper.php:455
 msgid "Italian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:442
+#: application/helpers/surveytranslator_helper.php:463
 msgid "Italian (informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:451
+#: application/helpers/surveytranslator_helper.php:472
 msgid "Japanese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:459
+#: application/helpers/surveytranslator_helper.php:480
 msgid "Kazakh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:467
+#: application/helpers/surveytranslator_helper.php:488
 msgid "Kannada"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:475
+#: application/helpers/surveytranslator_helper.php:496
 msgid "Kinyarwanda"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:483
+#: application/helpers/surveytranslator_helper.php:504
 msgid "Korean"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:491
+#: application/helpers/surveytranslator_helper.php:512
 msgid "Kirundi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:499
+#: application/helpers/surveytranslator_helper.php:520
 msgid "Kurdish (Sorani)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:508
+#: application/helpers/surveytranslator_helper.php:529
 msgid "Kurdish (Kurmanji)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:517
+#: application/helpers/surveytranslator_helper.php:538
 msgid "Kyrgyz"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:525
+#: application/helpers/surveytranslator_helper.php:546
 msgid "Latvian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:533
+#: application/helpers/surveytranslator_helper.php:554
 msgid "Lithuanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:541
+#: application/helpers/surveytranslator_helper.php:562
 msgid "Luxembourgish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:549
+#: application/helpers/surveytranslator_helper.php:570
 msgid "Macedonian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:557
+#: application/helpers/surveytranslator_helper.php:578
 msgid "Malay"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:565
+#: application/helpers/surveytranslator_helper.php:586
 msgid "Malayalam"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:573
+#: application/helpers/surveytranslator_helper.php:594
 msgid "Maltese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:581
+#: application/helpers/surveytranslator_helper.php:602
 msgid "Marathi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:589
+#: application/helpers/surveytranslator_helper.php:610
 msgid "Mongolian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:597
+#: application/helpers/surveytranslator_helper.php:618
 msgid "Montenegrin"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:606
+#: application/helpers/surveytranslator_helper.php:627
 msgid "Myanmar (Burmese)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:614
+#: application/helpers/surveytranslator_helper.php:635
 msgid "Norwegian (Bokmal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:622
+#: application/helpers/surveytranslator_helper.php:643
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:630
+#: application/helpers/surveytranslator_helper.php:651
 msgid "Occitan"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:638
+#: application/helpers/surveytranslator_helper.php:659
 msgid "Pashto"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:646
+#: application/helpers/surveytranslator_helper.php:667
 msgid "Persian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:654
+#: application/helpers/surveytranslator_helper.php:675
 msgid "Papiamento (Curaçao & Bonaire)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:663
+#: application/helpers/surveytranslator_helper.php:684
 msgid "Polish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:671
+#: application/helpers/surveytranslator_helper.php:692
 msgid "Polish (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:680
+#: application/helpers/surveytranslator_helper.php:701
 msgid "Portuguese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:688
+#: application/helpers/surveytranslator_helper.php:709
 msgid "Portuguese (Brazilian)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:696
+#: application/helpers/surveytranslator_helper.php:717
 msgid "Punjabi"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:704
+#: application/helpers/surveytranslator_helper.php:725
 msgid "Romanian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:713
+#: application/helpers/surveytranslator_helper.php:734
 msgid "Romansh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:722
+#: application/helpers/surveytranslator_helper.php:743
 msgid "Russian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:730
+#: application/helpers/surveytranslator_helper.php:751
 msgid "Sami"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:738
+#: application/helpers/surveytranslator_helper.php:759
 msgid "Serbian (Cyrillic)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:746
+#: application/helpers/surveytranslator_helper.php:767
 msgid "Serbian (Latin)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:754
+#: application/helpers/surveytranslator_helper.php:775
 msgid "Sinhala"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:762
+#: application/helpers/surveytranslator_helper.php:783
 msgid "Slovak"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:770
+#: application/helpers/surveytranslator_helper.php:791
 msgid "Slovenian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:778
+#: application/helpers/surveytranslator_helper.php:799
 msgid "Somali"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:786
+#: application/helpers/surveytranslator_helper.php:807
 msgid "Spanish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:794
+#: application/helpers/surveytranslator_helper.php:815
 msgid "Spanish (Argentina)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:802
+#: application/helpers/surveytranslator_helper.php:823
 msgid "Spanish (Argentina) (Informal)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:811
+#: application/helpers/surveytranslator_helper.php:832
 msgid "Spanish (Chile)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:819
+#: application/helpers/surveytranslator_helper.php:840
 msgid "Spanish (Colombia)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:827
+#: application/helpers/surveytranslator_helper.php:848
 msgid "Spanish (Mexico)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:835
+#: application/helpers/surveytranslator_helper.php:856
 msgid "Swahili"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:844
+#: application/helpers/surveytranslator_helper.php:865
 msgid "Swedish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:852
+#: application/helpers/surveytranslator_helper.php:873
 msgid "Tagalog"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:860
+#: application/helpers/surveytranslator_helper.php:881
 msgid "Tajik"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:868
+#: application/helpers/surveytranslator_helper.php:889
 msgid "Tamil"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:876
+#: application/helpers/surveytranslator_helper.php:897
 msgid "Telugu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:884
+#: application/helpers/surveytranslator_helper.php:905
 msgid "Thai"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:892
+#: application/helpers/surveytranslator_helper.php:913
 msgid "Tigrinya"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:900
+#: application/helpers/surveytranslator_helper.php:921
 msgid "Turkish"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:908
+#: application/helpers/surveytranslator_helper.php:929
 msgid "Ukrainian"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:916
+#: application/helpers/surveytranslator_helper.php:937
 msgid "Urdu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:924
+#: application/helpers/surveytranslator_helper.php:945
 msgid "Uyghur"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:932
+#: application/helpers/surveytranslator_helper.php:953
 msgid "Vietnamese"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:940
+#: application/helpers/surveytranslator_helper.php:961
 msgid "Welsh"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:948
+#: application/helpers/surveytranslator_helper.php:969
 msgid "Yakut"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:957
+#: application/helpers/surveytranslator_helper.php:978
 msgid "Zulu"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:985
+#: application/helpers/surveytranslator_helper.php:1006
 msgid "Dot (.)"
 msgstr ""
 
-#: application/helpers/surveytranslator_helper.php:986
+#: application/helpers/surveytranslator_helper.php:1007
 msgid "Comma (,)"
 msgstr ""
 
