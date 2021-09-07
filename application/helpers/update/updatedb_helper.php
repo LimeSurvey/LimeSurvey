@@ -4906,7 +4906,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $lids = $oDB->createCommand(
                 "SELECT lime_labels.lid AS lid
                 FROM lime_labels
-                GROUP BY lime_labels.lid, lime_labels.language
+                GROUP BY lime_labels.lid
                 HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
             )->queryAll();
             foreach ($lids as $lid) {
