@@ -34,6 +34,9 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.7 (build 210908) to 5.1.8 (build 210910) September 7, 2021
+Fixed issue #17576: Fixed wrong string in condition for update 450
+
 Changes from 5.1.6 (build 210906) to 5.1.7 (build 210908) September 7, 2021
 -Fixed issue #17568: Fixed "Invalid argument supplied for foreach" during update
 #Updated translation: Portuguese (Portugal) by samarta
