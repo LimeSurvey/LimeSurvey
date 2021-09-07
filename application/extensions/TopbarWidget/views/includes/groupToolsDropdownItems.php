@@ -30,7 +30,7 @@
                     data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("questionGroupsAdministration/delete/", ["asJson" => true, "surveyid" => $surveyid, "gid"=>$gid])); ?> })'
                     data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
                 >
-                    <span class="fa fa-trash"></span>
+                    <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
             </li>
@@ -38,7 +38,7 @@
             <?php // there is at least one question having a condition on its content ?>
             <li class="disabled">
                 <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
-                    <span class="fa fa-trash"></span>
+                    <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete group"); ?>
                 </a>
             </li>
@@ -47,7 +47,7 @@
         <!-- Activated -->
         <li class="disabled">
             <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add or delete a group on an active survey."); ?>" >
-                <span class="fa fa-trash"></span>
+                <span class="fa fa-trash text-danger"></span>
                 <?php eT("Delete"); ?>
             </a>
         </li>
