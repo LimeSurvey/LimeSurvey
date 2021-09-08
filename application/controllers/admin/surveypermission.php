@@ -125,8 +125,8 @@ class surveypermission extends Survey_Common_Action
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'delete')) {
                     $deleteUrl = App()->createUrl("admin/surveypermission/sa/delete/surveyid/".$iSurveyID, array(
                         'action' => 'delsurveysecurity',
-                        'user' => $PermissionRow['users_name'],
-                        'uid' => $PermissionRow['uid']
+                        'uid' => $PermissionRow['uid'],
+                        'user' => $PermissionRow['users_name']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
                     $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
