@@ -1379,9 +1379,6 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $QueryResult = Question::model()->findAllByAttributes(['parent_qid' => $qid, 'scale_id' => 0]);
     }
     foreach ($QueryResult as $Row) {
-        if ($use_answers) {
-            $aid = $Row->sortorder;
-        }
         $subQuestion = $dom->createElement("subQuestion");
         if ($use_answers) {
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
@@ -1397,6 +1394,9 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
+        } if ($use_answers == true) {
+            //ranking quesions
+            quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
         }
@@ -1405,6 +1405,40 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
 
     return;
 }
+
+/**
+ * Set defaultValue attribute of provided element from response table
+ *
+ * @param mixed $element DOM element to add attribute to
+ * @param int $iResponseID The response id
+ * @param int $qid The qid of the question
+ * @param int $iSurveyID The survey id
+ * @param array $fieldmap A mapping of fields to qid
+ * @param string $acode The answer code to search for
+ */
+function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
+{
+	if ($iResponseID) {
+        //here is the response
+        $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
+        $oResponse->decrypt();
+
+        $search = "qid";
+        //find the rank order of this current answer (if ranked at all over all subquestions)
+        $rank = 1;
+        foreach ($fieldmap as $key => $detail) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
+                $colname = $key;
+                $value = $oResponse->$colname; //response to this
+                if ($value == $acode) {
+                    $element->setAttribute("defaultValue", $rank);
+                }
+                $rank++;
+            }
+        }
+    }
+}
+
 
 /**
  * Set defaultValue attribute of provided element from response table
@@ -1832,21 +1866,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
-
-                        $sqllength = "CHAR_LENGTH";
-                        $platform = Yii::app()->db->getDriverName();
-                        if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
-                            $sqllength = "LEN";
-                        }
-
-                        $QROW = App()->db->createCommand()
-                            ->select('MAX(' . $sqllength . '(code)) as sc')
-                            ->from('{{answers}} a')
-                            ->join('{{answer_l10ns}} al', 'a.aid=al.aid')
-                            ->where('a.qid=:qid AND al.language=:language', [':qid' => $qid, ':language' => $quexmllang])
-                            ->queryRow();
-
-                        $response->appendChild(QueXMLCreateFree("integer", $QROW['sc'], ""));
+                        //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
+                        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid]);
+                        $response->appendChild(QueXMLCreateFree("integer", strlen(count($QueryResult)), ""));
                         $question->appendChild($response);
                         break;
                     case "M": //Multiple choice checkbox
