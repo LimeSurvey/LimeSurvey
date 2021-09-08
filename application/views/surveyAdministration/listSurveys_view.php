@@ -45,7 +45,7 @@ echo viewHelper::getViewTestTag('listSurveys');
                                     array('class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto')
                                 )
                             ),
-                        'htmlOptions'      => ['class' => 'table-responsive'],
+                        'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                         'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl("admin/surveysgroups/sa/update/id") . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
 
                     ));

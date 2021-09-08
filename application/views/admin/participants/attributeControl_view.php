@@ -25,7 +25,7 @@ echo viewHelper::getViewTestTag('participantsAttributeControl');
                         'filter'                   => $model,
                         'emptyText'                => gT('No attributes found.'),
                         'rowHtmlOptionsExpression' => '["data-attribute_id" => $data->attribute_id]',
-                        'htmlOptions'              => ['class' => 'table-responsive'],
+                        'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                         'afterAjaxUpdate'          => 'LS.CPDB.bindButtons',
                         'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(

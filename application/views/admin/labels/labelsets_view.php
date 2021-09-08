@@ -20,10 +20,13 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                     'dataProvider' => $model->search(),
 
                     // Number of row per page selection
-                    'id' => 'labelsets-grid',
-                    'emptyText' => gT('No label sets found.'),
-                    'template' => "{items}\n<div id='labelsetsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                    'summaryText' => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                    'id'               => 'labelsets-grid',
+                    'emptyText'        => gT('No label sets found.'),
+                    'template'         => "{items}\n<div id='labelsetsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'htmlOptions'      => ['class' => 'table-responsive grid-view-ls'],
+                    'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/labels/sa/view/lid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                    'ajaxUpdate'       => 'labelsets-grid',
+                    'summaryText'      => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -63,9 +66,6 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
                     ),
 
-                    'htmlOptions'      => ['class' => 'table-responsive'],
-                    'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/labels/sa/view/lid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                    'ajaxUpdate'       => 'labelsets-grid',
                    ));
             ?>
         </div>
