@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.8 (build 210910) to 5.1.9 (build 210912) September 8, 2021
+-Fixed issue: Answer text missing in ranking question when printing response (Carsten Schmitz)
+-Fixed issue: Remove url_encode for end URL (Olle Haerstedt)
+#Updated translation: German by c_schmitz, DanielZ
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by jmontane, qualitatuvic
+
+
 Changes from 5.1.7 (build 210908) to 5.1.8 (build 210910) September 7, 2021
 Fixed issue #17576: Fixed wrong string in condition for update 450
 
