@@ -16,6 +16,37 @@ if (!defined('BASEPATH')) {
 *
 */
 
+ /**
+ *
+ * @param string $sql
+ * @param array|bool $inputarr
+ * @param boolean $silent
+ * @return bool|CDbDataReader
+ * @throws Exception
+ * @deprecated Do not use anymore. If you see this replace it with a proper ActiveRecord Model query
+ */
+function dbExecuteAssoc($sql, $inputarr = false, $silent = true)
+{
+    $error = '';
+    try {
+        if ($inputarr) {
+            $dataset = Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query(); //Checked
+        } else {
+            $dataset = Yii::app()->db->createCommand($sql)->query();
+
+        }
+    } catch (CDbException $e) {
+        $error = $e->getMessage();
+        $dataset = false;
+    }
+
+    if (!$dataset && (Yii::app()->getConfig('debug') > 0 || !$silent)) {
+        // Exception is better than safeDie, because you can see the backtrace.
+        throw new \Exception('Error executing query in dbExecuteAssoc:'.$error);
+    }
+    return $dataset;
+}
+
 /**
  * Return the database-specific random function to use in ORDER BY sql statements
  *

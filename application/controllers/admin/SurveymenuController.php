@@ -372,7 +372,7 @@ class SurveymenuController extends Survey_Common_Action
         $aData = array();
         $aData['model'] = Surveymenu::model();
         
-        // Survey Menue Entries Data
+        // Survey Menu Entries Data
         $filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
         $aData['entries_model'] = SurveymenuEntries::model();
         $aData['entries_model']->setAttributes($filterAndSearch);
@@ -389,6 +389,7 @@ class SurveymenuController extends Survey_Common_Action
         $aData['fullpagebar'] = [
             'menus' => [
                 'buttons' => [
+                    'addMenu' => true,
                     'addMenuEntry' => true,
                     'reset' => Permission::model()->hasGlobalPermission('superadmin', 'read'),
                     'reorder' => true,

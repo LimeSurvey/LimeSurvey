@@ -473,7 +473,7 @@ class remotecontrol_handle
 
             $surveyActivator = new SurveyActivator($oSurvey);
 
-            
+
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
                 $aActivateResults = $surveyActivator->activate();
 
@@ -1287,7 +1287,7 @@ class remotecontrol_handle
                 // Remove fields that may not be modified
                 unset($aGroupData['sid']);
                 unset($aGroupData['gid']);
-                
+
                 // Backwards compatibility for L10n data
                 if (!empty($aGroupData['language'])) {
                     $language = $aGroupData['language'];
@@ -1652,7 +1652,7 @@ class remotecontrol_handle
                                 array(':parent_qid' => $iQuestionID, ':language' => $sLanguage),
                                 array('order' => 'title')
                             );
-                
+
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
@@ -2067,7 +2067,7 @@ class remotecontrol_handle
                 if (empty($aTokenData)) {
                     return array('status' => 'No valid Data');
                 }
-                
+
                 $oToken->setAttributes($aTokenData, false);
                 if ($oToken->encryptSave(true)) {
                     return $oToken->attributes;
@@ -2873,7 +2873,7 @@ class remotecontrol_handle
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
             $survey_dynamic->encryptSave();
-            
+
             if ($survey_dynamic->id) {
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
@@ -2985,6 +2985,50 @@ class remotecontrol_handle
             }
         } else {
             return 'No permission';
+        }
+    }
+
+    /**
+     * Delete a response in a given survey using its Id
+     *
+     * RPC Routine to delete responses of particular id in a survey.
+     * Returns array
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID Id of the survey that participants belong
+     * @param int $iResponseID Id of the response to delete
+     * @return array Result of the change action
+     */
+     public function delete_response($sSessionKey, $iSurveyID, $iResponseID)
+     {
+    	  // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey)){
+    		    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    		    if (!isset($oSurvey)){
+    			      return array('status' => 'Error: Invalid survey ID');
+            }
+
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+                // get response id from response table using ID
+                $Response = Response::model($iSurveyID)->findByPk($iResponseID);
+                if ($Response){
+                    // delete the files and timings and row
+                    if ($Response->delete()){
+                        return array($iResponseID=>'deleted');
+                    }
+                    return array('status' => 'Response not deleted for unknow reason');
+                }
+                else{
+                    return array('status' => 'Response Id not found');
+                }
+            }
+            else{
+                return array('status' => 'No permission');
+            }
+        }
+    	  else{
+           return array('status' => 'Invalid Session Key');
         }
     }
 

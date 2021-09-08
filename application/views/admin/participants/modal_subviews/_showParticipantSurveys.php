@@ -19,11 +19,9 @@
     <?php
         $this->widget('bootstrap.widgets.TbGridView', array(
             'id' => 'list_participant_surveys',
-            'itemsCssClass' => 'table table-striped items',
             'dataProvider' => $surveymodel->search(),
             'columns' => $surveymodel->columns,
             'htmlOptions' => array('class'=> 'table-responsive'),
-            'itemsCssClass' => 'table table-responsive table-striped',
             'afterAjaxUpdate' => 'bindButtonsInsideSurveys',
             'ajaxType' => 'POST',
             'summaryText'   => gT('Displaying {count} survey(s).'),

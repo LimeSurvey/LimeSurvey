@@ -249,7 +249,7 @@ class InstallerController extends CController
             //run validation, if it fails, load the view again else proceed to next step.
             if ($oModel->validate()) {
                 //saving the form data to session
-                foreach (array('dblocation', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
+                foreach (array('dblocation', 'dbport', 'dbname', 'dbengine', 'dbtype', 'dbpwd', 'dbuser', 'dbprefix') as $sStatusKey) {
                     Yii::app()->session[$sStatusKey] = $oModel->$sStatusKey;
                 }
 
@@ -525,6 +525,10 @@ class InstallerController extends CController
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminemail', 'stg_value' => $model->adminEmail));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'siteadminbounce', 'stg_value' => $model->adminEmail));
                         $model->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'defaultlang', 'stg_value' => $model->surveylang));
+
+                        // Save survey global settings
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['admin' => $model->adminName], "gsid=0");
+                        $model->db->createCommand()->update('{{surveys_groupsettings}}', ['adminemail' => $model->adminEmail], "gsid=0");
 
                         // only continue if we're error free otherwise setup is broken.
                         Yii::app()->session['deletedirectories'] = true;
@@ -1023,6 +1027,7 @@ class InstallerController extends CController
         isset(Yii::app()->session['dbuser']) ? $model->dbuser = Yii::app()->session['dbuser'] : null;
         isset(Yii::app()->session['dbpwd']) ? $model->dbpwd = Yii::app()->session['dbpwd'] : null;
         isset(Yii::app()->session['dblocation']) ? $model->dblocation = Yii::app()->session['dblocation'] : null;
+        isset(Yii::app()->session['dbport']) ? $model->dbport = Yii::app()->session['dbport'] : null;
         isset(Yii::app()->session['dbprefix']) ? $model->dbprefix = Yii::app()->session['dbprefix'] : null;
         isset(Yii::app()->session['dbExists']) ? $model->dbExists = Yii::app()->session['databaseexist'] : null;
         return $model;
@@ -1039,6 +1044,7 @@ class InstallerController extends CController
         unset(Yii::app()->session['dbuser']);
         unset(Yii::app()->session['dbpwd']);
         unset(Yii::app()->session['dblocation']);
+        unset(Yii::app()->session['dbport']);
         unset(Yii::app()->session['dbprefix']);
         unset(Yii::app()->session['dbExists']);
     }

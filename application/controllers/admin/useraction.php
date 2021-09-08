@@ -711,6 +711,11 @@ class UserAction extends Survey_Common_Action
             }
         }
 
+        // Page size
+        if (App()->request->getParam('pageSize')) {
+            App()->user->setState('pageSize', (int) App()->request->getParam('pageSize'));
+        }
+
         // Get user lang
         unset($oUser);
         $oUser = User::model()->findByPk(Yii::app()->session['loginID']);

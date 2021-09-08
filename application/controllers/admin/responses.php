@@ -786,8 +786,13 @@ class responses extends Survey_Common_Action
             $aQuestionFiles = $oResponse->getFiles($iQID);
             if (isset($aQuestionFiles[$iIndex])) {
                 $aFile = $aQuestionFiles[$iIndex];
-                $sFileRealName = App()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
-                if (file_exists($sFileRealName)) {
+                // Real path check from here: https://stackoverflow.com/questions/4205141/preventing-directory-traversal-in-php-but-allowing-paths
+                $sDir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
+                $sFileRealName = $sDir . $aFile['filename'];
+                $sRealUserPath = realpath($sFileRealName);
+                if ($sRealUserPath === false || strpos($sRealUserPath, $sDir) !== 0) {
+                    throw new CHttpException(403, "Disable for security reasons.");
+                } else {
                     $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
                     if (is_null($mimeType)) {
                         $mimeType = "application/octet-stream";
@@ -989,7 +994,7 @@ class responses extends Survey_Common_Action
         //interview Time statistics
         $aData['model'] = SurveyTimingDynamic::model($iSurveyID);
 
-        $aData['pageSize'] = 10;
+        $aData['pageSize'] = App()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $aData['statistics'] = SurveyTimingDynamic::model($iSurveyID)->statistics();
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');

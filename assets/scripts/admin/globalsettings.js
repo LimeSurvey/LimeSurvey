@@ -19,7 +19,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         function(ev) {
             ev.preventDefault();
             var url = $('input[name="global-settings-storage-url"]').val();
-            LS.ajax({
+            LS.AjaxHelper.ajax({
                 url: url,
                 method: 'GET'
             });

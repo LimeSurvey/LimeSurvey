@@ -5,7 +5,7 @@
     <metadata>
         <name>numerical</name>
         <type>question_theme</type>
-        <title>Numerical Input</title>
+        <title>Numerical input</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -136,9 +136,7 @@
             <sortorder>102</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
-            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You
-                may use expressions - remember this part is static.
-            </help>
+            <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>
             <caption>CSS class(es)</caption>
             <i18n></i18n>
             <readonly></readonly>

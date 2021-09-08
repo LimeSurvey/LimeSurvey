@@ -36,4 +36,5 @@ function dummy_twig_translation_helper()
     gT("Predefined label sets..."); // From application/views/questionAdministration/subquestions.twig
     gT("Save as label set");  // From application/views/questionAdministration/answerOptions.twig
     gT("Short free text"); // From application/views/survey/questions/answer/shortfreetext/config.xml
+    gT("Set the size to the input or textarea, the input will be displayed with approximately this size in width."); // From application/views/survey/questions/answer/shortfreetext/config.xml
 }

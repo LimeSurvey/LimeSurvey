@@ -184,22 +184,23 @@ class SurveyTimingDynamic extends LSActiveRecord
      */
     public function getButtons()
     {
-        // View details
-        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
-        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '"><span class="fa fa-list-alt" ></span></a>';
-
+        $buttons = "<div class='icon-btn-row'>";
         // Edit
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
             $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="fa fa-pencil" ></span></a>';
+            $buttons .= '<a class="btn btn-sm btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="' . gT('Edit this response') . '"><span class="fa fa-pencil" ></span></a>';
         }
+        // View details
+        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
+        $buttons .= '<a class="btn btn-sm btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="' . gT('View response details') . '"><span class="fa fa-list-alt" ></span></a>';
+
 
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="' . gT('Delete this response') . '"><span class="text-danger fa fa-trash" ></span></a>';
+            $buttons .= '<a class="btn btn-sm btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="' . gT('Delete this response') . '"><span class="fa fa-trash text-danger" ></span></a>';
         }
-
+        $buttons .= '</div>';
         return $buttons;
     }
 

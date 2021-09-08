@@ -68,6 +68,8 @@ class SurveysGroupsController extends Survey_Common_Action
                     App()->createUrl("admin/surveysgroups/sa/update", array('id' => $model->gsid, '#' => 'settingsForThisGroup'))
                 );
             }
+        } else {
+            $model->name = SurveysGroups::getNewCode();
         }
 
         $aData = array(
@@ -88,7 +90,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 'form' => 'surveys-groups-form',
             ],
             'white_closebutton' => array(
-                'url' => 'surveyAdministration/listsurveys#surveygroups',
+                'url' => App()->createUrl('surveyAdministration/listsurveys', ['#' => 'surveygroups']),
             ),
         );
         /* User for dropdown */

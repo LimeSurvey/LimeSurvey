@@ -1748,12 +1748,14 @@ class LsDefaultDataSets
             $addRow('Authwebserver'),
             $addRow('ExportR', 1),
             $addRow('ExportSTATAxml', 1),
+            $addRow('ExportSPSSsav', 1),
             $addRow('oldUrlCompat'),
             $addRow('expressionQuestionHelp'),
             $addRow('expressionQuestionForAll'),
             $addRow('expressionFixedDbVar'),
             $addRow('customToken', 0, '1.0.1'),
             $addRow('mailSenderToFrom'),
+            $addRow('TwoFactorAdminLogin', 0, '1.2.5'),
         ];
     }
 

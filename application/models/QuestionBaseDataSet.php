@@ -27,12 +27,12 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @param int $iQuestionID
      * @param int $sQuestionType
      * @param string $sLanguage
-     * @param null   $question_template
+     * @param null   $questionThemeName
      *
      * @return array
      * @throws CException
      */
-    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $question_template = null)
+    public function getGeneralSettingsArray($iQuestionID = null, $sQuestionType = null, $sLanguage = null, $questionThemeName = null)
     {
         Yii::import('ext.GeneralOptionWidget.settings.*');
         if ($iQuestionID != null) {

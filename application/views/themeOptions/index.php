@@ -120,7 +120,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                                             data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
                                                             title="<?php eT('Delete'); ?>"
                                                             class="btn btn-danger selector--ConfirmModal">
-                                                                <span class="fa fa-trash "></span>
+                                                                <span class="fa fa-trash"></span>
                                                                 <?php eT('Delete'); ?>
                                                         </a>
                                                     <?php endif;?>
@@ -224,7 +224,16 @@ echo viewHelper::getViewTestTag('templateOptions');
             <div class="col-lg-12 list-surveys">
                 <?php echo '<h3>' . gT('Question themes:') . '</h3>'; ?>
                 <!-- Installed Question Themes -->
-                <?php $this->renderPartial('./surveythememenu', ['canImport' => $canImport, 'importErrorMessage' => $importErrorMessage, 'importModal' => 'importQuestionModal', 'importTemplate' => 'importQuestionTemplate', 'themeType' => 'question']); ?>
+                <?php $this->renderPartial(
+                        './surveythememenu',
+                        [
+                            'canImport' => $canImport,
+                            'importErrorMessage' => $importErrorMessage,
+                            'importModal' => 'importQuestionModal',
+                            'importTemplate' => 'importQuestionTemplate',
+                            'themeType' => 'question'
+                        ]
+                ); ?>
                 <?php $this->renderPartial('./installedthemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
                 <!-- Available Quesiton Themes-->
                 <?php $this->renderPartial('./availablethemelist', array('oQuestionTheme' => $oQuestionTheme, 'pageSize' => $pageSize)); ?>
@@ -236,6 +245,15 @@ echo viewHelper::getViewTestTag('templateOptions');
 <script>
     $('#themelist a').click(function (e) {
         e.preventDefault();
+        $(this).tab('show');
+
+        var target = $(e.target).attr("href");
+        if(target ==="#questionthemes"){
+            $("#uploadandinstall").attr('data-target', '#importQuestionModal');
+        }
+        if(target ==="#surveythemes"){
+            $("#uploadandinstall").attr('data-target', '#importSurveyModal');
+        }
         $(this).tab('show');
     });
 </script>

@@ -2,31 +2,44 @@
     // TODO: is this whole file still used? can't find a reference (p_teichmann)
     $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
-<div class="container-fluid ls-space padding left-35 right-35">
-	<div class="ls-flex-column">
-		<div class="col-12 h1"><?php eT('Menu entries')?></div>
-		<div class="ls-flex-row">
-			<div class="col-12 ls-flex-item">
-			<?php $this->widget('bootstrap.widgets.TbGridView', array(
-					'dataProvider' => $model->search(),
-					'id' => 'surveymenu-entries-shortlist-grid',
-					'columns' => $model->getShortListColumns(),
-					'emptyText'=>gT('No customizable entries found.'),
-					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-						CHtml::dropDownList(
-							'pageSize',
-							$pageSize,
-							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
-					'itemsCssClass' =>'table table-striped',
-					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
-					'ajaxUpdate' => 'surveymenu-entries-shortlist-grid'
-				));
-			?>
-			</div>
-		</div>
-	</div>
+<div class="ls-flex-column">
+    <div class="col-12 h1"><?php eT('Menu entries') ?></div>
+    <div class="ls-flex-row">
+        <div class="col-12 ls-flex-item">
+            <?php
+            $this->widget(
+                'bootstrap.widgets.TbGridView',
+                [
+                    'dataProvider' => $model->search(),
+                    'id'           => 'surveymenu-entries-shortlist-grid',
+                    'columns'      => $model->getShortListColumns(),
+                    'emptyText'    => gT('No customizable entries found.'),
+                    'htmlOptions'  => ['class' => 'table-responsive'],
+                    'template'     => "{items}\n<div id='surveymenuentriesshortlistListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                    'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'surveymenuentriesshortlistPageSize',
+                            $pageSize,
+                            Yii::app()->params['pageSizeOptions'],
+                            ['class' => 'changePageSize form-control', 'style' => 'display: inline; width: auto']
+                        )
+                    ),
+                    'ajaxUpdate' => 'surveymenu-entries-shortlist-grid'
+                ]
+            );
+            ?>
+        </div>
+    </div>
 </div>
+
+<!-- update rows with pagination -->
+<script type="text/javascript">
+    jQuery(function ($) {
+        $(document).on("change", '#surveymenuentriesshortlistPageSize', function () {
+            $.fn.yiiGridView.update('surveymenu-entries-shortlist-grid', {data: {pageSize: $(this).val()}});
+        });
+    });
+</script>
 
 

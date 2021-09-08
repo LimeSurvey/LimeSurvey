@@ -692,7 +692,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * @todo document me
+     * Displays survey theme action buttons
      *
      * @return string
      */

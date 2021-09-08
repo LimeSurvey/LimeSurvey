@@ -85,7 +85,7 @@
                 <!-- Delete survey -->
                 <li>
                     <a href="<?php echo App()->createUrl("surveyAdministration/delete/" , ['iSurveyID' => $sid]); ?>">
-                        <span class="fa fa-trash" ></span>
+                        <span class="fa fa-trash text-danger" ></span>
                         <?php eT("Delete survey"); ?>
                     </a>
                 </li>

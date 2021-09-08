@@ -33,6 +33,8 @@
 	"require": {
         "paragonie/sodium_compat": "^1.14",
 		"twig/twig": "1.44.2",
+		"phpseclib/bcmath_compat": "1.0.4",
+		"tiamo/spss": "^2.2",
         "yiiext/twig-renderer":"dev-master"
 	},
     "config": {
@@ -65,8 +67,9 @@
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
-            "./third_party/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/ArchivedTableSettings.php text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/libraries/PluginManager text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/controllers/SurveyAdministrationController.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/libraries/ExtensionInstaller/ text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/psalm"
         ]

@@ -1,23 +1,14 @@
 <?php
-/** @var string $closeBtnUrl */
-/** @var int $surveyId */
-/** @var Question $question */
+/** TODO: Can't find any implementation of this file #UNUSED
+ * @var string $closeBtnUrl
+ * @var int $surveyId
+ * @var Question $question
+ */
 ?>
 
-<style>
-/* TODO: Move to CSS */
-.topbarbutton {
-    margin-left: 1px;
-    margin-right: 1px;
-}
-.navbar ul {
-    padding-top: 4px;
-}
-</style>
-
-<div id="question-create-edit-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
+<div id="question-create-edit-topbar" class="container-fluid vue-general-topbar">
     <div class="topbarpanel">
-        <nav class="navbar navbar-default scoped-topbar-nav" style="border: none;">
+        <nav class="navbar navbar-default scoped-topbar-nav">
             <div class="ls-flex ls-flex-row ls-space padding top-5">
                 <ul class="col-sm-4 nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row grow-2 text-left">
                     <li>
@@ -81,9 +72,9 @@
 </div>
 
 <?php if ($question->qid !== 0): ?>
-<div id="question-summary-topbar" class="container-fluid vue-general-topbar" style="width: 100%; padding: 0px; margin: 0px;">
+<div id="question-summary-topbar" class="container-fluid vue-general-topbar">
     <div class="topbarpanel">
-        <nav class="navbar navbar-default scoped-topbar-nav" style="border: 0;">
+        <nav class="navbar navbar-default scoped-topbar-nav">
             <div id="itm-7192564" class="ls-flex ls-flex-row ls-space padding top-5">
                 <ul class="nav navbar-nav scoped-topbar-nav ls-flex-item ls-flex-row grow-2 text-left">
                     <li>

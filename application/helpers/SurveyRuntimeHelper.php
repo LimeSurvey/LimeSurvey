@@ -327,6 +327,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
                 $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
             }
+            /* String used in vanilla/views/subviews/header/progress_bar.twig : for autotranslation */
+            $this->aSurveyInfo['progress']['string'] = gT('You have completed %s%% of this survey');
         }
 
         /**
@@ -384,6 +386,8 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
         $this->aSurveyInfo['mandSoft'] = array_key_exists('mandSoft', $this->aMoveResult) ? $this->aMoveResult['mandSoft'] : false;
         $this->aSurveyInfo['mandNonSoft'] = array_key_exists('mandNonSoft', $this->aMoveResult) ? $this->aMoveResult['mandNonSoft'] : false;
+        $this->aSurveyInfo['mandViolation'] = $this->aStepInfo['mandViolation'] && $this->okToShowErrors;
+        $this->aSurveyInfo['showPopups'] = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
         $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups == 0;

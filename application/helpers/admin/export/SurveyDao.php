@@ -81,9 +81,9 @@ class SurveyDao
      * @param string $completionState all, complete or incomplete
      * @param array $aFields If empty all, otherwise only select the selected fields from the survey response table
      * @param string $sResponsesId
-     * @throws CException
+     * @return CDbCommand
      */
-    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter = '', $completionState = 'all', $aFields = array(), $sResponsesId = null)
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter = '', $completionState = 'all', $aFields = array(), $sResponsesId = null): CDbCommand
     {
         $oSurvey = Survey::model()->findByPk($survey->id);
 
@@ -107,7 +107,7 @@ class SurveyDao
             foreach ($aTokenFields as &$sField) {
                 $sField = "tokentable." . $sField;
             }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, array('tokentable.token')));
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, ['tokentable.token']));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
@@ -117,29 +117,29 @@ class SurveyDao
             foreach ($aTimingFields as &$sField) {
                 $sField = "survey_timings." . $sField;
             }
-            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, array('survey_timings.id')));
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, ['survey_timings.id']));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
         if (empty($sResponsesId)) {
-            $aParams = array(
+            $aParams = [
                 'min' => $iMinimum,
                 'max' => $iMaximum
-            );
+            ];
             $selection = $oSurvey->responsesTableName . '.id >= :min AND ' . $oSurvey->responsesTableName . '.id <= :max';
             $oRecordSet->where($selection, $aParams);
         } else {
             $aResponsesId = explode(',', $sResponsesId);
 
             foreach ($aResponsesId as $i => $iResponseId) {
-                $iResponseId = (int) $iResponseId;
+                $iResponseId = (int)$iResponseId;
                 $selection = $oSurvey->responsesTableName . '.id = :id' . $i;
 
 
                 if ($i === 0) {
-                    $oRecordSet->where($selection, array('id' . $i => $iResponseId));
+                    $oRecordSet->where($selection, ['id' . $i => $iResponseId]);
                 } else {
-                    $oRecordSet->orWhere($selection, array('id' . $i => $iResponseId));
+                    $oRecordSet->orWhere($selection, ['id' . $i => $iResponseId]);
                 }
             }
         }
@@ -165,6 +165,7 @@ class SurveyDao
                 break;
         }
         $oRecordSet->order = $oSurvey->responsesTableName . '.id ASC';
-        $survey->responses = $oRecordSet->select($aSelectFields)->query();
+        $oRecordSet->select($aSelectFields);
+        return $oRecordSet;
     }
 }

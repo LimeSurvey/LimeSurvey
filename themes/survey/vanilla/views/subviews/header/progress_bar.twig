@@ -16,21 +16,18 @@
     @see: http://getbootstrap.com/components/#progress
 
 #}
-
-{# do not show on "completed/thank you page" page #}
-{% if not aSurveyInfo.aCompleted %}
+{# do not show if : All in one or is not Y or on aCompleted #}
+{% if aSurveyInfo.showprogress == 'Y' and aSurveyInfo.format != 'A' and not aSurveyInfo.aCompleted %}
     <!-- Top container -->
     <div class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
         <div class="{{ aSurveyInfo.class.topcontent  }} container-fluid" {{ aSurveyInfo.attr.topcontent  }} >
-            {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
-                {{  registerPublicCssFile('lime-progress.css') }}
-                {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
-                <div class="{{ aSurveyInfo.class.progress  }}" {{ aSurveyInfo.attr.progress  }}>
-                    <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
+            {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
+            <div class="sr-only">{{ sprintf(gT('You have completed %s%% of this survey'),progressValue) }}</div>
+                <div class="{{ aSurveyInfo.class.progress  }}" {{ aSurveyInfo.attr.progress  }}  aria-hidden="true">
+                    <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} style="min-width: 2em; width: {{ progressValue }}%;">
                         {{ progressValue }}%
                     </div>
                 </div>
-            {% endif %}
-        </div> <!-- must hide it without javascript -->
+        </div>
     </div>
 {% endif %}

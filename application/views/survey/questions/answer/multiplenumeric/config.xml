@@ -5,7 +5,7 @@
     <metadata>
         <name>multiplenumeric</name>
         <type>question_theme</type>
-        <title>Multiple Numerical Input</title>
+        <title>Multiple numerical input</title>
         <creationDate>09/08/2018</creationDate>
         <author>Dominik Vitt</author>
         <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
@@ -677,7 +677,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Set the handle shape. &amp;#039;Custom&amp;#039; is defined in CSS using the Font Awesome font.</help>
+            <help>Set the handle shape. &#039;Custom&#039; is defined in CSS using the Font Awesome font.</help>
             <caption>Handle shape</caption>
             <i18n></i18n>
             <readonly></readonly>
@@ -957,7 +957,7 @@
                 </option>
             </options>
             <default>1</default>
-            <help>Is no answer (missing) allowed when either &amp;#039;Equals sum value&amp;#039; or &amp;#039;Minimum sum value&amp;#039; are set?</help>
+            <help>Is no answer (missing) allowed when either &#039;Equals sum value&#039; or &#039;Minimum sum value&#039; are set?</help>
             <caption>Value range allows missing</caption>
             <i18n></i18n>
             <readonly></readonly>

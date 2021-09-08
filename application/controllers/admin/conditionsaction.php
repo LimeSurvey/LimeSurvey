@@ -125,7 +125,7 @@ class conditionsaction extends Survey_Common_Action
         $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
 
         // Green Save and Close Button
-        $aData['showGreenSaveAndCloseButton'] = true;
+        $aData['showGreenSaveAndCloseButton'] = false;
         $aData['closeUrl'] = $returnUrl;
 
         // White Close Button

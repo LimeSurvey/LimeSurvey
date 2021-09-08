@@ -89,6 +89,9 @@ class Question extends LSActiveRecord
     /** Set defaut relevance **/
     public $relevance ='';
 
+    /** @var QuestionTheme cached question theme*/
+    private $relatedQuestionTheme;
+
     /**
      * @inheritdoc
      * @return Question
@@ -124,6 +127,9 @@ class Question extends LSActiveRecord
             'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid' => 'qid'), 'order' => App()->getDb()->quoteColumnName('subquestions.question_order') . ' ASC'),
             'conditions' => array(self::HAS_MANY, 'Condition', 'qid'),
             'answers' => array(self::HAS_MANY, 'Answer', 'qid', 'order' => App()->getDb()->quoteColumnName('answers.sortorder') . ' ASC'),
+            // This relation will fail for non saved questions, which is often the case
+            // when using question editor on create mode. Better use getQuestionTheme()
+            'question_theme' => [self::HAS_ONE, 'QuestionTheme', ['question_type' => 'type', 'name' => 'question_theme_name']],
         );
     }
 
@@ -214,6 +220,8 @@ class Question extends LSActiveRecord
                 'message' => sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
+            /* Don't save empty or 'core' question theme name */
+            $aRules[] = ['question_theme_name', 'questionThemeNameValidator'];
         } else {
             $aRules[] = array('title', 'compare', 'compareValue' => 'time', 'operator' => '!=',
                 'message' => gT("'time' is a reserved word and can not be used for a subquestion."),
@@ -644,30 +652,32 @@ class Question extends LSActiveRecord
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/' . $this->sid . '/gid/' . $this->gid . '/qid/' . $this->qid;
         $editurl     = Yii::app()->createUrl("questionAdministration/edit/questionId/$this->qid/tabOverviewEditor/editor");
-        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="' . gT("Question preview") . '"  aria-data-url="' . $previewUrl . '" aria-data-sid="' . $this->sid . '" aria-data-gid="' . $this->gid . '" aria-data-qid="' . $this->qid . '" aria-data-language="' . $this->survey->language . '" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
+
+        $buttons = "<div class='icon-btn-row'>";
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Edit question") . '" href="' . $editurl . '" role="button"><span class="fa fa-pencil" ></span></a>';
+            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Edit question") . '" href="' . $editurl . '" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
+        $buttons .= '<a class="btn btn-sm btn-default open-preview"  data-toggle="tooltip" title="' . gT("Question preview") . '"  aria-data-url="' . $previewUrl . '" aria-data-sid="' . $this->sid . '" aria-data-gid="' . $this->gid . '" aria-data-qid="' . $this->qid . '" aria-data-language="' . $this->survey->language . '" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
+
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Question summary") . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
+            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Question summary") . '" href="' . $url . '" role="button"><span class="fa fa-list-alt" ></span></a>';
         }
 
         $oSurvey = Survey::model()->findByPk($this->sid);
-        $gid_search = $this->gid;
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
+            $buttons .= '<a class="btn btn-sm btn-default"  data-toggle="tooltip" title="' . gT("Delete question") . '" href="#" role="button"'
                 . " onclick='$.bsconfirm(\"" . CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             . "\", {\"confirm_ok\": \"" . gT("Yes") . "\", \"confirm_cancel\": \"" . gT("No") . "\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("questionAdministration/delete/", ["qid" => $this->qid]))
                         . "});'>"
-                    . ' <i class="text-danger fa fa-trash"></i>
+                    . ' <i class="fa fa-trash text-danger"></i>
                 </a>';
         }
-
-        return $button;
+        $buttons .= "</div>";
+        return $buttons;
     }
 
     public function getOrderedAnswers($scale_id = null)
@@ -877,6 +887,13 @@ class Question extends LSActiveRecord
                 'selectableRows' => '100',
             ),
             array(
+                'header' => gT('Action'),
+                'name' => 'actions',
+                'type' => 'raw',
+                'value' => '$data->buttons',
+                'htmlOptions' => array('class' => ''),
+            ),
+            array(
                 'header' => gT('Question ID'),
                 'name' => 'question_id',
                 'value' => '$data->qid',
@@ -890,20 +907,20 @@ class Question extends LSActiveRecord
                 'header' => gT('Code'),
                 'name' => 'title',
                 'value' => '$data->title',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => ''),
             ),
             array(
                 'header' => gT('Question'),
                 'name' => 'question',
                 'value' => 'array_key_exists($data->survey->language, $data->questionl10ns) ? viewHelper::flatEllipsizeText($data->questionl10ns[$data->survey->language]->question,true,0) : ""',
-                'htmlOptions' => array('class' => 'col-md-5'),
+                'htmlOptions' => array('class' => ''),
             ),
             array(
                 'header' => gT('Question type'),
                 'name' => 'type',
                 'type' => 'raw',
                 'value' => '$data->typedesc',
-                'htmlOptions' => array('class' => 'col-md-1'),
+                'htmlOptions' => array('class' => ''),
             ),
 
             array(
@@ -927,16 +944,6 @@ class Question extends LSActiveRecord
                 'value' => '$data->otherIcon',
                 'htmlOptions' => array('class' => 'text-center'),
             ),
-
-
-            array(
-                'header' => '',
-                'name' => 'actions',
-                'type' => 'raw',
-                'value' => '$data->buttons',
-                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
-            ),
-
         );
     }
 
@@ -1532,5 +1539,34 @@ class Question extends LSActiveRecord
             }
         }
         return $results;
+    }
+
+    /**
+     * Validates the question theme name, making sure it's not empty or 'core'
+     */
+    public function questionThemeNameValidator()
+    {
+        // As long as there is a question theme name, and it's not 'core', it's ok.
+        if (!empty($this->question_theme_name) && $this->question_theme_name != 'core') {
+            return;
+        }
+
+        // If question_theme_name is empty or 'core', we fetch the value from the question_theme related to the question_type
+        $baseQuestionThemeName = QuestionTheme::model()->getBaseThemeNameForQuestionType($this->type);
+        if (!empty($baseQuestionThemeName)) {
+            $this->question_theme_name = $baseQuestionThemeName;
+        }
+    }
+
+    /**
+     * Returns the QuestionTheme related to this question.
+     * It's not implemented as a relation because relations only work on
+     * persisted models.
+     *
+     * @return QuestionTheme|null
+     */
+    public function getQuestionTheme()
+    {
+        return $this->getRelated("question_theme", $this->isNewRecord);
     }
 }

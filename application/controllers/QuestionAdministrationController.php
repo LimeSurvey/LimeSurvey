@@ -90,7 +90,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new Exception('Internal error: Found no survey with id ' . $surveyid);
         }
 
-        $oQuestion = $this->getQuestionObject(null, null, null);
+        $oQuestion = $this->getQuestionObject();
         $oQuestion->sid = $surveyid;
 
         $this->aData['showSaveAndNewGroupButton'] = true;
@@ -178,17 +178,6 @@ class QuestionAdministrationController extends LSBaseController
         App()->session['FileManagerContext'] = "edit:survey:{$question->sid}";
         initKcfinder();
 
-        $questionTemplate = SettingsUser::getUserSettingValue(
-            'preselectquestiontheme',
-            null,
-            null,
-            null,
-            App()->getConfig('preselectquestiontheme')
-        );
-        if ($question->qid !== 0) {
-            $questionTemplate = QuestionAttribute::getQuestionTemplateValue($question->qid);
-        }
-
         $this->aData['surveyid'] = $question->sid;
         $this->aData['sid'] = $question->sid;
         $this->aData['display']['menu_bars']['gid_action'] = 'viewquestion';
@@ -198,7 +187,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $question->sid . ")";
         $this->aData['aQuestionTypeList'] = QuestionTheme::findAllQuestionMetaDataForSelector();
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionTemplate);
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $question->question_theme_name);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
@@ -227,8 +216,9 @@ class QuestionAdministrationController extends LSBaseController
         // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
 
-        // Save Button
         $this->aData['showSaveButton'] = true;
+        $this->aData['showSaveAndCloseButton'] = true;
+        $this->aData['showCloseButton'] = true;
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
@@ -243,8 +233,7 @@ class QuestionAdministrationController extends LSBaseController
             $question->qid,
             $question->type,
             $question->gid,
-            // TODO: question_template
-            'core'
+            $question->question_theme_name
         );
 
         if (App()->session['questionselectormode'] !== 'default') {
@@ -256,7 +245,6 @@ class QuestionAdministrationController extends LSBaseController
         $viewData = [
             'oSurvey'                => $question->survey,
             'oQuestion'              => $question,
-            'questionTemplate'       => $questionTemplate,
             'aQuestionTypeGroups'    => $this->getQuestionTypeGroups($this->aData['aQuestionTypeList']),
             'advancedSettings'       => $advancedSettings,
             'generalSettings'        => $generalSettings,
@@ -308,9 +296,7 @@ class QuestionAdministrationController extends LSBaseController
         $aData['display']['menu_bars']['listquestions'] = true;
         $aData['sidemenu']['listquestions']             = true;
         $aData['sidemenu']['landOnSideMenuTab']         = $landOnSideMenuTab;
-        $aData['surveybar']['returnbutton']['url']      = $this->createUrl(
-            "/surveyAdministration/listsurveys"
-        );
+        $aData['surveybar']['returnbutton']['url']      = "/surveyAdministration/listsurveys";
 
         $aData["surveyHasGroup"]        = $oSurvey->groups;
         $aData['subaction']             = gT("Questions in this survey");
@@ -400,6 +386,20 @@ class QuestionAdministrationController extends LSBaseController
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
                 Yii::app()->user->setFlash('error', gT("Access denied"));
                 $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        }
+
+        // Check the POST data is not truncated
+        if (!$request->getPost('bFullPOST')) {
+            $message = gT("The data received seems incomplete. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
+
+            if ($calledWithAjax) {
+                echo json_encode(['message' => $message]);
+                Yii::app()->end();
+            } else {
+                $sRedirectUrl = $this->createUrl('questionAdministration/listQuestions', ['surveyid' => $iSurveyId]);
+                Yii::app()->setFlashMessage($message, 'error');
+                $this->redirect($sRedirectUrl);
             }
         }
 
@@ -566,7 +566,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param string $sQuestionType
      * @param int $gid
      * @param boolean $returnArray
-     * @param string $question_template
+     * @param string $questionThemeName
      *
      * @return void|array
      * @throws CException
@@ -576,9 +576,9 @@ class QuestionAdministrationController extends LSBaseController
         $sQuestionType = null,
         $gid = null,
         $returnArray = false,  //todo see were this ajaxrequest is done and take out the parameter there and here
-        $question_template = 'core'
+        $questionThemeName = null
     ) {
-        $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $question_template);
+        $aGeneralOptionsArray = $this->getGeneralOptions($iQuestionId, $sQuestionType, $gid, $questionThemeName);
 
         $this->renderJSON($aGeneralOptionsArray);
     }
@@ -591,7 +591,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param boolean $returnArray
-     * @param string $question_template
+     * @param string $questionThemeName
      *
      * @return void|array
      * @throws CException
@@ -601,11 +601,12 @@ class QuestionAdministrationController extends LSBaseController
         $iQuestionId = null,
         $sQuestionType = null,
         $returnArray = false, //todo see were this ajaxrequest is done and take out the parameter there and here
-        $question_template = 'core'
+        $questionThemeName = null
     ) {
         //here we get a Question object (also if question is new --> QuestionCreate)
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
-        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $question_template);
+        // TODO: this object doesn't seem to be needed here.
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $questionThemeName);
+        $aAdvancedOptionsArray = $this->getAdvancedOptions($iQuestionId, $sQuestionType, $questionThemeName);
 
         $this->renderJSON(
             [
@@ -1111,7 +1112,7 @@ class QuestionAdministrationController extends LSBaseController
         if ($fatalerror != '') {
             unlink($sFullFilepath);
             App()->setFlashMessage($fatalerror, 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1130,7 +1131,7 @@ class QuestionAdministrationController extends LSBaseController
             );
         } else {
             App()->setFlashMessage(gT('Unknown file extension'), 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1138,7 +1139,7 @@ class QuestionAdministrationController extends LSBaseController
 
         if (isset($aImportResults['fatalerror'])) {
             App()->setFlashMessage($aImportResults['fatalerror'], 'error');
-            $this->redirect('questionAdministration/importView/surveyid/' . $iSurveyID);
+            $this->redirect(['questionAdministration/importView', 'surveyid' => $iSurveyID]);
             return;
         }
 
@@ -1235,13 +1236,14 @@ class QuestionAdministrationController extends LSBaseController
         $aData['sidemenu']['explorer']['state'] = true;
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
+        $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
 
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView'] = 'editQuestionTopbarLeft_view';
-        $aData['topBar']['rightSideView'] = 'questionTopbarRight_view';
+        $aData['topBar']['rightSideView'] = 'surveyTopbarRight_view';
         $aData['showSaveButton'] = true;
         $aData['showSaveAndCloseButton'] = true;
-        $aData['showCloseButton'] = true;
+        $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = Yii::app()->createUrl(
             'questionAdministration/view/',
             [
@@ -1360,7 +1362,6 @@ class QuestionAdministrationController extends LSBaseController
             $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             Yii::app()->setFlashMessage($sMessage, 'error');
             $this->redirect($redirect);
-            $this->redirect(['questionAdministration/listQuestions/surveyid/' . $surveyid]);
         } else {
             QuestionL10n::model()->deleteAllByAttributes(['qid' => $qid]);
             $result = $oQuestion->delete();
@@ -1543,7 +1544,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
+    public function actionGetGeneralSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1553,7 +1554,7 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT('No permission'));
         }
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId, $questionType);
+        $question = $this->getQuestionObject($questionId, $questionType, null, $questionTheme);
         // NB: Only check permission when there is a question.
         if (!empty($question)) {
             // NB: Could happen if user manipulates request.
@@ -1744,7 +1745,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $questionId Null or 0 if new question is being created.
      * @return void
      */
-    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = 'core', $questionId = null)
+    public function actionGetAdvancedSettingsHTML(int $surveyId, string $questionType, string $questionTheme = null, $questionId = null)
     {
         if (empty($questionType)) {
             throw new CHttpException(405, 'Internal error: No question type');
@@ -1755,7 +1756,7 @@ class QuestionAdministrationController extends LSBaseController
         }
         Yii::app()->loadHelper("admin.htmleditor");
         // NB: This works even when $questionId is null (get default question values).
-        $question = $this->getQuestionObject($questionId, $questionType);
+        $question = $this->getQuestionObject($questionId, $questionType, null, $questionTheme);
         if ($questionId) {
             // NB: Could happen if user manipulates request.
             if (!Permission::model()->hasSurveyPermission($question->sid, 'surveycontent', 'update')) {
@@ -2243,7 +2244,7 @@ class QuestionAdministrationController extends LSBaseController
      * @return Question
      * @throws CException
      */
-    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null)
+    private function getQuestionObject($iQuestionId = null, $sQuestionType = null, $gid = null, $questionThemeName = null)
     {
         //todo: this should be done in the action directly
         $iSurveyId = App()->request->getParam('sid') ??
@@ -2253,11 +2254,15 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         if (empty($oQuestion)) {
-            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType);
+            $oQuestion = QuestionCreate::getInstance($iSurveyId, $sQuestionType, $questionThemeName);
         }
 
         if ($sQuestionType != null) {
             $oQuestion->type = $sQuestionType;
+        }
+
+        if ($questionThemeName != null) {
+            $oQuestion->question_theme_name = $questionThemeName;
         }
 
         if ($gid != null) {
@@ -2273,7 +2278,7 @@ class QuestionAdministrationController extends LSBaseController
      * @param int $iQuestionId
      * @param string $sQuestionType
      * @param int $gid
-     * @param string $question_template
+     * @param string $questionThemeName
      *
      * @return void|array
      * @throws CException
@@ -2282,12 +2287,12 @@ class QuestionAdministrationController extends LSBaseController
         $iQuestionId = null,
         $sQuestionType = null,
         $gid = null,
-        $question_template = 'core'
+        $questionThemeName = null
     ) {
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid);
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, $gid, $questionThemeName);
         $result = $oQuestion
             ->getDataSetObject()
-            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $question_template);
+            ->getGeneralSettingsArray($oQuestion->qid, $sQuestionType, null, $questionThemeName);
         return $result;
     }
 
@@ -2367,13 +2372,13 @@ class QuestionAdministrationController extends LSBaseController
      * @throws CException
      * @throws Exception
      */
-    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = 'core')
+    private function getAdvancedOptions($iQuestionId = null, $sQuestionType = null, $sQuestionTheme = null)
     {
         //here we get a Question object (also if question is new --> QuestionCreate)
-        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType);
+        $oQuestion = $this->getQuestionObject($iQuestionId, $sQuestionType, null, $sQuestionTheme);
 
         // Get the advanced settings array
-        $advancedSettings = $oQuestion->getAdvancedSettingsWithValues(null, $sQuestionTheme);
+        $advancedSettings = $oQuestion->getAdvancedSettingsWithValues();
 
         // Group the array in categories
         $questionAttributeHelper = new LimeSurvey\Models\Services\QuestionAttributeHelper();
@@ -3163,17 +3168,12 @@ class QuestionAdministrationController extends LSBaseController
             throw new CHttpException(403, gT('No permission'));
         }
 
-        /** @var string */
-        $questionThemeName = $question->getQuestionAttribute('question_template');
-
+        // Use the question's theme if it exists, or a dummy theme if it doesn't
         /** @var QuestionTheme */
-        $questionTheme = QuestionTheme::findQuestionMetaData($question->type, $questionThemeName);
-        if (empty($questionTheme['extends'])) {
-            $questionTheme['name'] = 'core';    // Temporary solution for the issue 17346
-        }
+        $questionTheme = !empty($question->questionTheme) ? $question->questionTheme : QuestionTheme::getDummyInstance($question->type);
 
         /** @var array<string,array<mixed>> */
-        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $questionThemeName);
+        $advancedSettings = $this->getAdvancedOptions($question->qid, $question->type, $question->question_theme_name);
         // Remove general settings from this array.
         unset($advancedSettings['Attribute']);
 
