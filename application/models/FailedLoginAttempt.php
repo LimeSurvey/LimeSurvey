@@ -58,7 +58,7 @@ class FailedLoginAttempt extends LSActiveRecord
      */
     public function deleteAttempts()
     {
-        $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
+        $ip = substr(getIPAddress(), 0, 40);
         $this->deleteAllByAttributes(array('ip' => $ip));
     }
 
@@ -72,7 +72,7 @@ class FailedLoginAttempt extends LSActiveRecord
     public function isLockedOut($attemptType = '')
     {
         $isLockedOut = false;
-        $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
+        $ip = substr(getIPAddress(), 0, 40);
 
         // Return false if IP is whitelisted
         if (!empty($attemptType) && $this->isWhitelisted($ip, $attemptType)) {
@@ -117,7 +117,7 @@ class FailedLoginAttempt extends LSActiveRecord
     {
         if (!$this->isLockedOut()) {
             $timestamp = date("Y-m-d H:i:s");
-            $ip = substr(App()->getRequest()->getUserHostAddress(), 0, 40);
+            $ip = substr(getIPAddress(), 0, 40);
             $row = $this->findByAttributes(array('ip' => $ip));
     
             if ($row !== null) {

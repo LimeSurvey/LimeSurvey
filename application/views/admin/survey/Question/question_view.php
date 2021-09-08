@@ -200,8 +200,12 @@
                             </td>
                             <td>
                                 <?php
-                                    if (isset($aAdvancedSetting['expression']) && $aAdvancedSetting['expression']==2){
-                                        LimeExpressionManager::ProcessString('{' . $aAdvancedSetting['value'] . '}', $qid);
+                                    if (isset($aAdvancedSetting['expression']) && $aAdvancedSetting['expression'] > 0) {
+                                        if ($aAdvancedSetting['expression'] == 1) {
+                                            LimeExpressionManager::ProcessString($aAdvancedSetting['value'], $qid);
+                                        } else {
+                                            LimeExpressionManager::ProcessString('{' . $aAdvancedSetting['value'] . '}', $qid);
+                                        }
                                         echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                     } else {
                                         if ($aAdvancedSetting['i18n']==false){

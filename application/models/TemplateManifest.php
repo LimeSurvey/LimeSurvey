@@ -505,12 +505,8 @@ class TemplateManifest extends TemplateConfiguration
             if ($file->attributes()->role == "content") {
 
                 // The path of the file is defined inside the theme itself.
-                $aExplodedFile = explode(DIRECTORY_SEPARATOR, $file);
-                $sFormatedFile = end($aExplodedFile);
-
-                // The file extension (.twig) is defined inside the theme itself.
-                $aExplodedFile = explode('.', $sFormatedFile);
-                $sFormatedFile = $aExplodedFile[0];
+                $aExplodedFile = pathinfo($file);
+                $sFormatedFile = $aExplodedFile['filename'];
                 return (string) $sFormatedFile;
             }
         }
@@ -1029,8 +1025,11 @@ class TemplateManifest extends TemplateConfiguration
                 $oComment->parentNode->removeChild($oComment);
             }
             $oXMLConfig = simplexml_import_dom($oDOMConfig);
-            foreach ($oXMLConfig->config->xpath("//file") as $oFileName) {
-                        $oFileName[0] = get_absolute_path($oFileName[0]);
+            $filenames = $oXMLConfig->config->xpath("//file");
+            if ($filenames) {
+                foreach ($filenames as $oFileName) {
+                    $oFileName[0] = get_absolute_path($oFileName[0]);
+                }
             }
 
             $this->config = $oXMLConfig; // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example

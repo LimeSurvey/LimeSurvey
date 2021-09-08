@@ -233,7 +233,7 @@ class ParticipantShare extends LSActiveRecord
                 "name" => 'share_uid',
                 "value" => '$data->sharedBy',
                 "type" => 'raw',
-                "header" => gT("Shared by"),
+                "header" => gT("Shared with"),
                 "filter" => $this->getSharedByList($this->share_uid)
             ),
             array(
@@ -382,7 +382,14 @@ class ParticipantShare extends LSActiveRecord
             list($participantId, $uId) = explode("--", $row);
             Yii::app()->db
                 ->createCommand()
-                ->delete('{{participant_shares}}', "participant_id = '$participantId' AND share_uid = $uId");
+                ->delete(
+                    '{{participant_shares}}',
+                    sprintf(
+                        "participant_id = '%d' AND share_uid = %d",
+                        (int) $participantId,
+                        (int) $uId
+                    )
+                );
         }
     }
 

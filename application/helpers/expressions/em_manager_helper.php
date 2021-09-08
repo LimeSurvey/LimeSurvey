@@ -5648,7 +5648,7 @@
                     }
                     elseif ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                     {
-                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
+                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$_SESSION[$this->sessid]['step']));
                     }
                     // Check Quotas
                     $aQuotas = checkCompletedQuota($this->sid,true);
@@ -6671,11 +6671,19 @@
                         }
                         break;
                     case 'R':
-                        if (count($unansweredSQs) > 0)
-                        {
+                        $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                        // If min_answers or max_answers is set, we check that at least one answer is ranked.
+                        // But, if no limit is set, then all answers must be ranked.
+                        if (!empty($qattr['min_answers']) || !empty($qattr['max_answers'])) {
+                            $maxUnrankedAnswers = count($relevantSQs) - 1;
+                            $sMandatoryText = $LEM->gT('Please rank the items.');
+                        } else {
+                            $maxUnrankedAnswers = 0;
+                            $sMandatoryText = $LEM->gT('Please rank all items.');
+                        }
+                        if (count($unansweredSQs) > $maxUnrankedAnswers) {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please rank all items.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);

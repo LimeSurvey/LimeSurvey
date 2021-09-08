@@ -32,6 +32,7 @@
   width: 60%;
   z-index: 3500;
   background: rgba(255,255,255,0.1);
+  min-height: 0;
 }
 .bg-white{
   background: #fff;
@@ -3233,4 +3234,8 @@ height:2.4em;
 .template-files-delete-button{
     margin: 1px 0 0 0;
     padding: 0 5px;
+}
+
+.overflow-visible {
+  overflow: visible !important;
 }

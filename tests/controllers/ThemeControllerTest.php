@@ -220,6 +220,8 @@ class ThemeControllerTest extends TestBaseClassWeb
         $_POST['newname'] = 'vanilla_version_1';
         $contr->templatecopy();
 
+        exec('sudo chmod -R 777 ./upload'); // Add permisions to ./upload directory, neede for CI pipeline
+
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(

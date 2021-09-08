@@ -215,7 +215,7 @@
         }
 
         /* fieldtype have language at end , set fullpage for email HTML edit */
-        if (substr($fieldtype, 0, 6) === 'email_') {
+        if (substr($fieldtype, 0, 6) === 'email-') {
             $htmlformatoption = ",fullPage:true\n";
             //~ $htmlformatoption = ",allowedContent:true\n"; // seems uneeded 
         }

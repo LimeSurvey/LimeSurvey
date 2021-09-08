@@ -1911,9 +1911,10 @@ $url .= "_view"; });
     public function editShareInfo()
     {
         $operation = Yii::app()->request->getPost('oper');
+        // NB: Comma-separated list.
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') {
-// If operation is delete , it will delete, otherwise edit it
+            // If operation is delete , it will delete, otherwise edit it
             ParticipantShare::model()->deleteRow($shareIds);
         } else {
             $aData = array(
@@ -2145,10 +2146,10 @@ $url .= "_view"; });
             foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
-                    'participant_id' => (int) $id,
+                    'participant_id' => $id,
                     'share_uid' => $iShareUserId,
                     'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
+                    'can_edit' => ($bCanEdit === false ? 0 : 1)
                 );
                 ParticipantShare::model()->storeParticipantShare($aData, $permissions);
                 $i++;
