@@ -2660,22 +2660,23 @@ class remotecontrol_handle
             	foreach($emailsToCheck as $emailToCheck) {
                  	if (preg_match($pattern, $emailToCheck) !== 1) {
                           	unset($aResultTokens[$key]);
-				//subtract from 'left to send
-				$iAllTokensCount--;
-                         }
-                 }
+				            //subtract from 'left to send
+				            $iAllTokensCount--;
+                    }
+                }
             }
 
             if (empty($aResultTokens)) {
-                            return array('status' => 'Error: No candidate tokens');
+                return array('status' => 'Error: No candidate tokens');
             }
+            
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'register');
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
 
             return $aResult;
         } else {
-                    return array('status' => 'No permission');
+            return array('status' => 'No permission');
         }
     }
 
