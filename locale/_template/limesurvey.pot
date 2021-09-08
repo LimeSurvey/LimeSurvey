@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-09-07 10:08:33+00:00\n"
+"POT-Creation-Date: 2021-09-08 07:22:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -192,7 +192,7 @@ msgstr ""
 #: application/controllers/admin/checkintegrity.php:31
 #: application/controllers/admin/dataentry.php:106
 #: application/controllers/admin/emailtemplates.php:36
-#: application/controllers/admin/export.php:636
+#: application/controllers/admin/export.php:642
 #: application/controllers/admin/expressions.php:44
 #: application/controllers/admin/expressions.php:92
 #: application/controllers/admin/globalsettings.php:36
@@ -271,7 +271,7 @@ msgstr ""
 #: application/controllers/SurveyAdministrationController.php:3173
 #: application/controllers/admin/PluginHelper.php:32
 #: application/controllers/admin/emailtemplates.php:84
-#: application/controllers/admin/export.php:1192
+#: application/controllers/admin/export.php:1198
 #: application/controllers/admin/expressions.php:133
 #: application/controllers/admin/index.php:36
 #: application/controllers/admin/quotas.php:147
@@ -1030,7 +1030,7 @@ msgstr ""
 #: application/controllers/ThemeOptionsController.php:594
 #: application/controllers/admin/SurveymenuController.php:169
 #: application/controllers/admin/SurveymenuEntryController.php:214
-#: application/controllers/admin/export.php:973
+#: application/controllers/admin/export.php:979
 #: application/controllers/admin/questionthemes.php:13
 #: application/controllers/admin/themes.php:34
 #: application/controllers/admin/themes.php:73
@@ -4614,12 +4614,12 @@ msgid "Quick statistics"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:302
-#: application/controllers/admin/export.php:272
-#: application/controllers/admin/export.php:273
-#: application/controllers/admin/export.php:420
-#: application/controllers/admin/export.php:421
-#: application/controllers/admin/export.php:656
-#: application/controllers/admin/export.php:657
+#: application/controllers/admin/export.php:278
+#: application/controllers/admin/export.php:279
+#: application/controllers/admin/export.php:426
+#: application/controllers/admin/export.php:427
+#: application/controllers/admin/export.php:662
+#: application/controllers/admin/export.php:663
 #: application/controllers/admin/responses.php:1100
 #: application/controllers/admin/responses.php:1101
 #: application/controllers/admin/saved.php:127
@@ -4988,53 +4988,61 @@ msgstr ""
 msgid "Detailed notification attachments:"
 msgstr ""
 
-#: application/controllers/admin/export.php:225
-#: application/controllers/admin/export.php:274
-#: application/controllers/admin/export.php:418
+#: application/controllers/admin/export.php:154
+#: application/extensions/TopbarWidget/views/includes/surveyTopbarLeft_view.php:269
+#: application/views/admin/survey/subview/_survey_quickaction.php:294
+#: application/views/admin/survey/surveybar_statistics.php:21
+#: application/views/surveyAdministration/survey_topbar.php:393
+msgid "This survey is not active - no responses are available."
+msgstr ""
+
+#: application/controllers/admin/export.php:231
+#: application/controllers/admin/export.php:280
+#: application/controllers/admin/export.php:424
 #: application/views/admin/export/exportresults_view.php:23
 #: application/views/admin/export/vv_view.php:96
 msgid "Export results"
 msgstr ""
 
-#: application/controllers/admin/export.php:247
+#: application/controllers/admin/export.php:253
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:53
 #: application/views/questionAdministration/questionCode.php:6
 msgid "Question code"
 msgstr ""
 
-#: application/controllers/admin/export.php:248
+#: application/controllers/admin/export.php:254
 msgid "Abbreviated question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:249
+#: application/controllers/admin/export.php:255
 msgid "Full question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:250
+#: application/controllers/admin/export.php:256
 msgid "Question code & question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:261
+#: application/controllers/admin/export.php:267
 #: application/views/admin/participants/importCSV_view.php:54
 #: application/views/admin/token/csvupload.php:42
 msgid "Comma"
 msgstr ""
 
-#: application/controllers/admin/export.php:262
+#: application/controllers/admin/export.php:268
 #: application/views/admin/participants/importCSV_view.php:55
 #: application/views/admin/token/csvupload.php:43
 msgid "Semicolon"
 msgstr ""
 
-#: application/controllers/admin/export.php:263
+#: application/controllers/admin/export.php:269
 msgid "Tab"
 msgstr ""
 
-#: application/controllers/admin/export.php:643
+#: application/controllers/admin/export.php:649
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:658
+#: application/controllers/admin/export.php:664
 #: application/extensions/TopbarWidget/views/includes/responsesTopbarLeft_view.php:69
 #: application/views/admin/export/vv_view.php:7
 #: application/views/admin/responses/browsemenubar_view.php:76
@@ -5042,17 +5050,17 @@ msgstr ""
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/export.php:938
-#: application/controllers/admin/export.php:956
+#: application/controllers/admin/export.php:944
+#: application/controllers/admin/export.php:962
 msgid "Unknown error"
 msgstr ""
 
-#: application/controllers/admin/export.php:941
+#: application/controllers/admin/export.php:947
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/export.php:1190
-#: application/controllers/admin/export.php:1191
+#: application/controllers/admin/export.php:1196
+#: application/controllers/admin/export.php:1197
 #: application/views/admin/survey/queXMLSurvey_view.php:5
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:70
@@ -5060,7 +5068,7 @@ msgstr ""
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/export.php:1261
+#: application/controllers/admin/export.php:1267
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -6722,7 +6730,7 @@ msgid "Import failed"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2623
-msgid "There are no matching settings to start the restore of the tokens table Error: 1628493792215"
+msgid "There are no matching settings to start the restore of the tokens table."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:2894
@@ -9773,13 +9781,6 @@ msgstr ""
 #: application/views/admin/survey/surveybar_statistics.php:53
 #: application/views/surveyAdministration/survey_topbar.php:377
 msgid "Partial (saved) responses"
-msgstr ""
-
-#: application/extensions/TopbarWidget/views/includes/surveyTopbarLeft_view.php:269
-#: application/views/admin/survey/subview/_survey_quickaction.php:294
-#: application/views/admin/survey/surveybar_statistics.php:21
-#: application/views/surveyAdministration/survey_topbar.php:393
-msgid "This survey is not active - no responses are available."
 msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/tokensTopbarLeft_view.php:5
