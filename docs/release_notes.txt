@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.16 (build 210909) to 3.27.17 (build 210911) September 8, 2021
+-Fixed issue: Remove url_encode for end URL (already filtered at save) (Olle Haerstedt)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.27.15 (build 210907) to 3.27.16 (build 210909) September 7, 2021
 -Fixed issue: Remove debug code from theme file
 -Fixed issue #17535: Error when logging in with LDAP (Carsten Schmitz)
