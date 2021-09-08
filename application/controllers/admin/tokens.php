@@ -2620,7 +2620,7 @@ class tokens extends Survey_Common_Action
                         'message' => [
                             'class' => 'message-box-error',
                             'title'   => gT("Import failed"),
-                            'message' => gT ("There are no matching settings to start the restore of the tokens table.")
+                            'message' => gT("There are no matching settings to start the restoration of the participant table.")
                         ]
                     ],
                     $aData
