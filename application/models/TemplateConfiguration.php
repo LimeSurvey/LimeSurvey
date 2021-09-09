@@ -1591,29 +1591,47 @@ class TemplateConfiguration extends TemplateConfig
                 if (empty($value) || $value == 'inherit') {
                     continue;
                 }
+                // If the value starts with 'invalid:', skip it.
+                if (stripos($value, 'invalid:', 0) === 0) {
+                    continue;
+                }
                 // Validation A - If option value is a path that matches a virtual path, transform the value to the virtual path
                 $virtualPath = $this->getVirtualThemeFilePath($value);
                 if (!empty($virtualPath)) {
                     $value = $virtualPath;
                     continue;
                 }
-                // Validation B - If any of the following:
-                // - option value matches a virtual path format or
+                // Validation B - If the file couldn't be matched to a category (validation A) we flag it as invalid if:
+                // - option value matches a virtual path format but is invalid or
                 // - option value matches a real existing path to a file either relative to the root LS installation or to the current workgin dir or absolute
-                // Mark the value as invalid, as that's not allowed
+                // Mark the value as invalid, as that's not allowed. These are files outside the boundaries.
                 if ($this->isVirtualPath($value) || realpath($value) !== false || realpath(Yii::app()->getConfig('rootdir') . '/' . $value) !== false) {
                     $value = 'invalid:' . $value;
                     continue;
                 }
-                // Validation C - If the value contains one of the 'forbidden' substrings, we asume it's a path and, since it wasn't
-                // caught by validation A, we mark it as invalid.
-                $forbiddenStrings = ['themes/surveys', 'themes\surveys'];
-                foreach ($forbiddenStrings as $forbiddenString) {
-                    if (stripos($value, $forbiddenString, 0) !== false) {
-                        $value = 'invalid:' . $value;
-                        continue 2;
+                // Validation C - If the value contains certain substrings, we try to convert it into some known dirs.
+                $replacements = [
+                    "~^.*themes[\\/]survey~" => [
+                        Yii::app()->getConfig("standardthemerootdir"),
+                        Yii::app()->getConfig("userthemerootdir")
+                    ]
+                ];
+                foreach ($replacements as $pattern => $alternatives) {
+                    // If the value matches the pattern, we replace that part by each of the alternative replacements,
+                    // and try to get a valid virtual path from that.
+                    if (preg_match($pattern, $value, $m)) {
+                        foreach ($alternatives as $replacement) {
+                            $path = preg_replace($pattern, $replacement, $value);
+                            $virtualPath = $this->getVirtualThemeFilePath($path);
+                            if (!empty($virtualPath)) {
+                                $value = $virtualPath;
+                                continue 3;
+                            }
+                        }
                     }
                 }
+                // If we got here, it means the value couldn't be matched to real path.
+                // It may look like a path (maybe a file that no longer exists), or be something completely different.
             }
             $this->$attribute = json_encode($decodedOptions);
         }

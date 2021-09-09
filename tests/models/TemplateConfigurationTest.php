@@ -49,6 +49,7 @@ class TemplateConfigurationTest extends TestBaseClass
             'existingInvalidFile' => 'themes/admin/Apple_Blossom/images/Limesurvey_logo.png',
             'virtualPathWithTraversalInsideTheme' => 'image::theme::../fruity/files/logo.png',
             'virtualPathWithTraversalOutsideTheme' => 'image::theme::../vanilla/files/logo.png',
+            'inferablePath' => "../../../../made/up/path/themes/survey/fruity/files/logo.png",
         ];
 
         // Test
@@ -72,6 +73,9 @@ class TemplateConfigurationTest extends TestBaseClass
 
         // Check that non-paths (values that don't match an existing file) are not changed
         $this->assertEquals($options['nonExistingFile'], $savedOptions['nonExistingFile']);
+
+        // Check that paths containing 'themes/survey' can be transformed by inferring the real path
+        $this->assertEquals('image::theme::files/logo.png', $savedOptions['inferablePath']);
     }
 
     /**
