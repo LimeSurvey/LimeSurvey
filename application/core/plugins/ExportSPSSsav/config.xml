@@ -4,10 +4,10 @@
         <name>ExportSPSSsav</name>
         <type>plugin</type>
         <creationDate>2021-03-31</creationDate>
-        <lastUpdate>2021-03-31</lastUpdate>
+        <lastUpdate>2021-08-02</lastUpdate>
         <author>Adam Zammit</author>
         <authorUrl>https://www.acspri.org.au</authorUrl>
-        <version>1.0.0</version>
+        <version>1.0.4</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Core: Export survey results to an SPSS sav file]]></description>
     </metadata>

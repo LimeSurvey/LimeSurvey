@@ -967,8 +967,13 @@ class SurveyDynamic extends LSActiveRecord
                     return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
                 });
 
-                $option = $oSelectedAnswerOption !== null ? $oSelectedAnswerOption->attributes : '';
-
+                $option = '';
+                if ($oSelectedAnswerOption !== null) {
+                    $option = array_merge(
+                        $oSelectedAnswerOption->attributes,
+                        $oSelectedAnswerOption->answerl10ns[$sLanguage]->attributes
+                    );
+                }
                 $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
 
                 $iterator++;

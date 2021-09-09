@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - '*'
+      - '**'
+      - 'bug/**'
+      - 'dev/**'
+      - 'zoho/**'
 
 jobs:
   CI-pipeline:
@@ -120,6 +124,8 @@ jobs:
           # Setup Selenium with Firefox headless mode, Gecko driver already installed
           wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
           export MOZ_HEADLESS=1
+          export MOZ_HEADLESS_WIDTH=1280
+          export MOZ_HEADLESS_HEIGHT=1024
           java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
       # Prepare the packages that need to be tested and update the nvm

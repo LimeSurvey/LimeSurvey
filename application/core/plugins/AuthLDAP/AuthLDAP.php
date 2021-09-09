@@ -341,7 +341,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
 
         // using LDAP version
-        if ($ldapver === null) {
+        if (empty($ldapver)) {
             // If the version hasn't been set, default = 2
             $ldapver = 2;
         }
@@ -352,7 +352,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         }
         ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, $ldapoptreferrals);
 
-        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) == 0) {
+        // Apply TLS only if ldaps is not used - you can use either SSL or TLS - both does not work
+        // TLS also requires LDAPv3
+        if (!empty($ldaptls) && $ldaptls == '1' && $ldapver == 3 && preg_match("/^ldaps:\/\//", $ldapserver) === 0) {
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
                 ldap_unbind($ldapconn); // Could not properly connect, unbind everything.
@@ -533,7 +535,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 return;
             }
 
-            // If specifed, check group membership
+            // If specified, check group membership
             if ($groupsearchbase != '' && $groupsearchfilter != '') {
                 $keywords = array('$username', '$userdn');
                 $substitutions = array($username, ldap_escape($userdn, "", LDAP_ESCAPE_FILTER));
@@ -550,7 +552,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 }
             }
 
-            // binding to ldap server with the userDN and privided credentials
+            // binding to ldap server with the userDN and provided credentials
             $ldapbind = @ldap_bind($ldapconn, $userdn, $password);
         }
 

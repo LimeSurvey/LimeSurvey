@@ -34,6 +34,27 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.8 (build 210910) to 5.1.9 (build 210912) September 8, 2021
+-Fixed issue: Answer text missing in ranking question when printing response (Carsten Schmitz)
+-Fixed issue: Remove url_encode for end URL (Olle Haerstedt)
+#Updated translation: German by c_schmitz, DanielZ
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by jmontane, qualitatuvic
+
+
+Changes from 5.1.7 (build 210908) to 5.1.8 (build 210910) September 7, 2021
+Fixed issue #17576: Fixed wrong string in condition for update 450
+
+Changes from 5.1.6 (build 210906) to 5.1.7 (build 210908) September 7, 2021
+-Fixed issue #17568: Fixed "Invalid argument supplied for foreach" during update
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
 Changes from 5.1.5 (build 210830) to 5.1.6 (build 210906) September 6, 2021
 -Fixed issue #17573: No confirmation email is sent if email is encrypted (Carsten Schmitz)
 -Fixed issue #17563: When editing 'reminder sent' and set to yes, 'Completed' is automatically set to yes (Carsten Schmitz)
