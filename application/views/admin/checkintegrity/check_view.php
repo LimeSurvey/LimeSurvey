@@ -363,5 +363,4 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             deleteCheckedItemsButton.setAttribute("disabled","disabled");
         }
     }
-
-  </script>
+</script>
