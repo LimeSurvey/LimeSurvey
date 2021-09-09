@@ -3206,10 +3206,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Apply integrity fix before starting label set update.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
-                "SELECT lime_labels.lid AS lid
-                FROM lime_labels
-                GROUP BY lime_labels.lid, lime_labels.language
-                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid, {{labels}}.language
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
             foreach ($lids as $lid) {
                 $regenerateCodes($lid['lid']);
