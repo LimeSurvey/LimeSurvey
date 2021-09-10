@@ -1616,6 +1616,7 @@ class TemplateConfiguration extends TemplateConfig
                         Yii::app()->getConfig("userthemerootdir")
                     ]
                 ];
+                $validPathFound = false;
                 foreach ($replacements as $pattern => $alternatives) {
                     // If the value matches the pattern, we replace that part by each of the alternative replacements,
                     // and try to get a valid virtual path from that.
@@ -1625,10 +1626,17 @@ class TemplateConfiguration extends TemplateConfig
                             $virtualPath = $this->getVirtualThemeFilePath($path);
                             if (!empty($virtualPath)) {
                                 $value = $virtualPath;
-                                continue 3;
+                                $validPathFound = true;
+                                break;
                             }
                         }
+                        if ($validPathFound) {
+                            break;
+                        }
                     }
+                }
+                if ($validPathFound) {
+                    continue;   // Not needed at the moment, because we are at the end of the loop. But it's clearer in case another validation is added later.
                 }
                 // If we got here, it means the value couldn't be matched to real path.
                 // It may look like a path (maybe a file that no longer exists), or be something completely different.
