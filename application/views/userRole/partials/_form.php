@@ -1,5 +1,5 @@
 <?php
-/* @var $this PermissiontemplatesController */
+/* @var $this UserRoleController */
 /* @var $model Permissiontemplates */
 /* @var $form CActiveForm */
 

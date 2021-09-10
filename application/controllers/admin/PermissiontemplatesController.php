@@ -7,6 +7,8 @@ class PermissiontemplatesController extends Survey_Common_Action
 {
 
     /**
+     * REFACTORED in UserRoleController
+     *
      * Lists all models.
      */
     public function index()
@@ -50,6 +52,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Displays a particular model.
      * @param integer $ptid the ID of the model to be displayed
      */
@@ -69,6 +73,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * * REFACTORED in UserRoleController
+     *
      * Edit Role Modal.
      */
     public function editrolemodal($ptid = null)
@@ -119,6 +125,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     ** REFACTORED in UserRoleController
+     *
      * @param array $errors
      *
      * @return string $errorDiv
@@ -204,6 +212,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED in UserRoleController
+     *
      * Set Permissions
      */
     public function setpermissions()
@@ -446,6 +456,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED in UserRoleController
+     *
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $ptid the ID of the model to be loaded
@@ -463,6 +475,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Adds permission to a role
      * Needs an array in the form of [PERMISSIONID][PERMISSION]
      *

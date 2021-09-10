@@ -1,8 +1,6 @@
 <?php
 /**
- * @var PermissiontemplatesController $this
- * @var CActiveDataProvider $dataProvider
- * @var AdminController $this
+ * @var UserRoleController $this
  * @var CActiveDataProvider $dataProvider
  * @var Permissiontemplates $model
  * @var string $massiveAction
@@ -13,7 +11,7 @@ $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPa
 echo viewHelper::getViewTestTag('roles');
 
 ?>
-<?php $this->renderPartial('permissiontemplates/partials/_menubar', []); ?>
+<?php $this->renderPartial('partials/_menubar', []); ?>
 <div class="col-lg-12">
     <div class="row">
         <div class="col-lg-12 content-right">

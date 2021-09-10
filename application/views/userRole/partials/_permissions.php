@@ -7,7 +7,7 @@ Yii::app()->getController()->renderPartial(
 
 <?=TbHtml::formTb(
     null,
-    App()->createUrl('admin/roles/sa/savepermissions', ['ptid' => $oModel->ptid]),
+    App()->createUrl('userRole/savePermissions', ['ptid' => $oModel->ptid]),
     'post',
     ["id"=>"RoleControl--modalform"]
 )?>

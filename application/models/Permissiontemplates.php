@@ -148,10 +148,13 @@ class Permissiontemplates extends CActiveRecord
      */
     public function getButtons(): string
     {
-        $detailUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
-        $editUrl           = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
+        $detailUrl         = Yii::app()->getController()->createUrl('userRole/viewRole', ['ptid' => $this->ptid]);
+        $editUrl           = Yii::app()->getController()->createUrl('userRole/editRoleModal', ['ptid' => $this->ptid]);
         $exportRoleUrl     = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl(
+            'userRole/renderModalPermissions',
+            ['ptid' => $this->ptid]
+        );
         $deleteUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
 
         // Role Detail
