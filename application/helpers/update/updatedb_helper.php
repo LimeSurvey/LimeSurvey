@@ -3206,10 +3206,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Apply integrity fix before starting label set update.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
-                "SELECT lime_labels.lid AS lid
-                FROM lime_labels
-                GROUP BY lime_labels.lid, lime_labels.language
-                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid, {{labels}}.language
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
             foreach ($lids as $lid) {
                 $regenerateCodes($lid['lid']);
@@ -3998,9 +3998,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
+                    'name' => 'listQuestionGroups',
                     'menu_link' => 'questionGroupsAdministration/listquestiongroups',
                 ),
-                "name='listQuestionGroups'"
+                "name='listSurveyGroups'"
             );
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
@@ -4940,6 +4941,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 472), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 473) {
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+                if ($aSurveymenuentry['name'] == 'listQuestionGroups') {
+                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                        SurveymenuEntries::reorderMenu(2);
+                    }
+                    break;
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 473), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
