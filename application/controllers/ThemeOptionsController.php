@@ -474,7 +474,7 @@ class ThemeOptionsController extends LSBaseController
         
         // White Bar with Buttons
         $aData['fullpagebar']['returnbutton'] = [
-            'url' => 'index',
+            'url' => 'admin/index',
             'text' => gT('Back'),
         ];
 
