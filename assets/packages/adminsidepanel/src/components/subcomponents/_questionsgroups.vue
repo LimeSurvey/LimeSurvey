@@ -49,7 +49,6 @@
             <div class="scoped-toolbuttons-right">
                 <button
                     class="btn btn-default"
-                    v-if="createQuestionAllowed"
                     @click="toggleOrganizer"
                     :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
                 >
@@ -57,7 +56,6 @@
                 </button>
                 <button
                     class="btn btn-default"
-                    v-if="createQuestionAllowed"
                     @click="collapseAll"
                     :title="translate('collapseAll')"
                 >
@@ -65,6 +63,7 @@
                 </button>
             </div>
         </div>
+        <!-- List of all Question Groups with Questions -->
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
                 class="list-group col-12 questiongroup-list-group"  
