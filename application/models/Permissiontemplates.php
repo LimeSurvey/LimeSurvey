@@ -150,12 +150,12 @@ class Permissiontemplates extends CActiveRecord
     {
         $detailUrl         = Yii::app()->getController()->createUrl('userRole/viewRole', ['ptid' => $this->ptid]);
         $editUrl           = Yii::app()->getController()->createUrl('userRole/editRoleModal', ['ptid' => $this->ptid]);
-        $exportRoleUrl     = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
+        $exportRoleUrl     = Yii::app()->getController()->createUrl('userRole/runExport', ['ptid' => $this->ptid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl(
             'userRole/renderModalPermissions',
             ['ptid' => $this->ptid]
         );
-        $deleteUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
+        $deleteUrl         = Yii::app()->getController()->createUrl('userRole/delete');
 
         // Role Detail
         $roleDetail = ""
@@ -201,7 +201,7 @@ class Permissiontemplates extends CActiveRecord
                 </a>";
 
         // Delete Role
-        $deleteUrl .= '/ptid/' . $this->ptid;
+        //$deleteUrl .= '/ptid/' . $this->ptid;  NO GET-request here!!!
         $deleteRoleButton = '<span data-toggle="tooltip" title="' . gT('Delete user role') . '">'
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
@@ -209,7 +209,10 @@ class Permissiontemplates extends CActiveRecord
                 data-toggle='modal' 
                 data-title='" . gt('Delete user role') . "'
                 data-target='#confirmation-modal'
-                data-href ='" . $deleteUrl . "' 
+                data-url='" . $deleteUrl . "' 
+                data-ptid='" . $this->ptid . "'
+                data-action='delrole'         
+                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'
                 data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>

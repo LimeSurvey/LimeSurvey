@@ -4,6 +4,19 @@ class UserRoleController extends LSBaseController
 {
 
     /**
+     * Run filters
+     *
+     * @return array|void
+     */
+    public function filters()
+    {
+        return [
+          'postOnly + delete, applyEdit'
+        ];
+    }
+
+
+    /**
      * Renders the list of user roles.
      *
      * @throws CException
@@ -224,6 +237,119 @@ class UserRoleController extends LSBaseController
                 "oModel" => $oPermissionTemplate,
             ]
         );
+    }
+
+    /**
+     * Creates an xml content/file to export. Opens dialog to save
+     * the xml file.
+     *
+     * @param $ptid
+     */
+    public function actionRunExport($ptid)
+    {
+        $oModel = $this->loadModel($ptid);
+        $oXML = $oModel->compileExportXML();
+        $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name);
+
+        header('Content-type: application/xml');
+        header('Content-Disposition: attachment; filename="' . $filename . '.xml"');
+        print($oXML->asXML());
+        Yii::app()->end();
+    }
+
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     *
+     */
+    public function actionDelete()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->getController()->redirect(array('/admin'));
+        }
+        $ptid = Yii::app()->request->getPost('ptid', 0);
+        try {
+            $this->loadModel((int)$ptid)->delete();
+            Yii::app()->setFlashMessage(gT("Role was successfully deleted."), 'success');
+        } catch (Exception $e) {
+            Yii::app()->setFlashMessage(gT("Role could not be deleted."), 'error');
+        }
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax'])) {
+            $this->redirect($_POST['returnUrl'] ?? ['index']);
+        }
+    }
+
+    /**
+     * Opens modal to import role (xml-file).
+     *
+     * @throws CException
+     */
+    public function actionShowImportXML()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(array('/admin'));
+        }
+
+        $this->renderPartial('partials/_import');
+    }
+
+    /**
+     *
+     */
+    public function importXML()
+    {
+        $sRandomFileName = randomChars(20);
+        $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
+        $aPathinfo = pathinfo($_FILES['the_file']['name']);
+        $sExtension = $aPathinfo['extension'];
+        $bMoveFileResult = false;
+
+        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
+            Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
+            $this->redirect(array('/admin/roles'));
+            Yii::app()->end(); //todo: is this necessary? after redirect this line will never be reached?!?
+        } elseif (strtolower($sExtension) == 'xml' || 1 == 1) {
+            $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
+        } else {
+            Yii::app()->setFlashMessage(gT("This is not a .xml file.") . 'It is a ' . $sExtension, 'error');
+            $this->redirect(array('/admin/roles'));
+           // Yii::app()->end();
+        }
+
+        if ($bMoveFileResult === false) {
+            Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
+            $this->redirect(array('/admin/roles'));
+            Yii::app()->end();
+            return;
+        }
+
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(false);
+        }
+
+        $oRoleDefinition = simplexml_load_file(realpath($sFilePath));
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
+
+        $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
+        if ($oNewRole == false) {
+            Yii::app()->setFlashMessage(gT("Error creating role"), 'error');
+            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->end();
+            return;
+        }
+
+        $applyPermissions = $this->applyPermissionFromXML($oNewRole->ptid, $oRoleDefinition->permissions);
+
+        Yii::app()->setFlashMessage(gT("Role was successfully imported."), 'success');
+        Yii::app()->getController()->redirect(array('/admin/roles'));
+        Yii::app()->end();
+        return;
     }
 
     /**                                       THIS FUNCTIONS DO NOT BELONG TO CONTROLLERS                         ** */

@@ -67,7 +67,7 @@ const ConfirmationModal = function(e){
 
                 success : function(html, statut)
                 {
-                    $.fn.yiiGridView.update(options.gridid);                   // Update the surveys list
+                    $.fn.yiiGridView.update(options.gridid);                   // Update the list
                     $('#confirmation-modal').modal('hide');
                 },
                 error :  function(html, statut){

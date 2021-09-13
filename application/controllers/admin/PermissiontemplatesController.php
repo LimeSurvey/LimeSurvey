@@ -144,6 +144,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Show Import XML
      */
     public function showImportXML()
@@ -157,6 +159,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Import XML
      */
     public function importXML()
@@ -360,6 +364,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $ptid the ID of the model to be deleted
@@ -385,6 +391,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Run Export
      * @param $ptids ?
      */
