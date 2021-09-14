@@ -3164,10 +3164,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Apply integrity fix before starting label set update.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
-                "SELECT lime_labels.lid AS lid
-                FROM lime_labels
-                GROUP BY lime_labels.lid, lime_labels.language
-                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid, {{labels}}.language
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
             foreach ($lids as $lid) {
                 regenerateLabelCodes400($lid['lid']);
@@ -3956,9 +3956,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
+                    'name' => 'listQuestionGroups',
                     'menu_link' => 'questionGroupsAdministration/listquestiongroups',
                 ),
-                "name='listQuestionGroups'"
+                "name='listSurveyGroups'"
             );
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
@@ -4663,7 +4664,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
             $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
             foreach ($archivedTableSettings as $archivedTableSetting) {
-                if ($archivedTableSetting['type'] === 'token') {
+                if ($archivedTableSetting['tbl_type'] === 'token') {
                     $oDB->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
                 }
             }
@@ -4866,6 +4867,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 471) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -4890,6 +4892,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 471), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 472) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -4899,7 +4902,54 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Loop through all plugins in core folder and make sure they have the correct plugin type.
+         *
+         * @todo What if a plugin is both in user and core?
+         * @todo Add integrity test when plugin manager is opened.
+         */
+        if ($iOldDBVersion < 473) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    $plugin = Plugin::model()->findByAttributes(
+                        ['name' => $fileinfo->getFilename()]
+                    );
+
+                    if (!empty($plugin)) {
+                        if ($plugin->plugin_type !== 'core') {
+                            $plugin->plugin_type = 'core';
+                            $plugin->save();
+                        }
+                    } else {
+                        // Plugin in folder but not in database?
+                    }
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 473), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
         if ($iOldDBVersion < 474) {
+            $oTransaction = $oDB->beginTransaction();
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+                if ($aSurveymenuentry['name'] == 'listQuestionGroups') {
+                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                        SurveymenuEntries::reorderMenu(2);
+                    }
+                    break;
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 474), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 475) {
             $oTransaction = $oDB->beginTransaction();
             // Apply integrity fix before adding unique constraint.
             // List of label set ids which contain code duplicates.
@@ -4913,7 +4963,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 regenerateLabelCodes400($lid['lid']);
             }
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 474), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 475), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {

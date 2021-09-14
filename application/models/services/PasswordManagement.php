@@ -193,9 +193,9 @@ class PasswordManagement
      * @todo it's fine to use static functions, until it is used only in controllers ...
      *
      * @param int $length Length of the password
-     * @return string
+     * @return string|null
      */
-    public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH): string
+    public static function getRandomPassword($length = self::MIN_PASSWORD_LENGTH)
     {
         $oGetPasswordEvent = new \PluginEvent('createRandomPassword');
         $oGetPasswordEvent->set('targetSize', $length);
