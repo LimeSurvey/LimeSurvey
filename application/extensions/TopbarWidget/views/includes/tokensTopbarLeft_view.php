@@ -168,3 +168,9 @@
         <?php eT("View in CPDB"); ?>
     </a>
 <?php endif; ?>
+
+<!-- Survey Quotas -->
+<a class="btn btn-default" href='<?php echo Yii::App()->createUrl("admin/quotas/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
+    <span class="fa fa-tasks"></span>
+    <?php eT("Survey quotas"); ?>
+</a>
