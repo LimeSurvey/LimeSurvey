@@ -151,6 +151,7 @@ class quotas extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['subaction'] = gT("Survey quotas");
 
+        // TODO: I dont think that is is needed anymore. Remove it.
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
@@ -173,9 +174,13 @@ class quotas extends Survey_Common_Action
             ),
         ));
 
-
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
+
+        // TopBar
+        $aData['topBar']['name'] = 'surveyTopbar_view';
+        $aData['topBar']['leftSideView'] = 'quotasTopbarLeft_view';
+
         if (!empty($oSurvey->quotas)) {
             $aData['output'] = '';
             $aQuotaItems = array();
