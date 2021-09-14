@@ -4976,6 +4976,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 474) {
+            $oTransaction = $oDB->beginTransaction();
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
                 if ($aSurveymenuentry['name'] == 'listQuestionGroups') {
