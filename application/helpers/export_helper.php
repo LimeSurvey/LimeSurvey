@@ -1379,9 +1379,6 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $QueryResult = Question::model()->findAllByAttributes(['parent_qid' => $qid, 'scale_id' => 0]);
     }
     foreach ($QueryResult as $Row) {
-        if ($use_answers) {
-            $aid = $Row->sortorder;
-        }
         $subQuestion = $dom->createElement("subQuestion");
         if ($use_answers) {
             $text = $dom->createElement("text", QueXMLCleanup($Row->answerl10ns[$quexmllang]->answer, ''));
@@ -1397,6 +1394,9 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
+        } else if ($use_answers == true) {
+            //ranking quesions
+            quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
         }
@@ -1405,6 +1405,40 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
 
     return;
 }
+
+/**
+ * Set defaultValue attribute of provided element from response table
+ *
+ * @param mixed $element DOM element to add attribute to
+ * @param int $iResponseID The response id
+ * @param int $qid The qid of the question
+ * @param int $iSurveyID The survey id
+ * @param array $fieldmap A mapping of fields to qid
+ * @param string $acode The answer code to search for
+ */
+function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
+{
+	if ($iResponseID) {
+        //here is the response
+        $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
+        $oResponse->decrypt();
+
+        $search = "qid";
+        //find the rank order of this current answer (if ranked at all over all subquestions)
+        $rank = 1;
+        foreach ($fieldmap as $key => $detail) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
+                $colname = $key;
+                $value = $oResponse->$colname; //response to this
+                if ($value == $acode) {
+                    $element->setAttribute("defaultValue", $rank);
+                }
+                $rank++;
+            }
+        }
+    }
+}
+
 
 /**
  * Set defaultValue attribute of provided element from response table
@@ -1832,21 +1866,9 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
-
-                        $sqllength = "CHAR_LENGTH";
-                        $platform = Yii::app()->db->getDriverName();
-                        if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
-                            $sqllength = "LEN";
-                        }
-
-                        $QROW = App()->db->createCommand()
-                            ->select('MAX(' . $sqllength . '(code)) as sc')
-                            ->from('{{answers}} a')
-                            ->join('{{answer_l10ns}} al', 'a.aid=al.aid')
-                            ->where('a.qid=:qid AND al.language=:language', [':qid' => $qid, ':language' => $quexmllang])
-                            ->queryRow();
-
-                        $response->appendChild(QueXMLCreateFree("integer", $QROW['sc'], ""));
+                        //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
+                        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid]);
+                        $response->appendChild(QueXMLCreateFree("integer", strlen(count($QueryResult)), ""));
                         $question->appendChild($response);
                         break;
                     case "M": //Multiple choice checkbox
@@ -2523,6 +2545,7 @@ function tsvSurveyExport($surveyid)
         'language',
         'validation',
         'mandatory',
+        'encrypted',
         'other',
         'default',
         'same_default',
@@ -2586,7 +2609,7 @@ function tsvSurveyExport($surveyid)
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
 
-    foreach ($language_data as $key => $language) {  //echo $key.'---'; print_r($language); die;
+    foreach ($language_data as $language_data_key => $language) {  //echo $key.'---'; print_r($language); die;
         $current_language = !empty($language['surveyls_language']) ? $language['surveyls_language'] : '';
         foreach ((array)$language as $key => $value) {
             if (is_array($value)) {
@@ -2619,7 +2642,7 @@ function tsvSurveyExport($surveyid)
         $attributes[$attribute['qid']][] = $attribute;
     }
 
-    // default values data
+    // defaultvalues_data
     if (array_key_exists('defaultvalues', $xmlData)) {
         $defaultvalues_data = $xmlData['defaultvalues']['rows']['row'];
         if (!array_key_exists('0', $defaultvalues_data)) {
@@ -2628,8 +2651,26 @@ function tsvSurveyExport($surveyid)
     } else {
         $defaultvalues_data = array();
     }
+    // insert translations to defaultvalues_datas
+    if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
+        $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
+        $defaultvalues_datas = [];
+        foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
+            foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
+                if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
+                    $defaultvalues_datas[] = $defaultvalue_data;
+                    $defaultvalues_datas_last = array_key_last($defaultvalues_datas);
+                    $defaultvalues_datas[$defaultvalues_datas_last]['language'] = $defaultvalue_l10ns_data['language'];
+                    $defaultvalues_datas[$defaultvalues_datas_last]['defaultvalue'] = $defaultvalue_l10ns_data['defaultvalue'];
+                    continue 2;
+                }
+            }
+        }
+    }
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
     $defaultvalues = array();
-    foreach ($defaultvalues_data as $key => $defaultvalue) {
+    foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
         } else {
@@ -2660,7 +2701,9 @@ function tsvSurveyExport($surveyid)
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
             }
             foreach ($xmlData['group_l10ns']['rows']['row'] as $group_l10ns) {
-                $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                if ($group_l10ns['language'] === $language) {
+                    $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                }
             }
         } else {
             $groups_data = array();
@@ -2838,6 +2881,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];
                         $tsv_output['mandatory'] = !empty($question['mandatory']) ? $question['mandatory'] : '';
+                        $tsv_output['encrypted'] = !empty($question['encrypted']) ? $question['encrypted'] : 'N';
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
 
@@ -2861,6 +2905,7 @@ function tsvSurveyExport($surveyid)
                         }
                         fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
 
+
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])) {
                             foreach ($quota_members[$qid] as $key => $member) {
@@ -2883,7 +2928,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['related_id'] = $condition['cqid'];
                                 $tsv_output['name'] = $condition['cfieldname'];
                                 $tsv_output['relevance'] = $condition['method'];
-                                $tsv_output['text'] = !empty($assessment['value']) ? $condition['value'] : '';
+                                $tsv_output['text'] = !empty($condition['value']) ? $condition['value'] : '';
                                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
                             }
                         }
@@ -3086,6 +3131,9 @@ function MaskFormula($sValue)
 {
     if (isset($sValue[0]) && $sValue[0] == '=') {
         $sValue = "'" . $sValue;
+    }
+    if (is_array($sValue) && empty($sValue)) {
+        $sValue = '';
     }
     return $sValue;
 }

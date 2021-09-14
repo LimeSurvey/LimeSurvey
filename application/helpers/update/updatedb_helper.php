@@ -4909,6 +4909,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 471) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -4933,6 +4934,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 471), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 472) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -4942,7 +4944,37 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Loop through all plugins in core folder and make sure they have the correct plugin type.
+         *
+         * @todo What if a plugin is both in user and core?
+         * @todo Add integrity test when plugin manager is opened.
+         */
         if ($iOldDBVersion < 473) {
+            $oTransaction = $oDB->beginTransaction();
+            $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    $plugin = Plugin::model()->findByAttributes(
+                        ['name' => $fileinfo->getFilename()]
+                    );
+
+                    if (!empty($plugin)) {
+                        if ($plugin->plugin_type !== 'core') {
+                            $plugin->plugin_type = 'core';
+                            $plugin->save();
+                        }
+                    } else {
+                        // Plugin in folder but not in database?
+                    }
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 473), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 474) {
             $oTransaction = $oDB->beginTransaction();
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
@@ -4954,7 +4986,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     break;
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 473), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 474), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
