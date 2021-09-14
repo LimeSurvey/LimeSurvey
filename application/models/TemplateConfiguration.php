@@ -860,7 +860,7 @@ class TemplateConfiguration extends TemplateConfig
             $basePath = $category->path;
             // If the category is theme, add the "files folder" to the base path, as that's the directory to scan for files
             if ($category->name == 'theme') {
-                $filesFolder = $this->getAttributeValue('files_folder');
+                $filesFolder = $this->getAttributeValue('files_folder') . DIRECTORY_SEPARATOR;
                 $basePath = $basePath . $filesFolder;
                 $pathPrefix = $pathPrefix . $filesFolder;
             }
