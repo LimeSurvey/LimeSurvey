@@ -171,7 +171,6 @@ App()->getClientScript()->registerScript(
                     </div>
                     <div class="col-sm-3">
                         <input type="hidden" id="boxesupdatemessage" data-ajaxsuccessmessage="<?php eT('Box settings updated!'); ?>"/>
-                        <button class="btn btn-default" type="button" id="save_boxes_setting" data-url="<?php echo App()->createUrl('homepageSettings/updateBoxesSettings'); ?>"><?php eT('Save boxes settings'); ?></button>
                     </div>
                     <br/><br/><br/><br/>
                 </div>

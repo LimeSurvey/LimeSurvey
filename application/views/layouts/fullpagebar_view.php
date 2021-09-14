@@ -9,6 +9,7 @@
 <!-- Full page menu bar -->
 <div class="menubar surveybar" id="fullpagebar">
     <div class="row">
+        <!-- Left actions -->
         <div class="col-md-6 text-left">
 
             <!-- Themes -->
@@ -66,8 +67,16 @@
                     <?php eT("Create survey group");?>
                 </a>
             <?php endif;?>
-        </div>
 
+            <!-- Dashboard - Add a new Box -->
+            <?php if(isset($fullpagebar['boxbuttons'])): ?>
+                <!-- Create Box Button -->
+                <a href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>" class="btn btn-default">
+                    <span class="icon-add text-success"></span>
+                    <?php eT("Create Box"); ?>
+                </a>
+            <?php endif; ?>
+        </div>
 
         <!-- Right actions -->
         <div class="col-md-6 text-right">
@@ -116,14 +125,15 @@
             <!-- Box Buttons -->
             <?php if (isset($fullpagebar['boxbuttons'])) :?>
                 <!-- Reset Boxes Button -->
-                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
-                    <span class="fa fa-refresh"></span>
+                <a href="<?php echo $this->createUrl('homepageSettings/resetAllBoxes/');?>" class="btn btn-warning" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">                    <span class="fa fa-refresh"></span>
                     <?php eT("Reset");?>
                 </a>
-
-                <a href="<?php echo $this->createUrl('homepageSettings/createBox/');?>" class="btn btn-default">
-                    <span class="icon-add  text-success"></span>
-                    <?php eT("Create box");?>
+                <!-- Save Box Settings Button -->
+                <a data-url="<?php echo $this->createUrl('homepageSettings/updateBoxesSettings'); ?>"
+                    class="btn btn-success" 
+                    role="button" 
+                    id="save_boxes_setting">
+                    <?php eT('Save'); ?>
                 </a>
             <?php endif;?>
 
