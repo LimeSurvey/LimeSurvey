@@ -888,6 +888,9 @@ class UserManagementController extends LSBaseController
                     $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
                     $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
                     $success = $successData['success'];
+                    if (!$success) {
+                        $aResults[$user]['error'] = gT("Error: New password could not be sent to ") . $oUser->email;
+                    }
                     $aResults[$user]['result'] = $success;
                 }
             }
