@@ -93,19 +93,13 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <p>
-                    <?php eT("Once a survey has been activated you can no longer "); ?>
-                    <strong><?php eT("add"); ?></strong>
-                    <?php eT("or ") ?>
-                    <strong><?php eT("delete"); ?></strong>
-                    <?php eT("questions, questions groups, or subquestions. You will be "); ?>
-                    <strong><?php eT("still able to edit"); ?></strong>
-                    <?php eT("questions, questions groups, or subquestions."); ?>
+                    <?php eT("Once a survey has been activated you can no longer <strong>add</strong> or <strong>delete</strong> questions, questions groups, or subquestions. You will be <strong>still able to edit</strong> questions, questions groups, or subquestions.", 'unescaped'); ?>
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
-                <h3 class="pagetitle"><?php eT("Notification and Data management");?></h3>
+                <h3 class="pagetitle"><?php eT("Notification & data management");?></h3>
                 <p>
                     <?php eT("Additionally, the following settings cannot be changed once a survey has been activated.");?>
                     <br>
@@ -120,7 +114,7 @@
                     <div class='form-group'>
                         <label for='anonymized' class='control-label col-sm-7'>
                             <?php eT("Anonymized responses"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect answers and participants."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, reponses will be anonymized - there will be no way to connect responses and participants."); ?>"></i>
                             <script type="text/javascript">
                                 <!--
                                 function alertPrivacy()
@@ -155,7 +149,7 @@
                     <div class='form-group'>
                         <label for='datestamp' class='control-label col-sm-7'>
                             <?php eT("Date stamp"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the time when the answers were submitted can be seen."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the submission time of a response will be recorded."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
                             <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
@@ -177,7 +171,7 @@
                     <div class='form-group'>
                         <label for='ipaddr' class='control-label col-sm-7'>
                             <?php eT("Save IP address"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with his or her answers."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the IP address of the survey respondent will be stored together with the response."); ?>"></i>
                         </label>
 
                         <div class='col-sm-5'>
@@ -239,7 +233,7 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-7' for='refurl'>
                             <?php eT("Save referrer URL"); ?>
-                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the answers."); ?>"></i>
+                            <i class="fa fa-question-circle text-success" data-toggle="tooltip" title="<?= gT("If enabled, the referrer URL will be stored together with the response."); ?>"></i>
                         </label>
                         <div class='col-sm-5'>
                             <select class='form-control' name='refurl' id='refurl'>
@@ -259,15 +253,7 @@
             <div class='row'>
                 <div class='col-sm-8 col-sm-offset-2'>
                     <div class="alert alert-info">
-                        <?php eT("Tip: Please note that you need to "); ?>
-                        <strong> <?php eT("deactivate"); ?> </strong>
-                        <?php eT(" a survey if you want to "); ?>
-                        <strong> <?php eT("add"); ?> </strong>
-                        <?php eT("or "); ?>
-                        <strong> <?php eT("delete"); ?> </strong>
-                        <?php eT("groups/questions or "); ?>
-                        <strong> <?php eT("change"); ?> </strong>
-                        <?php eT("any of the settings above. The changes will cause all collected data from respondents to be moved and archived."); ?>
+                        <?php eT("Tip: Please note that you need to <strong>deactivate</strong> a survey if you want to <strong>add</strong> or <strong>delete</strong> groups/questions or <strong>change</strong> any of the settings above. The changes will cause all collected data from respondents to be moved and archived.", 'unescaped'); ?>
                     </div>
                     <br><br>
                 </div>

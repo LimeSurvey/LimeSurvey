@@ -15,7 +15,7 @@
         <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
             { ?>
             <a>
-                <span id='deleteresponse_<?php echo $dtrow['id']; ?>' title='<?php eT('Delete this response'); ?>' class='deleteresponse fa fa-trash text-warning'></span>
+                <span id='deleteresponse_<?php echo $dtrow['id']; ?>' title='<?php eT('Delete this response'); ?>' class='deleteresponse fa fa-trash text-danger'></span>
             </a>
         <?php } ?>
     </td>
@@ -33,16 +33,12 @@
 <?php
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider' => $model->search($iSurveyID, $language),
-
         'id' => 'time-grid',
         'emptyText'=>gT('No surveys found.'),
-        'itemsCssClass' => 'table-striped',
-        'htmlOptions' => array('class' => 'time-statistics-table'),
-
+        'htmlOptions' => ['class' => 'table-responsive time-statistics-table'],
         'ajaxUpdate' => 'time-grid',
         'afterAjaxUpdate' => 'window.LS.doToolTip',
-
-        // Number of row per page selection
+        'template' => "{items}\n<div id='timeListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
@@ -60,3 +56,12 @@
             )),
             $columns)
     ));
+?>
+<script type="text/javascript">
+    jQuery(function ($) {
+        // To update rows per page via ajax
+        $(document).on("change", '#pageSize', function () {
+            $.fn.yiiGridView.update('time-grid', {data: {pageSize: $(this).val()}});
+        });
+    });
+</script>

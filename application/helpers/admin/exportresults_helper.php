@@ -103,9 +103,21 @@ class ExportSurveyResultsService
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode, $oOptions);
         $writer->init($survey, $sLanguageCode, $oOptions);
-        
-        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
-        $writer->write($survey, $sLanguageCode, $oOptions, true);
+
+        $countResponsesCommand = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
+        $countResponsesCommand->order = null;
+        $countResponsesCommand->select('count(*)');
+        $responseCount = $countResponsesCommand->queryScalar();
+        $maxRows = 100;
+        $maxPages = ceil($responseCount / $maxRows);
+        for ($i = 0; $i < $maxPages; $i++) {
+            $offset = $i * $maxRows;
+            $responsesQuery = $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
+            $responsesQuery->offset($offset);
+            $responsesQuery->limit($maxRows);
+            $survey->responses = $responsesQuery->query();
+            $writer->write($survey, $sLanguageCode, $oOptions, true);
+        }
         $result = $writer->close();
         
         // Close resultset if needed

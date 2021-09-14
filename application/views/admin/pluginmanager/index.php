@@ -53,97 +53,100 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
             </div>
         </div>
 
-    <?php
+        <?php
 
-    $sort = new CSort();
-    $sort->attributes = array(
-        'name'=>array(
-            'asc'=> 'name',
-            'desc'=> 'name desc',
-        ),
-        'description'=>array(
-            'asc'=> 'description',
-            'desc'=> 'description desc',
-        ),
-        'status'=>array(
-            'asc'=> 'active',
-            'desc'=> 'active desc',
-            'default'=> 'desc',
-        ),
-    );
-    $sort->defaultOrder = array(
-        'name' => CSort::SORT_ASC,
-    );
+        $sort = new CSort();
+        $sort->attributes = [
+            'name'        => [
+                'asc'  => 'name',
+                'desc' => 'name desc',
+            ],
+            'description' => [
+                'asc'  => 'description',
+                'desc' => 'description desc',
+            ],
+            'status'      => [
+                'asc'     => 'active',
+                'desc'    => 'active desc',
+                'default' => 'desc',
+            ],
+        ];
+        $sort->defaultOrder = [
+            'name' => CSort::SORT_ASC,
+        ];
 
-    $providerOptions = array(
-        'pagination' => array(
-            'pageSize' => $pageSize,
-        ),
-        'sort' => $sort,
-        'caseSensitiveSort' => false,
-    );
+        $providerOptions = [
+            'pagination'        => [
+                'pageSize' => $pageSize,
+            ],
+            'sort'              => $sort,
+            'caseSensitiveSort' => false,
+        ];
 
-    $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
+        $dataProvider = new CArrayDataProvider($plugins, $providerOptions);
 
-    $gridColumns = [
-        [
-            'header' => gT('Status'),
-            'type' => 'html',
-            'name' => 'status',
-            'value' => '$data->getStatus()'
-        ],
-        [
-            'header' => gT('Plugin'),
-            'name' => 'name',
-            'type' => 'html',
-            'value' => '$data->getName()'
-        ],
-        [
-            'header' => gT('Description'),
-            'name' => 'description',
-            'type' => 'html',
-            'value' => '$data->getDescription()'
-        ],
-        [
-            'type' => 'raw',
-            'header' => gT('Action'),
-            'name' => 'action',
-            'value' => '$data->getActionButtons()'
-        ],
-    ];
+        $gridColumns = [
+            [
+                'type'   => 'raw',
+                'header' => gT('Action'),
+                'name'   => 'action',
+                'value'  => '$data->getActionButtons()'
+            ],
+            [
+                'header' => gT('Status'),
+                'type'   => 'html',
+                'name'   => 'status',
+                'value'  => '$data->getStatus()'
+            ],
+            [
+                'header' => gT('Plugin'),
+                'name'   => 'name',
+                'type'   => 'html',
+                'value'  => '$data->getName()'
+            ],
+            [
+                'header' => gT('Description'),
+                'name'   => 'description',
+                'type'   => 'html',
+                'value'  => '$data->getDescription()'
+            ],
+        ];
 
-    $this->widget(
-        'bootstrap.widgets.TbGridView',
-        [
-            'dataProvider' => $dataProvider,
-            'id'           => 'plugins-grid',
-            'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') .' '
-                . sprintf(
-                    gT('%s rows per page'),
-                    CHtml::dropDownList(
-                        'pageSize',
-                        $pageSize,
-                        Yii::app()->params['pageSizeOptions'],
-                        [
-                            'class' => 'changePageSize form-control',
-                            'style' => 'display: inline; width: auto'
-                        ]
-                    )
-                ),
-            'columns' => $gridColumns,
-            'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
-            'ajaxUpdate' => 'plugins-grid'
-        ]
-    );
+        $this->widget(
+            'bootstrap.widgets.TbGridView',
+            [
+                'id'                       => 'plugins-grid',
+                'dataProvider'             => $dataProvider,
+                'template'                 => "{items}\n<div id='pluginsListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                'summaryText'              => gT('Displaying {start}-{end} of {count} result(s).') . ' '
+                    . sprintf(
+                        gT('%s rows per page'),
+                        CHtml::dropDownList(
+                            'pageSize',
+                            $pageSize,
+                            Yii::app()->params['pageSizeOptions'],
+                            [
+                                'class' => 'changePageSize form-control',
+                                'style' => 'display: inline; width: auto'
+                            ]
+                        )
+                    ),
+                'columns'                  => $gridColumns,
+                'rowHtmlOptionsExpression' => 'array("data-id" => $data["id"])',
+                'ajaxUpdate'               => 'plugins-grid'
+            ]
+        );
 
-    $this->renderPartial('./pluginmanager/uploadModal', []);
-?>
+        $this->renderPartial('./pluginmanager/uploadModal', []);
+        ?>
+    </div>
+</div>
 
 <script type="text/javascript">
-jQuery(function($) {
-    // To update rows per page via ajax
-    $(document).on("change", '#pageSize', function() {
-        $.fn.yiiGridView.update('plugins-grid',{ data:{ pageSize: $(this).val() }});
+    jQuery(function ($) {
+        // To update rows per page via ajax
+        $(document).on("change", '#pageSize', function () {
+            $.fn.yiiGridView.update('plugins-grid', {data: {pageSize: $(this).val()}});
+        });
     });
-});
 </script>

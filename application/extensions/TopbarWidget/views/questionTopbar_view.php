@@ -17,11 +17,11 @@ $rightSideContentSummary = $this->render('includes/questionSummaryTopbarRight_vi
     <?php if ($oQuestion->qid !== 0) : ?>
         <div id="question-summary-topbar" class='row'>
             <!-- Left Side -->
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <?= $leftSideContentSummary ?>
             </div>
 
-            <div class="col-md-6 pull-right text-right">
+            <div class="col-md-4 pull-right text-right">
                 <?= $rightSideContentSummary ?>
             </div>
         </div>

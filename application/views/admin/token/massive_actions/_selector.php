@@ -40,7 +40,7 @@
                     'action'      => 'delete',
                     'disabled'     => !Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'delete'),
                     'url'         =>  App()->createUrl('/admin/tokens/sa/deleteMultiple/'),
-                    'iconClasses' => 'text-danger fa fa-trash',
+                    'iconClasses' => 'fa fa-trash text-danger',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 

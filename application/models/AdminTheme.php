@@ -268,7 +268,6 @@ class AdminTheme extends CFormModel
             'application/extensions/yiiwheels/widgets/maskinput/assets',
             'application/extensions/yiiwheels/widgets/redactor/assets',
             'application/extensions/yiiwheels/widgets/switch/assets',
-            'application/extensions/yiiwheels/widgets/fineuploader/assets',
             'application/extensions/yiiwheels/widgets/datetimepicker/assets',
             'application/extensions/yiiwheels/widgets/timeago/assets',
             'application/extensions/yiiwheels/widgets/sparklines/assets',

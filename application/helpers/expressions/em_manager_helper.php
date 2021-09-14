@@ -5208,7 +5208,7 @@ class LimeExpressionManager
                         $savedControl->delete();
                     }
                 } elseif ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid'])) {
-                    SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], ['saved_thisstep' => $thisstep]);
+                    SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], ['saved_thisstep' => $_SESSION[$this->sessid]['step']]);
                 }
                 // Check Quotas
                 $aQuotas = checkCompletedQuota($this->sid, true);
@@ -6091,7 +6091,7 @@ class LimeExpressionManager
             $mandatoryTip = App()->twigRenderer->renderPartial(
                 '/survey/questions/question_help/mandatory_tip.twig',
                 [
-                    'sMandatoryText' => $LEM->gT('This question is mandatory'),
+                    'sMandatoryText' => $qInfo['mandatory'] == 'S' ? $LEM->gT("Please notice you haven't answered this question. Still, you can continue without answering.") : $LEM->gT('This question is mandatory'),
                     'part'           => 'initial',
                     'qInfo'          => $qInfo
                 ]

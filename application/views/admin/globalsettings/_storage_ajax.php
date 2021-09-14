@@ -49,7 +49,7 @@
                 <?php echo $survey['size']; ?>
                 <?php if ($survey['showPurgeButton']): ?>
                     <span
-                        class='fa fa-trash pull-right btn btn-danger btn-xs'
+                        class='fa fa-trash text-danger pull-right btn btn-default btn-xs'
                         data-toggle='tooltip'
                         onclick='window.location = "<?php echo $this->createUrl('admin/survey', array('sa' => 'purge', 'purge_sid' => $survey['sid'])); ?>"'
                         title='<?php eT('Delete survey files'); ?>'

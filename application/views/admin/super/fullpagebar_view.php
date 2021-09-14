@@ -50,8 +50,10 @@
                 <?php if(isset($fullpagebar['menus']['buttons']['addMenu']) && $fullpagebar['menus']['buttons']['addMenu']): ?>
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenu"
-                       data-tab="#surveymenues">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu') ?>
+                       data-tab="#surveymenues"
+                       title="<?php eT('Add new menu'); ?>"
+                    >
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -62,8 +64,10 @@
                     <a class="btn btn-default tab-dependent-button"
                        id="createnewmenuentry"
                        data-tab="#surveymenuentries"
-                       style="display:none;">
-                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New Menu Entry') ?>
+                       style="display:none;"
+                       title="<?php eT('Add new menu entry'); ?>"
+                    >
+                        <i class="icon-add text-success"></i>&nbsp;<?php eT('New menu entry') ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -92,8 +96,9 @@
             <!-- Reset -->
             <?php if (isset($fullpagebar['menus']['buttons']['reset']) && $fullpagebar['menus']['buttons']['reset']) :?>
                 <a class="btn btn-warning"
-                   href="#restoremodal"
-                   data-toggle="modal">
+                   id="restoreBtn"
+                   href="#"
+                >
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset') ?>
                 </a>

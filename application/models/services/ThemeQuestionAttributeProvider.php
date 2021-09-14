@@ -76,7 +76,7 @@ class ThemeQuestionAttributeProvider extends QuestionAttributeProvider
             return $options['questionTheme'];
         }
         if (!empty($options['question'])) {
-            return $options['question']->questionThemeName;
+            return $options['question']->question_theme_name;
         }
         return '';
     }

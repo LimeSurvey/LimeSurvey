@@ -374,6 +374,7 @@ function populateDatabase($oDB)
             'scale_id' =>  "integer NOT NULL default '0'",
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
+            'question_theme_name' => "string(150) NULL",
             'modulename' =>  "string(255) NULL"
         ), $options);
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
@@ -1082,7 +1083,8 @@ function populateDatabase($oDB)
             'created' => "datetime",
             'modified' => "datetime",
             'validation_key' => 'string(38)',
-            'validation_key_expiration' => 'datetime'
+            'validation_key_expiration' => 'datetime',
+            'last_forgot_email_password' => 'datetime'
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
@@ -1115,6 +1117,7 @@ function populateDatabase($oDB)
             'tbl_type' => "string(10) NOT NULL",
             'created' => "datetime NOT NULL",
             'properties' => "text NOT NULL",
+            'attributes' => "text NULL",
         ], $options);
 
         // Install default plugins.

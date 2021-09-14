@@ -31,7 +31,7 @@
                 <?php if (Permission::model()->hasGlobalPermission('users', 'export')) { ?>
                     <div class="btn-group">
                         <!-- Export -->
-                        <button class="btn btn-default" type="button" data-toggle="dropdown">
+                        <button class="btn btn-default" type="button" data-toggle="dropdown" title="<?php eT('Export survey administrators'); ?>">
                             <i class="fa fa-upload text-success"></i> <?php eT("Export"); ?>
                             <span class="caret"></span>
                         </button>

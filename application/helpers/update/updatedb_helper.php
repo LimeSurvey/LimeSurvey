@@ -2782,6 +2782,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 }
                 $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
+            unset($aDefaultSurveyMenuEntries);
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 354], "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -2988,8 +2989,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 array(
                     'id' => "pk",
                     'qid' => "integer NOT NULL",
-                    'question' => "text NOT NULL",
-                    'help' => "text",
+                    'question' => "mediumtext NOT NULL",
+                    'help' => "mediumtext",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
@@ -3056,14 +3057,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'id' => "pk",
                     'gid' => "integer NOT NULL",
                     'group_name' => "text NOT NULL",
-                    'description' => "text",
+                    'description' => "mediumtext",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
             );
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+            $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
             $oDB->createCommand(
-                "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}"
+                sprintf(
+                    "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
+                    $quotedGroups
+                )
             )->execute();
             if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
                 $oDB->createCommand()->dropTable('{{groups_update400}}');
@@ -3082,7 +3087,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             );
             switchMSSQLIdentityInsert('groups', true); // Untested
             $oDB->createCommand(
-                "INSERT INTO {{groups}}
+                "INSERT INTO " . $quotedGroups . "
                 (gid, sid, group_order, randomization_group, grelevance)
                 SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
                 FROM {{groups_update400}}
@@ -3102,7 +3107,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 array(
                     'id' => "pk",
                     'aid' => "integer NOT NULL",
-                    'answer' => "text NOT NULL",
+                    'answer' => "mediumtext NOT NULL",
                     'language' => "string(20) NOT NULL"
                 ),
                 $options
@@ -3155,6 +3160,60 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropTable('{{answers_update400}}');
             $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
+
+            /**
+             * Regenerate codes for problematic label sets
+             * Helper function (TODO: Put in separate class)
+             * Fails silently
+             *
+             * @param int $lid Label set id
+             * @return void
+             */
+            $regenerateCodes = function (int $lid) {
+                $oDB = Yii::app()->getDb();
+
+                $labelSet = $oDB->createCommand(
+                    sprintf("SELECT * FROM {{labelsets}} WHERE lid = %d", (int) $lid)
+                )->queryRow();
+                if (empty($labelSet)) {
+                    return;
+                }
+
+                foreach (explode(',', $labelSet['languages']) as $lang) {
+                    $labels = $oDB->createCommand(
+                        sprintf(
+                            "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
+                            (int) $lid,
+                            $oDB->quoteValue($lang)
+                        )
+                    )->queryAll();
+                    if (empty($labels)) {
+                        continue;
+                    }
+                    foreach ($labels as $key => $label) {
+                        $oDB->createCommand(
+                            sprintf(
+                                "UPDATE {{labels}} SET code = %s WHERE id = %d",
+                                // Use simply nr as label code
+                                $oDB->quoteValue((string) $key + 1),
+                                $label['id']
+                            )
+                        )->execute();
+                    }
+                }
+            };
+
+            // Apply integrity fix before starting label set update.
+            // List of label set ids which contain code duplicates.
+            $lids = $oDB->createCommand(
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid, {{labels}}.language
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
+            )->queryAll();
+            foreach ($lids as $lid) {
+                $regenerateCodes($lid['lid']);
+            }
 
             // Labels table
             if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
@@ -3529,7 +3588,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                                 $aSurvey->bounceaccountpass
                             )
                         ],
-                        "sid=" . $aSurvey[sid]
+                        "sid=" . $aSurvey['sid']
                     );
                 }
             }
@@ -3659,6 +3718,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
                 $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
             }
+            unset($baseQuestionThemeEntries);
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 421), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -3791,11 +3851,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 reset($aUserDirectory);
                 $aUserXMLPaths = key($aUserDirectory);
                 foreach ($aUserDirectory[$aUserXMLPaths] as $sXMLDirectoryPath) {
-                    $aSuccess = QuestionTheme::convertLS3toLS5($sXMLDirectoryPath);
-                    if ($aSuccess['success']) {
-                        $oQuestionTheme = new QuestionTheme();
-                        $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
-                    };
+                    try {
+                        $aSuccess = QuestionTheme::convertLS3toLS5($sXMLDirectoryPath);
+                        if ($aSuccess['success']) {
+                            $oQuestionTheme = new QuestionTheme();
+                            $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
+                        }
+                    } catch (throwable $e) {
+                        continue;
+                    }
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 425), "stg_name='DBVersion'");
@@ -3934,9 +3998,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
+                    'name' => 'listQuestionGroups',
                     'menu_link' => 'questionGroupsAdministration/listquestiongroups',
                 ),
-                "name='listQuestionGroups'"
+                "name='listSurveyGroups'"
             );
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
@@ -4107,6 +4172,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 434) {
             $oTransaction = $oDB->beginTransaction();
             $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
+
+            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'sendadmincreationemail']);
+            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailsubject']);
+            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailtemplate']);
+
             $oDB->createCommand()->insert(
                 '{{settings_global}}',
                 [
@@ -4633,7 +4703,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 450) {
             $oTransaction = $oDB->beginTransaction();
 
-            updateEncryptedValues450($oDB);
+            $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
+            $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
+            foreach ($archivedTableSettings as $archivedTableSetting) {
+                if ($archivedTableSetting['tbl_type'] === 'token') {
+                    $oDB->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
+                }
+            }
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                updateEncryptedValues450($oDB);
+            }
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 450], "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -4641,34 +4721,37 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 451) {
             $oTransaction = $oDB->beginTransaction();
 
-            // update wrongly encrypted custom attribute values for cpdb participants
-            $encryptedAttributes = $oDB->createCommand()
-                ->select('attribute_id')
-                ->from('{{participant_attribute_names}}')
-                ->where('encrypted = :encrypted AND core_attribute <> :core_attribute', ['encrypted' => 'Y', 'core_attribute' => 'Y'])
-                ->queryAll();
-            $nrOfAttributes = count($encryptedAttributes);
-            foreach ($encryptedAttributes as $encryptedAttribute) {
-                $attributes = $oDB->createCommand()
-                    ->select('*')
-                    ->from('{{participant_attribute}}')
-                    ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                // update wrongly encrypted custom attribute values for cpdb participants
+                $encryptedAttributes = $oDB->createCommand()
+                    ->select('attribute_id')
+                    ->from('{{participant_attribute_names}}')
+                    ->where('encrypted = :encrypted AND core_attribute <> :core_attribute', ['encrypted' => 'Y', 'core_attribute' => 'Y'])
                     ->queryAll();
-                foreach ($attributes as $attribute) {
-                    $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
-                    // This extra decrypt loop is needed because of wrongly encrypted attributes.
-                    // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
-                    for ($i = 1; $i < $nrOfAttributes; $i++) {
-                        $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                $nrOfAttributes = count($encryptedAttributes);
+                foreach ($encryptedAttributes as $encryptedAttribute) {
+                    $attributes = $oDB->createCommand()
+                        ->select('*')
+                        ->from('{{participant_attribute}}')
+                        ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
+                        ->queryAll();
+                    foreach ($attributes as $attribute) {
+                        $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
+                        // This extra decrypt loop is needed because of wrongly encrypted attributes.
+                        // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
+                        for ($i = 1; $i < $nrOfAttributes; $i++) {
+                            $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                        }
+                        $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
+                        $updateArray['value'] = $recryptedValue;
+                        $oDB->createCommand()->update(
+                            '{{participant_attribute}}',
+                            $updateArray,
+                            'participant_id = :participant_id AND attribute_id = :attribute_id',
+                            ['participant_id' => $attribute['participant_id'], 'attribute_id' => $attribute['attribute_id']]
+                        );
                     }
-                    $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
-                    $updateArray['value'] = $recryptedValue;
-                    $oDB->createCommand()->update(
-                        '{{participant_attribute}}',
-                        $updateArray,
-                        'participant_id = :participant_id AND attribute_id = :attribute_id',
-                        ['participant_id' => $attribute['participant_id'], 'attribute_id' => $attribute['attribute_id']]
-                    );
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 451], "stg_name='DBVersion'");
@@ -4677,31 +4760,51 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 452) {
             $oTransaction = $oDB->beginTransaction();
 
-            // update encryption for smtppassword
-            $emailsmtppassword = $oDB->createCommand()
-                ->select('*')
-                ->from('{{settings_global}}')
-                ->where('stg_name = :stg_name', ['stg_name' => 'emailsmtppassword'])
-                ->queryRow();
-            if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
-                $decryptedValue = LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
-                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
-                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
-            }
+            // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
+            if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+                // update encryption for smtppassword
+                $emailsmtppassword = $oDB->createCommand()
+                    ->select('*')
+                    ->from('{{settings_global}}')
+                    ->where('stg_name = :stg_name', ['stg_name' => 'emailsmtppassword'])
+                    ->queryRow();
+                if ($emailsmtppassword && !empty($emailsmtppassword['stg_value']) && $emailsmtppassword['stg_value'] !== 'somepassword') {
+                    $decryptedValue = LSActiveRecord::decryptSingleOld($emailsmtppassword['stg_value']);
+                    $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                    $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='emailsmtppassword'");
+                }
 
-            // update encryption for bounceaccountpass
-            $bounceaccountpass = $oDB->createCommand()
-                ->select('*')
-                ->from('{{settings_global}}')
-                ->where('stg_name = :stg_name', ['stg_name' => 'bounceaccountpass'])
-                ->queryRow();
-            if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
-                $decryptedValue = LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
-                $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
-                $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
+                // update encryption for bounceaccountpass
+                $bounceaccountpass = $oDB->createCommand()
+                    ->select('*')
+                    ->from('{{settings_global}}')
+                    ->where('stg_name = :stg_name', ['stg_name' => 'bounceaccountpass'])
+                    ->queryRow();
+                if ($bounceaccountpass && !empty($bounceaccountpass['stg_value']) && $bounceaccountpass['stg_value'] !== 'enteredpassword') {
+                    $decryptedValue = LSActiveRecord::decryptSingleOld($bounceaccountpass['stg_value']);
+                    $encryptedValue = LSActiveRecord::encryptSingle($decryptedValue);
+                    $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => $encryptedValue], "stg_name='bounceaccountpass'");
+                }
             }
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 452], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 453) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $columnSchema = $oDB->getSchema()->getTable('{{archived_table_settings}}')->getColumn('attributes');
+            if ($columnSchema === null) {
+                $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
+            }
+            $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
+            foreach ($archivedTableSettings as $archivedTableSetting) {
+                if ($archivedTableSetting['tbl_type'] === 'token') {
+                    $oDB->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 453], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 460) { //ExportSPSSsav plugin
@@ -4742,6 +4845,149 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             };
             $insertPlugin('ExportSPSSsav', 1);
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 460], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 470) {
+            $oTransaction = $oDB->beginTransaction();
+            // Add the new column to questions table
+            $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
+            switch (Yii::app()->db->driverName) {
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql':
+                    $updateExtendedQuery = "UPDATE q SET q.question_theme_name = qt.value
+                        FROM {{questions}} q
+                        LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template' 
+                        WHERE qt.value IS NOT NULL AND qt.value <> 'core' AND qt.value <> ''";
+                    $updateCoreQuery = "UPDATE q SET q.question_theme_name = qt.name
+                        FROM {{questions}} q
+                        LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = 1 AND qt.extends = ''
+                        WHERE q.question_theme_name IS NULL";
+                    $updateUserSettingsQuery = "UPDATE su SET stg_value = qt.name
+                        FROM {{settings_user}} su
+                        JOIN {{settings_user}} su2 ON su2.uid = su.uid AND su2.stg_name = 'preselectquestiontype'
+                        JOIN {{question_themes}} qt ON qt.question_type = su2.stg_value
+                        WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'";
+                    break;
+                case 'pgsql':
+                    $updateExtendedQuery = "UPDATE {{questions}} q SET question_theme_name = qt.value
+                        FROM {{questions}} q2
+                        LEFT JOIN {{question_attributes}} qt ON qt.qid = q2.qid AND qt.attribute = 'question_template' 
+                        WHERE qt.value IS NOT NULL AND qt.value <> 'core' AND qt.value <> '' AND q.qid = q2.qid";
+                    $updateCoreQuery = "UPDATE {{questions}} q SET question_theme_name = qt.name
+                        FROM {{questions}} q2
+                        LEFT JOIN {{question_themes}} qt ON qt.question_type = q2.type AND qt.core_theme = true AND qt.extends = ''
+                        WHERE q.question_theme_name IS NULL AND q.qid = q2.qid";
+                    $updateUserSettingsQuery = "UPDATE {{settings_user}} su SET stg_value = qt.name
+                        FROM {{settings_user}} su1
+                        JOIN {{settings_user}} su2 ON su2.uid = su1.uid AND su2.stg_name = 'preselectquestiontype'
+                        JOIN {{question_themes}} qt ON qt.question_type = su2.stg_value
+                        WHERE su1.stg_name = 'preselectquestiontheme' AND su1.stg_value = 'core' AND su.id = su1.id";
+                    break;
+                default:
+                    $updateExtendedQuery = "UPDATE {{questions}} q LEFT JOIN {{question_attributes}} qt ON qt.qid = q.qid AND qt.attribute = 'question_template'
+                        SET q.question_theme_name = qt.value 
+                        WHERE qt.value IS NOT NULL AND qt.value <> 'core' AND qt.value <> ''";
+                    $updateCoreQuery = "UPDATE {{questions}} q LEFT JOIN {{question_themes}} qt ON qt.question_type = q.type AND qt.core_theme = 1 AND qt.extends = ''
+                        SET q.question_theme_name = qt.name 
+                        WHERE q.question_theme_name IS NULL";
+                    $updateUserSettingsQuery = "UPDATE {{settings_user}} su
+                        JOIN {{settings_user}} su2 ON su2.uid = su.uid AND su2.stg_name = 'preselectquestiontype'
+                        JOIN {{question_themes}} qt ON qt.question_type = su2.stg_value
+                        SET su.stg_value = qt.name
+                        WHERE su.stg_name = 'preselectquestiontheme' AND su.stg_value = 'core'";
+            }
+
+            // Fill column from question_attributes when it's not null or 'core'
+            $oDB->createCommand($updateExtendedQuery)->execute();
+            // Fill null question_theme_name values using the proper theme name
+            $oDB->createCommand($updateCoreQuery)->execute();
+            // Also update 'preselectquestiontheme' user settings where the value is 'core'
+            $oDB->createCommand($updateUserSettingsQuery)->execute();
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 471) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $fixedTitles = [
+                '5pointchoice' => '5 point choice',
+                'arrays/10point' => 'Array (10 point choice)',
+                'arrays/5point' => 'Array (5 point choice)',
+                'hugefreetext' => 'Huge free text',
+                'multiplenumeric' => 'Multiple numerical input',
+                'multipleshorttext' => 'Multiple short text',
+                'numerical' => 'Numerical input',
+                'shortfreetext' => 'Short free text',
+                'image_select-listradio' => 'Image select list (Radio)',
+                'image_select-multiplechoice' => 'Image select multiple choice',
+                'ranking_advanced' => 'Ranking advanced'
+            ];
+
+            foreach ($fixedTitles as $themeName => $newTitle) {
+                $oDB->createCommand()->update('{{question_themes}}', array('title' => $newTitle), "name='$themeName'");
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 471), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 472) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{users}}', 'last_forgot_email_password', 'datetime');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 472), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Loop through all plugins in core folder and make sure they have the correct plugin type.
+         *
+         * @todo What if a plugin is both in user and core?
+         * @todo Add integrity test when plugin manager is opened.
+         */
+        if ($iOldDBVersion < 473) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
+            foreach ($dir as $fileinfo) {
+                if (!$fileinfo->isDot()) {
+                    $plugin = Plugin::model()->findByAttributes(
+                        ['name' => $fileinfo->getFilename()]
+                    );
+
+                    if (!empty($plugin)) {
+                        if ($plugin->plugin_type !== 'core') {
+                            $plugin->plugin_type = 'core';
+                            $plugin->save();
+                        }
+                    } else {
+                        // Plugin in folder but not in database?
+                    }
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 473), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 474) {
+            $oTransaction = $oDB->beginTransaction();
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+                if ($aSurveymenuentry['name'] == 'listQuestionGroups') {
+                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                        SurveymenuEntries::reorderMenu(2);
+                    }
+                    break;
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 474), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     } catch (Exception $e) {
@@ -4893,10 +5139,11 @@ function decryptParticipantTables450($oDB)
         ->from('{{surveys}}')
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableSchema = $oDB->getSchema()->getTable("{{tokens_{$survey['sid']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{tokens_{$survey['sid']}}}");
+        if (!$tableExists) {
             continue;
         }
+        $tableSchema = $oDB->getSchema()->getTable("{{tokens_{$survey['sid']}}}");
         $tokens = $oDB->createCommand()
             ->select('*')
             ->from("{{tokens_{$survey['sid']}}}")
@@ -4904,16 +5151,14 @@ function decryptParticipantTables450($oDB)
         $tokenencryptionoptions = json_decode($survey['tokenencryptionoptions'], true);
 
         // default attributes
-        foreach ($tokenencryptionoptions['columns'] as $column => $encrypted) {
-            $columnEncryptions[$column]['encrypted'] = $encrypted;
+        if (!empty($tokenencryptionoptions)) {
+            foreach ($tokenencryptionoptions['columns'] as $column => $encrypted) {
+                $columnEncryptions[$column]['encrypted'] = $encrypted;
+            }
         }
 
         // find custom attribute column names
-        if (!$tableSchema) {
-            $aCustomAttributes = [];
-        } else {
-            $aCustomAttributes = array_filter(array_keys($tableSchema->columns), 'filterForAttributes');
-        }
+        $aCustomAttributes = array_filter(array_keys($tableSchema->columns), 'filterForAttributes');
 
         // custom attributes
         foreach ($aCustomAttributes as $attributeName) {
@@ -4956,8 +5201,8 @@ function decryptResponseTables450($oDB)
         ->where('active =:active', ['active' => 'Y'])
         ->queryAll();
     foreach ($surveys as $survey) {
-        $tableSchema = $oDB->getSchema()->getTable("{{survey_{$survey['sid']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{survey_{$survey['sid']}}}");
+        if (!$tableExists) {
             continue;
         }
         $responsesCount = $oDB->createCommand()
@@ -5008,82 +5253,73 @@ function decryptArchivedTables450($oDB)
 {
     $archivedTablesSettings = $oDB->createCommand('SELECT * FROM {{archived_table_settings}}')->queryAll();
     foreach ($archivedTablesSettings as $archivedTableSettings) {
-        $tableSchema = $oDB->getSchema()->getTable("{{{$archivedTableSettings['tbl_name']}}}");
-        if (!isset($tableSchema)) {
+        $tableExists = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
+        if (!$tableExists) {
             continue;
         }
-        $surveyId = $archivedTableSettings['survey_id'];
-        $survey = $oDB
-            ->createCommand()
-            ->select('*')
-            ->from('{{surveys}}')
-            ->where('sid=:sid', ['sid' => $surveyId])
-            ->queryRow();
-        // if the encryption status is unknown
-        $archivedTableSettingsArray = json_decode($archivedTableSettings['properties'], true);
-        foreach ($archivedTableSettingsArray as $archivedTableSetting) {
-            if ($archivedTableSetting === 'unknown') {
-                continue 2;
-            }
-        }
+        $archivedTableSettingsProperties = json_decode($archivedTableSettings['properties'], true);
+        $archivedTableSettingsAttributes = json_decode($archivedTableSettings['attributes'], true);
 
+        // recrypt tokens
         if ($archivedTableSettings['tbl_type'] === 'token') {
-            $archivedTableRows = $oDB
-                ->createCommand()
-                ->select('*')
-                ->from("{{{$archivedTableSettings['tbl_name']}}}")
-                ->queryAll();
-            if ($archivedTableSettings['properties']) {
-                $tokenencryptionoptions = json_decode($archivedTableSettings['properties'], true);
+            // skip if the encryption status is unknown
+            if (isset($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+                $tokenencryptionoptions = $archivedTableSettingsProperties;
 
                 // default attributes
                 foreach ($tokenencryptionoptions['columns'] as $column => $encrypted) {
                     $columnEncryptions[$column]['encrypted'] = $encrypted;
                 }
-
+            }
+            // skip if the encryption status is unknown
+            if (isset($archivedTableSettingsAttributes) && $archivedTableSettingsAttributes[0] !== 'unknown') {
                 // find custom attribute column names
-                $table = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
+                $table = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
                 if (!$table) {
                     $aCustomAttributes = [];
                 } else {
-                    $aCustomAttributes = array_filter(array_keys($table->columns), 'filterForAttributes');
+                    $aCustomAttributes = array_filter(array_keys($oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}")->columns), 'filterForAttributes');
                 }
 
                 // custom attributes
-                if ($survey) {
-                    foreach ($aCustomAttributes as $attributeName) {
-                        if (isset(json_decode($survey['attributedescriptions'])->$attributeName->encrypted)) {
-                            $columnEncryptions[$attributeName]['encrypted'] = json_decode($survey['attributedescriptions'], true)[$attributeName]['encrypted'];
-                        } else {
-                            $columnEncryptions[$attributeName]['encrypted'] = 'N';
-                        }
+                foreach ($aCustomAttributes as $attributeName) {
+                    if (isset(json_decode($archivedTableSettings['attributes'])->$attributeName->encrypted)) {
+                        $columnEncryptions[$attributeName]['encrypted'] = $archivedTableSettingsAttributes[$attributeName]['encrypted'];
+                    } else {
+                        $columnEncryptions[$attributeName]['encrypted'] = 'N';
                     }
                 }
-                if (isset($columnEncryptions) && $columnEncryptions) {
-                    foreach ($archivedTableRows as $archivedToken) {
-                        $recryptedToken = [];
-                        foreach ($columnEncryptions as $column => $value) {
-                            if ($columnEncryptions[$column]['encrypted'] === 'Y') {
-                                $decryptedTokenColumn = LSActiveRecord::decryptSingleOld($archivedToken[$column]);
-                                $recryptedToken[$column] = LSActiveRecord::encryptSingle($decryptedTokenColumn);
-                            }
+            }
+            if (isset($columnEncryptions) && $columnEncryptions) {
+                $archivedTableRows = $oDB
+                    ->createCommand()
+                    ->select('*')
+                    ->from("{{{$archivedTableSettings['tbl_name']}}}")
+                    ->queryAll();
+                foreach ($archivedTableRows as $archivedToken) {
+                    $recryptedToken = [];
+                    foreach ($columnEncryptions as $column => $value) {
+                        if ($value['encrypted'] === 'Y') {
+                            $decryptedTokenColumn = LSActiveRecord::decryptSingleOld($archivedToken[$column]);
+                            $recryptedToken[$column] = LSActiveRecord::encryptSingle($decryptedTokenColumn);
                         }
-                        if ($recryptedToken) {
-                            $oDB->createCommand()->update("{{{$archivedTableSettings['tbl_name']}}}", $recryptedToken, 'tid=' . $archivedToken['tid']);
-                        }
+                    }
+                    if ($recryptedToken) {
+                        $oDB->createCommand()->update("{{{$archivedTableSettings['tbl_name']}}}", $recryptedToken, 'tid=' . $archivedToken['tid']);
                     }
                 }
             }
         }
 
-        if ($archivedTableSettings['tbl_type'] === 'response') {
+        // recrypt responses // skip if the encryption status is unknown
+        if ($archivedTableSettings['tbl_type'] === 'response' && isset($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
             $responsesCount = $oDB->createCommand()
                 ->select('count(*)')
                 ->from("{{{$archivedTableSettings['tbl_name']}}}")
                 ->queryScalar();
             if ($responsesCount) {
                 $responseTableSchema = $oDB->schema->getTable("{{{$archivedTableSettings['tbl_name']}}}");
-                $encryptedResponseAttributes = json_decode($archivedTableSettings['properties'], true);
+                $encryptedResponseAttributes = $archivedTableSettingsProperties;
 
                 $fieldMap = [];
                 foreach ($responseTableSchema->getColumnNames() as $name) {
@@ -5136,6 +5372,7 @@ function createFieldMap450($survey): array
 {
     // Main query
     $style = 'full';
+    $defaultValues = null;
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $aquery = 'SELECT g.*, q.*, gls.*, qls.*, qa.attribute, qa.value'
         . " FROM $quotedGroups g"
@@ -5222,7 +5459,7 @@ function createFieldMap450($survey): array
         // GXQXSXA
         // G=Group  Q=Question S=Subquestion A=Answer Option
         // If S or A don't exist then set it to 0
-        // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
+        // Implicit (subqestion intermal to a question type) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
@@ -7405,7 +7642,7 @@ function upgradeQuestionAttributes142()
             $record['value'] = implode(';', $attributevalues);
             $record['attribute'] = 'exclude_all_other';
             $record['qid'] = $questionid;
-            Yii::app()->getDb()->createCommand()->insert('{{question_attributes}}', $record)->execute();
+            Yii::app()->getDb()->createCommand()->insert('{{question_attributes}}', $record);
         }
     }
 }

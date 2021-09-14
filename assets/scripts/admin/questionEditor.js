@@ -1520,7 +1520,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
         $.ajax({
           url: generalSettingsUrl,
           method: 'GET',
-          data: { questionType, questionTheme }, //todo add question_template (e.g. 'bootstrap_buttons' it's the theme) here
+          data: { questionType, questionTheme },
           dataType: 'html',
           success: (data) => {
             resolve(data);

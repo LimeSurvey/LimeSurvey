@@ -90,7 +90,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 'form' => 'surveys-groups-form',
             ],
             'white_closebutton' => array(
-                'url' => 'surveyAdministration/listsurveys#surveygroups',
+                'url' => App()->createUrl('surveyAdministration/listsurveys', ['#' => 'surveygroups']),
             ),
         );
         /* User for dropdown */

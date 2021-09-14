@@ -281,7 +281,7 @@ class UserGroup extends LSActiveRecord
                 'header' => gT('Name'),
                 'name' => 'name',
                 'value' => '$data->name',
-                'htmlOptions' => array('class' => 'col-md-2'),
+                'htmlOptions' => array('class' => ''),
             ),
 
             array(
@@ -310,7 +310,7 @@ class UserGroup extends LSActiveRecord
                 'name' => 'actions',
                 'type' => 'raw',
                 'value' => '',
-                'htmlOptions' => array('class' => 'col-md-2 col-xs-1'),
+                'htmlOptions' => array('class' => ''),
             ),
 
         );
@@ -322,10 +322,11 @@ class UserGroup extends LSActiveRecord
      */
     public function getButtons()
     {
+        $button = "<div class='icon-btn-row'>";
         // Edit user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'update')) {
             $url = Yii::app()->createUrl("userGroup/edit/ugid/$this->ugid");
-            $button = ' <a class="btn btn-default btn-sm green-border" style="margin-right: 5px;" data-toggle="tooltip" data-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-default btn-sm green-border" data-toggle="tooltip" data-placement="top" title="' . gT('Edit user group') . '" href="' . $url . '" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // View users
@@ -339,9 +340,9 @@ class UserGroup extends LSActiveRecord
 
         // Delete user group
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
-            $button .= ' <button data-toggle="tooltip" data-placement="top" title="' . gT('Delete user group') . '" class="btn btn-default btn-sm red-border action__delete-group" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash"></span></button>';
+            $button .= '<button class="btn btn-default btn-sm red-border action__delete-group" data-toggle="tooltip" data-placement="top" title="' . gT('Delete user group') . '" href="#delete-modal" data-toggle="modal" data-ugid="' . $this->ugid . '" role="button"><span class="fa fa-trash text-danger"></span></button>';
         }
-
+        $button .= "</div>";
         return $button;
     }
 

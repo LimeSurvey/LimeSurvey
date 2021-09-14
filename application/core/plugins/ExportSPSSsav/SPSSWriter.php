@@ -32,6 +32,8 @@ class SPSSWriter extends Writer
         $this->separator       = ',';
         $this->hasOutputHeader = false;
         $this->spssfileversion = $pluginsettings['spssfileversion']['current'];
+
+
         if ($this->spssfileversion >= 13) {
             $this->maxStringLength = 32767; // for SPSS version 13 and above
         } else {
@@ -312,10 +314,17 @@ class SPSSWriter extends Writer
         foreach ($this->customResponsemap as $iRespId => &$aResponses) {
             // go through variables and response items
 
+
             //relevant types for SPSS are numeric (need to know largest number and number of decimal places), date and string
             foreach ($aResponses as $iVarid => &$response) {
                 $response = trim($response);
+                $iDatatype = 5;
+                $iStringlength = 1;
                 if ($response != '') {
+
+                    if ($response == '-oth-') {
+                     $this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['spssothervaluelabel'] = true;
+                    }
 
                     $numberresponse = trim($response);
                     if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) {
@@ -351,7 +360,6 @@ class SPSSWriter extends Writer
                                 $iNumberWidth = strlen($response);
                                 $iDecimalPlaces = $iNumberWidth - ($tmpdpoint + 1);
                             }
-
                         }
                         }
                     } else {
@@ -359,14 +367,11 @@ class SPSSWriter extends Writer
                         $iDatatype = 1; //string
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
-                }  else {
-                    $iDatatype = 1; // response = ""
-                    $iStringlength = 1;
                 }
 
                 // initialize format and type (default: empty)
                 if (!isset($aSPSStypelist[$this->headersSGQA[$iVarid]]['type'])) {
-                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
+                                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = 5;
                 }
                 if (!isset($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'])) {
                                     $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
@@ -376,20 +381,20 @@ class SPSSWriter extends Writer
                 }
 
                 // Does the variable need a higher datatype because of the current response?
-                if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype) {
+                if ($iDatatype < $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] ) {
                                     $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
                 }
 
                 // if datatype is a string, set needed stringlength
-                if ($iDatatype == 1) {
+                if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] == 1 || $aSPSStypelist[$this->headersSGQA[$iVarid]]['type'] == 5) {
+                    $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = -1;
                     // Does the variable need a higher stringlength because of the current response?
                     if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength) {
                                             $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
                     }
-
                 }
                  // if datatype is a numeric, set needed width and decimals
-                if ($iDatatype == 2) {
+                if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['type']  == 2) {
                     // Does the variable need a higher length because of the current response?
                     if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] < $iNumberWidth) {
                                             $aSPSStypelist[$this->headersSGQA[$iVarid]]['format'] = $iNumberWidth;
@@ -397,17 +402,18 @@ class SPSSWriter extends Writer
                      if ($aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] < $iDecimalPlaces) {
                                             $aSPSStypelist[$this->headersSGQA[$iVarid]]['decimals'] = $iDecimalPlaces;
                     }
-
                 }
                 //write the recoded response back to the response array
                 $this->customResponsemap[$iRespId][$iVarid] = $response;
             }
         }
 
+
         // translate coding into SPSS datatypes, format and length
         foreach ($aSPSStypelist as $variable => $data) {
 
             switch ($data['type']) {
+                case 5:
                 case 1:
                     $this->customFieldmap['questions'][$variable]['spsswidth']   = min($data['format'], $this->maxStringLength);
                     $this->customFieldmap['questions'][$variable]['spssformat'] = Variable::FORMAT_TYPE_A;
@@ -459,8 +465,8 @@ class SPSSWriter extends Writer
             }
             $tmpvar['label'] = $question['varlabel'];
             $tmpwidth = $question['spsswidth'];
-            //export value labels if they exist
-            if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false) {
+            //export value labels if they exist (not for time questions)
+            if (!empty($this->customFieldmap['answers'][$question['qid']]) && $question['commentother'] == false && $question['type'] != "answer_time") {
                 $tmpvar['values'] = array();
                 foreach($this->customFieldmap['answers'][$question['qid']] as $aAnswercodes) {
                     foreach($aAnswercodes as $sAnscode => $aAnswer) {
@@ -476,6 +482,10 @@ class SPSSWriter extends Writer
                         }
                     }
                 }
+                //if other is set add as value label
+                if (isset($question['spssothervaluelabel']) && $question['spssothervaluelabel'] == true) {
+                    $tmpvar['values']['-oth-'] = "Other";
+                }
             }
             $tmpvar['width'] = $tmpwidth;
             $tmpvar['columns'] = 8;
@@ -487,11 +497,23 @@ class SPSSWriter extends Writer
         $header = array(
             'prodName' => '@(#) IBM SPSS STATISTICS 64-bit Macintosh 23.0.0.0',
             'creationDate' => date('d M y'),
-            'creationTime' => date('H:M:s'),
-            'weightIndex' => 0);
+            'creationTime' => date('H:i:s'),
+            'weightIndex' => 0,
+       );
 
+        $info = array(
+             'machineInteger' => [
+                 'machineCode' => 720,
+                 'version' => [23, 0, 0],
+             ],
+             'machineFloatingPoint' => [
+                 'sysmis' => -1.7976931348623157e+308,
+                 'highest' => 1.7976931348623157e+308,
+                 'lowest' => -1.7976931348623155e+308,
+             ],
+        );
 
-        $writer = new \SPSS\Sav\Writer(['header' => $header, 'variables' => $variables]);
+        $writer = new \SPSS\Sav\Writer(['header' => $header, 'info' => $info, 'variables' => $variables]);
 
         foreach ($this->customResponsemap as $aResponses) {
             $tmpdat = array();

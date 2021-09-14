@@ -45,10 +45,9 @@
                    data-tab="#surveys"
                    href="<?php echo $fullpagebar['listSurveys']['buttons']['createSurvey']['url']; ?>"
                    role="button"
-                   style="display: none;"
                 >
                     <span class="icon-add text-success"></span>
-                    <?php eT("Create a new survey");?>
+                    <?php eT("Create survey");?>
                 </a>
             <?php endif;?>
 
@@ -64,7 +63,7 @@
                    style="display: none;"
                 >
                     <span class="icon-add text-success"></span>
-                    <?php eT("Create a new survey group");?>
+                    <?php eT("Create survey group");?>
                 </a>
             <?php endif;?>
         </div>

@@ -140,8 +140,10 @@ class QuestionTemplate extends CFormModel
     public function getQuestionTemplateFolderName()
     {
         if ($this->sTemplateFolderName === null) {
-            $aQuestionAttributes       = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-            $this->sTemplateFolderName = (isset($aQuestionAttributes['question_template']) && $aQuestionAttributes['question_template'] != 'core') ? $aQuestionAttributes['question_template'] : false;
+            $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
+            /** @var string|null */
+            $questionThemeName = $this->oQuestion->question_theme_name;
+            $this->sTemplateFolderName = (!empty($questionThemeName) && $questionThemeName != 'core') ? $questionThemeName : false;
         }
         $this->bHasTemplate = ($this->sTemplateFolderName != false);
         return $this->sTemplateFolderName;
@@ -174,12 +176,12 @@ class QuestionTemplate extends CFormModel
     /**
      * Register a core css file
      * @param string $sCssFile
-     * @param int $pos
+     * @param int $media
      */
-    public function registerCssFile($sCssFile, $pos = CClientScript::POS_HEAD)
+    public function registerCssFile($sCssFile, $media = '')
     {
         if ($this->templateLoadsCoreCss) {
-            Yii::app()->getClientScript()->registerCssFile($sCssFile, $pos);
+            Yii::app()->getClientScript()->registerCssFile($sCssFile, $media);
         }
     }
 
@@ -325,7 +327,7 @@ class QuestionTemplate extends CFormModel
                 } else {
                     $templateurl = $this->getTemplateUrl();
                     foreach ($aCssFiles as $sCssFile) {
-                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile", LSYii_ClientScript::POS_BEGIN);
+                        Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
                     }
                     foreach ($aJsFiles as $sJsFile) {
                         Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile", LSYii_ClientScript::POS_BEGIN);

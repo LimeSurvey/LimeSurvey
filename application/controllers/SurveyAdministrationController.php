@@ -1569,6 +1569,7 @@ class SurveyAdministrationController extends LSBaseController
                     $archivedTokenSettings->tbl_type = 'token';
                     $archivedTokenSettings->created = $DBDate;
                     $archivedTokenSettings->properties = $aData['aSurveysettings']['tokenencryptionoptions'];
+                    $archivedTokenSettings->attributes = json_encode($aData['aSurveysettings']['attributedescriptions']);
                     $archivedTokenSettings->save();
 
                     $aData['tnewtable'] = $tnewtable;
@@ -1973,7 +1974,7 @@ class SurveyAdministrationController extends LSBaseController
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['topBar']['closeUrl'] = $this->createUrl("surveyAdministration/view/", ['surveyid' => $iSurveyID]); // Close button
 
-        if ($subaction === 'resources' || $subaction === 'panelintegration') {
+        if ($subaction === 'resources') {
             $aData['topBar']['showSaveButton'] = false;
         } else {
             $aData['topBar']['showSaveButton'] = true;

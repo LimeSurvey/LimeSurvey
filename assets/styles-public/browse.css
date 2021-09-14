@@ -2,13 +2,6 @@
 /*!
  * Style for browsing response : in Cgrid
  */
-
-/* Note: The child selector is necessary to not affect date time picker */
- #responses-grid > table > thead > tr > th {
-     min-width: 125px;
-     text-align: center;
- }
-
  .grid-view .table .filters > td .filter-container
  {
      padding: 0;

@@ -648,7 +648,8 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Action'),
                 'class' => 'bootstrap.widgets.TbButtonColumn',
-                'template' => '{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
+                'template' => '{edit}{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{viewparticipant}<span data-toggle="tooltip" title="' . gt('Delete survey participant') . '">{deletetoken}</span>{viewparticipantspacer}',
+                'htmlOptions' => array('class' => 'icon-btn-row'),
                 'buttons' => $this->getGridButtons(),
             ),
 
@@ -814,7 +815,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/responses/sa/viewbytoken",array("surveyid"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'data-toggle' => "tooltip",
                 'title' => gT("View response details")
             ),
@@ -825,7 +826,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-xs invisible",
+                'class' => "btn btn-default btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -835,11 +836,11 @@ class TokenDynamic extends LSActiveRecord
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
-            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-cog" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT("Launch the survey with this participant") . '</span><span class="fa fa-eye" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/survey/index",array("sid"=>' . self::$sid . ',"token"=>$data->token,"newtest"=>"Y"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs",
+                'class' => "btn btn-default btn-sm",
                 'target' => "_blank",
                 'data-toggle' => "tooltip",
                 'title' => gT("Launch the survey with this participant")
@@ -847,11 +848,11 @@ class TokenDynamic extends LSActiveRecord
             'visible' => $baseView . ' && !empty($data->token) && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
         $gridButtons['previewsurveyspacer'] = array(
-            'label' => '<span class="fa fa-cog  text-muted" aria-hidden="true"></span>',
+            'label' => '<span class="fa fa-eye  text-muted" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-xs invisible",
+                'class' => "btn btn-default btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -866,7 +867,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid,));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-email",
+                'class' => "btn btn-default btn-sm btn-email",
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email invitation")
             ),
@@ -878,7 +879,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>' . self::$sid . ',"tokenids"=>$data->tid));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-email",
+                'class' => "btn btn-default btn-sm btn-email",
                 'data-toggle' => "tooltip",
                 'title' => gT("Send email reminder")
             ),
@@ -889,7 +890,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-xs invisible",
+                'class' => "btn btn-default btn-sm invisible",
                 'disabled' => 'disabled',
                 'title' => ''
             ),
@@ -897,11 +898,11 @@ class TokenDynamic extends LSActiveRecord
         );
         /* edit button button */
         $gridButtons['edit'] = array(
-            'label' => '<span class="sr-only">' . gT('Edit this survey participant') . '</span><span class="fa fa-edit" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT('Edit this survey participant') . '</span><span class="fa fa-pencil" aria-hidden="true"></span>',
             'imageUrl' => false,
             'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>' . self::$sid . ',"iTokenId"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-edit",
+                'class' => "btn btn-default btn-sm btn-edit",
                 'data-toggle' => "tooltip",
                 'title' => gT('Edit this survey participant'),
                 'data-sid' => self::$sid
@@ -911,17 +912,15 @@ class TokenDynamic extends LSActiveRecord
         );
         /* delete button */
         $gridButtons['deletetoken'] = array(
-            'label' => '<span class="sr-only">' . gT('Delete survey participant') . '</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
+            'label' => '<span class="sr-only">' . gT('Delete survey participant') . '</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl' => false,
             //'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-delete",
+                'class' => "btn btn-default btn-sm btn-delete",
                 ///'data-toggle' => "tooltip",
                 'data-toggle' => "modal",
                 'data-target' => '#confirmation-modal',
-                'data-title' => gt('Delete this participant'),
                 'data-message' => gt('Do you really want to delete this participant') . '?',
-                'data-btnclass' => 'btn-danger',
                 'data-href' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>' . self::$sid . ',"sItem"=>$data->tid));',
                 'evaluateOptions' => array('data-href'),
                 'data-btntext' => gt('Delete'),
@@ -937,7 +936,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-participant",
+                'class' => "btn btn-default btn-sm btn-participant",
                 'data-toggle' => "tooltip",
                 'title' => gT('View this participant in the central participants database'),
             ),
@@ -949,7 +948,7 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl' => false,
             'url' => '#',
             'options' => array(
-                'class' => "btn btn-default btn-xs invisible",
+                'class' => "btn btn-default btn-sm invisible",
                 'data-toggle' => "tooltip",
                 'title' => "",
             ),
