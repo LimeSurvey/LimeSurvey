@@ -89,6 +89,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * @return string|string[]|null
      * @throws CException
      * @throws CHttpException
@@ -279,6 +281,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Save Permissions
      */
     public function savepermissions()
@@ -338,6 +342,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED
+     *
      * Batch Delete
      */
     public function batchDelete()
@@ -525,6 +531,8 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
 
     /**
+     * REFACTORED ...
+     *
      * Apply Permission from XML.
      * @param int   $iRoleId           Role ID
      * @param array $oPermissionObject Permission

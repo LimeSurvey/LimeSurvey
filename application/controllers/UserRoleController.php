@@ -11,10 +11,9 @@ class UserRoleController extends LSBaseController
     public function filters()
     {
         return [
-          'postOnly + delete, applyEdit'
+          'postOnly + delete, applyEdit, savePermissions, batchDelete'
         ];
     }
-
 
     /**
      * Renders the list of user roles.
@@ -84,6 +83,9 @@ class UserRoleController extends LSBaseController
     }
 
     /**
+     * Updates the role itself (name, description).
+     * Renders a modal view with success/error message.
+     *
      * @return string|string[]|null
      * @throws CException
      * @throws CHttpException
@@ -119,6 +121,9 @@ class UserRoleController extends LSBaseController
 
     /**
      * Renders the modal for adding the permissions to the role.
+     *
+     * @return array|false|mixed|string|string[]|void|null
+     * @throws CException
      */
     public function actionRenderModalPermissions()
     {
@@ -202,9 +207,9 @@ class UserRoleController extends LSBaseController
         }
 
         $oRequest = Yii::app()->request;
-        $ptid = $oRequest->getParam('ptid');
-        $aPermissions = Yii::app()->request->getPost('Permission', []);
-        $oPermissionTemplate = Permissiontemplates::model()->findByPk($ptid);
+        $ptid = $oRequest->getPost('ptid');
+        $aPermissions = $oRequest->getPost('Permission', []);
+        $oPermissionTemplate = Permissiontemplates::model()->findByPk((int)$ptid);
         $results = $this->applyPermissionFromArray($ptid, $aPermissions);
 
         $oPermissionTemplate->renewed_last = date('Y-m-d H:i:s');
@@ -243,7 +248,7 @@ class UserRoleController extends LSBaseController
      * Creates an xml content/file to export. Opens dialog to save
      * the xml file.
      *
-     * @param $ptid
+     * @param int $ptid
      */
     public function actionRunExport($ptid)
     {
@@ -298,9 +303,16 @@ class UserRoleController extends LSBaseController
     }
 
     /**
+     * Imports a role (and the permissions) from a xml-file.
+     * Shows error message in case of
+     *  - file to large
+     *  - wrong file extension
+     *  - error while parsing xml to db
+     * Shows success message if role could be imported.
+     * Redirects to index in any case.
      *
      */
-    public function importXML()
+    public function actionImportXML()
     {
         $sRandomFileName = randomChars(20);
         $sFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $sRandomFileName;
@@ -310,19 +322,19 @@ class UserRoleController extends LSBaseController
 
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
-            $this->redirect(array('/admin/roles'));
+            $this->redirect(array('userRole/index'));
             Yii::app()->end(); //todo: is this necessary? after redirect this line will never be reached?!?
-        } elseif (strtolower($sExtension) == 'xml' || 1 == 1) {
-            $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
-        } else {
+        } elseif (strtolower($sExtension) !== 'xml') {
             Yii::app()->setFlashMessage(gT("This is not a .xml file.") . 'It is a ' . $sExtension, 'error');
-            $this->redirect(array('/admin/roles'));
-           // Yii::app()->end();
+            $this->redirect(array('userRole/index'));
+            Yii::app()->end();
+        } else {
+            $bMoveFileResult = @move_uploaded_file($_FILES['the_file']['tmp_name'], $sFilePath);
         }
 
         if ($bMoveFileResult === false) {
             Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
-            $this->redirect(array('/admin/roles'));
+            $this->redirect(array('userRole/index'));
             Yii::app()->end();
             return;
         }
@@ -339,7 +351,7 @@ class UserRoleController extends LSBaseController
         $oNewRole = Permissiontemplates::model()->createFromXML($oRoleDefinition);
         if ($oNewRole == false) {
             Yii::app()->setFlashMessage(gT("Error creating role"), 'error');
-            Yii::app()->getController()->redirect(array('/admin/roles'));
+            Yii::app()->getController()->redirect(array('userRole/index'));
             Yii::app()->end();
             return;
         }
@@ -347,12 +359,143 @@ class UserRoleController extends LSBaseController
         $applyPermissions = $this->applyPermissionFromXML($oNewRole->ptid, $oRoleDefinition->permissions);
 
         Yii::app()->setFlashMessage(gT("Role was successfully imported."), 'success');
-        Yii::app()->getController()->redirect(array('/admin/roles'));
+        Yii::app()->getController()->redirect(array('userRole/index'));
         Yii::app()->end();
-        return;
+    }
+
+    /**
+     * Batch Delete
+     * Massive action for deleting multiple roles at once.
+     *
+     * Renders a modal with deleting results for all roles that should be deleted.
+     *
+     * @throws CDbException
+     * @throws CException
+     */
+    public function actionBatchDelete()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(array('/admin'));
+        }
+        $sPtids = Yii::app()->request->getPost('sItems', []);
+        $aPtids = json_decode($sPtids, true);
+        $success = [];
+        foreach ($aPtids as $ptid) {
+            $success[$ptid] = $this->loadModel($ptid)->delete();
+        }
+
+        $this->renderPartial(
+            '/userManagement/partial/success',
+            [
+                'sMessage' => gT('Roles successfully deleted'),
+                'sDebug' => json_encode($success, JSON_PRETTY_PRINT),
+                'noButton' => true
+            ]
+        );
+    }
+
+    /**
+     * Batch Export
+     * Massive action to export multiple roles.
+     *
+     * Redirects to index.
+     */
+    public function actionBatchExport()
+    {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
+            $this->redirect(array('/admin'));
+        }
+        $sPtids = Yii::app()->request->getParam('sItems', '');
+        $aPtids = explode(',', $sPtids);
+        $sRandomFolderName = randomChars(20);
+        $sRandomFileName = "RoleExport-" . randomChars(5) . '-' . time();
+
+        $tempdir = Yii::app()->getConfig('tempdir');
+        $zipfile = "$tempdir/$sRandomFileName.zip";
+        Yii::app()->loadLibrary('admin.pclzip');
+
+        $zip = new PclZip($zipfile);
+        $sFilePath = $tempdir . DIRECTORY_SEPARATOR . $sRandomFolderName;
+
+        mkdir($sFilePath);
+        $filesInArchive = [];
+
+        foreach ($aPtids as $iPtid) {
+            $oModel = $this->loadModel($iPtid);
+            $oXML = $oModel->compileExportXML();
+            $filename = preg_replace("/[^a-zA-Z0-9-_]*/", '', $oModel->name) . '.xml';
+
+            file_put_contents($sFilePath . DIRECTORY_SEPARATOR . $filename, $oXML->asXML());
+            $filesInArchive[] = $sFilePath . DIRECTORY_SEPARATOR . $filename;
+        }
+
+        $zip->create($filesInArchive, PCLZIP_OPT_REMOVE_ALL_PATH);
+
+        if (is_file($zipfile)) {
+            // Send the file for download!
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate");
+            header("Content-Type: application/force-download");
+            header("Content-Disposition: attachment; filename=$sRandomFileName.zip");
+            header("Content-Description: File Transfer");
+
+            @readfile($zipfile);
+
+            // Delete the temporary file
+            array_map('unlink', glob("$sFilePath/*.*"));
+            rmdir($sFilePath);
+            unlink($zipfile);
+            return;
+        }
+
+        $this->redirect('index');
     }
 
     /**                                       THIS FUNCTIONS DO NOT BELONG TO CONTROLLERS                         ** */
+
+    /**
+     * Apply Permission from XML.
+     *
+     * @param int   $iRoleId           Role ID
+     * @param array $oPermissionObject Permission
+     * @return array
+     */
+    private function applyPermissionFromXML($iRoleId, $oPermissionObject)
+    {
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('entity_id', $iRoleId);
+        $oCriteria->compare('entity', 'role');
+        //Kill all Permissions of that role.
+        $aPermissionsCurrently = Permission::model()->deleteAll($oCriteria); //todo: why delete here???
+        $results = [];
+        //Apply the permission array
+        $aCleanPermissionObject = json_decode(json_encode($oPermissionObject), true);
+        foreach ($aCleanPermissionObject as $sPermissionKey => $aPermissionSettings) {
+            $oPermission = new Permission();
+            $oPermission->entity = 'role';
+            $oPermission->entity_id = $iRoleId;
+            $oPermission->uid = 0;
+            $oPermission->permission = $sPermissionKey;
+
+            foreach ($aPermissionSettings as $sSettingKey => $sSettingValue) {
+                $oPermissionDBSettingKey = $sSettingKey . '_p';
+                if (isset($oPermission->$oPermissionDBSettingKey)) {
+                    $oPermission->$oPermissionDBSettingKey = $sSettingValue;
+                }
+            }
+
+            $aPermissionData = Permission::getGlobalPermissionData($sPermissionKey);
+
+            $results[$sPermissionKey] = [
+                'descriptionData' => $aPermissionData,
+                'success' => $oPermission->save(),
+                'storedValue' => $oPermission->attributes
+            ];
+        }
+        return $results;
+    }
 
     /**
      * Returns the data model based on the id. If no entry exists with the given id, then a

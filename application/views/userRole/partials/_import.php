@@ -7,7 +7,7 @@ Yii::app()->getController()->renderPartial(
 
 <?= TbHtml::formTb(
     null,
-    App()->createUrl('admin/roles/sa/importXML'),
+    App()->createUrl('userRole/importXML'),
     'post',
     ["id" => "RoleControl--modalform-import", 'enctype' => 'multipart/form-data']
 ) ?>

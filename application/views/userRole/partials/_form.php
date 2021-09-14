@@ -17,7 +17,7 @@ Yii::app()->getController()->renderPartial(
 
 <?php $form=$this->beginWidget('TbActiveForm', array(
     'id'=>'RoleControl--modalform',
-    'action' => App()->createUrl('admin/roles/sa/applyEdit'),
+    'action' => App()->createUrl('userRole/applyEdit'),
     'enableAjaxValidation'=>false,
 )); ?>
 <div class="modal-body">
