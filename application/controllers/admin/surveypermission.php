@@ -127,7 +127,6 @@ class surveypermission extends Survey_Common_Action
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'delete')) {
                     $deleteUrl = App()->createUrl("admin/surveypermission/sa/delete/surveyid/" . $iSurveyID, array(
                         'action' => 'delsurveysecurity',
-                        'user' => $PermissionRow['users_name'],
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
@@ -530,7 +529,10 @@ class surveypermission extends Survey_Common_Action
             if (Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'delete')) {
                 if (isset($postuserid)) {
                     $dbresult = Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = 'survey'", array(':uid' => $postuserid, ':sid' => $surveyid));
-                    $addsummary .= "<br />" . gT("Username") . ": " . sanitize_xss_string(App()->getRequest()->getParam('user')) . "<br /><br />\n";
+                    $user = User::model()->findByPk($postuserid);
+                    if (!empty($user)) {
+                        $addsummary .= "<br />" . gT("Username") . ": " . sanitize_xss_string($user->users_name) . "<br /><br />\n";
+                    }
                     $addsummary .= "<div class=\"successheader\">" . gT("Success!") . "</div>\n";
                 } else {
                     $addsummary .= "<div class=\"warningheader\">" . gT("Could not delete user. User was not supplied.") . "</div>\n";
