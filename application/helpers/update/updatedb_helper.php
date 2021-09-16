@@ -4917,7 +4917,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $plugin = $oDB->createCommand()
                         ->select('*')
                         ->from('{{plugins}}')
-                        ->where("name = :name", [':name' => $fileinfo->getFilename()]);
+                        ->where("name = :name", [':name' => $fileinfo->getFilename()])
                         ->queryRow();
 
                     if (!empty($plugin)) {
