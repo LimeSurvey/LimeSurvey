@@ -343,7 +343,7 @@ class UserManagementController extends LSBaseController
     /**
      * Show some user detail and statistics
      *
-     * @param $userid int
+     * @param int $userid int
      * @return string|null
      * @throws CException
      */
@@ -619,7 +619,7 @@ class UserManagementController extends LSBaseController
     /**
      * Creates users from an uploaded CSV / JSON file
      *
-     * @param string importFormat - format of the imported file - Choice between csv / json
+     * @param string $importFormat - format of the imported file - Choice between csv / json
      * @return string
      * @throws CException
      */
@@ -889,7 +889,7 @@ class UserManagementController extends LSBaseController
                     $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
                     $success = $successData['success'];
                     if (!$success) {
-                        $aResults[$user]['error'] = gT("Error: New password could not be sent to ") . $oUser->email;
+                        $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
                     }
                     $aResults[$user]['result'] = $success;
                 }
