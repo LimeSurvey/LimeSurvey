@@ -311,7 +311,7 @@ class Plugin extends LSActiveRecord
                         'load_error' => 1,
                         'load_error_message' => addslashes($error['message'] . ' ' . $error['file'])
                     ]
-                )->execute();
+                );
         }
         return $result;
     }
