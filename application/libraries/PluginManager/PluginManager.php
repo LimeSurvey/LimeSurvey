@@ -59,8 +59,10 @@ class PluginManager extends \CApplicationComponent
     public $shutdownObject;
 
     /**
-     * Creates the plugin manager.
-     * Loads all active plugins.
+     * Creates the plugin manager.  Loads all active plugins.
+     * If $plugin->save() is used in this method, it can lead to an infinite event loop,
+     * since beforeSave tries to get the PluginManager, which executes init() again.
+     *
      * @return void
      */
     public function init()
