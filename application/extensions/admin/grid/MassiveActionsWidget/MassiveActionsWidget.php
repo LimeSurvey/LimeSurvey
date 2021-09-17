@@ -27,6 +27,7 @@
             'cancel-apply',
             'cancel-resend',
             'cancel-add',
+            'cancel-save',
             'cancel-delete'
         ];
 
