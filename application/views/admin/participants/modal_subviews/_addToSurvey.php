@@ -38,7 +38,6 @@
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
                 <div class='col-sm-8'>
-                    <!--<input type='checkbox' name='redirect' />-->
                     <input name='redirect' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch' />
                 </div>
             </div>
