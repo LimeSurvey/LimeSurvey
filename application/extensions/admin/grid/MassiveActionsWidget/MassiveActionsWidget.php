@@ -26,6 +26,7 @@
             'empty-lg',
             'cancel-apply',
             'cancel-resend',
+            'cancel-add',
             'cancel-delete'
         ];
 

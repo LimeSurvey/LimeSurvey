@@ -75,7 +75,7 @@ if(Permission::model()->hasGlobalPermission('users', 'update')) {
         'grid-reload'   => 'yes',
         //modal
         'actionType'    => 'modal',
-        'modalType'     => 'cancel-apply',
+        'modalType'     => 'cancel-add',
         'keepopen'      => 'yes',
         'showSelected'  => 'yes',
         'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
