@@ -4921,7 +4921,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         ->queryRow();
 
                     if (!empty($plugin)) {
-                        if ($plugin->plugin_type !== 'core') {
+                        if ($plugin['plugin_type'] !== 'core') {
                             $oDB->createCommand()->update(
                                 '{{plugins}}',
                                 ['plugin_type' => 'core'],
