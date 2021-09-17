@@ -50,6 +50,6 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px; ">
     <button class="btn btn-error " id="exitForm"><?=gT('Cancel')?></button>
-    <button type="submit" class="btn btn-success " id="submitForm"><?=gT('Save')?></button>
+    <button type="submit" class="btn btn-success " id="submitForm"><?=gT('Create')?></button>
 </div>
 <?php $this->endWidget(); ?>
