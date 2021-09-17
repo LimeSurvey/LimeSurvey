@@ -46,6 +46,6 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel') ?></button>
-        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Apply')?>' />
+        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Add')?>' />
     </div>
 <?php $this->endWidget('CActiveForm'); ?>
