@@ -6,8 +6,10 @@
 
 if ($model->isNewRecord) {
     $modalTitle =  gT('Create permission role');
+    $buttonTitle = gT('Create');
 } else {
-    $modalTitle = sprintf(gT('Update permission role %s'), $model->name);
+    $modalTitle = sprintf(gT('Update permission role *%s*'), $model->name);
+    $buttonTitle = gT('Save');
 }
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
@@ -50,6 +52,6 @@ Yii::app()->getController()->renderPartial(
 </div>
 <div class="modal-footer modal-footer-buttons" style="margin-top: 15px; ">
     <button class="btn btn-error " id="exitForm"><?=gT('Cancel')?></button>
-    <button type="submit" class="btn btn-success " id="submitForm"><?=gT('Create')?></button>
+    <button type="submit" class="btn btn-success " id="submitForm"><?php echo $buttonTitle; ?></button>
 </div>
 <?php $this->endWidget(); ?>
