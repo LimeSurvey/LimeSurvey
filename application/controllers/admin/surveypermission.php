@@ -129,7 +129,9 @@ class surveypermission extends Survey_Common_Action
                         'user' => $PermissionRow['users_name']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
+                    // The "Delete" button is using confirmationModal and it's data-post-url attribute because we need the request method to be POST (so CSRF validation is applied)
+                    // and we are not able to use neither 'confirmGridAction' nor 'runAjaxRequest' (this is not a grid view).
+                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
                         <span class='fa fa-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
                         </a>";
                 }
@@ -541,6 +543,7 @@ class surveypermission extends Survey_Common_Action
      */
     function delete($surveyid)
     {
+        $this->requirePostRequest();
 
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

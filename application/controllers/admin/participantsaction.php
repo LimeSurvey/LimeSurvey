@@ -2215,6 +2215,8 @@ $url .= "_view"; });
      */
     public function deleteSingleParticipantShare($participantId, $shareUid)
     {
+        $this->requirePostRequest();
+
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
             'share_uid' => $shareUid

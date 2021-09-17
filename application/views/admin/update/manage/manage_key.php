@@ -44,7 +44,7 @@
                             <?php echo $updateKeyInfos->remaining_updates; ?>
                         </td>
                         <td>
-                            <a data-href="<?php echo App()->createUrl('/admin/update/sa/delete_key');?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+                            <a data-post-url="<?php echo App()->createUrl('/admin/update/sa/delete_key');?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
                                 <span class="text-danger fa fa-trash"></span>
                             </a>
                         </td>
