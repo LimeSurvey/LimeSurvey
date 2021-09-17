@@ -24,7 +24,7 @@ class UserRoleController extends LSBaseController
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             App()->session['flashmessage'] = gT('You have no access to the role management!');
-            $this->getController()->redirect(array('/admin'));
+            $this->redirect(array('/admin'));
         }
 
         App()->getClientScript()->registerPackage('permissionroles');
