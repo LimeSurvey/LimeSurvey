@@ -397,14 +397,12 @@ class LimesurveyApi
 
     /**
      * @param int $surveyId
-     * @param string $language
      * $param array $conditions
      * @return \Question[]
      */
-    public function getQuestions($surveyId, $language = 'en', $conditions = array())
+    public function getQuestions($surveyId, $conditions = array())
     {
         $conditions['sid'] = $surveyId;
-        $conditions['language'] = $language;
         return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
     }
 
