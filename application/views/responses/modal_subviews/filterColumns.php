@@ -1,6 +1,9 @@
 <?php
-$surveyid = App()->request->getParam('surveyid');
-$filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
+/**
+ * @var $surveyId int
+ * @var $filteredColumns array
+ * @var $filterableColumns array
+ */
 ?>
 
 <!-- Button trigger modal -->
@@ -12,7 +15,7 @@ $filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
 <div class="modal fade" id="responses-column-filter-modal" tabindex="-1" role="dialog" aria-labelledby="responses-column-filter-label">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="<?= App()->createUrl('/admin/responses/sa/setfilteredcolumns/', ['surveyid' => $surveyid]) ?>" class="pjax" method="POST" data-filtered-columns=<?php echo json_encode($filteredColumns) ?>>
+            <form action="<?= App()->createUrl('responses/setfilteredcolumns/', ['surveyId' => $surveyId]) ?>" class="pjax" method="POST" data-filtered-columns=<?php echo json_encode($filteredColumns) ?>>
                 <?php
                 Yii::app()->getController()->renderPartial(
                     '/layouts/partial_modals/modal_header',
@@ -37,7 +40,7 @@ $filterableColumns = isset($filterableColumns) ? $filterableColumns : null;
                                 </label>
                             </div>
                         <?php endforeach; ?>
-                        <input type="hidden" name="surveyid" value="<?= $surveyid ?>"/>
+                        <input type="hidden" name="surveyid" value="<?= $surveyId ?>"/>
                         <input type="hidden" name="<?= Yii::app()->request->csrfTokenName ?>" value="<?= App()->request->csrfToken ?>"/>
                     </div>
                 </div>

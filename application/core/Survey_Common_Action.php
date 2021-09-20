@@ -121,7 +121,7 @@ class Survey_Common_Action extends CAction
             'fieldtext' => 'sFieldText',
             'action' => 'sAction',
             'lang' => 'sLanguage',
-            'browselang' => 'sBrowseLang',
+            'browseLang' => 'sBrowseLang',
             'tokenids' => 'aTokenIds',
             'tokenid' => 'iTokenId',
             'subaction' => 'sSubAction', // /!\ Already filled by sa : can be different (usage of subaction in quota at 2019-09-04)
@@ -1049,31 +1049,6 @@ class Survey_Common_Action extends CAction
             $aData['model'] = $model;
 
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
-        }
-    }
-
-    /**
-     * Browse Menu Bar
-     *
-     * DEPRECATED ??? Never used...
-     *
-     *
-     * @param array $aData
-     */
-    public function _browsemenubar(array $aData)
-    {
-        if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid'])) {
-            //BROWSE MENU BAR
-            $iSurveyID = $aData['surveyid'];
-            $aData['title'] = $aData['display']['menu_bars']['browse'];
-            $aData['thissurvey'] = getSurveyInfo($iSurveyID);
-            $aData['surveyid'] = $iSurveyID;
-
-            if (!isset($aData['menu']['closeurl'])) {
-                $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/" . $aData['surveyid']));
-            }
-
-            $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
 

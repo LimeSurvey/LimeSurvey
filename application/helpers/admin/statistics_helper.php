@@ -4006,7 +4006,7 @@ class statistics_helper
         if ($results > 0) {
             if ($outputType == 'html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
                 //add a buttons to browse results
-                $sOutputHTML .= CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post', array('target' => '_blank')) . "\n"
+                $sOutputHTML .= CHtml::form(["responses/browse/", ['surveyId' => $surveyid]], 'post', array('target' => '_blank')) . "\n"
                 . "\t\t<p>"
                 . "\t\t\t<input type='submit' class='btn btn-default' value='" . gT("Browse") . "'  />\n"
                 . "\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"

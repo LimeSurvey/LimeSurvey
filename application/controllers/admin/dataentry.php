@@ -406,7 +406,7 @@ class dataentry extends Survey_Common_Action
                 }
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."), $imported, $iRecordCountT);
             }
-            $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
+            $this->getController()->redirect(["/responses/index/", 'surveyId' => $surveyid]);
         }
     }
 
@@ -1494,7 +1494,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
         if (Yii::app()->request->getPost('close-after-save') == 'true') {
-            $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
+            $this->getController()->redirect($this->getController()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $id]));
         } else {
             $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
         }

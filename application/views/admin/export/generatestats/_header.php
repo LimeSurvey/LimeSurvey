@@ -27,7 +27,7 @@
     <?php endif; ?>
 
     <?php if ($browse) : ?>
-        <?php echo CHtml::form(["admin/responses/sa/browse/surveyid/{$surveyid}"], 'post') . "\n"; ?>
+        <?php echo CHtml::form(["responses/browse/", ['surveyId' => $surveyid]], 'post') . "\n"; ?>
         <p>
             <?php Yii::app()->user->setState('sql_' . $surveyid, $sql); ?>
             <input type='submit' class='btn btn-default hidden-print' value='<?php eT("Browse"); ?>'/>

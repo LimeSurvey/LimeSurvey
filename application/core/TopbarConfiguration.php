@@ -279,7 +279,7 @@ class TopbarConfiguration
             return [];
         }
 
-        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/" . $sid));
+        $closeUrl = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("responses/browse/", ['surveyId' => $sid]));
 
         return array(
             'closeUrl' => $closeUrl,

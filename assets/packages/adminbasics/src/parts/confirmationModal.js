@@ -80,8 +80,8 @@ const ConfirmationModal = function(e){
     },
     _sendPost = () => {
         LOG.log('Binding post handler on confirmation dialog');
-        $(_this).find('.btn-ok').on('click', function(ev) {
-            window.LS.sendPost(options.postUrl, options.postDatas);
+        $(_this).find('.btn-ok').on('click', function (ev) {
+            window.LS.sendPost(options.postUrl, '',options.postDatas);
         });
     },
     _setTarget = () => {

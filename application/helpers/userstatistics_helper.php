@@ -2719,8 +2719,8 @@ class userstatistics_helper
                 if ($outputType == 'html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
                     //add a buttons to browse results
                     $sOutputHTML .= "<tr><td clospan='2' style='text-align:center'>";
-                    $sOutputHTML .= CHtml::link(gT("Browse"), array("admin/responses", "sa" => 'browse', 'surveyid' => $surveyid, 'statfilter' => 1), array('class' => 'button btn-link'));
-                    $sOutputHTML .= CHtml::link(gT("Export"), array("admin/export", "sa" => 'exportresults', 'surveyid' => $surveyid, 'statfilter' => 1), array('class' => 'button btn-link'));
+                    $sOutputHTML .= CHtml::link(gT("Browse"), ["responses/browse", 'surveyId' => $surveyid, 'statfilter' => 1], array('class' => 'button btn-link'));
+                    $sOutputHTML .= CHtml::link(gT("Export"), ["admin/export", "sa" => 'exportresults', 'surveyid' => $surveyid, 'statfilter' => 1], array('class' => 'button btn-link'));
                     $sOutputHTML .= "</td></tr>";
                 }
                 $sOutputHTML .= "</table></div>\n";

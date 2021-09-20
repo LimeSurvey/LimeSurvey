@@ -348,7 +348,7 @@ if ($isActive) {
     if ($hasResponsesStatisticsReadPermission && $isActive) {
         $buttons['responses_statistics'] = [
             'class' => 'pjax',
-            'url' => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
+            'url' => $this->createUrl("responses/index/", ['surveyId' => $sid]),
             'icon' => 'icon-browse',
             'name' => gT('Responses & statistics', 'js'),
             'id' => 'responses_statistics',

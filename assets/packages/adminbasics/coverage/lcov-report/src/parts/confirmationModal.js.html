@@ -274,7 +274,7 @@ const ConfirmationModal = <span class="cstat-no" title="statement not covered" >
         href        : null,
         message     : null,
         keepopen    : null,    
-        postDatas   : null,    
+        postdata   : null,
         gridid      : null,
         "ajax-url"  : null,
     };
@@ -314,7 +314,7 @@ const ConfirmationModal = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >            $.ajax({</span>
                 type: "POST",
                 url: options['ajax-url'],
-                data: options.postDatas,
+                data: options.postdata,
 &nbsp;
                 success : <span class="fstat-no" title="function not covered" >fu</span>nction(html, statut)
                 {
