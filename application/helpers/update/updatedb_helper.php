@@ -4944,10 +4944,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Apply integrity fix before adding unique constraint.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
-                "SELECT lime_labels.lid AS lid
-                FROM lime_labels
-                GROUP BY lime_labels.lid
-                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
             foreach ($lids as $lid) {
                 regenerateLabelCodes400($lid['lid']);
