@@ -2662,7 +2662,7 @@ class remotecontrol_handle
                         unset($aResultTokens[$key]);
                         //subtract from 'left to send'
                         $iAllTokensCount--;
-                        continue;
+                        break;
                     }
                 }
             }
@@ -2733,7 +2733,7 @@ class remotecontrol_handle
                 foreach($emailsToCheck as $emailToCheck) {
                     if (preg_match($pattern, $emailToCheck) !== 1) {
                         unset($aResultTokens[$key]);
-                        continue;
+                        break;
                     }
                 }
             }
