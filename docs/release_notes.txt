@@ -34,6 +34,15 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.10 (build 210913) to 5.1.11 (build 210920) September 20, 2021
+-Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
+-Fixed issue: "List question groups" menu item not properly working after update (Carsten Schmitz)
+-Fixed issue #17590: Role reseted after checkintegrity (#2036) (Gabriel Jenik)
+-Fixed issue #17509: when exporting/importing surveys as "Tab-separated-values" encryption settings are lost (Patrick Teichmann)
+-Fixed issue #17454: Unable to remove a user with survey permissions with friendly url enabled (#2037) (Gabriel Jenik)
+-Fixed issue #14370: QueXML export (Print answers) of a ranking question showing name of available options instead of "Rank #" (#2033) (Adam Zammit)
+
+
 Changes from 5.1.9 (build 210912) to 5.1.10 (build 210913) September 9, 2021
 -Fixed issue: Remove prefix from database update (Olle Haerstedt)
 -Fixed issue #17578: PSPP reports warnings when opening SPSS SAV file using Export to SAV (#2034) (Adam Zammit)
