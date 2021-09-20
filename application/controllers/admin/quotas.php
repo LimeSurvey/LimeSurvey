@@ -299,9 +299,9 @@ class quotas extends Survey_Common_Action
 
     /**
      * Delete answers 
-     * @param $iSurveyId
+     * @param int $iSurveyId
      */
-    public function delans($iSurveyId)
+    public function delans(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
@@ -317,9 +317,9 @@ class quotas extends Survey_Common_Action
 
     /**
      * Delete Quota
-     * @param iSurveyId
+     * @param int iSurveyId
      */
-    public function delquota($iSurveyId)
+    public function delquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
@@ -337,9 +337,9 @@ class quotas extends Survey_Common_Action
 
     /**
      * Edit Quota
-     * @param iSurveyId
+     * @param int iSurveyId
      */
-    function editquota($iSurveyId)
+    function editquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
