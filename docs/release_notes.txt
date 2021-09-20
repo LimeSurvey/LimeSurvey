@@ -34,6 +34,22 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.11 (build 210920) to 5.1.12 (build 210922) September 20, 2021
+-Fixed issue: Remove lime_ prefix from db update (Olle Haerstedt)
+-Fixed issue #17606: Single data set summary is missing "last page" detail (Carsten Schmitz)
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Portuguese (Portugal) by algarvio, effgarces, femariso, lucaspcs, marcelovincenzi, mauriciofurtado, samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.1.10 (build 210913) to 5.1.11 (build 210920) September 20, 2021
 -Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
 -Fixed issue: "List question groups" menu item not properly working after update (Carsten Schmitz)
