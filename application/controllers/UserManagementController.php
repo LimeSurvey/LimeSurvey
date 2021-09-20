@@ -343,7 +343,7 @@ class UserManagementController extends LSBaseController
     /**
      * Show some user detail and statistics
      *
-     * @param int $userid int
+     * @param int $userid
      * @return string|null
      * @throws CException
      */
