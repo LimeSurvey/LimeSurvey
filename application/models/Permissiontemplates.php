@@ -206,7 +206,7 @@ class Permissiontemplates extends CActiveRecord
                 data-toggle='modal' 
                 data-title='" . gt('Delete user role') . "'
                 data-target='#confirmation-modal'
-                data-href ='" . $deleteUrl . "' 
+                data-post-url ='" . $deleteUrl . "' 
                 data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>

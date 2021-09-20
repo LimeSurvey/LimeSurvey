@@ -703,6 +703,8 @@ class responses extends Survey_Common_Action
      */
     public function actionDeleteSingle($surveyid, $responseId)
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
