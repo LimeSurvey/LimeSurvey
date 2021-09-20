@@ -267,9 +267,9 @@ class quotas extends Survey_Common_Action
 
     /**
      * Insert Quota answer
-     * @param $iSurveyId
+     * @param int $iSurveyId
      */
-    public function insertquotaanswer($iSurveyId)
+    public function insertquotaanswer(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
