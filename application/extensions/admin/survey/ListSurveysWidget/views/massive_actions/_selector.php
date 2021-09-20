@@ -144,7 +144,7 @@
                     'text'        =>  gT("Printable survey (*.html)"),
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-export',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
