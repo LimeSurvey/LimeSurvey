@@ -75,7 +75,7 @@ var LS = LS || {};  // namespace
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><?=gT("Choose file")?></h4>
+        <h4 class="modal-title"><?=gT("Choose file to add")?></h4>
       </div>
       <div class="modal-body" style="padding: 0;">
         <iframe frameBorder="0" style="min-height: 600px; height:100%; width: 100%;" src="about:blank"></iframe>
@@ -101,7 +101,7 @@ var LS = LS || {};  // namespace
             </div>
             <div class='modal-footer'>
                 <button type="button" class='btn btn-default' data-dismiss='modal'><?php eT("Close");?></button>
-                <button type="button" class='btn btn-success'><?php eT("Apply");?></button>
+                <button type="button" class='btn btn-success'><?php eT("Add");?></button>
             </div>
         </div>
     </div>
