@@ -34,6 +34,55 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.10 (build 210913) to 5.1.11 (build 210920) September 20, 2021
+-Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
+-Fixed issue: "List question groups" menu item not properly working after update (Carsten Schmitz)
+-Fixed issue #17590: Role reseted after checkintegrity (#2036) (Gabriel Jenik)
+-Fixed issue #17509: when exporting/importing surveys as "Tab-separated-values" encryption settings are lost (Patrick Teichmann)
+-Fixed issue #17454: Unable to remove a user with survey permissions with friendly url enabled (#2037) (Gabriel Jenik)
+-Fixed issue #14370: QueXML export (Print answers) of a ranking question showing name of available options instead of "Rank #" (#2033) (Adam Zammit)
+
+
+Changes from 5.1.9 (build 210912) to 5.1.10 (build 210913) September 9, 2021
+-Fixed issue: Remove prefix from database update (Olle Haerstedt)
+-Fixed issue #17578: PSPP reports warnings when opening SPSS SAV file using Export to SAV (#2034) (Adam Zammit)
+
+
+Changes from 5.1.8 (build 210910) to 5.1.9 (build 210912) September 8, 2021
+-Fixed issue: Answer text missing in ranking question when printing response (Carsten Schmitz)
+-Fixed issue: Remove url_encode for end URL (Olle Haerstedt)
+#Updated translation: German by c_schmitz, DanielZ
+#Updated translation: German by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by jmontane, qualitatuvic
+
+
+Changes from 5.1.7 (build 210908) to 5.1.8 (build 210910) September 7, 2021
+Fixed issue #17576: Fixed wrong string in condition for update 450
+
+Changes from 5.1.6 (build 210906) to 5.1.7 (build 210908) September 7, 2021
+-Fixed issue #17568: Fixed "Invalid argument supplied for foreach" during update
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1, slansky
+
+Changes from 5.1.5 (build 210830) to 5.1.6 (build 210906) September 6, 2021
+-Fixed issue #17573: No confirmation email is sent if email is encrypted (Carsten Schmitz)
+-Fixed issue #17563: When editing 'reminder sent' and set to yes, 'Completed' is automatically set to yes (Carsten Schmitz)
+-Fixed issue #17522: SQL error when exporting responses (Olle Haerstedt)
+-Fixed issue #17481: Error adding a large number of answer options (#2026) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.1.4 (build 210824) to 5.1.5 (build 210830) August 30, 2021
 -Fixed issue #17538: Incorrect attribute applied to custom question theme style tag (Carsten Schmitz)
 -Fixed issue #17535: Login with LDAP not working (Patrick Teichmann)

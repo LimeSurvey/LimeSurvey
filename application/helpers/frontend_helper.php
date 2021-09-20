@@ -419,6 +419,7 @@ function submittokens($quotaexit = false)
     $token->encryptSave();
 
     if ($quotaexit == false) {
+        $token->decrypt();
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {

@@ -67,7 +67,7 @@ class Plugin extends LSActiveRecord
     /**
      * Set this plugin as load error in database, and saves the error message.
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
-     * @return boolean Update result.
+     * @return int Rows affected
      */
     public function setLoadError(array $error)
     {
@@ -295,20 +295,23 @@ class Plugin extends LSActiveRecord
      * @param Plugin|null $plugin
      * @param string $pluginName
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).
-     * @return boolean
+     * @return int Rows affected
      */
     public static function setPluginLoadError($plugin, $pluginName, array $error)
     {
         if ($plugin) {
             $result = $plugin->setLoadError($error);
         } else {
-            // TODO: Use raw SQL insteadl of active records.
-            $plugin = new \Plugin();
-            $plugin->name = $pluginName;
-            $plugin->active = 0;
-            $result1 = $plugin->save();
-            $result2 = $plugin->setLoadError($error);
-            $result = $result1 && $result2;
+            $result = Yii::app()->db->createCommand()
+                ->insert(
+                    '{{plugins}}',
+                    [
+                        'name' => $pluginName,
+                        'active' => 0,
+                        'load_error' => 1,
+                        'load_error_message' => addslashes($error['message'] . ' ' . $error['file'])
+                    ]
+                );
         }
         return $result;
     }

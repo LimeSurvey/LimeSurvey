@@ -688,14 +688,14 @@ class tokens extends Survey_Common_Action
             if (trim($request->getPost('sent')) === 'N') {
                 $_POST['sent'] = 'N';
             } else {
-                $_POST['completed'] = 'Y';
+                 $_POST['sent'] = 'Y';
             }
 
             // remindersent
             if (trim($request->getPost('remindersent')) === 'N') {
                 $_POST['remindersent'] = 'N';
             } else {
-                $_POST['completed'] = 'Y';
+                $_POST['remindersent'] = 'Y';
             }
 
             $aTokenData['firstname'] = $request->getPost('firstname');
@@ -1148,11 +1148,11 @@ class tokens extends Survey_Common_Action
      */
     public function updatetokenattributedescriptions($iSurveyId)
     {
-        $iSurveyId = (int) $iSurveyId;
+        $iSurveyId = (int)$iSurveyId;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
-            $this->getController()->redirect(array("/surveyAdministration/view/surveyid/{$iSurveyId}"));
+            $this->getController()->redirect(["/surveyAdministration/view/surveyid/{$iSurveyId}"]);
         }
 
         $languages = array_merge((array)$oSurvey->language, $oSurvey->additionalLanguages);
@@ -1166,9 +1166,9 @@ class tokens extends Survey_Common_Action
         foreach ($aMandatoryAttributes['columns'] as $column => $fieldname) {
             $aOptionsBeforeChange[$column]['encrypted'] = $aMandatoryAttributes['columns'][$column];
 
-                $fieldcontents[$column] = [
-                    'encrypted' => Yii::app()->request->getPost('encrypted_' . $column) == '1' ? 'Y' : 'N',
-                ];
+            $fieldcontents[$column] = [
+                'encrypted' => Yii::app()->request->getPost('encrypted_' . $column) == '1' ? 'Y' : 'N',
+            ];
 
             $aOptionsAfterChange[$column]['encrypted'] = $fieldcontents[$column]['encrypted'];
             $aTokenencryptionoptions['columns'][$column] = $fieldcontents[$column]['encrypted'];
@@ -1183,13 +1183,13 @@ class tokens extends Survey_Common_Action
             } else {
                 $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
             }
-                $fieldcontents[$fieldname] = [
-                    'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
-                    'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
-                    'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
-                    'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
-                    'cpdbmap'       => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
-                ];
+            $fieldcontents[$fieldname] = [
+                'description'   => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
+                'mandatory'     => Yii::app()->request->getPost('mandatory_' . $fieldname) == '1' ? 'Y' : 'N',
+                'encrypted'     => Yii::app()->request->getPost('encrypted_' . $fieldname) == '1' ? 'Y' : 'N',
+                'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == '1' ? 'Y' : 'N',
+                'cpdbmap'       => Yii::app()->request->getPost('cpdbmap_' . $fieldname)
+            ];
             $aOptionsAfterChange[$fieldname]['encrypted'] = $fieldcontents[$fieldname]['encrypted'];
             foreach ($languages as $language) {
                 $fieldNameValue = Yii::app()->request->getPost("caption_" . $fieldname . "_" . $language);
@@ -1206,10 +1206,10 @@ class tokens extends Survey_Common_Action
             $this->updateEncryption($iSurveyId, $aOptionsAfterChange);
 
             // save token encryption options if everything was ok
-            Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
+            Survey::model()->updateByPk($iSurveyId, ['attributedescriptions' => json_encode($fieldcontents)]);
 
             foreach ($languages as $language) {
-                $ls = SurveyLanguageSetting::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
+                $ls = SurveyLanguageSetting::model()->findByAttributes(['surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language]);
                 $ls->surveyls_attributecaptions = !empty($captions[$language]) ? json_encode($captions[$language]) : '';
                 $ls->save();
             }
@@ -1223,13 +1223,13 @@ class tokens extends Survey_Common_Action
 
 
         //admin/tokens/sa/browse/surveyid/652779//
-        $this->getController()->redirect(array("/admin/tokens/sa/managetokenattributes/surveyid/{$iSurveyId}"));
+        $this->getController()->redirect(["/admin/tokens/sa/managetokenattributes/surveyid/{$iSurveyId}"]);
     }
 
     /**
      * Updates Token encryption settings based on $iSurveyId and configuration $aEncryptionSettings
-     * @param $iSurveyId
-     * @param $aEncryptionSettings
+     * @param string|int $iSurveyId
+     * @param array $aEncryptionSettings The new attribute encryption status
      */
     public function updateEncryption($iSurveyId, $aEncryptionSettings)
     {
@@ -1252,22 +1252,22 @@ class tokens extends Survey_Common_Action
             $aEncryptionSettings[$column] = [
                 'encrypted' => $aEncryptionSettings[$column]['encrypted'] === 'Y' ? 'Y' : 'N',
             ];
-
             $aTokenencryptionoptions['columns'][$column] = $aEncryptionSettings[$column]['encrypted'];
         }
 
-        // find custom attribute column names
-        $aCustomAttributes = getAttributeFieldNames($iSurveyId);
         // custom attributes
+        $aCustomAttributes = $oSurvey->getTokenAttributes();
         foreach ($aCustomAttributes as $column => $attributeName) {
-            if (isset(json_decode($oSurvey->attributedescriptions)->$attributeName->encrypted)) {
-                $aEncryptionSettingsOld[$attributeName]['encrypted'] = json_decode($oSurvey->attributedescriptions)->$attributeName->encrypted;
+            if (isset($attributeName['encrypted'])) {
+                $aEncryptionSettingsOld[$column]['encrypted'] = $attributeName['encrypted'];
             } else {
-                $aEncryptionSettingsOld[$attributeName]['encrypted'] = 'N';
+                $aEncryptionSettingsOld[$column]['encrypted'] = 'N';
             }
-            $aEncryptionSettings[$attributeName] = [
-                'encrypted'     => $aEncryptionSettings[$attributeName]['encrypted'] === 'Y' ? 'Y' : 'N',
-            ];
+            if (isset($aEncryptionSettings[$column])) {
+                $aEncryptionSettings[$column] = [
+                    'encrypted' => $aEncryptionSettings[$column]['encrypted'] === 'Y' ? 'Y' : 'N',
+                ];
+            }
         }
 
         foreach ($oTokens as $token) {
@@ -2336,6 +2336,7 @@ class tokens extends Survey_Common_Action
             $archivedTokenSettings->tbl_type = 'token';
             $archivedTokenSettings->created = $DBDate;
             $archivedTokenSettings->properties = $aData['thissurvey']['tokenencryptionoptions'];
+            $archivedTokenSettings->attributes = json_encode($aData['thissurvey']['attributedescriptions']);
             $archivedTokenSettings->save();
 
             //Remove any survey_links to the CPDB
@@ -2549,82 +2550,84 @@ class tokens extends Survey_Common_Action
             )), $aData);
         } elseif (returnGlobal('restoretable') === "Y" && Yii::app()->request->getPost('oldtable')) {
             /* Restore a previously deleted tokens table */
-            //Rebuild attributedescription value for the surveys table
             $archivedTable = Yii::app()->request->getPost('oldtable');
-            $table = Yii::app()->db->schema->getTable("{{" . $archivedTable . "}}");
-            $fields = array_filter(array_keys($table->columns), 'filterForAttributes');
-            $fieldcontents = $aSurveyInfo['attributedescriptions'];
-            if (!is_array($fieldcontents)) {
-                $fieldcontents = [];
-            }
-            foreach ($fields as $fieldname) {
-                $name = $fieldname;
-                if ($fieldname[10] === 'c') {
-                    //This belongs to a cpdb attribute
-                    $cpdbattid = substr($fieldname, 15);
-                    $data = ParticipantAttributeName::model()->getAttributeName($cpdbattid, Yii::app()->session['adminlang']);
-                    $name = $data['attribute_name'];
-                }
-                if (!isset($fieldcontents[$fieldname])) {
-                    $fieldcontents[$fieldname] = [
-                        'description'   => $name,
-                        'mandatory'     => 'N',
-                        'encrypted'     => 'N',
-                        'show_register' => 'N'
-                    ];
-                }
-            }
-
-            // Set the $tokenencryptionoptions from the encryption column in ArchivedTableSettings                                                  tokens_282267_20210422115937
             $archivedTableSettings = ArchivedTableSettings::model()->findByAttributes(['tbl_name' => $archivedTable]);
-            $tokenencryptionoptions = $tokenencryptionoptionsOld = ls_json_encode($aTokenencryptionoptions);
-            if ($archivedTableSettings->properties) {
+
+            // Set the $tokenencryptionoptions from the encryption column in ArchivedTableSettings
+            if (isset($archivedTableSettings)) {
                 $tokenencryptionoptions = $archivedTableSettings->properties;
-            }
-            // if the encryption status is unknown
-            $archivedTableSettingsArray = json_decode($archivedTableSettings->properties, true);
-            foreach ($archivedTableSettingsArray as $archivedTableSetting) {
-                if ($archivedTableSetting === 'unknown') {
-                    $tokenencryptionoptions = $tokenencryptionoptionsOld;
+                $tokenencryptionoptionsOld = $aTokenencryptionoptions;
+                $tokenencryptionoptionsArray = json_decode($tokenencryptionoptions, true);
+                foreach ($tokenencryptionoptionsArray as $tokenencryptionoption) {
+                    // if the encryption status is unknown
+                    if ($tokenencryptionoption === 'unknown') {
+                        // for later use in refactoring
+                        // $tokenencryptionoptions = json_encode($tokenencryptionoptionsOld);
+                        $tokenencryptionoptionsArray = $tokenencryptionoptionsOld;
+                    }
                 }
-            }
-
-            $oDB = Yii::app()->db;
-            $oTransaction = $oDB->beginTransaction();
-            try {
-                Survey::model()->updateByPk($iSurveyId, ['attributedescriptions' => json_encode($fieldcontents), 'tokenencryptionoptions' => $tokenencryptionoptions]);
-                Yii::app()->db->createCommand()->renameTable("{{{$archivedTable}}}", "{{tokens_" . (int)$iSurveyId . "}}");
-                $archivedTableSettings->delete();
-                // Refresh schema cache just in case the table existed in the past
-                Yii::app()->db->schema->getTable("{{tokens_" . (int)$iSurveyId . "}}", true);
-
-                foreach ($aTokenencryptionoptions['columns'] as $column => $fieldname) {
-                    $aEncryptionSettings[$column]['encrypted'] = $fieldname;
+                $attributedescriptions = $archivedTableSettings->attributes;
+                $attributedescriptionsOld = $aSurveyInfo['attributedescriptions'];
+                $attributedescriptionsArray = json_decode($attributedescriptions, true);
+                foreach ($attributedescriptionsArray as $attributedescription) {
+                    // if the encryption status is unknown
+                    if ($attributedescription === 'unknown') {
+                        $attributedescriptions =  json_encode($attributedescriptionsOld);
+                        $attributedescriptionsArray = $attributedescriptionsOld;
+                    }
                 }
-                $this->updateEncryption($iSurveyId, $aEncryptionSettings);
 
-                //Add any survey_links from the renamed table
-                SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
-                $oTransaction->commit();
+                $oDB = Yii::app()->db;
+                $oTransaction = $oDB->beginTransaction();
+                try {
+                    $aEncryptionSettings = [];
+                    foreach ($tokenencryptionoptionsArray['columns'] as $column => $encrypted) {
+                        $aEncryptionSettings[$column]['encrypted'] = $encrypted;
+                    }
+                    foreach ($attributedescriptionsArray as $attribute => $description) {
+                        $aEncryptionSettings[$attribute]['encrypted'] = $description['encrypted'];
+                    }
+                    Yii::app()->db->createCommand()->renameTable("{{{$archivedTable}}}", "{{tokens_" . (int)$iSurveyId . "}}");
+                    $archivedTableSettings->delete();
+                    $this->updateEncryption($iSurveyId, $aEncryptionSettings);
+                    Survey::model()->updateByPk($iSurveyId, ['attributedescriptions' => $attributedescriptions]);
+                    // Refresh schema cache just in case the table existed in the past
+                    Yii::app()->db->schema->getTable("{{tokens_" . (int)$iSurveyId . "}}", true);
+                    //Add any survey_links from the renamed table
+                    SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
+                    $oTransaction->commit();
 
+                    $this->_renderWrappedTemplate(
+                        'token',
+                        [
+                            'message' => [
+                                'title'   => gT("Import old participant table"),
+                                'message' => gT("A survey participants table has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
+                                    . "<input type='submit' class='btn btn-default' value='"
+                                    . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                            ]
+                        ],
+                        $aData
+                    );
+                } catch (\Exception $e) {
+                    $oTransaction->rollback();
+                    return;
+                }
+
+                LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
+            } else {
                 $this->_renderWrappedTemplate(
                     'token',
                     [
                         'message' => [
-                            'title'   => gT("Import old participant table"),
-                            'message' => gT("A survey participants table has been created for this survey and the old participants were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
-                                . "<input type='submit' class='btn btn-default' value='"
-                                . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
+                            'class' => 'message-box-error',
+                            'title'   => gT("Import failed"),
+                            'message' => gT("There are no matching settings to start the restoration of the participant table.")
                         ]
                     ],
                     $aData
                 );
-            } catch (\Exception $e) {
-                $oTransaction->rollback();
-                return;
             }
-
-            LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         } else {
             Yii::app()->loadHelper('database');
             Survey::model()->updateByPk($iSurveyId, array('tokenencryptionoptions' => ls_json_encode($aTokenencryptionoptions)));

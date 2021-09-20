@@ -541,13 +541,14 @@ class CheckIntegrity extends Survey_Common_Action
         /* Find is some fix is done */
         $bDirectlyFixed = false;
         $aFullOldSIDs = array();
-        // Delete survey permissions if the user does not exist
+        // Delete survey and global permissions if the user does not exist
         $oCriteria = new CDbCriteria();
         $oCriteria->join = 'LEFT JOIN {{users}} u ON {{permissions}}.uid=u.uid';
-        $oCriteria->condition = '(u.uid IS NULL)';
+        $oCriteria->addCondition('u.uid IS NULL');
+        $oCriteria->addCondition("{{permissions}}.entity <> 'role'");
         if (App()->db->driverName == 'pgsql') {
             $oCriteria->join = 'USING {{users}} u';
-            $oCriteria->condition = '{{permissions}}.uid=u.uid AND (u.uid IS NULL)';
+            $oCriteria->addCondition('{{permissions}}.uid=u.uid');
         }
         if (Permission::model()->deleteAll($oCriteria)) {
             $bDirectlyFixed = true;

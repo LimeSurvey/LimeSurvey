@@ -20,15 +20,20 @@
             $data['language']                   = Yii::app()->language;
             $data['replacementFields']['path']  = App()->createUrl("limereplacementfields/index");
             $json = json_encode($data, JSON_FORCE_OBJECT);
-            // TODO: CSRF should not be passed on GET requests. Test with subquestion quick-add to confirm fix (uses POST).
-            $script = "LS.data = $json;\n"
-                    . "LS.lang = {
-                        confirm: {
-                            confirm_cancel: '".gT('Cancel')."',
-                            confirm_ok: '".gT('OK')."'
+            $script = "LS.data = $json;\n
+                    // @see https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#jquery
+                    function csrfSafeMethod(method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS)$/.test(method));
+                    }
+                    $.ajaxSetup({
+                        beforeSend: function(jqXHR, settings) {
+                            if(!csrfSafeMethod(settings.type)) {
+                                // NB: This sometimes includes the CSRF token twice, when already added to data.
+                                settings.data +=  '&" . Yii::app()->request->csrfTokenName . "=" . Yii::app()->request->csrfToken ."';
+                            }
                         }
-                    };\n"
-                    . "$.ajaxSetup({data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}});";
+                    });";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }

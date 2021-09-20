@@ -175,6 +175,7 @@ function populateDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
         $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder'], false);
+        $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
 
         // label_l10ns
         $oDB->createCommand()->createTable('{{label_l10ns}}', array(
@@ -1117,6 +1118,7 @@ function populateDatabase($oDB)
             'tbl_type' => "string(10) NOT NULL",
             'created' => "datetime NOT NULL",
             'properties' => "text NOT NULL",
+            'attributes' => "text NULL",
         ], $options);
 
         // Install default plugins.

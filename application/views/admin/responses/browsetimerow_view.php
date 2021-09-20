@@ -35,7 +35,7 @@
         'dataProvider' => $model->search($iSurveyID, $language),
         'id' => 'time-grid',
         'emptyText'=>gT('No surveys found.'),
-        'htmlOptions' => ['class' => 'table-responsive time-statistics-table'],
+        'htmlOptions' => ['class' => 'table-responsive grid-view-ls time-statistics-table'],
         'ajaxUpdate' => 'time-grid',
         'afterAjaxUpdate' => 'window.LS.doToolTip',
         'template' => "{items}\n<div id='timeListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",

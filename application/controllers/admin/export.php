@@ -150,6 +150,12 @@ class export extends Survey_Common_Action
             $this->getController()->error('Access denied!');
         }
 
+        if (!$survey->isActive) {
+            Yii::app()->session['flashmessage'] = gT('This survey is not active - no responses are available.');
+            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyID}"));
+        }
+
+
         Yii::app()->loadHelper("admin/exportresults");
 
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . '/exportresults.js');

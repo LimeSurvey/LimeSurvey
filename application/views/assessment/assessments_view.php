@@ -50,7 +50,7 @@ $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['de
                             )
                         ),
                         'rowHtmlOptionsExpression' => '["data-assessment-id" => $data->id]',
-                        'htmlOptions'              => ['class' => 'table-responsive'],
+                        'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                         'ajaxType'                 => 'POST',
                         'ajaxUpdate'               => 'assessments-grid',
                         'template'                 => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
