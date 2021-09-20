@@ -38,6 +38,9 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                     <?php $this->widget('bootstrap.widgets.TbGridView', array(
                         'dataProvider'  => $oDataProvider,
                         'id'            => 'quota-grid',
+                        'htmlOptions'   => ['class' => 'table-responsive grid-view-ls'],
+                        'itemsCssClass' => 'table-quotas table-striped table-condensed',
+                        'ajaxUpdate'    => 'quota-grid',
                         'emptyText'     => gT('No quotas'),
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
@@ -115,8 +118,6 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                             ),
 
                         ),
-                        'itemsCssClass' => 'table-quotas table-striped table-condensed',
-                        'ajaxUpdate'    => 'quota-grid',
                     ));
                     ?>
                 </div>

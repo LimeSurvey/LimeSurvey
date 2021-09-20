@@ -6,11 +6,11 @@
 
 $surveyGrid = $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
-    'id' => 'notification-grid',
-    'emptyText' => gT('No notifications found'),
-    'itemsCssClass' =>'table-striped',
-    'ajaxUpdate' => 'notification-grid',
-    'columns' => array(
+    'id'           => 'notification-grid',
+    'emptyText'    => gT('No notifications found'),
+    'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
+    'ajaxUpdate'   => 'notification-grid',
+    'columns'      => array(
         /*
         array(
             'id' => 'id'
