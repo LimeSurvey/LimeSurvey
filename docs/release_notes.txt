@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.17 (build 210911) to 3.27.18 (build 210921) September 20, 2021
+-Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
+-Fixed issue #17512: Survey Logic File Syntax Error Summary Displays Incorrect Error Count (#2030) (Gabriel Jenik)
+-Fixed issue #17454: Unable to remove a user with survey permissions with friendly url enabled (#2027) (Gabriel Jenik)
+-Fixed issue #16792: Delete permission on Survey : no CRSF control (#1967) (Gabriel Jenik)
+-Fixed issue #14370: QueXML export (Print answers) of a ranking question showing name of available options instead of "Rank #" (#2032) (Adam Zammit)
+
+
 Changes from 3.27.16 (build 210909) to 3.27.17 (build 210911) September 8, 2021
 -Fixed issue: Remove url_encode for end URL (already filtered at save) (Olle Haerstedt)
 #Updated translation: Xhosa by erik.lamontagne
