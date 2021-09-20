@@ -128,10 +128,10 @@ class quotas extends Survey_Common_Action
 
     /**
      * Index
-     * @param $iSurveyId
+     * @param int $iSurveyId
      * @param bool $quickreport Default is false
      */
-    public function index($iSurveyId, $quickreport = false)
+    public function index(int $iSurveyId, bool $quickreport = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'read');
