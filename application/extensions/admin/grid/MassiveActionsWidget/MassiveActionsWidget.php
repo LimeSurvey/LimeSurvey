@@ -28,7 +28,8 @@
             'cancel-resend',
             'cancel-add',
             'cancel-save',
-            'cancel-delete'
+            'cancel-delete',
+            'cancel-export',
         ];
 
         // Selector variables
