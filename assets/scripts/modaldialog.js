@@ -103,7 +103,10 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 
     if (jsonstring !== '')
     {
-        jsonobj = eval('(' + jsonstring + ')');
+        var jsonobj = '';
+        try{
+            jsonobj = JSON.parse(jsonstring);
+        } catch(e) {}
         display = '<table width="100%" class="question uploadedfiles"><thead><tr><td width="20%">&nbsp;</td>';
         if (show_title != 0)
             display += '<th>'+uploadLang.headTitle+'</th>';
