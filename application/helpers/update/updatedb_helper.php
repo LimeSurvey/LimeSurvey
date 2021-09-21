@@ -8082,8 +8082,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
             $oDB->createCommand(
                 sprintf(
                     "UPDATE {{labels}} SET code = %s WHERE id = %d",
-                    // Use simply nr as label code
-                    $oDB->quoteValue((string) $key + 1),
+                    $oDB->quoteValue("L" . (string) $key + 1),
                     $label['id']
                 )
             )->execute();
