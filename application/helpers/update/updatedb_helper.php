@@ -4943,13 +4943,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // Apply integrity fix before adding unique constraint.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
-                "SELECT lime_labels.lid AS lid
-                FROM lime_labels
-                GROUP BY lime_labels.lid
-                HAVING COUNT(DISTINCT(lime_labels.code)) < COUNT(lime_labels.id)"
+                "SELECT {{labels}}.lid AS lid
+                FROM {{labels}}
+                GROUP BY {{labels}}.lid
+                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
             foreach ($lids as $lid) {
-                regenerateLabelCodes400($lid['lid']);
+                regenerateLabelCodes400($lid['lid'], $hasLanguageColumn = false);
             }
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 475), "stg_name='DBVersion'");
@@ -8048,9 +8048,10 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB)
  * Fails silently
  *
  * @param int $lid Label set id
+ * @param bool $hasLanguageColumn Should be true before dbversion 400 is finished, false after
  * @return void
  */
-function regenerateLabelCodes400(int $lid)
+function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
 {
     $oDB = Yii::app()->getDb();
 
@@ -8062,13 +8063,17 @@ function regenerateLabelCodes400(int $lid)
     }
 
     foreach (explode(',', $labelSet['languages']) as $lang) {
-        $labels = $oDB->createCommand(
-            sprintf(
+        if ($hasLanguageColumn) {
+            $query = sprintf(
                 "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
                 (int) $lid,
                 $oDB->quoteValue($lang)
-            )
-        )->queryAll();
+            );
+        } else {
+            // When this function is used in update 475, the language column is already moved.
+            $query = sprintf("SELECT * FROM {{labels}} WHERE lid = %d", (int) $lid);
+        }
+        $labels = $oDB->createCommand($query)->queryAll();
         if (empty($labels)) {
             continue;
         }
@@ -8076,8 +8081,7 @@ function regenerateLabelCodes400(int $lid)
             $oDB->createCommand(
                 sprintf(
                     "UPDATE {{labels}} SET code = %s WHERE id = %d",
-                    // Use simply nr as label code
-                    $oDB->quoteValue((string) $key + 1),
+                    $oDB->quoteValue("L" . (string) $key + 1),
                     $label['id']
                 )
             )->execute();

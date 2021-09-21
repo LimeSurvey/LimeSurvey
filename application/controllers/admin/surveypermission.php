@@ -130,7 +130,7 @@ class surveypermission extends Survey_Common_Action
                         'uid' => $PermissionRow['uid']
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
-                    $surveysecurity .= "<span data-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
+                    $surveysecurity .= "<span data-toggle='tooltip' title='" . gT("Delete") . "'><a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-post-url='{$deleteUrl}' type='submit' class='btn-sm btn btn-default'>
                         <span class='fa fa-trash text-danger'></span>
                         </a></span>";
                 }
@@ -499,6 +499,7 @@ class surveypermission extends Survey_Common_Action
      */
     function delete($surveyid)
     {
+        $this->requirePostRequest();
 
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);

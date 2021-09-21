@@ -351,6 +351,8 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function delete($id)
     {
+        $this->requirePostRequest();
+
         $oGroupToDelete = $this->loadModel($id);
         if (!$oGroupToDelete->hasPermission('group', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));

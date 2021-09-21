@@ -148,7 +148,7 @@ class LabelSet extends LSActiveRecord
             $button .= '<span data-toggle="tooltip" data-placement="top" title="' . gT('Delete label set') . '"><a 
             class="btn btn-default btn-sm"  
             data-toggle="modal"
-            data-href ="' . $url . '"
+            data-post-url ="' . $url . '"
             data-message="' . $message . '"
             data-target="#confirmation-modal" 
             title="' . gT("Delete") . '" 

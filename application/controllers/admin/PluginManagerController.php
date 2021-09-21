@@ -166,6 +166,7 @@ class PluginManagerController extends Survey_Common_Action
 
     public function deleteFiles($plugin)
     {
+        $this->requirePostRequest();
         $this->checkUpdatePermission();
 
         // Pre supposes the plugin is in the uploads folder. Other plugins are not deletable by button.
