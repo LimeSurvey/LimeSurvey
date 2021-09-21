@@ -185,6 +185,14 @@ App()->getClientScript()->registerScript(
         window.location.hash = $(this).attr('href');
         e.preventDefault();
         $(this).tab('show');
+
+        // Hide the save button for boxes tab
+        let tabName = $(this).tab().attr('href');
+        if (tabName == '#boxes') {
+            $('#save_boxes_setting').hide();
+        } else {
+            $('#save_boxes_setting').show();
+        }
     });
     $(document).on('ready pjax:scriptcomplete', function () {
         if (window.location.hash) {
