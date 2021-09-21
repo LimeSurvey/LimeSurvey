@@ -20,7 +20,7 @@
 
     pk: auto-incremental primary key type (“int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY”).
     string: string type (“varchar(255)”).
-    text: a long string type (“text”) - MySQL: max size 64kb - Postgres: unlimited - MSSQL: max size 2.1GB 
+    text: a long string type (“text”) - MySQL: max size 64kb - Postgres: unlimited - MSSQL: max size 2.1GB
     mediumtext: a long string type (“text”) - MySQL: max size 16MB - Postgres: unlimited - MSSQL: max size 2.1GB
     longtext: a long string type (“text”) - MySQL: max size 2.1 GB - Postgres: unlimited - MSSQL: max size 2.1GB
     integer: integer type (“int(11)”).
@@ -2451,7 +2451,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>360], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         /*
         * DBVersion 361 & 362 were intentionally left out to sync with Cloud Hosting
         */
@@ -2464,8 +2464,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $aTableNames = dbGetTablesLike("tokens%");
             $oDB = Yii::app()->getDb();
             foreach ($aTableNames as $sTableName) {
-                try { 
-                        setTransactionBookmark(); 
+                try {
+                        setTransactionBookmark();
                         switch (Yii::app()->db->driverName){
                             case 'mysql':
                             case 'mysqli':
@@ -2480,7 +2480,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>363], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }        
+        }
 
         /*
          * Extend text datafield lengths for MySQL
@@ -2526,10 +2526,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{surveys}}','additional_languages',"text");
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>364], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }  
-        
-        
-        
+        }
+
+
+
         if ($iOldDBVersion < 365) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->insert("{{plugins}}", [
@@ -4290,6 +4290,11 @@ function fixMySQLCollations($sEncoding, $sCollation)
             // more bytes per character than the old one - we just leave them as they are for now.
         };
     }
+
+    if (!function_exists('getDBConnectionStringProperty')) {
+        require_once(__DIR__ . '/update_helper.php');
+    }
+
     $sDatabaseName = getDBConnectionStringProperty('dbname');
     Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
 }
