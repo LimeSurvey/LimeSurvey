@@ -451,9 +451,9 @@ class quotas extends Survey_Common_Action
 
     /**
      * New Quota
-     * @param iSurveyId
+     * @param int iSurveyId
      */
-    public function newquota($iSurveyId)
+    public function newquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
