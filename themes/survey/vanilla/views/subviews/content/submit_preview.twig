@@ -48,7 +48,7 @@
 {% endblock %}
 {% block endurl %}
     {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
-        <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl | url_encode }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}
+        <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}
         {% if(aSurveyInfo.autoredirect == "Y") %}
             <small class="text-info">{{ gT("Note: Automatically loading the end URL works only if the survey is activated.") }}</small>
         {% endif %}

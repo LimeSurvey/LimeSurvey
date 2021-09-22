@@ -1271,4 +1271,14 @@ class Survey_Common_Action extends CAction
         return $extraMenus;
     }
 
+    /**
+     * Throws a 405 HTTP exception if the request method is not POST
+     */
+    protected function requirePostRequest()
+    {
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+    }
+
 }

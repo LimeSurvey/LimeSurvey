@@ -116,6 +116,8 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function delete($id)
     {
+        $this->requirePostRequest();
+
         $oGroupToDelete = $this->loadModel($id);
         $sGroupTitle    = $oGroupToDelete->title;
 
