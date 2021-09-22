@@ -850,7 +850,8 @@ class TemplateConfiguration extends TemplateConfig
         $aData = $this->attributes;
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        $categoryList = $this->getFileCategories($this->template_name, $this->sid);
+        Yii::import('application.helpers.surveyThemeHelper');
+        $categoryList = surveyThemeHelper::getFileCategories($this->template_name, $this->sid);
 
         // Compose list of image files for each category
         foreach ($categoryList as $category) {
