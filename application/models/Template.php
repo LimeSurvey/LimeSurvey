@@ -42,12 +42,6 @@ class Template extends LSActiveRecord
     /** @var array $aAllTemplatesDir cache for the method getAllTemplatesDirectories */
     public static $aAllTemplatesDir = null;
 
-    /** @var array $aTemplatesInUploadDir cache for the method getTemplateInUpload */
-    public static $aTemplatesInUploadDir = null;
-
-    /** @var array $aTemplatesInStandardDir cache for the method getTemplateInStandard */
-    public static $aTemplatesInStandardDir = null;
-
     /** @var array $aTemplatesFileFolder cache for the method getTemplateFilesFolder */
     public static $aTemplatesFileFolder = null;
 
