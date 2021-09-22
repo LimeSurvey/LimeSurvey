@@ -637,13 +637,13 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTemplateURL()
     {
-
-      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
-      if (Template::isStandardTemplate($this->sTemplateName)) {
-          return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
-      } else {
-          return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
-      }
+        Yii::import('application.helpers.surveyThemeHelper');
+        // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+        if (surveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
+            return Yii::app()->getConfig("standardthemerooturl").'/'.$this->sTemplateName.'/';
+        } else {
+            return  Yii::app()->getConfig("userthemerooturl").'/'.$this->sTemplateName.'/';
+        }
 
     //    return Template::getTemplateURL($this->sTemplateName);
     }
@@ -678,7 +678,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $sDeleteLink = '';
         // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
-        if(Permission::model()->hasGlobalPermission('templates','delete') && !Template::isStandardTemplate($this->sTemplateName) ){
+        Yii::import('application.helpers.surveyThemeHelper');
+        if(Permission::model()->hasGlobalPermission('templates','delete') && !surveyThemeHelper::isStandardTemplate($this->sTemplateName) ){
           $sDeleteLink = '<a
               id="template_delete_link_'.$this->sTemplateName.'"
               href="'.$sDeleteUrl.'"
@@ -1058,7 +1059,8 @@ class TemplateManifest extends TemplateConfiguration
                 /* @todo ? : check if installed, install if not */
             }
             $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            if(Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+            Yii::import('application.helpers.surveyThemeHelper');
+            if(surveyThemeHelper::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
                 $this->isStandard    = true;
                 $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             } else {
