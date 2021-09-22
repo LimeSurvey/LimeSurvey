@@ -80,7 +80,7 @@ class surveyThemeHelper
 
     /**
      * Returns a list of user themes, in the form of an array where
-     * the key is the theme name, and value is the theme's path.
+     * the key is the folder name, and value is the theme's path.
      * @return array<string,string>
      */
     public static function getTemplateInUpload()
@@ -95,7 +95,7 @@ class surveyThemeHelper
 
     /**
      * Returns a list of standard themes, in the form of an array where
-     * the key is the theme name, and value is the theme's path.
+     * the key is the folder name, and value is the theme's path.
      * @return array<string,string>
      */
     public static function getTemplateInStandard()
@@ -118,8 +118,10 @@ class surveyThemeHelper
     }
 
     /**
-     * isStandardTemplate returns true if a template is a standard template
-     * This function does not check if a template actually exists
+     * isStandardTemplate returns true if a template is a standard template.
+     * This function does not check if a template actually exists.
+     * Scans standard themes folder and looks for folder matching the $sTemplateName.
+     * Important: here is asumed that theme name = folder name
      *
      * @param mixed $sTemplateName template name to look for
      * @return bool True if standard template, otherwise false
@@ -240,8 +242,9 @@ class surveyThemeHelper
         $basePath = self::isStandardTemplate($themeName) ? Yii::app()->getConfig("standardthemerootdir") : Yii::app()->getConfig("userthemerootdir");
 
         // Technically the theme's folder name is saved in the model ($template->folder),
-        // but we use the theme name here, to avoid using the model. It seems folder always
-        // matches the theme name.
+        // but we use the theme name here, to avoid using the model and/or database calls.
+        // Throughout the code, it is asumed that the theme's folder matches the theme name.
+        // Seems that asumption has it's root source in the isStandardTemplate() method.
         $path = $basePath . DIRECTORY_SEPARATOR . $themeName . DIRECTORY_SEPARATOR;
         return $path;
     }
@@ -312,6 +315,10 @@ class surveyThemeHelper
     /**
      * Returns the virtual path for $path
      * If $path is not valid, returns null.
+     * Paths can be
+     * - related to a global theme option and hence the file be located on the generalfiles directory.
+     * - related to a survey theme option and hence the file be located relative to a survey upload directory.
+     * - related to a theme and hence the file be located on the theme directory (eg. when uploaded from theme editor)
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      * @param string $themeName
