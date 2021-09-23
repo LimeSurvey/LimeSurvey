@@ -336,7 +336,7 @@ class printablesurvey extends Survey_Common_Action
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         }
                                         break;
-                                    case Question::QT_L_LIST_DROPDOWN:
+                                    case Question::QT_L_LIST:
                                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     case Question::QT_O_LIST_WITH_COMMENT:
                                     case Question::QT_R_RANKING_STYLE:
@@ -589,7 +589,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_L_LIST_DROPDOWN:
+                        case Question::QT_L_LIST:
                             // ==================================================================
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {

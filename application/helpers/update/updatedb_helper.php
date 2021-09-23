@@ -5454,7 +5454,7 @@ function createFieldMap450($survey): array
                 }
             }
             switch ($arow['type']) {
-                case Question::QT_L_LIST_DROPDOWN:  //RADIO LIST
+                case Question::QT_L_LIST:  //RADIO LIST
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //DROPDOWN LIST
                     if ($arow['other'] === 'Y') {
                         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";

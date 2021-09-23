@@ -60,7 +60,7 @@ class Question extends LSActiveRecord
     const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
     const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
-    const QT_L_LIST_DROPDOWN = 'L';
+    const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
     const QT_N_NUMERICAL = 'N';
     const QT_O_LIST_WITH_COMMENT = 'O';
@@ -604,7 +604,7 @@ class Question extends LSActiveRecord
                 return 'language';
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                 return 'numeric-multi';
-            case Question::QT_L_LIST_DROPDOWN:
+            case Question::QT_L_LIST:
                 return 'list-radio';
             case Question::QT_M_MULTIPLE_CHOICE:
                 return 'multiple-opt';
@@ -828,7 +828,7 @@ class Question extends LSActiveRecord
 
     public function getOtherIcon()
     {
-        if (($this->type == Question::QT_L_LIST_DROPDOWN) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
+        if (($this->type == Question::QT_L_LIST) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
         } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="' . gT('Not relevant for this question type') . '"></span>';
@@ -1170,7 +1170,7 @@ class Question extends LSActiveRecord
             case Question::QT_1_ARRAY_MULTISCALE:
                 $oRenderer = new RenderArrayMultiscale($aFieldArray);
                 break;
-            case Question::QT_L_LIST_DROPDOWN:
+            case Question::QT_L_LIST:
                 $oRenderer = new RenderListRadio($aFieldArray);
                 break;
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
@@ -1269,7 +1269,7 @@ class Question extends LSActiveRecord
                 return new DataSetDate($this->qid);
             case Question::QT_1_ARRAY_MULTISCALE:
                 return new DataSetArrayMultiscale($this->qid);
-            case Question::QT_L_LIST_DROPDOWN:
+            case Question::QT_L_LIST:
                 return new DataSetListRadio($this->qid);
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 return new DataSetListDropdown($this->qid);

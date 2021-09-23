@@ -28,7 +28,7 @@ class QuestionType extends StaticModel
     const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
     const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
-    const QT_L_LIST_DROPDOWN = 'L';
+    const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
     const QT_N_NUMERICAL = 'N';
     const QT_O_LIST_WITH_COMMENT = 'O';
@@ -238,8 +238,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'numeric-multi'
             ],
-            self::QT_L_LIST_DROPDOWN => [
-                'code' => self::QT_L_LIST_DROPDOWN,
+            self::QT_L_LIST => [
+                'code' => self::QT_L_LIST,
                 'description' => gT("List (Radio)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,

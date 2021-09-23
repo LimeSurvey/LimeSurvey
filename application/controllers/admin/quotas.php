@@ -539,7 +539,7 @@ class quotas extends Survey_Common_Action
             $aAnswerList = array(
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-        } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
+        } elseif ($aQuestionType == Question::QT_L_LIST || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
             $aAnsResults = Answer::model()
                 ->with('answerl10ns', array('language' => $sBaseLang))
                 ->findAllByAttributes(array('qid' => $iQuestionId));

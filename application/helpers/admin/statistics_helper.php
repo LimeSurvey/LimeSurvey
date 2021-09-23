@@ -1410,7 +1410,7 @@ class statistics_helper
                     }
 
                     //handling for "other" field for list radio or list drowpdown
-                    if ((($qtype == Question::QT_L_LIST_DROPDOWN || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
+                    if ((($qtype == Question::QT_L_LIST || $qtype == Question::QT_EXCLAMATION_LIST_DROPDOWN) && $qother == Question::QT_Y_YES_NO_RADIO)) {
                         //add "other"
                         $alist[] = array(gT("Other"), gT("Other"), $fielddata['fieldname'] . 'other');
                     }
@@ -1462,7 +1462,7 @@ class statistics_helper
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
-                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
@@ -2233,7 +2233,7 @@ class statistics_helper
             if (isset($al[2]) && $al[2]) {
                 //handling for "other" option
                 if ($al[0] == gT("Other")) {
-                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST_DROPDOWN) {
+                    if ($outputs['qtype'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $outputs['qtype'] == Question::QT_L_LIST) {
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */

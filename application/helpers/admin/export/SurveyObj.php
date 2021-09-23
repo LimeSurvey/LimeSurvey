@@ -133,7 +133,7 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_L_LIST_DROPDOWN:   //DROPDOWN LIST
+            case Question::QT_L_LIST:   //DROPDOWN LIST
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 if (mb_substr($fieldName, -5, 5) == 'other') {
                     $fullAnswer = $answerCode;

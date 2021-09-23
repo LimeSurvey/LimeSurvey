@@ -699,7 +699,7 @@ class dataentry extends Survey_Common_Action
                             );
                             $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down
+                        case Question::QT_L_LIST: //LIST drop-down
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
                             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
@@ -2034,7 +2034,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
 
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                             if ($arQuestion['type'] == '!' && trim($qidattributes['category_separator']) != '') {
                                 $optCategorySeparator = $qidattributes['category_separator'];

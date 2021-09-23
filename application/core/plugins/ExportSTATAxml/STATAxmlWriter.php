@@ -397,7 +397,7 @@ class STATAxmlWriter extends Writer
                         case Question::QT_D_DATE: //replace in customResponsemap: date/time as string with STATA-timestamp
                             $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
                             break;
-                        case Question::QT_L_LIST_DROPDOWN:
+                        case Question::QT_L_LIST:
                             // For radio lists, user wants code, not label
                             // TODO: We could skip this loop if we had answer code
                             foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {

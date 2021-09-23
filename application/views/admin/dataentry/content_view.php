@@ -186,7 +186,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 
         //LIST drop-down/radio-button list
-        case Question::QT_L_LIST_DROPDOWN:
+        case Question::QT_L_LIST:
         case Question::QT_EXCLAMATION_LIST_DROPDOWN: ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>

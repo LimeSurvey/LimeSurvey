@@ -77,7 +77,7 @@
                                     <?php endif; ?>
 
                                     <?php switch ($questionrow['type']) {
-                                        case Question::QT_L_LIST_DROPDOWN:
+                                        case Question::QT_L_LIST:
                                         case Question::QT_M_MULTIPLE_CHOICE:
                                         case Question::QT_O_LIST_WITH_COMMENT:
                                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:

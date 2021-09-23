@@ -1168,7 +1168,7 @@ class LimeExpressionManager
                             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
                             case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                            case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
@@ -1306,7 +1306,7 @@ class LimeExpressionManager
             // individual subquestion relevance
             if (
                 $hasSubqs &&
-                $type != Question::QT_VERTICAL_FILE_UPLOAD && $type != Question::QT_EXCLAMATION_LIST_DROPDOWN && $type != Question::QT_L_LIST_DROPDOWN && $type != Question::QT_O_LIST_WITH_COMMENT
+                $type != Question::QT_VERTICAL_FILE_UPLOAD && $type != Question::QT_EXCLAMATION_LIST_DROPDOWN && $type != Question::QT_L_LIST && $type != Question::QT_O_LIST_WITH_COMMENT
             ) {
                 $subqs = $qinfo['subqs'];
                 $last_rowdivid = '--';
@@ -1361,7 +1361,7 @@ class LimeExpressionManager
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 case Question::QT_O_LIST_WITH_COMMENT:
                 case Question::QT_M_MULTIPLE_CHOICE: //NUMERICAL QUESTION TYPE
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     $validationEqn[$questionNum][] = [
                         'qtype' => $type,
                         'type'  => 'default',
@@ -2576,7 +2576,7 @@ class LimeExpressionManager
                     $sgqa = $qinfo['sgqa'];
                     switch ($type) {
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && !is_empty(trim(" . $sgqa . "other.NAOK))))";
                             break;
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments
@@ -2611,7 +2611,7 @@ class LimeExpressionManager
                     $sgqa = $qinfo['sgqa'];
                     switch ($type) {
                         //case '!': //List - dropdown
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with
                             $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) ||is_numeric(" . $sgqa . "other.NAOK))";
@@ -2897,7 +2897,7 @@ class LimeExpressionManager
                     $qtips['default'] = $this->gT('Choose your language');
                     break;
                 case Question::QT_O_LIST_WITH_COMMENT:
-                case Question::QT_L_LIST_DROPDOWN:
+                case Question::QT_L_LIST:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                     $qtips['default'] = $this->gT('Choose one of the following answers');
                     break;
@@ -3457,14 +3457,14 @@ class LimeExpressionManager
             // Set $ansArray
             switch ($type) {
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
                 case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
                 case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
                 case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                     $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : null);
-                    if ($other == 'Y' && ($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN)) {
+                    if ($other == 'Y' && ($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN)) {
                         if (preg_match('/other$/', $sgqa)) {
                             $ansArray = null;   // since the other variable doesn't need it
                         } else {
@@ -3537,7 +3537,7 @@ class LimeExpressionManager
                 case Question::QT_D_DATE: //DATE
                 case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
                 case Question::QT_I_LANGUAGE: //Language Question
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
@@ -3631,7 +3631,7 @@ class LimeExpressionManager
                         $onlynum = true;
                     }
                     break;
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                     if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only'] == '1' && preg_match('/other$/', $sgqa)) {
@@ -3671,7 +3671,7 @@ class LimeExpressionManager
                         $jsVarName_on = $jsVarName;
                     }
                     break;
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     if (preg_match("/other$/", $sgqa)) {
                         $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = 'answer' . $sgqa . "text";
@@ -3729,7 +3729,7 @@ class LimeExpressionManager
             }
 
             if (
-                !is_null($rowdivid) || $type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT || !is_null($preg)
+                !is_null($rowdivid) || $type == Question::QT_L_LIST || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT || !is_null($preg)
                 || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD
             ) {
                 if (!isset($q2subqInfo[$questionNum])) {
@@ -3750,7 +3750,7 @@ class LimeExpressionManager
                     $q2subqInfo[$questionNum]['subqs'] = [];
                 }
                 switch ($type) {
-                    case Question::QT_L_LIST_DROPDOWN:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
+                    case Question::QT_L_LIST:// What using sq: it's only on question + one other if other is set. This don't set the other subq here.
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                         if (!is_null($ansArray)) {
                             foreach (array_keys($ansArray) as $key) {
@@ -6016,7 +6016,7 @@ class LimeExpressionManager
                                 }
                             }
                             break;
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             if ($sgqa == ($sq['sgqa'] . 'other') && $sgqa == $sq['rowdivid']) {   // don't do sub-q level validition to main question, just to other option
                                 $foundSQrelevance = true;
                                 if (isset($LEM->ParseResultCache[$sq['eqn']])) {
@@ -6100,12 +6100,12 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     // If at least one checkbox is checked, we're OK
                     if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
                         $qmandViolation = true;
                     }
-                    if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN)) {
+                    if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST)) {
                         $sMandatoryText = $LEM->gT('Please check at least one item.');
                         $mandatoryTip .= App()->twigRenderer->renderPartial(
                             '/survey/questions/question_help/mandatory_tip.twig',
@@ -6260,7 +6260,7 @@ class LimeExpressionManager
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     // If at least one checkbox is checked, we're OK
                     if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
                         $anyUnanswered = true;
@@ -7118,7 +7118,7 @@ class LimeExpressionManager
                         $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                     }
                     switch ($sq['qtype']) {
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             $listItem = substr($sq['rowdivid'], strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
                             $relParts[] = "    if (($('#java" . $sq['sgqa'] . "').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
@@ -7245,13 +7245,13 @@ class LimeExpressionManager
                     // color-code mandatory other comment fields
                     switch ($arg['type']) {
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
-                        case Question::QT_L_LIST_DROPDOWN:
+                        case Question::QT_L_LIST:
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                             switch ($arg['type']) {
                                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     $othervar = 'othertext' . substr($arg['jsResultVar'], 4, -5);
                                     break;
-                                case Question::QT_L_LIST_DROPDOWN:
+                                case Question::QT_L_LIST:
                                     $othervar = 'answer' . substr($arg['jsResultVar'], 4) . 'text';
                                     break;
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
@@ -8593,7 +8593,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
                                 return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                             case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                            case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                            case Question::QT_L_LIST: //LIST drop-down/radio-button list
                             case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                             case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
@@ -8617,7 +8617,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $code = $this->_GetVarAttribute($name, 'code', $default, $gseq, $qseq);
                 switch ($type) {
                     case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                    case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                    case Question::QT_L_LIST: //LIST drop-down/radio-button list
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                     case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
                     case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
@@ -8625,7 +8625,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                         if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment\.value/', $name)) {
                             $value = $code;
-                        } elseif (($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other\.value/', $name)) {
+                        } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other\.value/', $name)) {
                             $value = $code;
                         } else {
                             $scale_id = $this->_GetVarAttribute($name, 'scale_id', '0', $gseq, $qseq);
@@ -8671,7 +8671,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $shown = $default;  // Default value to satisfy Scrutinizer
                     switch ($type) {
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale  // need scale
                         case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
@@ -8679,7 +8679,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         case Question::QT_R_RANKING_STYLE: //RANKING STYLE
                             if ($type == Question::QT_O_LIST_WITH_COMMENT && preg_match('/comment$/', $name)) {
                                 $shown = $code;
-                            } elseif (($type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', $name)) {
+                            } elseif (($type == Question::QT_L_LIST || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN) && preg_match('/_other$/', $name)) {
                                 $shown = $code;
                             } else {
                                 $scale_id = $this->_GetVarAttribute($name, 'scale_id', '0', $gseq, $qseq);

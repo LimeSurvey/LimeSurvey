@@ -135,7 +135,7 @@ class SurveyActivator
                 case Question::QT_S_SHORT_FREE_TEXT:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
-                case Question::QT_L_LIST_DROPDOWN:
+                case Question::QT_L_LIST:
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 case Question::QT_M_MULTIPLE_CHOICE:
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:

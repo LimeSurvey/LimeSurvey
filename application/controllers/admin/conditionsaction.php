@@ -1678,7 +1678,7 @@ class conditionsaction extends Survey_Common_Action
                             // For dropdown questions
                             // optinnaly add the 'Other' answer
                             if (
-                                ($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                                ($rows['type'] == Question::QT_L_LIST ||
                                 $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
                                 $rows['other'] == "Y"
                             ) {
