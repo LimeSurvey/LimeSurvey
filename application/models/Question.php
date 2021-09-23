@@ -1233,9 +1233,6 @@ class Question extends LSActiveRecord
             case Question::QT_Y_YES_NO_RADIO:
                 $oRenderer = new RenderYesNoRadio($aFieldArray);
                 break;
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                $oRenderer = new RenderListRadioFlexible($aFieldArray);
-                break;
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                 $oRenderer = new RenderArrayMultiFlexNumbers($aFieldArray);
                 break;
@@ -1311,8 +1308,6 @@ class Question extends LSActiveRecord
                 return new DataSetShortFreeText($this->qid);
             case Question::QT_Y_YES_NO_RADIO:
                 return new DataSetYesNoRadio($this->qid);
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                return new DataSetListRadioFlexible($this->qid);
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                 return new DataSetArrayMultiFlexNumbers($this->qid);
             case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
