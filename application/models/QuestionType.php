@@ -40,7 +40,6 @@ class QuestionType extends StaticModel
     const QT_U_HUGE_FREE_TEXT = 'U';
     const QT_X_BOILERPLATE_QUESTION = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
-    const QT_Z_LIST_RADIO_FLEXIBLE = 'Z';
     const QT_EXCLAMATION_LIST_DROPDOWN = '!';
     const QT_VERTICAL_FILE_UPLOAD = '|';
     const QT_ASTERISK_EQUATION = '*';
