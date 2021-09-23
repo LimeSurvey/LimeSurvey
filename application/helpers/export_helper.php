@@ -454,7 +454,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge Free Text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_Z_LIST_RADIO_FLEXIBLE => array('name' => 'List (Flexible Labels) (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_L_LIST_DROPDOWN => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_O_LIST_WITH_COMMENT => array('name' => 'List With Comment', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_T_LONG_FREE_TEXT => array('name' => 'Long free text', 'size' => 1, 'SPSStype' => 'A'),
