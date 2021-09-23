@@ -73,7 +73,7 @@ class LSYii_ImageValidator
             $result['uploadresult'] = '';
             $result['check'] = true;
         } else {
-            $result['uploadresult'] = gT("This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images.");
+            $result['uploadresult'] = sprintf(gT("This file is not a supported image format - only the following ones are allowed: %s"),strtoupper(Yii::app()->getConfig('allowedthemeimageformats')));
             $result['check'] = false;
         }
         return $result;

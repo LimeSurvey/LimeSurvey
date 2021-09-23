@@ -8059,6 +8059,14 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
         sprintf("SELECT * FROM {{labelsets}} WHERE lid = %d", (int) $lid)
     )->queryRow();
     if (empty($labelSet)) {
+        // No belonging label set, remove orphan labels.
+        // @see https://bugs.limesurvey.org/view.php?id=17608
+        $oDB->createCommand(
+            sprintf(
+                'DELETE FROM {{labels}} WHERE lid = %d',
+                (int) $lid
+            )
+        )->execute();
         return;
     }
 
