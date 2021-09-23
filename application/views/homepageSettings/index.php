@@ -195,6 +195,8 @@ App()->getClientScript()->registerScript(
         }
     });
     $(document).on('ready pjax:scriptcomplete', function () {
+        // Default behaviour: hide the save button
+        $('#save_boxes_setting').hide();
         if (window.location.hash) {
             $('#boxeslist').find('a[href=' + window.location.hash + ']').trigger('click');
         }
