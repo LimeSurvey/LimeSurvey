@@ -24,7 +24,6 @@ class LoadQuestionTypes
         Yii::import('questiontypes.Language.*');
         Yii::import('questiontypes.ListDropdown.*');
         Yii::import('questiontypes.ListRadio.*');
-        Yii::import('questiontypes.ListRadioFlexible.*');
         Yii::import('questiontypes.ListWithComment.*');
         Yii::import('questiontypes.LongFreeText.*');
         Yii::import('questiontypes.MultipleChoice.*');
@@ -117,9 +116,6 @@ class LoadQuestionTypes
                 break;
             case Question::QT_Y_YES_NO_RADIO:
                 Yii::import('questiontypes.YesNoRadio.*');
-                break;
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                Yii::import('questiontypes.ListRadioFlexible.*');
                 break;
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                 Yii::import('questiontypes.ArrayMultiFlexNumbers.*');
