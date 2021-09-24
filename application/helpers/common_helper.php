@@ -160,8 +160,8 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector", $sLa
 */
 function isStandardTemplate($sTemplateName)
 {
-    Yii::import('application.helpers.surveyThemeHelper');
-    return surveyThemeHelper::isStandardTemplate($sTemplateName);
+    Yii::import('application.helpers.SurveyThemeHelper');
+    return SurveyThemeHelper::isStandardTemplate($sTemplateName);
 }
 
 /**

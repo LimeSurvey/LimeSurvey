@@ -465,8 +465,8 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('template.extends', $this->template_extends, true);
 
 
-        Yii::import('application.helpers.surveyThemeHelper');
-        $coreTemplates = surveyThemeHelper::getStandardTemplateList();
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $coreTemplates = SurveyThemeHelper::getStandardTemplateList();
         if ($this->template_type == 'core'){
             $criteria->addInCondition('template_name', $coreTemplates);
         } elseif ($this->template_type == 'user'){
@@ -605,8 +605,8 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)) {
-            Yii::import('application.helpers.surveyThemeHelper');
-            $this->sTypeIcon = (surveyThemeHelper::isStandardTemplate($this->template->name)) ?gT("Core theme") : gT("User theme");
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $this->sTypeIcon = (SurveyThemeHelper::isStandardTemplate($this->template->name)) ?gT("Core theme") : gT("User theme");
         }
         return $this->sTypeIcon;
     }
@@ -850,8 +850,8 @@ class TemplateConfiguration extends TemplateConfig
         $aData = $this->attributes;
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        Yii::import('application.helpers.surveyThemeHelper');
-        $categoryList = surveyThemeHelper::getFileCategories($this->template_name, $this->sid);
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $categoryList = SurveyThemeHelper::getFileCategories($this->template_name, $this->sid);
 
         // Compose list of image files for each category
         foreach ($categoryList as $category) {
@@ -1387,9 +1387,9 @@ class TemplateConfiguration extends TemplateConfig
         // as other options may hold a path as well (eg. custom theme options)
         $decodedOptions = json_decode($this->$attribute, true);
         if (is_array($decodedOptions)) {
-            Yii::import('application.helpers.surveyThemeHelper');
+            Yii::import('application.helpers.SurveyThemeHelper');
             foreach($decodedOptions as &$value) {
-                $value = surveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
+                $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);
         }

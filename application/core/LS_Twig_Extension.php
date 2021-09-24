@@ -284,8 +284,8 @@ class LS_Twig_Extension extends Twig_Extension
         // If $sImagePath is a 'virtual' path, we must get the real path.
         if (preg_match('/(image::\w+::)/', $sImagePath, $m)) {
             $oTemplate =  Template::getLastInstance();
-            Yii::import('application.helpers.surveyThemeHelper');
-            $sFullPath = surveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $sFullPath = SurveyThemeHelper::getRealThemeFilePath($sImagePath, $oTemplate->template_name, $oTemplate->sid);
         } else {
             // If it's not a virtual path, only paths relative to a theme (and within the theme) are allowed.
             // Recurrence on templates to find the file

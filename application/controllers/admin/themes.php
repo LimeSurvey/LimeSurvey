@@ -251,8 +251,8 @@ class themes extends Survey_Common_Action
             }
 
             $destdir = $oTemplateConfiguration->filesPath;
-            Yii::import('application.helpers.surveyThemeHelper');
-            if(surveyThemeHelper::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if(SurveyThemeHelper::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
                 $destdir = $oTemplateConfiguration->generalFilesPath;
             }
 
@@ -609,8 +609,8 @@ class themes extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'create')) {
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
 
-            Yii::import('application.helpers.surveyThemeHelper');
-            if(surveyThemeHelper::isStandardTemplate($newname)){
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if(SurveyThemeHelper::isStandardTemplate($newname)){
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                 $this->getController()->redirect(array("admin/themeoptions"));
             }
@@ -660,8 +660,8 @@ class themes extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
-            Yii::import('application.helpers.surveyThemeHelper');
-            if (Template::checkIfTemplateExists($templatename) && !surveyThemeHelper::isStandardTemplate($templatename)) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
 
                 if (!Template::hasInheritance($templatename)) {
                     if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)) {
@@ -735,8 +735,8 @@ class themes extends Survey_Common_Action
                 throw new CHttpException(403,"Disable for security reasons.");
             }
             // CheckIfTemplateExists check if the template is installed....
-            Yii::import('application.helpers.surveyThemeHelper');
-            if ( ! Template::checkIfTemplateExists($templatename) && !surveyThemeHelper::isStandardTemplate($templatename) ) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if ( ! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename) ) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 }else{

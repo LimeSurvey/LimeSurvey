@@ -1,6 +1,5 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php
+
 /*
 * LimeSurvey
 * Copyright (C) 2007-2021 The LimeSurvey Project Team / Carsten Schmitz
@@ -20,14 +19,8 @@ use LimeSurvey\Datavalueobjects\ThemeFileInfo;
 /**
  * General helper class for survey themes
  */
-class surveyThemeHelper
+class SurveyThemeHelper
 {
-    /** @var array $aTemplatesInUploadDir cache for the method getTemplateInUpload */
-    public static $aTemplatesInUploadDir = null;
-
-    /** @var array $aTemplatesInStandardDir cache for the method getTemplateInStandard */
-    public static $aTemplatesInStandardDir = null;
-
     /**
      * Returns the virtual path prefix of $virtualPath.
      *
@@ -62,20 +55,21 @@ class surveyThemeHelper
      * @param string $folder
      * @return array<string,string>
      */
-    public static function getTemplateInFolder($sFolder)
+    public static function getTemplateInFolder($folder)
     {
-        $aTemplateList = array();
+        /** @var array<string,string> */
+        $templateList = [];
 
-        if ($sFolder && $handle = opendir($sFolder)) {
-            while (false !== ($sFileName = readdir($handle))) {
-                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName != ".svn" && (file_exists("{$sFolder}/{$sFileName}/config.xml"))) {
-                    $aTemplateList[$sFileName] = $sFolder . DIRECTORY_SEPARATOR . $sFileName;
+        if ($folder && $handle = opendir($folder)) {
+            while (false !== ($fileName = readdir($handle))) {
+                if (!is_file("$folder/$fileName") && $fileName != "." && $fileName != ".." && $fileName != ".svn" && (file_exists("{$folder}/{$fileName}/config.xml"))) {
+                    $templateList[$fileName] = $folder . DIRECTORY_SEPARATOR . $fileName;
                 }
             }
             closedir($handle);
         }
-        ksort($aTemplateList);
-        return  $aTemplateList;
+        ksort($templateList);
+        return  $templateList;
     }
 
     /**
@@ -85,12 +79,14 @@ class surveyThemeHelper
      */
     public static function getTemplateInUpload()
     {
-        if (empty(self::$aTemplatesInUploadDir)) {
-            $sUserTemplateRootDir        = Yii::app()->getConfig("userthemerootdir");
-            self::$aTemplatesInUploadDir = self::getTemplateInFolder($sUserTemplateRootDir);
+        /** @var array<string,string> used for caching */
+        static $templatesInUploadDir = null;
+        if (empty($templatesInUploadDir)) {
+            $userTemplateRootDir = Yii::app()->getConfig("userthemerootdir");
+            $templatesInUploadDir = self::getTemplateInFolder($userTemplateRootDir);
         }
 
-        return self::$aTemplatesInUploadDir;
+        return $templatesInUploadDir;
     }
 
     /**
@@ -100,11 +96,13 @@ class surveyThemeHelper
      */
     public static function getTemplateInStandard()
     {
-        if (empty(self::$aTemplatesInStandardDir)) {
-            $standardTemplateRootDir       = Yii::app()->getConfig("standardthemerootdir");
-            self::$aTemplatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
+        /** @var array<string,string> used for caching */
+        static $templatesInStandardDir = null;
+        if (empty($templatesInStandardDir)) {
+            $standardTemplateRootDir = Yii::app()->getConfig("standardthemerootdir");
+            $templatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
         }
-        return self::$aTemplatesInStandardDir;
+        return $templatesInStandardDir;
     }
 
     /**
@@ -120,16 +118,16 @@ class surveyThemeHelper
     /**
      * isStandardTemplate returns true if a template is a standard template.
      * This function does not check if a template actually exists.
-     * Scans standard themes folder and looks for folder matching the $sTemplateName.
+     * Scans standard themes folder and looks for folder matching the $themeName.
      * Important: here is asumed that theme name = folder name
      *
-     * @param mixed $sTemplateName template name to look for
+     * @param mixed $themeName template name to look for
      * @return bool True if standard template, otherwise false
      */
-    public static function isStandardTemplate($sTemplateName)
+    public static function isStandardTemplate($themeName)
     {
         $standardTemplates = self::getStandardTemplateList();
-        return in_array($sTemplateName, $standardTemplates);
+        return in_array($themeName, $standardTemplates);
     }
 
     /**
@@ -313,7 +311,10 @@ class surveyThemeHelper
     }
 
     /**
-     * Returns the virtual path for $path
+     * Returns the virtual path for $path.
+     * Virtual paths are a special notation for relative paths, including a prefix to give context.
+     * Eg.: the path "image::theme::files/logo.png" is relative to the theme folder, while 
+     *      "image::generalfiles::" is relative to the general files folder.
      * If $path is not valid, returns null.
      * Paths can be
      * - related to a global theme option and hence the file be located on the generalfiles directory.
