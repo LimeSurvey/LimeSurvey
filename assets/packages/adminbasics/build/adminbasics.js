@@ -28223,7 +28223,8 @@
       keepopen: null,
       postDatas: null,
       gridid: null,
-      "ajax-url": null
+      "ajax-url": null,
+      postUrl: null
     }; //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
 
@@ -28276,6 +28277,12 @@
         });
       });
     },
+        _sendPost = function _sendPost() {
+      adminCoreLSConsole.log('Binding post handler on confirmation dialog');
+      $(_this).find('.btn-ok').on('click', function (ev) {
+        window.LS.sendPost(options.postUrl, options.postDatas);
+      });
+    },
         _setTarget = function _setTarget() {
       //Set up normal href
       if (!!options.href) {
@@ -28294,6 +28301,13 @@
 
       if (!!options['ajax-url']) {
         _ajaxHandler();
+
+        return;
+      } //Set up a handler to send a POST request
+
+
+      if (!!options.postUrl) {
+        _sendPost();
 
         return;
       }
