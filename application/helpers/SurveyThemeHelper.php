@@ -253,7 +253,7 @@ class SurveyThemeHelper
      *  - valid virtual path
      *  - real path for an available category
      *
-     * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
+     * @param string|null $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      * @param string $themeName
      * @param mixed $sid
      * @return LimeSurvey\Datavalueobjects\ThemeFileInfo|null the file info if it's valid, or null if it's not.
