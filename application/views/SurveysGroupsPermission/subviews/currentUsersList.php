@@ -35,7 +35,7 @@
                                 <a class="btn btn-default btn-sm" role="button"
                                    data-target='#confirmation-modal' data-toggle='modal'
                                    data-message='<?= gT("Are you sure you want to remove all permissions for this user?") ?>'
-                                   data-href='<?= $deleteUrl ?>'
+                                   data-post-url='<?= $deleteUrl ?>'
                                 ><span class="fa fa-trash text-danger" aria-hidden="true" title="<?= gT("Delete") ?>"><span>
                             <span class="sr-only"><?= gT("Delete") ?></span>
                                 </a>

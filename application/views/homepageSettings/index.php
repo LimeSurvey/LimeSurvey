@@ -43,7 +43,7 @@ App()->getClientScript()->registerScript(
                     [
                         'id'           => 'boxes-grid',
                         'dataProvider' => $dataProviderBox->search(),
-                        'htmlOptions'  => ['class' => 'table-responsive'],
+                        'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
                         'template'     => "{items}\n<div id='boxListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                         'summaryText'  => gT('Displaying {start}-{end} of {count} result(s).') . ' '
                             . sprintf(
@@ -185,8 +185,18 @@ App()->getClientScript()->registerScript(
         window.location.hash = $(this).attr('href');
         e.preventDefault();
         $(this).tab('show');
+
+        // Hide the save button for boxes tab
+        let tabName = $(this).tab().attr('href');
+        if (tabName === '#boxes') {
+            $('#save_boxes_setting').hide();
+        } else {
+            $('#save_boxes_setting').show();
+        }
     });
     $(document).on('ready pjax:scriptcomplete', function () {
+        // Default behaviour: hide the save button
+        $('#save_boxes_setting').hide();
         if (window.location.hash) {
             $('#boxeslist').find('a[href=' + window.location.hash + ']').trigger('click');
         }

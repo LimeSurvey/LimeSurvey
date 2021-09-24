@@ -579,16 +579,19 @@ class ExpressionManager
      * Main entry function
      * @param string $expr
      * @param boolean $onlyparse - if true, then validate the syntax without computing an answer
+     * @param boolean $resetErrorsAndWarnings - if true (default), EM errors and warnings will be cleared before evaluation
      * @return boolean - true if success, false if any error occurred
      */
-    public function RDP_Evaluate($expr, $onlyparse = false)
+    public function RDP_Evaluate($expr, $onlyparse = false, $resetErrorsAndWarnings = true)
     {
         $this->RDP_expr = $expr;
         $this->RDP_tokens = $this->RDP_Tokenize($expr);
         $this->RDP_count = count($this->RDP_tokens);
         $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
-        $this->RDP_errs = array();
-        $this->RDP_warnings = array();
+        if ($resetErrorsAndWarnings) {
+            $this->RDP_errs = array();
+            $this->RDP_warnings = array();
+        }
         $this->RDP_onlyparse = $onlyparse;
         $this->RDP_stack = array();
         $this->RDP_evalStatus = false;
@@ -1975,6 +1978,7 @@ class ExpressionManager
         $stringParts = $this->asSplitStringOnExpressions($src);
         $resolvedParts = array();
         $prettyPrintParts = array();
+        $this->ResetErrorsAndWarnings();
         foreach ($stringParts as $stringPart) {
             if ($stringPart[2] == 'STRING') {
                 $resolvedParts[] = $stringPart[0];
@@ -1982,7 +1986,7 @@ class ExpressionManager
             } else {
                 ++$this->substitutionNum;
                 $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
-                if ($this->RDP_Evaluate($expr)) {
+                if ($this->RDP_Evaluate($expr, false, false)) { // We call RDP_Evaluate with $resetErrorsAndWarnings = false because, if $src has more than one expression, error information could be lost
                     $resolvedPart = $this->GetResult();
                 } else {
                     // show original and errors in-line only if user have the rigth to update survey content

@@ -24,7 +24,7 @@
                 'dataProvider'     => $model->searchMine(true),
                 'id'               => 'usergroups-grid-mine',
                 'emptyText'        => gT('No user groups found.'),
-                'htmlOptions'      => ['class' => 'table-responsive'],
+                'htmlOptions'      => ['class' => 'table-responsive grid-view-ls'],
                 'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate'       => 'usergroups-grid-mine',
                 'template'         => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
@@ -118,7 +118,7 @@
                         )
                     ),
                     'columns'          => $model->columns,
-                    'htmlOptions'      => array('style' => 'cursor: pointer;', 'class' => 'hoverAction'),
+                    'htmlOptions'      => ['class' => 'table-responsive grid-view-ls'],
                     'selectionChanged' => "function(id){window.location='" . Yii::app()->urlManager->createUrl('userGroup/viewGroup/ugid') . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate'       => 'usergroups-grid-belong-to',
                 ));

@@ -48,6 +48,12 @@ class SurveysGroupsPermissionController extends LSBaseController
         ];
     }
 
+    public function filters()
+    {
+        return array(
+            'postOnly + DeleteUser'
+        );
+    }
 
     /**
      * Shown permissions list, allow to add user and group,
@@ -156,7 +162,7 @@ class SurveysGroupsPermissionController extends LSBaseController
         $aData['fullpagebar'] = array(
             'returnbutton' => array(
                 'text' => gT('Back'),
-                'url'  => App()->createUrl('surveyAdministration/listsurveys', array('#' => 'surveygroups')),
+                'url'  => 'surveyAdministration/listsurveys#surveygroups',
             ),
         );
         $this->aData = $aData;

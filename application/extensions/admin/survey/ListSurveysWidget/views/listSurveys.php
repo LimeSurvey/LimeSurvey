@@ -29,7 +29,7 @@
                         $this->pageSize,
                         Yii::app()->params['pageSizeOptions'],
                         array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                'htmlOptions' => ['class' => 'table-responsive'],
+                'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
                 'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('surveyAdministration/view/iSurveyID' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => 'survey-grid',
                 'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',

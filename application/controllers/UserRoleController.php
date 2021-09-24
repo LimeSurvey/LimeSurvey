@@ -269,6 +269,8 @@ class UserRoleController extends LSBaseController
      */
     public function actionDelete()
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
             $this->getController()->redirect(array('/admin'));
