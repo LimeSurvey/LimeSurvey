@@ -68,10 +68,10 @@ class UserRoleController extends LSBaseController
     /**
      * Returns the modal view for adding/editing a user role
      *
-     * @param null $ptid
+     * @param int $ptid (optional)
      * @throws CException
      */
-    public function actionEditRoleModal($ptid = null)
+    public function actionEditRoleModal(?int $ptid = 0)
     {
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             Yii::app()->session['flashmessage'] = gT('You have no access to the role management!');
