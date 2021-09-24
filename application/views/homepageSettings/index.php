@@ -188,7 +188,7 @@ App()->getClientScript()->registerScript(
 
         // Hide the save button for boxes tab
         let tabName = $(this).tab().attr('href');
-        if (tabName == '#boxes') {
+        if (tabName === '#boxes') {
             $('#save_boxes_setting').hide();
         } else {
             $('#save_boxes_setting').show();
