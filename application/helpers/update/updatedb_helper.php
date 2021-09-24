@@ -5228,7 +5228,7 @@ function decryptArchivedTables450($oDB)
         // recrypt tokens
         if ($archivedTableSettings['tbl_type'] === 'token') {
             // skip if the encryption status is unknown
-            if (isset($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+            if (!empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
                 $tokenencryptionoptions = $archivedTableSettingsProperties;
 
                 // default attributes
@@ -5237,7 +5237,7 @@ function decryptArchivedTables450($oDB)
                 }
             }
             // skip if the encryption status is unknown
-            if (isset($archivedTableSettingsAttributes) && $archivedTableSettingsAttributes[0] !== 'unknown') {
+            if (!empty($archivedTableSettingsAttributes) && $archivedTableSettingsAttributes[0] !== 'unknown') {
                 // find custom attribute column names
                 $table = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
                 if (!$table) {
@@ -5277,7 +5277,7 @@ function decryptArchivedTables450($oDB)
         }
 
         // recrypt responses // skip if the encryption status is unknown
-        if ($archivedTableSettings['tbl_type'] === 'response' && isset($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+        if ($archivedTableSettings['tbl_type'] === 'response' && !empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
             $responsesCount = $oDB->createCommand()
                 ->select('count(*)')
                 ->from("{{{$archivedTableSettings['tbl_name']}}}")
