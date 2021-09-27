@@ -34,6 +34,21 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.13 (build 210923) to 5.1.14 (build 210927) September 27, 2021
+-Fixed issue #T1228: Close button does not work when attempting to abort importing participants from CSV file (#2051) (Gabriel Jenik)
+-Fixed issue #17611: Updating from 2.05 or earlier throws error "Undefined function getDBConnectionStringProperty()" (Carsten Schmitz)
+-Fixed issue #17608: Remove orphan labels before adding table unique constraint (Olle Haerstedt)
+-Fixed issue #17592: Database update 450 fails (Patrick Teichmann)
+-Fixed issue #17592: Call to a member function getColumn() on string when updating using MSSQL (Carsten Schmitz)
+-Fixed issue #17557: Allowed image extensions are not properly shown in administration (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by samarta, tamiel
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
 Changes from 5.1.12 (build 210922) to 5.1.13 (build 210923) September 21, 2021
 -Fixed issue #17608: Label sets have no language column in latest dbversion (Olle Haerstedt)
 -Fixed issue #17528: Back-button on survey group permission fails (#2043) (Gabriel Jenik)
