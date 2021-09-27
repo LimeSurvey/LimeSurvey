@@ -48,7 +48,7 @@
         <li class="disabled">
             <a class="btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("It is not possible to add or delete a group on an active survey."); ?>" >
                 <span class="fa fa-trash text-danger"></span>
-                <?php eT("Delete"); ?>
+                <?php eT("Delete group"); ?>
             </a>
         </li>
     <?php endif; ?>
