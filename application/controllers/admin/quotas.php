@@ -317,7 +317,7 @@ class quotas extends Survey_Common_Action
 
     /**
      * Delete Quota
-     * @param int iSurveyId
+     * @param int $iSurveyId
      */
     public function delquota(int $iSurveyId)
     {
