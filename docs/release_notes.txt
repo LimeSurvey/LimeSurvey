@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.18 (build 210921) to 3.27.19 (build 210928) September 27, 2021
+-Fixed issue #17611: Updating from 2.05 or earlier throws error "Undefined function getDBConnectionStringProperty()" (Carsten Schmitz)
+-Fixed issue #17606: Single data set summary is missing "last page" detail (Carsten Schmitz)
+-Fixed issue #17562: XSS injection in the 'File upload' question type in LimeSurvey version 3.x-LTS (#2044) (Gabriel Jenik)
+-Fixed issue #17437: Missing prefix (multiple numeric number) for total value (Patricia Stelling)
+-Fixed issue #13601: {TIME} placeholder not working (#2042) (Gabriel Jenik)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 3.27.17 (build 210911) to 3.27.18 (build 210921) September 20, 2021
 -Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
 -Fixed issue #17512: Survey Logic File Syntax Error Summary Displays Incorrect Error Count (#2030) (Gabriel Jenik)
