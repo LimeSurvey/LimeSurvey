@@ -616,9 +616,9 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getTemplateURL()
     {
-
-      // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
-        if (Template::isStandardTemplate($this->sTemplateName)) {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        // By default, theme folder is always the folder name. @See:TemplateConfig::importManifest().
+        if (SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
             return Yii::app()->getConfig("standardthemerooturl") . '/' . $this->sTemplateName . '/';
         } else {
             return  Yii::app()->getConfig("userthemerooturl") . '/' . $this->sTemplateName . '/';
@@ -658,7 +658,8 @@ class TemplateManifest extends TemplateConfiguration
 
         $sDeleteLink = '';
         // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
-        if (Permission::model()->hasGlobalPermission('templates', 'delete') && !Template::isStandardTemplate($this->sTemplateName)) {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        if (Permission::model()->hasGlobalPermission('templates', 'delete') && !SurveyThemeHelper::isStandardTemplate($this->sTemplateName)) {
             $sDeleteLink = '<a
               id="template_delete_link_' . $this->sTemplateName . '"
               href="' . $sDeleteUrl . '"
@@ -1044,7 +1045,8 @@ class TemplateManifest extends TemplateConfiguration
                 /* @todo ? : check if installed, install if not */
             }
             $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            if (Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if(SurveyThemeHelper::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
                 $this->isStandard    = true;
                 $this->path = Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
             } else {
@@ -1218,11 +1220,11 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * @param TemplateManifest $oRTemplate
-     * @param string $sPath
+     * @param string $attribute
      */
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
-        while (empty($oRTemplate->config->xpath($sPath))) {
+        while (empty($oRTemplate->config->xpath($attribute))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
@@ -1241,9 +1243,9 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion         = (isset($this->config->metadata->apiVersion)) ? $this->config->metadata->apiVersion : null;
 
 
-        $this->viewPath           = $this->path . $this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;
-        $this->filesPath          = $this->path . $this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory . DIRECTORY_SEPARATOR;
-        $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
+        $this->viewPath           = $this->path . $this->getTemplateConfigurationForAttribute($this, '//viewdirectory')->config->engine->viewdirectory . DIRECTORY_SEPARATOR;
+        $this->filesPath          = $this->path . $this->getTemplateConfigurationForAttribute($this, '//filesdirectory')->config->engine->filesdirectory . DIRECTORY_SEPARATOR;
+        $this->templateEditor     = $this->getTemplateConfigurationForAttribute($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))) {

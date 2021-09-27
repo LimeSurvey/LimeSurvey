@@ -39,12 +39,6 @@ class Template extends LSActiveRecord
     /** @var array $aAllTemplatesDir cache for the method getAllTemplatesDirectories */
     public static $aAllTemplatesDir = null;
 
-    /** @var array $aTemplatesInUploadDir cache for the method getTemplateInUpload */
-    public static $aTemplatesInUploadDir = null;
-
-    /** @var array $aTemplatesInStandardDir cache for the method getTemplateInStandard */
-    public static $aTemplatesInStandardDir = null;
-
     /** @var array $aTemplatesFileFolder cache for the method getTemplateFilesFolder */
     public static $aTemplatesFileFolder = null;
 
@@ -293,7 +287,8 @@ class Template extends LSActiveRecord
             throw new \CException("Survey theme {$sTemplateName} not found.", 1);
         }
 
-        if (self::isStandardTemplate($sTemplateName)) {
+        Yii::import('application.helpers.SurveyThemeHelper');
+        if (SurveyThemeHelper::isStandardTemplate($sTemplateName)) {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->folder;
         } else {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("userthemerootdir") . DIRECTORY_SEPARATOR . $oTemplate->folder;
@@ -381,7 +376,8 @@ class Template extends LSActiveRecord
         $oTemplate = self::model()->findByPk($sTemplateName);
 
         if (is_object($oTemplate)) {
-            if (self::isStandardTemplate($sTemplateName)) {
+            Yii::import('application.helpers.SurveyThemeHelper');
+            if (SurveyThemeHelper::isStandardTemplate($sTemplateName)) {
                 return $aTemplateUrl[$sTemplateName] = Yii::app()->getConfig("standardthemerooturl") . '/' . $oTemplate->folder . '/';
             } else {
                 return $aTemplateUrl[$sTemplateName] = Yii::app()->getConfig("userthemerooturl") . '/' . $oTemplate->folder . '/';
@@ -462,11 +458,15 @@ class Template extends LSActiveRecord
      *
      * @param mixed $sTemplateName template name to look for
      * @return bool True if standard template, otherwise false
+     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
      */
     public static function isStandardTemplate($sTemplateName)
     {
-        $standardTemplates = self::getStandardTemplateList();
-        return in_array($sTemplateName, $standardTemplates);
+        // Refactored into SurveyThemeHelper. Replaced the code here
+        // by a call to the helper to avoid code duplication while keeping
+        // backwards compatibility.
+        Yii::import('application.helpers.SurveyThemeHelper');
+        return SurveyThemeHelper::isStandardTemplate($sTemplateName);
     }
 
     /**
@@ -581,10 +581,15 @@ class Template extends LSActiveRecord
      * Return the standard template list
      * @return string[]
      * @throws Exception
+     * @deprecated Use SurveyThemeHelper::getStandardTemplateList() instead.
      */
     public static function getStandardTemplateList()
     {
-        return array_keys(self::getTemplateInStandard());
+        // Refactored into SurveyThemeHelper. Replaced the code here
+        // by a call to the helper to avoid code duplication while keeping
+        // backwards compatibility.
+        Yii::import('application.helpers.SurveyThemeHelper');
+        return SurveyThemeHelper::getStandardTemplateList();
     }
 
 
@@ -596,48 +601,49 @@ class Template extends LSActiveRecord
     public static function getAllTemplatesDirectories()
     {
         if (empty(self::$aAllTemplatesDir)) {
-            $aTemplatesInUpload     = Template::getTemplateInUpload();
-            $aTemplatesInCore       = Template::getTemplateInStandard();
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $aTemplatesInUpload     = SurveyThemeHelper::getTemplateInUpload();
+            $aTemplatesInCore       = SurveyThemeHelper::getTemplateInStandard();
             self::$aAllTemplatesDir = array_merge($aTemplatesInUpload, $aTemplatesInCore);
         }
         return self::$aAllTemplatesDir;
     }
 
+    /**
+     * @deprecated Use SurveyThemeHelper::getTemplateInUpload() instead.
+     */
     public static function getTemplateInUpload()
     {
-        if (empty(self::$aTemplatesInUploadDir)) {
-            $sUserTemplateRootDir        = Yii::app()->getConfig("userthemerootdir");
-            self::$aTemplatesInUploadDir = self::getTemplateInFolder($sUserTemplateRootDir);
-        }
-
-        return self::$aTemplatesInUploadDir;
+        // Refactored into SurveyThemeHelper. Replaced the code here
+        // by a call to the helper to avoid code duplication while keeping
+        // backwards compatibility.
+        Yii::import('application.helpers.SurveyThemeHelper');
+        return SurveyThemeHelper::getTemplateInUpload();
     }
 
+    /**
+     * @deprecated Use SurveyThemeHelper::getTemplateInStandard() instead.
+     */
     public static function getTemplateInStandard()
     {
-        if (empty(self::$aTemplatesInStandardDir)) {
-            $standardTemplateRootDir       = Yii::app()->getConfig("standardthemerootdir");
-            self::$aTemplatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
-        }
-        return self::$aTemplatesInStandardDir;
+        // Refactored into SurveyThemeHelper. Replaced the code here
+        // by a call to the helper to avoid code duplication while keeping
+        // backwards compatibility.
+        Yii::import('application.helpers.SurveyThemeHelper');
+        return SurveyThemeHelper::getTemplateInStandard();
     }
 
+    /**
+     * @deprecated Use SurveyThemeHelper::getTemplateInFolder() instead.
+     */
     public static function getTemplateInFolder($sFolder)
     {
-        $aTemplateList = array();
-
-        if ($sFolder && $handle = opendir($sFolder)) {
-            while (false !== ($sFileName = readdir($handle))) {
-                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName != ".svn" && (file_exists("{$sFolder}/{$sFileName}/config.xml"))) {
-                    $aTemplateList[$sFileName] = $sFolder . DIRECTORY_SEPARATOR . $sFileName;
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aTemplateList);
-        return  $aTemplateList;
+        // Refactored into SurveyThemeHelper. Replaced the code here
+        // by a call to the helper to avoid code duplication while keeping
+        // backwards compatibility.
+        Yii::import('application.helpers.SurveyThemeHelper');
+        return SurveyThemeHelper::getTemplateInFolder($sFolder);
     }
-
 
     /**
      * Change the template name inside DB and the manifest (called from template editor)
