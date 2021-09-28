@@ -556,23 +556,6 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
-     * Construct a question object from a GUID.
-     * @param string $guid
-     * @param int $questionId,
-     * @param int $responseId
-     * @return \Question
-     */
-    public function constructQuestionFromGUID($guid, $questionId = null, $responseId = null)
-    {
-        $this->loadQuestionObjects();
-        if (isset($this->guidToQuestion[$guid])) {
-            $questionClass = $this->guidToQuestion[$guid]['class'];
-            $questionObject = new $questionClass($this->loadPlugin($this->guidToQuestion[$guid]['plugin']), $this->api, $questionId, $responseId);
-            return $questionObject;
-        }
-    }
-
-    /**
      * Read all plugin config files and updates information
      * in database if plugin version differs.
      * @return void
