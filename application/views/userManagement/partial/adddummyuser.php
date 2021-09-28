@@ -2,7 +2,7 @@
 <?php
 Yii::app()->getController()->renderPartial(
     '/layouts/partial_modals/modal_header',
-    ['modalTitle' => gT('Adding anonymous users')]
+    ['modalTitle' => gT('Add dummy users')]
 );
 ?>
 <?=TbHtml::formTb(null, App()->createUrl('userManagement/runAddDummyUser'), 'post', ["id"=>"UserManagement--modalform"])?>
@@ -31,6 +31,6 @@ Yii::app()->getController()->renderPartial(
 
 <div class="modal-footer modal-footer-buttons">
     <button id="exitForm" class="btn btn-cancel  "><?=gT('Cancel')?></button>
-    <button class="btn btn-success" id="submitForm"><?=gT('Create')?></button>
+    <button class="btn btn-success" id="submitForm"><?=gT('Add')?></button>
 </div>
 </form>

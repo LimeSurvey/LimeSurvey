@@ -25,7 +25,11 @@
             'yes-no-lg',
             'empty-lg',
             'cancel-apply',
-            'cancel-delete'
+            'cancel-resend',
+            'cancel-add',
+            'cancel-save',
+            'cancel-delete',
+            'cancel-export',
         ];
 
         // Selector variables
