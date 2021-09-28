@@ -5,7 +5,6 @@ namespace LimeSurvey\PluginManager;
 use Yii;
 use Plugin;
 use ExtensionConfig;
-use Exception;
 
 /**
  * Factory for limesurvey plugin objects.
@@ -317,7 +316,7 @@ class PluginManager extends \CApplicationComponent
                                     if (!$saveResult) {
                                         // This only happens if database save fails.
                                         $this->shutdownObject->disable();
-                                        throw new Exception(
+                                        throw new \Exception(
                                             'Internal error: Could not save load error for plugin ' . $pluginName
                                         );
                                     }
@@ -435,11 +434,7 @@ class PluginManager extends \CApplicationComponent
                 }
             } else {
                 if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
-                    $pluginInfo = $this->getPluginInfo($pluginName);
-                    if ($pluginInfo !== false) {
-                        if (!$pluginInfo['isCompatible']) {
-                            throw new Exception(gT('The plugin is not compatible with your version of LimeSurvey.'));
-                        }
+                    if ($this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);
                             if (method_exists($this->plugins[$id], 'init')) {
@@ -465,7 +460,7 @@ class PluginManager extends \CApplicationComponent
             if (!$saveResult) {
                 // This only happens if database save fails.
                 $this->shutdownObject->disable();
-                throw new Exception(
+                throw new \Exception(
                     'Internal error: Could not save load error for plugin ' . $pluginName
                 );
             }
