@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-09-27 09:26:01+00:00\n"
+"POT-Creation-Date: 2021-09-28 08:35:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14852,27 +14852,31 @@ msgstr ""
 msgid "Plugin load error"
 msgstr ""
 
-#: application/models/Plugin.php:193
+#: application/models/Plugin.php:186
+msgid "Error: Could not get plugin description: %s"
+msgstr ""
+
+#: application/models/Plugin.php:208
 msgid "Attempt plugin reload"
 msgstr ""
 
-#: application/models/Plugin.php:229
+#: application/models/Plugin.php:244
 msgid "Activate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:257
+#: application/models/Plugin.php:272
 msgid "Are you sure you want to deactivate this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:257
+#: application/models/Plugin.php:272
 msgid "Deactivate plugin"
 msgstr ""
 
-#: application/models/Plugin.php:286
+#: application/models/Plugin.php:301
 msgid "Are you sure you want to uninstall this plugin?"
 msgstr ""
 
-#: application/models/Plugin.php:286
+#: application/models/Plugin.php:301
 msgid "Uninstall plugin"
 msgstr ""
 
