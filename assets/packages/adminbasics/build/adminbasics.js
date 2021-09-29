@@ -32094,7 +32094,7 @@
 
     options.fnOnHide = options.fnOnHide || function () {};
 
-    options.removeOnClose = options.removeOnClose || function () {};
+    options.removeOnClose = options.removeOnClose || true;
 
     options.fnOnHidden = options.fnOnHidden || function () {};
 
@@ -32221,7 +32221,7 @@
         } catch (e) {}
       });
       modalObject.on('shown.bs.modal', function () {
-        modalObject.find('.selector--button-confirm').on('click', function (e) {
+        modalObject.find('.selector--button-confirm').off('click.confirmdeletesubmit').on('click.confirmdeletesubmit', function (e) {
           e.preventDefault();
 
           if (!useAjax) {
@@ -32273,6 +32273,11 @@
     $(document).off('click.confirmModalSelector', 'a.selector--ConfirmModal');
     $(document).on('click.confirmModalSelector', 'a.selector--ConfirmModal', function (e) {
       e.preventDefault();
+
+      if ($(this).data('confirm-modal-appended') == 'yes') {
+        return;
+      }
+
       $(this).confirmModal({});
       $(this).trigger('click.confirmmodal');
     });
