@@ -80,6 +80,7 @@ LS.CPDB = (function() {
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             method: 'POST',
 
             /**
