@@ -252,7 +252,7 @@ class participantsaction extends Survey_Common_Action
         if ($count > 1) {
             return sprintf(gT("Export %s participants to CSV"), $count);
         } elseif ($count == 1) {
-            return gT("Export participant to CSV");
+            return gT("Export participants to CSV");
         } else {
             return $count;
         }
