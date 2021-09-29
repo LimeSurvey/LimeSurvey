@@ -614,6 +614,10 @@ class tokens extends Survey_Common_Action
 
             $aData['topBar']['name'] = 'tokensTopbar_view';
 
+            if($aData['success']){
+                $this->getController()->redirect(array("admin/tokens/sa/browse/surveyid/{$iSurveyId}"));
+            }
+
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
         } else {
             $this->_handletokenform($iSurveyId, "addnew");
@@ -2492,7 +2496,8 @@ class tokens extends Survey_Common_Action
         $aData['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        //close button should redirect from where it came
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
 
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
