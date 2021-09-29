@@ -119,6 +119,8 @@ export default class TimerConstructor {
     _showWarning() {
         if (this.option.warning !== 0) {
             this.timerLogger.log('Warning called!');
+            const timeObject = this._parseTimeToObject(this.option.warning, true);
+            this.$warningTimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
             this.$warningDisplayElement.removeClass('hidden').css({
                 opacity: 0
             }).animate({
@@ -141,6 +143,8 @@ export default class TimerConstructor {
     _showWarning2() {
         if (this.option.warning2 !== 0) {
             this.timerLogger.log('Warning2 called!');
+            const timeObject = this._parseTimeToObject(this.option.warning, true);
+            this.$warning2TimeDisplayElement.html(timeObject.hours + ':' + timeObject.minutes + ':' + timeObject.seconds);
             this.$warning2DisplayElement.removeClass('hidden').css({
                 opacity: 0
             }).animate({
