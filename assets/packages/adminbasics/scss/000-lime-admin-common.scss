@@ -4331,3 +4331,8 @@ table.dataTable thead .sorting_desc:after {
 .answeroptions-table > tbody > tr > td:last-of-type {
     padding-right: 0;
 }
+
+/** Surveys Grid View **/
+#survey-grid {
+    overflow-x: visible;
+}
