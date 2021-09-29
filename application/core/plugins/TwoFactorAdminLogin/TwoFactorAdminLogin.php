@@ -34,40 +34,40 @@ class TwoFactorAdminLogin extends AuthPluginBase
             'type' => 'string',
             'label' => 'Issuer',
             'default' => 'LimeSurvey Survey Software',
-            'help' => 'Will be displayed in the app as issuer name.'
+            'help' => 'This will be displayed in the 2FA app as issuer name.'
         ),
         'digits' => array(
             'type' => 'string',
-            'label' => 'Digits (6 is needed for most tools)',
+            'label' => 'Code length',
             'default' => '6',
-            'help' => 'The number of digits the resulting codes will be. Please leave it at 6 for Google-Authenticator.'
+            'help' => 'The number of digits the resulting codes will be. Leave it at 6 for best compatibility.'
         ),
         'period' => array(
             'type' => 'string',
-            'label' => 'Time period (30 is needed for most tools)',
+            'label' => 'Time period',
             'default' => '30',
-            'help' => 'The number of seconds a code will be valid. Please leave it at 30 for Google-Authenticator.'
+            'help' => 'The number of seconds a code will be valid. Please leave it at 30 for best compatibility.'
         ),
         'leeway' => array(
             'type' => 'string',
             'label' => 'Discrepancy',
-            'default' => '0',
+            'default' => '5',
             'help' => 'What amount of discrepancy in seconds is allowed for the client.'
         ),
         'algorithm' => array(
             'type' => 'select',
-            'label' => 'Algorithm (SHA1 is needed for most tools)',
+            'label' => 'Algorithm',
             'default' => 'sha1',
             'options' => [
                 'sha1' => 'SHA1 (Default)',
                 'sha256 ' => 'SHA256',
                 'md5' => 'MD5',
             ],
-            'help' => 'The algorithm used, please keep in mind, that most tools only work with SHA1 hashing'
+            'help' => 'Please keep in mind, that most tools only work with SHA1 hashing.'
         ),
         'force2fa' => array(
             'type' => 'select',
-            'label' => 'Force 2FA',
+            'label' => 'Force 2FA on login',
             'default' => '0',
             'options' => [
                 '0 ' => 'No',
@@ -79,7 +79,6 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
     public function init()
     {
-
         //System events
         $this->subscribe('direct');
         $this->subscribe('newDirectRequest');
@@ -93,6 +92,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $this->subscribe('afterLoginFormSubmit');
         $this->subscribe('newUserSession');
     }
+
     //##############  Plugin event handlers ##############//
     /**
      * Listen to direct requests
@@ -208,7 +208,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
         $aMenuItemUserOptions = [
             'isDivider' => false,
             'isSmallText' => false,
-            'label' => '2FA-Setting',
+            'label' => gT('General'),
             'href' => $this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/userindex', []),
             'iconClass' => 'fa fa-user-secret',
         ];
@@ -219,7 +219,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
             $aMenuItemAdminOptions = [
                 'isDivider' => false,
                 'isSmallText' => false,
-                'label' => '2FA-Administration',
+                'label' => gT('Administration'),
                 'href' => $this->api->createUrl('admin/pluginhelper/sa/fullpagewrapper/plugin/TwoFactorAdminLogin/method/index', []),
                 'iconClass' => 'fa fa-users',
             ];
@@ -228,7 +228,7 @@ class TwoFactorAdminLogin extends AuthPluginBase
 
         $aNewMenuOptions = [
             'isDropDown' => true,
-            'label' => '2-Factor-Settings',
+            'label' => gT('2FA settings'),
             'href' => '#',
             'menuItems' => $aMenuItems,
             'iconClass' => 'fa fa-lock fa-lg',
