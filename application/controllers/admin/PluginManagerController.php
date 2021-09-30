@@ -278,6 +278,7 @@ class PluginManagerController extends Survey_Common_Action
 
     /**
      * Configure for plugin
+     * @param int $id
      */
     public function configure($id)
     {
@@ -337,19 +338,19 @@ class PluginManagerController extends Survey_Common_Action
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
                 'save' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save'),
-                    'class' => array('btn-success'),
+                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
+                    'class' => array('btn btn-success'),
                     'type'  => 'submit'
                 ),
                 'redirect' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save and close'),
-                    'class' => array('btn-default'),
+                    'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
+                    'class' => array('btn btn-default'),
                     'type'  => 'submit',
                     'value' => $url,
                 ),
                 'cancel' => array(
-                    'label' => gT('Close'),
-                    'class' => array('btn-danger'),
+                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
+                    'class' => array('btn btn-danger'),
                     'type'  => 'link',
                     'href' => $url,
                 ),
