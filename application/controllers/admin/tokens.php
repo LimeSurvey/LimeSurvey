@@ -2763,9 +2763,12 @@ class tokens extends Survey_Common_Action
 
     /**
      * This method echos HTML and ends.
+     * @param int   $iSurveyId
+     * @param array $aSurveyLangs
+     * @param array $aData
      * @return void
      */
-    protected function showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData)
+    protected function showInviteOrReminderEmailForm(int $iSurveyId, array $aSurveyLangs, array $aData)
     {
         $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
         $sSubAction = $this->getSubAction();
