@@ -1046,7 +1046,7 @@ class TemplateManifest extends TemplateConfiguration
             }
             $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
             Yii::import('application.helpers.SurveyThemeHelper');
-            if(SurveyThemeHelper::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+            if (SurveyThemeHelper::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
                 $this->isStandard    = true;
                 $this->path = Yii::app()->getConfig("standardthemerootdir") . DIRECTORY_SEPARATOR . $this->sTemplateName . DIRECTORY_SEPARATOR;
             } else {
