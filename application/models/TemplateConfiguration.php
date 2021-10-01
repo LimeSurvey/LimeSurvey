@@ -516,7 +516,7 @@ class TemplateConfiguration extends TemplateConfig
 
         Yii::import('application.helpers.SurveyThemeHelper');
         $coreTemplates = SurveyThemeHelper::getStandardTemplateList();
-        if ($this->template_type == 'core') {
+        if ($this->template_type == 'core'){
             $criteria->addInCondition('template_name', $coreTemplates);
         } elseif ($this->template_type == 'user') {
             $criteria->addNotInCondition('template_name', $coreTemplates);
@@ -1595,7 +1595,7 @@ class TemplateConfiguration extends TemplateConfig
         $decodedOptions = json_decode($this->$attribute, true);
         if (is_array($decodedOptions)) {
             Yii::import('application.helpers.SurveyThemeHelper');
-            foreach ($decodedOptions as &$value) {
+            foreach($decodedOptions as &$value) {
                 $value = SurveyThemeHelper::sanitizePathInOption($value, $this->template_name, $this->sid);
             }
             $this->$attribute = json_encode($decodedOptions);
