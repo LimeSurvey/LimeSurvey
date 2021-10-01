@@ -4966,7 +4966,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 foreach ($templateConfigurations as $templateConfiguration) {
                     $decodedOptions = json_decode($templateConfiguration['options'], true);
                     if (is_array($decodedOptions)) {
-                        foreach($decodedOptions as &$value) {
+                        foreach ($decodedOptions as &$value) {
                             $value = SurveyThemeHelper::sanitizePathInOption($value, $templateConfiguration['template_name'], $templateConfiguration['sid']);
                         }
                         $sanitizedOptions = json_encode($decodedOptions);

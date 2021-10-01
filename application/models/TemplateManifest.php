@@ -1227,7 +1227,7 @@ class TemplateManifest extends TemplateConfiguration
         while (empty($oRTemplate->config->xpath($attribute))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$attribute'.");
             }
             $oRTemplate = $oMotherTemplate;
         }
