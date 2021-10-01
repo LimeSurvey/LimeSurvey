@@ -25,6 +25,7 @@
             'yes-no-lg',
             'empty-lg',
             'cancel-apply',
+            'cancel-change',
             'cancel-resend',
             'cancel-add',
             'cancel-save',
