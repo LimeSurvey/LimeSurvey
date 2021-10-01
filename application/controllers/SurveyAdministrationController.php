@@ -2198,6 +2198,12 @@ class SurveyAdministrationController extends LSBaseController
                 $aData['bFailed'] = true;
             }
 
+            // If the import failed, set the status and error message in order to keep consistency with other errors
+            if (!empty($aImportResults['error'])) {
+                $aData['sErrorMessage'] = $aImportResults['error'];
+                $aData['bFailed'] = true;
+            }
+
             if ($action == 'importsurvey' && isset($sFullFilepath) && file_exists($sFullFilepath)) {
                 unlink($sFullFilepath);
             }
