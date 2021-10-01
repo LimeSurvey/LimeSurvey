@@ -30377,7 +30377,14 @@
               name: 'saveandclose',
               value: '1'
             }).appendTo($form);
-            $form.find('[type="submit"]').first().trigger('click');
+            var submitButton = $form.find('[type="submit"]').first();
+
+            if (submitButton.length) {
+              submitButton.trigger('click');
+            } else {
+              $form.submit();
+            }
+
             displayLoadingState(this);
             return false;
           },
