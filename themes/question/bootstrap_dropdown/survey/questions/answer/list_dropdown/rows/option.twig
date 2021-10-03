@@ -10,6 +10,6 @@
 
 <!-- option -->
 <option data-content="{{ processString(answer,1) }}" value='{{ value }}' {{ opt_select }} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
-    {{ processString(answer,1) }}
+    {{ flatString(processString(answer,1),1) }}
 </option>
 <!-- end of option -->

@@ -10,6 +10,6 @@
 
 <!-- option -->
 <option data-content="{{ answer }}" value='{{ code }}' {{ opt_select }} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
-    {{ answer }}
+    {{ flattenText(answer) }}
 </option>
 <!-- end of option -->
