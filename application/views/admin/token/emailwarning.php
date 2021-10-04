@@ -83,7 +83,7 @@ App()->getClientScript()->registerScript('TokenInviteLooper', "
         $('#countdown-progress').css('-moz-animation-duration', '500ms');
         $('#countdown-progress').css('animation-duration', '500ms');
         $('#countdown-progress').css('width', '0');
-        $('#tokensendcounter').text('0');
+        $('#tokenSendCounter').text('0');
         submitInviteForm();
     });
 
