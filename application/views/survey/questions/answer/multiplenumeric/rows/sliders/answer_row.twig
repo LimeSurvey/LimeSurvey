@@ -52,8 +52,15 @@
                         })
                     }}
                 {% if slider_showminmax %}
-                    <div class='pull-left help-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
-                    <div class='pull-right help-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                    {% if slider_orientation == 'horizontal' %}
+                        <div class='pull-left help-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
+                        <div class='pull-right help-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                    {% else %}
+                        <div class="slider-min-max-container">
+                            <div class='help-block slider-min-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
+                            <div class='help-block slider-max-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                        </div>
+                    {% endif %}
                 {% endif %}
                 {% if slider_reset %}
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
