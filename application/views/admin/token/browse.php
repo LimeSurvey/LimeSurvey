@@ -27,7 +27,7 @@
 
         <!-- Grid -->
         <div class="row">
-            <div class="content-right scrolling-wrapper"    >
+            <div class="content-right">
                 <?php
                     $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider' => $model->search(),
@@ -41,7 +41,7 @@
                                 $pageSizeTokenView,
                                 Yii::app()->params['pageSizeOptionsTokens'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                        'htmlOptions'              => ['class' => 'table-responsive'],
+                        'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                         'columns'                  => $model->attributesForGrid,
                         'ajaxUpdate'               => 'token-grid',
                         'ajaxType'                 => 'POST',

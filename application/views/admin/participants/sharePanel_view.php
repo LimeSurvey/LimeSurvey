@@ -21,7 +21,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                         [
                             'id'                       => 'share_central_participants',
                             'emptyText'                => gT('No shared participants found'),
-                            'htmlOptions'              => ['class' => 'table-responsive'],
+                            'htmlOptions'              => ['class' => 'table-responsive grid-view-ls'],
                             'dataProvider'             => $model->search(),
                             'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id, "data-share_uid" => $data->share_uid]',
                             'columns'                  => $model->columns,

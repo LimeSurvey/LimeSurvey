@@ -259,6 +259,8 @@ class tokens extends Survey_Common_Action
      */
     public function deleteToken()
     {
+        $this->requirePostRequest();
+
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
         $iSid = (int) Yii::app()->getRequest()->getParam('sid');
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
@@ -1619,6 +1621,7 @@ class tokens extends Survey_Common_Action
 
             // White Close Button
             $aData['showWhiteCloseButton'] = true;
+            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
             
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -2213,6 +2216,7 @@ class tokens extends Survey_Common_Action
         $aData['thischaracterset'] = $thischaracterset;
 
         $aData['showCloseButton'] = true;
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2488,6 +2492,7 @@ class tokens extends Survey_Common_Action
         $aData['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
 
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -2620,7 +2625,7 @@ class tokens extends Survey_Common_Action
                         'message' => [
                             'class' => 'message-box-error',
                             'title'   => gT("Import failed"),
-                            'message' => gT ("There are no matching settings to start the restore of the tokens table.")
+                            'message' => gT("There are no matching settings to start the restoration of the participant table.")
                         ]
                     ],
                     $aData

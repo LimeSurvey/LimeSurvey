@@ -22,6 +22,7 @@ const ConfirmationModal = function(e){
         btnclass    : 'btn-primary',
         btntext     : actionBtn.dataset.actionbtntext,
         "ajax-url"  : null,
+        postUrl     : null,
     };
 
     //////METHODS
@@ -77,6 +78,12 @@ const ConfirmationModal = function(e){
             });
         });
     },
+    _sendPost = () => {
+        LOG.log('Binding post handler on confirmation dialog');
+        $(_this).find('.btn-ok').on('click', function(ev) {
+            window.LS.sendPost(options.postUrl, options.postDatas);
+        });
+    },
     _setTarget = () => {
         //Set up normal href
         if (!!options.href) {
@@ -91,6 +98,11 @@ const ConfirmationModal = function(e){
         //Set up an ajax post
         if (!!options['ajax-url']) {
             _ajaxHandler();
+            return;
+        }
+        //Set up a handler to send a POST request
+        if (!!options.postUrl) {
+            _sendPost();
             return;
         }
         LOG.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");

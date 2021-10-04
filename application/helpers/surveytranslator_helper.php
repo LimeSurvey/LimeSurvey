@@ -962,6 +962,14 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['cy']['radixpoint'] = 0;
     $supportedLanguages['cy']['momentjs'] = 'cy';
 
+    // Xhosa
+    $supportedLanguages['xho']['description'] = gT('Xhosa');
+    $supportedLanguages['xho']['nativedescription'] = 'isiXhosa';
+    $supportedLanguages['xho']['rtl'] = false;
+    $supportedLanguages['xho']['dateformat'] = 5;
+    $supportedLanguages['xho']['radixpoint'] = 1;
+    $supportedLanguages['xho']['momentjs'] = 'null';
+
     // Yakut
     $supportedLanguages['sah']['description'] = gT('Yakut');
     $supportedLanguages['sah']['nativedescription'] = '&#x421;&#x430;&#x445;&#x430; &#x442;&#x44B;&#x43B;&#x430;';

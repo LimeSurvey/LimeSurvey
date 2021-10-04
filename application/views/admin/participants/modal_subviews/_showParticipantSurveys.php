@@ -21,7 +21,7 @@
             'id' => 'list_participant_surveys',
             'dataProvider' => $surveymodel->search(),
             'columns' => $surveymodel->columns,
-            'htmlOptions' => array('class'=> 'table-responsive'),
+            'htmlOptions' => ['class' => 'table-responsive grid-view-ls'],
             'afterAjaxUpdate' => 'bindButtonsInsideSurveys',
             'ajaxType' => 'POST',
             'summaryText'   => gT('Displaying {count} survey(s).'),

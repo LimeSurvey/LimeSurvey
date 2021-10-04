@@ -42,8 +42,8 @@ echo viewHelper::getViewTestTag('2faUsersIndex');
                         class="btn btn-default TFA--actionconfirm" 
                         data-href="<?=App()->createUrl("plugins/direct/plugin/TwoFactorAdminLogin/function/directCallDeleteKey")?>" 
                         id="TFA--unset2fa"
-                        data-confirmtext="<?=gT('Are you sure you want to delete your 2FA key?')?>"
-                        data-buttons="{confirm_cancel: '<?=gT('No, cancel')?>', confirm_ok: '<?=gT('Yes, I am sure')?>'}"
+                        data-confirmtext="<?=gT('Are you sure you want to disable two-factor authentication (2FA) for your account?')?>"
+                        data-buttons='{"confirm_cancel": "<?=gT('No, cancel', 'js')?>", "confirm_ok": "<?=gT('Yes, I am sure', 'js')?>"}'
                         data-uid="<?=$oTFAModel->uid?>"
                         data-errortext="<?=gT('An error has occurred, and the key could not be deleted.')?>"
                     ><?=gT("Remove 2FA")?></a>

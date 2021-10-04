@@ -1302,6 +1302,8 @@ class dataentry extends Survey_Common_Action
      */
     public function delete()
     {
+        $this->requirePostRequest();
+
         $surveyid = '';
         if (isset($_REQUEST['surveyid']) && !empty($_REQUEST['surveyid'])) {
             $surveyid = $_REQUEST['surveyid'];

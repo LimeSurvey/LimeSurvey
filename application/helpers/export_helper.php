@@ -454,7 +454,6 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge Free Text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_Z_LIST_RADIO_FLEXIBLE => array('name' => 'List (Flexible Labels) (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_L_LIST_DROPDOWN => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_O_LIST_WITH_COMMENT => array('name' => 'List With Comment', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_T_LONG_FREE_TEXT => array('name' => 'Long free text', 'size' => 1, 'SPSStype' => 'A'),
@@ -1394,7 +1393,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
-        } if ($use_answers == true) {
+        } else if ($use_answers == true) {
             //ranking quesions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
@@ -2545,6 +2544,7 @@ function tsvSurveyExport($surveyid)
         'language',
         'validation',
         'mandatory',
+        'encrypted',
         'other',
         'default',
         'same_default',
@@ -2608,7 +2608,7 @@ function tsvSurveyExport($surveyid)
         $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
     }
 
-    foreach ($language_data as $key => $language) {  //echo $key.'---'; print_r($language); die;
+    foreach ($language_data as $language_data_key => $language) {  //echo $key.'---'; print_r($language); die;
         $current_language = !empty($language['surveyls_language']) ? $language['surveyls_language'] : '';
         foreach ((array)$language as $key => $value) {
             if (is_array($value)) {
@@ -2641,7 +2641,7 @@ function tsvSurveyExport($surveyid)
         $attributes[$attribute['qid']][] = $attribute;
     }
 
-    // default values data
+    // defaultvalues_data
     if (array_key_exists('defaultvalues', $xmlData)) {
         $defaultvalues_data = $xmlData['defaultvalues']['rows']['row'];
         if (!array_key_exists('0', $defaultvalues_data)) {
@@ -2650,8 +2650,26 @@ function tsvSurveyExport($surveyid)
     } else {
         $defaultvalues_data = array();
     }
+    // insert translations to defaultvalues_datas
+    if (array_key_exists('defaultvalue_l10ns', $xmlData)) {
+        $defaultvalues_l10ns_data = $xmlData['defaultvalue_l10ns']['rows']['row'];
+        $defaultvalues_datas = [];
+        foreach ($defaultvalues_l10ns_data as $defaultvalue_l10ns_key => $defaultvalue_l10ns_data) {
+            foreach ($defaultvalues_data as $defaultvalue_key => $defaultvalue_data) {
+                if ($defaultvalue_l10ns_data['dvid'] === $defaultvalue_data['dvid']) {
+                    $defaultvalues_datas[] = $defaultvalue_data;
+                    $defaultvalues_datas_last = array_key_last($defaultvalues_datas);
+                    $defaultvalues_datas[$defaultvalues_datas_last]['language'] = $defaultvalue_l10ns_data['language'];
+                    $defaultvalues_datas[$defaultvalues_datas_last]['defaultvalue'] = $defaultvalue_l10ns_data['defaultvalue'];
+                    continue 2;
+                }
+            }
+        }
+    }
+    unset($defaultvalues_data);
+    unset($defaultvalues_l10ns_data);
     $defaultvalues = array();
-    foreach ($defaultvalues_data as $key => $defaultvalue) {
+    foreach ($defaultvalues_datas as $key => $defaultvalue) {
         if ($defaultvalue['sqid'] > 0) {
             $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
         } else {
@@ -2682,7 +2700,9 @@ function tsvSurveyExport($surveyid)
                 $xmlData['group_l10ns']['rows']['row'][0] = $aSaveData;
             }
             foreach ($xmlData['group_l10ns']['rows']['row'] as $group_l10ns) {
-                $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                if ($group_l10ns['language'] === $language) {
+                    $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
+                }
             }
         } else {
             $groups_data = array();
@@ -2860,6 +2880,7 @@ function tsvSurveyExport($surveyid)
                         $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                         $tsv_output['language'] = $question['language'];
                         $tsv_output['mandatory'] = !empty($question['mandatory']) ? $question['mandatory'] : '';
+                        $tsv_output['encrypted'] = !empty($question['encrypted']) ? $question['encrypted'] : 'N';
                         $tsv_output['other'] = $question['other'];
                         $tsv_output['same_default'] = $question['same_default'];
 
@@ -2883,6 +2904,7 @@ function tsvSurveyExport($surveyid)
                         }
                         fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
 
+
                         // quota members
                         if ($index_languages == 0 && !empty($quota_members[$qid])) {
                             foreach ($quota_members[$qid] as $key => $member) {
@@ -2905,7 +2927,7 @@ function tsvSurveyExport($surveyid)
                                 $tsv_output['related_id'] = $condition['cqid'];
                                 $tsv_output['name'] = $condition['cfieldname'];
                                 $tsv_output['relevance'] = $condition['method'];
-                                $tsv_output['text'] = !empty($assessment['value']) ? $condition['value'] : '';
+                                $tsv_output['text'] = !empty($condition['value']) ? $condition['value'] : '';
                                 fputcsv($out, array_map('MaskFormula', $tsv_output), chr(9));
                             }
                         }
@@ -3108,6 +3130,9 @@ function MaskFormula($sValue)
 {
     if (isset($sValue[0]) && $sValue[0] == '=') {
         $sValue = "'" . $sValue;
+    }
+    if (is_array($sValue) && empty($sValue)) {
+        $sValue = '';
     }
     return $sValue;
 }

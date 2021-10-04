@@ -204,7 +204,7 @@ class responses extends Survey_Common_Action
             $fnames[] = array("completed", gT("Completed"), "0");
 
             foreach ($fieldmap as $field) {
-                if ($field['fieldname'] == 'lastpage' || $field['fieldname'] == 'submitdate') {
+                if ( $field['fieldname'] == 'submitdate') {
                     continue;
                 }
                 if ($field['type'] == 'interview_time') {
@@ -703,6 +703,8 @@ class responses extends Survey_Common_Action
      */
     public function actionDeleteSingle($surveyid, $responseId)
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }

@@ -166,6 +166,7 @@ class PluginManagerController extends Survey_Common_Action
 
     public function deleteFiles($plugin)
     {
+        $this->requirePostRequest();
         $this->checkUpdatePermission();
 
         // Pre supposes the plugin is in the uploads folder. Other plugins are not deletable by button.
@@ -209,6 +210,10 @@ class PluginManagerController extends Survey_Common_Action
 
         $oPlugin = Plugin::model()->findByPk($pluginId);
         if ($oPlugin && $oPlugin->active == 0) {
+            if (!$oPlugin->isCompatible()) {
+                $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+            }
+
             // Load the plugin:
             App()->getPluginManager()->loadPlugin($oPlugin->name, $pluginId);
             $result = App()->getPluginManager()->dispatchEvent(
