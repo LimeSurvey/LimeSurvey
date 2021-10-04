@@ -61,9 +61,9 @@
             'name' => 'emailsmtpssl',
             'value'=> getGlobalSetting('emailsmtpssl') ,
             'selectOptions'=>array(
-                ""=>gT("Off",'unescaped'),
-                "ssl"=>gT("SSL",'unescaped'),
-                "tls"=>gT("TLS",'unescaped')
+                ""=>gT("Off (unsafe)",'unescaped'),
+                "ssl"=>gT("SSL/TLS",'unescaped'),
+                "tls"=>gT("StartTLS",'unescaped')
             )
         ));?>
     </div>

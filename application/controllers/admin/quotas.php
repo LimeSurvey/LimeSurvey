@@ -301,6 +301,8 @@ class quotas extends Survey_Common_Action
 
     public function delquota($iSurveyId)
     {
+        $this->requirePostRequest();
+
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
 

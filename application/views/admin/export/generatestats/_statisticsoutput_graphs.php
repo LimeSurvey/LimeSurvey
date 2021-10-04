@@ -59,7 +59,7 @@
 </tr>
 
 <!-- Buttons to change graph type -->
-<tr>
+<tr class="hidden-print">
     <td colspan='4'>
         <div class="chartjs-buttons" style="text-align:center">
 

@@ -32,7 +32,8 @@
 <div class="form-group">
     <label class=" control-label"  for='bounceaccounthost'><?php eT("Server name & port:"); ?></label>
     <div class="">
-        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /> <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
+        <input class="form-control" type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" />
+        <span class='hint'><?php eT("Enter your hostname and port, e.g.: imap.gmail.com:993"); ?></span>
     </div>
 
 </div>
@@ -57,11 +58,11 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceencryption',
-                'value'=> getGlobalSetting('bounceencryption') ,
+                'value'=> strtolower(getGlobalSetting('bounceencryption')),
                 'selectOptions'=>array(
-                "off"=>gT("Off",'unescaped'),
-                "SSL"=>"SSL",
-                "TLS"=>"TLS"
+                "off"=>gT("Off (unsafe)",'unescaped'),
+                "ssl"=>"SSL/TLS",
+                "tls"=>"StartTLS"
                 )
                 ));?>
     </div>

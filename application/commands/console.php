@@ -19,6 +19,7 @@
         die();
     }
     define('BASEPATH', '.');
+    define('EXT', '.php');
     require_once __DIR__.'/../../third_party/autoload.php';
     require_once(dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'framework'.DIRECTORY_SEPARATOR.'yii.php');
     // Load configuration.
@@ -28,7 +29,7 @@
     $config['components']['session']['class'] = 'ConsoleHttpSession';
     $config['components']['session']['cookieMode'] = 'none';
     $config['components']['session']['cookieParams'] = [];
-    
+
     $core = dirname($sCurrentDir).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR;
     if (isset($config['config'])) {
         $settings = array_merge($settings, $config['config']);

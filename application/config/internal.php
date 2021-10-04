@@ -51,15 +51,6 @@ $internalConfig = array(
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__.'/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
-
-        // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
-        // However, LimeSurvey directory tree is not a standard Yii Application tree.
-        // we use 'third_party' instead of 'vendor'
-        // This line just point application.vendor.Twig to application/third_party/Twig
-        // @see: ETwigViewRenderer::$twigPathAlias
-        'application.vendor.Twig'=>'application.third_party.Twig',
-        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
-        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
     'modules'=>array(
@@ -94,7 +85,7 @@ $internalConfig = array(
         'ext.captchaExtended.CaptchaExtendedValidator'
 
     ),
-    'preload' => array('log'),
+    'preload' => array('log', 'ETwigViewRenderer'),
     'components' => array(
         // yiistrap configuration
         'bootstrap' => array(
@@ -193,9 +184,14 @@ $internalConfig = array(
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
         ),
+        'ETwigViewRenderer' => array(
+            'class' => 'third_party.yiiext.twig-renderer.ETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig'
+        ),
 
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
+            'twigPathAlias' => 'third_party.twig.twig.lib.Twig',
 
             // All parameters below are optional, change them to your needs
             'fileExtension' => '.twig',
@@ -299,9 +295,10 @@ $internalConfig = array(
                     'upper',
                     'strip_tags',
                     'number_format',
+                    'url_encode',
                 ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox", "tag"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut")

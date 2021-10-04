@@ -96,11 +96,11 @@
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value'=> $settings['bounceaccountencryption'] ,
+                                        'value'=> strtolower($settings['bounceaccountencryption']),
                                         'selectOptions'=>array(
-                                            "Off"=>gT("Off",'unescaped'),
-                                            "SSL"=>gT("SSL",'unescaped'),
-                                            "TLS"=>gT("TLS",'unescaped')
+                                            "off"=>gT("Off (unsafe)",'unescaped'),
+                                            "ssl"=>gT("SSL/TLS",'unescaped'),
+                                            "tls"=>gT("StartTLS",'unescaped')
                                         )
                                     ));?>
                                 </div>

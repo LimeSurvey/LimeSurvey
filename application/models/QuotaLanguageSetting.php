@@ -75,6 +75,9 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_urldescrip', 'LSYii_Validators'),
             array('quotals_url', 'filter', 'filter'=>'trim'),
             array('quotals_url', 'urlValidator'),
+            array('quotals_name', 'length', 'min' => 0, 'max' => 255),
+            array('quotals_url', 'length', 'min' => 0, 'max' => 255),
+            array('quotals_urldescrip', 'length', 'min' => 0, 'max' => 255),
         );
     }
     public function urlValidator()

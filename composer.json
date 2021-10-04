@@ -24,18 +24,31 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
-			"LimeSurvey\\Helpers\\": "application/helpers"
+			"LimeSurvey\\Helpers\\": "application/helpers",
+            "Twig\\": "third_party/twig/twig/src"
 		}
 	},
-	"require": {
-		"facebook/webdriver": "^1.4"
-	},
-    "config": {
+	"config": {
         "vendor-dir": "third_party",
-        "bin-dir": "third_party/bin"
+        "bin-dir": "third_party/bin",
+		"platform": {
+			"php": "5.6"
+		}
     },
 	"require-dev": {
+		"facebook/webdriver": "^1.4",
         "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "5.7.*"
-	}
+	},
+	"require": {
+		"twig/twig": "1.42.5",
+        "yiiext/twig-renderer":"dev-master"
+	},
+    "scripts": {
+        "test": [
+            "./tests/bin/lint-tests",
+            "./tests/bin/lint-application"
+        ]
+    }
+
 }

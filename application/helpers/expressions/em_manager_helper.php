@@ -5648,7 +5648,7 @@
                     }
                     elseif ($this->surveyOptions['allowsave'] && isset($_SESSION[$this->sessid]['scid']))
                     {
-                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$thisstep));
+                        SavedControl::model()->updateByPk($_SESSION[$this->sessid]['scid'], array('saved_thisstep'=>$_SESSION[$this->sessid]['step']));
                     }
                     // Check Quotas
                     $aQuotas = checkCompletedQuota($this->sid,true);
@@ -6671,11 +6671,19 @@
                         }
                         break;
                     case 'R':
-                        if (count($unansweredSQs) > 0)
-                        {
+                        $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                        // If min_answers or max_answers is set, we check that at least one answer is ranked.
+                        // But, if no limit is set, then all answers must be ranked.
+                        if (!empty($qattr['min_answers']) || !empty($qattr['max_answers'])) {
+                            $maxUnrankedAnswers = count($relevantSQs) - 1;
+                            $sMandatoryText = $LEM->gT('Please rank the items.');
+                        } else {
+                            $maxUnrankedAnswers = 0;
+                            $sMandatoryText = $LEM->gT('Please rank all items.');
+                        }
+                        if (count($unansweredSQs) > $maxUnrankedAnswers) {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please rank all items.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
@@ -10218,22 +10226,17 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         {
             $result = $str;
 
-            $standard = array("0","1","2","3","4","5","6","7","8","9");
+            $standard = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-            if ($lang == 'ar')
-            {
-                $eastern_arabic_symbols = array("Ù ","Ù¡","Ù¢","Ù£","Ù¤","Ù¥","Ù¦","Ù§","Ù¨","Ù©");
+            if ($lang == 'ar') {
+                $eastern_arabic_symbols = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
                 $result = str_replace($eastern_arabic_symbols, $standard, $str);
-            }
-            else if ($lang == 'fa')
-            {
+            } elseif ($lang == 'fa') {
                 // NOTE: NOT the same UTF-8 letters as array above (Arabic)
-                $extended_arabic_indic = array("Û°","Û±","Û²","Û³","Û´","Ûµ","Û¶","Û·","Û¸","Û¹");
+                $extended_arabic_indic = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
                 $result = str_replace($extended_arabic_indic, $standard, $str);
-            }
-            else if ($lang == 'hi')
-            {
-                $hindi_symbols = array("à¥¦","à¥§","à¥¨","à¥©","à¥ª","à¥«","à¥¬","à¥­","à¥®","à¥¯");
+            } elseif ($lang == 'hi') {
+                $hindi_symbols = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
                 $result = str_replace($hindi_symbols, $standard, $str);
             }
 

@@ -218,7 +218,6 @@ class SurveyRuntimeHelper
         }
 
         if ($this->sSurveyMode != 'survey' && isset($this->aSurveyInfo['showprogress']) && $this->aSurveyInfo['showprogress'] == 'Y') {
-
             if ($this->bShowEmptyGroup) {
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['totalsteps'] + 1;
                 $this->aSurveyInfo['progress']['total']       = $_SESSION[$this->LEMsessid]['totalsteps'];
@@ -226,6 +225,8 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['progress']['currentstep'] = $_SESSION[$this->LEMsessid]['step'];
                 $this->aSurveyInfo['progress']['total']       = isset($_SESSION[$this->LEMsessid]['totalsteps']) ? $_SESSION[$this->LEMsessid]['totalsteps'] : 1;
             }
+            /* String used in vanilla/views/subviews/header/progress_bar.twig : for autotranslation */
+            $this->aSurveyInfo['progress']['string'] = gT('You have completed %s%% of this survey');
         }
 
         $this->aSurveyInfo['yiiflashmessages'] = Yii::app()->user->getFlashes();
@@ -290,6 +291,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['errorHtml']['hiddenClass'] = $this->oTemplate->showpopups==1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
+        // Generate the groups data for the views ($this->aSurveyInfo['aGroups'])
         $_gseq = -1;
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl) {
 
@@ -314,7 +316,12 @@ class SurveyRuntimeHelper
                 $aGroup['class'] = ' ls-hidden';
             }
 
-            $aGroup['name']        = $gl['group_name'];
+            // Set basic replacements to use on group texts
+            $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
+            $aStandardsReplacementFields['GID'] = $gid;
+
+            $aGroup['name']        = LimeExpressionManager::ProcessString($gl['group_name'], null, $aStandardsReplacementFields, 3, 1);
+            $aStandardsReplacementFields['GROUPNAME'] = $aGroup['name'];
             $aGroup['gseq']        = $_gseq;
             $showgroupinfo_global_ = getGlobalSetting('showgroupinfo');
             $aSurveyinfo           = getSurveyInfo($this->iSurveyid, App()->getLanguage());
@@ -330,12 +337,19 @@ class SurveyRuntimeHelper
 
             $aGroup['showgroupinfo'] = $showgroupinfo_;
             $aGroup['showdescription']  = (!$this->previewquestion && trim($gl['description']) != "" && $showgroupdesc_);
-            $aGroup['description']      = $gl['description'];
+            $aGroup['description']      = LimeExpressionManager::ProcessString($gl['description'], null, $aStandardsReplacementFields, 3, 1);
 
-            // one entry per QID
+            // Note: $qanda contains all questions to be shown in the screen,
+            // according to the survey's format:
+            //  - Group by Group --> Only the ones in the current group
+            //  - Question by Question --> Only the current question
+            //  - All in one --> All questions in the survey
             foreach ($qanda as $qa) {
+                // Add question to question list in group information
 
-                if ($gid == $qa[6] || ( isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster']) && $this->sSurveyMode != 'survey' ) ) {
+                // For all in one, $qanda may contain questions which are not from the group
+                // currently being processed in this loop. Filter them by 'finalgroup'.
+                if ($gid == $qa['finalgroup']) {
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
@@ -368,7 +382,7 @@ class SurveyRuntimeHelper
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
                         $aStandardsReplacementFields['QID'] = $qid;
                         $aStandardsReplacementFields['SGQ'] = $qa[7];
-                        $aStandardsReplacementFields['GROUPNAME'] = $this->groupname;
+                        $aStandardsReplacementFields['GROUPNAME'] = $gl['group_name'];
                         $aStandardsReplacementFields['QUESTION_CODE'] = $qa[0]['code'];
                         $aStandardsReplacementFields['GID'] = $qinfo['info']['gid'];
                     }

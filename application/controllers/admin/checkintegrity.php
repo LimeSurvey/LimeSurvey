@@ -481,7 +481,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         // Deactivate surveys that have a missing response table
-        $oSurveys = Survey::model()->findAll();
+        $oSurveys = Survey::model()->findAll(array('order'=>'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
         Yii::app()->setConfig('Updating', true);
@@ -521,7 +521,7 @@ class CheckIntegrity extends Survey_Common_Action
                             // QID field can be more than just QID, like: 886other or 886A1
                             // So we clean it by finding the first alphabetical character
                             $sDirtyQid = $aFields[2];
-                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+                            preg_match('~[a-zA-Z_#]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
 
                             if (isset($match[0][1])){
                                 $sQID      =  substr ($sDirtyQid, 0, $match[0][1]);
@@ -529,9 +529,12 @@ class CheckIntegrity extends Survey_Common_Action
                                 // It was just the QID....
                                 $sQID      =  $sDirtyQid;
                             }
+                            if ((string) intval($sQID) !== $sQID) {
+                                throw new \Exception('sQID is not an integer: ' . $sQID);
+                            }
 
                             // Here, we get the question as defined in backend
-                            $oQuestion = Question::model()->findByPk([ 'qid' => $sQID , 'language' => $oSurvey->language]);
+                            $oQuestion = Question::model()->findByAttributes([ 'qid' => $sQID , 'language' => $oSurvey->language, 'sid' => $oSurvey->sid ]);
                             if (is_a($oQuestion, 'Question')){
 
                                 // We check if its GID is the same as the one defined in the column name
@@ -545,8 +548,7 @@ class CheckIntegrity extends Survey_Common_Action
                                         // So we'll change the group of the question question group table (so in admin interface, not in frontend)
                                         $oQuestion->gid = $sGid;
                                         $oQuestion->save();
-
-                                    }else{
+                                    } else {
                                         $oTransaction = $oDB->beginTransaction();
                                         $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
                                         $oTransaction->commit();
@@ -554,9 +556,11 @@ class CheckIntegrity extends Survey_Common_Action
 
 
                                 }
-                            }else{
-                                // QID not found: we should do something...
-                                // $aUnfoundQIDs[] = $sQID;
+                            } else {
+                                // QID not found: The function to split the fieldname into the SGQA data is not 100% reliable
+                                // So for certain question types (for example Text Array) the field name cannot be properly derived
+                                // In this case just ignore the field - see also https://bugs.limesurvey.org/view.php?id=15642
+                                // There is still a extremely  low chance that an unwanted rename happens if a collision like this happens in the same survey
                             }
                         }
                     }

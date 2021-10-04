@@ -138,7 +138,7 @@ class questions extends Survey_Common_Action
     /**
      * Display import view
      */
-    public function importView($groupid = null, $surveyid)
+    public function importView($groupid , $surveyid)
     {
         $iSurveyID = (int) $surveyid;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'import')) {
@@ -1237,6 +1237,8 @@ class questions extends Survey_Common_Action
 
                 foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
+                        /* This language didn't exist in this survey : autofixer */
+                        switchMSSQLIdentityInsert('questions', true);
                         $arQuestion = new Question;
                         $arQuestion->qid = $qid;
                         $arQuestion->sid = $surveyid;
@@ -1251,6 +1253,7 @@ class questions extends Survey_Common_Action
                         $arQuestion->question_order = $basesettings['question_order'];
                         $arQuestion->language = $key;
                         $arQuestion->insert();
+                        switchMSSQLIdentityInsert('questions', false);
                     }
                 }
 

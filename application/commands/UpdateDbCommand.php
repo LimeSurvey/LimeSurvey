@@ -40,6 +40,7 @@ class UpdateDBCommand extends CConsoleCommand
             echo "Update ".Yii::app()->db->connectionString." with prefix :";
             echo Yii::app()->db->tablePrefix." from {$currentDbVersion} to {$newDbVersion}\n";
             Yii::import('application.helpers.common_helper', true);
+            Yii::import('application.helpers.update.update_helper', true);
             Yii::import('application.helpers.update.updatedb_helper', true);
             $result = db_upgrade_all($currentDbVersion);
             if ($result) {

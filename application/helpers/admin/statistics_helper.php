@@ -26,7 +26,7 @@
 *  @param string $sQuestionType The question type
 *  @return                false|string
 */
-function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
+function createChart($iQuestionID, $iSurveyID, $type, $lbl, $gdata, $grawdata, $cache, $sLanguageCode, $sQuestionType)
 {
     /* This is a lazy solution to bug #6389. A better solution would be to find out how
     the "T" gets passed to this function from the statistics.js file in the first place! */
@@ -819,7 +819,8 @@ class statistics_helper
                     .gT("Calculation")."</strong></th>\n"
                     ."\t\t<th width='50%' align='right' ><strong>"
                     .gT("Result")."</strong></th>\n"
-                    ."\t</tr></thead>\n";
+                    ."\t</tr></thead>\n"
+                    ."<tbody>\n";
 
                     foreach ($showem as $res) {
                         $statisticsoutput .= "<tr><td>".$res[0]."</td><td>".$res[1]."</td></tr>";
@@ -897,7 +898,8 @@ class statistics_helper
                         .gT("Calculation")."</strong></th>\n"
                         ."\t\t<th width='50%' align='right' ><strong>"
                         .gT("Result")."</strong></th>\n"
-                        ."\t</tr></thead>\n";
+                        ."\t</tr></thead>\n"
+                        ."<tbody>\n";
 
                         break;
                     default:
@@ -1073,7 +1075,7 @@ class statistics_helper
                             $statisticsoutput .= "<tr><td class='statisticsbrowsecolumn' colspan='3' style='display: none'>
                             <div class='statisticsbrowsecolumn' id='columnlist_{$fieldname}'></div></td></tr>";
                         }
-                        $statisticsoutput .= "</table>\n";
+                        $statisticsoutput .= "</tbody></table>\n";
 
                         break;
                     default:
@@ -2756,6 +2758,9 @@ class statistics_helper
             foreach ($outputs['alist'] as $al) {
                 $criteria->addCondition(Yii::app()->db->quoteColumnName($al[2])." IS NULL");
             }
+            if (!empty($sql)) {
+                $criteria->addCondition($sql);
+            }             
             if (incompleteAnsFilterState() == "incomplete") {$criteria->addCondition("submitdate IS NULL"); } elseif (incompleteAnsFilterState() == "complete") {$criteria->addCondition("submitdate IS NOT NULL"); }
             $multiNotDisplayed = SurveyDynamic::model($surveyid)->count($criteria);
             if (isset($_POST['noncompleted']) and ($_POST['noncompleted'] == 1)) {
@@ -3500,7 +3505,7 @@ class statistics_helper
                 $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
                 $statisticsoutput_footer .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_footer', $aData, true);
             }
-            $statisticsoutput .= "</table></div><!-- in statistics helper --> \n";
+            $statisticsoutput .= "</tbody></table></div><!-- in statistics helper --> \n";
         }
             $statisticsoutput = $statisticsoutput.$statisticsoutput_footer."</script>";
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);

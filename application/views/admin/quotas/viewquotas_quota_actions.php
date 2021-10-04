@@ -14,7 +14,7 @@
     </a>
 <?php } ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','delete')) { ?>
-    <a data-href="<?php echo $deleteUrl; ?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+    <a data-post-url="<?php echo $deleteUrl; ?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
         <span class='fa fa-trash text-danger'></span>
     </a>
 <?php } ?>
@@ -24,7 +24,7 @@
       data-remote-link="<?=App()->createUrl('admin/validate/', ["sa" => 'quota', 'sid'=>$oSurvey->getPrimaryKey(), 'quota'=>$oQuota->getPrimaryKey()])?>"
       class="btn btn-default selector__quota_open_validation"
       data-tooltip="true"
-      title="<?=sprintf(gT("Validation of quota %s"),htmlentities($oQuota->name))?>"
+      title="<?=sprintf(gT("Validation of quota %s"), CHtml::encode($oQuota->name))?>"
       data-toggel="modal"
       data-target="quotaValidation"
     >

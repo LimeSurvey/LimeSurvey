@@ -38,7 +38,10 @@ function doFileUpload()
     if (filecount > 0)
     {
         var jsontext = window.parent.window.$('#' + fieldname).val();
-        var json = eval('(' + jsontext + ')');
+        var json = '';
+        try{
+            json = JSON.parse(jsontext);
+        } catch(e) {}
         if ($('#field' + fieldname + '_listfiles').length == 0)
         {
             $("<ul id='field" + fieldname + "_listfiles' class='files-list' />").insertAfter("#uploadstatus");

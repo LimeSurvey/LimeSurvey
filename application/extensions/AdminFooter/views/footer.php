@@ -5,5 +5,5 @@
     <div style='float:right;'>
         <a href='http://donate.limesurvey.org' target="_blank"><img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>donate.png'/></a>
     </div>
-    <div class='subtitle'><a class='subtitle' title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle . " " . $versionnumber . $buildtext; ?></div>
+    <div class='subtitle'><a class='subtitle' title='<?php eT("Visit our website!"); ?>' href='https://community.limesurvey.org' target='_blank'>LimeSurvey Community Edition</a><br /><?php echo $versiontitle . " " . $versionnumber . $buildtext; ?></div>
 </div>

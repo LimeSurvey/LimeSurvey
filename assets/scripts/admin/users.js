@@ -38,8 +38,8 @@ function bindButtons(){
     $('.action_usercontrol_button').on('click', function(){
         runAction(this);
     });
-    $('input[name="alltemplates"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        $('input[id$="_use"]').prop('checked',state).trigger('change');
+    $('input[name="alltemplates"]').on('change', function(event) {
+        $('input[id$="_use"]').prop('checked', this.checked).trigger('change');
     });
 
 }

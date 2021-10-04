@@ -97,7 +97,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                     <?php endif;?>
 
                 <!-- Export -->
-                <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','export') && class_exists('ZipArchive')):?>
                     <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
@@ -128,7 +128,7 @@ echo viewHelper::getViewTestTag('themeEditor');
                 <!-- import disabled -->
                 <?php
 
-                if (!function_exists("zip_open"))
+                if (!class_exists('ZipArchive'))
                 {
                     $sMessage=gT("You cannot upload themes because you do not have the required ZIP library installed in PHP.");
                 }

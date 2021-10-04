@@ -409,6 +409,9 @@ class Participant extends LSActiveRecord
             if ($attribute['visible'] == "FALSE") {
                 continue;
             }
+            if (!isset($extraAttributeParams[$name])) {
+                $extraAttributeParams[$name]='';
+            }
             $col_array = array(
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
@@ -800,7 +803,7 @@ class Participant extends LSActiveRecord
      * @param string|null $order
      * @return CDbCommand
      */
-    private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
+    private function getParticipantsSelectCommand($count, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
         $joinValue = array();
@@ -1956,7 +1959,7 @@ class Participant extends LSActiveRecord
         if (is_array($arr)) {
             $tokenfieldnames = array_keys($arr);
         }
-
+        $aAutoMapped=$survey->getCPDBMappings();
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
@@ -2007,11 +2010,16 @@ class Participant extends LSActiveRecord
                 /* If there is already an existing entry, add to the duplicate count */
                 if ($existing != null) {
                     $duplicate++;
-                    if ($overwriteman == "true" && !empty($aMapped)) {
+                    if ($overwriteman && !empty($aMapped)) {
                         foreach ($aMapped as $cpdbatt => $tatt) {
                             Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
                         }
                     }
+                    if ($overwriteauto && !empty($aAutoMapped)) {
+                        foreach ($aAutoMapped as $cpdbatt => $tatt) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $existing->participant_id, $cpdbatt, $tatt);
+                        }
+                    }                    
                 }
                 /* If there isn't an existing entry, create one! */
                 else {

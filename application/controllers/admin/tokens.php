@@ -100,13 +100,13 @@ class tokens extends Survey_Common_Action
                 $hostname = getGlobalSetting('bounceaccounthost');
                 $username = getGlobalSetting('bounceaccountuser');
                 $pass = getGlobalSetting('bounceaccountpass');
-                $hostencryption = strtoupper(getGlobalSetting('bounceencryption'));
+                $hostencryption = strtolower(getGlobalSetting('bounceencryption'));
             } else {
                 $accounttype = strtoupper($thissurvey['bounceaccounttype']);
                 $hostname = $thissurvey['bounceaccounthost'];
                 $username = $thissurvey['bounceaccountuser'];
                 $pass = $thissurvey['bounceaccountpass'];
-                $hostencryption = strtoupper($thissurvey['bounceaccountencryption']);
+                $hostencryption = strtolower($thissurvey['bounceaccountencryption']);
             }
 
             @list($hostname, $port) = explode(':', $hostname);
@@ -114,25 +114,21 @@ class tokens extends Survey_Common_Action
             if (empty($port)) {
                 if ($accounttype == "IMAP") {
                     switch ($hostencryption) {
-                        case "OFF":
+                        case "off":
+                        case "tls":
                             $hostname = $hostname . ":143";
                             break;
-                        case "SSL":
-                            $hostname = $hostname . ":993";
-                            break;
-                        case "TLS":
+                        case "ssl":
                             $hostname = $hostname . ":993";
                             break;
                     }
                 } else {
                     switch ($hostencryption) {
-                        case "OFF":
+                        case "off":
+                        case "tls":
                             $hostname = $hostname . ":110";
                             break;
-                        case "SSL":
-                            $hostname = $hostname . ":995";
-                            break;
-                        case "TLS":
+                        case "ssl":
                             $hostname = $hostname . ":995";
                             break;
                     }
@@ -154,13 +150,13 @@ class tokens extends Survey_Common_Action
 
             switch ($hostencryption) // novalidate-cert to have personal CA , maybe option.
             {
-                case "OFF":
+                case "off":
                     $flags .= "/notls"; // Really Off
                     break;
-                case "SSL":
+                case "ssl":
                     $flags .= "/ssl/novalidate-cert";
                     break;
-                case "TLS":
+                case "tls":
                     $flags .= "/tls/novalidate-cert";
                     break;
             }
@@ -837,6 +833,10 @@ class tokens extends Survey_Common_Action
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
 
+                if (!empty($sOutput)) {
+                    \ls\ajax\AjaxHelper::outputError($sOutput);
+                }
+
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
                 foreach ($aTokenData as $k => $v) {
                     $token->$k = $v;
@@ -845,7 +845,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->save();
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess($sOutput . gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
                 } else {
                     $errors = $token->getErrors();
                     $firstError = reset($errors);

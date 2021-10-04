@@ -318,6 +318,13 @@ class Question extends LSActiveRecord
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
                         $sAttributeName = (string) $oCustomAttribute->name;
                         $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
+                        // Empty xml nodes (ex: <default></default>) end up as empty arrays.
+                        // We need a null instead
+                        foreach ($aCustomAttribute as $property => $propertyValue) {
+                            if (is_array($propertyValue) && empty($propertyValue)) {
+                                $aCustomAttribute[$property] = null;
+                            }
+                        }
                         $aCustomAttribute = array_merge(
                             QuestionAttribute::getDefaultSettings(),
                             array("category"=>gT("Template")),

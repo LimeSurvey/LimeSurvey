@@ -86,6 +86,7 @@ class questionHelper
             'category'=>gT('Display'),
             'sortorder'=>100,
             'inputtype'=>'integer',
+            'min'=>'0',
             'default'=>'',
             "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
             "caption"=>gT('Repeat answer options')
@@ -1652,6 +1653,18 @@ class questionHelper
         $additionalAttributes = array();
         // Create array of attribute with name as key
         foreach($custom_attributes['attribute'] as $customAttribute) {
+            // Empty xml nodes (ex: <default></default>) end up as empty arrays.
+            // We need a null instead
+            foreach ($customAttribute as $property => $propertyValue) {
+                if (is_array($propertyValue) && empty($propertyValue)) {
+                    $customAttribute[$property] = null;
+                }
+            }            
+            // Try to translate the category title. Custom categories may not be translated, but at least if the theme tries
+            // to "reuse" a core category the attribute will be displayed properly. See issue #15671
+            if(!empty($customAttribute['category'])) {
+                $customAttribute['category'] = gT($customAttribute['category']);
+            }
             if(!empty($customAttribute['name'])) {
                 $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
             }

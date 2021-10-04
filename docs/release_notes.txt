@@ -34,6 +34,316 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.18 (build 210921) to 3.27.19 (build 210928) September 27, 2021
+-Fixed issue #17611: Updating from 2.05 or earlier throws error "Undefined function getDBConnectionStringProperty()" (Carsten Schmitz)
+-Fixed issue #17606: Single data set summary is missing "last page" detail (Carsten Schmitz)
+-Fixed issue #17562: XSS injection in the 'File upload' question type in LimeSurvey version 3.x-LTS (#2044) (Gabriel Jenik)
+-Fixed issue #17437: Missing prefix (multiple numeric number) for total value (Patricia Stelling)
+-Fixed issue #13601: {TIME} placeholder not working (#2042) (Gabriel Jenik)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Portuguese (Brazil) by c_schmitz
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.27.17 (build 210911) to 3.27.18 (build 210921) September 20, 2021
+-Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
+-Fixed issue #17512: Survey Logic File Syntax Error Summary Displays Incorrect Error Count (#2030) (Gabriel Jenik)
+-Fixed issue #17454: Unable to remove a user with survey permissions with friendly url enabled (#2027) (Gabriel Jenik)
+-Fixed issue #16792: Delete permission on Survey : no CRSF control (#1967) (Gabriel Jenik)
+-Fixed issue #14370: QueXML export (Print answers) of a ranking question showing name of available options instead of "Rank #" (#2032) (Adam Zammit)
+
+
+Changes from 3.27.16 (build 210909) to 3.27.17 (build 210911) September 8, 2021
+-Fixed issue: Remove url_encode for end URL (already filtered at save) (Olle Haerstedt)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.27.15 (build 210907) to 3.27.16 (build 210909) September 7, 2021
+-Fixed issue: Remove debug code from theme file
+-Fixed issue #17535: Error when logging in with LDAP (Carsten Schmitz)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Ilocano by c_schmitz
+#Updated translation: Hiligaynon by c_schmitz
+#Updated translation: Cebuano by c_schmitz
+
+
+Changes from 3.27.14 (build 210831) to 3.27.15 (build 210907) September 6, 2021
+-Fixed issue #17541: PDF export via plugin not possible (#2025) (pop1989_bb)
+#Updated translation: Xhosa by erik.lamontagne
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.27.13 (build 210823) to 3.27.14 (build 210831) August 30, 2021
+-Fixed issue [security]: Add missing url_encode filter to URL in Twig template (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.27.12 (build 210816) to 3.27.13 (build 210823) August 23, 2021
+-Fixed issue: Fatal error when using unary operator on empty string (Carsten Schmitz)
+-Fixed issue #16720:  Invalid question codes during lss import do not get replaced (#1994) (Gabriel Jenik)
+-Fixed issue [security]: Disallow XML upload in survey resources (Mika Kulmala and Ville Kapanen at F-Secure) (Olle Haerstedt)
+-Fixed issue #17519: LDAP not working when using URI with port (Carsten Schmitz)
+-Fixed issue #17517: Doctype, title and other details seem to be filtered at email sending (Carsten Schmitz)
+-Fixed issue #17515: Getting an error when changing the language on the data entry page (Carsten Schmitz)
+-Fixed issue #17489: No question relevance field for array-by-column question type (#2014) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: German by c_schmitz
+
+
+Changes from 3.27.11 (build 210809) to 3.27.12 (build 210816) August 16, 2021
+-Fixed issue: LTS branch shown as unstable in ComfortUpdate (Carsten Schmitz)
+-Fixed issue: ComfortUpdate not working when one of the files to back up has 0 size (Carsten Schmitz)
+-Fixed issue #17513: System information modal duplicates database server info (Carsten Schmitz)
+-Fixed issue #17223: With mandatory attribute : lost all current value when create a token (#1942) (Gabriel Jenik)
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.27.10 (build 210803) to 3.27.11 (build 210809) August 9, 2021
+-Fixed issue #17285: "Resume later" not working after "Load unfinished survey" (#1988) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 3.27.9 (build 210726) to 3.27.10 (build 210803) August 3, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
+-Fixed issue: Security issues found by Michael Mazzolini (Olle Haerstedt)
+-Fixed issue #17432: Group randomization shuffles only questions from first group (Gabriel Jenik)
+-Fixed issue #17432: Group randomization shuffles only questions from first group (#1987) (Gabriel Jenik)
+-Fixed issue #17148: Publication & access control settings - Start Date / Expiry Date Picker inaccessible in resized browser window (#1984) (Gabriel Jenik)
+-Fixed issue #17480: Unable to reload with token + persistence + allow edit (Denis Chenu)
+-Fixed issue #17367: Survey policy error not show in vanilla (Denis Chenu)
+-Fixed issue: Privacy was not shown in all in one survey (Denis Chenu)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni, Microchip
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+
+
+Changes from 3.27.8 (build 210721) to 3.27.9 (build 210726) July 26, 2021
+-Fixed issue #17470 [security]: Arbitrary file read in participant functionality (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17469 [security]: SQL injection in participants (editShareInfo) (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17468 [security]: SQL injection in survey data entries (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17467 [security]: SQL injection in survey data entries (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17471 [security]: Update PHPMailer to 6.5.0 (Olle Haerstedt, Michael Mazzolini)
+-Fixed issue #17373: Misuse of progress bar (#1953) (Denis Chenu)
+
+
+Changes from 3.27.7 (build 210713) to 3.27.8 (build 210721) July 21, 2021
+-Fixed issue: Seperator showing in Chrome when clicking back (Gabriel Jenik)
+-Fixed issue #17451: Upload file link after session expire leads to a message unclear to users (Denis Chenu)
+-Fixed issue #17381: Missing evaluation of EM in CSS script field (#1946) (Gabriel Jenik)
+-Fixed issue #17330: Ranking Question issue with mandatory setting (#1941) (Gabriel Jenik)
+
+
+Changes from 3.27.6 (build 210629) to 3.27.7 (build 210713) July 12, 2021
++New feature: Delete response by id in remote API (#1932) (arnaudbore)
+-Fixed issue #14726: LanguageSelector national language (Olle Haerstedt)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Azerbaijani by c_schmitz
+
+
+Changes from 3.27.5 (build 210624) to 3.27.6 (build 210629) June 28, 2021
+-Fixed issue [security] #17388: Stored XSS in quota management (Denis Chenu)
+-Fixed issue #17394: Sharing a participant does not work in CPDB (Carsten Schmitz)
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.27.4 (build 210622) to 3.27.5 (build 210624) June 24, 2021
+-Fixed issue: [security] Resuming a survey may load wrong data (Carsten Schmitz)
+#Updated translation: Yakut by c_schmitz
+#Updated translation: Slovak by jelen1
+#Updated translation: Sami by c_schmitz
+#Updated translation: Mongolian by amidral
+#Updated translation: Latvian (Informal) by anorkusa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by datamunger, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Azerbaijani by c_schmitz
+
+
+Changes from 3.27.3 (build 210615) to 3.27.4 (build 210622) June 21, 2021
+-Fixed issue #17368: Failed Login Attempt locks out all users when behind nginx proxy (Olle Haerstedt)
+-Fixed issue #17351: Also check that GD implement jpeg support (#1917) (Gabriel Jenik)
+-Fixed issue #17038: templateurl placeholder not being replaced (#1924) (Gabriel Jenik)
+
+
+Changes from 3.27.2 (build 210608) to 3.27.3 (build 210615) June 14, 2021
+-Fixed issue #17347: 'Class Twig_Environment not found' when uploading an image (#1912) (Gabriel Jenik)
+#Updated translation: Turkish by kayazeren
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.27.1 (build 210531) to 3.27.2 (build 210608) June 7, 2021
+-Fixed issue: Database error when editing a quota and text is too long (Gabriel Jenik)
+-Fixed issue #17298: queXML PDF Export: 500: Internal Server Error (#1902) (Adam Zammit)
+-Fixed issue #17239: Unable to find template "./subviews/content/.twig" (with PHP8) (Gabriel Jenik)
+-Fixed issue #14897: Edit theme permissions: option 'All themes' not working (#1903) (Gabriel Jenik)
+-Fixed issue #14039: Captcha prevent panel integration. GET URL parameter not captured (#1896) (Gabriel Jenik)
+
+
+Changes from 3.27.0 (build 210525) to 3.27.1 (build 210531) May 31, 2021
+-Fixed issue #17306: Some update theme can break page in 3.26.4 (#1892) (Gabriel Jenik)
+
+
+Changes from 3.26.5 (build 210519) to 3.27.0 (build 210525) May 25, 2021
++New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Gabriel Jenik)
++New feature #17301: Allow whitelisting IP addresses in global settings (#1889) (Carsten Schmitz)
+-Fixed issue #17309: Date question always shows error when using AR language - can't proceed at survey (#1888) (Gabriel Jenik)
+-Fixed issue #17270: Print statistics take a lot of page (#1880) (Denis Chenu)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 3.26.4 (build 210517) to 3.26.5 (build 210519) May 19, 2021
+-Fixed issue #17303: ZipArchive error when exporting theme and debug mode is active (Carsten Schmitz)
+-Fixed issue #17250: Unable to upload image with extension in uppercase in Theme option (#1883) (Gabriel Jenik)
+-Fixed issue #17301: Survey participants lock out issue (Gabriel Jenik)
+
+
+Changes from 3.26.3 (build 210511) to 3.26.4 (build 210517) May 17, 2021
+-Fixed issue #17291: Condition for multiple choice with comments question shows JS error (Olle Haerstedt)
+-Fixed issue #17236: PHP 8 not supported (Carsten Schmitz)
+
+Changes from 3.26.2 (build 210503) to 3.26.3 (build 210511) May 10, 2021
+-Fixed issue: Assessment filter scope does not work for selection 'All' (Patricia Stelling)
+-Fixed issue #17283: "Repeat answer options" option does not accept value 0 (Carsten Schmitz)
+
+
+Changes from 3.26.1 (build 210427) to 3.26.2 (build 210503) May 3, 2021
+-Fixed issue #17277: Quick-translation opens blank page (Olle Haerstedt)
+-Fixed issue #16339: Plugin helper fullpagewrapper doesnt show content (#1858) (Gabriel Jenik)
+-Fixed issue #15196: Passwords of participants who saved their survey progress are stored without salt (Patrick Teichmann)
+#Updated translation: Uzbek by Iskandar_r
+#Updated translation: Turkish by kayazeren, bulent
+#Updated translation: Tajik by Iskandar_r
+
+
+Changes from 3.26.0 (build 210419) to 3.26.1 (build 210427) April 26, 2021
+-Fixed issue #15653: Dark Sky admin theme : Item texts hardly visible in hover (Jessica Höck)
+-Fixed issue #17264: Validuntil and validfrom fields don't allow just date (without time) aynmore (Carsten Schmitz)
+-Fixed issue #17235: Token additional attributes are blank after editing (#1846) (Gabriel Jenik)
+-Fixed issue #17112: Uploading files at quick translation feature using integrated editor fails with permission error (Olle Haerstedt)
+#Updated translation: Amharic by c_schmitz
+
+
+Changes from 3.25.22 (build 210413) to 3.26.0 (build 210419) April 19, 2021
++New feature #16832: Add user group functions to LimeSurveyAPI (Olle Härstedt)
+#Updated translation: Japanese by nomoto
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 3.25.21 (build 210407) to 3.25.22 (build 210413) April 12, 2021
+-Fixed issue #17230: Inconsistent 'willRun' state of the survey when Start date is undefined (Carsten Schmitz)
+-Fixed issue #17221: Check data integrity crash with SQL error when # is use in the name of field (Olle Haerstedt)
+-Fixed issue #17204: {GROUPNAME} and other variables not rendered (#1838) (Gabriel Jenik)
+-Fixed issue #17195: When attaching PDF to email invitation, full path is kept as value of a hidden input (#1836) (Gabriel Jenik)
+-Fixed issue #15712: When doing error in token create : unable to submit, need to reload page (#1839) (Gabriel Jenik)
+-Fixed issue # 17207: When attaching using the theme editor, full path is displayed on the screen (#1840) (Gabriel Jenik)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Czech by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 3.25.20 (build 210330) to 3.25.21 (build 210407) April 6, 2021
+-Fixed issue: Cannot change page in survey list (Carsten Schmitz)
+-Fixed issue #17219: Filter on numeric fields in response view does not work on Postgres (Carsten Schmitz)
+-Fixed issue #17208: avoid column name must be either a string or an array during survey taking (#1825) (Denis Chenu)
+-Fixed issue #16480: Empty/invalid brand/background logo causes loops on the welcome page (Carsten Schmitz)
+-Fixed issue #16414: Question editor is not loaded when config.xml attribute has empty string as default (#1829) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by myliserta, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Greek by george01
+#Updated translation: German by mariomaurer, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by slansky, jelen1
+#Updated translation: Czech by c_schmitz, jelen1
+#Updated translation: Czech (Informal) by slansky, jelen1
+
+
+Changes from 3.25.19 (build 210323) to 3.25.20 (build 210330) March 29, 2021
+-Fixed issue: Wrong port and TLS description in bounce email/smtp settings (#1807) (Vilius Šumskas)
+-Fixed issue: RemoteControl add_participants did not return anything (arnaudbore)
+-Fixed issue: RemoteControl add_participants did not return anything (Carsten Schmitz)
+-Fixed issue: Debug mode not working in RemoteControl (arnaudbore)
+-Fixed issue : Unable to upload heic or heiv files (and other) (#1421) (Denis Chenu)
+-Fixed issue #17210: Invalid TSV : OK on mysql/pgsql, broken on MSSQL (#1826) (Denis Chenu)
+-Fixed issue #17190: Update Theme Permission Language (#1812) (Gabriel Jenik)
+-Fixed issue #16871: When displaying assessment messages, empty lines are being displayed (#1817) (Gabriel Jenik)
+-Fixed issue #16870: When saving, an empty rule is being added (#1820) (Gabriel Jenik)
+-Fixed issue #15671: Questiontheme Imageselect missing translation (#1819) (Gabriel Jenik)
+-Fixed issue #15642: Checking data integrity erroneously modifies column names in result tables (Carsten Schmitz)
+#Updated translation: Spanish (Chile) by eskorbutin
+#Updated translation: Slovak by jelen1
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Arabic by KLAwareness
+
+
+Changes from 3.25.18 (build 210316) to 3.25.19 (build 210323) March 22, 2021
+-Fixed issue: Notice when listing CPDB participants (Carsten Schmitz)
+-Fixed issue: Error spam when saving invalid question code in a survey with multiple languages (Carsten Schmitz)
+-Fixed issue: Display issue in question group bar when deletion button is deactivated (Carsten Schmitz)
+-Fixed issue #17193: Auto-mapped participant attributes are not copied to CPDB (Carsten Schmitz)
+-Fixed issue #17189: Wrong field size in SPSS syntax export (Carsten Schmitz)
+-Fixed issue #17181: User group deletion not working (Carsten Schmitz)
+-Fixed issue #14777: For "Numerical input" question type sometimes the first number is erased when beginning to type (Carsten Schmitz)
+-Fixed issue #14738: Percentages are not correct for  multiple choice questions if a date filter is set (Carsten Schmitz)
+
+
 Changes from 3.25.17 (build 210309) to 3.25.18 (build 210316) March 15, 2021
 -Fixed issue: Mass emailing using SMTP unnecessary slow due to reconnect on every email being sent out (Gabriel Jenik)
 -Fixed issue: Grammar Correction - Array Dual Scale Question Type (Jessica Höck)

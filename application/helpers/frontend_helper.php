@@ -27,124 +27,114 @@ function loadanswers()
 
 
     $scid = Yii::app()->request->getQuery('scid');
-    if (Yii::app()->request->getParam('loadall') == "reload") {
+    if (Yii::app()->request->getParam('loadall') === "reload") {
         $sLoadName = Yii::app()->request->getParam('loadname');
         $sLoadPass = Yii::app()->request->getParam('loadpass');
-        $oCriteria = new CDbCriteria;
-        $oCriteria->join = "LEFT JOIN {{saved_control}} ON t.id={{saved_control}}.srid";
-        $oCriteria->condition = "{{saved_control}}.sid=:sid";
-        $aParams = array(':sid'=>$surveyid);
+        $oCriteria = new CDbCriteria();
         if (isset($scid)) {
-//Would only come from email : we don't need it ....
-            $oCriteria->addCondition("{{saved_control}}.scid=:scid");
+            //Would only come from email : we don't need it ....
+            $oCriteria->addCondition("saved_control.scid=:scid");
             $aParams[':scid'] = $scid;
         }
-        $oCriteria->addCondition("{{saved_control}}.identifier=:identifier");
+        $oCriteria->addCondition("saved_control.identifier=:identifier");
         $aParams[':identifier'] = $sLoadName;
-
-        if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-            // To be validated with mssql, think it's not needed
-            $oCriteria->addCondition("(CAST({{saved_control}}.access_code as varchar(64))=:md5_code OR CAST({{saved_control}}.access_code as varchar(64))=:sha256_code)");
-        } else {
-            $oCriteria->addCondition("({{saved_control}}.access_code=:md5_code OR {{saved_control}}.access_code=:sha256_code)");
-        }
-        $aParams[':md5_code'] = md5($sLoadPass);
-        $aParams[':sha256_code'] = hash('sha256', $sLoadPass);
-    } elseif (isset($_SESSION['survey_'.$surveyid]['srid'])) {
-        $oCriteria = new CDbCriteria;
+        $oCriteria->params = $aParams;
+        /* relations saved_control is needed: force */
+        $oResponses = SurveyDynamic::model($surveyid)->with('saved_control')->find($oCriteria);
+    } elseif (isset($_SESSION['survey_' . $surveyid]['srid'])) {
+        $oCriteria = new CDbCriteria();
         $oCriteria->condition = "id=:id";
-        $aParams = array(':id'=>$_SESSION['survey_'.$surveyid]['srid']);
+        $aParams = [':id' => $_SESSION['survey_' . $surveyid]['srid']];
+        $oCriteria->params = $aParams;
+        /* relations saved_control is not needed : only lazy load */
+        $oResponses = SurveyDynamic::model($surveyid)->find($oCriteria);
     } else {
-        return;
+        return false;
     }
-    $oCriteria->params = $aParams;
-    $oResponses = SurveyDynamic::model($surveyid)->find($oCriteria);
+
     if (!$oResponses) {
         return false;
-    } else {
-        //A match has been found. Let's load the values!
-        //If this is from an email, build surveysession first
-        $_SESSION['survey_'.$surveyid]['LEMtokenResume'] = true;
-
-        // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
-        if (Yii::app()->request->getParam('loadall') == "reload") {
-            $oSavedSurvey = SavedControl::model()->find(
-                "sid = :sid AND identifier = :identifier AND (access_code = :access_code OR access_code = :sha256_code)",
-                array(
-                    ':sid' => $surveyid,
-                    ':identifier' => $sLoadName,
-                    ':access_code' => md5($sLoadPass),
-                    ':sha256_code' => hash('sha256', $sLoadPass)
-                )
-            );
-            // We don't need to control if we have one, because we do the test before
-            $_SESSION['survey_'.$surveyid]['scid'] = $oSavedSurvey->scid;
-            $_SESSION['survey_'.$surveyid]['step'] = ($oSavedSurvey->saved_thisstep > 1) ? $oSavedSurvey->saved_thisstep : 1;
-            $thisstep = $_SESSION['survey_'.$surveyid]['step'] - 1; // deprecated ?
-            $_SESSION['survey_'.$surveyid]['srid'] = $oSavedSurvey->srid; // Seems OK without
-            $_SESSION['survey_'.$surveyid]['refurl'] = $oSavedSurvey->refurl;
-        }
-
-        // Get if survey is been answered
-        $submitdate = $oResponses->submitdate;
-        $aRow = $oResponses->attributes;
-        foreach ($aRow as $column => $value) {
-            if ($column == "token") {
-                $clienttoken = $value;
-                $token = $value;
-            } elseif ($column == 'lastpage' && !isset($_SESSION['survey_'.$surveyid]['step'])) {
-                if (is_null($submitdate) || $submitdate == "N") {
-                    $_SESSION['survey_'.$surveyid]['step'] = ($value > 1 ? $value : 1);
-                    $thisstep = $_SESSION['survey_'.$surveyid]['step'] - 1;
-                } else {
-                    $_SESSION['survey_'.$surveyid]['maxstep'] = ($value > 1 ? $value : 1);
-                }
-            } elseif ($column == "datestamp") {
-                $_SESSION['survey_'.$surveyid]['datestamp'] = $value;
-            }
-            if ($column == "startdate") {
-                $_SESSION['survey_'.$surveyid]['startdate'] = $value;
-            } else {
-                //Only make session variables for those in insertarray[]
-                if (in_array($column, $_SESSION['survey_'.$surveyid]['insertarray']) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$column])) {
-
-                    if (($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'N' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'K' ||
-                    $_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null) {
-// For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-                        // This is especially important for the deletenonvalue feature,
-                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-                        // question types (NKD)
-                        $_SESSION['survey_'.$surveyid][$column] = '';
-                    } elseif ($_SESSION['survey_'.$surveyid]['fieldmap'][$column]['type'] == '|' && !preg_match('/_filecount$/', $column)) {
-                        $aFiles = json_decode($value);
-                        $iSize=@count($aFiles);
-                        if (!is_null($aFiles) && $iSize > 0)
-                        {
-                            for ($i = 0; $i < $iSize; $i++)
-                            {
-                                // Encode html entities
-                                $aFiles[$i]->title = htmlentities($aFiles[$i]->title, ENT_QUOTES, null, false);
-                                $aFiles[$i]->comment = htmlentities($aFiles[$i]->comment, ENT_QUOTES, null, false);
-                                $aFiles[$i]->name = htmlentities($aFiles[$i]->name, ENT_QUOTES, null, false);
-                                $aFiles[$i]->filename = htmlentities($aFiles[$i]->filename, ENT_QUOTES, null, false);
-                                $aFiles[$i]->ext = htmlentities($aFiles[$i]->ext, ENT_QUOTES, null, false);
-                            }
-                            $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
-                            $_SESSION['survey_'.$surveyid][$column] = $value;
-                        }
-                    } else {
-                        $_SESSION['survey_'.$surveyid][$column] = $value;
-                    }
-                    if (isset($token) && !empty($token)) {
-                        $_SESSION['survey_'.$surveyid][$column] = $value;
-                    }
-                }  // if (in_array(
-            }  // else
-        } // foreach
-        return true;
     }
+    /* If we came from reload : check access_code */
+    if (!empty($sLoadName) && !empty($oResponses->saved_control)) {
+        $saved_control = $oResponses->saved_control;
+        $access_code = $oResponses->saved_control->access_code;
+        $md5_code = md5($sLoadPass);
+        $sha256_code = hash('sha256', $sLoadPass);
+        if ($md5_code === $access_code || $sha256_code === $access_code || password_verify($sLoadPass, $access_code)) {
+            //A match has been found. Let's load the values!
+            //If this is from an email, build surveysession first
+            $_SESSION['survey_' . $surveyid]['LEMtokenResume'] = true;
+
+            // If survey come from reload (GET or POST); some value need to be found on saved_control, not on survey
+            if (Yii::app()->request->getParam('loadall') === "reload") {
+                // We don't need to control if we have one, because we do the test before
+                $_SESSION['survey_' . $surveyid]['scid'] = $saved_control->scid;
+                $_SESSION['survey_' . $surveyid]['step'] = ($saved_control->saved_thisstep > 1) ? $saved_control->saved_thisstep : 1;
+                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1; // deprecated ?
+                $_SESSION['survey_' . $surveyid]['srid'] = $saved_control->srid; // Seems OK without
+                $_SESSION['survey_' . $surveyid]['refurl'] = $saved_control->refurl;
+            }
+        } else {
+            return false;
+        }
+    }
+    // Get if survey is been answered
+    $submitdate = $oResponses->submitdate;
+    $aRow = $oResponses->attributes;
+    foreach ($aRow as $column => $value) {
+        if ($column === "token") {
+            $clienttoken = $value;
+            $token = $value;
+        } elseif ($column === 'lastpage' && !isset($_SESSION['survey_' . $surveyid]['step'])) {
+            if (is_null($submitdate) || $submitdate === "N") {
+                $_SESSION['survey_' . $surveyid]['step'] = ($value > 1 ? $value : 1);
+                $thisstep = $_SESSION['survey_' . $surveyid]['step'] - 1;
+            } else {
+                $_SESSION['survey_' . $surveyid]['maxstep'] = ($value > 1 ? $value : 1);
+            }
+        } elseif ($column === "datestamp") {
+            $_SESSION['survey_' . $surveyid]['datestamp'] = $value;
+        }
+        if ($column === "startdate") {
+            $_SESSION['survey_' . $surveyid]['startdate'] = $value;
+        } else {
+            //Only make session variables for those in insertarray[]
+            if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
+                if (($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == 'N' ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == 'K' ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null) {
+// For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                    // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
+                    // This is especially important for the deletenonvalue feature,
+                    // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
+                    // question types (NKD)
+                    $_SESSION['survey_' . $surveyid][$column] = '';
+                } elseif ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == '|' && !preg_match('/_filecount$/', $column)) {
+                    $aFiles = json_decode($value);
+                    $iSize = @count($aFiles);
+                    if (!is_null($aFiles) && $iSize > 0) {
+                        for ($i = 0; $i < $iSize; $i++) {
+                            // Encode html entities
+                            $aFiles[$i]->title = htmlentities($aFiles[$i]->title, ENT_QUOTES, null, false);
+                            $aFiles[$i]->comment = htmlentities($aFiles[$i]->comment, ENT_QUOTES, null, false);
+                            $aFiles[$i]->name = htmlentities($aFiles[$i]->name, ENT_QUOTES, null, false);
+                            $aFiles[$i]->filename = htmlentities($aFiles[$i]->filename, ENT_QUOTES, null, false);
+                            $aFiles[$i]->ext = htmlentities($aFiles[$i]->ext, ENT_QUOTES, null, false);
+                        }
+                        $value = ls_json_encode($aFiles);  // so that EM doesn't try to parse it.
+                        $_SESSION['survey_' . $surveyid][$column] = $value;
+                    }
+                } else {
+                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                }
+                if (isset($token) && !empty($token)) {
+                    $_SESSION['survey_' . $surveyid][$column] = $value;
+                }
+            }  // if (in_array(
+        }  // else
+    } // foreach
+    return true;
 }
 
 
@@ -198,7 +188,7 @@ function getLanguageChangerDatas($sSelectedLanguage = "")
 
         $aListLang = array();
         foreach ($aSurveyLangs as $sLangCode => $aSurveyLang) {
-            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8');
+            $aListLang[$sLangCode] = html_entity_decode($aSurveyLang['nativedescription'], ENT_COMPAT, 'UTF-8') . ' - ' . $aSurveyLang['description'];
         }
 
         $sSelected = ($sSelectedLanguage) ? $sSelectedLanguage : App()->language;
@@ -772,9 +762,8 @@ function buildsurveysession($surveyid, $preview = false)
     // NOTE: All of this is already done in survey controller.
     // We keep it here only for Travis Tested thar are still not using Selenium
     // As soon as the tests are rewrote to use selenium, those lines can be removed
-    $lang       = $_SESSION['survey_'.$surveyid]['s_lang'];
-    if (empty($lang)){
-
+    $lang = isset($_SESSION['survey_' . $surveyid]['s_lang']) ? $_SESSION['survey_' . $surveyid]['s_lang'] : '';
+    if (empty($lang)) {
         // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
 
            if (returnGlobal('lang', true)) {
@@ -897,8 +886,9 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-    if (Yii::app()->getRequest()->getRequestType()=='GET') {
-        $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
+    $request = Yii::app()->getRequest();
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
         if(!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
@@ -1246,7 +1236,7 @@ function finalizeRandomization($fieldmap)
 function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnterTokenData, $clienttoken)
 {
     $FlashError = '';
-    if (FailedLoginAttempt::model()->isLockedOut()) {
+    if (FailedLoginAttempt::model()->isLockedOut(FailedLoginAttempt::TYPE_TOKEN)) {
         $FlashError = sprintf(gT('You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again.'), App()->getConfig('timeOutTime') / 60);
         $renderToken = 'main';
     } else {
@@ -1333,7 +1323,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
@@ -1436,7 +1426,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 /**
  * @param string $sTemplateViewPath
  */
-function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
+function renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath)
 {
     // Template settings
     $surveyid = $thissurvey['sid'];
@@ -1444,7 +1434,7 @@ function renderError($sTitle = '', $sMessage, $thissurvey, $sTemplateViewPath)
     //$oTemplate->registerAssets();
 
     $aError = array();
-    $aError['title']      = ($sTitle != '') ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
+    $aError['title']      = (!empty(trim($sTitle))) ? $sTitle : gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
@@ -2226,4 +2216,32 @@ function cookieConsentLocalization()
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')
     );
+}
+
+/**
+ * Returns an array of URL parameters that can be forwarded
+ *
+ * @param LSHttpRequest $request the HTTP request
+ *
+ * @return array<string,mixed>
+ */
+function getForwardParameters($request)
+{
+    $reservedGetValues = array(
+        'token',
+        'sid',
+        'gid',
+        'qid',
+        'lang',
+        'newtest',
+        'action',
+        'seed',
+        'index.php',
+    );
+
+    $parameters = [];
+    if (in_array($request->getRequestType(), ['GET', 'POST'])) {
+        $parameters = array_diff_key($request->getQueryParams(), array_flip($reservedGetValues));
+    }
+    return $parameters;
 }

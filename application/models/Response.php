@@ -10,6 +10,7 @@
         {
             if (parent::beforeDelete()) {
                 $this->deleteFiles();
+                $this->deleteTimings();
                 return true;
             }
             return false;
@@ -34,6 +35,15 @@
         public static function create($surveyId, $scenario = 'insert')
         {
             return parent::create($surveyId, $scenario);
+        }
+
+        /** @inheritdoc
+         * Must be set by DB, adding by security here
+         * @see https://bugs.limesurvey.org/view.php?id=17208
+         **/
+        public function primaryKey()
+        {
+            return 'id';
         }
 
         /**
@@ -121,6 +131,16 @@
             }
 
             return $errors;
+        }
+
+        /**
+         * Delete timings if savetimings is set.
+         */
+        public function deleteTimings()
+        {
+          if (Survey::model()->findByPk($this->dynamicId)->isSaveTimings) {
+              SurveyTimingDynamic::model($this->dynamicId)->deleteByPk($this->id);
+          }
         }
 
         /**

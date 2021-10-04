@@ -1911,9 +1911,10 @@ $url .= "_view"; });
     public function editShareInfo()
     {
         $operation = Yii::app()->request->getPost('oper');
+        // NB: Comma-separated list.
         $shareIds = Yii::app()->request->getPost('id');
         if ($operation == 'del') {
-// If operation is delete , it will delete, otherwise edit it
+            // If operation is delete , it will delete, otherwise edit it
             ParticipantShare::model()->deleteRow($shareIds);
         } else {
             $aData = array(
@@ -2145,10 +2146,10 @@ $url .= "_view"; });
             foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
-                    'participant_id' => (int) $id,
+                    'participant_id' => $id,
                     'share_uid' => $iShareUserId,
                     'date_added' => date('Y-m-d H:i:s', $time),
-                    'can_edit' => $bCanEdit
+                    'can_edit' => ($bCanEdit === false ? 0 : 1)
                 );
                 ParticipantShare::model()->storeParticipantShare($aData, $permissions);
                 $i++;
@@ -2214,6 +2215,8 @@ $url .= "_view"; });
      */
     public function deleteSingleParticipantShare($participantId, $shareUid)
     {
+        $this->requirePostRequest();
+
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
             'share_uid' => $shareUid
@@ -2306,8 +2309,8 @@ $url .= "_view"; });
     {
         $newarr = Yii::app()->request->getPost('newarr');
         $mapped = Yii::app()->request->getPost('mapped');
-        $overwriteauto = Yii::app()->request->getPost('overwriteauto');
-        $overwriteman = Yii::app()->request->getPost('overwriteman');
+        $overwriteauto = Yii::app()->request->getPost('overwriteauto', false);
+        $overwriteman = Yii::app()->request->getPost('overwriteman', false);
         $createautomap = Yii::app()->request->getPost('createautomap');
 
         $response = Participant::model()->copyToCentral(Yii::app()->request->getPost('surveyid'), $newarr, $mapped, $overwriteauto, $overwriteman, $createautomap);

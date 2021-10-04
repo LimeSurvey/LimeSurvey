@@ -718,18 +718,19 @@ class InstallerController extends CController
     }
 
     /**
-     * check for a specific PHPFunction, return HTML image
+     * Check for a specific PHP Function or class, updates HTML image
      *
-     * @param string $sFunctionName
-     * @param string $sImage return
-     * @return bool result
+     * @param string $sFunctionName Function or class name
+     * @param string $sImage HTML string for related image to show
+     * @return bool True if exists, otherwise false
      */
-    public function checkPHPFunction($sFunctionName, &$sImage)
+    public function checkPHPFunctionOrClass($sFunctionName, &$sImage)
     {
-        $bExists = function_exists($sFunctionName);
+        $bExists = function_exists($sFunctionName) || class_exists($sFunctionName);
         $sImage = $this->check_HTML_image($bExists);
         return $bExists;
     }
+    
 
     /**
      * check if file or directory exists and is writeable, returns via parameters by reference
@@ -808,29 +809,32 @@ class InstallerController extends CController
         // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
         $bProceed = true; //lets be optimistic!
 
-
-        //  version check
+        //  version check for minimum
         if (version_compare(PHP_VERSION, '5.5.9', '<')) {
-                    $bProceed = !$aData['verror'] = true;
+            $bProceed = !$aData['versions_status'] = 'error';
+        }
+
+        //  version check for maximum version
+        if (version_compare(PHP_VERSION, '8.0', '>=')) {
+            $aData['versions_status'] = 'warning';
         }
 
         if (convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024 < 128 && ini_get('memory_limit') != -1) {
                     $bProceed = !$aData['bMemoryError'] = true;
         }
 
-
         // mbstring library check
-        if (!$this->checkPHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('mb_convert_encoding', $aData['mbstringPresent'])) {
                     $bProceed = false;
         }
 
         // zlib library check    
-        if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent'])) {
             $bProceed = false;
         }
 
         // JSON library check
-        if (!$this->checkPHPFunction('json_encode', $aData['bJSONPresent'])) {
+        if (!$this->checkPHPFunctionOrClass('json_encode', $aData['bJSONPresent'])) {
                     $bProceed = false;
         }
 
@@ -866,23 +870,29 @@ class InstallerController extends CController
 
         // gd library check
         if (function_exists('gd_info')) {
-            $aData['gdPresent'] = $this->check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+            $gdInfo = gd_info();
+            $gdHasJpegSupport = !empty($gdInfo['JPEG Support']);
+            if ($gdHasJpegSupport) {
+                $aData['gdPresent'] = $this->check_HTML_image(true);
+            } else {
+                $aData['gdPresent'] = $this->check_HTML_image(false) . '<br/>' . gT("The GD extension found doesn't support JPEG");
+            }
         } else {
             $aData['gdPresent'] = $this->check_HTML_image(false);
         }
         // ldap library check
-        $this->checkPHPFunction('ldap_connect', $aData['ldapPresent']);
+        $this->checkPHPFunctionOrClass('ldap_connect', $aData['ldapPresent']);
 
         // php zip library check
-        $this->checkPHPFunction('zip_open', $aData['zipPresent']);
+        $this->checkPHPFunctionOrClass('ZipArchive', $aData['zipPresent']);
 
         // zlib php library check
-        $this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
+        $this->checkPHPFunctionOrClass('zlib_get_coding_type', $aData['zlibPresent']);
 
         // imap php library check
-        $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
+        $this->checkPHPFunctionOrClass('imap_open', $aData['bIMAPPresent']);
 
-        // Silently check some default PHP extensions
+         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();
 
         return $bProceed;

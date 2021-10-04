@@ -15,7 +15,6 @@
  // TODO: move to controller
  $qqid = str_replace ( '-', '__' , $qqid );
 ?>
-
 statisticsData['quid'+'<?php echo $qqid; ?>'] = {
     labels : <?php echo json_encode($graph_labels); ?>,
     grawdata : <?php echo json_encode($grawdata); ?>, // the datas to generate the graph  

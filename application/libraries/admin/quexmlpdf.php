@@ -2759,7 +2759,7 @@ class quexmlpdf extends pdf
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-20
      */
-    protected function drawMatrixVas($subquestions, $parenttext = false, $labelleft, $labelright, $split = 'notset')
+    protected function drawMatrixVas($subquestions, $parenttext, $labelleft, $labelright, $split = 'notset')
     {
         if ($split === 'notset') {
             $split = $this->allowSplittingVas;

@@ -127,7 +127,11 @@ class Assessment extends LSActiveRecord
                 'name' => 'scope',
                 'value' => '$data->scope == "G" ? eT("Group") : eT("Total")',
                 'htmlOptions' => ['class' => 'col-sm-1'],
-                'filter' => TbHtml::dropDownList('Assessment[scope]', 'scope', ['' => gT('All'), 'T' => gT('Total'), 'G' => gT("Group")])
+                'filter' => TbHtml::dropDownList(
+                    'Assessment[scope]',
+                    $this->scope,
+                    ['A' => gT('All'), 'T' => gT('Total'), 'G' => gT("Group")]
+                )
             ),
             array(
                 'name' => 'name',
@@ -161,7 +165,9 @@ class Assessment extends LSActiveRecord
         $criteria->compare('id', $this->id);
         $criteria->compare('sid', $this->sid);
         $criteria->compare('gid', $this->gid);
-        $criteria->compare('scope', $this->scope);
+        if($this->scope !== 'A') {
+            $criteria->compare('scope', $this->scope);
+        }
         $criteria->compare('name', $this->name, true);
         $criteria->compare('minimum', $this->minimum);
         $criteria->compare('maximum', $this->maximum);

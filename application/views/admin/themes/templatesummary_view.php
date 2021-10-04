@@ -8,7 +8,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
     <div class="row template-sum">
         <div class="col-lg-12">
             <div class="h4">
-                <?php echo sprintf(gT("Viewing file '%s'"),$editfile); ?>
+                <?php echo sprintf(gT("Viewing file '%s'"), $filedisplayname); ?>
             </div>
 
             <?php if (!is_writable($templates[$templatename])) { ?>
