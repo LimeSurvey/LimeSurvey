@@ -2361,8 +2361,8 @@ function tokensExport($iSurveyID)
         }
 
         $tokenoutput .= '"' . trim($brow['tid']) . '",';
-        $tokenoutput .= '"' . trim($brow['firstname']) . '",';
-        $tokenoutput .= '"' . trim($brow['lastname']) . '",';
+        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['firstname'])) . '",';
+        $tokenoutput .= '"' . str_replace('"', '""', trim($brow['lastname'])) . '",';
         $tokenoutput .= '"' . trim($brow['email']) . '",';
         $tokenoutput .= '"' . trim($brow['emailstatus']) . '",';
         $tokenoutput .= '"' . trim($brow['token']) . '",';
@@ -2378,7 +2378,7 @@ function tokensExport($iSurveyID)
             $tokenoutput .= '"' . trim($brow['started']) . '",';
         }
         foreach ($attrfieldnames as $attr_name) {
-            $tokenoutput .= '"' . trim($brow[$attr_name]) . '",';
+            $tokenoutput .= '"' . str_replace('"', '""', trim($brow[$attr_name])) . '",';
         }
         $tokenoutput = substr($tokenoutput, 0, -1); // remove last comma
         $tokenoutput .= "\n";
