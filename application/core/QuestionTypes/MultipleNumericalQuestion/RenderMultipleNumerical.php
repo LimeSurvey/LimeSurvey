@@ -35,6 +35,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
     private $sliderOptionsArray = [];
     private $extraclass = '';
     private $maxlength = '';
+    private $sumRemainingEqn = '';
+    private $sumEqn = '';
     private $inputsize = null;
     private $numbersonly = true;
     private $prefix = '';
@@ -56,6 +58,13 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
             $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
+        }
+
+        if (ctype_digit(trim($this->getQuestionAttribute('equals_num_value'))) ||
+            ctype_digit(trim($this->getQuestionAttribute('min_num_value'))) ||
+            ctype_digit(trim($this->getQuestionAttribute('max_num_value')))) {
+            $this->sumRemainingEqn = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid)['sumRemainingEqn'];
+            $this->sumEqn = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid)['sumEqn'];
         }
 
         if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
@@ -277,6 +286,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 'aRows' => $this->getRows(),
                 'coreClass' => $this->sCoreClasses . ' ' . $sCoreClasses,
                 'basename' => $this->sSGQA,
+                'sumRemainingEqn' => $this->sumRemainingEqn,
+                'sumEqn' => $this->sumEqn,
+                'id' => $this->oQuestion->qid,
+                'sLabelWidth' => $this->widthArray['sLabelWidth'],
+                'sInputContainerWidth' => $this->widthArray['sInputContainerWidth'],
             ),
             true
         );
@@ -290,6 +304,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 'aRows' => $this->getRows(),
                 'coreClass' => $this->sCoreClasses . ' ' . $sCoreClasses,
                 'basename' => $this->sSGQA,
+                'sumRemainingEqn' => $this->sumRemainingEqn,
+                'sumEqn' => $this->sumEqn,
+                'id' => $this->oQuestion->qid,
+                'sLabelWidth' => $this->widthArray['sLabelWidth'],
+                'sInputContainerWidth' => $this->widthArray['sInputContainerWidth'],
             ),
             true
         );
@@ -326,6 +345,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 'basename' => $this->sSGQA,
                 'rowTemplate' => $rowTemplate,
                 'dynamicTemplate' => $dynamicTemplate,
+                'sumRemainingEqn' => $this->sumRemainingEqn,
+                'sumEqn' => $this->sumEqn,
+                'sLabelWidth' => $this->widthArray['sLabelWidth'],
+                'sInputContainerWidth' => $this->widthArray['sInputContainerWidth'],
+                'id' => $this->oQuestion->qid,
             ),
             true
         );
