@@ -326,9 +326,6 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         ) {
             $qinfo = LimeExpressionManager::GetQuestionStatus($this->oQuestion->qid);
 
-            $sumRemainingEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumRemainingEqn'].'}', $this->oQuestion->qid);
-            $sumEqn = LimeExpressionManager::ProcessString('{'.$qinfo['sumEqn'].'}', $this->oQuestion->qid);
-
             if (trim($this->getQuestionAttribute('equals_num_value')) != '') {
                 $equals_num_value = true;
             }
@@ -344,8 +341,10 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                 'rowTemplate' => $rowTemplate,
                 'dynamicTemplate' => $dynamicTemplate,
                 'id' => $this->oQuestion->qid,
-                'sumRemainingEqn' => $equals_num_value ? $sumRemainingEqn : '',
-                'sumEqn' => $displaytotal ? $sumEqn : '',
+                'sumRemainingEqn' => $equals_num_value ? $qinfo['sumRemainingEqn'] : '',
+                'equals_num_value' => $equals_num_value,
+                'displaytotal' => $displaytotal,
+                'sumEqn' => $displaytotal ? $qinfo['sumEqn'] : '',
                 'sLabelWidth' => $this->widthArray['sLabelWidth'],
                 'sInputContainerWidth' => $this->widthArray['sInputContainerWidth'],
                 'prefix' => $this->prefix,
