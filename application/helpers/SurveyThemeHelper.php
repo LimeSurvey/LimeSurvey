@@ -312,14 +312,6 @@ class SurveyThemeHelper
 
     /**
      * Returns the virtual path for $path.
-     * Virtual paths are a special notation for relative paths, including a prefix to give context.
-     * Eg.: the path "image::theme::files/logo.png" is relative to the theme folder, while 
-     *      "image::generalfiles::" is relative to the general files folder.
-     * If $path is not valid, returns null.
-     * Paths can be
-     * - related to a global theme option and hence the file be located on the generalfiles directory.
-     * - related to a survey theme option and hence the file be located relative to a survey upload directory.
-     * - related to a theme and hence the file be located on the theme directory (eg. when uploaded from theme editor)
      *
      * @param string $path  the path to check. Can be a "virtual" path (eg. 'image::theme::logo.png'), or a normal path.
      * @param string $themeName
@@ -361,6 +353,10 @@ class SurveyThemeHelper
 
     /**
      * Sanitizes a theme option value making sure that paths are valid.
+     *
+     * - All paths should be relative to the root directoy of the current theme or general files.
+     * - All paths should be a subdir of the current theme or general files -no path traversal (.. or . ) will be allowed - (example: "../../files/image.png" is not allowed)
+     *
      * Options that match a file will be marked as invalid if the file
      * is not valid, or replaced with the virtual path if the file is valid.
      * The validity of paths depend on the theme configuration (basically the
@@ -373,6 +369,11 @@ class SurveyThemeHelper
      */
     public static function sanitizePathInOption($value, $themeName, $sid = null)
     {
+        // We only sanitize strings
+        if (!is_string($value)) {
+            return;
+        }
+
         // This is used to sanitize all options of the theme. Not only classic ones which
         // are expected to hold a path, as other options may hold a path as well (eg. custom theme options)
         if (empty($value) || $value == 'inherit') {
