@@ -57,7 +57,7 @@
                     'showSelected' => 'yes',
                     'selectedUrl'  => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
                     'keepopen'     => 'yes',
-                    'sModalTitle'  => gT('Set survey theme'),
+                    'sModalTitle'  => gT('Apply survey theme'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php', array(), true),
                 ),
 
