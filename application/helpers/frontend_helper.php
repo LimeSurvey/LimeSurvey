@@ -428,7 +428,9 @@ function submittokens($quotaexit = false)
         }
         $token->usesleft--;
     }
-    $token->save();
+    // We need to specify the attributes we are updating because validation could fail on other (untouched) attributes,
+    // preventing the update (eg.: the participant could have an invalid email).
+    $token->save(true, ['completed', 'usesleft']);
 
     if ($quotaexit == false) {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
