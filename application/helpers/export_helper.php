@@ -2313,9 +2313,13 @@ function tokensExport($iSurveyID)
     foreach ($bresultAll as $tokenKey => $tokenValue) {
         // creating TokenDynamic object to be able to decrypt easier
         $token = TokenDynamic::model($iSurveyID);
-        // populate TokenDynamic object with values
+        $attributes = array_keys($token->getAttributes());
+        // Populate TokenDynamic object with values
+        // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
         foreach ($tokenValue as $key => $value) {
-            $token->$key = $value;
+            if (in_array($key, $attributes)) {
+                $token->$key = $value;
+            }
         }
         // decrypting
         $token->decrypt();
