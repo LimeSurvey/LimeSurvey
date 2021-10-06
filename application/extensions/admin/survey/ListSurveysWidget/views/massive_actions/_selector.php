@@ -72,7 +72,7 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'  => 'modal',
-                    'modalType'   => 'cancel-apply',
+                    'modalType'   => 'cancel-change',
                     'keepopen'    => 'yes',
                     'showSelected'  => 'yes',
                     'selectedUrl'   => App()->createUrl('/surveyAdministration/renderItemsSelected/'),
