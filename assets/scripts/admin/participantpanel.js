@@ -534,7 +534,7 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         })
@@ -553,7 +553,7 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.success, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })
