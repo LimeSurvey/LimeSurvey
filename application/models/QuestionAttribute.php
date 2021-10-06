@@ -35,6 +35,8 @@ class QuestionAttribute extends LSActiveRecord
 {
     protected static $questionAttributesSettings = array();
 
+    protected $xssFilterAttributes = ['value'];
+
     /**
      * @return static
      */

@@ -19,6 +19,9 @@
  */
 class LSActiveRecord extends CActiveRecord
 {
+    /** @var string[] Array of attributes that should be XSS filtered on mass updates */
+    protected $xssFilterAttributes = [];
+
     public $bEncryption = false;
 
     /**
@@ -209,6 +212,32 @@ class LSActiveRecord extends CActiveRecord
         $this->dispatchPluginModelEvent('before' . $modelEventName . 'DeleteMany', $criteria, $eventParams);
         $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria, $eventParams);
         return parent::deleteAllByAttributes([], $criteria, []);
+    }
+
+    /**
+     * Updates records with the specified condition.
+     * XSS filtering is enforced for attributes listed in model's $xssFilterAttributes property.
+     * See {@link find()} for detailed explanation about $condition and $params.
+     * Note, the attributes are not checked for safety and no validation is done.
+     * @param array $attributes list of attributes (name=>$value) to be updated
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return integer the number of rows being updated
+     */
+    public function updateAll($attributes, $condition = '', $params = array())
+    {
+        if (!empty($this->xssFilterAttributes)) {
+            $validator = new LSYii_Validators;
+            if ($validator->xssfilter) {
+                $attributeNames = array_keys($attributes);
+                $attributesToFilter = array_intersect($attributeNames, $this->xssFilterAttributes);
+                foreach ($attributesToFilter as $attribute) {
+                    $attributes[$attribute] = $validator->xssFilter($attributes[$attribute]);
+                }
+            }
+        }
+
+        return parent::updateAll($attributes, $condition, $params);
     }
 
     /**
