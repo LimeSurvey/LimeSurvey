@@ -800,8 +800,6 @@ class statistics extends Survey_Common_Action
         $aData['oStatisticsHelper'] = $helper;
         $aData['expertstats'] = true;
 
-        $aData['subaction'] = gT('Statistics');
-
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'json-js/json2.min.js');
@@ -842,6 +840,11 @@ class statistics extends Survey_Common_Action
         $aData['topBar']['rightSideView'] = 'statisticsTopbarRight_view';
 
         $aData['sidemenu']['state'] = false;
+
+        // Set the active Sidemenu (for deeper navigation)
+        $aData['sidemenu']['isSideMenuElementActive'] = true;
+        $aData['sidemenu']['activeSideMenuElement']   = 'statistics';
+
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
         $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
