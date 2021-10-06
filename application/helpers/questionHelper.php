@@ -786,7 +786,7 @@ class questionHelper
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
-            "help" => gT('Insert a page break before this question in printable view by setting this to Yes.'),
+            "help" => gT('Insert a page break before this question in printable view.'),
             "caption" => gT('Insert page break in printable view')
         );
 

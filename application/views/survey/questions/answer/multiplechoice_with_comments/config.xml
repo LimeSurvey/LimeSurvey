@@ -571,7 +571,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Insert a page break before this question in printable view by setting this to Yes.</help>
+            <help>Insert a page break before this question in printable view.</help>
             <caption>Insert page break in printable view</caption>
             <i18n></i18n>
             <readonly></readonly>

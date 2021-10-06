@@ -12916,7 +12916,7 @@ msgid "Label for 'Other:' option"
 msgstr ""
 
 #: application/helpers/questionHelper.php:789
-msgid "Insert a page break before this question in printable view by setting this to Yes."
+msgid "Insert a page break before this question in printable view."
 msgstr ""
 
 #: application/helpers/questionHelper.php:790
