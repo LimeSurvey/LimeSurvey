@@ -659,6 +659,8 @@ class SurveyAdministrationController extends LSBaseController
                 'surveyid' => $iSurveyID
             );
             $aData['display']['menu_bars']['surveysummary'] = true;
+            $survey = Survey::model()->findByPk($iSurveyID);
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
             $this->aData = $aData;
             $this->render('importSurveyResources_view', $this->aData);
