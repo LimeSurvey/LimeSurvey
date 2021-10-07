@@ -261,8 +261,15 @@ class PluginManager extends \CApplicationComponent
                     !$event->isStopped()
                     && (empty($target) || in_array(get_class($subscription[0]), $target))
                 ) {
+                    // before setting event, we must save previous event
+                    // (needed if subscriber code is dispatching another event)
+                    $prev_event = $subscription[0]->getEvent();
+
                     $subscription[0]->setEvent($event);
                     call_user_func($subscription);
+
+                    // restore previous event
+                    if ($prev_event) $subscription[0]->setEvent($prev_event);
                 }
             }
         }
