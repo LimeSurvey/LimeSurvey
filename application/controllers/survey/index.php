@@ -37,7 +37,13 @@ class index extends CAction
         $surveyid    = $param['sid'];
         $thisstep    = $param['thisstep'];
         $move        = getMove();
+
+        /* Get client token by POST or GET value */
         $clienttoken = trim($param['token']);
+        /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
+        if(empty($clienttoken) && !empty($_SESSION['survey_' . $surveyid]['token'] ))  {
+            $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
+        }
 
         $oSurvey = Survey::model()->findByPk($surveyid);
 
