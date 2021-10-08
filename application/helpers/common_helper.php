@@ -844,8 +844,8 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 */
 function groupOrderThenQuestionOrder($a, $b)
 {
-    if (isset($a['group_order']) && isset($b['group_order'])) {
-        $GroupResult = strnatcasecmp($a['group_order'], $b['group_order']);
+    if (isset($a->group['group_order']) && isset($b->group['group_order'])) {
+        $GroupResult = strnatcasecmp($a->group['group_order'], $b->group['group_order']);
     } else {
         $GroupResult = "";
     }
