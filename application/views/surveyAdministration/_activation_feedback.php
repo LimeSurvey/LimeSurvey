@@ -20,7 +20,7 @@
                     <?php eT('Activate Survey'); ?> (<?php echo $survey->currentLanguageSettings->surveyls_title; ?>)
                 </h3>
                 <p class='lead'>
-                    <?php eT("Survey has been activated. Results table has been successfully created."); ?>
+                    <?php eT("Your survey has been activated and the responses and statistics section is now available."); ?>
                 </p>
 
                 <?php if($warning):?>
@@ -43,22 +43,19 @@
                     </p>
                     <?php else:?>
                     <p>
-                        <?php eT("This survey is now active and responses can be recorded."); ?>
-                        <br />
                         <br />
                         <?php if(!tableExists('tokens_'.$iSurveyID)):?>
                             <!-- Open Access Mode -->
-                            <?php eT("By default, your survey has been activated in "); ?><strong><?php eT("open-access mode"); ?></strong>
-                            <?php eT(". This means that no invitation code is needed to complete the survey and you can share it via URL, QR code or social media in the sharing panel."); ?>
+                            <?php eT("By default, surveys are activated in open-access mode. Participants do not need an invitation (open-access mode)"); ?>
+                            <?php eT(" to complete the survey. You can share your survey via URL, QR code or social media. Navigate to Settings --> Overview --> Share your survey."); ?>
                             <br />
                             <br />
                             <!-- Closed Access Mode -->
-                            <?php eT("If you want your survey to be only accessible for people who have been invited, please switch to "); ?><strong><?php eT("closed-access mode"); ?></strong>
-                            <?php eT("by clicking the following button."); ?>
-
+                            <?php eT("To exit open-access mode, please click Switch to closed-access mode below. In closed-access mode, only those who are invited (and have an access code) can access the survey."); ?>
+                            
                             <br />
                             <br />
-                            <?php eT("If you change your mind at any later point, you can switch to closed-access mode by navigating ba to 'Survey participants' and initialising the participants table at any time.");?>
+                            <?php eT("You can switch back to open-access mode at any time. Navigate to Settings --> Survey participants and click on the red 'Delete participants table' button from the top bar.");?>
                             <br />
                             <br />
                             <input
