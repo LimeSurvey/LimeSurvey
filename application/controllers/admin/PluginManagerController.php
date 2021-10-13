@@ -22,6 +22,9 @@ use LimeSurvey\Menu\MenuItem;
  */
 class PluginManagerController extends Survey_Common_Action
 {
+    /**
+     * Init
+     */
     public function init()
     {
     }
@@ -164,6 +167,10 @@ class PluginManagerController extends Survey_Common_Action
         );
     }
 
+    /**
+     * Delete files
+     * @param $plugin
+     */
     public function deleteFiles($plugin)
     {
         $this->requirePostRequest();
@@ -359,14 +366,19 @@ class PluginManagerController extends Survey_Common_Action
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
+        // Fullpage Bar
         $fullPageBar = [];
         $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
         $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
+
+        // Green Bar with Page Title
+        $pageTitle = gT("Plugin:") . ' ' . $plugin['name'];
 
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'configure',
             [
+                'pageTitle'    => $pageTitle,
                 'settings'     => $aSettings,
                 'buttons'      => $aButtons,
                 'plugin'       => $plugin,

@@ -7,8 +7,6 @@ echo viewHelper::getViewTestTag('configurePlugin');
 ?>
 
 <div class="col-lg-12">
-    <div class="pagetitle h3"><?php echo gT("Plugin:") . ' ' . $plugin['name']; ?></div>
-
     <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="active">
             <a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a>
