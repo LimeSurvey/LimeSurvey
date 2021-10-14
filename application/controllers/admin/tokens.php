@@ -29,7 +29,7 @@ class tokens extends Survey_Common_Action
      * @param int $surveyid  The survey ID
      * @return void
      */
-    public function index($surveyid)
+    public function index(int $surveyid)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
