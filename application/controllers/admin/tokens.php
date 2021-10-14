@@ -2313,15 +2313,8 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
-            $this->_renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Delete survey participants table"),
-            'message' => gT("If you delete this table access codes will no longer be required to access this survey.") . "<br />" . gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
-            . sprintf('("%s")<br /><br />', $newtableDisplay)
-            . "<input class='btn btn-danger' type='submit' value='"
-            . gT("Delete table") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y") . "', '_top')\" />\n"
-            . "<input class='btn btn-default' type='submit' value='"
-            . gT("Cancel") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}") . "', '_top')\" />\n"
-            )), $aData);
+            $aData['backupTableName']   = $newtableDisplay;
+            $this->_renderWrappedTemplate('token', 'deleteParticipantsTable', $aData);
         } else /* The user has confirmed they want to delete the tokens table */
         {
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
@@ -2340,14 +2333,8 @@ class tokens extends Survey_Common_Action
             SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
 
             $aData['sidemenu']['state'] = false;
-            $this->_renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Delete survey participants table"),
-            'message' => '<br />' . gT("The participant table has now been removed and access codes are no longer required to access this survey.") . "<br /> " . gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
-            . sprintf('("%s")<br /><br />', $newtableDisplay)
-            . "<input type='submit' class='btn btn-default' value='"
-            . gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $iSurveyId) . "', '_top')\" />"
-            )), $aData);
-
+            $aData['backupTableName'] = $newtableDisplay;
+            $this->_renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         }
     }
