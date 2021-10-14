@@ -2282,7 +2282,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function kill($iSurveyId)
+    public function kill(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
