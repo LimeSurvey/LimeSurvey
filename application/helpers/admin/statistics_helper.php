@@ -2009,7 +2009,7 @@ class statistics_helper
         //PCHART has to be enabled and we need some data
         //
         if ($usegraph == 1) {
-            $bShowGraph = $aattr["statistics_showgraph"] == "1";
+            $bShowGraph = (isset($aattr["statistics_showgraph"]) && $aattr["statistics_showgraph"] == "1");
             $bAllowPieChart = ($outputs['qtype'] != Question::QT_M_MULTIPLE_CHOICE && $outputs['qtype'] != Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS);
             $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
             $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
