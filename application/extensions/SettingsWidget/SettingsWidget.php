@@ -2,6 +2,7 @@
 
 class SettingsWidget extends CWidget
 {
+    /** @var int */
     protected static $counter = 0;
 
     public $action;
@@ -16,19 +17,35 @@ class SettingsWidget extends CWidget
      * @var boolean
      */
     public $form = true;
+
+    /** @var array */
     public $formHtmlOptions = array();
+    
+    /** @var array */
     public $fieldHtmlOptions = array();
 
+    /** @var string */
     public $method = 'post';
+
     public $prefix;
+
+    /** @var array */
     public $settings = array();
 
     public $title;
-    public $labelWidth=6;
-    public $controlWidth=6;
+
+    /** @var int */
+    public $labelWidth = 6;
+
+    /** @var int */
+    public $controlWidth = 6;
+
     /** @var string - Raw HTML to output last */
     public $additionalHtml = "";
 
+    /**
+     * Begin form
+     */
     public function beginForm()
     {
         if ($this->form) {
@@ -43,6 +60,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * End form
      * @return void
      */
     public function endForm()
@@ -54,7 +72,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * 
+     * Init
      */
     public function init()
     {
@@ -132,6 +150,9 @@ class SettingsWidget extends CWidget
         }
     }
 
+    /**
+     * Renders Buttons
+     */
     protected function renderButtons()
     {
         if (!empty($this->buttons)) {
@@ -156,14 +177,15 @@ class SettingsWidget extends CWidget
     }
 
     /**
-     * @param string $name
-     * @param array $metaData
-     * @param ? $form
+     * Render Settings
+     * @param string  $name
+     * @param array   $metaData
+     * @param string  $form
      * @param boolean $return
-     * @param string $wrapper
+     * @param string  $wrapper
      * @return string|void
      */
-    protected function renderSetting($name, $metaData, $form = null, $return = false, $wrapper = 'div')
+    protected function renderSetting(string $name, array $metaData, string $form = '', bool $return = false, string $wrapper = 'div')
     {
         // TODO: Weird hack that fixes some rendering issues after moving to Bootstrap2
         echo "&nbsp;";
@@ -214,6 +236,7 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Renders Settings
      * @return void
      */
     protected function renderSettings()
@@ -223,6 +246,9 @@ class SettingsWidget extends CWidget
         }
     }
 
+    /**
+     * Run
+     */
     public function run()
     {
         parent::run();
@@ -247,8 +273,11 @@ class SettingsWidget extends CWidget
 
     /**
      * Fix metaData for a setting : set default etc.
+     * @param string $name
+     * @param array  $metaData
+     * @return array
      */
-    public function fixMetaData($name, $metaData)
+    public function fixMetaData(string $name, array $metaData): array
     {
         $defaults = array(
             'class' => array(),
@@ -304,8 +333,11 @@ class SettingsWidget extends CWidget
 
     /**
      * render label according to type and $metaData['label']
+     * @param string $name
+     * @param array  $metaData
+     * @return string
      */
-    public function renderLabel($name, $metaData)
+    public function renderLabel(string $name, array $metaData): string
     {
         if (!isset($metaData['label'])) {
             return "";
@@ -319,9 +351,11 @@ class SettingsWidget extends CWidget
     /**
      * render help/desscription according to type and $metaData['help']
      * @todo $name is not used
+     * @param string $name
+     * @param array  $metaData
      * @return string
      */
-    public function renderHelp($name, $metaData)
+    public function renderHelp(string $name, array $metaData): string
     {
         if (!is_string($metaData['help'])) {
             return "";
@@ -334,7 +368,13 @@ class SettingsWidget extends CWidget
      * Settings renderers.
      **********************************************************************/
 
-    public function renderBoolean($name, array $metaData, $form = null)
+    /**
+     * Render Boolean
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     */
+    public function renderBoolean(string $name, array $metaData, string $form = '')
     {
         $htmlOptions = $this->htmlOptions($metaData, $form);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -353,14 +393,28 @@ class SettingsWidget extends CWidget
         );
     }
 
-    public function renderCheckbox($name, array $metaData, $form = null)
+    /**
+     * Render Checkbox
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderCheckbox($name, array $metaData, string $form = ''): string
     {
         $htmlOptions = $this->htmlOptions($metaData, $form, array('uncheckValue'=>false));
         $value = isset($metaData['current']) ? (bool) $metaData['current'] : false;
         return CHtml::checkBox($name, $value, $htmlOptions);
     }
 
-    public function renderFloat($name, array $metaData, $form = null)
+    /**
+     * Render Float
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderFloat(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         // Step can be replaced by plugin developer.
@@ -369,7 +423,14 @@ class SettingsWidget extends CWidget
         return CHtml::numberField($name, $value, $htmlOptions);
     }
 
-    public function renderHtml($name, array $metaData, $form = null)
+    /**
+     * Render HTML
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderHtml($name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -394,9 +455,14 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Render Info
      * @todo $form is not used.
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
      */
-    public function renderInfo($name, array $metaData, $form = null)
+    public function renderInfo(string $name, array $metaData, string $form = ''): string
     {
         $value = isset($metaData['content']) ? $metaData['content'] : '';
         if (is_array($value)) {
@@ -407,9 +473,13 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Render Int
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
      * @return string
      */
-    public function renderInt($name, array $metaData, $form = null)
+    public function renderInt($name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -420,7 +490,14 @@ class SettingsWidget extends CWidget
         return CHtml::numberField($name, $value, $htmlOptions);
     }
 
-    public function renderJson($name, array $metaData, $form = null)
+    /**
+     * Render Json
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderJson(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control'; // Needed ?
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -451,24 +528,43 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Render Logo
      * @todo $name is not used
      * @todo $form is not used
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
      */
-    public function renderLogo($name, array $metaData, $form = null)
+    public function renderLogo(string $name, array $metaData, string $form = ''): string
     {
         $alt=isset($metaData['alt']) ? $metaData['alt'] : '';
         $htmlOptions = $this->htmlOptions($metaData);
         return CHtml::image($metaData['path'], $alt, $htmlOptions);
     }
 
-    public function renderRadio($name, array $metaData, $form = null)
+    /**
+     * Render Radio
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderRadio(string $name, array $metaData, string $form = ''): string
     {
         $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
         $htmlOptions = $this->htmlOptions($metaData,$form);
         return CHtml::radioButtonList($name, $value, $metaData['options'],$htmlOptions);
     }
 
-    public function renderRelevance($name, array $metaData, $form = null)
+    /**
+     * Render Relevance
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderRelevance(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'relevance';
         $metaData['class'][] = 'form-control';
@@ -477,7 +573,14 @@ class SettingsWidget extends CWidget
         return CHtml::textArea($name, $value, $htmlOptions);
     }
 
-    public function renderSelect($name, array $metaData, $form = null)
+    /**
+     * Render Select
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderSelect(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : (isset($metaData['default']) ? $metaData['default'] : null);
@@ -512,9 +615,13 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Render String
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
      * @return string
      */
-    public function renderString($name, array $metaData, $form = null)
+    public function renderString(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -522,7 +629,14 @@ class SettingsWidget extends CWidget
         return CHtml::textField($name, $value, $htmlOptions);
     }
 
-    public function renderEmail($name, array $metaData, $form = null)
+    /**
+     * Render Email
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderEmail(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -530,7 +644,14 @@ class SettingsWidget extends CWidget
         return CHtml::emailField($name, $value, $htmlOptions);
     }
 
-    public function renderText($name, array $metaData, $form = null)
+    /**
+     * Render Text
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string 
+     */
+    public function renderText(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -538,7 +659,14 @@ class SettingsWidget extends CWidget
         return CHtml::textArea($name, $value, $htmlOptions);
     }
 
-    public function renderPassword($name, array $metaData, $form = null)
+    /**
+     * Render Password
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderPassword(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -546,7 +674,14 @@ class SettingsWidget extends CWidget
         return CHtml::passwordField($name, $value, $htmlOptions);
     }
 
-    public function renderLink($name, array $metaData, $form = null)
+    /**
+     * Render Link
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
+     */
+    public function renderLink(string $name, array $metaData, string $form = ''): string
     {
         $metaData['class'][] = 'btn btn-link';
         $metaData['text']=isset($metaData['text'])?$metaData['text']:$metaData['label'];
@@ -555,9 +690,14 @@ class SettingsWidget extends CWidget
     }
 
     /**
+     * Render List
      * @todo $name is not used
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
      */
-    public function renderList($name, array $metaData, $form = null)
+    public function renderList(string $name, array $metaData, string $form = ''): string
     {
         $out = '';
         $headers = '';
@@ -607,8 +747,12 @@ class SettingsWidget extends CWidget
 
     /**
      * Date type
+     * @param string $name
+     * @param array  $metaData
+     * @param string $form
+     * @return string
      */
-    public function renderDate($name, array $metaData, $form = null)
+    public function renderDate(string $name, array $metaData, string $form = ''): string
     {
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         $value = isset($metaData['current']) ? $metaData['current'] : '';
@@ -641,14 +785,15 @@ class SettingsWidget extends CWidget
         return $html;
     }
 
-    /* Return htmlOptions for an input od seting
+    /** Return htmlOptions for an input od seting
      *
-     * @param array metaData : completMetaData of setting
-     * @param string form form to be used
-     * @param array aDefault default htmlOptions to use
-     * @param array aForced forced htmlOptions to use
+     * @param array  $metaData completMetaData of setting
+     * @param string $form     form to be used
+     * @param array  $aDefault default htmlOptions to use
+     * @param array  $aForced  forced htmlOptions to use
+     * @return array
      */
-    public function htmlOptions(array $metaData, $form = null, array $aDefault = array(), array $aForced = array())
+    public function htmlOptions(array $metaData, string $form = '', array $aDefault = array(), array $aForced = array()): array
     {
         if (isset($metaData['htmlOptions']) && is_array($metaData['htmlOptions'])) {
             $htmlOptions=$metaData['htmlOptions'];
