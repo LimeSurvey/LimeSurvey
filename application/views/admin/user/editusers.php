@@ -45,11 +45,12 @@ echo viewHelper::getViewTestTag('usersIndex');
             <?php
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'all_users',
-                'itemsCssClass' => 'table table-striped items',
-                'dataProvider' => $model->search(),
-                'columns' => $model->colums,
+                'itemsCssClass'   => 'table table-striped items',
+                'htmlOptions'     => ['class' => 'table-responsive grid-view-ls'],
+                'dataProvider'    => $model->search(),
+                'columns'         => $model->colums,
                 'afterAjaxUpdate' => 'bindButtons',
-                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                'summaryText'     => gT('Displaying {start}-{end} of {count} result(s).') . ' ' . sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,

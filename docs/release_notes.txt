@@ -34,6 +34,97 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.14 (build 210927) to 5.1.15 (build 211011) October 11, 2021
+-Fixed issue: Error when sorting by group ID in group list (Carsten Schmitz)
+-Fixed issue #T424: Confusing message on survey import (#2075) (Gabriel Jenik)
+-Fixed issue #17649: White page by deleting a participant in a survey (Olle Haerstedt)
+-Fixed issue #17633: Changing Array (Texts) sub questions' label at runtime, manipulates question design (#2076) (Gabriel Jenik)
+-Fixed issue #17598: Save and close button on label sets list screen not working as expected (#2061) (Gabriel Jenik)
+-Fixed issue #17597: Back button on themes page not working as expected (#2067) (Gabriel Jenik)
+-Fixed issue #17596: Close button on global survey settings not working as expected (#2063) (Gabriel Jenik)
+-Fixed issue #17569: Unable to edit answer in single choice question after activate survey (#2054) (Gabriel Jenik)
+-Fixed issue #17554: If a user has more than one email associated the methods mail_registered_participants and invite_participants fail (#2041) (Gabriel Jenik)
+-Fixed issue #17549: Hint for page break (#2066) (Gabriel Jenik)
+-Fixed issue #17526: Filter html_entity_decode at save (#2017) (Gabriel Jenik)
+-Fixed issue #17504: Responses Batch deletion modal only opens the first time (#2046) (Gabriel Jenik)
+-Fixed issue #17421: When upgrading from LS3 to LS5, plugin Manager can't be used if non-compatible plugins are found (Olle Haerstedt)
+-Fixed issue #17416: Lost of Total and Remaining in multi numeric (#2077) (Gabriel Jenik)
+-Fixed issue #17317: Missing green bar breadcrumbs when importing zip file resources (#2074) (Gabriel Jenik)
+-Fixed issue #15608: No success message when deleting single custom attributes from CPDB (#2068) (Gabriel Jenik)
+-Fixed issue #13601: {TIME} placeholder not working (#2060) (Gabriel Jenik)
+#Updated translation: Xhosa by c_schmitz, erik.lamontagne
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1, jlcavazza
+#Updated translation: Sinhala by sayuri
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, educaticteced
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, Hyperion, lsurvey20, RobinBur
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Hong Kong) (Traditional) by c_schmitz
+#Updated translation: Bulgarian by peterx
+#Updated translation: Azerbaijani by abdul42
+
+
+Changes from 5.1.13 (build 210923) to 5.1.14 (build 210927) September 27, 2021
+-Fixed issue #T1228: Close button does not work when attempting to abort importing participants from CSV file (#2051) (Gabriel Jenik)
+-Fixed issue #17611: Updating from 2.05 or earlier throws error "Undefined function getDBConnectionStringProperty()" (Carsten Schmitz)
+-Fixed issue #17608: Remove orphan labels before adding table unique constraint (Olle Haerstedt)
+-Fixed issue #17592: Database update 450 fails (Patrick Teichmann)
+-Fixed issue #17592: Call to a member function getColumn() on string when updating using MSSQL (Carsten Schmitz)
+-Fixed issue #17557: Allowed image extensions are not properly shown in administration (Carsten Schmitz)
+#Updated translation: Portuguese (Portugal) by samarta, tamiel
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 5.1.12 (build 210922) to 5.1.13 (build 210923) September 21, 2021
+-Fixed issue #17608: Label sets have no language column in latest dbversion (Olle Haerstedt)
+-Fixed issue #17528: Back-button on survey group permission fails (#2043) (Gabriel Jenik)
+-Fixed issue #17512: Survey Logic File Syntax Error Summary Displays Incorrect Error Count (#2035) (Gabriel Jenik)
+-Fixed issue #16792: Delete permission on Survey : no CRSF control (#2029) (Gabriel Jenik)
+#Updated translation: Japanese by nomoto
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.1.11 (build 210920) to 5.1.12 (build 210922) September 20, 2021
+-Fixed issue: Remove lime_ prefix from db update (Olle Haerstedt)
+-Fixed issue #17606: Single data set summary is missing "last page" detail (Carsten Schmitz)
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Portuguese (Portugal) by algarvio, effgarces, femariso, lucaspcs, marcelovincenzi, mauriciofurtado, samarta
+#Updated translation: Japanese by nomoto
+#Updated translation: Italian by lfanfoni, ritapas
+#Updated translation: Italian (Informal) by lfanfoni, ritapas
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.1.10 (build 210913) to 5.1.11 (build 210920) September 20, 2021
+-Fixed issue: Prevent failed saving when users enters too many characters for survey title in quick translation (Carsten Schmitz)
+-Fixed issue: "List question groups" menu item not properly working after update (Carsten Schmitz)
+-Fixed issue #17590: Role reseted after checkintegrity (#2036) (Gabriel Jenik)
+-Fixed issue #17509: when exporting/importing surveys as "Tab-separated-values" encryption settings are lost (Patrick Teichmann)
+-Fixed issue #17454: Unable to remove a user with survey permissions with friendly url enabled (#2037) (Gabriel Jenik)
+-Fixed issue #14370: QueXML export (Print answers) of a ranking question showing name of available options instead of "Rank #" (#2033) (Adam Zammit)
+
+
 Changes from 5.1.9 (build 210912) to 5.1.10 (build 210913) September 9, 2021
 -Fixed issue: Remove prefix from database update (Olle Haerstedt)
 -Fixed issue #17578: PSPP reports warnings when opening SPSS SAV file using Export to SAV (#2034) (Adam Zammit)

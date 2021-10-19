@@ -202,7 +202,7 @@ function checkQuestions($postsid, $iSurveyID)
         ->join('{{question_l10ns}} ls', 'ls.qid=q.qid')
         ->andWhere("(SELECT count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0")
         ->andWhere("sid=:sid", [':sid' => $iSurveyID])
-        ->andWhere("type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_Z_LIST_RADIO_FLEXIBLE . "', '" . Question::QT_1_ARRAY_MULTISCALE . "')")
+        ->andWhere("type IN ('" . Question::QT_F_ARRAY_FLEXIBLE_ROW . "', '" . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . "', '" . Question::QT_1_ARRAY_MULTISCALE . "')")
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {

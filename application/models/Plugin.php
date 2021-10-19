@@ -163,6 +163,7 @@ class Plugin extends LSActiveRecord
     /**
      * Description as shown in plugin list.
      * @return string
+     * @throws Exception
      */
     public function getDescription()
     {
@@ -170,6 +171,20 @@ class Plugin extends LSActiveRecord
         // Harden for XSS
         $filter = LSYii_HtmlPurifier::getXssPurifier();
         return $filter->purify($config->getDescription());
+    }
+
+    /**
+     * As getDescription, but catches the exception (to be used in plugin gridview)
+     *
+     * @return string
+     */
+    public function getPossibleDescription()
+    {
+        try {
+            return $this->getDescription();
+        } catch (\Throwable $ex) {
+            return sprintf(gT('Error: Could not get plugin description: %s'), $ex->getMessage());
+        }
     }
 
 

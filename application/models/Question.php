@@ -72,7 +72,6 @@ class Question extends LSActiveRecord
     const QT_U_HUGE_FREE_TEXT = 'U';
     const QT_X_BOILERPLATE_QUESTION = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
-    const QT_Z_LIST_RADIO_FLEXIBLE = 'Z';
     const QT_EXCLAMATION_LIST_DROPDOWN = '!';
     const QT_VERTICAL_FILE_UPLOAD = '|';
     const QT_ASTERISK_EQUATION = '*';
@@ -628,8 +627,6 @@ class Question extends LSActiveRecord
                 return 'boilerplate';
             case Question::QT_Y_YES_NO_RADIO:
                 return 'yes-no';
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                return 'list-radio-flexible';
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                 return 'list-dropdown';
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
@@ -1233,9 +1230,6 @@ class Question extends LSActiveRecord
             case Question::QT_Y_YES_NO_RADIO:
                 $oRenderer = new RenderYesNoRadio($aFieldArray);
                 break;
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                $oRenderer = new RenderListRadioFlexible($aFieldArray);
-                break;
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                 $oRenderer = new RenderArrayMultiFlexNumbers($aFieldArray);
                 break;
@@ -1311,8 +1305,6 @@ class Question extends LSActiveRecord
                 return new DataSetShortFreeText($this->qid);
             case Question::QT_Y_YES_NO_RADIO:
                 return new DataSetYesNoRadio($this->qid);
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE:
-                return new DataSetListRadioFlexible($this->qid);
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                 return new DataSetArrayMultiFlexNumbers($this->qid);
             case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:

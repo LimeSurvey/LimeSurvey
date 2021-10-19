@@ -12,11 +12,11 @@ class TFAUser extends User
     public function attributeLabels()
     {
         return [
-            'authType' => 'Type of 2-Factor-Authentication used',
-            'secretKey' => 'Authentication base value',
+            'authType' => gT('Two-factor authentication method'),
+            'secretKey' => gT('Secret base key'),
             'uid' => gT('User ID'),
-            'firstLogin' => 'Logged in with 2FA',
-            'forceNewFirstLogin' => 'Force to set 2FA'
+            'firstLogin' => gT('Logged in with 2FA'),
+            'forceNewFirstLogin' => gT('Force to enable 2FA')
         ];
     }
 

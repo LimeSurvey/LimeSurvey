@@ -1218,4 +1218,19 @@ class Survey_Common_Action extends CAction
         ], true, false);
         return;
     }
+
+    /**
+     * Validates that the request method is POST.
+     *
+     * This is intended to be used on subactions. When possible (eg. when refactoring
+     * a Survey_Common_Action into an actual controller), use 'postOnly' filter instead.
+     *
+     * @throws CHttpException with 405 status if the request method is not POST.
+     */
+    protected function requirePostRequest()
+    {
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+    }
 }

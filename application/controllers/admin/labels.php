@@ -362,7 +362,7 @@ class labels extends Survey_Common_Action
                     $lid = $oLabelSet->lid;
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                    modlabelsetanswers($lid);
+            modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             if (LabelSet::model()->deleteLabelSet($lid)) {
@@ -371,10 +371,14 @@ class labels extends Survey_Common_Action
             }
         }
 
+        if (Yii::app()->request->getPost("saveandclose")) {
+            $this->getController()->redirect(array("admin/labels/sa/view"));
+        }
+
         if ($lid) {
-                    $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
+            $this->getController()->redirect(array("admin/labels/sa/view/lid/" . $lid));
         } else {
-                    $this->getController()->redirect(array("admin/labels/sa/view"));
+            $this->getController()->redirect(array("admin/labels/sa/view"));
         }
     }
 
@@ -402,6 +406,8 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
+        $this->requirePostRequest();
+
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete label sets.", 'unescaped'));
         }

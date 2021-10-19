@@ -338,8 +338,8 @@ class QuestionGroup extends LSActiveRecord
         $sort->defaultOrder = array('group_order' => false);
         $sort->attributes = array(
             'group_id' => array(
-                'asc' => 'gid',
-                'desc' => 'gid desc',
+                'asc' => 't.gid',
+                'desc' => 't.gid desc',
             ),
             'group_order' => array(
                 'asc' => 'group_order',

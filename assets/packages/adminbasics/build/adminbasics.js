@@ -28804,7 +28804,8 @@
       title: null,
       btnclass: 'btn-primary',
       btntext: actionBtn.dataset.actionbtntext,
-      "ajax-url": null
+      "ajax-url": null,
+      postUrl: null
     }; //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
 
@@ -28857,6 +28858,12 @@
         });
       });
     },
+        _sendPost = function _sendPost() {
+      adminCoreLSConsole.log('Binding post handler on confirmation dialog');
+      $(_this).find('.btn-ok').on('click', function (ev) {
+        window.LS.sendPost(options.postUrl, options.postDatas);
+      });
+    },
         _setTarget = function _setTarget() {
       //Set up normal href
       if (!!options.href) {
@@ -28875,6 +28882,13 @@
 
       if (!!options['ajax-url']) {
         _ajaxHandler();
+
+        return;
+      } //Set up a handler to send a POST request
+
+
+      if (!!options.postUrl) {
+        _sendPost();
 
         return;
       }
@@ -30363,7 +30377,14 @@
               name: 'saveandclose',
               value: '1'
             }).appendTo($form);
-            $form.find('[type="submit"]').first().trigger('click');
+            var submitButton = $form.find('[type="submit"]').first();
+
+            if (submitButton.length) {
+              submitButton.trigger('click');
+            } else {
+              $form.submit();
+            }
+
             displayLoadingState(this);
             return false;
           },
@@ -32080,7 +32101,7 @@
 
     options.fnOnHide = options.fnOnHide || function () {};
 
-    options.removeOnClose = options.removeOnClose || function () {};
+    options.removeOnClose = options.removeOnClose || true;
 
     options.fnOnHidden = options.fnOnHidden || function () {};
 
@@ -32207,7 +32228,7 @@
         } catch (e) {}
       });
       modalObject.on('shown.bs.modal', function () {
-        modalObject.find('.selector--button-confirm').on('click', function (e) {
+        modalObject.find('.selector--button-confirm').off('click.confirmdeletesubmit').on('click.confirmdeletesubmit', function (e) {
           e.preventDefault();
 
           if (!useAjax) {
@@ -32259,6 +32280,11 @@
     $(document).off('click.confirmModalSelector', 'a.selector--ConfirmModal');
     $(document).on('click.confirmModalSelector', 'a.selector--ConfirmModal', function (e) {
       e.preventDefault();
+
+      if ($(this).data('confirm-modal-appended') == 'yes') {
+        return;
+      }
+
       $(this).confirmModal({});
       $(this).trigger('click.confirmmodal');
     });

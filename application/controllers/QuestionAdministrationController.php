@@ -445,10 +445,19 @@ class QuestionAdministrationController extends LSBaseController
                 SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type']);
             }
 
-            // Clean subquestions and answer options before save.
+            // Clean answer options before save.
             // NB: Still inside a database transaction.
+            $question->deleteAllAnswers();
+            // If question type has answeroptions, save them.
+            if ($question->questionType->answerscales > 0) {
+                $this->storeAnswerOptions(
+                    $question,
+                    $request->getPost('answeroptions')
+                );
+            }
+
             if ($question->survey->active == 'N') {
-                $question->deleteAllAnswers();
+                // Clean subquestions before save.
                 $question->deleteAllSubquestions();
                 // If question type has subquestions, save them.
                 if ($question->questionType->subquestions > 0) {
@@ -457,24 +466,11 @@ class QuestionAdministrationController extends LSBaseController
                         $request->getPost('subquestions')
                     );
                 }
-                // If question type has answeroptions, save them.
-                if ($question->questionType->answerscales > 0) {
-                    $this->storeAnswerOptions(
-                        $question,
-                        $request->getPost('answeroptions')
-                    );
-                }
             } else {
                 if ($question->questionType->subquestions > 0) {
                     $this->updateSubquestions(
                         $question,
                         $request->getPost('subquestions')
-                    );
-                }
-                if ($question->questionType->answerscales > 0) {
-                    $this->updateAnswerOptions(
-                        $question,
-                        $request->getPost('answeroptions')
                     );
                 }
             }
@@ -863,6 +859,7 @@ class QuestionAdministrationController extends LSBaseController
             'activated'         => $activated,
             'first'             => $first,
             'surveyid'          => $surveyid,
+            'sid'               => $surveyid,
             'gid'               => $gid,
             'qid'               => $qid,
             'language'          => $language,
@@ -2849,7 +2846,8 @@ class QuestionAdministrationController extends LSBaseController
                 $subquestion = Question::model()->findByAttributes(
                     [
                         'parent_qid' => $question->qid,
-                        'title'      => $data['code']
+                        'title'      => $data['code'],
+                        'scale_id'   => $scaleId
                     ]
                 );
                 if (empty($subquestion)) {
@@ -2944,77 +2942,6 @@ class QuestionAdministrationController extends LSBaseController
                 $answer->refresh();
                 foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
                     $l10n = new AnswerL10n();
-                    $l10n->aid = $answer->aid;
-                    $l10n->language = $lang;
-                    $l10n->answer = $answerOptionText;
-                    if (!$l10n->save()) {
-                        throw new CHttpException(
-                            500,
-                            gT("Could not save answer option") . PHP_EOL
-                            . print_r($l10n->getErrors(), true)
-                        );
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Like storeAnswerOptions, but adapted for when survey is active (not allowed to change codes).
-     *
-     * @param Question $question
-     * @param array $answerOptionsArray
-     * @return void
-     * @throws CHttpException
-     */
-    private function updateAnswerOptions(Question $question, array $answerOptionsArray)
-    {
-        $i = 0;
-        foreach ($answerOptionsArray as $answerOptionId => $answerOptionArray) {
-            foreach ($answerOptionArray as $scaleId => $data) {
-                if (!isset($data['code'])) {
-                    throw new Exception(
-                        'code is not set in data: ' . json_encode($data)
-                    );
-                }
-                $answer = Answer::model()->findByAttributes(
-                    [
-                        'qid' => $question->qid,
-                        'code' => $data['code']
-                    ]
-                );
-                if (empty($answer)) {
-                    throw new Exception(
-                        'Found no answer option with code ' . $data['code']
-                    );
-                }
-                $answer->sortorder = $i;
-                $i++;
-                if (isset($data['assessment'])) {
-                    $answer->assessment_value = $data['assessment'];
-                } else {
-                    $answer->assessment_value = 0;
-                }
-                $answer->scale_id = $scaleId;
-                if (!$answer->update()) {
-                    throw new CHttpException(
-                        500,
-                        gT("Could not save answer option") . PHP_EOL
-                        . print_r($answer->getErrors(), true)
-                    );
-                }
-                $answer->refresh();
-                foreach ($data['answeroptionl10n'] as $lang => $answerOptionText) {
-                    $l10n = AnswerL10n::model()->findByAttributes(
-                        [
-                            'aid' => $answer->aid,
-                            'language' => $lang
-                        ]
-                    );
-                    if (empty($l10n)) {
-                        $l10n = new AnswerL10n();
-                    }
                     $l10n->aid = $answer->aid;
                     $l10n->language = $lang;
                     $l10n->answer = $answerOptionText;

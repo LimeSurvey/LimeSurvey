@@ -2368,6 +2368,8 @@ class participantsaction extends Survey_Common_Action
      */
     public function deleteSingleParticipantShare($participantId, $shareUid)
     {
+        $this->requirePostRequest();
+
         $participantShare = ParticipantShare::model()->findByPk(array(
             'participant_id' => $participantId,
             'share_uid' => $shareUid

@@ -15,8 +15,9 @@
             false);
         $this->widget('bootstrap.widgets.TbGridView', array(
             'dataProvider' => $oSurveyTheme->searchGrid(),
-            'filter'        => $oSurveyTheme,
-            'id'            => 'themeoptions-grid',
+            'filter'       => $oSurveyTheme,
+            'id'           => 'themeoptions-grid',
+            'htmlOptions'  => ['class' => 'table-responsive grid-view-ls'],
             'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                 "<div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div>",
                 CHtml::dropDownList(
