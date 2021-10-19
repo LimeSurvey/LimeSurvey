@@ -660,6 +660,12 @@ class surveypermission extends Survey_Common_Action
             }
 
             if (isset($postusergroupid) && $postusergroupid > 0) {
+                $event = new PluginEvent('beforeUserGroupPermissionSetSave');
+                $event->set('survey', $surveyid);
+                $event->set('ugid', $postusergroupid);
+                $event->set('permissions', $aPermissions);
+                App()->getPluginManager()->dispatchEvent($event);
+
                 $oResult = UserInGroup::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID', array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
                 if (count($oResult) > 0) {
                     foreach ($oResult as $aRow) {
