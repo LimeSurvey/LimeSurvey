@@ -355,11 +355,18 @@ export default {
 
             this.currentTab = tab;
         },
-        filterAgainstMenus(isSideMenuActive) {
+        /**
+         * Filters against the active menus in sidemenu.
+         * It will return the actual index of it.
+         * @param lodash Lodash
+         * @param isSideMenuActive Activity state of the sidemenu 
+         * @return int
+         */
+        filterAgainstMenus(lodash, isSideMenuActive) {
             let result = 0;
             if (isSideMenuActive) {
                 let sidemenu = self.sidemenus;
-                result = LS.ld.findIndex(sidemenu, function(element) {
+                result = lodash.findIndex(sidemenu, function(element) {
                     return element.name == self.activeSideMenuElement;
                 });
             }
@@ -380,7 +387,7 @@ export default {
         LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition);
 
         // select right menu entry
-        this.activeMenuIndex = this.filterAgainstMenus(this.isSideMenuActive);
+        this.activeMenuIndex = this.filterAgainstMenus(LS.ld, this.isSideMenuActive);
     },
     mounted() {
         const self = this;
