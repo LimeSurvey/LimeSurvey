@@ -660,7 +660,7 @@ class surveypermission extends Survey_Common_Action
             }
 
             if (isset($postusergroupid) && $postusergroupid > 0) {
-                $event = new PluginEvent('beforeUserGroupPermissionSetSave');
+                $event = new PluginEvent('afterUserGroupPermissionSetSave');
                 $event->set('survey', $surveyid);
                 $event->set('ugid', $postusergroupid);
                 $event->set('permissions', $aPermissions);
