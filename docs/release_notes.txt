@@ -34,6 +34,10 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.20 (build 211012) to 3.27.21 (build 211021) October 20, 2021
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 3.27.19 (build 210928) to 3.27.20 (build 211012) October 11, 2021
 -Fixed issue #17527: Validate before using updateAll (#2028) (Gabriel Jenik)
 -Fixed issue #17526: Filter html_entity_decode at save (#2016) (Gabriel Jenik)
