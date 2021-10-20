@@ -59,10 +59,13 @@ class SurveyAdmin extends Survey_Common_Action
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
+            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
+            } else {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
             }
         }
 
@@ -366,7 +369,12 @@ class SurveyAdmin extends Survey_Common_Action
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-            $aResults[$iSurveyID]['result']= $oSurvey->save();
+            if ($oSurvey->save()) {
+                $aResults[$iSurveyID]['result'] = true;
+            } else {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("Survey update failed");
+            }
         }
 
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT("Success")));
@@ -396,6 +404,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (!empty($bReturn)){
                 $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
                 return $aResults;
             }else{
                 die('No permission');
@@ -1999,6 +2008,7 @@ class SurveyAdmin extends Survey_Common_Action
             // We check the permission after retrieving the title because we need it anyway.
             if (!Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')) {
                 $aResults[$survey->primaryKey]['result'] = false;
+                $aResults[$survey->primaryKey]['error'] = gT("User does not have valid permissions");
                 continue;
             }
             $survey->expires = $expires;
@@ -2006,6 +2016,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aResults[$survey->primaryKey]['result'] = true;
             } else {
                 $aResults[$survey->primaryKey]['result'] = false;
+                $aResults[$survey->primaryKey]['error'] = gT("Survey update failed");
             }
         }
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults, 'successLabel'=>gT('OK')));

@@ -30,7 +30,7 @@
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?php eT('Error'); ?>
+                        <?= empty($result['error']) ? gT('Error') : sprintf(gT("Unable to perform function - %s"), $result['error']) ?>
                     </td>
                 <?php endif;?>
             </tr>
