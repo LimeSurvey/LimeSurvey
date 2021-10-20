@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.15 (build 211011) to 5.1.16 (build 211020) October 20, 2021
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.1.14 (build 210927) to 5.1.15 (build 211011) October 11, 2021
 -Fixed issue: Error when sorting by group ID in group list (Carsten Schmitz)
 -Fixed issue #T424: Confusing message on survey import (#2075) (Gabriel Jenik)
