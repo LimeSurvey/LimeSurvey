@@ -51,7 +51,7 @@
                     <div class='form-group'>
                         <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
                         <div class=''>
-                            <input type="text" id="minreminderdelay" class="form-control" size="50" value="" name="minreminderdelay" />
+                            <input type="text" id="minreminderdelay" class="form-control" size="25" value="" name="minreminderdelay" />
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div class='form-group'>
                         <label class='control-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
                         <div class=''>
-                            <input type="text" id="maxremindercount" class="form-control" size="50" value="" name="maxremindercount" />
+                            <input type="text" id="maxremindercount" class="form-control" size="25" value="" name="maxremindercount" />
                         </div>
                     </div>
 
