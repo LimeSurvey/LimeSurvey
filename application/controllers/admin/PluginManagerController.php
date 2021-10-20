@@ -344,10 +344,11 @@ class PluginManagerController extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
-                'save' => array(
-                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
-                    'class' => array('btn btn-success'),
-                    'type'  => 'submit'
+                'cancel' => array(
+                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
+                    'class' => array('btn btn-danger'),
+                    'type'  => 'link',
+                    'href' => $url,
                 ),
                 'redirect' => array(
                     'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
@@ -355,11 +356,10 @@ class PluginManagerController extends Survey_Common_Action
                     'type'  => 'submit',
                     'value' => $url,
                 ),
-                'cancel' => array(
-                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
-                    'class' => array('btn btn-danger'),
-                    'type'  => 'link',
-                    'href' => $url,
+                'save' => array(
+                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
+                    'class' => array('btn btn-success'),
+                    'type'  => 'submit'
                 ),
             );
         }
