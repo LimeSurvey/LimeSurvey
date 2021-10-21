@@ -287,9 +287,9 @@ class Save
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
                 $from     = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 
-                $event = new PluginEvent('beforeResumeEmail');
+                $event = new PluginEvent('beforeSurveyEmail');
                 $event->set('survey', $surveyid);
-                $event->set('type', 'confirm');
+                $event->set('type', 'savesurveydetails');
                 $event->set('model', 'confirm');
                 $event->set('subject', $subject);
                 $event->set('to', $_POST['saveemail']);
