@@ -1442,7 +1442,11 @@ class SurveyRuntimeHelper
 
         //Mandatory question(s) with unanswered answer
         if ($this->aStepInfo['mandViolation'] && $this->okToShowErrors) {
-            $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            if ($this->aStepInfo['mandNonSoft']) {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            } else {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
+            }
         }
 
         // Question(s) with not valid answer(s)
