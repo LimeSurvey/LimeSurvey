@@ -9,7 +9,7 @@
                 <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?php echo $extraClass?>">
                     <li>
                         <a id="breadcrumb__surveylist--link" class="pjax animate home-icon" href="<?php echo App()->createUrl('surveyAdministration/listsurveys'); ?>">
-                            <?php et('List surveys') ?>
+                            <?php et('Surveys') ?>
                         </a>
                     </li>
                     <?php //First create the basis with a surveylink if set?>
