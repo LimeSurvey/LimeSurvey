@@ -4188,10 +4188,10 @@ class statistics_helper
         $q1 = $quartile / 4 * ($recordCount + 1);
         $row = $q1 - 1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
-            return LSActiveRecord::decryptSingle($allRows[$row][$fieldname]);
+            return $allRows[$row][$fieldname];
         } else {
             $diff = ($q1 - (int) $q1);
-            return LSActiveRecord::decryptSingle($allRows[$row][$fieldname]) + $diff * (LSActiveRecord::decryptSingle($allRows[$row + 1][$fieldname]) - LSActiveRecord::decryptSingle($allRows[$row][$fieldname]));
+            return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
         }
     }
 
