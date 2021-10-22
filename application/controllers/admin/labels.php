@@ -51,7 +51,7 @@ class labels extends Survey_Common_Action
         $lid = returnGlobal('lid');
         if (!empty($lid)) {
             if (Yii::app()->getConfig('demoMode')) {
-                            $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             // Create temporary directory
@@ -67,11 +67,11 @@ class labels extends Survey_Common_Action
             $zip = new PclZip($zipfilename);
 
             if (!is_writeable($basedestdir)) {
-                            $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(sprintf(gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             if (!is_dir($destdir)) {
-                            mkdir($destdir);
+                mkdir($destdir);
             }
 
             $aImportedFilesInfo = array();
@@ -79,7 +79,7 @@ class labels extends Survey_Common_Action
 
             if (is_file($zipfilename)) {
                 if ($zip->extract($extractdir) <= 0) {
-                                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                    $this->getController()->error(gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
                 }
 
                 // now read tempdir and copy authorized files only
@@ -97,10 +97,10 @@ class labels extends Survey_Common_Action
                 unlink($zipfilename);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo)) {
-                                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                    $this->getController()->error(gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
                 }
             } else {
-                            $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
+                $this->getController()->error(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), $this->getController()->createUrl("admin/labels/sa/view/lid/{$lid}"));
             }
 
             $aData = array(
@@ -165,7 +165,7 @@ class labels extends Survey_Common_Action
      * @access public
      * @param string  $sa
      * @param integer $lid
-     * @return
+     * @return void
      */
     public function index(string $sa, $lid = 0)
     {
@@ -221,7 +221,6 @@ class labels extends Survey_Common_Action
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
        
-
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
 
@@ -289,7 +288,6 @@ class labels extends Survey_Common_Action
                 'lslanguages' => $lslanguages,
                 'lid' => $lid,
                 'maxsortorder' => $maxSortOrder,
-                //    'msorow' => $maxresult->sortorder,
                 'action' => $action,
                 'model' => $model
             );
@@ -358,8 +356,8 @@ class labels extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Label set successfully saved."), 'success');
         }
         if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
-                    $oLabelSet = insertlabelset();
-                    $lid = $oLabelSet->lid;
+            $oLabelSet = insertlabelset();
+            $lid = $oLabelSet->lid;
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
             modlabelsetanswers($lid);
@@ -382,6 +380,12 @@ class labels extends Survey_Common_Action
         }
     }
 
+    /**
+     * Save new label set
+     * 
+     * @access public
+     * @return void
+     */
     public function saveNewLabelSet()
     {
         $label_name   = Yii::app()->request->getPost('label_name');
@@ -454,6 +458,12 @@ class labels extends Survey_Common_Action
         }
     }
 
+    /**
+     * Get all label sets
+     * 
+     * @access public
+     * @return void
+     */
     public function getAllSets()
     {
         $results = LabelSet::model()->findAll();
@@ -472,6 +482,7 @@ class labels extends Survey_Common_Action
      * Used in question editor
      * Echoes JSON
      *
+     * @access public
      * @return void
      * @todo Permission check
      * @todo Move save logic into service class.
@@ -512,6 +523,7 @@ class labels extends Survey_Common_Action
     }
 
     /**
+     * Ajax Update
      * @return void
      */
     public function ajaxUpdate()
@@ -561,7 +573,7 @@ class labels extends Survey_Common_Action
      * @return void
      * @throws Exception
      */
-    private function saveLabelSetAux($lid, $codes, $answers, $assessmentValues)
+    private function saveLabelSetAux(int $lid, array $codes, array $answers, array $assessmentValues)
     {
         Label::model()->deleteAll('lid = :lid', [':lid' => $lid]);
         $i = 0;
@@ -593,6 +605,7 @@ class labels extends Survey_Common_Action
     }
 
     /**
+     * Get Label Sets for Question
      * @return void
      */
     public function getLabelSetsForQuestion()
@@ -628,6 +641,12 @@ class labels extends Survey_Common_Action
         die();
     }
 
+    /**
+     * New label set from question editor
+     * 
+     * @access public
+     * @return void
+     */
     public function newLabelSetFromQuestionEditor()
     {
         $aLabelSet = Yii::app()->request->getPost('labelSet', []);
@@ -673,7 +692,15 @@ class labels extends Survey_Common_Action
         die();
     }
 
-    private function _getLabelI10NObject($labelId, $language)
+    /**
+     * Get Label I10N Object
+     * 
+     * @access private
+     * @param int    $labelId   Label ID
+     * @param string $language  Language Code
+     * @return LabelL10n
+     */
+    private function _getLabelI10NObject(int $labelId, string $language)
     {
         $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
         if ($oLabelL10n == null) {
@@ -684,19 +711,27 @@ class labels extends Survey_Common_Action
         return $oLabelL10n;
     }
 
-    private function _getLabelObject($labelId)
+    /**
+     * Get Label Object
+     * 
+     * @access private
+     * @param int $labelId Label ID
+     * @return Label
+     */
+    private function _getLabelObject(int $labelId): Label
     {
         $oLabel = Label::model()->findByPk($labelId);
         return $oLabel == null ? (new Label()) : $oLabel;
     }
 
-
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string       $sAction     Current action, the folder to fetch views from
+     * @param string|array $aViewUrls   View url(s)
+     * @param array        $aData       Data to be passed on. Optional.
+     * @parm  bool         $sRenderFile 
+     * @return void
      */
     protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
