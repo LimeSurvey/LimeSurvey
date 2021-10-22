@@ -769,11 +769,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       arr.forEach(function(entry) {
         const lang = entry[0];
         const row = entry[1];
-        if (lang.length !== 2) {
-          alert('Internal error: lang must have exactly two characters, but is ' + lang);
-          throw 'abort';
-        }
-          /*
+        /*
         if (!(row instanceof HTMLElement)) {
           alert('Internal error: row is not an HTMLElement but a ' + (typeof row));
           throw 'abort';
