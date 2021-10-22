@@ -39,7 +39,7 @@
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
             {% endif %}
 
-            <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" id="answer{{myfname}}slid-container">
+            <div class="slider-container slider-{{slider_orientation}} ls-input-group col-xs-12 col-sm-{{sliderWidth}}" id="answer{{myfname}}slid-container">
                     {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item hidden',
                             'id' : "answer" ~ myfname ~ "slid", 
@@ -52,8 +52,10 @@
                         })
                     }}
                 {% if slider_showminmax %}
-                    <div class='pull-left help-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
-                    <div class='pull-right help-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                    <div class="slider-min-max-container">
+                        <div class='help-block slider-min-block'> {{ slider_reversed == 'false' ? slider_min : slider_max}}</div>
+                        <div class='help-block slider-max-block'> {{ slider_reversed == 'false' ? slider_max : slider_min}}</div>
+                    </div>
                 {% endif %}
                 {% if slider_reset %}
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
