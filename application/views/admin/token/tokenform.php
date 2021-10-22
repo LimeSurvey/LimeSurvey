@@ -210,10 +210,11 @@ foreach ($tokendata as $Key => $Value) {
                 <?php eT("Email:"); ?>
             </label>
             <div class="">
-                <?=TbHtml::textField('email', $email, [
+                <?=TbHtml::emailField('email', $email, [
                         'class' => 'form-control',
                         'size' => '50',
                         'maxlength' => '320',
+                        'multiple' => true
                 ]);?>
             </div>
             </div>
