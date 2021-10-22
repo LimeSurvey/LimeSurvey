@@ -2004,7 +2004,8 @@ class statistics_helper
 
         //-------------------------- PCHART OUTPUT ----------------------------
         list(, $qgid, $qqid) = explode("X", $rt, 3);
-        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
+        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
 
         //PCHART has to be enabled and we need some data
         //
@@ -4187,10 +4188,10 @@ class statistics_helper
         $q1 = $quartile / 4 * ($recordCount + 1);
         $row = $q1 - 1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
-            return $allRows[$row][$fieldname];
+            return LSActiveRecord::decryptSingle($allRows[$row][$fieldname]);
         } else {
             $diff = ($q1 - (int) $q1);
-            return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
+            return LSActiveRecord::decryptSingle($allRows[$row][$fieldname]) + $diff * (LSActiveRecord::decryptSingle($allRows[$row + 1][$fieldname]) - LSActiveRecord::decryptSingle($allRows[$row][$fieldname]));
         }
     }
 

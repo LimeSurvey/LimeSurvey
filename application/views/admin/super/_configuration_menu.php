@@ -290,7 +290,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Survey Menu");?>
+                            <?php eT("Survey menus");?>
                         </a>
                     </li>
                 <?php endif;?>

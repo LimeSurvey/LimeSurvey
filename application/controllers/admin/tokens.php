@@ -1608,15 +1608,9 @@ class tokens extends Survey_Common_Action
                 ),
             );
 
-            // Save Button
-            $aData['showSaveButton'] = true;
-
-            // Save and Close Button
-            $aData['showSaveAndCloseButton'] = true;
-
             // White Close Button
             $aData['showWhiteCloseButton'] = true;
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
             
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -2211,7 +2205,7 @@ class tokens extends Survey_Common_Action
         $aData['thischaracterset'] = $thischaracterset;
 
         $aData['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
