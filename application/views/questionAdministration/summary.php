@@ -173,6 +173,25 @@
             </tr>
         <?php endif; ?>
 
+
+        <!-- Encrypted -->
+        <?php if (isset($question->encrypted)):?>
+            <tr>
+                <td>
+                    <strong>
+                        <?php eT("Encrypted:"); ?>
+                    </strong>
+                </td>
+                <td>
+                    <?php if ($question->encrypted == "Y") : ?>
+                        <?php eT("Yes"); ?>
+                    <?php else:?>
+                        <?php eT("No"); ?>
+                    <?php endif;  ?>
+                </td>
+            </tr>
+        <?php endif; ?>
+
         <!-- Condition for this question -->
         <?php if (trim($question->relevance) != ''): ?>
             <tr>
