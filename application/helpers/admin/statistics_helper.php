@@ -2004,8 +2004,7 @@ class statistics_helper
 
         //-------------------------- PCHART OUTPUT ----------------------------
         list(, $qgid, $qqid) = explode("X", $rt, 3);
-        $attrQid = $outputs['parentqid'] > 0 ? $outputs['parentqid'] : $qqid; // use parentqid if exists
-        $aattr = QuestionAttribute::model()->getQuestionAttributes($attrQid);
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         //
