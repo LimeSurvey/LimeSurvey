@@ -34,6 +34,12 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.21 (build 211021) to 3.27.22 (build 211026) October 25, 2021
+-Fixed issue #17610: Token does not get marked as used if invalid email address exists (#2083) (Gabriel Jenik)
+-Fixed issue #17548: If a slider is displayed vertically the position of max value is wrong (#2082) (Gabriel Jenik)
+-Fixed issue #14786: application warning : Failed to set unsafe attribute "settings" of "Tutorial". (#2092) (Gabriel Jenik)
+
+
 Changes from 3.27.20 (build 211012) to 3.27.21 (build 211021) October 20, 2021
 #Updated translation: Catalan by qualitatuvic
 
