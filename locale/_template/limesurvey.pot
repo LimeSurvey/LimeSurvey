@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-10-11 11:57:30+00:00\n"
+"POT-Creation-Date: 2021-10-25 08:46:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3225,7 +3225,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
 #: application/helpers/SurveyRuntimeHelper.php:1327
-#: application/helpers/frontend_helper.php:2215
+#: application/helpers/frontend_helper.php:2217
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -9738,73 +9738,73 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:700
+#: application/helpers/frontend_helper.php:702
 msgid "Did Not Save"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:702
+#: application/helpers/frontend_helper.php:704
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:706
+#: application/helpers/frontend_helper.php:708
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:711
+#: application/helpers/frontend_helper.php:713
 msgid "An error occurred saving a response to survey id"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:712
+#: application/helpers/frontend_helper.php:714
 msgid "DATA TO BE ENTERED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:720
+#: application/helpers/frontend_helper.php:722
 msgid "SQL CODE THAT FAILED"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:723
+#: application/helpers/frontend_helper.php:725
 msgid "ERROR MESSAGE"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:726
+#: application/helpers/frontend_helper.php:728
 msgid "Error saving results"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:728
+#: application/helpers/frontend_helper.php:730
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1240
+#: application/helpers/frontend_helper.php:1242
 msgid "You have exceeded the number of maximum token validation attempts. Please wait %d minutes before trying again."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1253
+#: application/helpers/frontend_helper.php:1255
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1412
-#: application/helpers/frontend_helper.php:1437
+#: application/helpers/frontend_helper.php:1414
+#: application/helpers/frontend_helper.php:1439
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1416
+#: application/helpers/frontend_helper.php:1418
 #: tmp/runtime/twig_cache/b1/b109e969d1cb41841db97c84f4166ca9cd12b44e40f83b85bce239e297263eb0.php:128
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1420
+#: application/helpers/frontend_helper.php:1422
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2214
+#: application/helpers/frontend_helper.php:2216
 msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2216
+#: application/helpers/frontend_helper.php:2218
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2217
+#: application/helpers/frontend_helper.php:2219
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
