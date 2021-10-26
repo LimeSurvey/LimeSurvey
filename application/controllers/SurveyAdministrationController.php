@@ -659,6 +659,8 @@ class SurveyAdministrationController extends LSBaseController
                 'surveyid' => $iSurveyID
             );
             $aData['display']['menu_bars']['surveysummary'] = true;
+            $survey = Survey::model()->findByPk($iSurveyID);
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
 
             $this->aData = $aData;
             $this->render('importSurveyResources_view', $this->aData);
@@ -1535,11 +1537,11 @@ class SurveyAdministrationController extends LSBaseController
             $aData['nostep'] = true;
             $this->aData = $aData;
         } else {
+            if (!tableExists('survey_' . $iSurveyID)) {
+                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
+            }
             if (Yii::app()->request->getPost('ok') == '') {
-                if (!tableExists('survey_' . $iSurveyID)) {
-                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-                }
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
@@ -2195,6 +2197,12 @@ class SurveyAdministrationController extends LSBaseController
                     Permission::model()->copySurveyPermissions($iSurveyID, $aImportResults['newsid']);
                 }
             } else {
+                $aData['bFailed'] = true;
+            }
+
+            // If the import failed, set the status and error message in order to keep consistency with other errors
+            if (!empty($aImportResults['error'])) {
+                $aData['sErrorMessage'] = $aImportResults['error'];
                 $aData['bFailed'] = true;
             }
 

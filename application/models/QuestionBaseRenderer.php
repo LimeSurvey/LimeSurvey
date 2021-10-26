@@ -103,8 +103,6 @@ abstract class QuestionBaseRenderer extends StaticModel
         //~ }
 
         //Render timer
-        $timer_html = Yii::app()->twigRenderer->renderQuestion('/survey/questions/question_timer/timer', array('iQid' => $oQuestion->qid, 'sWarnId' => ''), true);
-
         $time_limit = $oQuestion->questionattributes['time_limit']['value'];
         $disable_next = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_next']['value'], 0);
         $disable_prev = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_disable_prev']['value'], 0);
@@ -114,20 +112,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_warning_2 = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2']['value'], 0);
         $time_limit_countdown_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_countdown_message']['value'], gT("Time remaining"));
         $time_limit_warning_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
-        $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
         $time_limit_warning_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_display_time']['value'], 0);
         $time_limit_warning_2_message = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_message']['value'], gT("Your time to answer this question has nearly expired. You have {TIME} remaining."));
 
-
-        //Render timer 2
-        $timer_html = Yii::app()->twigRenderer->renderQuestion(
-            '/survey/questions/question_timer/timer',
-            array('iQid' => $oQuestion->qid, 'sWarnId' => '_Warning_2'),
-            true
-        );
-
         $time_limit_message_delay = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_delay']['value'], 1000);
-        $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
         $time_limit_warning_2_display_time = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_warning_2_display_time']['value'], 0);
         $time_limit_message_style = $this->setDefaultIfEmpty($oQuestion->questionattributes['time_limit_message_style']['value'], '');
         $time_limit_message_class = "hidden ls-timer-content ls-timer-message ls-no-js-hidden";
@@ -143,6 +131,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         $time_limit_countdown_message = htmlspecialchars($time_limit_countdown_message, ENT_QUOTES);
         $time_limit_warning_message = htmlspecialchars($time_limit_warning_message, ENT_QUOTES);
         $time_limit_warning_2_message = htmlspecialchars($time_limit_warning_2_message, ENT_QUOTES);
+
+        // The {TIME} placeholder is replaced by the HTML that will contain the actual time.
+        // This is done after applying 'htmlspecialchars' to avoid encoding the HTML part.
+        $timer_html = Yii::app()->twigRenderer->renderQuestion(
+            '/survey/questions/question_timer/timer',
+            ['iQid' => $oQuestion->qid, 'sWarnId' => ''],
+            true
+        );
+        $time_limit_warning_message = str_replace("{TIME}", $timer_html, $time_limit_warning_message);
+        $timer_html = Yii::app()->twigRenderer->renderQuestion(
+            '/survey/questions/question_timer/timer',
+            ['iQid' => $oQuestion->qid, 'sWarnId' => '_2'],
+            true
+        );
+        $time_limit_warning_2_message = str_replace("{TIME}", $timer_html, $time_limit_warning_2_message);
 
         $timersessionname = "timer_question_" . $oQuestion->qid;
         if (isset($_SESSION['survey_' . Yii::app()->getConfig('surveyID')][$timersessionname])) {
