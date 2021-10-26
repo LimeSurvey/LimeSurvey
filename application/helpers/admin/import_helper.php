@@ -1905,11 +1905,16 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $iIdKey = array_search('id', $aCsvHeader); // the id is allways needed and used a lot
     if (is_int($iIdKey)) {
         unset($aKeyForFieldNames['id']);
+        /* Unset it if option is ignore */
+        if($aOptions['sExistingId'] == 'ignore') {
+            $iIdKey = false;
+        }
     }
     $iSubmitdateKey = array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
     if (is_int($iSubmitdateKey)) {
         unset($aKeyForFieldNames['submitdate']);
     }
+
     $iIdReponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for reponses id: id column or first column if not exist
 
     // Import each responses line here
@@ -1936,7 +1941,6 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         $oSurvey = new SurveyDynamic;
                         break;
                     case 'skip':
-                    case 'ignore':
                     default:
                         $oSurvey = false; // Remove existing survey : don't import again
                         break;
