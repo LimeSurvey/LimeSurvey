@@ -299,11 +299,11 @@ class Save
                 App()->getPluginManager()->dispatchEvent($event);
                 $subject = $event->get('subject');
                 $message = $event->get('body');
-                $sRecipient = $event->get('to');
+                $to = $event->get('to');
                 $bounce = $event->get('bounce');
                 $from = $event->get('from');
                 if ($event->get('send', true) != false) {
-                    if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, $bounce)) {
+                    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, $bounce)) {
                         $emailsent = "Y";
                     } else {
                         $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
