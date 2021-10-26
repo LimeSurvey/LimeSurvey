@@ -46,7 +46,7 @@
                         <br />
                         <?php if(!tableExists('tokens_'.$iSurveyID)):?>
                             <!-- Open Access Mode -->
-                            <?php eT("By default, surveys are activated in open-access mode. Participants do not need an invitation (open-access mode)"); ?>
+                            <?php eT("By default, surveys are activated in open-access mode. Participants do not need an invitation (access code)"); ?>
                             <?php eT(" to complete the survey. You can share your survey via URL, QR code or social media. Navigate to Settings --> Overview --> Share your survey."); ?>
                             <br />
                             <br />
