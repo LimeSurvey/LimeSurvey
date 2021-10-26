@@ -1936,13 +1936,13 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         break;
                     case 'replaceanswers':
                         break;
+                    case 'skip':
+                        $oSurvey = false; // Remove existing survey : don't import again
+                        break;
                     case 'renumber':
+                    default: // Must not happen, keep it in case
                         SurveyDynamic::sid($iSurveyId);
                         $oSurvey = new SurveyDynamic;
-                        break;
-                    case 'skip':
-                    default:
-                        $oSurvey = false; // Remove existing survey : don't import again
                         break;
                 }
             } else {
