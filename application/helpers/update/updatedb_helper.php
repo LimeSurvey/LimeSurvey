@@ -5243,8 +5243,8 @@ function decryptArchivedTables450($oDB)
 
         // recrypt tokens
         if ($archivedTableSettings['tbl_type'] === 'token') {
-            // skip if the encryption status is unknown
-            if (!empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+            // skip if the encryption status is unknown, use reset because of mixed array types
+            if (!empty($archivedTableSettingsProperties) && reset($archivedTableSettingsProperties) !== 'unknown') {
                 $tokenencryptionoptions = $archivedTableSettingsProperties;
 
                 // default attributes
@@ -5252,8 +5252,8 @@ function decryptArchivedTables450($oDB)
                     $columnEncryptions[$column]['encrypted'] = $encrypted;
                 }
             }
-            // skip if the encryption status is unknown
-            if (!empty($archivedTableSettingsAttributes) && $archivedTableSettingsAttributes[0] !== 'unknown') {
+            // skip if the encryption status is unknown, use reset because of mixed array types
+            if (!empty($archivedTableSettingsAttributes) && reset($archivedTableSettingsAttributes) !== 'unknown') {
                 // find custom attribute column names
                 $table = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
                 if (!$table) {
@@ -5292,8 +5292,8 @@ function decryptArchivedTables450($oDB)
             }
         }
 
-        // recrypt responses // skip if the encryption status is unknown
-        if ($archivedTableSettings['tbl_type'] === 'response' && !empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+        // recrypt responses // skip if the encryption status is unknown, use reset because of mixed array types
+        if ($archivedTableSettings['tbl_type'] === 'response' && !empty($archivedTableSettingsProperties) && reset($archivedTableSettingsProperties) !== 'unknown') {
             $responsesCount = $oDB->createCommand()
                 ->select('count(*)')
                 ->from("{{{$archivedTableSettings['tbl_name']}}}")

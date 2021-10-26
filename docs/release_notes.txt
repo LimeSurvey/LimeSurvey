@@ -34,6 +34,18 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.16 (build 211020) to 5.1.17 (build 211025) October 25, 2021
+-Fixed issue: Simple statistics breaking if survey contains a free text question (Carsten Schmitz)
+-Fixed issue: SQL error when trying to deactivate an already deactivated survey (Carsten Schmitz)
+-Fixed issue: Quartiles cannot be calculated if question is encrypted (Carsten Schmitz)
+-Fixed issue: Missing information in question summary if question is encrypted (Carsten Schmitz)
+-Fixed issue #17641: Close button on the 'Survey participant export options' does not work (#2088) (Gabriel Jenik)
+-Fixed issue #17635: In a "de-informal" survey loading a label set as answers into a "List"-type question results in error (Carsten Schmitz)
+-Fixed issue #17622: Cant export "Not completed" survey participant when "Anonymized responses" is set "No" (#2080) (Olle Härstedt)
+-Fixed issue #17593: Generated answer code is too long (#2059) (Gabriel Jenik)
+-Fixed issue #17548: If a slider is displayed vertically the position of max value is wrong (#2081) (Gabriel Jenik)
+
+
 Changes from 5.1.15 (build 211011) to 5.1.16 (build 211020) October 20, 2021
 #Updated translation: Portuguese (Portugal) by samarta
 #Updated translation: Finnish by Jmantysalo
