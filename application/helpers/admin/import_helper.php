@@ -34,12 +34,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $aQuestionCodeReplacements = [];
     $results['defaultvalues'] = 0;
     $results['answers'] = 0;
     $results['question_attributes'] = 0;
     $results['subquestions'] = 0;
     $results['conditions'] = 0;
     $results['groups'] = 0;
+    $results['importwarnings'] = [];
 
     if ($iDBVersion>=400) {
         $results['fatalerror'] = gT("The file is not compatible with this LimeSurvey version.");
@@ -142,13 +144,58 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 switchMSSQLIdentityInsert('questions', true);
             }
 
-            Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+            $oQuestion = new Question('import');
+            $oQuestion->setAttributes($insertdata, false);
+
+            // Try to fix question title for valid question code enforcement
+            if (!$oQuestion->validate(['title'])) {
+                $sOldTitle = $oQuestion->title;
+                $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric(substr($sNewTitle, 0, 1))) {
+                    $sNewTitle = 'q'.$sNewTitle;
+                }
+
+                $oQuestion->title = $sNewTitle;
+            }
+
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
+            $index = 0;
+            $rand = mt_rand(0, 1024);
+            while (!$oQuestion->validate(['title'])) {
+                $sNewTitle = 'r'.$rand.'q'.$index;
+                $index++;
+                $oQuestion->title = $sNewTitle;
+                $attempts++;
+                if ($attempts > 10) {
+                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+
+            if (!$oQuestion->save()) {
+                // safeDie(gT("Error while saving: "). print_r($oQuestion->errors, true));
+                //
+                // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                // and continue with the next one
+                continue;
+            }
+
+            // Set a warning if question title was updated
+            if (isset($sNewTitle) && isset($sOldTitle)) {
+                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."), $sOldTitle, $sNewTitle);
+                $aQuestionCodeReplacements[$sOldTitle] = $sNewTitle;
+                unset($sNewTitle);
+                unset($sOldTitle);
+            }
+
             if (isset($insertdata['qid'])) {
                 switchMSSQLIdentityInsert('questions', false);
             }
+
+            $newqid = $oQuestion->qid;
             if (!isset($aQIDReplacements[$oldqid])) {
-                $newqid = getLastInsertID('{{questions}}');
-                $aQIDReplacements[$oldqid] = $newqid; // add old and new qid to the mapping array
+                $aQIDReplacements[$oldqid] = $newqid;
                 $results['questions']++;
             }
         }
@@ -186,14 +233,56 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 switchMSSQLIdentityInsert('questions', true);
             }
 
-            Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
-            $newsqid = getLastInsertID('{{questions}}');
-            if (isset($insertdata['qid'])) {
-                switchMSSQLIdentityInsert('questions', false);
+            $oQuestion = new Question('import');
+            $oQuestion->setAttributes($insertdata, false);
+
+            // Try to fix question title for valid question code enforcement
+            if (!$oQuestion->validate(['title'])) {
+                $sOldTitle = $oQuestion->title;
+                $sNewTitle = preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+                if (is_numeric(substr($sNewTitle, 0, 1))) {
+                    $sNewTitle = 'sq'.$sNewTitle;
+                }
+
+                $oQuestion->title = $sNewTitle;
             }
 
+            $attempts = 0;
+            // Try to fix question title for unique question code enforcement
+            $index = 0;
+            $rand = mt_rand(0, 1024);
+            while (!$oQuestion->validate(['title'])) {
+                $sNewTitle = 'r'.$rand.'sq'.$index;
+                $index++;
+                $oQuestion->title = $sNewTitle;
+                $attempts++;
+                if ($attempts > 10) {
+                    safeDie(gT("Error").": Failed to resolve question code problems after 10 attempts.<br />");
+                }
+            }
+
+            if (!$oQuestion->save()) {
+                // safeDie(gT("Error while saving: "). print_r($oQuestion->errors, true));
+                //
+                // In PHP 5.2.10 a bug is triggered that resets the foreach loop when inserting a record
+                // For this reason we ignore insertion errors (because it is most likely a duplicate)
+                // and continue with the next one
+                continue;
+            }
+
+            // Set a warning if question title was updated
+            if (isset($sNewTitle) && isset($sOldTitle)) {
+                $results['importwarnings'][] = sprintf(gT("Title of subquestion %s was updated to %s."), $sOldTitle, $sNewTitle); // Maybe add the question title ?
+                $aQuestionCodeReplacements[$sOldTitle] = $sNewTitle;
+                unset($sNewTitle);
+                unset($sOldTitle);
+            }
+
+            $newsqid = $oQuestion->qid;
             if (!isset($insertdata['qid'])) {
                 $aQIDReplacements[$oldsqid] = $newsqid; // add old and new qid to the mapping array
+            } else {
+                switchMSSQLIdentityInsert('questions', false);
             }
 
             $results['subquestions']++;
@@ -328,6 +417,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $results['conditions']++;
         }
     }
+
+    replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
 
