@@ -566,7 +566,7 @@ class labels extends Survey_Common_Action
     /**
      * Helper function to save label set from question editor.
      *
-     * @param int $lid Label set id
+     * @param int   $lid               Label set id
      * @param array $codes
      * @param array $answers
      * @param array $assessmentValues

@@ -33,3 +33,22 @@
     </div>
 </div>
 
+<script type='text/javascript'>
+    /** If one or more elements are selected, then the export button will be enabled.
+     *  otherwise its disabled by default. */
+    let isSelected    = false;
+    let exportButton  = document.getElementById('exportButton');
+
+    $('select').change(function() {
+        $('#labelsets option:selected').each(function() {
+            isSelected = true;
+            return isSelected;
+        });
+
+        if (isSelected) {
+            exportButton.removeAttribute('disabled');
+        } else {
+            exportButton.setAttribute('disabled', true);
+        }
+    }).trigger('change');
+</script>
