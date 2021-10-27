@@ -1746,12 +1746,13 @@ class SurveyAdministrationController extends LSBaseController
                 $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $iSurveyID)) . "'";
 
                 $activationData = array(
-                    'iSurveyID' => $iSurveyID,
-                    'warning' => $warning,
-                    'allowregister' => $allowregister,
-                    'onclickAction' => $onclickAction,
+                    'iSurveyID'           => $iSurveyID,
+                    'survey'              => $survey,
+                    'warning'             => $warning,
+                    'allowregister'       => $allowregister,
+                    'onclickAction'       => $onclickAction,
                     'closedOnclickAction' => $closedOnclickAction,
-                    'noOnclickAction' => $noOnclickAction,
+                    'noOnclickAction'     => $noOnclickAction,
                 );
                 $this->aData = $aData;
                 $this->render('_activation_feedback', $activationData);
