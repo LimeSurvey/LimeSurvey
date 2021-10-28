@@ -917,8 +917,6 @@ class User extends LSActiveRecord
             }
         }
 
-        //filter for parentUserName
-        // This doesn't really work : filter stay empty
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
              $getParentName = $getUser['parentUserName'];
