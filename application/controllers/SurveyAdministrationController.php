@@ -241,10 +241,13 @@ class SurveyAdministrationController extends LSBaseController
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
+            } else {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
             }
         }
         $this->renderPartial(
@@ -270,11 +273,9 @@ class SurveyAdministrationController extends LSBaseController
             if (!is_numeric($iSurveyID)) {
                 continue;
             }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-                $aResults[$iSurveyID]['result'] = 'selected';
-            }
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result'] = 'selected';
         }
 
         $this->renderPartial(
@@ -779,7 +780,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionChangeMultipleTheme()
     {
         //only superadmin can do this
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -809,7 +810,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -824,7 +825,17 @@ class SurveyAdministrationController extends LSBaseController
             $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
             $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-            $aResults[$iSurveyID]['result'] = $oSurvey->save();
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
+            } else {
+                if ($oSurvey->save()) {
+                    $aResults[$iSurveyID]['result'] = true;
+                } else {
+                    $aResults[$iSurveyID]['result'] = false;
+                    $aResults[$iSurveyID]['error'] = gT("Survey update failed");
+                }
+            }
         }
 
         Yii::app()->getController()->renderPartial(
@@ -2327,7 +2338,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionExpireMultipleSurveys()
     {
         //permission check: only superadmin is allowed to do this
-        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -2350,10 +2361,16 @@ class SurveyAdministrationController extends LSBaseController
             $survey = Survey::model()->findByPk($sid);
             $survey->expires = $expires;
             $aResults[$survey->primaryKey]['title'] = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title, 30);
-            if ($survey->save()) {
-                $aResults[$survey->primaryKey]['result'] = true;
-            } else {
+            if (!Permission::model()->hasGlobalPermission('superadmin')) {
                 $aResults[$survey->primaryKey]['result'] = false;
+                $aResults[$survey->primaryKey]['error'] = gT("User does not have valid permissions");
+            } else {
+                if ($survey->save()) {
+                    $aResults[$survey->primaryKey]['result'] = true;
+                } else {
+                    $aResults[$survey->primaryKey]['result'] = false;
+                    $aResults[$survey->primaryKey]['error'] = gT("Survey update failed");
+                }
             }
         }
         $this->renderPartial(
@@ -2618,6 +2635,7 @@ class SurveyAdministrationController extends LSBaseController
             if (!empty($bReturn)) {
                 $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
                 return $aResults;
             } else {
                 die('No permission');
