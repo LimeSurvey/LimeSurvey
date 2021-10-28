@@ -5887,7 +5887,8 @@ function upgradeArchivedTableSettings446()
     $DBPrefix = Yii::app()->db->tablePrefix;
     $datestamp = time();
     $DBDate = date('Y-m-d H:i:s', $datestamp);
-    $userID = Yii::app()->user->getId();
+    // TODO: Inject user model instead. Polling for user will create a session, which breaks on command-line.
+    $userID = php_sapi_name() === 'cli' ? null : Yii::app()->user->getId();
     $forcedSuperadmin = Yii::app()->getConfig('forcedsuperadmin');
     $adminUserId = 1;
 
