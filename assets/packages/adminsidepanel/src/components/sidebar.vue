@@ -358,7 +358,7 @@ export default {
         /**
          * Filters against the active menus in sidemenu.
          * It will return the actual index of it.
-         * @param isSideMenuActive Activity state of the sidemenu 
+         * @param {bool} isSideMenuActive Activity state of the sidemenu 
          * @return int
          */
         filterAgainstMenus(isSideMenuActive) {
