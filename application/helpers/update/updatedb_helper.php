@@ -1467,7 +1467,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             );
 
             foreach ($aUsers as $oUser) {
-
                 $permissionExists = $oDB->createCommand()->select('id')->from("{{permissions}}")->where(
                     "(permission='authdb' OR permission='superadmin') and read_p=1 and entity='global' and uid=:uid",
                     [':uid' => $oUser->uid]
