@@ -1467,13 +1467,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             );
 
             foreach ($aUsers as $oUser) {
-                if (!Permission::model()->hasGlobalPermission('auth_db', 'read', $oUser->uid)) {
-                    $oPermission = new Permission();
-                    foreach ($aPerm as $k => $v) {
-                        $oPermission->$k = $v;
-                    }
-                    $oPermission->uid = $oUser->uid;
-                    $oPermission->save();
+
+                $permissionExists = $oDB->createCommand()->select('id')->from("{{permissions}}")->where(
+                    "(permission='authdb' OR permission='superadmin') and read_p=1 and entity='global' and uid=:uid",
+                    [':uid' => $oUser->uid]
+                )->queryScalar();
+                if ($permissionExists == false) {
+                    $newPermission = $aPerm;
+                    $newPermission['uid'] = $oUser->uid;
+                    $oDB->createCommand()->insert("{{permissions}}", $newPermission);
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 180), "stg_name='DBVersion'");
