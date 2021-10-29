@@ -3543,7 +3543,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         '{{surveys}}',
                         [
                             'bounceaccountpass' => LSActiveRecord::encryptSingle(
-                                $aSurvey->bounceaccountpass
+                                $aSurvey['bounceaccountpass']
                             )
                         ],
                         "sid=" . $aSurvey['sid']
