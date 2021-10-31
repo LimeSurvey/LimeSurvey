@@ -192,7 +192,6 @@ class UserAction extends Survey_Common_Action
             $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
 
             $postuserid = $this->_getPostOrParam("uid");
-            $postuser = flattenText($this->_getPostOrParam("user"));
 
             if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
 // it's the original superadmin !!!
@@ -239,7 +238,6 @@ class UserAction extends Survey_Common_Action
                     $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
                 } else {
                     $aData['postuserid'] = $postuserid;
-                    $aData['postuser'] = $postuser;
                     $aData['current_user'] = $current_user;
 
                     $aViewUrls['deluser'][] = $aData;
@@ -273,7 +271,6 @@ class UserAction extends Survey_Common_Action
         if (!$postuserid) {
             $postuserid = (int) Yii::app()->request->getParam("uid");
         }
-        $postuser = flattenText(Yii::app()->request->getPost("user"));
         // Never delete initial admin (with findByAttributes : found the first user without parent)
         $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
         if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
@@ -305,7 +302,7 @@ class UserAction extends Survey_Common_Action
             die();
         }
 
-        $extra = "<br />".sprintf(gT("User '%s' was successfully deleted."), $postuser)."<br /><br />\n";
+        $extra = "<br />".sprintf(gT("User '%s' was successfully deleted."), flattenText($fields['full_name']))."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred > 0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;

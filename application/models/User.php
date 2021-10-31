@@ -372,7 +372,6 @@ class User extends LSActiveRecord
                 data-onclick='$.post(".$deleteUrl.",{
                   action: \"deluser\",
                   uid:\"".$this->uid."\",
-                  user: \"".htmlspecialchars($this->full_name)."\",
                   });'
                 data-target='#confirmation-modal'
                 data-uid='".$this->uid."'
@@ -422,7 +421,6 @@ class User extends LSActiveRecord
                         data-target='#confirmation-modal'
                         data-url='".$deleteUrl."'
                         data-uid='".$this->uid."'
-                        data-user='".htmlspecialchars($this->full_name)."'
                         data-action='deluser'
                         data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))'
                         data-message='".gT("Do you want to delete this user?")."'
