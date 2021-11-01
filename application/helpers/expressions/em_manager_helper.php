@@ -5752,6 +5752,7 @@ class LimeExpressionManager
             'valid'         => $gvalid,
             'mandViolation' => $gmandViolation,
             'mandSoft'      => $gmandSoft,
+            'mandNonSoft'   => $gmandNonSoft,
             'show'          => (($grel && !$ghidden) ? true : false),
         ];
 
