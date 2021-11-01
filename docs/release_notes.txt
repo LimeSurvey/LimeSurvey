@@ -34,6 +34,13 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.22 (build 211026) to 3.27.23 (build 211102) November 1, 2021
+-Fixed issue #17666: Previewing a survey leads to DB error messages from log system (#2117) (Denis Chenu)
+#Updated translation: German by c_schmitz, holch
+#Updated translation: German (Informal) by c_schmitz, holch, Thomas_T
+#Updated translation: German (Easy) by c_schmitz, holch
+
+
 Changes from 3.27.21 (build 211021) to 3.27.22 (build 211026) October 25, 2021
 -Fixed issue #17610: Token does not get marked as used if invalid email address exists (#2083) (Gabriel Jenik)
 -Fixed issue #17548: If a slider is displayed vertically the position of max value is wrong (#2082) (Gabriel Jenik)
