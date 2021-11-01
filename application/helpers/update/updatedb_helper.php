@@ -1673,6 +1673,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oSchema = Yii::app()->db->schema;
             foreach ($aTables as $sTableName) {
                 $oTableSchema = $oSchema->getTable($sTableName);
+                removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
                 // Only update the table if it really is a survey response table - there are other tables that start the same
                 if (!in_array('lastpage', $oTableSchema->columnNames)) {
                     continue;
@@ -5989,6 +5990,7 @@ function upgradeSurveyTables402($sMySQLCollation)
         $aTables = dbGetTablesLike("survey\_%");
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
             }
@@ -6001,17 +6003,6 @@ function upgradeSurveyTables402($sMySQLCollation)
                     alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                     break;
                 case 'mysql':
-                    // Loop all datetime columns and remove zero dates.
-                    foreach ($oTableSchema->columns as $columnName => $info) {
-                        if ($info->dbType === 'datetime') {
-                            try {
-                                $oDB->createCommand()->update($sTableName, [$columnName => null], "$columnName = 0");
-                            } catch (Exception $e) {
-                                // $columnName might not be allowed to be null, then try with 1970-01-01 0 Unix date instead.
-                                $oDB->createCommand()->update($sTableName, [$columnName => '1970-01-01 00:00:00'], "$columnName = 0");
-                            }
-                        }
-                    }
                     alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                     break;
                 default:
@@ -6810,6 +6801,7 @@ function upgradeSurveyTables253()
     $aTables = dbGetTablesLike("survey\_%");
     foreach ($aTables as $sTable) {
         $oTableSchema = $oSchema->getTable($sTable);
+        removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
         if (in_array('refurl', $oTableSchema->columnNames)) {
             alterColumn($sTable, 'refurl', "text");
         }
@@ -6951,6 +6943,7 @@ function upgradeSurveyTables183()
     if (!empty($aTables)) {
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (empty($oTableSchema->primaryKey)) {
                 addPrimaryKey(substr($sTableName, strlen(Yii::app()->getDb()->tablePrefix)), 'id');
             }
@@ -6969,6 +6962,7 @@ function upgradeSurveyTables181($sMySQLCollation)
         $aTables = dbGetTablesLike("survey\_%");
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
             }
@@ -7651,7 +7645,11 @@ function upgradeQuestionAttributes142()
 function upgradeSurveyTables139()
 {
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     foreach ($aTables as $sTable) {
+        $oSchema = Yii::app()->db->schema;
+        $oTableSchema = $oSchema->getTable($sTableName);
+        removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
         addColumn($sTable, 'lastpage', 'integer');
     }
 }
@@ -8129,6 +8127,34 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
                     $label['id']
                 )
             )->execute();
+        }
+    }
+}
+
+/**
+ * Remove all zero-dates in $tableName by checking datetime columns from $tableSchema
+ * Zero-dates are replaced with null where possible; otherwise 1970-01-01
+ *
+ * @param string $tableName
+ * @param CDbSchema $tableSchema
+ * @param CDbConnection $oDB
+ * @return void
+ */
+function removeMysqlZeroDate($tableName, CDbSchema $tableSchema, CDbConnection $oDB)
+{
+    // Do nothing if we're not using MySQL
+    if (Yii::app()->db->driverName !== 'mysql') {
+        return;
+    }
+
+    foreach ($tableSchema->columns as $columnName => $info) {
+        if ($info->dbType === 'datetime') {
+            try {
+                $oDB->createCommand()->update($tableName, [$columnName => null], "$columnName = 0");
+            } catch (Exception $e) {
+                // $columnName might not be allowed to be null, then try with 1970-01-01 Unix 0 date instead.
+                $oDB->createCommand()->update($tableName, [$columnName => '1970-01-01 00:00:00'], "$columnName = 0");
+            }
         }
     }
 }
