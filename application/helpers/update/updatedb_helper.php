@@ -6799,9 +6799,10 @@ function upgradeSurveyTables253()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     foreach ($aTables as $sTable) {
         $oTableSchema = $oSchema->getTable($sTable);
-        removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
+        removeMysqlZeroDate($sTable, $oTableSchema, $oDB);
         if (in_array('refurl', $oTableSchema->columnNames)) {
             alterColumn($sTable, 'refurl', "text");
         }
@@ -6940,6 +6941,7 @@ function upgradeSurveyTables183()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     if (!empty($aTables)) {
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
@@ -7648,8 +7650,8 @@ function upgradeSurveyTables139()
     $oDB = Yii::app()->db;
     foreach ($aTables as $sTable) {
         $oSchema = Yii::app()->db->schema;
-        $oTableSchema = $oSchema->getTable($sTableName);
-        removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
+        $oTableSchema = $oSchema->getTable($sTable);
+        removeMysqlZeroDate($sTable, $oTableSchema, $oDB);
         addColumn($sTable, 'lastpage', 'integer');
     }
 }
@@ -8136,11 +8138,11 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
  * Zero-dates are replaced with null where possible; otherwise 1970-01-01
  *
  * @param string $tableName
- * @param CDbSchema $tableSchema
+ * @param CDbTableSchema $tableSchema
  * @param CDbConnection $oDB
  * @return void
  */
-function removeMysqlZeroDate($tableName, CDbSchema $tableSchema, CDbConnection $oDB)
+function removeMysqlZeroDate($tableName, CDbTableSchema $tableSchema, CDbConnection $oDB)
 {
     // Do nothing if we're not using MySQL
     if (Yii::app()->db->driverName !== 'mysql') {
