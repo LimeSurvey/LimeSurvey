@@ -4331,3 +4331,9 @@ table.dataTable thead .sorting_desc:after {
 .answeroptions-table > tbody > tr > td:last-of-type {
     padding-right: 0;
 }
+
+/* Fix text alignment on RTL */
+html[dir="rtl"] .dropdown-menu,
+html[dir="rtl"] th {
+    text-align: initial;
+}
