@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.17 (build 211025) to 5.1.18 (build 211101) November 1, 2021
+-Fixed issue: Update 446 should not create a session when called from command-line (Olle Haerstedt)
+-Fixed issue: Db update fails with old survey_x table (#2120) (Olle Härstedt)
+-Fixed issue: Cannot update to LimeSurvey5 from older LimeSurvey versions than 3 due to error in dbupdate 180 (Carsten Schmitz)
+-Fixed issue: Cannot search for parent admin in user list (Carsten Schmitz)
+-Fixed issue: Cannot browse response details in statistics (#2110) (Tim Willig)
+-Fixed issue #17666: Previewing a survey leads to DB error messages from log system (#2118) (Denis Chenu)
+-Fixed issue #17572: When adding a new participant the buttons are not properly working (#2104) (Gabriel Jenik)
+-Fixed issue #17568: database update 450 fails (Patrick Teichmann)
+-Fixed issue #16480: Empty logo causes under specific circumstances loops on the welcome page (#2058) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.1.16 (build 211020) to 5.1.17 (build 211025) October 25, 2021
 -Fixed issue: Simple statistics breaking if survey contains a free text question (Carsten Schmitz)
 -Fixed issue: SQL error when trying to deactivate an already deactivated survey (Carsten Schmitz)
