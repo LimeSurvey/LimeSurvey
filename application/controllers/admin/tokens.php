@@ -729,6 +729,10 @@ class tokens extends Survey_Common_Action
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
 
+                if (!empty($sOutput)) {
+                    \ls\ajax\AjaxHelper::outputError($sOutput);
+                }
+
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
                 $token->decrypt();
                 foreach ($aTokenData as $k => $v) {
@@ -738,7 +742,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->encryptSave(true);
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess($sOutput . gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
                 } else {
                     $errors = $token->getErrors();
                     $firstError = reset($errors);
