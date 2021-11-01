@@ -6001,12 +6001,16 @@ function upgradeSurveyTables402($sMySQLCollation)
                     alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
                     break;
                 case 'mysql':
-                    $oDB->createCommand()->update($sTableName, ['submitdate' => null], "submitdate=0");
-                    if (in_array('datestamp', $oTableSchema->columnNames)) {
-                        $oDB->createCommand()->update($sTableName, ['datestamp' => '1970-01-01 00:00:00'], "datestamp=0");
-                    }
-                    if (in_array('startdate', $oTableSchema->columnNames)) {
-                        $oDB->createCommand()->update($sTableName, ['startdate' => '1970-01-01 00:00:00'], "startdate=0");
+                    // Loop all datetime columns and remove zero dates.
+                    foreach ($oTableSchema->columns as $columnName => $info) {
+                        if ($info->dbType === 'datetime') {
+                            try {
+                                $oDB->createCommand()->update($sTableName, [$columnName => null], "$columnName = 0");
+                            } catch (Exception $e) {
+                                // $columnName might not be allowed to be null, then try with 1970-01-01 0 Unix date instead.
+                                $oDB->createCommand()->update($sTableName, [$columnName => '1970-01-01 00:00:00'], "$columnName = 0");
+                            }
+                        }
                     }
                     alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
                     break;
