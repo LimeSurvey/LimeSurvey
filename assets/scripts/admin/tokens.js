@@ -133,6 +133,10 @@ function submitEditToken(){
     var $modal      = $('#editTokenModal');
     var $gridId     = '';
 
+    if (!$form[0].reportValidity()) {
+        return;
+    }
+
     // check which grid id exists on the page, to be able to update grid successfully
     if ($('#token-grid').length > 0) {
         $gridId = 'token-grid';
@@ -356,6 +360,7 @@ var startEditToken = function(){
         $oldModalBody   = $modalBody.html();
     $ajaxLoader.show();
     $modal.modal('show');
+
     // Ajax request
     $.ajax({
         url : $actionUrl,
