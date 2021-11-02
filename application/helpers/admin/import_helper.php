@@ -457,7 +457,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     // Import defaultvalues ------------------------------------------------------
-    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
+    importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results);
 
     // Import conditions --------------------------------------------------------------
     if (isset($xml->conditions)) {
