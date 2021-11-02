@@ -1673,7 +1673,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oSchema = Yii::app()->db->schema;
             foreach ($aTables as $sTableName) {
                 $oTableSchema = $oSchema->getTable($sTableName);
-                removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
                 // Only update the table if it really is a survey response table - there are other tables that start the same
                 if (!in_array('lastpage', $oTableSchema->columnNames)) {
                     continue;
@@ -1682,6 +1681,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 if (in_array('seed', $oTableSchema->columnNames)) {
                     continue;
                 }
+                removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
                 // If survey has active table, create seed column
                 Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
@@ -5990,10 +5990,10 @@ function upgradeSurveyTables402($sMySQLCollation)
         $aTables = dbGetTablesLike("survey\_%");
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
-            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
             }
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             // No token field in this table
             switch (Yii::app()->db->driverName) {
                 case 'sqlsrv':
