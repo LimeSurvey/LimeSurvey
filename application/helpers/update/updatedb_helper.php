@@ -5197,7 +5197,7 @@ function decryptParticipantTables450($oDB)
             foreach ($tokens as $token) {
                 $recryptedToken = [];
                 foreach ($columnEncryptions as $column => $value) {
-                    if ($columnEncryptions[$column]['encrypted'] === 'Y') {
+                    if ($columnEncryptions[$column]['encrypted'] === 'Y' && isset($token[$column])) {
                         $decryptedTokenColumn = LSActiveRecord::decryptSingleOld($token[$column]);
                         $recryptedToken[$column] = LSActiveRecord::encryptSingle($decryptedTokenColumn);
                     }
