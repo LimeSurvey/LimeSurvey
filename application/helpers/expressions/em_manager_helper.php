@@ -7869,24 +7869,27 @@
                             $qrelgseqs[] = 'relChangeG' . $knownVar['gseq'];
                         }
                     }
+                    /* If group of current question relevance updated: must check too. See mantis #14955 */
+                    $qrelgseqs[] = 'relChangeG' . $arg['gseq'];
+                    $qrelgseqs = array_unique($qrelgseqs);
                     $qrelQIDs = array_unique($qrelQIDs);
                     $aQuestionsWithDependencies = array_unique($aQuestionsWithDependencies);
                     if ($LEM->surveyMode=='question') {
                         $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
                     }
                     if ($LEM->surveyMode!='survey') {
-                        $qrelgseqs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
+                        $qrelgseqs=array();  // javascript dependencies on groups only for survey mode
                     }
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
                     //Normally trigger reevaluation only for relevant questions except for equation questions
                     if($arg['type'] != '*') {
-                        /* If current relevance are updated in a previous function : must appy this one */
+                        /* If current relevance are updated in a previous function : must apply this one */
                         /* See issue #14465 . Warning : expression manager trigger this by order of question */
                         if (count($qrelQIDs) > 0) {
                              $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
                         }
-                        if (count($qrelgseqs) > 0) {
+                        if (count($qrelgseqs) > 0) { // If some of related group are updated : must check relevance (continue)
                              $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                         }
                         $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
