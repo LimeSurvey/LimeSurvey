@@ -124,6 +124,9 @@ class UploaderController extends SurveyController
             $filename = $_FILES['uploadfile']['name'];
             // Do we filter file name ? It's used on displaying only , but not save like that.
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
+            /* Fix file name : need to get only the basename url encoded for display . Acvoid usage of basename , need valid UTF8 setlocale*/
+            $aFilename = explode(DIRECTORY_SEPARATOR, rtrim( $filename, DIRECTORY_SEPARATOR));
+            $fixedFilename = rawurlencode(end($aFilename));
             $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
@@ -221,13 +224,14 @@ class UploaderController extends SurveyController
 
             // if everything went fine and the file was uploaded successfully,
             // If this is just a preview, don't save the file
+            /* Fix filename in all case */
             if ($preview) {
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
                     $return = array(
                                 "success"       => true,
                                 "file_index"    => $filecount,
                                 "size"          => $size,
-                                "name"          => rawurlencode(basename($filename)),
+                                "name"          => $fixedFilename,
                                 "ext"           => $cleanExt,
                                 "filename"      => $randfilename,
                                 "msg"           => gT("The file has been successfully uploaded.")
@@ -255,7 +259,7 @@ class UploaderController extends SurveyController
                     $return = array(
                         "success" => true,
                         "size"    => $size,
-                        "name"    => rawurlencode(basename($filename)),
+                        "name"    => $fixedFilename,
                         "ext"     => $cleanExt,
                         "filename"      => $randfilename,
                         "msg"     => gT("The file has been successfully uploaded.")
