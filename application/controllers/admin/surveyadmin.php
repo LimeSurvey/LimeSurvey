@@ -1995,8 +1995,13 @@ class SurveyAdmin extends Survey_Common_Action
 
         foreach ($aSIDs as $sid) {
             $survey = Survey::model()->findByPk($sid);
-            $survey->expires = $expires;
             $aResults[$survey->primaryKey]['title'] = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title, 30);
+            // We check the permission after retrieving the title because we need it anyway.
+            if (!Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')) {
+                $aResults[$survey->primaryKey]['result'] = false;
+                continue;
+            }
+            $survey->expires = $expires;
             if ($survey->save()) {
                 $aResults[$survey->primaryKey]['result'] = true;
             } else {
