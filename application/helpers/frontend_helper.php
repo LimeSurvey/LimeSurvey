@@ -2043,7 +2043,7 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id'=>'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['survey_'.$surveyid]['LEMpostKey'], array('id'=>'LEMpostKey'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('thisstep', 0, array('id'=>'thisstep'));
-    if (!empty($_SESSION['survey_'.$surveyid]['token'])) {
+    if (!empty($_SESSION['survey_'.$surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
         $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_'.$surveyid]['token'], array('id'=>'token'));
     }
 
