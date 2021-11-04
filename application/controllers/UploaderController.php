@@ -124,7 +124,7 @@ class UploaderController extends SurveyController
             $filename = $_FILES['uploadfile']['name'];
             // Do we filter file name ? It's used on displaying only , but not save like that.
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
-            /* Fix file name : need to get only the basename url encoded for display . Acvoid usage of basename , need valid UTF8 setlocale*/
+            /* Fix file name : need to get only the basename url encoded for display . Avoid usage of basename , need valid UTF8 setlocale*/
             $aFilename = explode(DIRECTORY_SEPARATOR, rtrim( $filename, DIRECTORY_SEPARATOR));
             $fixedFilename = rawurlencode(end($aFilename));
             $size = $_FILES['uploadfile']['size'] / 1024;
