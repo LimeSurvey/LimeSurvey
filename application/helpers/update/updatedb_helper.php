@@ -4167,7 +4167,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /* Add public boolean to surveygroup : view forl all in list */
         if ($iOldDBVersion < 435) {
             $oTransaction = $oDB->beginTransaction();
-            // Check if default survey groups exists - at some point it was possible to delete it 
+            // Check if default survey groups exists - at some point it was possible to delete it
             $defaultSurveyGroupExists = $oDB->createCommand()
             ->select('gsid')
             ->from("{{surveys_groups}}")
