@@ -7372,13 +7372,16 @@ class LimeExpressionManager
                         $qrelgseqs[] = 'relChangeG' . $knownVar['gseq'];
                     }
                 }
+                /* If group of current question relevance updated: must check too. See mantis #14955 */
+                $qrelgseqs[] = 'relChangeG' . $arg['gseq'];
+                $qrelgseqs = array_unique($qrelgseqs);
                 $qrelQIDs = array_unique($qrelQIDs);
                 $aQuestionsWithDependencies = array_unique($aQuestionsWithDependencies);
                 if ($LEM->surveyMode == 'question') {
                     $qrelQIDs = [];  // in question-by-questin mode, should never test for dependencies on self or other questions.
                 }
                 if ($LEM->surveyMode != 'survey') {
-                    $qrelgseqs = [];  // in group by group or question by question mode, should never test for dependencies on self or other group.
+                    $qrelgseqs = [];  // javascript dependencies on groups only for survey mode
                 }
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
@@ -7389,7 +7392,7 @@ class LimeExpressionManager
                 if (!empty($qrelQIDs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelQIDs) . ")";
                 }
-                /* If one of group relevance used in function are updated in a previous function */
+                /* If one of group relevance used in function are updated in a previous function OR group of this question */
                 if (!empty($qrelgseqs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelgseqs) . ")";
                 }
