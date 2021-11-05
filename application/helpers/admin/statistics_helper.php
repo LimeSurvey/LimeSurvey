@@ -951,6 +951,10 @@ class statistics_helper
                     foreach ($rows as $key => $row) {
                         $rows[$key] = LSActiveRecord::decryptSingle($row[$fieldname]);
                     }
+                } else {
+                    foreach ($rows as $key => $row) {
+                        $rows[$key] = $row[$fieldname];
+                    }
                 }
 
                 //calculate statistical values
