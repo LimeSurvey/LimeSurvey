@@ -8899,6 +8899,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sPreviewMode = 'logic';
+        // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
+        $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
         $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
         /* All final survey string must be shown in survey language #12208 */
