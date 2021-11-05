@@ -76,30 +76,33 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * render selected items for massive action
+     * Render selected items for massive action
      * @return void
      */
     public function renderItemsSelected()
     {
-        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
-        $aResults = [];
+        $surveyIds = json_decode(Yii::app()->request->getPost('$oCheckedItems'), true);
+        if(!is_array($surveyIds)) {
+            throw new CHttpException(400, gT('Invalid list of checked items'));
+        }
+        $results = [];
 
-        $tableLabels= [gT('Survey ID'), gT('Survey Title'), gT('Status')];
-        foreach ($aSurveys as $iSurveyID) {
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-                $aResults[$iSurveyID]['result'] = 'selected';
+        $tableLabels = [gT('Survey ID'), gT('Survey Title'), gT('Status')];
+        foreach ($surveyIds as $surveyId) {
+            if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'delete')) {
+                $survey                        = Survey::model()->findByPk($surveyId);
+                $aResults[$surveyId]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$surveyId]['result'] = 'selected';
             }
         }
 
         Yii::app()->getController()->renderPartial(
             'ext.admin.survey.ListSurveysWidget.views.massive_actions._selected_survey',
-            array(
-                'aResults'     => $aResults,
+            [
+                'aResults'     => $results,
                 'successLabel' => gT('Seleted'),
                 'tableLabels'  => $tableLabels
-            )
+            ]
         );
     }
 
