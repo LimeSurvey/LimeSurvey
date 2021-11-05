@@ -923,7 +923,8 @@ class CheckIntegrity extends Survey_Common_Action
         /*     Check group localizations
         /**********************************************************************/
         $oCriteria = new CDbCriteria();
-        $oCriteria->join = 'LEFT JOIN {{groups}} g ON t.gid=g.gid';
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $oCriteria->join = "LEFT JOIN {$quotedGroups} g ON t.gid=g.gid";
         $oCriteria->condition = '(g.gid IS NULL)';
 
         $groups = QuestionGroupL10n::model()->resetScope()->findAll($oCriteria);
