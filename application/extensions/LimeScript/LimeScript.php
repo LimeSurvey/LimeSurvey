@@ -31,16 +31,16 @@
                     // the content type is 'text/plain', which is wrong.
                     $.ajaxPrefilter(function(settings) {
                         if(!csrfSafeMethod(settings.type)) {
-                            // NB: This sometimes includes the CSRF token twice, when already added to data.
+                            // Data could be passed as string or object, so we add the token depending on the data type
                             if (typeof settings.data == 'string') {
+                                // NB: This sometimes includes the CSRF token twice, when already added to data.
                                 settings.data +=  '&" . Yii::app()->request->csrfTokenName . "=" . Yii::app()->request->csrfToken ."';
                             } else {
                                 settings.data = settings.data || {};
                                 settings.data." . Yii::app()->request->csrfTokenName . " = '" . Yii::app()->request->csrfToken . "';
                             }
                         }
-                      });
-                    ";
+                    });";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }
