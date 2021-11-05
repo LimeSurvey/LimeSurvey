@@ -398,13 +398,13 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
 
     var boycott = $("#boycott_"+name).val();
     // 2 - city; 3 - state; 4 - country; 5 - postal
-    if (boycott.indexOf("2")!=-1)
+    if (boycott.indexOf("2")===-1) 
         city = '';
-    if (boycott.indexOf("3")!=-1)
+    if (boycott.indexOf("3")===-1) 
         state = '';
-    if (boycott.indexOf("4")!=-1)
+    if (boycott.indexOf("4")===-1) 
         country = '';
-    if (boycott.indexOf("5")!=-1)
+    if (boycott.indexOf("5")===-1) 
         postal = '';
 
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
