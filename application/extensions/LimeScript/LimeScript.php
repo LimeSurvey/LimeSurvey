@@ -26,14 +26,21 @@
                         // these HTTP methods do not require CSRF protection
                         return (/^(GET|HEAD|OPTIONS)$/.test(method));
                     }
-                    $.ajaxSetup({
-                        beforeSend: function(jqXHR, settings) {
-                            if(!csrfSafeMethod(settings.type)) {
-                                // NB: This sometimes includes the CSRF token twice, when already added to data.
+                    // Use $.ajaxPrefilter() instead of $.ajaxSetup({beforeSend: ...}) to add the CSRF token because beforeSend is
+                    // executed after the content type is determined. So, if the request had no data when beforeSend is executed,
+                    // the content type is 'text/plain', which is wrong.
+                    $.ajaxPrefilter(function(settings) {
+                        if(!csrfSafeMethod(settings.type)) {
+                            // NB: This sometimes includes the CSRF token twice, when already added to data.
+                            if (typeof settings.data == 'string') {
                                 settings.data +=  '&" . Yii::app()->request->csrfTokenName . "=" . Yii::app()->request->csrfToken ."';
+                            } else {
+                                settings.data = settings.data || {};
+                                settings.data." . Yii::app()->request->csrfTokenName . " = '" . Yii::app()->request->csrfToken . "';
                             }
                         }
-                    });";
+                      });
+                    ";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }
