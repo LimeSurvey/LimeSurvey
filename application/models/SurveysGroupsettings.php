@@ -450,7 +450,7 @@ class SurveysGroupsettings extends LSActiveRecord
         }
         foreach ($this->optionAttributesChar as $attribute) {
             //fix for 16179
-            $dbversion =  GetGlobalSetting('DBVersion');
+            $dbversion = App()->getConfig('DBVersion');
             if (!($attribute === 'ipanonymize' && ( $dbversion < 412 ))) {
                 $this->$attribute = 'I';
             }

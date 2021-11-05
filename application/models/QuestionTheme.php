@@ -465,7 +465,7 @@ class QuestionTheme extends LSActiveRecord
         if ($user) {
             $userQuestionThemesPath = $questionDirectories['customUserTheme'];
             if (!is_dir($userQuestionThemesPath)) {
-                mkdir($userQuestionThemesPath);
+                mkdir($userQuestionThemesPath, 0777, true);
             }
             $selectedQuestionDirectories[] = $userQuestionThemesPath;
         }

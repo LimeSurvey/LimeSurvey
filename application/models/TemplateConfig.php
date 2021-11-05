@@ -443,7 +443,8 @@ class TemplateConfig extends CActiveRecord
      */
     protected function setIsStandard()
     {
-        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $this->isStandard = SurveyThemeHelper::isStandardTemplate($this->sTemplateName);
     }
 
 
@@ -1263,7 +1264,7 @@ class TemplateConfig extends CActiveRecord
     {
     }
 
-    protected function getTemplateForPath($oRTemplate, $sPath)
+    protected function getTemplateConfigurationForAttribute($oRTemplate, $attribute)
     {
     }
 

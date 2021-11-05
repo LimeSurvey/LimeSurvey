@@ -540,8 +540,9 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('start_time', time(), array('id' => 'start_time'));
             $_SESSION[$this->LEMsessid]['LEMpostKey'] =  isset($_POST['LEMpostKeyPreset']) ? $_POST['LEMpostKeyPreset'] : mt_rand();
             $this->aSurveyInfo['hiddenInputs']         .= \CHtml::hiddenField('LEMpostKey', $_SESSION[$this->LEMsessid]['LEMpostKey'], array('id' => 'LEMpostKey'));
-            if (!empty($_SESSION[$this->LEMsessid]['token'])) {
-                $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('token', $_SESSION[$this->LEMsessid]['token'], array('id' => 'token'));
+            /* Reset session with multiple tabs (show Token mismatch issue) , but only for not anonymous survey */
+            if (!empty($_SESSION[$this->LEMsessid]['token']) and $this->aSurveyInfo['anonymized'] != 'Y') {
+                $this->aSurveyInfo['hiddenInputs']     .= \CHtml::hiddenField('token', $_SESSION[$this->LEMsessid]['token'], array('id'=>'token'));
             }
         }
 
@@ -1442,7 +1443,11 @@ class SurveyRuntimeHelper
 
         //Mandatory question(s) with unanswered answer
         if ($this->aStepInfo['mandViolation'] && $this->okToShowErrors) {
-            $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            if ($this->aStepInfo['mandNonSoft']) {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.");
+            } else {
+                $aErrorsMandatory[] = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
+            }
         }
 
         // Question(s) with not valid answer(s)

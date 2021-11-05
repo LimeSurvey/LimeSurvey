@@ -2268,7 +2268,8 @@ class Survey extends LSActiveRecord implements PermissionInterface
             return true;
         }
         /* Inherited by SurveysInGroup */
-        if (SurveysInGroup::model()->findByPk($this->gsid)->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
+        $sig = SurveysInGroup::model()->findByPk($this->gsid);
+        if ($sig && $sig->hasPermission('surveys', $sGlobalCRUD, $iUserID)) {
             return true;
         }
         return Permission::model()->hasPermission($this->getPrimaryKey(), 'survey', $sPermission, $sCRUD, $iUserID);

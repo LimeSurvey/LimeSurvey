@@ -310,7 +310,13 @@ function mandatory_popup($ia, $notanswered = null)
         //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
         global $mandatorypopup, $popup;
         //POPUP WARNING
-        if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
+        // If there is no "hard" mandatory violation (both current and previous violations belong to Soft Mandatory questions),
+        // we show the soft mandatory message.
+        if ($ia[6] == 'S' && (!isset($mandatorypopup) || $mandatorypopup == 'S')) {
+            $popup = gT("One or more mandatory questions have not been answered. If possible, please complete them before continuing to the next page.");
+            $mandatorypopup = "S";
+        } elseif (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U')) {
+            // If 
             $popup = gT("You cannot proceed until you enter some text for one or more questions.");
             $mandatorypopup = "Y";
         } else {

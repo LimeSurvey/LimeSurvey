@@ -609,6 +609,14 @@ class tokens extends Survey_Common_Action
 
             $aData['topBar']['name'] = 'tokensTopbar_view';
 
+            if ($aData['success']) {
+                if ($request->getPost('close-after-save')) {
+                    $redirectUrl = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+                } else {
+                    $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
+                }
+                $this->getController()->redirect($redirectUrl);
+            }
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
         } else {
             $this->_handletokenform($iSurveyId, "addnew");
@@ -721,6 +729,10 @@ class tokens extends Survey_Common_Action
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
 
+                if (!empty($sOutput)) {
+                    \ls\ajax\AjaxHelper::outputError($sOutput);
+                }
+
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
                 $token->decrypt();
                 foreach ($aTokenData as $k => $v) {
@@ -730,7 +742,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->encryptSave(true);
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess($sOutput . gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
                 } else {
                     $errors = $token->getErrors();
                     $firstError = reset($errors);
@@ -2468,7 +2480,7 @@ class tokens extends Survey_Common_Action
         $aData['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
 
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';

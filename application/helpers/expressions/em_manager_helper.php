@@ -5752,6 +5752,7 @@ class LimeExpressionManager
             'valid'         => $gvalid,
             'mandViolation' => $gmandViolation,
             'mandSoft'      => $gmandSoft,
+            'mandNonSoft'   => $gmandNonSoft,
             'show'          => (($grel && !$ghidden) ? true : false),
         ];
 
@@ -7371,13 +7372,16 @@ class LimeExpressionManager
                         $qrelgseqs[] = 'relChangeG' . $knownVar['gseq'];
                     }
                 }
+                /* If group of current question relevance updated: must check too. See mantis #14955 */
+                $qrelgseqs[] = 'relChangeG' . $arg['gseq'];
+                $qrelgseqs = array_unique($qrelgseqs);
                 $qrelQIDs = array_unique($qrelQIDs);
                 $aQuestionsWithDependencies = array_unique($aQuestionsWithDependencies);
                 if ($LEM->surveyMode == 'question') {
                     $qrelQIDs = [];  // in question-by-questin mode, should never test for dependencies on self or other questions.
                 }
                 if ($LEM->surveyMode != 'survey') {
-                    $qrelgseqs = [];  // in group by group or question by question mode, should never test for dependencies on self or other group.
+                    $qrelgseqs = [];  // javascript dependencies on groups only for survey mode
                 }
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
@@ -7388,7 +7392,7 @@ class LimeExpressionManager
                 if (!empty($qrelQIDs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelQIDs) . ")";
                 }
-                /* If one of group relevance used in function are updated in a previous function */
+                /* If one of group relevance used in function are updated in a previous function OR group of this question */
                 if (!empty($qrelgseqs) > 0) {
                     $aCheckNeeded[] = "!(" . implode(' || ', $qrelgseqs) . ")";
                 }
@@ -8895,6 +8899,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sPreviewMode = 'logic';
+        // We set $LEM->em->resetErrorsAndWarningsOnEachPart = false because, if a string has more than one expression, error information could be lost
+        $LEM->em->resetErrorsAndWarningsOnEachPart = false;
         $aSurveyInfo = getSurveyInfo($sid, $_SESSION['LEMlang']);
         $aAttributesDefinitions = questionHelper::getAttributesDefinitions();
         /* All final survey string must be shown in survey language #12208 */

@@ -4336,3 +4336,9 @@ table.dataTable thead .sorting_desc:after {
 #survey-grid {
     overflow-x: visible;
 }
+
+/* Fix text alignment on RTL */
+html[dir="rtl"] .dropdown-menu,
+html[dir="rtl"] th {
+    text-align: initial;
+}
