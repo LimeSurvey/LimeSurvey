@@ -63,7 +63,7 @@
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/ArchivedTableSettings.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php",
-            "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset.xml",
+            "./third_party/bin/phpmd application/models/services/ text tests/rulesets/phpmd_ruleset_strict.xml",
             "./third_party/bin/phpmd application/models/TemplateConfig.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateConfiguration.php text tests/rulesets/phpmd_ruleset.xml",
             "./third_party/bin/phpmd application/models/TemplateManifest.php text tests/rulesets/phpmd_ruleset.xml",
