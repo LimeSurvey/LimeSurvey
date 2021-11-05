@@ -947,12 +947,10 @@ class statistics_helper
 
                 //execute query
                 $rows = Yii::app()->db->createCommand($query)->queryAll();
-                if ($fielddata['encrypted'] === "Y") {
-                    foreach ($rows as $key => $row) {
+                foreach ($rows as $key => $row) {
+                    if ($fielddata['encrypted'] === "Y") {
                         $rows[$key] = LSActiveRecord::decryptSingle($row[$fieldname]);
-                    }
-                } else {
-                    foreach ($rows as $key => $row) {
+                    } else {
                         $rows[$key] = $row[$fieldname];
                     }
                 }
