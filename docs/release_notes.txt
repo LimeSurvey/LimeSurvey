@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.23 (build 211102) to 3.27.24 (build 211108) November 8, 2021
+-Fixed issue #T136: Error message needs rewording (#2135) (Gabriel Jenik)
+-Fixed issue #17632: Basic and detailed admin notification email fails (encuestabizdevgit)
+-Fixed issue #17599: Loading a label set at multilingual survey fails (encuestabizdevgit)
+-Fixed issue #17511: When importing a group, duplicate question codes can be generated (#2122) (Gabriel Jenik)
+-Fixed issue #14955: Question relevance is not reassessed after group is shown (#2119) (Denis Chenu)
+-Fixed issue #14557: User with very limited rights is allowed to set expiry date at survey list screen (#2094) (Gabriel Jenik)
+-Fixed issue #14302: Easy way to get token in a anonymous survey (super admin) (#2089) (Denis Chenu)
+-Fixed issue #15992: Using Expression Manager with double quotes fails for end URL field (Gabriel Jenik)
+
+
 Changes from 3.27.22 (build 211026) to 3.27.23 (build 211102) November 1, 2021
 -Fixed issue #17666: Previewing a survey leads to DB error messages from log system (#2117) (Denis Chenu)
 #Updated translation: German by c_schmitz, holch
