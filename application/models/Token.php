@@ -366,6 +366,7 @@ abstract class Token extends Dynamic
             array('firstname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('lastname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('language', 'LSYii_Validators', 'isLanguage'=>true),
+            array('language', 'length', 'min' => 2, 'max'=>25, 'allowEmpty'=>true),
             array(implode(',', $this->tableSchema->columnNames), 'safe'),
             /* pseudo date : force date or specific string ? */
             array('remindersent', 'length', 'min' => 0, 'max'=>17),
