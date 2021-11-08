@@ -471,12 +471,12 @@ function buildSelects($allfields, $surveyid, $language)
                     $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 3)) . " = " . App()->db->quoteValue($_POST[$pv]);
                 } else {
                     //date less than
-                    if (substr($pv, -4) == "less") {
+                    if (substr($pv, -4) == "more") {
                         $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " >= " . App()->db->quoteValue($_POST[$pv]);
                     }
 
                     //date greater than
-                    if (substr($pv, -4) == "more") {
+                    if (substr($pv, -4) == "less") {
                         $selects[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv) - 5)) . " <= " . App()->db->quoteValue($_POST[$pv]);
                     }
                 }

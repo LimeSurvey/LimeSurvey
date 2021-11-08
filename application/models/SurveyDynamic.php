@@ -684,7 +684,7 @@ class SurveyDynamic extends LSActiveRecord
         // When selection of responses come from statistics
         // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
         if (Yii::app()->user->getState('sql_' . self::$sid) != null) {
-            $criteria->condition .= Yii::app()->user->getState('sql_' . self::$sid);
+            $criteria->addCondition(Yii::app()->user->getState('sql_' . self::$sid));
         }
 
         $this->filterColumns($criteria);
@@ -851,7 +851,7 @@ class SurveyDynamic extends LSActiveRecord
                     "title" => "other",
                 ), false);
                 $oOtherQuestion->questionl10ns = [$sLanguage => $oOtherQuestionL10n];
-                
+
                 $aQuestionAttributes['subquestions']["other"] = $this->getQuestionArray($oOtherQuestion, $oResponses, $bHonorConditions, true, false, $sLanguage);
                 if ($oQuestion->type == "P") {
                     $aQuestionAttributes['subquestions']["other"]['comment'] = $this->getQuestionArray($oOtherQuestion, $oResponses, $bHonorConditions, true, true, $sLanguage);
@@ -934,7 +934,7 @@ class SurveyDynamic extends LSActiveRecord
                     )
             );
 
-            foreach($aAnswers as $key=>$value){
+            foreach ($aAnswers as $key => $value) {
                 $aAnswerText[$value['scale_id']][$value['code']] = Answer::model()->getAnswerFromCode($value->qid, $value->code, $sLanguage, $value->scale_id);
             }
 
@@ -994,7 +994,7 @@ class SurveyDynamic extends LSActiveRecord
                 $aQuestionAttributes['answervalueslabels'][$oScaleSubquestion->title] = isset($oScaleSubquestion->questionl10ns[$sLanguage]->question) ? $oScaleSubquestion->questionl10ns[$sLanguage]->question : null;
             }
         }
-        
+
         if ($oQuestion->type == 'N' || ($oQuestion->parent_qid != 0 && $oQuestion->parent['type'] === "K")) {
             if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
                 $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
