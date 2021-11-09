@@ -87,7 +87,7 @@ class QuestionAttribute extends LSActiveRecord
     {
         return array(
             array('qid,attribute', 'required'),
-            array('value', 'LSYii_Validators'),
+            array('value', 'filterXss'),
             array('language', 'LSYii_Validators', 'isLanguage' => true)
         );
     }
@@ -106,7 +106,10 @@ class QuestionAttribute extends LSActiveRecord
         $oModel = new self();
         $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName' => $sAttributeName, ':language' => $sLanguage, ':questionID' => $iQuestionID));
         if (!empty($aResult)) {
-            $oModel->updateAll(array('value' => $sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName' => $sAttributeName, ':language' => $sLanguage, ':questionID' => $iQuestionID));
+            foreach ($aResult as $questionAttribute) {
+                $questionAttribute->value = $sValue;
+                $questionAttribute->save();
+            }
         } else {
             $oModel = new self();
             $oModel->attribute = $sAttributeName;
@@ -118,7 +121,7 @@ class QuestionAttribute extends LSActiveRecord
         return Yii::app()->db->createCommand()
             ->select()
             ->from($this->tableName())
-            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $iQuestionID)
             ->order('qaid asc')
             ->query();
     }
@@ -135,7 +138,10 @@ class QuestionAttribute extends LSActiveRecord
         $oModel = new self();
         $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID', array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
         if (!empty($aResult)) {
-            $oModel->updateAll(array('value' => $sValue), 'attribute=:attributeName and qid=:questionID', array(':attributeName' => $sAttributeName, ':questionID' => $iQuestionID));
+            foreach ($aResult as $questionAttribute) {
+                $questionAttribute->value = $sValue;
+                $questionAttribute->save();
+            }
         } else {
             $oModel = new self();
             $oModel->attribute = $sAttributeName;
@@ -146,7 +152,7 @@ class QuestionAttribute extends LSActiveRecord
         return Yii::app()->db->createCommand()
             ->select()
             ->from($this->tableName())
-            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $iQuestionID)
             ->order('qaid asc')
             ->query();
     }
@@ -178,14 +184,17 @@ class QuestionAttribute extends LSActiveRecord
                 foreach ($aAttributesToUpdate as $sAttribute) {
                     // TODO: use an array like for a form submit, so we can parse it from the controller instead of using $_POST directly here
                     $sValue = Yii::app()->request->getPost($sAttribute);
-                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(['attribute' => $sAttribute, 'qid' => $iQid]);
+                    $questionAttributes = QuestionAttribute::model()->findAllByAttributes(['attribute' => $sAttribute, 'qid' => $iQid]);
 
                     // We check if we can update this attribute for this question type
                     // TODO: if (in_array($oQuestion->attributes, $sAttribute))
                     if (in_array($oQuestion->type, $aValidQuestionTypes)) {
-                        if (count($iInsertCount) > 0) {
+                        if (count($questionAttributes) > 0) {
                             // Update
-                            QuestionAttribute::model()->updateAll(['value' => $sValue], 'attribute=:attribute AND qid=:qid', [':attribute' => $sAttribute, ':qid' => $iQid]);
+                            foreach ($questionAttributes as $questionAttribute) {
+                                $questionAttribute->value = $sValue;
+                                $questionAttribute->save();
+                            }
                         } else {
                             // Create
                             $oAttribute = new QuestionAttribute();
@@ -579,5 +588,38 @@ class QuestionAttribute extends LSActiveRecord
         $result = App()->getPluginManager()->dispatchEvent($event);
 
         return (array) $result->get('questionAttributes');
+    }
+
+    /**
+     * Apply XSS filter to question attribute value unless 'xssfilter' property is false.
+     * @param string $attribute the name of the attribute to be validated.
+	 * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @return void
+     */
+    public function filterXss($attribute, $params)
+    {
+        $question = Question::model()->find("qid=:qid", ['qid' => $this->qid]);
+        if (empty($question)) {
+            return;
+        }
+        $questionAttributeFetcher = new \LimeSurvey\Models\Services\QuestionAttributeFetcher();
+        $questionAttributeFetcher->setQuestion($question);
+        $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
+
+        $shouldFilter = true;
+        if (isset($questionAttributeDefinitions[$this->attribute])) {
+            $questionAttributeDefinition = $questionAttributeDefinitions[$this->attribute];
+            if (array_key_exists("xssfilter", $questionAttributeDefinition) && $questionAttributeDefinition['xssfilter'] == false) {
+                $shouldFilter = false;
+            }
+        }
+
+        if (!$shouldFilter) {
+            return;
+        }
+
+        $validator = new LSYii_Validators;
+        $validator->attributes = [$attribute];
+        $validator->validate($this, [$attribute]);
     }
 }
