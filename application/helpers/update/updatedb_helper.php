@@ -8140,7 +8140,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
         return;
     }
 
-    foreach (explode(',', $labelSet['languages']) as $lang) {
+    foreach (explode(' ', $labelSet['languages']) as $lang) {
         if ($hasLanguageColumn) {
             $query = sprintf(
                 "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
