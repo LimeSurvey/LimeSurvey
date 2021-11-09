@@ -91,8 +91,8 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($surveyIds as $surveyId) {
             if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'delete')) {
                 $survey                        = Survey::model()->findByPk($surveyId);
-                $aResults[$surveyId]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
-                $aResults[$surveyId]['result'] = 'selected';
+                $results[$surveyId]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $results[$surveyId]['result'] = 'selected';
             }
         }
 
