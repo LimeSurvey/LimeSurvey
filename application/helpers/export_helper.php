@@ -401,11 +401,11 @@ function SPSSGetValues($field, $qidattributes, $language)
             if ($oQuestion->other == 'Y') {
                 $spsstype = 'A';
                 $size = 6;
+                $answers['needsAlterType'] = true;
             }
         }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
-        $answers['needsAlterType'] = true;
         return $answers;
     } else {
         /* Not managed (currently): url, IP, Ã¢â‚¬Â¦ */
