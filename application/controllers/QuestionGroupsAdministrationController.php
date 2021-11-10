@@ -132,7 +132,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $iSurveyID . ")";
-        
+
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView'] = 'groupTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'groupTopbarRight_view';
@@ -221,7 +221,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
 
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyid . ")";
-        
+
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
         $aData['closeUrl'] = $this->createUrl(
@@ -301,7 +301,8 @@ class QuestionGroupsAdministrationController extends LSBaseController
             [
                 'surveyid' => $surveyid
             ]
-        );;
+        );
+        ;
         ///////////
         // sidemenu
         $aData['sidemenu']['state'] = false;
@@ -501,7 +502,7 @@ class QuestionGroupsAdministrationController extends LSBaseController
             $aData['topBar']['showSaveButton'] = true;*/
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['rightSideView'] = 'importGroupTopbarRight_view';
-            
+
 
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title
                 . " (" . gT("ID") . ":" . $iSurveyID . ")";

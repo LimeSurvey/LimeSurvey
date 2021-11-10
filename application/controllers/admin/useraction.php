@@ -134,7 +134,7 @@ class UserAction extends Survey_Common_Action
                 $new_pass = $event->get('newPassword');
                 $new_email = $event->get('newEmail');
                 $new_full_name = $event->get('newFullName');
-                
+
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity' => 'template', 'read_p' => 1, 'entity_id' => 0));
                 // add default usersettings to the user
@@ -657,7 +657,7 @@ class UserAction extends Survey_Common_Action
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
-                if ($newPassword !== '' && $repeatPassword!=='') {
+                if ($newPassword !== '' && $repeatPassword !== '') {
                     $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
 
                     if ($error !== '') {
@@ -690,7 +690,7 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
                 Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
-                
+
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
                 SettingsUser::setUserSetting('preselectquestiontheme', Yii::app()->request->getPost('preselectquestiontheme'));
                 SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
@@ -738,7 +738,7 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
 
-        // Green Bar Page Title 
+        // Green Bar Page Title
         $aData['pageTitle'] = gT('My Account');
 
         //Get data for personal menues
@@ -891,7 +891,7 @@ class UserAction extends Survey_Common_Action
      * @param string $title
      * @param string $message
      * @param string $classMsg
-     * @param string $extra   
+     * @param string $extra
      * @param string $urlText
      * @param array  $hiddenVars
      * @param string $classMbTitle

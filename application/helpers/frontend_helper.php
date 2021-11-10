@@ -78,7 +78,7 @@ function loadanswers()
             return false;
         }
     }
-    
+
     /* Decrypt loaded responses */
     $oResponses->decrypt();
     // Get if survey is been answered
@@ -761,7 +761,7 @@ function prefillFromCommandLine($surveyid)
     $request = Yii::app()->getRequest();
     if (in_array($request->getRequestType(), ['GET', 'POST'])) {
         $getValues = array_diff_key($request->getQueryParams(), array_combine($reservedGetValues, $reservedGetValues));
-        if(!empty($getValues)) {
+        if (!empty($getValues)) {
             $qcode2sgqa = array();
             Yii::import('application.helpers.viewHelper');
             foreach ($_SESSION['survey_' . $surveyid]['fieldmap'] as $sgqa => $details) {
@@ -1125,7 +1125,7 @@ function testIfTokenIsValid(array $subscenarios, array $thissurvey, array $aEnte
             $aEnterTokenData['visibleToken'] = $clienttoken;
             $aEnterTokenData['token'] = $clienttoken;
             $renderToken = 'correct';
-            // Intentionally don't reset FailedLoginAttempt for this IP.  
+            // Intentionally don't reset FailedLoginAttempt for this IP.
             // FailedLoginAttempt::model()->deleteAttempts();
         }
     }
@@ -1189,7 +1189,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
-            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid"=>$surveyid], getForwardParameters(Yii::app()->getRequest())));
+            $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array_merge(["sid" => $surveyid], getForwardParameters(Yii::app()->getRequest())));
             $thissurvey['include_content']  = 'userforms';
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts") . 'nojs.js', CClientScript::POS_HEAD);
@@ -1897,8 +1897,8 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('lastgroupname', '_WELCOME_SCREEN_', array('id' => 'lastgroupname')); //This is to ensure consistency with mandatory checks, and new group test
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('LEMpostKey', $_SESSION['survey_' . $surveyid]['LEMpostKey'], array('id' => 'LEMpostKey'));
     $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('thisstep', 0, array('id' => 'thisstep'));
-    if (!empty($_SESSION['survey_'.$surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
-        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_'.$surveyid]['token'], array('id'=>'token'));
+    if (!empty($_SESSION['survey_' . $surveyid]['token']) && $thissurvey['anonymized'] != "Y") {
+        $thissurvey['EM']['ScriptsAndHiddenInputs'] .= \CHtml::hiddenField('token', $_SESSION['survey_' . $surveyid]['token'], array('id' => 'token'));
     }
 
     if (!empty($loadsecurity)) {

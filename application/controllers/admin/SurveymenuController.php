@@ -62,7 +62,7 @@ class SurveymenuController extends Survey_Common_Action
         }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-        
+
         $success = false;
         if (Yii::app()->request->isPostRequest) {
             $aSurveymenu = Yii::app()->request->getPost('Surveymenu', []);
@@ -101,7 +101,7 @@ class SurveymenuController extends Survey_Common_Action
                 'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
             ]
         );
-        
+
         if ($debug > 0) {
             $returnData['data']['debug'] = [$model, $_POST];
             $returnData['data']['debugErrors'] = $model->getErrors();
@@ -141,7 +141,7 @@ class SurveymenuController extends Survey_Common_Action
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
             }
-            
+
             if (count($aData) > 0) {
                 foreach ($aSurveyMenuIds as $iSurveyMenuId) {
                     $iSurveyMenuId = (int) $iSurveyMenuId;
@@ -182,7 +182,7 @@ class SurveymenuController extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
         }
-        
+
         if (Yii::app()->request->isPostRequest) {
             $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
             $success = [];
@@ -202,12 +202,12 @@ class SurveymenuController extends Survey_Common_Action
                     )
                 ]
             );
-            
+
             if ($debug > 0) {
                 $returnData['data']['debug'] = [$model, $_POST];
                 $returnData['data']['debugErrors'] = $model->getErrors();
             }
-    
+
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 $returnData,
@@ -216,7 +216,7 @@ class SurveymenuController extends Survey_Common_Action
             );
         }
     }
-    
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -244,7 +244,7 @@ class SurveymenuController extends Survey_Common_Action
                     )
                 ]
             );
-            
+
             if ($debug > 0) {
                 $returnData['data']['debug'] = [$model, $_POST];
                 $returnData['data']['debugErrors'] = $model->getErrors();
@@ -284,12 +284,12 @@ class SurveymenuController extends Survey_Common_Action
                         'message' => gT("You don't have the right to restore the settings to default")
                     ]
                 );
-                
+
                 if ($debug > 0) {
                     $returnData['data']['debug'] = [$model, $_POST];
                     $returnData['data']['debugErrors'] = $model->getErrors();
                 }
-    
+
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
                     $returnData,
@@ -312,7 +312,7 @@ class SurveymenuController extends Survey_Common_Action
                     'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
                 ]
             );
-            
+
             if ($debug > 0) {
                 $returnData['data']['debug'] = [$model, $_POST];
                 $returnData['data']['debugErrors'] = $model->getErrors();
@@ -371,7 +371,7 @@ class SurveymenuController extends Survey_Common_Action
     {
         $aData = array();
         $aData['model'] = Surveymenu::model();
-        
+
         // Survey Menu Entries Data
         $filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
         $aData['entries_model'] = SurveymenuEntries::model();

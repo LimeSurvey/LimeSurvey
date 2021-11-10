@@ -258,7 +258,7 @@ class Zend_XmlRpc_Client
         $this->_lastRequest = $request;
 
         ini_set("default_charset", "UTF-8");
-        
+
         $http = $this->getHttpClient();
         if ($http->getUri() === null) {
             $http->setUri($this->_serverAddress);

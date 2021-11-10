@@ -21,8 +21,8 @@ class UserParser
         $aPathinfo = pathinfo($FILES['the_file']['name']);
         $sExtension = $aPathinfo['extension'];
         $bMoveFileResult = false;
-        
- 
+
+
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
             Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024), 'error');
             Yii::app()->getController()->redirect(array('/userManagement/index'));
@@ -65,7 +65,7 @@ class UserParser
             $aToBeAddedUsers[] = $rowarray;
         }
         fclose($oCSVFile);
-        
+
         return $aToBeAddedUsers;
     }
 

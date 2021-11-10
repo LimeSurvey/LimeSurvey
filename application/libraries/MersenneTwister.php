@@ -12,11 +12,11 @@ namespace ls\mersenne;
 function setSeed($surveyid)
 {
     /* In started survey : get seed from response table */
-    if (isset($_SESSION['survey_'.$surveyid]['srid'])) {
-        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
+    if (isset($_SESSION['survey_' . $surveyid]['srid'])) {
+        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_' . $surveyid]['srid']);
         $seed = $oResponse->seed;
         /* fix empty seed, this allow broken seed (not number) */
-        if(empty($seed)) {
+        if (empty($seed)) {
             $seed = mt_rand();
             $oResponse->seed = $seed;
             $oResponse->save();
@@ -25,9 +25,9 @@ function setSeed($surveyid)
         $seed = mt_rand();
         /* On activated (but not started) survey : set seed in startingValues */
         if (\Survey::model()->findByPk($surveyid)->getIsActive()) {
-            $table = \Yii::app()->db->schema->getTable('{{survey_'.$surveyid.'}}');
+            $table = \Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}');
             if (isset($table->columns['seed'])) {
-                $_SESSION['survey_'.$surveyid]['startingValues']['seed'] = $seed;
+                $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
             }
         }
     }

@@ -635,7 +635,7 @@ class InstallerController extends CController
         $sImage = $this->check_HTML_image($bExists);
         return $bExists;
     }
-    
+
 
     /**
      * check if file or directory exists and is writeable, returns via parameters by reference

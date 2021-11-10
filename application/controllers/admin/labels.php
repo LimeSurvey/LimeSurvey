@@ -220,7 +220,7 @@ class labels extends Survey_Common_Action
         $aData['labelbar']['buttons']['return'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
-       
+
 
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
@@ -306,7 +306,7 @@ class labels extends Survey_Common_Action
         } else {
             $aData['labelbar']['buttons']['delete'] = true;
 
-            // Save Button 
+            // Save Button
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save");
 
@@ -315,7 +315,8 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['saveandclosebutton']['text'] = gT('Save & close');
 
             // White Close Button
-            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));;
+            $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
+            ;
             $aData['labelbar']['white_closebutton']['text'] = gT('Close');
 
             $aData['labelbar']['buttons']['edition'] = true;
@@ -439,7 +440,7 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['edition'] = true;
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Save");
-            
+
             // Save and Close Button
             $aData['labelbar']['saveandclosebutton']['form'] = 'exportlabelset';
 
@@ -449,7 +450,7 @@ class labels extends Survey_Common_Action
 
             // Green Page Title
             $aData['pageTitle'] = gT('Export multiple label sets');
-            
+
             $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
@@ -620,7 +621,7 @@ class labels extends Survey_Common_Action
             );
             $returnArray[] = $aLabelSet;
         }
-        
+
         Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             ['data' => $returnArray]
@@ -656,7 +657,7 @@ class labels extends Survey_Common_Action
                 $oLabelL10n->title = isset($aLabel[$language]['question'])
                     ? $aLabel[$language]['question']
                     : $aLabel[$language]['answer'];
-                
+
                 $lngResult = $oLabelL10n->save();
                 $aDebug['saveLabel_' . $i . '_' . $language] = $lngResult;
                 $result = $result && $lngResult;

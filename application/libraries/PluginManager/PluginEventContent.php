@@ -1,15 +1,17 @@
 <?php
+
 namespace LimeSurvey\PluginManager;
+
 class PluginEventContent
 {
-    
+
     const APPEND = 'append';
     const PREPEND = 'prepend';
-    
+
     protected $_content = null;
-    protected $_cssClass = array('pluginblock'=>'pluginblock');
+    protected $_cssClass = array('pluginblock' => 'pluginblock');
     protected $_cssId = '';
-    
+
     /**
      * @param string $content
      * @param string $cssClass
@@ -21,10 +23,10 @@ class PluginEventContent
         $this->setCssClass($cssClass);
         $this->setCssId($id);
     }
-    
+
     /**
      * Add a css class to use for this content
-     * 
+     *
      * @param string $cssClass
      * @return PluginEventContent
      */
@@ -33,13 +35,13 @@ class PluginEventContent
         if (!empty($cssClass)) {
             $this->_cssClass[$cssClass] = array($cssClass);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Add to existing content, by default append but optionally prepend it
-     * 
+     *
      * @param string $content
      * @param string $placement append or prepend
      */
@@ -48,60 +50,60 @@ class PluginEventContent
         if (strtolower($placement) === self::APPEND) {
             $this->_content .= $content;
         } else {
-            $this->_content = $content.$this->_content;
+            $this->_content = $content . $this->_content;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Clears exisiting content
-     * 
+     *
      * @return PluginEventContent
      */
     public function cleanContent()
     {
         $this->_content = null;
-        
+
         return $this;
     }
-    
+
     public function getContent()
     {
         return $this->_content;
     }
-    
+
     public function getCssClass()
     {
         return implode(' ', $this->_cssClass);
     }
-    
+
     public function getCssId()
     {
         return $this->_cssId;
     }
-    
+
     public function hasContent()
     {
         return !is_null($this->getContent());
     }
-    
+
     /**
      * Replace existing content
-     * 
+     *
      * @param string $content
      * @return PluginEventContent
      */
     public function setContent($content = '')
     {
         $this->_content = $content;
-        
+
         return $this;
     }
-    
+
     /**
      * Set the css class to use for this content
-     * 
+     *
      * @param string $cssClass
      * @return PluginEventContent
      */
@@ -112,13 +114,13 @@ class PluginEventContent
         } else {
             $this->_cssClass = array();
         }
-        
-        return $this;        
+
+        return $this;
     }
-    
+
     /**
      * Set the css id to use for this content
-     * 
+     *
      * @param string $id
      * @return PluginEventContent
      */

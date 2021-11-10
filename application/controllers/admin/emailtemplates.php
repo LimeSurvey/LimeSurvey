@@ -92,9 +92,9 @@ class emailtemplates extends Survey_Common_Action
 
         // Save Button
         $aData['topBar']['showSaveButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale', 'update');
-        
+
         App()->getClientScript()->registerPackage('expressionscript');
-        
+
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }
 

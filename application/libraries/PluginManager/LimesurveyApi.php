@@ -37,7 +37,7 @@ class LimesurveyApi
      */
     protected function getTableName(iPlugin $plugin, $tableName)
     {
-        return App()->getDb()->tablePrefix.strtolower($plugin->getName())."_$tableName";
+        return App()->getDb()->tablePrefix . strtolower($plugin->getName()) . "_$tableName";
     }
 
     /**
@@ -215,7 +215,7 @@ class LimesurveyApi
                         $code = $fieldmap[$key]['title'];
                         // Add subquestion code if needed
                         if (array_key_exists('aid', $fieldmap[$key]) && isset($fieldmap[$key]['aid']) && $fieldmap[$key]['aid'] != '') {
-                            $code .= '_'.$fieldmap[$key]['aid'];
+                            $code .= '_' . $fieldmap[$key]['aid'];
                         }
                         // Only add if the code does not exist yet and is not empty
                         if (!empty($code) && !array_key_exists($code, $output)) {
@@ -240,14 +240,14 @@ class LimesurveyApi
      */
     public function getCurrentResponses($surveyId = null)
     {
-        if(empty($surveyId)) {
+        if (empty($surveyId)) {
             $surveyId = \LimeExpressionManager::getLEMsurveyId();
         }
-        if(empty($surveyId)) {
+        if (empty($surveyId)) {
             return;
         }
         $sessionSurvey = Yii::app()->session["survey_{$surveyId}"];
-        if(empty($sessionSurvey['srid'])) {
+        if (empty($sessionSurvey['srid'])) {
             return;
         }
         return \Response::model($surveyId)->findByPk($sessionSurvey['srid']);
@@ -312,7 +312,7 @@ class LimesurveyApi
      */
     public function getResponseTable($surveyId)
     {
-        return App()->getDb()->tablePrefix.'survey_'.$surveyId;
+        return App()->getDb()->tablePrefix . 'survey_' . $surveyId;
     }
 
     /**
@@ -323,8 +323,8 @@ class LimesurveyApi
     public function getOldResponseTables($surveyId)
     {
         $tables = array();
-        $base = App()->getDb()->tablePrefix.'old_survey_'.$surveyId;
-        $timingbase = App()->getDb()->tablePrefix.'old_survey_'.$surveyId.'_timings_';
+        $base = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId;
+        $timingbase = App()->getDb()->tablePrefix . 'old_survey_' . $surveyId . '_timings_';
         foreach (App()->getDb()->getSchema()->getTableNames() as $table) {
             if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
                 $tables[] = $table;
@@ -457,7 +457,7 @@ class LimesurveyApi
         if ($plugin) {
             return $plugin->active == 1;
         } else {
-            throw new Exception("Can't find a plugin with name ".$name);
+            throw new Exception("Can't find a plugin with name " . $name);
         }
     }
 
@@ -484,7 +484,7 @@ class LimesurveyApi
      * @return array
      */
     public function getUserGroups()
-    {   
+    {
         return \UserGroup::model()->findAllAsArray();
     }
 
@@ -496,7 +496,7 @@ class LimesurveyApi
      * @return \UserGroup|null
      */
     public function getUserGroup($ugid)
-    {   
+    {
         return \UserGroup::model()->findByAttributes(array('ugid' => $ugid));
     }
 
@@ -509,7 +509,7 @@ class LimesurveyApi
      * @return \UserInGroup|null
      */
     public function getUserInGroup($ugid, $uid)
-    {   
+    {
         return \UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
     }
 
@@ -534,8 +534,7 @@ class LimesurveyApi
             if ($newUserGroup->save()) {
                 \UserInGroup::model()->insertRecords(array('ugid' => $newUserGroup->getPrimaryKey(), 'uid' => 1));
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         } else {

@@ -86,7 +86,7 @@ class QuestionTheme extends LSActiveRecord
     public function scopes()
     {
         return array(
-            // 'base' themes are the ones that don't extend any question type/theme. 
+            // 'base' themes are the ones that don't extend any question type/theme.
             'base' => array(
                 'condition' => 'core_theme = :true AND extends = :extends',
                 'params' => array(':true' => true, ':extends' => '')

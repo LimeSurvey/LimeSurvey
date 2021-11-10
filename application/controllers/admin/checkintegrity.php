@@ -25,7 +25,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * Constructor
-     * 
+     *
      * @param $controller
      * @param $id
      */
@@ -44,7 +44,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * Index
-     * 
+     *
      * @throws Exception
      */
     public function index()
@@ -86,10 +86,10 @@ class CheckIntegrity extends Survey_Common_Action
             $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
     }
-    
+
     /**
      * Fix integrity
-     * 
+     *
      */
     public function fixintegrity()
     {
@@ -183,7 +183,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * Delete orphan token tables
-     * 
+     *
      * @param array $tokenTables
      * @param array $aData
      * @return array
@@ -199,7 +199,7 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * Drop orphan survey tables
-     * 
+     *
      * @param array $surveyTables
      * @param array $aData
      * @return array
@@ -593,7 +593,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         // Deactivate surveys that have a missing response table
-        $oSurveys = Survey::model()->findAll(array('order'=>'sid'));
+        $oSurveys = Survey::model()->findAll(array('order' => 'sid'));
         $oDB = Yii::app()->getDb();
         $oDB->schemaCachingDuration = 0; // Deactivate schema caching
         Yii::app()->setConfig('Updating', true);

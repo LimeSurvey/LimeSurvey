@@ -49,7 +49,7 @@ class Permissiontemplates extends CActiveRecord
             'connectedusers' => array(self::HAS_MANY, 'UserInPermissionrole', ['ptid']),
         );
     }
-    
+
     /**
      * Collects and maps the connected userids to userobjects
      *
@@ -85,7 +85,7 @@ class Permissiontemplates extends CActiveRecord
             $oModel->ptid = $ptid;
             $oModel->uid = $iUserId;
         }
-        
+
         return $oModel->save();
     }
 
@@ -271,7 +271,7 @@ class Permissiontemplates extends CActiveRecord
                 "name" => "created_at",
                 "header" => gT("Created"),
                 "value" => '$data->formattedDateCreated',
-    
+
             )
         );
 
@@ -292,7 +292,7 @@ class Permissiontemplates extends CActiveRecord
         $meta->addChild('date', date('Y-m-d H:i:s'));
         $meta->addChild('createdOn', Yii::app()->getConfig('sitename'));
         $meta->addChild('createdBy', Yii::app()->user->id);
-        
+
         // Get base permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
 
@@ -307,7 +307,7 @@ class Permissiontemplates extends CActiveRecord
                 );
             }
         }
-        
+
         return $xml;
     }
 

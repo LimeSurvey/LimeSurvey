@@ -1,4 +1,5 @@
 <?php
+
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,7 +26,7 @@ final class SettingsStorage extends ArrayObject
             }
         }
         extract($defaults);
-		
+
         parent::__construct($array, $flags);
     }
 
@@ -61,5 +62,4 @@ final class SettingsStorage extends ArrayObject
         }
         return self::$_instance->offsetExists($index);
     }
-
 }

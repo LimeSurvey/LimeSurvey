@@ -41,7 +41,7 @@ class PluginHelper extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $aData['content'] = $content;
-        
+
         $aData['sideMenuOpen'] = false; // TODO: Assume this for all plugins?
         $this->_renderWrappedTemplate(null, array('super/sidebody'), $aData);
     }

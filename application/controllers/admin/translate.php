@@ -174,7 +174,7 @@ class translate extends Survey_Common_Action
             $evenRow = false; //deprecated => using css
 
             $all_fields_empty = true;
-            
+
             $resultbase = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
             $resultto = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
 
@@ -237,7 +237,7 @@ class translate extends Survey_Common_Action
                     $textfrom2 = htmlspecialchars_decode($aResultBase2[$amTypeOptions2["dbColumn"]]);
                     $textto2 = $aResultTo2[$amTypeOptions2["dbColumn"]];
                 }
-               
+
                 $gid = ($amTypeOptions["gid"] == true) ? $gid = $aRowfrom['gid'] : null;
                 $qid = ($amTypeOptions["qid"] == true) ? $qid = $aRowfrom['qid'] : null;
 
@@ -883,7 +883,7 @@ class translate extends Survey_Common_Action
             case "queryupdate":
                 switch ($type) {
                     case 'title':
-                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $tolang), array('surveyls_title' => substr($new,0,200)));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $tolang), array('surveyls_title' => substr($new, 0, 200)));
                     case 'description':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $tolang), array('surveyls_description' => $new));
                     case 'welcome':

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class QuestionAdministrationController
  */
@@ -227,13 +228,13 @@ class QuestionAdministrationController extends LSBaseController
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
-        
+
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-        
+
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -1089,7 +1090,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
         $fatalerror = '';
-        
+
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
@@ -1609,7 +1610,7 @@ class QuestionAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
-        
+
         //array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
@@ -1647,7 +1648,7 @@ class QuestionAdministrationController extends LSBaseController
                     )
                 );
             }
-            
+
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {

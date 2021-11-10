@@ -118,7 +118,7 @@ class FailedLoginAttempt extends LSActiveRecord
             $timestamp = date("Y-m-d H:i:s");
             $ip = substr(getIPAddress(), 0, 40);
             $row = $this->findByAttributes(array('ip' => $ip));
-    
+
             if ($row !== null) {
                 $row->number_attempts = $row->number_attempts + 1;
                 $row->last_attempt = $timestamp;

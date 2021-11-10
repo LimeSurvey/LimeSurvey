@@ -475,7 +475,7 @@ class TokenDynamic extends LSActiveRecord
         return ((int)$command->queryScalar() > 0);
     }
 
-    
+
     /**
      * @param string $token
      * @return mixed

@@ -1,6 +1,7 @@
 <?php
+
 /*
-					COPYRIGHT
+                    COPYRIGHT
 
 Copyright 2007 Sergio Vaccaro <sergio@inservibile.org>
 
@@ -43,7 +44,7 @@ class jsonRPCServer
             $_SERVER['REQUEST_METHOD'] != 'POST' ||
             empty($_SERVER['CONTENT_TYPE']) ||
             $_SERVER['CONTENT_TYPE'] != 'application/json'
-            ) {
+        ) {
             // This is not a JSON-RPC request
             return false;
         }

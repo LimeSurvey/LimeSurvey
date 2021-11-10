@@ -171,7 +171,7 @@ class statistics extends Survey_Common_Action
         $rows = Question::model()
             ->with(array('group' => array('alias' => 'g')))
             ->findAll(array('condition' => 'parent_qid = 0 AND g.sid=' . $surveyid, 'order' => 'group_order,question_order'));
-      
+
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
 

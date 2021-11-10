@@ -621,7 +621,7 @@ class ResponsesController extends LSBaseController
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'read')) {
             $oResponse = Response::model($surveyId)->findByPk($responseId);
-            if (is_null($oResponse)){
+            if (is_null($oResponse)) {
                 App()->user->setFlash('error', gT('Found no response with ID %d'), $responseId);
                 $this->redirect(["responses/browse", "surveyId" => $surveyId]);
             }
@@ -1024,5 +1024,4 @@ class ResponsesController extends LSBaseController
 
         return ['numberOfErrors' => $errors, 'numberOfTimingErrors' => $timingErrors];
     }
-
 }

@@ -299,7 +299,7 @@ class Condition extends LSActiveRecord
             $aResults[$i]['type'] = $result->questions->type;
             $i += 1;
         }
-        
+
         return $aResults;
     }
 

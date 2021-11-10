@@ -1,14 +1,15 @@
 <?php
+
     Yii::import('application.libraries.BigData', true);
     Yii::import('application.libraries.jsonRPCServer');
-    class LSjsonRPCServer extends jsonRPCServer
-    {
-        /**
-         * This function handle a request binding it to a given object
-         *
-         * @param remotecontrol_handle $object
-         * @return boolean
-         */
+class LSjsonRPCServer extends jsonRPCServer
+{
+    /**
+     * This function handle a request binding it to a given object
+     *
+     * @param remotecontrol_handle $object
+     * @return boolean
+     */
     public static function handle($object)
     {
         // checks if a JSON-RCP request has been received
@@ -16,11 +17,11 @@
             $_SERVER['REQUEST_METHOD'] != 'POST' ||
             empty($_SERVER['CONTENT_TYPE']) ||
             strpos($_SERVER['CONTENT_TYPE'], "application/json") === false
-            ) {
+        ) {
             // This is not a JSON-RPC request
             return false;
         }
-        
+
         // reads the input data
         $request = json_decode(file_get_contents('php://input'), true);
         // executes the task on local object
@@ -66,4 +67,4 @@
         // finish
         return true;
     }
-    }
+}
