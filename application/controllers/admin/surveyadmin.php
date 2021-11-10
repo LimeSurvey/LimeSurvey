@@ -79,6 +79,37 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Render selected items for massive action
+     * @return void
+     */
+    public function renderItemsSelected()
+    {
+        $surveyIds = json_decode(Yii::app()->request->getPost('$oCheckedItems'), true);
+        if(!is_array($surveyIds)) {
+            throw new CHttpException(400, gT('Invalid list of checked items'));
+        }
+        $results = [];
+
+        $tableLabels = [gT('Survey ID'), gT('Survey Title'), gT('Status')];
+        foreach ($surveyIds as $surveyId) {
+            if (Permission::model()->hasSurveyPermission($surveyId, 'survey', 'delete')) {
+                $survey                        = Survey::model()->findByPk($surveyId);
+                $results[$surveyId]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $results[$surveyId]['result'] = 'selected';
+            }
+        }
+
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._selected_survey',
+            [
+                'aResults'     => $results,
+                'successLabel' => gT('Seleted'),
+                'tableLabels'  => $tableLabels
+            ]
+        );
+    }
+
+    /**
      * @todo
      */
     public function listsurveys()
