@@ -88,10 +88,10 @@ class AdminViewsTest extends TestBaseClassView
             if (isset($view['activate']) && $view['activate']) {
                 $activator = new \SurveyActivator(self::$testSurvey);
                 $activator->activate();
-                \Token::createTable(self::$surveyId);
+                if (!tableExists("{{tokens_" . self::$surveyId . "}}")) {
+                    \Token::createTable(self::$surveyId);
+                }
             }
-
-
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).

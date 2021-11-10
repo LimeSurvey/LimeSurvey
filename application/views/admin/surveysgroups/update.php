@@ -56,31 +56,21 @@
 <script>
 
     $('#surveygrouptabsystem a').click(function (e) {
-        window.location.hash = $(this).attr('href');
-        $("surveygrouptabsystem.last a").unbind('click');
+        e.preventDefault();
+        $(this).tab('show');
 
-        if($(this).attr('href') == '#surveysInThisGroup'){
-            e.preventDefault();
+        var target = $(e.target).attr('href');
+        if (target == '#surveysInThisGroup') {
             $(this).tab('show');
-        } else if($(this).attr('href') == '#settingsForThisGroup'){
-            //e.preventDefault();
+        } else if (target == '#settingsForThisGroup') {
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-form');
             $(this).tab('show');
-        } else if($(this).attr('href') == '#securityForThisGroup'){
-            e.preventDefault();
+        } else if (target == '#securityForThisGroup') {
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'surveys-groups-permission');
             $(this).tab('show');
-        } else if($(this).attr('href') == '#templateSettingsFortThisGroup'){
-            e.preventDefault();
+        } else if (target == '#templateSettingsFortThisGroup') {
             $('#save-form-button, #save-and-close-form-button').attr('data-form-id', 'template-options-form');
             $(this).tab('show');
         }
     });
-
-    $(document).on('ready pjax:scriptcomplete', function(){
-        if(window.location.hash){
-            $('#surveygrouptabsystem').find('a[href='+window.location.hash+']').trigger('click');
-        }
-
-    })
 </script>

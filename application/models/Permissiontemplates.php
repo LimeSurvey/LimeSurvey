@@ -49,7 +49,7 @@ class Permissiontemplates extends CActiveRecord
             'connectedusers' => array(self::HAS_MANY, 'UserInPermissionrole', ['ptid']),
         );
     }
-    
+
     /**
      * Collects and maps the connected userids to userobjects
      *
@@ -85,7 +85,7 @@ class Permissiontemplates extends CActiveRecord
             $oModel->ptid = $ptid;
             $oModel->uid = $iUserId;
         }
-        
+
         return $oModel->save();
     }
 
@@ -148,11 +148,14 @@ class Permissiontemplates extends CActiveRecord
      */
     public function getButtons(): string
     {
-        $detailUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
-        $editUrl           = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
-        $exportRoleUrl     = Yii::app()->getController()->createUrl('/admin/roles/sa/runexport', ['ptid' => $this->ptid]);
-        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
-        $deleteUrl         = Yii::app()->getController()->createUrl('/admin/roles/sa/delete');
+        $detailUrl         = Yii::app()->getController()->createUrl('userRole/viewRole', ['ptid' => $this->ptid]);
+        $editUrl           = Yii::app()->getController()->createUrl('userRole/editRoleModal', ['ptid' => $this->ptid]);
+        $exportRoleUrl     = Yii::app()->getController()->createUrl('userRole/runExport', ['ptid' => $this->ptid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl(
+            'userRole/renderModalPermissions',
+            ['ptid' => $this->ptid]
+        );
+        $deleteUrl         = Yii::app()->getController()->createUrl('userRole/delete');
 
         // Role Detail
         $roleDetail = ""
@@ -198,7 +201,7 @@ class Permissiontemplates extends CActiveRecord
                 </a>";
 
         // Delete Role
-        $deleteUrl .= '/ptid/' . $this->ptid;
+        //$deleteUrl .= '/ptid/' . $this->ptid;  NO GET-request here!!!
         $deleteRoleButton = '<span data-toggle="tooltip" title="' . gT('Delete user role') . '">'
             . "<button 
                 id='RoleControl--delete-" . $this->ptid . "' 
@@ -207,6 +210,9 @@ class Permissiontemplates extends CActiveRecord
                 data-title='" . gt('Delete user role') . "'
                 data-target='#confirmation-modal'
                 data-post-url ='" . $deleteUrl . "' 
+                data-ptid='" . $this->ptid . "'
+                data-action='delrole'         
+                data-onclick='LS.RoleControl.triggerRunAction(\"#RoleControl--delete-" . $this->ptid . "\")'
                 data-btntext='" . gt('Delete') . "' 
                 data-message='" . gT('Do you want to delete this role?') . "'>
                     <i class='fa fa-trash text-danger'></i>
@@ -265,7 +271,7 @@ class Permissiontemplates extends CActiveRecord
                 "name" => "created_at",
                 "header" => gT("Created"),
                 "value" => '$data->formattedDateCreated',
-    
+
             )
         );
 
@@ -286,7 +292,7 @@ class Permissiontemplates extends CActiveRecord
         $meta->addChild('date', date('Y-m-d H:i:s'));
         $meta->addChild('createdOn', Yii::app()->getConfig('sitename'));
         $meta->addChild('createdBy', Yii::app()->user->id);
-        
+
         // Get base permissions
         $aBasePermissions = Permission::model()->getGlobalBasePermissions();
 
@@ -301,7 +307,7 @@ class Permissiontemplates extends CActiveRecord
                 );
             }
         }
-        
+
         return $xml;
     }
 

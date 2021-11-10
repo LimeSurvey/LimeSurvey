@@ -216,7 +216,7 @@ abstract class Token extends Dynamic
          * on a new token table (for example on reactivation)
          */
         $db->createCommand()->createIndex("idx_token_token_{$surveyId}_" . rand(1, 50000), $sTableName, 'token');
-        
+
         // MSSQL does not support indexes on text fields so not needed here
         switch (Yii::app()->db->driverName) {
             case 'mysql':
@@ -269,7 +269,7 @@ abstract class Token extends Dynamic
         if (empty($iTokenLength)) {
             $iTokenLength = $this->getSurveyTokenLength();
         }
-        
+
         $this->token = $this->_generateRandomToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
@@ -418,6 +418,7 @@ abstract class Token extends Dynamic
             array('firstname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('lastname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('language', 'LSYii_Validators', 'isLanguage' => true),
+            array('language', 'length', 'min' => 2, 'max' => 25, 'allowEmpty' => true),
             array(implode(',', $this->tableSchema->columnNames), 'safe'),
             /* pseudo date : force date or specific string ? */
             array('remindersent', 'length', 'min' => 0, 'max' => 17),

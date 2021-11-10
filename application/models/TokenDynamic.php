@@ -475,7 +475,7 @@ class TokenDynamic extends LSActiveRecord
         return ((int)$command->queryScalar() > 0);
     }
 
-    
+
     /**
      * @param string $token
      * @return mixed
@@ -813,7 +813,7 @@ class TokenDynamic extends LSActiveRecord
         $gridButtons['viewresponse'] = array(
             'label' => '<span class="sr-only">' . gT("View response details") . '</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
             'imageUrl' => false,
-            'url' => 'App()->createUrl("admin/responses/sa/viewbytoken",array("surveyid"=>' . self::$sid . ',"token"=>$data->token));',
+            'url' => 'App()->createUrl("responses/viewbytoken",array("surveyId"=>' . self::$sid . ',"token"=>$data->token));',
             'options' => array(
                 'class' => "btn btn-default btn-sm",
                 'data-toggle' => "tooltip",

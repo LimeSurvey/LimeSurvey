@@ -36,11 +36,11 @@ class PreviewModalWidget extends CWidget
      */
     public $debugKeyCheck = "Key: ";
 
-    /**
+     /**
      * The title of the preview window
      * @var string
      */
-    public $previewWindowTitle = "Preview";
+    public $previewWindowTitle = "";
 
     /**
      * Either a group or an items array must be given

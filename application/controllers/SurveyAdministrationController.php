@@ -187,9 +187,11 @@ class SurveyAdministrationController extends LSBaseController
 
         $this->surveysummary($aData);
 
+        // Display 'Overview' in Green Bar
+        $aData['subaction'] = gT('Overview');
+
         $this->aData = $aData;
         $this->render('sidebody', [
-            //'content' => $content,
             'sideMenuOpen' => true
         ]);
     }
@@ -221,7 +223,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Create Survey Groups Button
         $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
-        
+
         // Return Button
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
@@ -241,10 +243,13 @@ class SurveyAdministrationController extends LSBaseController
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
+            } else {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
             }
         }
         $this->renderPartial(
@@ -270,11 +275,9 @@ class SurveyAdministrationController extends LSBaseController
             if (!is_numeric($iSurveyID)) {
                 continue;
             }
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-                $oSurvey = Survey::model()->findByPk($iSurveyID);
-                $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-                $aResults[$iSurveyID]['result'] = 'selected';
-            }
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result'] = 'selected';
         }
 
         $this->renderPartial(
@@ -405,14 +408,12 @@ class SurveyAdministrationController extends LSBaseController
         $arrayed_data['oSurvey'] = $survey;
         $arrayed_data['data'] = $aData;
         $arrayed_data['title_bar']['title'] = gT('New survey');
-        $arrayed_data['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $arrayed_data['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
 
         // Green Bar Page Title
         $aData['pageTitle'] = gT("Create, import, or copy survey");
 
         $aData['fullpagebar']['savebutton']['form'] = 'addnewsurvey';
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/index'; // Close button
+        $aData['fullpagebar']['white_closebutton']['url'] = 'admin/index'; // Close button
 
         $this->aData = $aData;
 
@@ -779,7 +780,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionChangeMultipleTheme()
     {
         //only superadmin can do this
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -809,7 +810,7 @@ class SurveyAdministrationController extends LSBaseController
      */
     public function actionChangeMultipleSurveyGroup()
     {
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -824,7 +825,17 @@ class SurveyAdministrationController extends LSBaseController
             $oSurvey = Survey::model()->findByPk((int)$iSurveyID);
             $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title'] = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-            $aResults[$iSurveyID]['result'] = $oSurvey->save();
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'update')) {
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
+            } else {
+                if ($oSurvey->save()) {
+                    $aResults[$iSurveyID]['result'] = true;
+                } else {
+                    $aResults[$iSurveyID]['result'] = false;
+                    $aResults[$iSurveyID]['error'] = gT("Survey update failed");
+                }
+            }
         }
 
         Yii::app()->getController()->renderPartial(
@@ -1442,7 +1453,7 @@ class SurveyAdministrationController extends LSBaseController
             $context = gT("Preview survey");
             $contextbutton = 'preview_survey';
         } else {
-            $context = gT("Execute survey");
+            $context = gT("Run survey");
             $contextbutton = 'execute_survey';
         }
 
@@ -1537,11 +1548,11 @@ class SurveyAdministrationController extends LSBaseController
             $aData['nostep'] = true;
             $this->aData = $aData;
         } else {
+            if (!tableExists('survey_' . $iSurveyID)) {
+                $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
+                $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
+            }
             if (Yii::app()->request->getPost('ok') == '') {
-                if (!tableExists('survey_' . $iSurveyID)) {
-                    $_SESSION['flashmessage'] = gT("Error: Response table does not exist. Survey cannot be deactivated.");
-                    $this->redirect($this->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
-                }
                 $aData['surveyid'] = $iSurveyID;
                 $aData['date'] = $date;
                 $aData['dbprefix'] = Yii::app()->db->tablePrefix;
@@ -1746,12 +1757,13 @@ class SurveyAdministrationController extends LSBaseController
                 $noOnclickAction = "window.location.href='" . (Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $iSurveyID)) . "'";
 
                 $activationData = array(
-                    'iSurveyID' => $iSurveyID,
-                    'warning' => $warning,
-                    'allowregister' => $allowregister,
-                    'onclickAction' => $onclickAction,
+                    'iSurveyID'           => $iSurveyID,
+                    'survey'              => $survey,
+                    'warning'             => $warning,
+                    'allowregister'       => $allowregister,
+                    'onclickAction'       => $onclickAction,
                     'closedOnclickAction' => $closedOnclickAction,
-                    'noOnclickAction' => $noOnclickAction,
+                    'noOnclickAction'     => $noOnclickAction,
                 );
                 $this->aData = $aData;
                 $this->render('_activation_feedback', $activationData);
@@ -2024,6 +2036,9 @@ class SurveyAdministrationController extends LSBaseController
         }
         $aData = $this->showReorderForm($iSurveyID);
 
+        // Display 'Reorder question/question groups' in Green Bar
+        $aData['subaction'] = gT('Reorder question/question groups');
+
         $this->aData = $aData;
         $this->render('/admin/survey/organizeGroupsAndQuestions_view', $aData);
     }
@@ -2052,7 +2067,6 @@ class SurveyAdministrationController extends LSBaseController
             }
 
             if ($oSurveyParameter->targetsqid != '') {
-                //$row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
                 $row['questionTitle'] .= (' - ' . ellipsize(flattenText($oSurveyParameter->subquestion->questionl10ns[$sBaseLanguage]->question, false, true), 30, .75));
             }
 
@@ -2327,7 +2341,7 @@ class SurveyAdministrationController extends LSBaseController
     public function actionExpireMultipleSurveys()
     {
         //permission check: only superadmin is allowed to do this
-        if (!Permission::model()->hasGlobalPermission('superadmin')) {
+        if (!Yii::app()->request->isPostRequest && !Permission::model()->hasGlobalPermission('superadmin')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
@@ -2341,7 +2355,6 @@ class SurveyAdministrationController extends LSBaseController
         if (trim($expires) == "") {
             $expires = null;
         } else {
-            //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
             $datetimeobj = new Date_Time_Converter($expires, $formatdata['phpdate'] . ' H:i');
             $expires = $datetimeobj->convert("Y-m-d H:i:s");
         }
@@ -2350,10 +2363,16 @@ class SurveyAdministrationController extends LSBaseController
             $survey = Survey::model()->findByPk($sid);
             $survey->expires = $expires;
             $aResults[$survey->primaryKey]['title'] = ellipsize($survey->correct_relation_defaultlanguage->surveyls_title, 30);
-            if ($survey->save()) {
-                $aResults[$survey->primaryKey]['result'] = true;
-            } else {
+            if (!Permission::model()->hasGlobalPermission('superadmin')) {
                 $aResults[$survey->primaryKey]['result'] = false;
+                $aResults[$survey->primaryKey]['error'] = gT("User does not have valid permissions");
+            } else {
+                if ($survey->save()) {
+                    $aResults[$survey->primaryKey]['result'] = true;
+                } else {
+                    $aResults[$survey->primaryKey]['result'] = false;
+                    $aResults[$survey->primaryKey]['error'] = gT("Survey update failed");
+                }
             }
         }
         $this->renderPartial(
@@ -2613,11 +2632,11 @@ class SurveyAdministrationController extends LSBaseController
 
         $survey = Survey::model()->findByPk($iSurveyID);
 
-
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
             if (!empty($bReturn)) {
                 $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
                 $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have valid permissions");
                 return $aResults;
             } else {
                 die('No permission');
@@ -2805,10 +2824,8 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if (trim($oSurvey->expires) != '') {
-            //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
-            //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         } else {
             $aData['expdate'] = "-";
@@ -2821,7 +2838,13 @@ class SurveyAdministrationController extends LSBaseController
         }
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
-            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">" . flattenText($oSurvey->currentLanguageSettings->surveyls_url) . "</a>";
+            $aData['endurl'] = " <a target='_blank' href=\"" .
+                                htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                                "\" title=\"" .
+                                 htmlspecialchars($aSurveyInfo['surveyls_url']) .
+                                 "\">" .
+                                flattenText($oSurvey->currentLanguageSettings->surveyls_url) .
+                                "</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -2872,16 +2895,6 @@ class SurveyAdministrationController extends LSBaseController
         $aData['subviewData'] = $aData;
 
         Yii::app()->getClientScript()->registerPackage('surveysummary');
-
-        /*
-        return $aData;
-
-        $content = Yii::app()->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
-        Yii::app()->getController()->renderPartial("/admin/super/sidebody", array(
-            'content' => $content,
-            'sideMenuOpen' => true
-        ));
-        */
     }
 
     /**

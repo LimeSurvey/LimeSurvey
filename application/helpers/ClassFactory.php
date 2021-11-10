@@ -5,7 +5,7 @@ class ClassFactory
 
     protected static $map = array();
     protected static $registered = false;
-        
+
     public static function autoload($className)
     {
         foreach (self::$map as $prefix => $baseClass) {
@@ -32,7 +32,7 @@ class ClassFactory
         self::$map[$prefix] = $baseClass;
         // Keep the array "reverse"-sorted by keys.
         //uksort(self::$map, function($a, $b) { return strcmp($a, $b) * -1;} );
-            
+
         // mdekker: Don't see the need for sorting, but since anonymous functions
         //          can break on eaccelerator avoid it when possible uncomment if needed:
         //krsort(self::$map);

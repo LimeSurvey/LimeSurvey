@@ -27,7 +27,7 @@
                     'grid-reload' => 'yes',
                     // modal
                     'actionType'    => 'modal',
-                    'modalType'     => 'cancel-apply',
+                    'modalType'     => 'cancel-save',
                     'keepopen'      => 'yes',
                     'sModalTitle'   => gT('Batch-edit participants'),
                     'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat']), 'aLanguages' => $aLanguages), true),

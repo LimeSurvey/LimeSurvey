@@ -80,7 +80,7 @@ class dataentry extends Survey_Common_Action
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
-        
+
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['showImportButton'] = true;
         $aData['topBar']['showCloseButton'] = true;
@@ -294,14 +294,14 @@ class dataentry extends Survey_Common_Action
                 'type' => 'checkbox',
                 'label' => gT('Preserve response IDs')
             );
-            
+
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
             $survey = Survey::model()->findByPk($iSurveyId);
 
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
-            
+
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showImportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
@@ -374,7 +374,7 @@ class dataentry extends Survey_Common_Action
                 $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                 $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
- 
+
                 $imported++;
                 $targetResponse->save();
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
@@ -406,7 +406,7 @@ class dataentry extends Survey_Common_Action
                 }
                 Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."), $imported, $iRecordCountT);
             }
-            $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
+            $this->getController()->redirect(["/responses/index/", 'surveyId' => $surveyid]);
         }
     }
 
@@ -699,7 +699,7 @@ class dataentry extends Survey_Common_Action
                             );
                             $aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down
+                        case Question::QT_L_LIST: //LIST drop-down
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List (Radio)
                             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
@@ -1494,7 +1494,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
         if (Yii::app()->request->getPost('close-after-save') == 'true') {
-            $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
+            $this->getController()->redirect($this->getController()->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $id]));
         } else {
             $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
         }
@@ -1711,7 +1711,7 @@ class dataentry extends Survey_Common_Action
                         }
                     }
                     $aToken->save();
-                    
+
                     // save submitdate into survey table
                     $aResponse = Response::model($surveyid)->findByPk($last_db_id);
                     $aResponse->submitdate = $submitdate;
@@ -2034,7 +2034,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
 
-                        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+                        case Question::QT_L_LIST: //LIST drop-down/radio-button list
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                             if ($arQuestion['type'] == '!' && trim($qidattributes['category_separator']) != '') {
                                 $optCategorySeparator = $qidattributes['category_separator'];

@@ -1,6 +1,5 @@
 <?php
 
-
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz

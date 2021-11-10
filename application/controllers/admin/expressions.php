@@ -25,20 +25,20 @@ class Expressions extends Survey_Common_Action
     {
         $aData = array();
         $needpermission = false;
-        
+
         $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
         if (!$iSurveyID) {
             $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
         }
-        
+
         $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
-        
+
         $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
-        
+
         if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
         }
-        
+
         if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
@@ -82,7 +82,7 @@ class Expressions extends Survey_Common_Action
     public function survey_logic_file()
     {
         $aData = array();
-        
+
         $sid = Yii::app()->request->getParam('sid', 0, 'integer');
         $surveyid = Yii::app()->request->getParam('surveyid', $sid, 'integer');
 
@@ -94,14 +94,14 @@ class Expressions extends Survey_Common_Action
             $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
             return;
         }
-        
+
         $gid = Yii::app()->request->getParam('gid', null);
         $qid = Yii::app()->request->getParam('qid', null);
 
         $oSurvey = Survey::model()->findByPk($sid);
 
         $language = Yii::app()->request->getParam('lang', null);
-        
+
         if ($language !== null) {
             $language = sanitize_languagecode($language);
         }
@@ -126,7 +126,7 @@ class Expressions extends Survey_Common_Action
             ((int) $LEM_DEBUG_VALIDATION_DETAIL) +
             ((int) $LEM_PRETTY_PRINT_ALL_SYNTAX)
         );
-        
+
         $assessments = Yii::app()->request->getParam('assessments', $oSurvey->getIsAssessments()) == 'Y';
 
 
@@ -141,7 +141,7 @@ class Expressions extends Survey_Common_Action
             $aData['returnUrl'] = Yii::app()->createUrl('questionGroupsAdministration/view/surveyid/' . $sid . '/gid/' . $gid);
             $aData['gid'] = $gid;
         }
-        
+
         if ($qid !== null) {
             $qid = sanitize_int($qid);
             $aData['returnUrl'] = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $sid . '/gid/' . $gid . '/qid/' . $qid);
@@ -195,7 +195,7 @@ class Expressions extends Survey_Common_Action
     {
 
         $aData['surveylist'] = getSurveyList();
-        
+
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');
@@ -230,7 +230,7 @@ class Expressions extends Survey_Common_Action
     }
 
     /**
-     * Print Title 
+     * Print Title
      * @param string $which
      * @return string
      **/

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class QuestionAdministrationController
  */
@@ -216,19 +217,24 @@ class QuestionAdministrationController extends LSBaseController
         // Top Bar
         $this->aData['topBar']['name'] = 'questionTopbar_view';
 
+        // Save Button
         $this->aData['showSaveButton'] = true;
+
+        // Save and Close Button
         $this->aData['showSaveAndCloseButton'] = true;
+
+        // Close Button
         $this->aData['showCloseButton'] = true;
 
         // Delete Button
         $this->aData['showDeleteButton'] = true;
-        
+
         $this->aData['sid'] = $question->sid;
         $this->aData['gid'] = $question->gid;
         $this->aData['qid'] = $question->qid;
 
         $this->aData['hasdefaultvalues'] = (QuestionTheme::findQuestionMetaData($question->type)['settings'])->hasdefaultvalues;
-        
+
         $generalSettings = $this->getGeneralOptions(
             $question->qid,
             $question->type,
@@ -1084,7 +1090,7 @@ class QuestionAdministrationController extends LSBaseController
 
         $sFullFilepath = App()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
         $fatalerror = '';
-        
+
         // Check file size and redirect on error
         $uploadValidator = new LimeSurvey\Models\Services\UploadValidator();
         $uploadValidator->redirectOnError('the_file', \Yii::app()->createUrl('questionAdministration/importView', array('surveyid' => $iSurveyID)));
@@ -1604,7 +1610,7 @@ class QuestionAdministrationController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyId);
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
-        
+
         //array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
@@ -1642,7 +1648,7 @@ class QuestionAdministrationController extends LSBaseController
                     )
                 );
             }
-            
+
             $newQuestionL10n = Yii::app()->request->getParam('questionI10N');
             $copyQuestionTextValues = [];
             if (!empty($newQuestionL10n)) {
@@ -1985,7 +1991,7 @@ class QuestionAdministrationController extends LSBaseController
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // Only set the other state for question types that have this attribute
             if (
-                ($oQuestion->type == Question::QT_L_LIST_DROPDOWN)
+                ($oQuestion->type == Question::QT_L_LIST)
                 || ($oQuestion->type == Question::QT_EXCLAMATION_LIST_DROPDOWN)
                 || ($oQuestion->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS)
                 || ($oQuestion->type == Question::QT_M_MULTIPLE_CHOICE)

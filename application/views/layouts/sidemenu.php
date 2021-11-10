@@ -32,6 +32,10 @@
     }
     $landOnSideMenuTab = (isset($sidemenu['landOnSideMenuTab']) ? $sidemenu['landOnSideMenuTab'] : '');
     
+    // Set the active Sidemenu (for deeper navigation)
+    $isSideMenuElementActive = isset($sidemenu['isSideMenuElementActive']) ? $sidemenu['isSideMenuElementActive'] : false;
+    $activeSideMenuElement   = isset($sidemenu['activeSideMenuElement'])   ? $sidemenu['activeSideMenuElement']   : '';
+
     $menuObjectArray =  [
         "side" => [],
         "collapsed" => [],
@@ -42,13 +46,14 @@
         $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
     
-
     Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
         window.SideMenuData = {
             getQuestionsUrl: "'.$getQuestionsUrl.'",
             getMenuUrl: "'.$getMenuUrl.'",
             createQuestionGroupLink: "'.$createQuestionGroupLink.'",
             createQuestionLink: "'.$createQuestionLink.'",
+            buttonDisabledTooltipQuestions: "'. gt('It is not possible to add questions on an active survey.') .'",
+            buttonDisabledTooltipGroups: "'. gt('It is not possible to add groups on an active survey.') . '",
             gid: '.(isset($gid) ? $gid : 'null').',
             options: [],
             surveyid: '.$surveyid.',
@@ -78,7 +83,9 @@
     v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
     v-bind:data-collapsed="$store.state.isCollapsed">
     <?php if($landOnSideMenuTab !== ''): ?>
-        <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>' />
+        <sidebar land-on-tab='<?php echo $landOnSideMenuTab ?>'
+            	 is-side-menu-element-active='<?php echo $isSideMenuElementActive ?>'
+                 active-side-menu-element='<?php echo $activeSideMenuElement ?>' />
     <?php else: ?>
         <sidebar />
     <?php endif; ?>

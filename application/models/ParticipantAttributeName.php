@@ -110,7 +110,7 @@ class ParticipantAttributeName extends LSActiveRecord
             . "<span class='fa fa-%s' ></span>" //icon class
             . "</button>";
         $buttons .= "";
-        
+
         //Edit-button
         $editData = array(
             'green-border action_attributeNames_editModal',
@@ -133,9 +133,9 @@ class ParticipantAttributeName extends LSActiveRecord
         data-title='" . gT("Delete this attribute") . "'
         data-btnclass='btn-danger'
         data-btntext='" . gt("Delete") . "'
-        data-message=' " . gt("Do you really want to delete this attribute") ."?'
+        data-message=' " . gt("Do you really want to delete this attribute") . "?'
         data-onclick='deleteAttributeAjax(" . $this->attribute_id . ")'>";
-        $buttons.= vsprintf($raw_button_template, $deleteData) . "</a>";
+        $buttons .= vsprintf($raw_button_template, $deleteData) . "</a>";
         $buttons .= "</div>";
 
         return $buttons;

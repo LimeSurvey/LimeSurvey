@@ -183,8 +183,8 @@ class printablesurvey extends Survey_Common_Action
                     // START doing questions
 
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-                    
-                    
+
+
                     if ($qidattributes['hidden'] == 1 && $arQuestion['type'] != Question::QT_ASTERISK_EQUATION) {
                         continue;
                     }
@@ -336,7 +336,7 @@ class printablesurvey extends Survey_Common_Action
                                             $conditions[] = $frow->answerl10ns[$sLanguageCode]->answer;
                                         }
                                         break;
-                                    case Question::QT_L_LIST_DROPDOWN:
+                                    case Question::QT_L_LIST:
                                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     case Question::QT_O_LIST_WITH_COMMENT:
                                     case Question::QT_R_RANKING_STYLE:
@@ -589,7 +589,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_L_LIST_DROPDOWN:
+                        case Question::QT_L_LIST:
                             // ==================================================================
                         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator']) != '') {
@@ -618,7 +618,7 @@ class printablesurvey extends Survey_Common_Action
                                 $rowAnswer = $dearow->answerl10ns[$sLanguageCode]->answer;
                                 if (isset($optCategorySeparator)) {
                                     list($category, $answer) = explode($optCategorySeparator, $dearow->answerl10ns[$sLanguageCode]->answer);
-                                   
+
                                     if ($category != '') {
                                         $rowAnswer = "($category) $answer " . self::_addsgqacode("(" . $dearow['code'] . ")");
                                     } else {
@@ -639,7 +639,7 @@ class printablesurvey extends Survey_Common_Action
                                     ++$colcounter;
                                 }
                             }
-                            
+
                             if ($arQuestion['other'] == 'Y') {
                                 /*echo '<pre>';
                                 print_r($qidattributes);

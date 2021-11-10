@@ -34,6 +34,152 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.1.18 (build 211101) to 5.2.0 (build 211110) November 10, 2021
+-Fixed issue: Change mail to all users send button icon (Jessica Höck)
+-Fixed issue: When survey is active - the Add Group - Add Questions buttons should be shown with a disabled state + tooltip (Jessica Höck)
+-Fixed issue: Upgrade fails if token attribute column does not physically exist in participant table anymore (Carsten Schmitz)
+-Fixed issue: Update 402 must remove all zero dates for MySQL (Olle Haerstedt)
+-Fixed issue: Surveys - Survey Groups - Edit Survey Group (Jessica Höck)
+-Fixed issue: Survey list - instead of List Survey in breadcrumb (Jessica Höck)
+-Fixed issue: Settings - Export / Display - Should be just name Export - applied changes in question editor (Jessica Höck)
+-Fixed issue: Settings - Export / Display - Should be just name Export (Jessica Höck)
+-Fixed issue: Settings - Export / Display - Renamed Modal content (Jessica Höck)
+-Fixed issue: Response browsing failing when using filtered view from statistics and setting an additional filter (Carsten Schmitz)
+-Fixed issue: Replaced green save and close button with green save button in copy conditions view (Jessica Höck)
+-Fixed issue: Reordered buttons in condition designer view (Jessica Höck)
+-Fixed issue: Removed checked icon from save button in quick add conditions modal (Jessica Höck)
+-Fixed issue: Removed button and added icon to button in quick-add modal inside conditions view (Jessica Höck)
+-Fixed issue: Remove zero-dates for dbversion 139, 181, 183, 253, 290, 402 (MySQL only) (Olle Haerstedt)
+-Fixed issue: Plugin Settings - Save and Save & Close buttons have wrong styling (#2062) (Jessica Höck)
+-Fixed issue: Order of action buttons in edit group view (Jessica Höck)
+-Fixed issue: Missing white close button and save icon in edit question group view (Jessica Höck)
+-Fixed issue: Missing default survey group causing problems after upgrade (Carsten Schmitz)
+-Fixed issue: Missing 'delete group' for delete button (#2053) (Jessica Höck)
+-Fixed issue: Lock and collapse all button should be visible when survey is active (Jessica Höck)
+-Fixed issue: List Surveys - Dropdown cut off (#2057) (Jessica Höck)
+-Fixed issue: Left side spacing of first tab (overview) in "Global settings" (Jessica Höck)
+-Fixed issue: It's possible that a survey has no survey group in permission check (Olle Haerstedt)
+-Fixed issue: Integrity check not working when using MySQL8 (Carsten Schmitz)
+-Fixed issue: Home-Icon in breadcrumb navigation (Jessica Höck)
+-Fixed issue: Delete Question and Delete Group should be red and placed at the bottom of dropdown from Tools (Jessica Höck)
+-Fixed issue: Database error when importing participants and language string is too long (Carsten Schmitz)
+-Fixed issue: Database error when deleting a participant from CPDB and connected survey participant tables (Carsten Schmitz)
+-Fixed issue: Create question theme folder recursively (Olle Haerstedt)
+-Fixed issue: Change in wording for tooltip for changing groups and questions when a survey is active (Jessica Höck)
+-Fixed issue: Change color of buttons to red (Jessica Höck)
+-Fixed issue: Breadcrumb navigation of reorder and question/question groups tab (Jessica Höck)
+-Fixed issue: Breadcrumb navigation of overview tab (Jessica Höck)
+-Fixed issue: Added Back Button in conditions designer view (Jessica Höck)
+-Fixed issue: Add button state to delete checked items button (Jessica Höck)
+-Fixed issue: Optimize titles of modals (#2039) (Jessica Höck)
+-Fixed issue: 'Execute survey' should be 'Run survey' with play icon (Jessica Höck)
+-Fixed issue #T1415: Save and Close (#2096) (Jessica Höck)
+-Fixed issue #T1398: Send reminders -  Inputs have wrong size (#2103) (Jessica Höck)
+-Fixed issue #T1383: Survey lists - Survey group modal (#2069) (Jessica Höck)
+-Fixed issue #T1382: Survey lists - Survey theme modal (#2065) (Jessica Höck)
+-Fixed issue #T1380: Central Participant management - Export all participants modal (#2055) (Gabriel Jenik)
+-Fixed issue #T136: Error Message Needs Rewording (#2129) (Gabriel Jenik)
+-Fixed issue #T1329: Action buttons on plugin detail view: settings (#2098) (Jessica Höck)
+-Fixed issue #T1328: Green bar above top bar is missing in plugin detail view (#2095) (Jessica Höck)
+-Fixed issue #T1264: Menu navigation issues  (#2052) (Jessica Höck)
+-Fixed issue #T1055: Optimization open/closed-access mode and survey activation screens (#2097) (Jessica Höck)
+-Fixed issue #17688: When importing a group with question with default value, default values are not imported (#2132) (Gabriel Jenik)
+-Fixed issue #17676: Survey End URL Description gets scrambled if using HTML special chars (#2130) (Gabriel Jenik)
+-Fixed issue #17665: Update leads to database error integrity constraint violation because of duplicate entry (Olle Haerstedt)
+-Fixed issue #17632: Basic and detailed admin notification email fails (#2131) (Gabriel Jenik)
+-Fixed issue #17628: Inconsistent error message in case of soft mandatory (encuestabizdevgit)
+-Fixed issue #17525: VVImport: "Exclude record IDs" ignores existing entries while it should force "renumber" (#2115) (Denis Chenu)
+-Fixed issue #17224: When entering an invalid email when create token : lost all information (encuestabizdevgit)
+-Fixed issue #17223: With mandatory attribute : lost all current value when create a token (encuestabizdevgit)
+-Fixed issue #14955: Question relevance is not reassessed after group is shown (#2121) (Denis Chenu)
+-Fixed issue #14302: Easy way to get token in a anonymous survey (super admin) (Denis Chenu)
+-Fixed issue #12349: RTL languages not displayed correctly in the admin editor (encuestabizdevgit)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, eddylackmann, Hyperion, richterd, sur5r_
+#Updated translation: Dutch (Informal) by Han
+
+
+Changes from 5.1.17 (build 211025) to 5.1.18 (build 211101) November 1, 2021
+-Fixed issue: Update 446 should not create a session when called from command-line (Olle Haerstedt)
+-Fixed issue: Db update fails with old survey_x table (#2120) (Olle Härstedt)
+-Fixed issue: Cannot update to LimeSurvey5 from older LimeSurvey versions than 3 due to error in dbupdate 180 (Carsten Schmitz)
+-Fixed issue: Cannot search for parent admin in user list (Carsten Schmitz)
+-Fixed issue: Cannot browse response details in statistics (#2110) (Tim Willig)
+-Fixed issue #17666: Previewing a survey leads to DB error messages from log system (#2118) (Denis Chenu)
+-Fixed issue #17572: When adding a new participant the buttons are not properly working (#2104) (Gabriel Jenik)
+-Fixed issue #17568: database update 450 fails (Patrick Teichmann)
+-Fixed issue #16480: Empty logo causes under specific circumstances loops on the welcome page (#2058) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.1.16 (build 211020) to 5.1.17 (build 211025) October 25, 2021
+-Fixed issue: Simple statistics breaking if survey contains a free text question (Carsten Schmitz)
+-Fixed issue: SQL error when trying to deactivate an already deactivated survey (Carsten Schmitz)
+-Fixed issue: Quartiles cannot be calculated if question is encrypted (Carsten Schmitz)
+-Fixed issue: Missing information in question summary if question is encrypted (Carsten Schmitz)
+-Fixed issue #17641: Close button on the 'Survey participant export options' does not work (#2088) (Gabriel Jenik)
+-Fixed issue #17635: In a "de-informal" survey loading a label set as answers into a "List"-type question results in error (Carsten Schmitz)
+-Fixed issue #17622: Cant export "Not completed" survey participant when "Anonymized responses" is set "No" (#2080) (Olle Härstedt)
+-Fixed issue #17593: Generated answer code is too long (#2059) (Gabriel Jenik)
+-Fixed issue #17548: If a slider is displayed vertically the position of max value is wrong (#2081) (Gabriel Jenik)
+
+
+Changes from 5.1.15 (build 211011) to 5.1.16 (build 211020) October 20, 2021
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Catalan by qualitatuvic
+
+
+Changes from 5.1.14 (build 210927) to 5.1.15 (build 211011) October 11, 2021
+-Fixed issue: Error when sorting by group ID in group list (Carsten Schmitz)
+-Fixed issue #T424: Confusing message on survey import (#2075) (Gabriel Jenik)
+-Fixed issue #17649: White page by deleting a participant in a survey (Olle Haerstedt)
+-Fixed issue #17633: Changing Array (Texts) sub questions' label at runtime, manipulates question design (#2076) (Gabriel Jenik)
+-Fixed issue #17598: Save and close button on label sets list screen not working as expected (#2061) (Gabriel Jenik)
+-Fixed issue #17597: Back button on themes page not working as expected (#2067) (Gabriel Jenik)
+-Fixed issue #17596: Close button on global survey settings not working as expected (#2063) (Gabriel Jenik)
+-Fixed issue #17569: Unable to edit answer in single choice question after activate survey (#2054) (Gabriel Jenik)
+-Fixed issue #17554: If a user has more than one email associated the methods mail_registered_participants and invite_participants fail (#2041) (Gabriel Jenik)
+-Fixed issue #17549: Hint for page break (#2066) (Gabriel Jenik)
+-Fixed issue #17526: Filter html_entity_decode at save (#2017) (Gabriel Jenik)
+-Fixed issue #17504: Responses Batch deletion modal only opens the first time (#2046) (Gabriel Jenik)
+-Fixed issue #17421: When upgrading from LS3 to LS5, plugin Manager can't be used if non-compatible plugins are found (Olle Haerstedt)
+-Fixed issue #17416: Lost of Total and Remaining in multi numeric (#2077) (Gabriel Jenik)
+-Fixed issue #17317: Missing green bar breadcrumbs when importing zip file resources (#2074) (Gabriel Jenik)
+-Fixed issue #15608: No success message when deleting single custom attributes from CPDB (#2068) (Gabriel Jenik)
+-Fixed issue #13601: {TIME} placeholder not working (#2060) (Gabriel Jenik)
+#Updated translation: Xhosa by c_schmitz, erik.lamontagne
+#Updated translation: Turkish by bulent, kayazeren
+#Updated translation: Slovak by jelen1, jlcavazza
+#Updated translation: Sinhala by sayuri
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Brazil) by c_schmitz, educaticteced
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, Hyperion, lsurvey20, RobinBur
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Chinese (Hong Kong) (Traditional) by c_schmitz
+#Updated translation: Bulgarian by peterx
+#Updated translation: Azerbaijani by abdul42
+
+
 Changes from 5.1.13 (build 210923) to 5.1.14 (build 210927) September 27, 2021
 -Fixed issue #T1228: Close button does not work when attempting to abort importing participants from CSV file (#2051) (Gabriel Jenik)
 -Fixed issue #17611: Updating from 2.05 or earlier throws error "Undefined function getDBConnectionStringProperty()" (Carsten Schmitz)

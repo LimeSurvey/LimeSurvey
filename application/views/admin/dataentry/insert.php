@@ -55,7 +55,7 @@
                     <br /><br />
 
                     <?php if(isset($thisid) && Permission::model()->hasSurveyPermission($surveyid, 'responses','read')): ?>
-                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
+                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl("responses/view/", ['surveyId' => $surveyid, 'id' => $thisid]); ?>', '_top')" />
                         <br /><br />
                     <?php endif; ?>
 

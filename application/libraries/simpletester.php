@@ -1,4 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -13,8 +17,9 @@
  */
 $libraryDir = APPPATH . 'libraries/simpletest';
 
-if(!is_dir($libraryDir))
+if (!is_dir($libraryDir)) {
     exit("Simpletest must be located in \"$libraryDir\"");
+}
 
 require_once($libraryDir . '/unit_tester.php');
 require_once($libraryDir . '/mock_objects.php');
@@ -33,99 +38,99 @@ require_once($libraryDir . '/reporter.php');
 */
 class SimpleTester
 {
-	/**
-	* What reporter should be used for display.
-	* Could be either HtmlReporter, SmallReporter, MinimalReporter or ShowPasses.
-	*/
-	public $Reporter = 'MinimalReporter';
+    /**
+    * What reporter should be used for display.
+    * Could be either HtmlReporter, SmallReporter, MinimalReporter or ShowPasses.
+    */
+    public $Reporter = 'MinimalReporter';
 
     private $testDir;
     private $testTitle;
     private $fileExtension;
 
-	public function __construct($params)
-	{
+    public function __construct($params)
+    {
         $ci =& get_instance();
 
-        if(isset($params['runFromIPs']) && strpos($params['runFromIPs'], $ci->input->server('SERVER_ADDR') === FALSE))
-        {
+        if (isset($params['runFromIPs']) && strpos($params['runFromIPs'], $ci->input->server('SERVER_ADDR') === false)) {
             // Tests won't be run automatically from this IP.
-            $params['noautorun'] = TRUE;
+            $params['noautorun'] = true;
         }
 
         // Check if call was an AJAX call. No point in running test
         // if not seen and may break the call.
         $header = 'CONTENT_TYPE';
-        if(!empty($_SERVER[$header])) {
-        	// @todo Content types could be placed in config.
-        	$ajaxContentTypes = array('application/x-www-form-urlencoded', 'multipart/form-data');
-        	foreach ($ajaxContentTypes as $ajaxContentType) {
-        		if(false !== stripos($_SERVER[$header], $ajaxContentType))
-        		{
-        			$params['noautorun'] = TRUE;
-        			break;
-        		}
-        	}
+        if (!empty($_SERVER[$header])) {
+            // @todo Content types could be placed in config.
+            $ajaxContentTypes = array('application/x-www-form-urlencoded', 'multipart/form-data');
+            foreach ($ajaxContentTypes as $ajaxContentType) {
+                if (false !== stripos($_SERVER[$header], $ajaxContentType)) {
+                    $params['noautorun'] = true;
+                    break;
+                }
+            }
         }
 
         $this->testDir = $params['testDir'];
         $this->testTitle = $params['testTitle'];
         $this->fileExtension = $params['fileExtension'];
 
-        if(isset($params['reporter']))
+        if (isset($params['reporter'])) {
             $this->Reporter = $params['reporter'];
+        }
 
-        if(!isset($params['noautorun']) || $params['noautorun'] == FALSE)
+        if (!isset($params['noautorun']) || $params['noautorun'] == false) {
             echo $this->Run();
-	}
+        }
+    }
 
     /**
     * Run the tests, returning the reporter output.
     */
-	public function Run()
-	{
-		// Save superglobals that might be tested.
-		if(isset($_SESSION)) $oldsession = $_SESSION;
-		$oldrequest = $_REQUEST;
-		$oldpost = $_POST;
-		$oldget = $_GET;
-		$oldfiles = $_FILES;
-		$oldcookie = $_COOKIE;
+    public function Run()
+    {
+        // Save superglobals that might be tested.
+        if (isset($_SESSION)) {
+            $oldsession = $_SESSION;
+        }
+        $oldrequest = $_REQUEST;
+        $oldpost = $_POST;
+        $oldget = $_GET;
+        $oldfiles = $_FILES;
+        $oldcookie = $_COOKIE;
 
-		$group_test = new TestSuite($this->testTitle);
+        $group_test = new TestSuite($this->testTitle);
 
-		// Add files in tests_dir
-		if(is_dir($this->testDir))
-		{
-			if($dh = opendir($this->testDir))
-			{
-				while(($file = readdir($dh)) !== FALSE)
-				{
+        // Add files in tests_dir
+        if (is_dir($this->testDir)) {
+            if ($dh = opendir($this->testDir)) {
+                while (($file = readdir($dh)) !== false) {
                     // Test if file ends with php, then include it.
-                    if(substr($file, -(strlen($this->fileExtension)+1)) == '.' . $this->fileExtension)
-                    {
-					    $group_test->addFile($this->testDir . "/$file");
+                    if (substr($file, -(strlen($this->fileExtension) + 1)) == '.' . $this->fileExtension) {
+                        $group_test->addFile($this->testDir . "/$file");
                     }
-				}
-				closedir($dh);
-			}
-		}
+                }
+                closedir($dh);
+            }
+        }
 
-		// Start the tests
-		ob_start();
-		$group_test->run(new $this->Reporter);
-		$output_buffer = ob_get_clean();
+        // Start the tests
+        ob_start();
+        $group_test->run(new $this->Reporter());
+        $output_buffer = ob_get_clean();
 
         // Restore superglobals
-		if(isset($oldsession)) $_SESSION = $oldsession;
-		$_REQUEST = $oldrequest;
-		$_POST = $oldpost;
-		$_GET = $oldget;
-		$_FILES = $oldfiles;
-		$_COOKIE = $oldcookie;
+        if (isset($oldsession)) {
+            $_SESSION = $oldsession;
+        }
+        $_REQUEST = $oldrequest;
+        $_POST = $oldpost;
+        $_GET = $oldget;
+        $_FILES = $oldfiles;
+        $_COOKIE = $oldcookie;
 
-		return $output_buffer;
-	}
+        return $output_buffer;
+    }
 }
 
 // Html output reporter classes //////////////////////////////////////
@@ -175,13 +180,10 @@ class SmallReporter extends HtmlReporter
 
     function paintFooter($test_name)
     {
-        if($this->getFailCount() + $this->getExceptionCount() == 0)
-        {
+        if ($this->getFailCount() + $this->getExceptionCount() == 0) {
             $text = $this->getPassCount() . " tests ok";
             print "<div style=\"background-color:#F5FFA8; text-align:center; right:10px; top:30px; border:2px solid green; z-index:10; position:absolute;\">$text</div>";
-        }
-        else
-        {
+        } else {
             parent::paintFooter($test_name);
             print "</div>";
         }
@@ -189,11 +191,10 @@ class SmallReporter extends HtmlReporter
 
     function paintFail($message)
     {
-        static $header = FALSE;
-        if(!$header)
-        {
+        static $header = false;
+        if (!$header) {
             $this->newPaintHeader();
-            $header = TRUE;
+            $header = true;
         }
         parent::paintFail($message);
     }
@@ -217,8 +218,7 @@ class MinimalReporter extends SmallReporter
 {
     function paintFooter($test_name)
     {
-        if($this->getFailCount() + $this->getExceptionCount() != 0)
-        {
+        if ($this->getFailCount() + $this->getExceptionCount() != 0) {
             parent::paintFooter($test_name);
             print "</div>";
         }

@@ -29,7 +29,7 @@
         <?php if ($respstatsread && $oSurvey->isActive):?>
             <!-- Responses & statistics -->
             <li>
-                <a class="pjax" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$oSurvey->sid/");?>' >
+                <a class="pjax" href='<?php echo $this->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]);?>' >
                     <span class="icon-browse"></span>
                     <?php eT("Responses & statistics"); ?>
                 </a>

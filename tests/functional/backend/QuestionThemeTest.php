@@ -198,7 +198,7 @@ class QuestionThemeTest extends TestBaseClassWeb
         );
         self::$webDriver->get($url);
 
-        // Execute survey
+        // Run survey
         $button = self::$webDriver->findById('execute_survey_button') ;
         $button->click();
         sleep(1);

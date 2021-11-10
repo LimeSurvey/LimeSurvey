@@ -29,7 +29,7 @@ class tokens extends Survey_Common_Action
      * @param int $surveyid  The survey ID
      * @return void
      */
-    public function index($surveyid)
+    public function index(int $surveyid)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
@@ -609,6 +609,14 @@ class tokens extends Survey_Common_Action
 
             $aData['topBar']['name'] = 'tokensTopbar_view';
 
+            if ($aData['success']) {
+                if ($request->getPost('close-after-save')) {
+                    $redirectUrl = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+                } else {
+                    $redirectUrl = Yii::app()->createUrl("/admin/tokens/sa/edit", ["iSurveyId" => $iSurveyId, "iTokenId" => $token->tid]);
+                }
+                $this->getController()->redirect($redirectUrl);
+            }
             $this->_renderWrappedTemplate('token', array('addtokenpost'), $aData);
         } else {
             $this->_handletokenform($iSurveyId, "addnew");
@@ -721,6 +729,10 @@ class tokens extends Survey_Common_Action
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
 
+                if (!empty($sOutput)) {
+                    \ls\ajax\AjaxHelper::outputError($sOutput);
+                }
+
                 $token = Token::model($iSurveyId)->findByPk($iTokenId);
                 $token->decrypt();
                 foreach ($aTokenData as $k => $v) {
@@ -730,7 +742,7 @@ class tokens extends Survey_Common_Action
                 $result = $token->encryptSave(true);
 
                 if ($result) {
-                    \ls\ajax\AjaxHelper::outputSuccess($sOutput . gT('The survey participant was successfully updated.'));
+                    \ls\ajax\AjaxHelper::outputSuccess(gT('The survey participant was successfully updated.'));
                 } else {
                     $errors = $token->getErrors();
                     $firstError = reset($errors);
@@ -1537,7 +1549,6 @@ class tokens extends Survey_Common_Action
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         } else {
-
             $aData['surveyid'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId); // For tokenbar view
             $aData['sAction'] = App()->createUrl("admin/tokens", array("sa" => "exportdialog", "surveyid" => $iSurveyId));
@@ -1608,16 +1619,10 @@ class tokens extends Survey_Common_Action
                 ),
             );
 
-            // Save Button
-            $aData['showSaveButton'] = true;
-
-            // Save and Close Button
-            $aData['showSaveAndCloseButton'] = true;
-
             // White Close Button
             $aData['showWhiteCloseButton'] = true;
-            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
-            
+            $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
+
             $aData['topBar']['name'] = 'tokensTopbar_view';
             $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2211,7 +2216,7 @@ class tokens extends Survey_Common_Action
         $aData['thischaracterset'] = $thischaracterset;
 
         $aData['showCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
 
@@ -2282,7 +2287,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @return void
      */
-    public function kill($iSurveyId)
+    public function kill(int $iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -2313,15 +2318,8 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getQuery('ok')) {
             $aData['sidemenu']['state'] = false;
-            $this->_renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Delete survey participants table"),
-            'message' => gT("If you delete this table access codes will no longer be required to access this survey.") . "<br />" . gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
-            . sprintf('("%s")<br /><br />', $newtableDisplay)
-            . "<input class='btn btn-danger' type='submit' value='"
-            . gT("Delete table") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y") . "', '_top')\" />\n"
-            . "<input class='btn btn-default' type='submit' value='"
-            . gT("Cancel") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}") . "', '_top')\" />\n"
-            )), $aData);
+            $aData['backupTableName']   = $newtableDisplay;
+            $this->_renderWrappedTemplate('token', 'deleteParticipantsTable', $aData);
         } else /* The user has confirmed they want to delete the tokens table */
         {
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
@@ -2340,14 +2338,8 @@ class tokens extends Survey_Common_Action
             SurveyLink::model()->deleteLinksBySurvey($iSurveyId);
 
             $aData['sidemenu']['state'] = false;
-            $this->_renderWrappedTemplate('token', array('message' => array(
-            'title' => gT("Delete survey participants table"),
-            'message' => '<br />' . gT("The participant table has now been removed and access codes are no longer required to access this survey.") . "<br /> " . gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
-            . sprintf('("%s")<br /><br />', $newtableDisplay)
-            . "<input type='submit' class='btn btn-default' value='"
-            . gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("surveyAdministration/view/surveyid/" . $iSurveyId) . "', '_top')\" />"
-            )), $aData);
-
+            $aData['backupTableName'] = $newtableDisplay;
+            $this->_renderWrappedTemplate('token', 'afterDeleteParticipantsTable', $aData);
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         }
     }
@@ -2402,7 +2394,7 @@ class tokens extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
-        
+
         // Save Button
         $aData['topBar']['showSaveButton'] = true;
         // Back Button
@@ -2487,7 +2479,7 @@ class tokens extends Survey_Common_Action
         $aData['showSaveAndCloseButton'] = true;
         // White Close Button
         $aData['showWhiteCloseButton'] = true;
-        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/index/surveyid/' . $iSurveyId);
+        $aData['closeUrl'] = Yii::app()->createUrl('admin/tokens/sa/browse/surveyid/' . $iSurveyId);
 
         $aData['topBar']['name'] = 'tokensTopbar_view';
         $aData['topBar']['rightSideView'] = 'tokensTopbarRight_view';
@@ -2763,9 +2755,12 @@ class tokens extends Survey_Common_Action
 
     /**
      * This method echos HTML and ends.
+     * @param int   $iSurveyId
+     * @param array $aSurveyLangs
+     * @param array $aData
      * @return void
      */
-    protected function showInviteOrReminderEmailForm($iSurveyId, $aSurveyLangs, $aData)
+    protected function showInviteOrReminderEmailForm(int $iSurveyId, array $aSurveyLangs, array $aData)
     {
         $SQLemailstatuscondition = $this->getSQLemailstatuscondition();
         $sSubAction = $this->getSubAction();

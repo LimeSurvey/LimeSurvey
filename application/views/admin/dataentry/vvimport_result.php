@@ -31,7 +31,7 @@
                     <a class='limebutton submit' href='<?php echo $url['link'] ?>'><?php echo $url['text'] ?></a>
                 <?php } ?>
             <?php }else{ ?>
-                    <a class='limebutton submit' href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$iSurveyId"); ?>'><?php eT("Browse responses") ?></a>
+                    <a class='limebutton submit' href='<?php echo $this->createUrl("responses/browse/", ['surveyId' => $iSurveyId]); ?>'><?php eT("Browse responses") ?></a>
             <?php } ?>
         </div>
     </div>

@@ -6,4 +6,6 @@
         <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
         <exclude name="Generic.Files.LineLength"/>
     </rule>
+    <exclude-pattern>application/helpers/Zend/*</exclude-pattern>
+    <exclude-pattern>application/helpers/adodb/*</exclude-pattern>
 </ruleset>

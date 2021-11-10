@@ -60,7 +60,7 @@ if (!$isActive) {
 if ($hasSurveyContentPermission) {
     // Preview Survey Button
     $title = (!$isActive) ? 'preview_survey' : 'execute_survey';
-    $name = (!$isActive) ? gT('Preview survey') : gT('Execute survey');
+    $name = (!$isActive) ? gT('Preview survey') : gT('Run survey');
 
     if (safecount($oSurvey->allLanguages) > 1) {
         $preview_buttons = [];
@@ -348,7 +348,7 @@ if ($isActive) {
     if ($hasResponsesStatisticsReadPermission && $isActive) {
         $buttons['responses_statistics'] = [
             'class' => 'pjax',
-            'url' => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
+            'url' => $this->createUrl("responses/index/", ['surveyId' => $sid]),
             'icon' => 'icon-browse',
             'name' => gT('Responses & statistics', 'js'),
             'id' => 'responses_statistics',

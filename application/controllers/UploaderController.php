@@ -24,7 +24,7 @@ class UploaderController extends SurveyController
     public function run($actionID)
     {
         $surveyid = Yii::app()->session['LEMsid'];
-        if(empty($surveyid)) {
+        if (empty($surveyid)) {
             throw new CHttpException(401, gT("We are sorry but your session has expired."));
         }
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -300,7 +300,7 @@ class UploaderController extends SurveyController
         /* No action */
         $meta = '';
         App()->getClientScript()->registerPackage('question-file-upload');
-        
+
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
         $oEvent = new PluginEvent('beforeSurveyPage');
         $oEvent->set('surveyId', $surveyid);

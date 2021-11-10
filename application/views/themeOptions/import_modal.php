@@ -22,7 +22,7 @@
             <?php
             Yii::app()->getController()->renderPartial(
                 '/layouts/partial_modals/modal_header',
-                ['modalTitle' => gT("Upload theme file")]
+                ['modalTitle' => gT("Upload and install theme file")]
             );
             ?>
                 <div class="modal-body">

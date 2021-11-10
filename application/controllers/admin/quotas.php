@@ -126,9 +126,13 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    public function index($iSurveyId, $quickreport = false)
+    /**
+     * Index
+     * @param int $iSurveyId
+     * @param bool $quickreport Default is false
+     */
+    public function index(int $iSurveyId, bool $quickreport = false)
     {
-
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'read');
         $aData = $this->_getData($iSurveyId);
@@ -147,7 +151,7 @@ class quotas extends Survey_Common_Action
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyID . ")";
         $aData['subaction'] = gT("Survey quotas");
 
-        //$aData['surveybar']['active_survey_properties'] = 'quotas';
+        // TODO: I dont think that is is needed anymore. Remove it.
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';
         $aData['surveybar']['active_survey_properties']['txt'] = gT("Quotas");
@@ -170,9 +174,13 @@ class quotas extends Survey_Common_Action
             ),
         ));
 
-
         //if there are quotas let's proceed
         $aViewUrls['output'] = '';
+
+        // TopBar
+        $aData['topBar']['name'] = 'surveyTopbar_view';
+        $aData['topBar']['leftSideView'] = 'quotasTopbarLeft_view';
+
         if (!empty($oSurvey->quotas)) {
             $aData['output'] = '';
             $aQuotaItems = array();
@@ -237,7 +245,6 @@ class quotas extends Survey_Common_Action
             }
         } else {
             // No quotas have been set for this survey
-            //$aViewUrls[] = 'viewquotasempty_view';
             $aData['output'] = $this->getController()->renderPartial('/admin/quotas/viewquotasempty_view', $aData, true);
         }
 
@@ -258,8 +265,11 @@ class quotas extends Survey_Common_Action
         }
     }
 
-
-    public function insertquotaanswer($iSurveyId)
+    /**
+     * Insert Quota answer
+     * @param int $iSurveyId
+     */
+    public function insertquotaanswer(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
@@ -287,7 +297,11 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    public function delans($iSurveyId)
+    /**
+     * Delete answers
+     * @param int $iSurveyId
+     */
+    public function delans(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
@@ -301,7 +315,11 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
-    public function delquota($iSurveyId)
+    /**
+     * Delete Quota
+     * @param int $iSurveyId
+     */
+    public function delquota(int $iSurveyId)
     {
         $this->requirePostRequest();
 
@@ -319,7 +337,11 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
-    function editquota($iSurveyId)
+    /**
+     * Edit Quota
+     * @param int iSurveyId
+     */
+    function editquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -354,7 +376,6 @@ class quotas extends Survey_Common_Action
             }
         }
 
-
         $aData['oQuota'] = $oQuota;
         $aData['aQuotaLanguageSettings'] = array();
         foreach ($oQuota->languagesettings as $languagesetting) {
@@ -366,7 +387,6 @@ class quotas extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
 
-        //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $iSurveyId; // Close button
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['topBar']['showSaveButton'] = true;
@@ -412,7 +432,7 @@ class quotas extends Survey_Common_Action
 
             foreach ($aQuestionAnswers as $aQACheck) {
                 if (isset($aQACheck['rowexists'])) {
-                                    $x++;
+                    $x++;
                 }
             }
 
@@ -431,7 +451,11 @@ class quotas extends Survey_Common_Action
         $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
-    public function newquota($iSurveyId)
+    /**
+     * New Quota
+     * @param int iSurveyId
+     */
+    public function newquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -451,7 +475,6 @@ class quotas extends Survey_Common_Action
         $oQuota = new Quota();
         $oQuota->sid = $oSurvey->primaryKey;
 
-
         if (isset($_POST['Quota'])) {
             $oQuota->attributes = $_POST['Quota'];
             if ($oQuota->save()) {
@@ -460,7 +483,6 @@ class quotas extends Survey_Common_Action
                     $oQuotaLanguageSetting->attributes = $settingAttributes;
                     $oQuotaLanguageSetting->quotals_quota_id = $oQuota->primaryKey;
                     $oQuotaLanguageSetting->quotals_language = $language;
-
 
                     //Clean XSS - Automatically provided by CI
                     $oQuotaLanguageSetting->quotals_message = html_entity_decode($oQuotaLanguageSetting->quotals_message, ENT_QUOTES, "UTF-8");
@@ -503,13 +525,13 @@ class quotas extends Survey_Common_Action
     }
 
     /**
-     *
+     * Get Quota Answers
      * @param integer $iQuestionId
      * @param integer $iSurveyId
      * @param integer $iQuotaId
      * @return array
      */
-    public function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
+    public function getQuotaAnswers(int $iQuestionId, int $iSurveyId, int $iQuotaId)
     {
         $iQuestionId = sanitize_int($iQuestionId);
         $iSurveyId   = sanitize_int($iSurveyId);
@@ -518,7 +540,6 @@ class quotas extends Survey_Common_Action
         $sBaseLang   = $aData['sBaseLang'];
         $this->_checkPermissions($iSurveyId, 'read');
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-
 
         $aQuestion = Question::model()
             ->with('questionl10ns', array('language' => $sBaseLang))
@@ -539,7 +560,7 @@ class quotas extends Survey_Common_Action
             $aAnswerList = array(
                 'M' => array('Title' => $aQuestion['title'], 'Display' => gT("Male"), 'code' => 'M'),
                 'F' => array('Title' => $aQuestion['title'], 'Display' => gT("Female"), 'code' => 'F'));
-        } elseif ($aQuestionType == Question::QT_L_LIST_DROPDOWN || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
+        } elseif ($aQuestionType == Question::QT_L_LIST || $aQuestionType == Question::QT_O_LIST_WITH_COMMENT || $aQuestionType == Question::QT_EXCLAMATION_LIST_DROPDOWN) {
             $aAnsResults = Answer::model()
                 ->with('answerl10ns', array('language' => $sBaseLang))
                 ->findAllByAttributes(array('qid' => $iQuestionId));
@@ -605,9 +626,10 @@ class quotas extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
+     * @param string       $sAction     Current action, the folder to fetch views from. Default is 'quotas'.
+     * @param string|array $aViewUrls   View url(s)
+     * @param array        $aData       Data to be passed on. Optional.
+     * @param bool         $sRenderFile Default is false.
      */
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {

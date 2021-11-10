@@ -1467,13 +1467,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             );
 
             foreach ($aUsers as $oUser) {
-                if (!Permission::model()->hasGlobalPermission('auth_db', 'read', $oUser->uid)) {
-                    $oPermission = new Permission();
-                    foreach ($aPerm as $k => $v) {
-                        $oPermission->$k = $v;
-                    }
-                    $oPermission->uid = $oUser->uid;
-                    $oPermission->save();
+                $permissionExists = $oDB->createCommand()->select('id')->from("{{permissions}}")->where(
+                    "(permission='auth_db' OR permission='superadmin') and read_p=1 and entity='global' and uid=:uid",
+                    [':uid' => $oUser->uid]
+                )->queryScalar();
+                if ($permissionExists == false) {
+                    $newPermission = $aPerm;
+                    $newPermission['uid'] = $oUser->uid;
+                    $oDB->createCommand()->insert("{{permissions}}", $newPermission);
                 }
             }
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 180), "stg_name='DBVersion'");
@@ -1680,6 +1681,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 if (in_array('seed', $oTableSchema->columnNames)) {
                     continue;
                 }
+                removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
                 // If survey has active table, create seed column
                 Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
@@ -3543,7 +3545,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         '{{surveys}}',
                         [
                             'bounceaccountpass' => LSActiveRecord::encryptSingle(
-                                $aSurvey->bounceaccountpass
+                                $aSurvey['bounceaccountpass']
                             )
                         ],
                         "sid=" . $aSurvey['sid']
@@ -3635,7 +3637,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 420), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
 
         if ($iOldDBVersion < 421) {
             $oTransaction = $oDB->beginTransaction();
@@ -4166,7 +4167,41 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /* Add public boolean to surveygroup : view forl all in list */
         if ($iOldDBVersion < 435) {
             $oTransaction = $oDB->beginTransaction();
+            // Check if default survey groups exists - at some point it was possible to delete it
+            $defaultSurveyGroupExists = $oDB->createCommand()
+            ->select('gsid')
+            ->from("{{surveys_groups}}")
+            ->where('gsid = 1')
+            ->queryScalar();
+            if ($defaultSurveyGroupExists == false) {
+                // Add missing default template
+                $date = date("Y-m-d H:i:s");
+                $oDB->createCommand()->insert('{{surveys_groups}}', array(
+                    'gsid'        => 1,
+                    'name'        => 'default',
+                    'title'       => 'Default',
+                    'description' => 'Default survey group',
+                    'sortorder'   => '0',
+                    'owner_uid'   => '1',
+                    'created'     => $date,
+                    'modified'    => $date,
+                    'created_by'  => '1'
+                ));
+            }
             $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
+            $oDB->createCommand()->update(
+                '{{surveys_groups}}',
+                array(
+                    'alwaysavailable' => '0',
+                )
+            );
+            $oDB->createCommand()->update(
+                '{{surveys_groups}}',
+                array(
+                    'alwaysavailable' => '0',
+                ),
+                "gsid=1"
+            );
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 435), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -4910,7 +4945,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         if ($iOldDBVersion < 473) {
             $oTransaction = $oDB->beginTransaction();
-
             $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
             foreach ($dir as $fileinfo) {
                 if (!$fileinfo->isDot()) {
@@ -4955,6 +4989,45 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 475), "stg_name='DBVersion'");
             $oTransaction->commit();
+        }
+
+        /**
+         * Sanitize theme option paths
+         */
+        if ($iOldDBVersion < 476) {
+            $oTransaction = $oDB->beginTransaction();
+            Yii::import('application.helpers.SurveyThemeHelper');
+            $templateConfigurations = $oDB->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
+            if (!empty($templateConfigurations)) {
+                foreach ($templateConfigurations as $templateConfiguration) {
+                    $decodedOptions = json_decode($templateConfiguration['options'], true);
+                    if (is_array($decodedOptions)) {
+                        foreach ($decodedOptions as &$value) {
+                            $value = SurveyThemeHelper::sanitizePathInOption($value, $templateConfiguration['template_name'], $templateConfiguration['sid']);
+                        }
+                        $sanitizedOptions = json_encode($decodedOptions);
+                        $oDB->createCommand()->update('{{template_configuration}}', ['options' => $sanitizedOptions], 'id=:id', [':id' => $templateConfiguration['id']]);
+                    }
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 476), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 477) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // refactored controller ResponsesController (surveymenu_entry link changes to new controller rout)
+            $oDB->createCommand()->update(
+                '{{surveymenu_entries}}',
+                [
+                    'menu_link' => 'responses/browse',
+                    'data'      => '{"render": {"isActive": true, "link": {"data": {"surveyId": ["survey", "sid"]}}}}'
+                ],
+                "name='responses'"
+            );
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 477], "stg_name='DBVersion'");
         }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -5139,7 +5212,7 @@ function decryptParticipantTables450($oDB)
             foreach ($tokens as $token) {
                 $recryptedToken = [];
                 foreach ($columnEncryptions as $column => $value) {
-                    if ($columnEncryptions[$column]['encrypted'] === 'Y') {
+                    if ($columnEncryptions[$column]['encrypted'] === 'Y' && isset($token[$column])) {
                         $decryptedTokenColumn = LSActiveRecord::decryptSingleOld($token[$column]);
                         $recryptedToken[$column] = LSActiveRecord::encryptSingle($decryptedTokenColumn);
                     }
@@ -5228,8 +5301,8 @@ function decryptArchivedTables450($oDB)
 
         // recrypt tokens
         if ($archivedTableSettings['tbl_type'] === 'token') {
-            // skip if the encryption status is unknown
-            if (!empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+            // skip if the encryption status is unknown, use reset because of mixed array types
+            if (!empty($archivedTableSettingsProperties) && reset($archivedTableSettingsProperties) !== 'unknown') {
                 $tokenencryptionoptions = $archivedTableSettingsProperties;
 
                 // default attributes
@@ -5237,8 +5310,8 @@ function decryptArchivedTables450($oDB)
                     $columnEncryptions[$column]['encrypted'] = $encrypted;
                 }
             }
-            // skip if the encryption status is unknown
-            if (!empty($archivedTableSettingsAttributes) && $archivedTableSettingsAttributes[0] !== 'unknown') {
+            // skip if the encryption status is unknown, use reset because of mixed array types
+            if (!empty($archivedTableSettingsAttributes) && reset($archivedTableSettingsAttributes) !== 'unknown') {
                 // find custom attribute column names
                 $table = tableExists("{{{$archivedTableSettings['tbl_name']}}}");
                 if (!$table) {
@@ -5277,8 +5350,8 @@ function decryptArchivedTables450($oDB)
             }
         }
 
-        // recrypt responses // skip if the encryption status is unknown
-        if ($archivedTableSettings['tbl_type'] === 'response' && !empty($archivedTableSettingsProperties) && $archivedTableSettingsProperties[0] !== 'unknown') {
+        // recrypt responses // skip if the encryption status is unknown, use reset because of mixed array types
+        if ($archivedTableSettings['tbl_type'] === 'response' && !empty($archivedTableSettingsProperties) && reset($archivedTableSettingsProperties) !== 'unknown') {
             $responsesCount = $oDB->createCommand()
                 ->select('count(*)')
                 ->from("{{{$archivedTableSettings['tbl_name']}}}")
@@ -5455,7 +5528,7 @@ function createFieldMap450($survey): array
                 }
             }
             switch ($arow['type']) {
-                case Question::QT_L_LIST_DROPDOWN:  //RADIO LIST
+                case Question::QT_L_LIST:  //RADIO LIST
                 case Question::QT_EXCLAMATION_LIST_DROPDOWN:  //DROPDOWN LIST
                     if ($arow['other'] === 'Y') {
                         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
@@ -5865,7 +5938,8 @@ function upgradeArchivedTableSettings446()
     $DBPrefix = Yii::app()->db->tablePrefix;
     $datestamp = time();
     $DBDate = date('Y-m-d H:i:s', $datestamp);
-    $userID = Yii::app()->user->getId();
+    // TODO: Inject user model instead. Polling for user will create a session, which breaks on command-line.
+    $userID = php_sapi_name() === 'cli' ? null : Yii::app()->user->getId();
     $forcedSuperadmin = Yii::app()->getConfig('forcedsuperadmin');
     $adminUserId = 1;
 
@@ -5968,6 +6042,7 @@ function upgradeSurveyTables402($sMySQLCollation)
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
             }
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             // No token field in this table
             switch (Yii::app()->db->driverName) {
                 case 'sqlsrv':
@@ -6773,8 +6848,10 @@ function upgradeSurveyTables253()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     foreach ($aTables as $sTable) {
         $oTableSchema = $oSchema->getTable($sTable);
+        removeMysqlZeroDate($sTable, $oTableSchema, $oDB);
         if (in_array('refurl', $oTableSchema->columnNames)) {
             alterColumn($sTable, 'refurl', "text");
         }
@@ -6913,9 +6990,11 @@ function upgradeSurveyTables183()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     if (!empty($aTables)) {
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (empty($oTableSchema->primaryKey)) {
                 addPrimaryKey(substr($sTableName, strlen(Yii::app()->getDb()->tablePrefix)), 'id');
             }
@@ -6934,6 +7013,7 @@ function upgradeSurveyTables181($sMySQLCollation)
         $aTables = dbGetTablesLike("survey\_%");
         foreach ($aTables as $sTableName) {
             $oTableSchema = $oSchema->getTable($sTableName);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
             if (!in_array('token', $oTableSchema->columnNames)) {
                 continue;
             }
@@ -7616,7 +7696,11 @@ function upgradeQuestionAttributes142()
 function upgradeSurveyTables139()
 {
     $aTables = dbGetTablesLike("survey\_%");
+    $oDB = Yii::app()->db;
     foreach ($aTables as $sTable) {
+        $oSchema = Yii::app()->db->schema;
+        $oTableSchema = $oSchema->getTable($sTable);
+        removeMysqlZeroDate($sTable, $oTableSchema, $oDB);
         addColumn($sTable, 'lastpage', 'integer');
     }
 }
@@ -8071,7 +8155,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
         return;
     }
 
-    foreach (explode(',', $labelSet['languages']) as $lang) {
+    foreach (explode(' ', $labelSet['languages']) as $lang) {
         if ($hasLanguageColumn) {
             $query = sprintf(
                 "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",
@@ -8090,10 +8174,38 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
             $oDB->createCommand(
                 sprintf(
                     "UPDATE {{labels}} SET code = %s WHERE id = %d",
-                    $oDB->quoteValue("L" . (string) $key + 1),
+                    $oDB->quoteValue("L" . (string) ($key + 1)),
                     $label['id']
                 )
             )->execute();
+        }
+    }
+}
+
+/**
+ * Remove all zero-dates in $tableName by checking datetime columns from $tableSchema
+ * Zero-dates are replaced with null where possible; otherwise 1970-01-01
+ *
+ * @param string $tableName
+ * @param CDbTableSchema $tableSchema
+ * @param CDbConnection $oDB
+ * @return void
+ */
+function removeMysqlZeroDate($tableName, CDbTableSchema $tableSchema, CDbConnection $oDB)
+{
+    // Do nothing if we're not using MySQL
+    if (Yii::app()->db->driverName !== 'mysql') {
+        return;
+    }
+
+    foreach ($tableSchema->columns as $columnName => $info) {
+        if ($info->dbType === 'datetime') {
+            try {
+                $oDB->createCommand()->update($tableName, [$columnName => null], "$columnName = 0");
+            } catch (Exception $e) {
+                // $columnName might not be allowed to be null, then try with 1970-01-01 Unix 0 date instead.
+                $oDB->createCommand()->update($tableName, [$columnName => '1970-01-01 00:00:00'], "$columnName = 0");
+            }
         }
     }
 }

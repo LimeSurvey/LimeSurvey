@@ -171,7 +171,7 @@ class statistics extends Survey_Common_Action
         $rows = Question::model()
             ->with(array('group' => array('alias' => 'g')))
             ->findAll(array('condition' => 'parent_qid = 0 AND g.sid=' . $surveyid, 'order' => 'group_order,question_order'));
-      
+
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
 
@@ -683,8 +683,6 @@ class statistics extends Survey_Common_Action
             $this->getController()->redirect($this->getController()->createUrl("/surveyAdministration/view/surveyid/{$oSurveyid}"));
         }
 
-
-        
         // Set language for questions and answers to base language of this survey
         $language = $oSurvey->language;
         $summary = array();
@@ -783,7 +781,6 @@ class statistics extends Survey_Common_Action
             }
         }
 
-
         // ----------------------------------- END FILTER FORM ---------------------------------------
 
         Yii::app()->loadHelper('admin/statistics');
@@ -802,7 +799,6 @@ class statistics extends Survey_Common_Action
         $aData['summary'] = $summary;
         $aData['oStatisticsHelper'] = $helper;
         $aData['expertstats'] = true;
-        
 
         //Call the javascript file
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'statistics.js', CClientScript::POS_BEGIN);
@@ -844,6 +840,11 @@ class statistics extends Survey_Common_Action
         $aData['topBar']['rightSideView'] = 'statisticsTopbarRight_view';
 
         $aData['sidemenu']['state'] = false;
+
+        // Set the active Sidemenu (for deeper navigation)
+        $aData['sidemenu']['isSideMenuElementActive'] = true;
+        $aData['sidemenu']['activeSideMenuElement']   = 'statistics';
+
         $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $oSurvey->currentLanguageSettings->surveyls_title;
         $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);

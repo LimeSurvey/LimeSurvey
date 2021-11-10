@@ -81,7 +81,7 @@ class QuestionAttribute extends LSActiveRecord
     {
         return array('index' => 'attribute');
     }
-    
+
     /** @inheritdoc */
     public function rules()
     {
@@ -435,7 +435,7 @@ class QuestionAttribute extends LSActiveRecord
      * the attribute is missing. In those cases, the deault "core" is used.
      *
      * @return string question_template or 'core' if it not exists
-     * 
+     *
      * @deprecated use $question->question_theme_name instead (Question model)
      */
     public static function getQuestionTemplateValue($questionID)
@@ -476,7 +476,7 @@ class QuestionAttribute extends LSActiveRecord
             }
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
-            }            
+            }
         } else {
             return null;
         }

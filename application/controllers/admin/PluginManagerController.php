@@ -22,6 +22,9 @@ use LimeSurvey\Menu\MenuItem;
  */
 class PluginManagerController extends Survey_Common_Action
 {
+    /**
+     * Init
+     */
     public function init()
     {
     }
@@ -164,6 +167,10 @@ class PluginManagerController extends Survey_Common_Action
         );
     }
 
+    /**
+     * Delete files
+     * @param $plugin
+     */
     public function deleteFiles($plugin)
     {
         $this->requirePostRequest();
@@ -278,6 +285,7 @@ class PluginManagerController extends Survey_Common_Action
 
     /**
      * Configure for plugin
+     * @param int $id
      */
     public function configure($id)
     {
@@ -336,36 +344,41 @@ class PluginManagerController extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $url = App()->createUrl("admin/pluginmanager/sa/index");
             $aButtons = array(
-                'save' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save'),
-                    'class' => array('btn-success'),
-                    'type'  => 'submit'
+                'cancel' => array(
+                    'label' => '<span class="fa fa-close"></span> ' . gT('Close'),
+                    'class' => array('btn btn-danger'),
+                    'type'  => 'link',
+                    'href' => $url,
                 ),
                 'redirect' => array(
-                    'label' => '<span class="fa fa-floppy-o" aria-hidden="true"</span> ' . gT('Save and close'),
-                    'class' => array('btn-default'),
+                    'label' => '<span class="fa fa-check-square"></span> ' . gT('Save and close'),
+                    'class' => array('btn btn-default'),
                     'type'  => 'submit',
                     'value' => $url,
                 ),
-                'cancel' => array(
-                    'label' => gT('Close'),
-                    'class' => array('btn-danger'),
-                    'type'  => 'link',
-                    'href' => $url,
+                'save' => array(
+                    'label' => '<span class="fa fa-check"></span> ' . gT('Save'),
+                    'class' => array('btn btn-success'),
+                    'type'  => 'submit'
                 ),
             );
         }
         // Send to view plugin porperties: name and description
         $aPluginProp = App()->getPluginManager()->getPluginInfo($plugin->name);
 
+        // Fullpage Bar
         $fullPageBar = [];
         $fullPageBar['returnbutton']['url'] = 'admin/pluginmanager/sa/index';
         $fullPageBar['returnbutton']['text'] = gT('Return to plugin list');
+
+        // Green Bar with Page Title
+        $pageTitle = gT("Plugin:") . ' ' . $plugin['name'];
 
         $this->_renderWrappedTemplate(
             'pluginmanager',
             'configure',
             [
+                'pageTitle'    => $pageTitle,
                 'settings'     => $aSettings,
                 'buttons'      => $aButtons,
                 'plugin'       => $plugin,

@@ -75,6 +75,7 @@ class ExpressionManager
     private $RDP_result; // final result of evaluating the expression;
     private $RDP_evalStatus; // true if $RDP_result is a valid result, and  there are no serious errors
     private $varsUsed; // list of variables referenced in the equation
+    public $resetErrorsAndWarningsOnEachPart = true;
 
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed; // full list of variables used within the string, even if contains multiple expressions
@@ -356,7 +357,7 @@ class ExpressionManager
         /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
         $arg1[0] = ($arg1[2] == "NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
         $arg2[0] = ($arg2[2] == "NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
-        
+
         $bNumericArg1 = $arg1[0] !== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
         $bNumericArg2 = $arg2[0] !== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
@@ -405,7 +406,7 @@ class ExpressionManager
                 $arg2[0] = strval($arg2[0]);
             }
         }
-        
+
         switch (strtolower($token[0])) {
             case 'or':
             case '||':
@@ -1986,7 +1987,7 @@ class ExpressionManager
             } else {
                 ++$this->substitutionNum;
                 $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
-                if ($this->RDP_Evaluate($expr, false, false)) { // We call RDP_Evaluate with $resetErrorsAndWarnings = false because, if $src has more than one expression, error information could be lost
+                if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
                     // show original and errors in-line only if user have the rigth to update survey content
@@ -2122,7 +2123,7 @@ class ExpressionManager
         if (!$this->RDP_isValidFunction($name)) {
             return false;
         }
-        
+
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
         $result = 1; // default value for $this->RDP_onlyparse
@@ -2981,7 +2982,7 @@ function exprmgr_listifop($args)
     $value = array_shift($args);
     $retAttr = array_shift($args);
     $glue = array_shift($args);
-    
+
     $validAttributes = "/" . LimeExpressionManager::getRegexpValidAttributes() . "/";
     if (! preg_match($validAttributes, $cmpAttr)) {
         return $cmpAttr . " not recognized ?!";
@@ -2989,11 +2990,11 @@ function exprmgr_listifop($args)
     if (! preg_match($validAttributes, $retAttr)) {
         return $retAttr . " not recognized ?!";
     }
-    
+
     foreach ($args as $sgqa) {
         $cmpVal = LimeExpressionManager::GetVarAttribute($sgqa, $cmpAttr, null, -1, -1);
         $match = false;
-        
+
         switch ($op) {
             case '==':
             case 'eq':
@@ -3027,7 +3028,7 @@ function exprmgr_listifop($args)
                 }
                 break;
         }
-        
+
         if ($match) {
             $retVal = LimeExpressionManager::GetVarAttribute($sgqa, $retAttr, null, -1, -1);
             if ($result != "") {
@@ -3036,7 +3037,7 @@ function exprmgr_listifop($args)
             $result .= $retVal;
         }
     }
-    
+
     return $result;
 }
 

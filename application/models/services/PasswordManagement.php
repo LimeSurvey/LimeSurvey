@@ -215,32 +215,9 @@ class PasswordManagement
      */
     private function sendAdminMail($type = self::EMAIL_TYPE_REGISTRATION): \LimeMailer
     {
-        $absolutUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
-
         switch ($type) {
             case self::EMAIL_TYPE_RESET_PW:
-                $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
-                    'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
-                );
-                $renderArray = [
-                    'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
-                    'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
-                        . sprintf(
-                            gT(
-                                "This is an automated email to notify you that your login credentials for '%s' have been reset."
-                            ),
-                            \Yii::app()->getConfig("sitename")
-                        ),
-                    'credentialsText' => gT("Here are your new credentials."),
-                    'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
-                    'linkToAdminpanel' => $absolutUrl,
-                    'username' => $this->user->users_name,
-                    'password' => $passwordResetUrl,
-                    'mainLogoFile' => LOGO_URL,
-                    'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
-                        && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
-                    'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,
-                ];
+                $renderArray = $this->getRenderArray();
                 $subject = "[" . \Yii::app()->getConfig("sitename") . "] " . gT(
                     "Your login credentials have been reset"
                 );
@@ -272,5 +249,35 @@ class PasswordManagement
         $mailer->emailType = $emailType;
         $mailer->sendMessage();
         return $mailer;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRenderArray()
+    {
+        $absolutUrl = \Yii::app()->getController()->createAbsoluteUrl("/admin");
+        $passwordResetUrl = \Yii::app()->getController()->createAbsoluteUrl(
+            'admin/authentication/sa/newPassword/param/' . $this->user->validation_key
+        );
+        return [
+            'surveyapplicationname' => \Yii::app()->getConfig("sitename"),
+            'emailMessage' => sprintf(gT("Hello %s,"), $this->user->full_name) . "<br />"
+            . sprintf(
+                gT(
+                    "This is an automated email to notify you that your login credentials for '%s' have been reset."
+                ),
+                \Yii::app()->getConfig("sitename")
+            ),
+            'credentialsText' => gT("Here are your new credentials."),
+            'siteadminemail' => \Yii::app()->getConfig("siteadminemail"),
+            'linkToAdminpanel' => $absolutUrl,
+            'username' => $this->user->users_name,
+            'password' => $passwordResetUrl,
+            'mainLogoFile' => LOGO_URL,
+            'showPasswordSection' => \Yii::app()->getConfig("auth_webserver") === false
+            && \Permission::model() ->hasGlobalPermission('auth_db', 'read', $this->user->uid),
+            'showPassword' => \Yii::app()->getConfig("display_user_password_in_email") === true,
+        ];
     }
 }

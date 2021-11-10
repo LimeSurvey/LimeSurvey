@@ -769,11 +769,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
       arr.forEach(function(entry) {
         const lang = entry[0];
         const row = entry[1];
-        if (lang.length !== 2) {
-          alert('Internal error: lang must have exactly two characters, but is ' + lang);
-          throw 'abort';
-        }
-          /*
+        /*
         if (!(row instanceof HTMLElement)) {
           alert('Internal error: row is not an HTMLElement but a ' + (typeof row));
           throw 'abort';
@@ -929,7 +925,7 @@ $(document).on('ready pjax:scriptcomplete', function () {
     // TODO: Doc answers
     const answers = {};
     const lsrows = $('#quickaddarea').val().split('\n');
-    const allrows = $closestTable.find('tr').length;
+    const allrows = $closestTable.find('tbody tr').length;
     const separatorchar = getSeparatorChar(lsrows);
 
     let numericSuffix = '';
@@ -958,14 +954,16 @@ $(document).on('ready pjax:scriptcomplete', function () {
       const thisrow = value.splitCSV(separatorchar);
 
       if (thisrow.length <= languages.length) {
-        let qCode = (parseInt(k) + 1).toString();
+        let numericCode = (parseInt(k) + 1);
         if (lsreplace === false) {
-          qCode += (parseInt(allrows));
+          numericCode += (parseInt(allrows));
         }
-        while (qCode.toString().length < numericSuffix.length) {
+        let qCode = numericCode.toString();
+        while (qCode.length < numericSuffix.length) {
           qCode = `0${qCode}`;
         }
-        thisrow.unshift(codeSigil.join('') + qCode);
+        let prefix = codeSigil.slice(0, Math.max(0, 5 - qCode.length)).join('');
+        thisrow.unshift(prefix + qCode);
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }

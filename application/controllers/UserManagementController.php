@@ -166,20 +166,19 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
-
             //generate random password when password is empty
             if (empty($aUser['password'])) {
                 $newPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $aUser['password'] =  $newPassword;
             }
-            
+
             //retrive the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
             $passwordSetByUser = Yii::app()->request->getParam('preset_password');
-            if($passwordSetByUser == 0){ //in this case admin has not set a password, email with link will be sent
+            if ($passwordSetByUser == 0) { //in this case admin has not set a password, email with link will be sent
                 $data = $this->createAdminUser($aUser);
-            }else{ //in this case admin has set a password, no email will be send ...just create user with given credentials
+            } else { //in this case admin has set a password, no email will be send ...just create user with given credentials
                 $data = $this->createAdminUser($aUser, false);
             }
 
@@ -343,11 +342,11 @@ class UserManagementController extends LSBaseController
     /**
      * Show some user detail and statistics
      *
-     * @param $userid int
+     * @param int $userid
      * @return string|null
      * @throws CException
      */
-    public function actionViewUser(int $userid) : ?string
+    public function actionViewUser(int $userid): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -619,7 +618,7 @@ class UserManagementController extends LSBaseController
     /**
      * Creates users from an uploaded CSV / JSON file
      *
-     * @param string importFormat - format of the imported file - Choice between csv / json
+     * @param string $importFormat - format of the imported file - Choice between csv / json
      * @return string
      * @throws CException
      */
@@ -888,6 +887,9 @@ class UserManagementController extends LSBaseController
                     $passwordManagement = new \LimeSurvey\Models\Services\PasswordManagement($oUser);
                     $successData = $passwordManagement->sendPasswordLinkViaEmail(\LimeSurvey\Models\Services\PasswordManagement::EMAIL_TYPE_RESET_PW);
                     $success = $successData['success'];
+                    if (!$success) {
+                        $aResults[$user]['error'] = sprintf(gT("Error: New password could not be sent to %s"), $oUser->email);
+                    }
                     $aResults[$user]['result'] = $success;
                 }
             }
@@ -1254,7 +1256,7 @@ class UserManagementController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors'  => $event->get('errorMessageTitle') 
+                    'errors'  => $event->get('errorMessageTitle')
                                     . '<br/>'
                                     . $event->get('errorMessageBody'),
                     'debug'   => [

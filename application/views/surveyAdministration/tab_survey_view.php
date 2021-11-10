@@ -23,7 +23,7 @@ $activeTab = Yii::app()->request->getParam('tab', 'create');
 switch($activeTab) {
     case 'create':
         $activeForm = 'addnewsurvey'; 
-        $label = '<i class="fa fa-save"></i>&nbsp;'.gT("Save");
+        $label = '<i class="fa fa-check"></i>&nbsp;'.gT("Save");
         break;
     case 'import':
         $activeForm = 'importsurvey'; 

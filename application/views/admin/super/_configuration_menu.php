@@ -220,7 +220,7 @@
 
                     <!-- User groups -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/roles/"); ?>">
+                        <a href="<?php echo $this->createUrl("userRole/index"); ?>">
                             <?php eT("User roles");?>
                         </a>
                     </li>
@@ -290,7 +290,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Survey Menu");?>
+                            <?php eT("Survey menus");?>
                         </a>
                     </li>
                 <?php endif;?>

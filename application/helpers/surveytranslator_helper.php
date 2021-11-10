@@ -416,7 +416,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['hil']['nativedescription'] = 'Ilonggo';
     $supportedLanguages['hil']['rtl'] = false;
     $supportedLanguages['hil']['dateformat'] = 1;
-    $supportedLanguages['hil']['radixpoint'] = 1;    
+    $supportedLanguages['hil']['radixpoint'] = 1;
 
     // Hungarian
     $supportedLanguages['hu']['description'] = gT('Hungarian');
@@ -456,7 +456,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ilo']['nativedescription'] = 'Ilokano';
     $supportedLanguages['ilo']['rtl'] = false;
     $supportedLanguages['ilo']['dateformat'] = 1;
-    $supportedLanguages['ilo']['radixpoint'] = 1;    
+    $supportedLanguages['ilo']['radixpoint'] = 1;
 
     // Italian
     $supportedLanguages['it']['description'] = gT('Italian');

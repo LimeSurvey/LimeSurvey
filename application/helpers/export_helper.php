@@ -454,7 +454,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
         Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge Free Text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_L_LIST_DROPDOWN => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_L_LIST => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_O_LIST_WITH_COMMENT => array('name' => 'List With Comment', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_T_LONG_FREE_TEXT => array('name' => 'Long free text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_K_MULTIPLE_NUMERICAL_QUESTION => array('name' => 'Multiple Numerical Input', 'size' => 1, 'SPSStype' => 'F'),
@@ -1393,7 +1393,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
-        } else if ($use_answers == true) {
+        } elseif ($use_answers == true) {
             //ranking quesions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
@@ -1417,7 +1417,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
  */
 function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
 {
-	if ($iResponseID) {
+    if ($iResponseID) {
         //here is the response
         $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
         $oResponse->decrypt();
@@ -2313,9 +2313,13 @@ function tokensExport($iSurveyID)
     foreach ($bresultAll as $tokenKey => $tokenValue) {
         // creating TokenDynamic object to be able to decrypt easier
         $token = TokenDynamic::model($iSurveyID);
-        // populate TokenDynamic object with values
+        $attributes = array_keys($token->getAttributes());
+        // Populate TokenDynamic object with values
+        // NB: $tokenValue also contains values not belonging to TokenDynamic model (joined with survey)
         foreach ($tokenValue as $key => $value) {
-            $token->$key = $value;
+            if (in_array($key, $attributes)) {
+                $token->$key = $value;
+            }
         }
         // decrypting
         $token->decrypt();

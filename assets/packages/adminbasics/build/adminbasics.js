@@ -28848,7 +28848,7 @@
           url: options['ajax-url'],
           data: options.postDatas,
           success: function success(html, statut) {
-            $.fn.yiiGridView.update(options.gridid); // Update the surveys list
+            $.fn.yiiGridView.update(options.gridid); // Update the list
 
             $('#confirmation-modal').modal('hide');
           },
@@ -28861,7 +28861,7 @@
         _sendPost = function _sendPost() {
       adminCoreLSConsole.log('Binding post handler on confirmation dialog');
       $(_this).find('.btn-ok').on('click', function (ev) {
-        window.LS.sendPost(options.postUrl, options.postDatas);
+        window.LS.sendPost(options.postUrl, '', options.postDatas);
       });
     },
         _setTarget = function _setTarget() {

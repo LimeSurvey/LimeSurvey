@@ -3,12 +3,12 @@
     <?php if (count($surveyLanguages) > 1): ?>
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                <span class="icon-do" ></span>
                 <?php if($oSurvey->active=='N'):?>
+                    <span class="fa fa-eye" ></span>
                     <?php eT('Preview survey');?>
                 <?php else: ?>
-                    <?php eT('Execute survey');?>
+                    <span class="fa fa-play" ></span>
+                    <?php eT('Run survey');?>
                 <?php endif;?>
                 <span class="caret"></span>
             </button>
@@ -24,11 +24,12 @@
         </div>
     <?php else: ?>
         <a class="btn btn-default  btntooltip" href="<?php echo Yii::App()->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
-            <span class="icon-do" ></span>
             <?php if($oSurvey->active=='N'):?>
+                <span class="fa fa-eye" ></span>
                 <?php eT('Preview survey');?>
             <?php else: ?>
-                <?php eT('Execute survey');?>
+                <span class="fa fa-play" ></span>
+                <?php eT('Run survey');?>
             <?php endif;?>
         </a>
     <?php endif;?>
@@ -39,7 +40,7 @@
             <!-- Preview group multilanguage -->
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="icon-do"></span>
+                    <span class="fa fa-eye"></span>
                 <?php eT("Preview question group"); ?> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" style="min-width : 252px;">
@@ -56,7 +57,7 @@
 
             <!-- Preview group single language -->
             <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>" role="button" target="_blank">
-                <span class="icon-do"></span>
+                <span class="fa fa-eye"></span>
                 <?php eT("Preview question group");?>
             </a>
         <?php endif; ?>
@@ -65,7 +66,7 @@
         <!-- Preview question multilanguage -->
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="icon-do"></span>
+                <span class="fa fa-eye"></span>
             <?php eT("Preview question"); ?> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" style="min-width : 252px;">
@@ -82,7 +83,7 @@
 
         <!-- Preview question single language -->
         <a class="btn btn-default" href="<?php echo Yii::App()->createUrl("survey/index/action/previewquestion/sid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button" target="_blank">
-            <span class="icon-do"></span>
+            <span class="fa fa-eye"></span>
             <?php eT("Preview question");?>
         </a>
         <?php endif; ?>

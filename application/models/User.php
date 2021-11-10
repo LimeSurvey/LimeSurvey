@@ -106,7 +106,7 @@ class User extends LSActiveRecord
             array('lang', 'default', 'value' => Yii::app()->getConfig('defaultlang')),
             array('lang', 'LSYii_Validators', 'isLanguage' => true),
             array('htmleditormode', 'default', 'value' => 'default'),
-            array('htmleditormode', 'in', 'range'=>array('default', 'inline', 'popup', 'none'), 'allowEmpty'=>true),
+            array('htmleditormode', 'in', 'range' => array('default', 'inline', 'popup', 'none'), 'allowEmpty' => true),
             array('questionselectormode', 'default', 'value' => 'default'),
             array('questionselectormode', 'in', 'range' => array('default', 'full', 'none'), 'allowEmpty' => true),
             array('templateeditormode', 'default', 'value' => 'default'),
@@ -483,7 +483,7 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setuserpermissions');
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
-        
+
         $oUser = self::model()->findByPK($this->uid);
         if ($this->uid == Yii::app()->user->getId()) {
             // Edit self
@@ -752,7 +752,7 @@ class User extends LSActiveRecord
 
     public function getLastloginFormatted()
     {
-        
+
         $lastLogin = $this->last_login;
         if ($lastLogin == null) {
             return '---';
@@ -815,7 +815,7 @@ class User extends LSActiveRecord
                 "header" => gT("Created by"),
             )
         );
-        
+
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols[] = array(
                 "name" => 'surveysCreated',
@@ -917,13 +917,11 @@ class User extends LSActiveRecord
             }
         }
 
-        //filter for parentUserName
-        // This don't re&ally work : filter stay empty
         $getUser = Yii::app()->request->getParam('User');
         if (!empty($getUser['parentUserName'])) {
-            $getParentName = $getUser['parentUserName'];
-            $criteria->join = "LEFT JOIN lime_users luparent ON t.parent_id = luparent.uid";
-            $criteria->compare('luparent.users_name', $getParentName, true, 'OR');
+             $getParentName = $getUser['parentUserName'];
+            $criteria->join = "LEFT JOIN {{users}} u ON t.parent_id = u.uid";
+            $criteria->compare('u.users_name', $getParentName, true, 'OR');
         }
 
         return new CActiveDataProvider($this, array(
@@ -939,7 +937,8 @@ class User extends LSActiveRecord
      *
      * @return bool true if validation_key could be saved in db, false otherwise
      */
-    public function setValidationKey(){
+    public function setValidationKey()
+    {
         $this->validation_key = randomChars(self::MAX_VALIDATION_KEY_LENGTH);
 
         return $this->save();
@@ -951,7 +950,8 @@ class User extends LSActiveRecord
      * @return bool true if datetime could be saved, false otherwise
      * @throws Exception
      */
-    public function setValidationExpiration(){
+    public function setValidationExpiration()
+    {
         $datePlusMaxExpiration = new DateTime();
         $datePlusString = 'P' . self::MAX_EXPIRATION_TIME_IN_DAYS . 'D';
         $dateInterval = new DateInterval($datePlusString);

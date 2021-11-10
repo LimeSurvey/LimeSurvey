@@ -1,6 +1,6 @@
 <!-- Show summary information -->
 <?php if ($hasResponsesReadPermission): ?>
-    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("admin/responses/sa/index/surveyid/$oSurvey->sid"); ?>' role="button">
+    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("responses/index/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
         <span class="fa fa-list-alt text-success"></span>
         <?php eT("Summary"); ?>
     </a>
@@ -8,7 +8,7 @@
 
 <?php if ($hasResponsesReadPermission): ?>
     <!-- Display Responses -->
-    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("admin/responses/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
+    <a class="btn btn-default pjax" href='<?php echo Yii::App()->createUrl("responses/browse/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
         <span class="fa fa-list text-success"></span>
         <?php eT("Display responses"); ?>
     </a>
@@ -32,7 +32,7 @@
 
     <!-- Get time statistics from these responses -->
     <?php if ($isTimingEnabled == "Y"):?>
-        <a class="btn btn-default" href='<?php echo Yii::App()->createUrl("admin/responses/sa/time/surveyid/$oSurvey->sid"); ?>' role="button">
+        <a class="btn btn-default" href='<?php echo Yii::App()->createUrl("responses/time/", ['surveyId' => $oSurvey->sid]); ?>' role="button">
             <span class="fa fa-clock-o text-success"></span>
             <?php eT("Timing statistics"); ?>
         </a>
@@ -125,7 +125,7 @@
 <?php if ($hasResponsesDeletePermission): ?>
     <a
         id="response-batch-deletion"
-        href="<?php echo Yii::App()->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $oSurvey->sid )); ?>"
+        href="<?php echo Yii::App()->createUrl("responses/delete/", ["surveyId" => $oSurvey->sid]); ?>"
         data-post="{}"
         data-show-text-area="true"
         data-use-ajax="true"

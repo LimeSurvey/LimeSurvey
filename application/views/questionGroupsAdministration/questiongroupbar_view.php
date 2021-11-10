@@ -13,13 +13,13 @@
 
         <?php if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])):?>
             <div id="questiongroupbar--previewbar" class="text-left ls-flex-item">
-                <!-- test/execute survey -->
+                <!-- test/run survey -->
                 <?php if (count($languagelist) > 1): ?>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
-                                <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Execute survey'));?>
+                                <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="min-width : 252px;">
@@ -38,7 +38,7 @@
                         href="<?php echo $this->createUrl("survey/index", array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>"
                         role="button" accesskey='d' target='_blank'>
                         <span class="icon-do"></span>
-                        <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Execute survey'));?>
+                        <?=($oSurvey->active=='N' ? gT('Preview survey'): gT('Run survey'));?>
                     </a>
                 <?php endif;?>
 
@@ -148,12 +148,12 @@
             <div id="questiongroupbar--questionbuttons" class="text-left ls-flex-item">
             <!-- Previews while editing a question -->
                 <?php if (count($languagelist) > 1): ?>
-                    <!-- test/execute survey -->
+                    <!-- test/run survey -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <span class="icon-do"></span>
-                            <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Execute survey'));?>
+                            <?=($oSurvey->active=='N' ? gT('Preview survey') : gT('Run survey'));?>
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="min-width : 252px;">
@@ -208,7 +208,7 @@
                         </ul>
                     </div>
                     <?php else:?>
-                    <!-- Preview/Execute survey -->
+                    <!-- Preview/Run survey -->
                     <a class="btn btn-default  btntooltip selector__topbar--previewSurvey"
                         href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>"
                         role="button" accesskey='d' target='_blank'>
@@ -216,7 +216,7 @@
                         <?php if ($oSurvey->active=='N'):?>
                         <?php eT('Preview survey');?>
                         <?php else: ?>
-                        <?php eT('Execute survey');?>
+                        <?php eT('Run survey');?>
                         <?php endif;?>
                     </a>
 

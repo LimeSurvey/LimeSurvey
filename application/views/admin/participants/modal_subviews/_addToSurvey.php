@@ -38,7 +38,6 @@
                     <?php eT('Display survey participant table after addition?'); ?>
                 </label>
                 <div class='col-sm-8'>
-                    <!--<input type='checkbox' name='redirect' />-->
                     <input name='redirect' type='checkbox' data-size='small' data-on-color='primary' data-off-color='warning' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='ls-bootstrap-switch' />
                 </div>
             </div>
@@ -47,6 +46,6 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel') ?></button>
-        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Apply')?>' />
+        <input type="submit" class="btn btn-primary action_save_modal_shareparticipant" value='<?php eT('Add')?>' />
     </div>
 <?php $this->endWidget('CActiveForm'); ?>

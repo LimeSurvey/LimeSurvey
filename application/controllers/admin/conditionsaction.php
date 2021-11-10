@@ -121,7 +121,7 @@ class conditionsaction extends Survey_Common_Action
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView']  = 'conditionDesignerTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-        
+
         $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
 
         // Green Save and Close Button
@@ -307,6 +307,13 @@ class conditionsaction extends Survey_Common_Action
         $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
         $aData['javascriptpre'] = $javascriptpre;
 
+
+        // Back Button
+        $aData['showBackButton'] = true;
+
+        // White Close Button
+        $aData['showWhiteCloseButton'] = false;
+
         $scenarios = $this->getAllScenarios($qid);
 
         // Some extra args to getEditConditionForm
@@ -344,6 +351,10 @@ class conditionsaction extends Survey_Common_Action
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
+            // Show Save Button instead of green Save and Close Button
+            $aData['showSaveButton'] = true;
+            $aData['showGreenSaveAndCloseButton'] = false;
+
             //3: Get other conditions currently set for this question
             $s = 0;
 
@@ -355,7 +366,7 @@ class conditionsaction extends Survey_Common_Action
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
-            
+
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
                 $aViewUrls['conditionslist_view'][] = $aData;
@@ -1666,7 +1677,7 @@ class conditionsaction extends Survey_Common_Action
                             // For dropdown questions
                             // optinnaly add the 'Other' answer
                             if (
-                                ($rows['type'] == Question::QT_L_LIST_DROPDOWN ||
+                                ($rows['type'] == Question::QT_L_LIST ||
                                 $rows['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN) &&
                                 $rows['other'] == "Y"
                             ) {

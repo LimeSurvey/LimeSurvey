@@ -5,14 +5,7 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('checkIntegrity');
-
-// Green Bar (SurveyManagerBar)
-//$this->renderPartial('../layouts/surveymanagerbar', array('pageTitle' => 'Check data integrity'));
-
-// White Bar (FullPager)
-//$this->renderPartial('../layouts/fullpagebar_view', array('fullpagebar' => $fullpagebar));
 ?>
-<!-- <div class="pagetitle h3"><?php eT("Check data integrity");?></div> -->
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
@@ -288,28 +281,35 @@ echo viewHelper::getViewTestTag('checkIntegrity');
             <?php } else {?>
                 <br /><?php eT("Should we proceed with the delete?"); ?> <br />
                 <?php echo CHtml::form(array("admin/checkintegrity","sa" => 'fixintegrity'), 'post');?>
-                    <button type='submit' value='Y' name='ok' class="btn btn-default" ><?php eT("Yes - Delete Them!"); ?></button>
+                    <button type='submit' value='Y' name='ok' class="btn btn-danger" ><?php eT("Yes - Delete Them!"); ?></button>
                 </form>
                 <?php
             } ?>
         </div>
-
+        
+        <!-- Data redundancy check -->
         <div class="jumbotron message-box">
                 <h2><?php eT("Data redundancy check"); ?></h2>
-                <p class="lead"><?php eT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."); ?></p>
+                <p class="lead">
+                    <?php eT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."); ?>
+                </p>
                 <p>
             <?php if ($redundancyok) { ?>
                 <br /> <?php eT("No database action required!"); ?>
             <?php } else {?>
                 <?php echo CHtml::form(array("admin/checkintegrity",'sa' => 'fixredundancy'), 'post');?>
-                    <ul class='data-redundancy-list list-unstyled'>
+                    <ul id="data-redundancy-list" class='data-redundancy-list list-unstyled'>
                         <?php
                         if (isset($redundantsurveytables)) {?>
                             <li><?php eT("The following old survey response tables exist and may be deleted if no longer required:"); ?>
                                 <ul class='response-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundantsurveytables as $surveytable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
+                                    <li>
+                                        <input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]'  onclick="toggleDisableState(this)"/>
+                                        <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label>
+                                    </li>
+                                <?php
                                 }?>
                                 </ul>
                             </li>
@@ -322,18 +322,45 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                                 <ul class='token-tables-list list-unstyled'>
                                 <?php
                                 foreach ($redundanttokentables as $tokentable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
+                                    <li>
+                                        <input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' />
+                                        <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label>
+                                    </li>
+                                <?php
                                 }?>
                                 </ul>
                             </li>
                             <?php
                         } ?>
-                    </ul><p>
+                    </ul>
+                    <p>
                         <input type='hidden' name='ok' value='Y' />
-                        <input type='submit' value='<?php eT("Delete checked items!"); ?>' class="btn btn-default" /> <br />
-                        <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
+                        <input type='submit' disabled="true" id='delete-checked-items-button' value='<?php eT("Delete checked items!"); ?>' class="btn btn-danger" />
+                        <br />
+                        <span class='hint warning'>
+                            <?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?>
+                        </span>
+                    </p>
                 </form><?php
             } ?>
         </div>
     </div>
 </div>
+
+<script>
+    /**
+     * If checkbox with to-be-deleted items is selected, 
+     * the 'delete' button will be enabled,
+     * otherwise its disabled.
+     * @param {HTMLElement} checkbox - HTML Element 
+     */
+    function toggleDisableState(checkbox) {
+        let isChecked = $(checkbox).is(':checked');
+        let deleteCheckedItemsButton = document.getElementById('delete-checked-items-button');
+        if (isChecked) {
+            deleteCheckedItemsButton.removeAttribute("disabled");
+        } else {
+            deleteCheckedItemsButton.setAttribute("disabled","disabled");
+        }
+    }
+</script>

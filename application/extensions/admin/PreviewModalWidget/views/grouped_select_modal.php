@@ -63,7 +63,6 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h3>
-                            <b><?=gT($this->previewWindowTitle)?></b><br/>
                             <p id="selector__<?=$this->widgetsJsName?>-currentSelected"><?=$this->currentSelected?></p>
                             </h3>
                         </div>

@@ -33,7 +33,7 @@ class JsonWriter extends Writer
             }
         }
     }
-    
+
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $aJson = array_combine($headers, $values);

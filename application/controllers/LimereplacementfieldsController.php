@@ -40,7 +40,7 @@ class LimeReplacementFieldsController extends LSBaseController
 
         if ($newType) {
             $newTypeResponse = $this->getNewTypeResponse($fieldtype, $surveyid, $gid, $qid);
-            
+
             return $this->renderPartial('/admin/super/_renderJson', ['data' => $newTypeResponse]);
         }
 
@@ -470,7 +470,7 @@ class LimeReplacementFieldsController extends LSBaseController
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oCurrentQuestion = Question::model()->findByPk($qid);
         $aResult = [];
-        
+
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('t.sid', $surveyid);
         $oCriteria->compare('parent_qid', 0);
@@ -492,7 +492,7 @@ class LimeReplacementFieldsController extends LSBaseController
         }
 
         $aQuestions = Question::model()->findAll($oCriteria);
-        
+
         uasort(
             $aQuestions,
             function ($a, $b) {
@@ -510,7 +510,7 @@ class LimeReplacementFieldsController extends LSBaseController
 
             if (safecount($oQuestion->subquestions) != 0) {
                 $aSubquestions = $oQuestion->subquestions;
-                
+
                 uasort($aSubquestions, function ($a, $b) {
                     return $a->question_order < $b->question_order ? -1 : 1;
                 });

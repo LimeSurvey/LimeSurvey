@@ -54,7 +54,7 @@ class LoadQuestionTypes
             case Question::QT_1_ARRAY_MULTISCALE:
                 Yii::import('questiontypes.ArrayMultiscale.*');
                 break;
-            case Question::QT_L_LIST_DROPDOWN:
+            case Question::QT_L_LIST:
                 Yii::import('questiontypes.ListRadio.*');
                 break;
             case Question::QT_EXCLAMATION_LIST_DROPDOWN:

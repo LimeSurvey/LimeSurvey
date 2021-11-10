@@ -77,7 +77,7 @@ class PluginManager extends \CApplicationComponent
         parent::init();
         if (!is_object($this->api)) {
             $class = $this->api;
-            $this->api = new $class;
+            $this->api = new $class();
         }
         $this->loadPlugins();
     }
@@ -92,7 +92,7 @@ class PluginManager extends \CApplicationComponent
     public function getInstalledPlugins()
     {
         $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll(['order'=>'priority DESC']);
+        $records = $pluginModel->findAll(['order' => 'priority DESC']);
 
         $plugins = array();
 
@@ -145,7 +145,7 @@ class PluginManager extends \CApplicationComponent
         $plugin = new Plugin();
         $plugin->name        = $newName;
         $plugin->version     = (string) $extensionConfig->xml->metadata->version;
-        if(!empty($extensionConfig->xml->priority)) {
+        if (!empty($extensionConfig->xml->priority)) {
             $plugin->priority   = (int) $extensionConfig->xml->priority;
         }
         $plugin->plugin_type = $pluginType;
@@ -178,9 +178,11 @@ class PluginManager extends \CApplicationComponent
      */
     public function getStore($storageClass)
     {
-        if (!class_exists($storageClass)
-                && class_exists('LimeSurvey\\PluginManager\\'.$storageClass)) {
-            $storageClass = 'LimeSurvey\\PluginManager\\'.$storageClass;
+        if (
+            !class_exists($storageClass)
+                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)
+        ) {
+            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
         }
         if (!isset($this->stores[$storageClass])) {
             $this->stores[$storageClass] = new $storageClass();
@@ -217,8 +219,6 @@ class PluginManager extends \CApplicationComponent
         if (!in_array($subscription, $this->subscriptions[$event])) {
             $this->subscriptions[$event][] = $subscription;
         }
-
-
     }
 
     /**
@@ -257,8 +257,10 @@ class PluginManager extends \CApplicationComponent
         }
         if (isset($this->subscriptions[$eventName])) {
             foreach ($this->subscriptions[$eventName] as $subscription) {
-                if (!$event->isStopped()
-                 && (empty($target) || in_array(get_class($subscription[0]), $target))) {
+                if (
+                    !$event->isStopped()
+                    && (empty($target) || in_array(get_class($subscription[0]), $target))
+                ) {
                     $subscription[0]->setEvent($event);
                     call_user_func($subscription);
                 }
@@ -290,10 +292,12 @@ class PluginManager extends \CApplicationComponent
                         // Directory name Example must contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
                         $this->shutdownObject->setPluginName($pluginName);
-                        $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
+                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
-                        if (empty($plugin)
-                            || ($includeInstalledPlugins && $plugin->load_error == 0)) {
+                        if (
+                            empty($plugin)
+                            || ($includeInstalledPlugins && $plugin->load_error == 0)
+                        ) {
                             if (file_exists($file) && $this->_checkWhitelist($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
@@ -333,7 +337,6 @@ class PluginManager extends \CApplicationComponent
                         } else {
                         }
                     }
-
                 }
             }
         }
@@ -362,13 +365,13 @@ class PluginManager extends \CApplicationComponent
             $found = false;
 
             foreach ($this->pluginDirs as $type => $pluginDir) {
-                $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
+                $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
                 if (file_exists($file)) {
-                    Yii::import($pluginDir.".$pluginClass.*");
+                    Yii::import($pluginDir . ".$pluginClass.*");
 
                     $configFile = Yii::getPathOfAlias($pluginDir)
                         . DIRECTORY_SEPARATOR . $pluginClass
-                        . DIRECTORY_SEPARATOR .'config.xml';
+                        . DIRECTORY_SEPARATOR . 'config.xml';
                     $extensionConfig = \ExtensionConfig::loadFromFile($configFile);
                     if ($extensionConfig) {
                         $pluginType = $type;
@@ -479,22 +482,24 @@ class PluginManager extends \CApplicationComponent
     public function loadPlugins()
     {
         // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
-        $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
+        $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name' => 'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
-            if($dbVersion->stg_value >= 411) {
+            if ($dbVersion->stg_value >= 411) {
                 /* Before DB 411 version, unable to set order, must check to load before upgrading */
-                $records = $pluginModel->findAllByAttributes(array('active'=>1),['order'=>'priority DESC']);
+                $records = $pluginModel->findAllByAttributes(array('active' => 1), ['order' => 'priority DESC']);
             } else {
-                $records = $pluginModel->findAllByAttributes(array('active'=>1));
+                $records = $pluginModel->findAllByAttributes(array('active' => 1));
             }
 
             foreach ($records as $record) {
-                if (!isset($record->load_error)
+                if (
+                    !isset($record->load_error)
                     || $record->load_error == 0
                     // NB: Authdb is hardcoded since updating sometimes causes error.
                     // @see https://bugs.limesurvey.org/view.php?id=15908
-                    || $record->name == 'Authdb') {
+                    || $record->name == 'Authdb'
+                ) {
                     $this->loadPlugin($record->name, $record->id);
                 }
             }
@@ -531,7 +536,6 @@ class PluginManager extends \CApplicationComponent
 
             foreach ($event->get('questionplugins', array()) as $pluginClass => $paths) {
                 foreach ($paths as $path) {
-
                     Yii::import("webroot.plugins.$pluginClass.$path");
                     $parts = explode('.', $path);
 
@@ -553,23 +557,6 @@ class PluginManager extends \CApplicationComponent
         }
 
         return $this->guidToQuestion;
-    }
-
-    /**
-     * Construct a question object from a GUID.
-     * @param string $guid
-     * @param int $questionId,
-     * @param int $responseId
-     * @return \Question
-     */
-    public function constructQuestionFromGUID($guid, $questionId = null, $responseId = null)
-    {
-        $this->loadQuestionObjects();
-        if (isset($this->guidToQuestion[$guid])) {
-            $questionClass = $this->guidToQuestion[$guid]['class'];
-            $questionObject = new $questionClass($this->loadPlugin($this->guidToQuestion[$guid]['plugin']), $this->api, $questionId, $responseId);
-            return $questionObject;
-        }
     }
 
     /**
@@ -653,7 +640,6 @@ class PluginManager extends \CApplicationComponent
     private function _checkWhitelist($pluginName)
     {
         if (App()->getConfig('usePluginWhitelist')) {
-
             $whiteList = App()->getConfig('pluginWhitelist');
             $coreList = App()->getConfig('pluginCoreList');
             $allowedPlugins =  array_merge($coreList, $whiteList);

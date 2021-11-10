@@ -57,7 +57,6 @@ const Lsadminsidepanel = (userid, surveyid) => {
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
         $('#fullbody-container').css({
-            //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
             'overflow-x': 'auto'
         });
@@ -136,7 +135,6 @@ const Lsadminsidepanel = (userid, surveyid) => {
                 });
                 $(document).trigger("vue-resize-height");
                 $(document).trigger("vue-reload-remote");
-                // $(document).trigger('vue-sidemenu-update-link');
                 setTimeout(function () {
                     $("#pjax-file-load-container")
                         .find("div")
