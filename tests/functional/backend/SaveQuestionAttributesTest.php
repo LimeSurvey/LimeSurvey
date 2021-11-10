@@ -178,6 +178,7 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
+        $button = $this->waitForElementShim($web, '[type="submit"][value="Install"]');
         $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[type="submit"][value="Install"]')));
         $button = $web->findByCss('[type="submit"][value="Install"]');
         $button->click();
