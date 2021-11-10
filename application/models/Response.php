@@ -162,9 +162,9 @@ abstract class Response extends Dynamic
      */
     public function deleteTimings()
     {
-      if (Survey::model()->findByPk($this->dynamicId)->isSaveTimings) {
-          SurveyTimingDynamic::model($this->dynamicId)->deleteByPk($this->id);
-      }
+        if (Survey::model()->findByPk($this->dynamicId)->isSaveTimings) {
+            SurveyTimingDynamic::model($this->dynamicId)->deleteByPk($this->id);
+        }
     }
 
     /**

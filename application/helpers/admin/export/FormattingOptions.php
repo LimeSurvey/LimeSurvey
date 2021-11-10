@@ -69,7 +69,7 @@ class FormattingOptions
      * @var string
      */
     public $csvFieldSeparator;
-    
+
     /**
      * Mask CSV/Excelt equation fields to prevent CSV injection attackts
      *
@@ -115,7 +115,7 @@ class FormattingOptions
     public $convertN;
 
     public $nValue;
-    
+
     /**
      * Destination format - either 'display' (send to browser) or 'file' (send to file)
      *
@@ -124,7 +124,7 @@ class FormattingOptions
     public $output;
 
     public $format;
-    
+
     public function toString()
     {
         return $this->format . ',' . $this->headingFormat . ','

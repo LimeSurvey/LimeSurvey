@@ -12,4 +12,3 @@ interface MenuInterface
     public function getHref();
     public function getMenuItems();
 }
-

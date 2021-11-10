@@ -123,7 +123,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['sGlobalSendAdminCreationEmail'] = getGlobalSetting('sendadmincreationemail');
         $data['sGlobalAdminCreationEmailTemplate'] = getGlobalSetting('admincreationemailtemplate');
         $data['sGlobalAdminCreationEmailSubject'] = getGlobalSetting('admincreationemailsubject');
-        
+
         //Prepare editor script for global settings tabs / Textarea fields
         App()->loadHelper("admin.htmleditor");
         $data['scripts'] = PrepareEditorScript(false, $this->getController());
@@ -300,12 +300,12 @@ class GlobalSettings extends Survey_Common_Action
         $validatedLoginIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('loginIpWhitelist'));
         SettingGlobal::setSetting('loginIpWhitelist', $validatedLoginIpWhitelistInput['valid']);
         if (!empty($validatedLoginIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")).'<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for login")) . '<br/>';
         }
         $validatedTokenIpWhitelistInput = $this->validateIpAddresses(Yii::app()->getRequest()->getPost('tokenIpWhitelist'));
         SettingGlobal::setSetting('tokenIpWhitelist', $validatedTokenIpWhitelistInput['valid']);
         if (!empty($validatedTokenIpWhitelistInput['invalid'])) {
-            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for token access")).'<br/>';
+            $warning .= sprintf(gT("Warning! Invalid IP addresses have been excluded from '%s' setting."), gT("IP whitelist for token access")) . '<br/>';
         }
 
         // we set the admin theme
@@ -552,7 +552,7 @@ class GlobalSettings extends Survey_Common_Action
         $sTo = $user->full_name . " <" . $user->email . ">";
         $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
         $sSubject = sprintf(gT('Test email from %s'), $sSiteName);
-        
+
         $body   = array();
         $body[] = sprintf(gT('This is a test email from %s'), $sSiteName);
         $body   = implode("\n", $body);

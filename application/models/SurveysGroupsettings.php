@@ -78,8 +78,8 @@ class SurveysGroupsettings extends LSActiveRecord
     /**
      * @return string the associated database table name
      */
- 
-    
+
+
     public function tableName()
     {
         return '{{surveys_groupsettings}}';
@@ -111,7 +111,7 @@ class SurveysGroupsettings extends LSActiveRecord
 			questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on' => 'search'),
         );
     }
-  
+
     /**
      * @return array relational rules.
      */
@@ -307,7 +307,7 @@ class SurveysGroupsettings extends LSActiveRecord
             //this is the default group setting with gsid=0 !!!
             $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
         }
-        
+
         // set initial values to instance on first run
         if ($instance === null) {
             if ($model === null) {
@@ -349,7 +349,8 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)) {
             foreach ($instance->optionAttributes as $key => $attribute) {
-                if ((empty($instance->oOptions->{$attribute}))
+                if (
+                    (empty($instance->oOptions->{$attribute}))
                     || (
                         !empty($instance->oOptions->{$attribute})
                         && (
@@ -370,7 +371,7 @@ class SurveysGroupsettings extends LSActiveRecord
         if ($iSurveyGroupId > 0 && !empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null) {
             self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
         }
-        
+
         // fetch global instance
         if ($iSurveyGroupId > 0 && !empty($model->SurveysGroups) && $model->SurveysGroups->parent_id === null) {
             self::getInstance(0, null, $instance, $iStep + 1); // calling global settings

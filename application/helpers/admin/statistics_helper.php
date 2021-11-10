@@ -456,7 +456,7 @@ function buildSelects($allfields, $surveyid, $language)
                 $pvParts = explode(",", str_replace('*', '%', str_replace(' OR ', ',', $_POST[$pv])));
                 if (is_array($pvParts) and count($pvParts)) {
                     foreach ($pvParts as $pvPart) {
-                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv)))." LIKE ".App()->db->quoteValue($pvPart);
+                        $selectSubs[] = Yii::app()->db->quoteColumnName(substr($pv, 1, strlen($pv))) . " LIKE " . App()->db->quoteValue($pvPart);
                     }
                     if (count($selectSubs)) {
                         $selects[] = ' (' . implode(' OR ', $selectSubs) . ') ';
@@ -828,7 +828,7 @@ class statistics_helper
                     . "\t\t<th width='50%' align='right' ><strong>"
                     . gT("Result") . "</strong></th>\n"
                     . "\t</tr></thead>\n"
-                    ."<tbody>\n";
+                    . "<tbody>\n";
 
                     foreach ($showem as $res) {
                         $statisticsoutput .= "<tr><td>" . $res[0] . "</td><td>" . $res[1] . "</td></tr>";
@@ -905,7 +905,7 @@ class statistics_helper
                         . "\t\t<th width='50%' align='right' ><strong>"
                         . gT("Result") . "</strong></th>\n"
                         . "\t</tr></thead>\n"
-                        ."<tbody>\n";
+                        . "<tbody>\n";
 
                         break;
                     default:

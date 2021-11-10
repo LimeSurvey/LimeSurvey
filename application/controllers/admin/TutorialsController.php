@@ -149,7 +149,7 @@ class TutorialsController extends Survey_Common_Action
         $oTutorial->setFinished(App()->user->id);
         echo '{"success": true}';
     }
-    
+
     public function index()
     {
         $this->getController()->redirect(array('admin/tutorials/sa/view'));

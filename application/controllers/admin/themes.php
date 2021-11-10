@@ -691,7 +691,7 @@ class themes extends Survey_Common_Action
             $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
 
             Yii::import('application.helpers.SurveyThemeHelper');
-            if(SurveyThemeHelper::isStandardTemplate($newname)){
+            if (SurveyThemeHelper::isStandardTemplate($newname)) {
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname), 'error');
                 $this->getController()->redirect(array("themeOptions/index"));
             }
@@ -743,7 +743,6 @@ class themes extends Survey_Common_Action
 
             Yii::import('application.helpers.SurveyThemeHelper');
             if (Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
-
                 if (!Template::hasInheritance($templatename)) {
                     if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
                         Template::model()->findByPk($templatename)->deleteAssetVersion();
@@ -816,7 +815,7 @@ class themes extends Survey_Common_Action
             }
             // CheckIfTemplateExists check if the template is installed....
                 Yii::import('application.helpers.SurveyThemeHelper');
-                if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
+            if (! Template::checkIfTemplateExists($templatename) && !SurveyThemeHelper::isStandardTemplate($templatename)) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename)) {
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 } else {

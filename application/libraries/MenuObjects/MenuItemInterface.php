@@ -13,4 +13,3 @@ interface MenuItemInterface
     public function isDivider();
     public function isSmallText();
 }
-

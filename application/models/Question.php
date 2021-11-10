@@ -86,7 +86,7 @@ class Question extends LSActiveRecord
     public $group_name;
     public $gid;
     /** Set defaut relevance **/
-    public $relevance ='';
+    public $relevance = '';
 
     /** @var QuestionTheme cached question theme*/
     private $relatedQuestionTheme;
@@ -754,7 +754,7 @@ class Question extends LSActiveRecord
      */
     public function getOrderedSubQuestions($scale_id = null)
     {
-        
+
 
         //reset subquestions set prior to this call
         $aSubQuestions = [
@@ -1422,7 +1422,7 @@ class Question extends LSActiveRecord
             return false;
         }
     }
-    
+
     protected function removeInvalidSubquestions()
     {
         // No need to remove anything if this is a subquestion

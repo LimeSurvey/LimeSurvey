@@ -80,7 +80,7 @@ class dataentry extends Survey_Common_Action
         $aData['display']['menu_bars']['browse'] = gT("Data entry");
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
-        
+
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['showImportButton'] = true;
         $aData['topBar']['showCloseButton'] = true;
@@ -294,14 +294,14 @@ class dataentry extends Survey_Common_Action
                 'type' => 'checkbox',
                 'label' => gT('Preserve response IDs')
             );
-            
+
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
             $survey = Survey::model()->findByPk($iSurveyId);
 
             $aData['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
-            
+
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showImportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
@@ -374,7 +374,7 @@ class dataentry extends Survey_Common_Action
                 $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                 $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
- 
+
                 $imported++;
                 $targetResponse->save();
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
@@ -1711,7 +1711,7 @@ class dataentry extends Survey_Common_Action
                         }
                     }
                     $aToken->save();
-                    
+
                     // save submitdate into survey table
                     $aResponse = Response::model($surveyid)->findByPk($last_db_id);
                     $aResponse->submitdate = $submitdate;

@@ -43,7 +43,7 @@ class TutorialEntryController extends Survey_Common_Action
     {
         $this->getController()->redirect(array('admin/tutorialentries/sa/view'));
     }
-    
+
     public function view()
     {
         //$this->checkPermission();

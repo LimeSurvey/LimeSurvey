@@ -471,7 +471,7 @@ class ThemeOptionsController extends LSBaseController
 
         // Green Bar Page Title
         $aData['pageTitle'] = gT('Themes');
-        
+
         // White Bar with Buttons
         $aData['fullpagebar']['returnbutton'] = [
             'url' => 'admin/index',
@@ -693,7 +693,7 @@ class ThemeOptionsController extends LSBaseController
         $oTemplate = $oModelWithInheritReplacement->prepareTemplateRendering($oModelWithInheritReplacement->template->name); // Fix empty file lists
         $aTemplateConfiguration = $oTemplate->getOptionPageAttributes();
         App()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
-        
+
         if ($aOptionAttributes['optionsPage'] == 'core') {
             App()->clientScript->registerPackage('themeoptions-core');
             $templateOptionPage = '';

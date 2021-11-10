@@ -434,7 +434,7 @@ class UserGroup extends LSActiveRecord
         return false;
     }
 
-    
+
 
     /**
      * Checks whether the specified UID is part of that group
@@ -446,7 +446,7 @@ class UserGroup extends LSActiveRecord
         $oModel = new UserInGroup();
         $oModel->uid = $uid;
         $oModel->ugid = $this->ugid;
-        
+
         return $oModel->save();
     }
 
@@ -476,7 +476,7 @@ class UserGroup extends LSActiveRecord
         $oUserFrom = User::model()->findByPk(Yii::app()->session['loginID']);
         $fromName = empty($oUserFrom->full_name) ? $oUserFrom->users_name : $oUserFrom->full_name;
         $mailer->setFrom($oUserFrom->email, $fromName);
-        
+
         // Add the sender to the list of users in order to receive a copy
         if ($copy == 1) {
             $oAuxUserInGroup = new UserInGroup();

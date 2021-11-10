@@ -41,7 +41,7 @@ class index extends CAction
         /* Get client token by POST or GET value */
         $clienttoken = trim($param['token']);
         /* If not set : get by SESSION to avoid multiple submit of same token in different navigator */
-        if(empty($clienttoken) && !empty($_SESSION['survey_' . $surveyid]['token'] ))  {
+        if (empty($clienttoken) && !empty($_SESSION['survey_' . $surveyid]['token'])) {
             $clienttoken = $_SESSION['survey_' . $surveyid]['token'];
         }
 
@@ -137,7 +137,7 @@ class index extends CAction
                 }
             }
         }
-                  
+
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_" . $surveyid . "}}") && !$previewmode) {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y') {

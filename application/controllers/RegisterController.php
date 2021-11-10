@@ -195,9 +195,9 @@ class RegisterController extends LSYii_Controller
     public function getRegisterSuccess($iSurveyId, $iTokenId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        
+
         $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
-        
+
         $aData['active'] = $oSurvey->active;
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;

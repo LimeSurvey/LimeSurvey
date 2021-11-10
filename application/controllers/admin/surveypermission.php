@@ -19,6 +19,7 @@
 * @copyright 2011
 * @access public
 */
+
 use LimeSurvey\Models\Services\PermissionManager;
 
 class surveypermission extends Survey_Common_Action
@@ -612,7 +613,7 @@ class surveypermission extends Survey_Common_Action
                     )
                 );
             }
-           
+
             $uids = CHtml::listData($oUserInGroups, 'uid', 'uid');
         } else {
             throw new CHttpException(400, gT("Invalid parameters."));
@@ -659,7 +660,7 @@ class surveypermission extends Survey_Common_Action
         $addsummary .= "<br/><input class='btn btn-default' type=\"submit\" onclick=\"window.open('" . $this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/' . $surveyid) . "', '_top')\" value=\"" . gT("Continue") . "\"/>\n";
         $addsummary .= "</div></div></div></div>\n";
         $aViewUrls['output'] = $addsummary;
-        
+
         $aData['sidemenu']['state']  = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 

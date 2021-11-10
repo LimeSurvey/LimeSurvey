@@ -1393,7 +1393,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         if ($use_answers == false && $aid != false) {
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
-        } else if ($use_answers == true) {
+        } elseif ($use_answers == true) {
             //ranking quesions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
@@ -1417,7 +1417,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
  */
 function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
 {
-	if ($iResponseID) {
+    if ($iResponseID) {
         //here is the response
         $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
         $oResponse->decrypt();

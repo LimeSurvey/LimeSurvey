@@ -31,7 +31,7 @@ class Answer extends LSActiveRecord
     private $oldCode;
     private $oldQid;
     private $oldScaleId;
-    
+
     /**
      * @inheritdoc
      * @return static
@@ -68,7 +68,7 @@ class Answer extends LSActiveRecord
             ),
             'answerl10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
             'questionl10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
-            
+
         );
     }
 

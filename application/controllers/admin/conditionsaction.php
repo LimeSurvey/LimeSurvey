@@ -121,7 +121,7 @@ class conditionsaction extends Survey_Common_Action
         $aData['topBar']['name'] = 'baseTopbar_view';
         $aData['topBar']['leftSideView']  = 'conditionDesignerTopbarLeft_view';
         $aData['topBar']['rightSideView'] = 'conditionDesignerTopbarRight_view';
-        
+
         $returnUrl = Yii::app()->createUrl('questionAdministration/view/surveyid/' . $iSurveyID . '/gid/' . $gid . '/qid/' . $qid);
 
         // Green Save and Close Button
@@ -351,7 +351,6 @@ class conditionsaction extends Survey_Common_Action
             $subaction == "updatescenario" ||
             $subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
         ) {
-
             // Show Save Button instead of green Save and Close Button
             $aData['showSaveButton'] = true;
             $aData['showGreenSaveAndCloseButton'] = false;
@@ -367,7 +366,7 @@ class conditionsaction extends Survey_Common_Action
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['sCurrentQuestionText'] = $questiontitle . ': ' . viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
-            
+
             $aData['scenariocount'] = $scenariocount;
             if (empty(trim($oQuestion->relevance)) || !empty($oQuestion->conditions)) {
                 $aViewUrls['conditionslist_view'][] = $aData;

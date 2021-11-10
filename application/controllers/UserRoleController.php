@@ -506,7 +506,7 @@ class UserRoleController extends LSBaseController
      * @param integer|null $ptid the ID of the model to be loaded
      * @return Permissiontemplates the loaded model
      */
-    private function loadModel($ptid):Permissiontemplates
+    private function loadModel($ptid): Permissiontemplates
     {
         $model = Permissiontemplates::model()->findByPk($ptid);
         if ($model === null) {
@@ -523,7 +523,7 @@ class UserRoleController extends LSBaseController
      *
      * @return string $errorDiv
      */
-    private function renderErrors(array $errors):string
+    private function renderErrors(array $errors): string
     {
         $errorDiv = '<ul class="list-unstyled">';
         foreach ($errors as $key => $error) {

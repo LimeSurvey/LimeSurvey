@@ -35,7 +35,7 @@ class Zend_Validate_Ldap_Dn extends Zend_Validate_Abstract
 {
 
     const MALFORMED = 'malformed';
-    
+
     /**
      * Validation failure message template definitions.
      *
@@ -44,7 +44,7 @@ class Zend_Validate_Ldap_Dn extends Zend_Validate_Abstract
     protected $_messageTemplates = array(
         self::MALFORMED => 'DN is malformed',
     );
-    
+
     /**
      * Defined by Zend_Validate_Interface.
      *

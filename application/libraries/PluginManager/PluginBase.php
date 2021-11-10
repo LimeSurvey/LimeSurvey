@@ -30,12 +30,12 @@ abstract class PluginBase implements iPlugin
     /**
      * @var string
      */
-    static protected $description = 'Base plugin object';
+    protected static $description = 'Base plugin object';
 
     /**
      * @var string
      */
-    static protected $name = 'PluginBase';
+    protected static $name = 'PluginBase';
 
     /**
      * @var ?
@@ -109,7 +109,7 @@ abstract class PluginBase implements iPlugin
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
         \Yii::app()->setComponent(
-            get_class($this).'Messages',
+            get_class($this) . 'Messages',
             [
                 'class'            => 'LSCGettextMessageSource',
                 'cachingDuration'  => 3600,
@@ -214,11 +214,10 @@ abstract class PluginBase implements iPlugin
         if (strpos('//', $fileName) === false) {
             // This is a limesurvey relative path.
             if (strpos('/', $fileName) === 0) {
-                $url = \Yii::getPathOfAlias('webroot').$fileName;
-
+                $url = \Yii::getPathOfAlias('webroot') . $fileName;
             } else {
                 // This is a plugin relative path.
-                $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
+                $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
                  * This approach allows a locked down plugin directory that is not publicly accessible.
@@ -344,9 +343,9 @@ abstract class PluginBase implements iPlugin
      */
     public function renderPartial($viewfile, $data, $return = false, $processOutput = false)
     {
-        $alias = 'plugin_views_folder'.$this->id;
+        $alias = 'plugin_views_folder' . $this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
-        $fullAlias = $alias.'.views.'.$viewfile;
+        $fullAlias = $alias . '.views.' . $viewfile;
 
         if (isset($data['plugin'])) {
             throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
@@ -373,7 +372,7 @@ abstract class PluginBase implements iPlugin
                 '',
                 $sToTranslate,
                 array(),
-                get_class($this).'Messages',
+                get_class($this) . 'Messages',
                 $sLanguage
             ),
             $sEscapeMode
@@ -396,7 +395,6 @@ abstract class PluginBase implements iPlugin
         }
 
         return $translation;
-
     }
 
     /**
@@ -410,7 +408,7 @@ abstract class PluginBase implements iPlugin
     public function log($message, $level = \CLogger::LEVEL_TRACE)
     {
         $category = $this->getName();
-        \Yii::log($message, $level, 'plugin.'.$category);
+        \Yii::log($message, $level, 'plugin.' . $category);
     }
 
     /**
@@ -426,7 +424,7 @@ abstract class PluginBase implements iPlugin
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(false);
             }
-        $this->config = simplexml_load_file(realpath($file));
+            $this->config = simplexml_load_file(realpath($file));
             if (\PHP_VERSION_ID < 80000) {
                 libxml_disable_entity_loader(true);
             }
@@ -442,7 +440,7 @@ abstract class PluginBase implements iPlugin
                     $pluginModel = \Plugin::model()->findByPk($this->id);
                     // "Impossible"
                     if (empty($pluginModel)) {
-                        throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
+                        throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
                     }
                     $this->checkActive($pluginModel);
                     $this->saveNewVersion($pluginModel);
@@ -483,9 +481,9 @@ abstract class PluginBase implements iPlugin
                         'user_id' => \Yii::app()->user->id,
                         'title'   => gT('Plugin error'),
                         'message' =>
-                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
-                            gT('Could not activate plugin '.$this->getName()).'. '.
-                            gT('Reason:').' '.$result->get('message'),
+                            '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                            gT('Could not activate plugin ' . $this->getName()) . '. ' .
+                            gT('Reason:') . ' ' . $result->get('message'),
                         'importance' => \Notification::HIGH_IMPORTANCE
                     ]
                 );
@@ -505,8 +503,8 @@ abstract class PluginBase implements iPlugin
             'user_id' => \Yii::app()->user->id,
             'title'   => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
-                gT('Could not read config file for plugin '.$this->getName()).'. '.
+                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
+                gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
             ]
@@ -549,20 +547,20 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerScript($relativePathToScript, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
 
         $scriptToRegister = null;
-        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
             $scriptToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToScript
             );
-        } elseif (file_exists(\Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        } elseif (file_exists(\Yii::app()->getBasePath() . '/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
             $scriptToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::app()->getBasePath() . '/plugins/' . $parentPlugin . '/' . $relativePathToScript
             );
-        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+        } elseif (file_exists(\Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToScript)) {
             $scriptToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+                \Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToScript
             );
         }
         \Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
@@ -575,20 +573,20 @@ abstract class PluginBase implements iPlugin
      */
     protected function registerCss($relativePathToCss, $parentPlugin = null)
     {
-        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+        $parentPlugin = $parentPlugin === null ? get_class($this) : $parentPlugin;
 
         $cssToRegister = null;
-        if (file_exists(\Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        if (file_exists(\Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::getPathOfAlias('userdir') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
-        } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        } elseif (file_exists(YiiBase::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::getPathOfAlias('webroot') . '/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
-        } elseif (file_exists(\Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+        } elseif (file_exists(\Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToCss)) {
             $cssToRegister = \Yii::app()->getAssetManager()->publish(
-                \Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+                \Yii::app()->getBasePath() . '/application/core/plugins/' . $parentPlugin . '/' . $relativePathToCss
             );
         }
         \Yii::app()->getClientScript()->registerCssFile($cssToRegister);
