@@ -165,26 +165,24 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
         // Go to plugin manager page
         $url = $urlMan->createUrl('admin/pluginmanager/sa/index');
         $web->get($url);
-        sleep(1);
 
-        $button = $web->findByLinkText('Upload & install');
+        $button = $this->waitForElementShim($web, '[data-target="#installPluginZipModal"]');
+        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-target="#installPluginZipModal"]')));
         $button->click();
 
-        sleep(1);
-
         // Upload the file
+        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
         $fileInput = $web->findByCss('#installPluginZipModal #the_file');
         $fileInput->setFileDetector(new LocalFileDetector());
         $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
         $this->assertTrue(file_exists($file));
         $fileInput->sendKeys($file)->submit();
 
-        sleep(1);
-
+        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[type="submit"][value="Install"]')));
         $button = $web->findByCss('[type="submit"][value="Install"]');
         $button->click();
 
-        sleep(1);
+        sleep(2);
 
         // Check result in database
         $plugin = \Plugin::model()->findByAttributes(['name' => 'NewQuestionAttributesPlugin']);
