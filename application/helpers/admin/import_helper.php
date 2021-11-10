@@ -457,7 +457,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID, $bTranslateLinksFields)
 
 
     // Import defaultvalues ------------------------------------------------------
-    importDefaultValues($xml, $aLanguagesSupported, $aQIDReplacements, $results);
+    importDefaultValues($xml, $importlanguages, $aQIDReplacements, $results);
 
     // Import conditions --------------------------------------------------------------
     if (isset($xml->conditions)) {
@@ -2433,6 +2433,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $iIdKey = array_search('id', $aCsvHeader); // the id is allways needed and used a lot
     if (is_int($iIdKey)) {
         unset($aKeyForFieldNames['id']);
+        /* Unset it if option is ignore */
+        if($aOptions['sExistingId'] == 'ignore') {
+            $iIdKey = false;
+        }
     }
     $iSubmitdateKey = array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
     if (is_int($iSubmitdateKey)) {
@@ -2459,14 +2463,13 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                         break;
                     case 'replaceanswers':
                         break;
+                    case 'skip':
+                        $oSurvey = false; // Remove existing survey : don't import again
+                        break;
                     case 'renumber':
+                    default: // Must not happen, keep it in case
                         SurveyDynamic::sid($iSurveyId);
                         $oSurvey = new SurveyDynamic();
-                        break;
-                    case 'skip':
-                    case 'ignore':
-                    default:
-                        $oSurvey = false; // Remove existing survey : don't import again
                         break;
                 }
             } else {
