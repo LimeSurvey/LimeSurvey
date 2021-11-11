@@ -271,6 +271,10 @@ class TestHelper extends TestCase
         $this->assertEmpty($flashes, 'No flash error messages: ' . json_encode($flashes));
         $this->assertTrue($result, 'Upgrade successful');
 
+        $oDB = Yii::app()->db;
+        $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'DBVersion'))->queryRow();
+        $this->assertEquals($version, $currentDbVersion, 'Version in db is same as updated to');
+
         return $connection;
 
     }

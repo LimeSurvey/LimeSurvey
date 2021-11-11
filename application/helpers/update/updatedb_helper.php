@@ -5028,7 +5028,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "name='responses'"
             );
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 477], "stg_name='DBVersion'");
-            $oTransaction->commit();
         }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
