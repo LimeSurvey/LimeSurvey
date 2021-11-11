@@ -246,7 +246,7 @@ class TestHelper extends TestCase
     }
 
     /**
-     * @param int $version
+     * @param int $version Version to update FROM
      * @return \CDbConnection
      */
     public function updateDbFromVersion($version, $connection = null)
@@ -273,9 +273,14 @@ class TestHelper extends TestCase
         $this->assertEmpty($flashes, 'No flash error messages: ' . json_encode($flashes));
         $this->assertTrue($result, 'Upgrade successful');
 
-        $db = Yii::app()->db;
-        $currentDbVersion = $db->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name' => 'DBVersion'))->queryRow();
-        $this->assertEquals($version, $currentDbVersion, 'Version in db is same as updated to');
+        $versionConfig = require(Yii::app()->getBasePath() . '/config/version.php');
+        $currentDbVersion = $connection
+            ->createCommand()
+            ->select('stg_value')
+            ->from('{{settings_global}}')
+            ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
+            ->queryScalar();
+        $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
 
         return $connection;
 
