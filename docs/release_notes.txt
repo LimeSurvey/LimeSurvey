@@ -34,6 +34,14 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.0 (build 211110) to 5.2.1 (build 211111) November 11, 2021
+-Fixed issue: Missing database commit in update 477 (Olle Haerstedt)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.1.18 (build 211101) to 5.2.0 (build 211110) November 10, 2021
 -Fixed issue: Change mail to all users send button icon (Jessica Höck)
 -Fixed issue: When survey is active - the Add Group - Add Questions buttons should be shown with a disabled state + tooltip (Jessica Höck)
