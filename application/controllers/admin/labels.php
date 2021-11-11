@@ -442,7 +442,7 @@ class labels extends Survey_Common_Action
             // Save Button
             $aData['labelbar']['buttons']['edition'] = true;
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
-            $aData['labelbar']['savebutton']['text'] = gT("Save");
+            $aData['labelbar']['savebutton']['text'] = gT("Export");
             
             // Save and Close Button
             $aData['labelbar']['saveandclosebutton']['form'] = 'exportlabelset';

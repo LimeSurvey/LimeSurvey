@@ -38,10 +38,15 @@
 </div>
 
 <script type='text/javascript'>
-    /** If one or more elements are selected, then the export button will be enabled.
-     *  otherwise its disabled by default. */
+    /** If one or more elements are selected, then the save button will be enabled.
+     *  otherwise its disabled by default. 
+     *  Export Button will be hidden. */
     let isSelected    = false;
     let exportButton  = document.getElementById('exportButton');
+    let saveButton    = document.getElementById('save-form-button');
+    
+    /* Hide Export Button */
+    $(exportButton).hide();
 
     $('select').change(function() {
         $('#labelsets option:selected').each(function() {
@@ -50,9 +55,9 @@
         });
 
         if (isSelected) {
-            exportButton.removeAttribute('disabled');
+            saveButton.removeAttribute('disabled');
         } else {
-            exportButton.setAttribute('disabled', true);
+            saveButton.setAttribute('disabled', true);
         }
     }).trigger('change');
 </script>
