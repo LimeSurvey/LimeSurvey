@@ -167,13 +167,13 @@ class statistics extends Survey_Common_Action
          * b) "groups" -> group_name + group_order *
          */
 
-
-        $rows = Question::model()
-            ->with(array('group' => array('alias' => 'g')))
-            ->findAll(array('condition' => 'parent_qid = 0 AND g.sid=' . $surveyid, 'order' => 'group_order,question_order'));
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
+         $rows = Question::model()
+             ->with('group')
+             ->findAll(array(
+                'condition' => 'parent_qid = 0 AND t.sid=:sid',
+                'order' => 'group_order,question_order',
+                'params' => array(":sid" => $surveyid)
+            ));
 
         //put the question information into the filter array
         $filters = array();
@@ -693,10 +693,13 @@ class statistics extends Survey_Common_Action
         $summary[4] = "idL";
 
         // 1: Get list of questions from survey
-        $rows = Question::model()->getQuestionList($surveyid);
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
+        $rows = Question::model()
+            ->with('group')
+            ->findAll(array(
+                'condition' => 'parent_qid = 0 AND t.sid=:sid',
+                'order' => 'group_order,question_order',
+                'params' => array(":sid" => $surveyid)
+            ));
 
         // The questions to display (all question)
         foreach ($rows as $row) {
