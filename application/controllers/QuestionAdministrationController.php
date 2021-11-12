@@ -2434,8 +2434,7 @@ class QuestionAdministrationController extends LSBaseController
     {
         $iSurveyId = $aQuestionData['sid'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        // TODO: Don't read request from private methods.
-        $iQuestionGroupId = (int) App()->request->getParam('gid'); //the group id the question belongs to
+        $iQuestionGroupId = (int) $aQuestionData['gid'];
         $type = SettingsUser::getUserSettingValue(
             'preselectquestiontype',
             null,
