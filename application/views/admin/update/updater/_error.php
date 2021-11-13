@@ -4,12 +4,11 @@
  * @var obj $errorObject the object error
  */
 // TODO : move to the controler
-$urlNew = Yii::app()->createUrl("admin/update", array("update"=>'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
+$urlNew = Yii::app()->createUrl("admin/update", array("update" => 'newKey', 'destinationBuild' => $_REQUEST['destinationBuild']));
 // We first build the error message.
 // View is right place to do this, so it's easy for further integrators to change messages.
 $buttons = 0;
-switch ($errorObject->error)
-{
+switch ($errorObject->error) {
     case 'no_server_answer':
         $title = gT('No server answer!');
         $message = gT("We couldn't reach the server or the server didn't provide any answer. Please try again in few minutes.");
@@ -66,7 +65,7 @@ switch ($errorObject->error)
 
     case 'unknown_view':
         $title = gT("The server tried to call an unknown view!");
-        $message = gT('Is your ComfortUpdate up to date?').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('Is your ComfortUpdate up to date?') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 3;
         break;
 
@@ -78,25 +77,25 @@ switch ($errorObject->error)
 
     case 'file_locked':
         $title = gT('Update server busy');
-        $message = gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.').'<br/>'.gT('Please be patient and try again in about 5 minutes.');
+        $message = gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.') . '<br/>' . gT('Please be patient and try again in about 5 minutes.');
         $buttons = 0;
         break;
 
     case 'server_error_creating_zip_update':
-        $title = gT('Server error!');
-        $message = gT('An error occured while creating your update package file.').' '.gT('Please contact the LimeSurvey team.');
+        $title = gT('Update server busy');
+        $message = gT('The update server needs a bit of time to create the package for your version. Please try again in a couple minutes.');
         $buttons = 0;
         break;
 
     case 'server_error_getting_checksums':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting checksums.').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occured while getting checksums.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
     case 'cant_get_changeset':
         $title = gT('Server error!');
-        $message = gT('An error occured while getting the changeset.').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('An error occured while getting the changeset.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 
@@ -131,7 +130,7 @@ switch ($errorObject->error)
 
     default:
         $title = $errorObject->error;
-        $message = gT('Unknown error.').' '.gT('Please contact the LimeSurvey team.');
+        $message = gT('Unknown error.') . ' ' . gT('Please contact the LimeSurvey team.');
         $buttons = 0;
         break;
 }
@@ -145,7 +144,7 @@ switch ($errorObject->error)
 
 <div>
 
-<?php if( $buttons == 1 ): ?>
+<?php if ($buttons == 1) : ?>
         <a class="btn btn-default" href="https://community.limesurvey.org/comfort-update-extension/" role="button" aria-disabled="false" target="_blank">
             <?php eT("Buy a new key"); ?>
         </a>
@@ -154,7 +153,7 @@ switch ($errorObject->error)
             <?php eT("Enter a new key"); ?>
         </a>
 <?php endif; ?>
-<?php if( $buttons == 3 ): ?>
+<?php if ($buttons == 3) : ?>
         <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update/sa/managekey");?>" role="button" aria-disabled="false">
             <?php eT("Enter a new key"); ?>
         </a>
