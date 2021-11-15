@@ -956,7 +956,7 @@ class statistics_helper
                 }
 
                 //calculate statistical values
-                $standardDeviation = standard_deviation($rows);
+                $standardDeviation = standardDeviation($rows);
                 $sum = array_sum($rows);
                 $average = $sum / count($rows);
                 $min = min($rows);

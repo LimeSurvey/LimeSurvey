@@ -5089,18 +5089,18 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
 }
 
 /**
- * function to calculate the standard deviation of an array
- * @var array $array The array to calculate the standard deviation for
+ * Returns the standard deviation of supplied $numbers
+ * @param array $numbers The numbers to calculate the standard deviation for
  * @return float
  */
-function standard_deviation(array $array): float
+function standardDeviation(array $numbers): float
 {
-    $numberOfElements = count($array);
+    $numberOfElements = count($numbers);
 
     $variance = 0.0;
-    $average = array_sum($array) / $numberOfElements;
+    $average = array_sum($numbers) / $numberOfElements;
 
-    foreach ($array as $i) {
+    foreach ($numbers as $i) {
         // sum of squares of differences between all numbers
         $variance += ($i - $average) ** 2;
     }
