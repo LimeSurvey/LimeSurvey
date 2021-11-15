@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-08 10:01:27+00:00\n"
+"POT-Creation-Date: 2021-11-15 11:23:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -427,18 +427,18 @@ msgstr ""
 #: application/controllers/admin/quotas.php:419
 #: application/controllers/admin/quotas.php:439
 #: application/controllers/admin/responses.php:824
-#: application/controllers/admin/surveyadmin.php:250
-#: application/controllers/admin/surveyadmin.php:492
-#: application/controllers/admin/surveyadmin.php:657
-#: application/controllers/admin/surveyadmin.php:708
-#: application/controllers/admin/surveyadmin.php:735
-#: application/controllers/admin/surveyadmin.php:860
-#: application/controllers/admin/surveyadmin.php:943
-#: application/controllers/admin/surveyadmin.php:1081
-#: application/controllers/admin/surveyadmin.php:1159
-#: application/controllers/admin/surveyadmin.php:1251
-#: application/controllers/admin/surveyadmin.php:1496
-#: application/controllers/admin/surveyadmin.php:1896
+#: application/controllers/admin/surveyadmin.php:281
+#: application/controllers/admin/surveyadmin.php:523
+#: application/controllers/admin/surveyadmin.php:688
+#: application/controllers/admin/surveyadmin.php:739
+#: application/controllers/admin/surveyadmin.php:766
+#: application/controllers/admin/surveyadmin.php:891
+#: application/controllers/admin/surveyadmin.php:974
+#: application/controllers/admin/surveyadmin.php:1112
+#: application/controllers/admin/surveyadmin.php:1190
+#: application/controllers/admin/surveyadmin.php:1282
+#: application/controllers/admin/surveyadmin.php:1527
+#: application/controllers/admin/surveyadmin.php:1927
 #: application/controllers/admin/surveypermission.php:48
 #: application/controllers/admin/surveypermission.php:227
 #: application/controllers/admin/surveypermission.php:330
@@ -645,6 +645,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:937
 #: application/controllers/admin/responses.php:217
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:60
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:12
 #: application/helpers/qanda_helper.php:2304
 #: application/models/Notification.php:166
 #: application/models/Surveymenu.php:189
@@ -1026,12 +1027,12 @@ msgstr ""
 #: application/controllers/admin/questions.php:693
 #: application/controllers/admin/questions.php:1026
 #: application/controllers/admin/questions.php:1199
-#: application/controllers/admin/surveyadmin.php:153
-#: application/controllers/admin/surveyadmin.php:218
-#: application/controllers/admin/surveyadmin.php:547
-#: application/controllers/admin/surveyadmin.php:958
-#: application/controllers/admin/surveyadmin.php:993
-#: application/controllers/admin/surveyadmin.php:1450
+#: application/controllers/admin/surveyadmin.php:184
+#: application/controllers/admin/surveyadmin.php:249
+#: application/controllers/admin/surveyadmin.php:578
+#: application/controllers/admin/surveyadmin.php:989
+#: application/controllers/admin/surveyadmin.php:1024
+#: application/controllers/admin/surveyadmin.php:1481
 msgid "Access denied"
 msgstr ""
 
@@ -1063,7 +1064,7 @@ msgstr ""
 #: application/controllers/admin/SurveymenuEntryController.php:195
 #: application/controllers/admin/export.php:927
 #: application/controllers/admin/questions.php:145
-#: application/controllers/admin/surveyadmin.php:1359
+#: application/controllers/admin/surveyadmin.php:1390
 #: application/controllers/admin/themeoptions.php:43
 #: application/controllers/admin/themeoptions.php:67
 #: application/controllers/admin/themeoptions.php:96
@@ -1129,12 +1130,12 @@ msgstr ""
 #: application/controllers/admin/statistics.php:532
 #: application/controllers/admin/statistics.php:573
 #: application/controllers/admin/statistics.php:680
-#: application/controllers/admin/surveyadmin.php:105
-#: application/controllers/admin/surveyadmin.php:1051
-#: application/controllers/admin/surveyadmin.php:1107
-#: application/controllers/admin/surveyadmin.php:1265
-#: application/controllers/admin/surveyadmin.php:1281
-#: application/controllers/admin/surveyadmin.php:1964
+#: application/controllers/admin/surveyadmin.php:136
+#: application/controllers/admin/surveyadmin.php:1082
+#: application/controllers/admin/surveyadmin.php:1138
+#: application/controllers/admin/surveyadmin.php:1296
+#: application/controllers/admin/surveyadmin.php:1312
+#: application/controllers/admin/surveyadmin.php:1995
 #: application/controllers/admin/tokens.php:46
 #: application/controllers/admin/tokens.php:243
 #: application/controllers/admin/tokens.php:257
@@ -1177,7 +1178,7 @@ msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:58
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:49
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:58
 #: application/helpers/replacements_helper.php:342
 #: application/helpers/replacements_helper.php:458
 #: application/models/TemplateConfig.php:725
@@ -1779,7 +1780,7 @@ msgstr ""
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:210
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:237
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:33
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:42
 #: application/helpers/SurveyRuntimeHelper.php:454
 #: application/helpers/admin/statistics_helper.php:1244
 #: application/helpers/admin/statistics_helper.php:1366
@@ -1939,7 +1940,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1087
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:232
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:241
-#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:41
+#: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:50
 #: application/helpers/SurveyRuntimeHelper.php:454
 #: application/helpers/admin/statistics_helper.php:1245
 #: application/helpers/admin/statistics_helper.php:1367
@@ -2379,9 +2380,9 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:789
 #: application/controllers/admin/questiongroups.php:59
 #: application/controllers/admin/questions.php:197
-#: application/controllers/admin/surveyadmin.php:324
-#: application/controllers/admin/surveyadmin.php:1319
-#: application/controllers/admin/surveyadmin.php:2410
+#: application/controllers/admin/surveyadmin.php:355
+#: application/controllers/admin/surveyadmin.php:1350
+#: application/controllers/admin/surveyadmin.php:2441
 #: application/controllers/admin/themes.php:264
 #: application/controllers/admin/themes.php:359
 #: application/controllers/admin/themes.php:435
@@ -2540,7 +2541,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1245
 #: application/controllers/admin/labels.php:220
-#: application/controllers/admin/surveyadmin.php:1912
+#: application/controllers/admin/surveyadmin.php:1943
 #: application/controllers/admin/usergroups.php:178
 #: application/helpers/admin/label_helper.php:130
 #: application/models/TemplateManifest.php:175
@@ -2591,7 +2592,7 @@ msgstr ""
 #: application/controllers/admin/responses.php:67
 #: application/controllers/admin/statistics.php:117
 #: application/controllers/admin/statistics.php:685
-#: application/controllers/admin/surveyadmin.php:1356
+#: application/controllers/admin/surveyadmin.php:1387
 #: application/core/Survey_Common_Action.php:606
 #: application/core/Survey_Common_Action.php:882
 msgid "Invalid survey ID"
@@ -3003,19 +3004,19 @@ msgid "Box deleted"
 msgstr ""
 
 #: application/controllers/admin/labels.php:57
-#: application/controllers/admin/surveyadmin.php:271
+#: application/controllers/admin/surveyadmin.php:302
 msgid "Demo mode only: Uploading files is disabled in this system."
 msgstr ""
 
 #: application/controllers/admin/labels.php:73
-#: application/controllers/admin/surveyadmin.php:288
-#: application/controllers/admin/surveyadmin.php:2395
+#: application/controllers/admin/surveyadmin.php:319
+#: application/controllers/admin/surveyadmin.php:2426
 #: application/controllers/admin/themes.php:1287
 msgid "Incorrect permissions in your %s folder."
 msgstr ""
 
 #: application/controllers/admin/labels.php:103
-#: application/controllers/admin/surveyadmin.php:320
+#: application/controllers/admin/surveyadmin.php:351
 msgid "This ZIP archive contains no valid Resources files. Import failed."
 msgstr ""
 
@@ -3129,9 +3130,11 @@ msgstr ""
 #: application/controllers/admin/limereplacementfields.php:265
 #: application/controllers/admin/limereplacementfields.php:281
 #: application/controllers/admin/limereplacementfields.php:299
+#: application/controllers/admin/surveyadmin.php:93
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:42
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:14
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:12
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:11
 #: application/models/SurveyLink.php:232
 #: application/views/admin/token/massive_actions/_delete_results.php:10
 #: application/views/admin/token/massive_actions/_export_archive_results.php:12
@@ -3203,7 +3206,7 @@ msgid "Participant successfully added"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:771
-#: application/controllers/admin/surveyadmin.php:1934
+#: application/controllers/admin/surveyadmin.php:1965
 #: application/views/admin/labels/_labelviewrightcontent_view.php:57
 #: application/views/admin/labels/_labelviewrightcontent_view.php:77
 #: application/views/admin/survey/Question/importQuestion_view.php:12
@@ -3222,7 +3225,7 @@ msgid "This is not a .csv file."
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:843
-#: application/controllers/admin/surveyadmin.php:2022
+#: application/controllers/admin/surveyadmin.php:2053
 #: application/controllers/admin/themes.php:340
 #: application/core/Survey_Common_Action.php:1235
 #: application/extensions/LimeScript/LimeScript.php:27
@@ -3559,7 +3562,7 @@ msgid "Please choose no more than %s items."
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:57
-#: application/controllers/admin/surveyadmin.php:1313
+#: application/controllers/admin/surveyadmin.php:1344
 #: application/core/LSUploadHelper.php:54
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
@@ -3633,11 +3636,11 @@ msgid "Group could not be deleted"
 msgstr ""
 
 #: application/controllers/admin/questiongroups.php:388
-#: application/controllers/admin/surveyadmin.php:1134
-#: application/controllers/admin/surveyadmin.php:1216
-#: application/controllers/admin/surveyadmin.php:1712
-#: application/controllers/admin/surveyadmin.php:1751
-#: application/controllers/admin/surveyadmin.php:1764
+#: application/controllers/admin/surveyadmin.php:1165
+#: application/controllers/admin/surveyadmin.php:1247
+#: application/controllers/admin/surveyadmin.php:1743
+#: application/controllers/admin/surveyadmin.php:1782
+#: application/controllers/admin/surveyadmin.php:1795
 #: application/views/admin/assessments/assessments_edit.php:89
 #: application/views/admin/emailtemplates/emailtemplates_view.php:38
 #: application/views/admin/quotas/_form_langsettings.php:15
@@ -3695,7 +3698,7 @@ msgstr ""
 
 #: application/controllers/admin/questions.php:1037
 #: application/controllers/admin/questions.php:1188
-#: application/controllers/admin/surveyadmin.php:1717
+#: application/controllers/admin/surveyadmin.php:1748
 #: application/views/admin/survey/Question/editQuestion_view.php:78
 msgid "Add a new question"
 msgstr ""
@@ -3752,9 +3755,9 @@ msgstr ""
 #: application/controllers/admin/questions.php:1849
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_change_survey_group.php:20
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:106
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:124
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:140
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:114
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:134
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:152
 #: application/views/admin/conditions/deleteAllConditions.php:8
 msgid "Continue?"
 msgstr ""
@@ -4025,33 +4028,62 @@ msgid "Statistics"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:68
-#: application/controllers/admin/surveyadmin.php:407
-#: application/controllers/admin/surveyadmin.php:2011
+#: application/controllers/admin/surveyadmin.php:438
+#: application/controllers/admin/surveyadmin.php:2042
 msgid "User does not have valid permissions"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:110
-msgid "You can't update question code for an active survey."
+#: application/controllers/admin/surveyadmin.php:89
+msgid "Invalid list of checked items"
+msgstr ""
+
+#: application/controllers/admin/surveyadmin.php:93
+msgid "Survey Title"
+msgstr ""
+
+#: application/controllers/admin/surveyadmin.php:93
+#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:51
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:16
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:13
+#: application/models/Notification.php:165
+#: application/views/admin/participants/massive_actions/_update_results.php:18
+#: application/views/admin/pluginmanager/index.php:57
+#: application/views/admin/survey/Question/massive_actions/_delete_results.php:12
+#: application/views/admin/surveymenu/massive_action/_update_results.php:18
+#: application/views/admin/surveymenu_entries/massive_action/_update_results.php:18
+#: application/views/admin/token/massive_actions/_delete_results.php:12
+#: application/views/admin/token/massive_actions/_export_archive_results.php:14
+#: application/views/admin/token/massive_actions/_update_results.php:18
+msgid "Status"
+msgstr ""
+
+#: application/controllers/admin/surveyadmin.php:106
+msgid "Seleted"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:141
+msgid "You can't update question code for an active survey."
+msgstr ""
+
+#: application/controllers/admin/surveyadmin.php:172
 msgid "Question codes were successfully regenerated."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:189
+#: application/controllers/admin/surveyadmin.php:220
 msgid "New survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:302
+#: application/controllers/admin/surveyadmin.php:333
 msgid "This file is not a valid ZIP file archive. Import failed. "
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:376
-#: application/controllers/admin/surveyadmin.php:2019
+#: application/controllers/admin/surveyadmin.php:407
+#: application/controllers/admin/surveyadmin.php:2050
 msgid "Survey update failed"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:380
+#: application/controllers/admin/surveyadmin.php:411
 #: application/controllers/admin/useraction.php:157
 #: application/helpers/SurveyRuntimeHelper.php:1037
 #: application/helpers/update/update_helper.php:35
@@ -4073,81 +4105,81 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:502
-#: application/controllers/admin/surveyadmin.php:703
+#: application/controllers/admin/surveyadmin.php:533
+#: application/controllers/admin/surveyadmin.php:734
 msgid "Return to survey list"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:658
+#: application/controllers/admin/surveyadmin.php:689
 #: application/views/admin/survey/QuestionGroups/listquestiongroups.php:12
 msgid "Question groups in this survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:707
+#: application/controllers/admin/surveyadmin.php:738
 #: application/views/admin/survey/Question/listquestions.php:12
 msgid "Questions in this survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:755
+#: application/controllers/admin/surveyadmin.php:786
 msgid "Error: Response table does not exist. Survey cannot be deactivated."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:863
+#: application/controllers/admin/surveyadmin.php:894
 msgid "This survey is already active."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:952
+#: application/controllers/admin/surveyadmin.php:983
 msgid "Survey deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:981
+#: application/controllers/admin/surveyadmin.php:1012
 msgid "Survey files deleted."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:983
+#: application/controllers/admin/surveyadmin.php:1014
 msgid "Error: Could not delete survey files."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:989
+#: application/controllers/admin/surveyadmin.php:1020
 msgid "Error: Cannot purge files for a survey that is not deleted. Please delete the survey normally in the survey view."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1293
+#: application/controllers/admin/surveyadmin.php:1324
 #: application/views/admin/survey/importSurvey_view.php:12
 msgid "Import survey data"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1294
+#: application/controllers/admin/surveyadmin.php:1325
 msgid "Survey structure import summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1302
+#: application/controllers/admin/surveyadmin.php:1333
 #: application/views/admin/survey/copySurvey_view.php:11
 #: application/views/admin/survey/subview/tabCopy_view.php:153
 msgid "Copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1303
+#: application/controllers/admin/surveyadmin.php:1334
 msgid "Survey copy summary"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1316
+#: application/controllers/admin/surveyadmin.php:1347
 msgid "Import failed. You specified an invalid file type '%s'."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1353
+#: application/controllers/admin/surveyadmin.php:1384
 msgid "No survey ID has been provided. Cannot copy survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1374
+#: application/controllers/admin/surveyadmin.php:1405
 msgid "Unknown error while reading the file, no survey created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1573
+#: application/controllers/admin/surveyadmin.php:1604
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1897
+#: application/controllers/admin/surveyadmin.php:1928
 #: application/controllers/admin/surveypermission.php:66
 #: application/models/Assessment.php:123 application/models/Participant.php:366
 #: application/models/ParticipantAttributeName.php:196
@@ -4165,58 +4197,58 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1898
-#: application/controllers/admin/surveyadmin.php:1906
+#: application/controllers/admin/surveyadmin.php:1929
+#: application/controllers/admin/surveyadmin.php:1937
 msgid "Parameter"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1899
-#: application/controllers/admin/surveyadmin.php:1907
+#: application/controllers/admin/surveyadmin.php:1930
+#: application/controllers/admin/surveyadmin.php:1938
 msgid "Target question"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1900
+#: application/controllers/admin/surveyadmin.php:1931
 msgid "Survey id"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1901
+#: application/controllers/admin/surveyadmin.php:1932
 msgid "Question id"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1902
+#: application/controllers/admin/surveyadmin.php:1933
 msgid "Subquestion ID"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1903
-#: application/controllers/admin/surveyadmin.php:1905
+#: application/controllers/admin/surveyadmin.php:1934
+#: application/controllers/admin/surveyadmin.php:1936
 msgid "Add URL parameter"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1904
+#: application/controllers/admin/surveyadmin.php:1935
 msgid "Edit URL parameter"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1908
+#: application/controllers/admin/surveyadmin.php:1939
 #: application/views/admin/survey/subview/addPanelIntegrationParameter_view.php:25
 msgid "(No target question)"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1909
+#: application/controllers/admin/surveyadmin.php:1940
 msgid "Are you sure you want to delete this URL parameter?"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1910
+#: application/controllers/admin/surveyadmin.php:1941
 #: application/models/Boxes.php:144
 msgid "No, cancel"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1911
+#: application/controllers/admin/surveyadmin.php:1942
 #: application/models/Boxes.php:145
 #: application/views/admin/assessments/assessments_delete.php:27
 msgid "Yes, delete"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1913
+#: application/controllers/admin/surveyadmin.php:1944
 #: application/controllers/admin/tokens.php:1202
 #: application/controllers/admin/tokens.php:1583
 #: application/controllers/admin/tokens.php:2384
@@ -4272,54 +4304,54 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1936
+#: application/controllers/admin/surveyadmin.php:1967
 #: application/views/admin/labels/_labelviewrightcontent_view.php:76
 #: application/views/admin/themeoptions/import_modal.php:30
 #: application/views/admin/themes/importform_view.php:14
 msgid "The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:1967
+#: application/controllers/admin/surveyadmin.php:1998
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2084
+#: application/controllers/admin/surveyadmin.php:2115
 msgid "Survey could not be created because it did not have a title"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2180
+#: application/controllers/admin/surveyadmin.php:2211
 msgid "Warning! Notification email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2187
+#: application/controllers/admin/surveyadmin.php:2218
 msgid "Warning! Bounce email was not updated because it was not valid."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2243
+#: application/controllers/admin/surveyadmin.php:2274
 msgid "Your new survey was created. We also created a first question group and an example question for you."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2253
+#: application/controllers/admin/surveyadmin.php:2284
 msgid "Your new survey was created."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2282
+#: application/controllers/admin/surveyadmin.php:2313
 msgid "My first question group"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2305
+#: application/controllers/admin/surveyadmin.php:2336
 msgid "A first example question. Please answer this question:"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2306
+#: application/controllers/admin/surveyadmin.php:2337
 msgid "This is a question help text."
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2372
+#: application/controllers/admin/surveyadmin.php:2403
 msgid "You don't have sufficient permissions to upload images in this survey"
 msgstr ""
 
-#: application/controllers/admin/surveyadmin.php:2412
+#: application/controllers/admin/surveyadmin.php:2443
 #: application/controllers/admin/themes.php:266
 #: application/controllers/admin/themes.php:437
 msgid "File %s uploaded"
@@ -7658,21 +7690,6 @@ msgstr ""
 msgid "%s rows per page"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:51
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:16
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_export_archive_results.php:14
-#: application/models/Notification.php:165
-#: application/views/admin/participants/massive_actions/_update_results.php:18
-#: application/views/admin/pluginmanager/index.php:57
-#: application/views/admin/survey/Question/massive_actions/_delete_results.php:12
-#: application/views/admin/surveymenu/massive_action/_update_results.php:18
-#: application/views/admin/surveymenu_entries/massive_action/_update_results.php:18
-#: application/views/admin/token/massive_actions/_delete_results.php:12
-#: application/views/admin/token/massive_actions/_export_archive_results.php:14
-#: application/views/admin/token/massive_actions/_update_results.php:18
-msgid "Status"
-msgstr ""
-
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:77
 #: application/models/Notification.php:163
 msgid "Created"
@@ -7756,77 +7773,82 @@ msgstr ""
 msgid "This will update the survey theme for all selected active surveys."
 msgstr ""
 
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selected_survey.php:27
+#: application/views/admin/themeoptions/index.php:200
+msgid "Selected"
+msgstr ""
+
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:15
 msgid "Selected survey(s)..."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:32
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:34
 msgid "Delete surveys"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:33
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:35
 msgid "Are you sure you want to delete all those surveys?"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:50
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:52
 msgid "Survey theme"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:56
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:60
 msgid "Set survey theme"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:67
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:71
 msgid "Survey group"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:73
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:79
 msgid "Change survey group"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:89
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:95
 msgid "Export as..."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:99
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:105
 msgid "Survey archive (*.lsa)"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:105
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:113
 msgid "Export survey archive"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:106
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:114
 msgid "This will export the survey archive (.lsa) for all selected active surveys. They will be provided in a single ZIP archive."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:117
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:125
 msgid "Survey structure (*.lss)"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:123
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:133
 msgid "Export survey structure"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:124
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:134
 msgid "This will export the survey structure (.lss) for all selected active surveys. They will be provided in a single ZIP archive."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:134
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:144
 #: application/views/admin/survey/surveybar_displayexport.php:95
 msgid "Printable survey (*.html)"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:139
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:151
 msgid "Export printable survey"
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:140
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:152
 msgid "This will export a printable version of your survey."
 msgstr ""
 
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:149
-#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:155
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:161
+#: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:169
 msgid "Set expiry date"
 msgstr ""
 
@@ -19711,10 +19733,6 @@ msgstr ""
 
 #: application/views/admin/themeoptions/index.php:197
 msgid "Core admin theme"
-msgstr ""
-
-#: application/views/admin/themeoptions/index.php:200
-msgid "Selected"
 msgstr ""
 
 #: application/views/admin/themeoptions/index.php:221
