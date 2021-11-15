@@ -606,6 +606,7 @@ class QuestionAttribute extends LSActiveRecord
         $questionAttributeFetcher->setQuestion($question);
         $questionAttributeDefinitions = $questionAttributeFetcher->fetch();
 
+        // The value will be filtered unless the attribute definition has the "xssfilter" property set to false
         $shouldFilter = true;
         if (isset($questionAttributeDefinitions[$this->attribute])) {
             $questionAttributeDefinition = $questionAttributeDefinitions[$this->attribute];
@@ -618,6 +619,7 @@ class QuestionAttribute extends LSActiveRecord
             return;
         }
 
+        // By default, LSYii_Validators only applies an XSS filter. It has other filters but they are not enabled by default.
         $validator = new LSYii_Validators;
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
