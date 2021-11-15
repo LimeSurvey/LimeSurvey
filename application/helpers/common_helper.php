@@ -5086,3 +5086,23 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
     }
     return $result;
 }
+
+/**
+ * Returns the standard deviation of supplied $numbers
+ * @param array $numbers The numbers to calculate the standard deviation for
+ * @return float
+ */
+function standardDeviation(array $numbers): float
+{
+    $numberOfElements = count($numbers);
+
+    $variance = 0.0;
+    $average = array_sum($numbers) / $numberOfElements;
+
+    foreach ($numbers as $i) {
+        // sum of squares of differences between all numbers
+        $variance += ($i - $average) ** 2;
+    }
+
+    return sqrt($variance / $numberOfElements);
+}
