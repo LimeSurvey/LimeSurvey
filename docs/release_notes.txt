@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.1 (build 211111) to 5.2.2 (build 211115) November 15, 2021
+-Fixed issue: Error message "Unknown column 'owner_uid' in 'field list'"  when updating from 4.x (Carsten Schmitz)
+-Fixed issue: Confusing message when the ComfortUpdate server is preparing the update package (Carsten Schmitz)
+-Fixed issue #L41-T1509: Numeric questions prevent statistics from generating and display false data (Patrick Teichmann)
+-Fixed issue #L41-T1509: Numeric questions prevent statistics from generating and display false data (#2127) (Patrick Teichmann)
+-Fixed issue #17719: Question list not updated when adding/changing questions (Olle Haerstedt)
+-Fixed issue #17717: Saving survey group permissions fails with error if auditlog plugin is active (#2141) (Vitauts Stočka)
+-Fixed issue #17713: broken theme name in Survey general settings (#2140) (Vitauts Stočka)
+-Fixed issue #17674: Impossible to add new Menu or New Menu Entry  (#2136) (Gabriel Jenik)
+-Fixed issue #17637: wrong question order (#2139) (Vitauts Stočka)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz, rovinj
+
+
+Changes from 5.2.0 (build 211110) to 5.2.1 (build 211111) November 11, 2021
+-Fixed issue: Missing database commit in update 477 (Olle Haerstedt)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by Jmantysalo
+
+
 Changes from 5.1.18 (build 211101) to 5.2.0 (build 211110) November 10, 2021
 -Fixed issue: Change mail to all users send button icon (Jessica Höck)
 -Fixed issue: When survey is active - the Add Group - Add Questions buttons should be shown with a disabled state + tooltip (Jessica Höck)
