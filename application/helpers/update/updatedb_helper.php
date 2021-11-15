@@ -13,6 +13,8 @@
 *
 */
 
+use LimeSurvey\Helpers\Update\DatabaseUpdateBase;
+
 /* Rules:
 - Never use models in the upgrade process - never ever!
 - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
