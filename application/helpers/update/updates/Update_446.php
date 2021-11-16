@@ -18,7 +18,7 @@ class Update_446 extends DatabaseUpdateBase
                     'created' => "datetime NOT NULL",
                     'properties' => "text NOT NULL",
                 ],
-                $options
+                $this->options
             );
             upgradeArchivedTableSettings446();
 

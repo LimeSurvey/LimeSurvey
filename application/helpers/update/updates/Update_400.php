@@ -14,68 +14,65 @@ class Update_400 extends DatabaseUpdateBase
             );
         }
 
-            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
-            $oTransaction = $this->db->beginTransaction();
-
-            // Question table
-            /* l10ns question table */
+        // Question table
+        /* l10ns question table */
         if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{question_l10ns}}');
         }
-            $this->db->createCommand()->createTable(
-                '{{question_l10ns}}',
-                array(
-                    'id' => "pk",
-                    'qid' => "integer NOT NULL",
-                    'question' => "mediumtext NOT NULL",
-                    'help' => "mediumtext",
-                    'language' => "string(20) NOT NULL"
-                ),
-                $options
-            );
-            $this->db->createCommand()->createIndex(
-                '{{idx1_question_l10ns}}',
-                '{{question_l10ns}}',
-                ['qid', 'language'],
-                true
-            );
-            $this->db->createCommand(
-                "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
-            )->execute();
-            /* questions by rename/insert */
+        $this->db->createCommand()->createTable(
+            '{{question_l10ns}}',
+            array(
+                'id' => "pk",
+                'qid' => "integer NOT NULL",
+                'question' => "mediumtext NOT NULL",
+                'help' => "mediumtext",
+                'language' => "string(20) NOT NULL"
+            ),
+            $options
+        );
+        $this->db->createCommand()->createIndex(
+            '{{idx1_question_l10ns}}',
+            '{{question_l10ns}}',
+            ['qid', 'language'],
+            true
+        );
+        $this->db->createCommand(
+            "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
+        )->execute();
+        /* questions by rename/insert */
         if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
             $this->db->createCommand()->dropTable('{{questions_update400}}');
         }
-            $this->db->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
-            $this->db->createCommand()->createTable(
-                '{{questions}}',
-                array(
-                    'qid' => "pk",
-                    'parent_qid' => "integer NOT NULL default '0'",
-                    'sid' => "integer NOT NULL default '0'",
-                    'gid' => "integer NOT NULL default '0'",
-                    'type' => "string(30) NOT NULL default 'T'",
-                    'title' => "string(20) NOT NULL default ''",
-                    'preg' => "text",
-                    'other' => "string(1) NOT NULL default 'N'",
-                    'mandatory' => "string(1) NULL",
-                    //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
-                    'question_order' => "integer NOT NULL",
-                    'scale_id' => "integer NOT NULL default '0'",
-                    'same_default' => "integer NOT NULL default '0'",
-                    'relevance' => "text",
-                    'modulename' => "string(255) NULL"
-                ),
-                $options
-            );
-            switchMSSQLIdentityInsert('questions', true); // Untested
-            $this->db->createCommand(
-                "INSERT INTO {{questions}}
-                (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
-                SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
-                FROM {{questions_update400}}
-                    INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
-                "
+        $this->db->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
+        $this->db->createCommand()->createTable(
+            '{{questions}}',
+            array(
+                'qid' => "pk",
+                'parent_qid' => "integer NOT NULL default '0'",
+                'sid' => "integer NOT NULL default '0'",
+                'gid' => "integer NOT NULL default '0'",
+                'type' => "string(30) NOT NULL default 'T'",
+                'title' => "string(20) NOT NULL default ''",
+                'preg' => "text",
+                'other' => "string(1) NOT NULL default 'N'",
+                'mandatory' => "string(1) NULL",
+                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                'question_order' => "integer NOT NULL",
+                'scale_id' => "integer NOT NULL default '0'",
+                'same_default' => "integer NOT NULL default '0'",
+                'relevance' => "text",
+                'modulename' => "string(255) NULL"
+            ),
+            $options
+        );
+        switchMSSQLIdentityInsert('questions', true); // Untested
+        $this->db->createCommand(
+            "INSERT INTO {{questions}}
+            (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
+            SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
+            FROM {{questions_update400}}
+            INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
+            "
             )->execute();
             switchMSSQLIdentityInsert('questions', false); // Untested
             $this->db->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
@@ -218,64 +215,69 @@ class Update_400 extends DatabaseUpdateBase
         if (Yii::app()->db->schema->getTable('{{labels_update400}}')) {
             $this->db->createCommand()->dropTable('{{labels_update400}}');
         }
-            $this->db->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
-            $this->db->createCommand()->createTable(
-                '{{labels}}',
-                [
-                    'id' => "pk",
-                    'lid' => 'integer NOT NULL',
-                    'code' => 'string(5) NOT NULL',
-                    'sortorder' => 'integer NOT NULL',
-                    'assessment_value' => 'integer NOT NULL DEFAULT 0'
-                ],
-                $options
-            );
-            /* The previous id is broken and can not be used, create a new one */
-            /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
-            $this->db->createCommand(
-                "INSERT INTO {{labels}}
-                (lid, code, sortorder, assessment_value)
-                SELECT lid, code, min(sortorder), min(assessment_value)
-                FROM {{labels_update400}}
-                GROUP BY lid, code"
+
+        $this->db->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
+        $this->db->createCommand()->createTable(
+            '{{labels}}',
+            [
+                'id' => "pk",
+                'lid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0'
+            ],
+            $options
+        );
+        /* The previous id is broken and can not be used, create a new one */
+        /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
+        $this->db->createCommand(
+            "INSERT INTO {{labels}}
+            (lid, code, sortorder, assessment_value)
+            SELECT lid, code, min(sortorder), min(assessment_value)
+            FROM {{labels_update400}}
+            GROUP BY lid, code"
             )->execute();
-            $this->db->createCommand()->createTable(
-                '{{label_l10ns}}',
-                array(
-                    'id' => "pk",
-                    'label_id' => "integer NOT NULL",
-                    'title' => "text",
-                    'language' => "string(20) NOT NULL DEFAULT 'en'"
-                ),
-                $options
-            );
-            $this->db->createCommand()->createIndex(
-                '{{idx1_label_l10ns}}',
-                '{{label_l10ns}}',
-                ['label_id', 'language'],
-                true
-            );
-            // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
-            $this->db->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
-            $this->db->createCommand(
-                "INSERT INTO {{label_l10ns}}
-                (label_id, title, language)
-                SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
-                FROM {{labels_update400}}
-                    INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
-                "
-            )->execute();
-            $this->db->createCommand()->dropTable('{{labels_update400}}');
 
-            // Extend language field on labelsets
-            alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+        $this->db->createCommand()->createTable(
+            '{{label_l10ns}}',
+            array(
+                'id' => "pk",
+                'label_id' => "integer NOT NULL",
+                'title' => "text",
+                'language' => "string(20) NOT NULL DEFAULT 'en'"
+            ),
+            $options
+        );
 
-            // Extend question type field length
-            alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
+        $this->db->createCommand()->createIndex(
+            '{{idx1_label_l10ns}}',
+            '{{label_l10ns}}',
+            ['label_id', 'language'],
+            true
+        );
 
-            // Drop autoincrement on timings table primary key
-            upgradeSurveyTimings350();
+        // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
+        $this->db->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
+        $this->db->createCommand(
+            "INSERT INTO {{label_l10ns}}
+            (label_id, title, language)
+            SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
+            FROM {{labels_update400}}
+            INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
+            "
+        )->execute();
 
-            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
+        $this->db->createCommand()->dropTable('{{labels_update400}}');
+
+        // Extend language field on labelsets
+        alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+
+        // Extend question type field length
+        alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
+
+        // Drop autoincrement on timings table primary key
+        upgradeSurveyTimings350();
+
+        $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
     }
-}
+    }

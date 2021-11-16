@@ -6,19 +6,16 @@ class Update_418 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $this->db->createCommand()->insert(
-                "{{plugins}}",
-                [
-                    'name' => 'PasswordRequirement',
-                    'plugin_type' => 'core',
-                    'active' => 1,
-                    'version' => '1.0.0',
-                    'load_error' => 0,
-                    'load_error_message' => null
-                ]
-            );
-
-            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
-            $oTransaction->commit();
+        $this->db->createCommand()->insert(
+            "{{plugins}}",
+            [
+                'name' => 'PasswordRequirement',
+                'plugin_type' => 'core',
+                'active' => 1,
+                'version' => '1.0.0',
+                'load_error' => 0,
+                'load_error_message' => null
+            ]
+        );
     }
 }

@@ -34,7 +34,7 @@ class Update_421 extends DatabaseUpdateBase
                     'group' => "string(150)",
                     'settings' => "text"
                 ],
-                $options
+                $this->options
             );
 
             $this->db->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);

@@ -11,14 +11,22 @@ abstract class DatabaseUpdateBase
     /** @var CDbConnection */
     private $db;
 
+    /** @var int */
+    private $newVersion;
+
+    /** @var string Specific database options like ENGINE=INNODB etc */
+    private $options;
+
     /**
      * @param CDbConnection $connection
+     * @param string $options
      */
-    public function __construct(CDbConnection $connection)
+    public function __construct(CDbConnection $connection, $options)
     {
         $this->db = $connection;
         // Database version is part of class and file name, e.g. Update_123.
         $this->newVersion = $this->getVersion();
+        $this->options = $options;
     }
 
     /**

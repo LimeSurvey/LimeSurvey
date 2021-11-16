@@ -84,7 +84,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     }
     try {
         // Get all relevant files from updates/ folder
-        $updates = getRelevantUpdates($iOldDBVersion);
+        $updates = getRelevantUpdates($iOldDBVersion, Yii::app()->db, $options);
         foreach ($updates as $update) {
             $update->safeUp();
         }
@@ -3273,10 +3273,12 @@ function removeMysqlZeroDate($tableName, CDbTableSchema $tableSchema, CDbConnect
  * Returns a sorted array of update objects with version higher than $iOldDBVersion
  *
  * @param int $iOldDBVersion
+ * @param CDbConnection $db
+ * @param string $options
  * @return DatabaseUpdateBase[]
  * @todo Move to class?
  */
-function getRelevantUpdates($iOldDBVersion)
+function getRelevantUpdates($iOldDBVersion, CDbConnection $db, $options)
 {
     $updates = [];
     $dir = new DirectoryIterator(dirname(__FILE__) . 'updates/');
@@ -3284,7 +3286,7 @@ function getRelevantUpdates($iOldDBVersion)
         if (!$fileinfo->isDot()) {
             $info = $fileinfo->getFileInfo();
             $basename = $info->getBasename();
-            $update = new $basename;
+            $update = new $basename($db, $options);
             $version = $update->getVersion();
             // Only add if version is newer than $iOldDBVersion
             if ($version > $iOldDBVersion) {

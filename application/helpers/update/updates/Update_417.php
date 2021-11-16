@@ -6,8 +6,6 @@ class Update_417 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $this->db->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => 'reorder']);
-            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 417), "stg_name='DBVersion'");
-            $oTransaction->commit();
+        $this->db->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => 'reorder']);
     }
 }
