@@ -9,13 +9,13 @@ namespace LimeSurvey\Helpers\Update;
 abstract class DatabaseUpdateBase
 {
     /** @var CDbConnection */
-    private $db;
+    protected $db;
 
     /** @var int */
-    private $newVersion;
+    protected $newVersion;
 
     /** @var string Specific database options like ENGINE=INNODB etc */
-    private $options;
+    protected $options;
 
     /**
      * @param CDbConnection $connection
