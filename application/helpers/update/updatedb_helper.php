@@ -3279,7 +3279,7 @@ function removeMysqlZeroDate($tableName, CDbTableSchema $tableSchema, CDbConnect
 function getRelevantUpdates($iOldDBVersion, CDbConnection $db, $options)
 {
     $updates = [];
-    $dir = new DirectoryIterator(dirname(__FILE__) . 'updates/');
+    $dir = new DirectoryIterator(dirname(__FILE__) . '/updates/');
     foreach ($dir as $fileinfo) {
         if (!$fileinfo->isDot()) {
             $info = $fileinfo->getFileInfo();
