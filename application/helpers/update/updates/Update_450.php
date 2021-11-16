@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_450 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
             $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
@@ -11,3 +19,5 @@
                 updateEncryptedValues450($oDB);
             }
 
+    }
+}

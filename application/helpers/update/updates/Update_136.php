@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_136 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             addColumn('{{quota}}', 'autoload_url', "integer NOT NULL default 0");
             // Create quota table
             $aFields = array(
@@ -10,3 +18,5 @@
                 'quotals_urldescrip' => 'string',
             );
             $oDB->createCommand()->createTable('{{quota_languagesettings}}', $aFields);
+    }
+}

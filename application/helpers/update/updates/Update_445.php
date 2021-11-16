@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_445 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $table = '{{surveymenu_entries}}';
             $data_to_be_updated = [
@@ -16,3 +24,5 @@
                 array('stg_value' => 445),
                 "stg_name = 'DBVersion'"
             );
+    }
+}

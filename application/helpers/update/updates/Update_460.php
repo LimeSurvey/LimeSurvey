@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_460 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $installedPlugins = array_map(
                 function ($v) {
                     return $v['name'];
@@ -33,3 +41,5 @@
                 }
             };
             $insertPlugin('ExportSPSSsav', 1);
+    }
+}

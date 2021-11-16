@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_451 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
             if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
@@ -32,3 +40,5 @@
                     }
                 }
             }
+    }
+}

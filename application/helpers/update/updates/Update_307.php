@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_307 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             if (tableExists('{settings_user}')) {
                 $oDB->createCommand()->dropTable('{{settings_user}}');
             }
@@ -13,3 +21,5 @@
 
                 )
             );
+    }
+}

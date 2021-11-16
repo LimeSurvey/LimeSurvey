@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_355 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $aIdMap = [];
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
@@ -34,3 +42,5 @@
             }
 
 
+    }
+}

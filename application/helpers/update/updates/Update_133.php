@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_133 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             addColumn('{{users}}', 'one_time_pw', 'binary');
             // Add new assessment setting
             addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL default 'N'");
@@ -72,3 +80,5 @@
             )->execute();
             // drop old URL field
             dropColumn('{{surveys}}', 'url');
+    }
+}

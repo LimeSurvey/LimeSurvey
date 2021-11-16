@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_421 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // question_themes
             $oDB->createCommand()->createTable(
                 '{{question_themes}}',
@@ -37,3 +45,5 @@
             }
             unset($baseQuestionThemeEntries);
 
+    }
+}

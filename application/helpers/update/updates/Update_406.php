@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_406 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // surveys
             $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
             $oDB->createCommand()->update(
@@ -40,3 +48,5 @@
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
 
+    }
+}

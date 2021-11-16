@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_143 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             addColumn('{{questions}}', 'parent_qid', 'integer NOT NULL default 0');
             addColumn('{{answers}}', 'scale_id', 'integer NOT NULL default 0');
             addColumn('{{questions}}', 'scale_id', 'integer NOT NULL default 0');
@@ -71,3 +79,5 @@
             }
             // close directory
             closedir($hTemplateDirectory);
+    }
+}

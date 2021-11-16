@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_422 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             //update core themes api_version
             $oDB->createCommand()->update(
                 '{{templates}}',
@@ -26,3 +34,5 @@
                 ),
                 "name='bootwatch'"
             );
+    }
+}

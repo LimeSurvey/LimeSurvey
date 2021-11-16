@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_429 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oTransaction = $oDB->beginTransaction();
             extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
             $oDB->createCommand()->update(
@@ -12,3 +20,5 @@
                 "name='resources'"
             );
 
+    }
+}

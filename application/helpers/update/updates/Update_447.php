@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_447 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key', 'string(38)');
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key_expiration', 'datetime');
@@ -20,3 +28,5 @@
                 );
             }
 
+    }
+}

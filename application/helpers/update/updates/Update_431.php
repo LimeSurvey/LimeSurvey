@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_431 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->update(
                 '{{boxes}}',
@@ -124,3 +132,5 @@
                     break;
                 }
             }
+    }
+}

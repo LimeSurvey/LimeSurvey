@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_453 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $columnSchema = $oDB->getSchema()->getTable('{{archived_table_settings}}')->getColumn('attributes');
             if ($columnSchema === null) {
@@ -10,3 +18,5 @@
                 }
             }
 
+    }
+}

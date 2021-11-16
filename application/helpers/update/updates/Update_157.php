@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_157 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // MySQL DB corrections
             try {
                 setTransactionBookmark();
@@ -326,3 +334,5 @@
                 "attribute = 'random_order' and value = '2'"
             );
 
+    }
+}

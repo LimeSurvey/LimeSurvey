@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_171 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             try {
                 dropColumn('{{sessions}}', 'data');
             } catch (Exception $e) {
@@ -15,3 +23,5 @@
                     addColumn('{{sessions}}', 'data', 'BYTEA');
                     break;
             }
+    }
+}

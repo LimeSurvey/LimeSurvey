@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_442 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
             foreach ($questionsMetaData as $questionMetaData) {
@@ -23,3 +31,5 @@
                     'load_error_message' => null
                 ]
             );
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_434 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
 
             $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'sendadmincreationemail']);
@@ -28,3 +36,5 @@
                 ]
             );
 
+    }
+}

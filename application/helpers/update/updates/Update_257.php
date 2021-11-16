@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_257 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             switch (Yii::app()->db->driverName) {
                 case 'pgsql':
                     $sSubstringCommand = 'substr';
@@ -22,3 +30,5 @@
                 upgradeSurveyTables181('utf8mb4_bin');
                 upgradeTokenTables181('utf8mb4_bin');
             }
+    }
+}

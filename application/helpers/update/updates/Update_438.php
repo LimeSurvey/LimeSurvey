@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_438 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->update(
                 '{{question_attributes}}',
@@ -253,3 +261,5 @@
             );
 
 
+    }
+}

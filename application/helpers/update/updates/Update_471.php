@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_471 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $fixedTitles = [
                 '5pointchoice' => '5 point choice',
@@ -17,3 +25,5 @@
                 $oDB->createCommand()->update('{{question_themes}}', array('title' => $newTitle), "name='$themeName'");
             }
 
+    }
+}

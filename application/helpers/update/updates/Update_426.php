@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_426 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->addColumn(
                 '{{surveys_groupsettings}}',
@@ -15,3 +23,5 @@
             //for all non active surveys,the value must be "I" for inheritance ...
             $oDB->createCommand()->update('{{surveys}}', array('ipanonymize' => 'I'), "active='N'");
 
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_345 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $fruityConf = $oDB
                 ->createCommand()
                 ->select('*')
@@ -80,3 +88,5 @@
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
             }
+    }
+}

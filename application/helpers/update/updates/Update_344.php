@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_344 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             // All templates should inherit from vanilla as default (if extends is empty).
             $oDB->createCommand()->update(
@@ -63,3 +71,5 @@
                 $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
             }
 
+    }
+}

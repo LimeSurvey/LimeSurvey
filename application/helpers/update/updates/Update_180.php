@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_180 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $aUsers = User::model()->findAll();
             $aPerm = array(
                 'entity_id' => 0,
@@ -23,3 +31,5 @@
                     $oDB->createCommand()->insert("{{permissions}}", $newPermission);
                 }
             }
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_165 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->createTable(
                 '{{plugins}}',
                 array(
@@ -18,3 +26,5 @@
                 )
             );
             alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "text");
+    }
+}

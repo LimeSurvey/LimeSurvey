@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_156 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             try {
                 $oDB->createCommand()->dropTable('{{survey_url_parameters}}');
             } catch (Exception $e) {
@@ -51,3 +59,5 @@
             foreach ($oSurveyResult as $row) {
                 $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
+    }
+}

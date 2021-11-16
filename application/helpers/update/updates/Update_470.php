@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_470 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // Add the new column to questions table
             $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
             switch (Yii::app()->db->driverName) {
@@ -54,3 +62,5 @@
             // Also update 'preselectquestiontheme' user settings where the value is 'core'
             $oDB->createCommand($updateUserSettingsQuery)->execute();
 
+    }
+}

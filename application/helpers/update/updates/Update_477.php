@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_477 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             // refactored controller ResponsesController (surveymenu_entry link changes to new controller rout)
             $oDB->createCommand()->update(
@@ -8,3 +16,5 @@
                 ],
                 "name='responses'"
             );
+    }
+}

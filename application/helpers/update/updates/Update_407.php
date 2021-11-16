@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_407 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // defaultvalues
             if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
@@ -62,3 +70,5 @@
             )->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 
+    }
+}

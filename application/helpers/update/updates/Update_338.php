@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_338 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where(
                 'ico=:ico',
                 [':ico' => 'templates']
@@ -20,3 +28,5 @@
                 ]
             );
 
+    }
+}

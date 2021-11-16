@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_322 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->createTable(
                 '{{tutorials}}',
                 [
@@ -20,3 +28,5 @@
                     'settings' => 'text'
                 ]
             );
+    }
+}

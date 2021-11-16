@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_444 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // Delete duplicate template configurations
             $deleteQuery = "DELETE FROM {{template_configuration}}
                 WHERE id NOT IN (
@@ -8,3 +16,5 @@
                     ) x
                 )";
             $oDB->createCommand($deleteQuery)->execute();
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_418 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->insert(
                 "{{plugins}}",
                 [
@@ -12,3 +20,5 @@
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
             $oTransaction->commit();
+    }
+}

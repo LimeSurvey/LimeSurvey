@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_359 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             alterColumn('{{notifications}}', 'message', "text", false);
             alterColumn('{{settings_user}}', 'stg_value', "text", true);
             alterColumn('{{surveys_languagesettings}}', 'surveyls_description', "text", true);
@@ -15,3 +23,5 @@
             alterColumn('{{surveys_languagesettings}}', 'email_admin_responses', "text", true);
             alterColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer", false, '0');
             alterColumn('{{user_groups}}', 'description', "text", false);
+    }
+}

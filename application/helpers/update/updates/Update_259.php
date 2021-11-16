@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_259 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->createTable(
                 '{{notifications}}',
                 array(
@@ -19,3 +27,5 @@
                 'entity, entity_id, status',
                 false
             );
+    }
+}

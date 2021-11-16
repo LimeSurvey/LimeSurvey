@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_435 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // Check if default survey groups exists - at some point it was possible to delete it
             $defaultSurveyGroupExists = $oDB->createCommand()
             ->select('gsid')
@@ -33,3 +41,5 @@
                 ),
                 "gsid=1"
             );
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_290 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $aTables = dbGetTablesLike("survey\_%");
             $oSchema = Yii::app()->db->schema;
             foreach ($aTables as $sTableName) {
@@ -28,3 +36,5 @@
                         break;
                 }
             }
+    }
+}

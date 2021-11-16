@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_166 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             dropPrimaryKey('permissions');
             alterColumn('{{permissions}}', 'permission', "string(100)", false);
@@ -27,3 +35,5 @@
             dropColumn('{{users}}', 'manage_label');
             dropColumn('{{users}}', 'participant_panel');
             $oDB->createCommand()->dropTable('{{templates_rights}}');
+    }
+}

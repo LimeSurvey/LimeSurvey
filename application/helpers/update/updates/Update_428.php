@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_428 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // Update vanilla config
             $oDB->createCommand()->update(
                 '{{template_configuration}}',
@@ -14,3 +22,5 @@
                 ],
                 "template_name = 'bootswatch' AND files_css != 'inherit'"
             );
+    }
+}

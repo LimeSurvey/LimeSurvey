@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_427 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
             $oDB->createCommand()->update(
@@ -10,3 +18,5 @@
                 ),
                 "name='resources'"
             );
+    }
+}

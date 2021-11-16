@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_425 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
             if (!empty($aUserDirectory)) {
                 reset($aUserDirectory);
@@ -14,3 +22,5 @@
                     }
                 }
             }
+    }
+}

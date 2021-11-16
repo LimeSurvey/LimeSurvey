@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_145 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             addColumn('{{surveys}}', 'savetimings', "string(1) NULL default 'N'");
             addColumn('{{surveys}}', 'showXquestions', "string(1) NULL default 'Y'");
             addColumn('{{surveys}}', 'showgroupinfo', "string(1) NULL default 'B'");
@@ -220,3 +228,5 @@
                 )
             );
             upgradeTokens145();
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_148 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
 
             $oDB->createCommand()->createTable(
@@ -78,3 +86,5 @@
             addColumn('{{question_attributes}}', 'language', "string(20)");
             upgradeQuestionAttributes148();
             fixSubquestions();
+    }
+}

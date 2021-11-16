@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_405 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand(
                 "
                 UPDATE
@@ -8,3 +16,5 @@
                 END
                 "
             )->execute();
+    }
+}

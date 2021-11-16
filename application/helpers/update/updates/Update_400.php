@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_400 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             if (Yii::app()->db->driverName == 'mysql') {
                 Yii::app()->db->createCommand(
                     "ALTER DATABASE `" . getDBConnectionStringProperty(
@@ -269,3 +277,5 @@
             upgradeSurveyTimings350();
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
+    }
+}

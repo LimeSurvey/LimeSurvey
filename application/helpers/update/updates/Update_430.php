@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_430 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->insert(
                 "{{plugins}}",
                 [
@@ -9,3 +17,5 @@
                     'load_error_message' => null
                 ]
             );
+    }
+}

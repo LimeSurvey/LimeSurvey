@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_319 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 319), "stg_name='DBVersion'");
 
@@ -10,3 +18,5 @@
             if (isset($table->columns['extends_template_name'])) {
                 $oDB->createCommand()->renameColumn('{{templates}}', 'extends_template_name', 'extends');
             }
+    }
+}

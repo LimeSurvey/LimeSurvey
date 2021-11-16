@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_419 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->createTable(
                 "{{permissiontemplates}}",
                 [
@@ -27,3 +35,5 @@
                 ['ptid', 'uid']
             );
 
+    }
+}

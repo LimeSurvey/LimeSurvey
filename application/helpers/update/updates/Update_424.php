@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_424 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $installedPlugins = array_map(
                 function ($v) {
                     return $v['name'];
@@ -45,3 +53,5 @@
             $insertPlugin('expressionFixedDbVar');
             $insertPlugin('customToken');
             $insertPlugin('mailSenderToFrom');
+    }
+}

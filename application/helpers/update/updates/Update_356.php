@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_356 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             switch (Yii::app()->db->driverName) {
                 case 'sqlsrv':
                 case 'dblib':
@@ -26,3 +34,5 @@
                         'id = 5'
                     );
             }
+    }
+}

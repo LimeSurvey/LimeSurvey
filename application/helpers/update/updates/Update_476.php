@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_476 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             Yii::import('application.helpers.SurveyThemeHelper');
             $templateConfigurations = $oDB->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
             if (!empty($templateConfigurations)) {
@@ -13,3 +21,5 @@
                 }
             }
 
+    }
+}

@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_415 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',
@@ -12,3 +20,5 @@
                 'name=:name',
                 [':name' => 'resources']
             );
+    }
+}

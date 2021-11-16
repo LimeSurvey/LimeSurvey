@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_146 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
             try {
@@ -8,3 +16,5 @@
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             }
+    }
+}

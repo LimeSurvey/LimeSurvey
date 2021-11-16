@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_325 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->dropTable('{{templates}}');
             $oDB->createCommand()->dropTable('{{template_configuration}}');
 
@@ -261,3 +269,5 @@
                 )
             );
 
+    }
+}

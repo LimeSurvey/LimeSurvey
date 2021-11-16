@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_416 extends DatabaseUpdateBase
+{
+    public function run()
+    {
 
             // encrypt values in db
             SettingGlobal::setSetting(
@@ -27,3 +35,5 @@
                 }
             }
 
+    }
+}

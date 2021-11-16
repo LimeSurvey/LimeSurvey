@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_354 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
 
             if (!isset($surveymenuTable->columns['showincollapse'])) {
@@ -45,3 +53,5 @@
             }
             unset($aDefaultSurveyMenuEntries);
 
+    }
+}

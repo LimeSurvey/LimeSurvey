@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_475 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             // Apply integrity fix before adding unique constraint.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(
@@ -10,3 +18,5 @@
                 regenerateLabelCodes400($lid['lid'], $hasLanguageColumn = false);
             }
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
+    }
+}

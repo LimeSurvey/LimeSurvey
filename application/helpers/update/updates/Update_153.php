@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_153 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $oDB->createCommand()->createTable(
                 '{{expression_errors}}',
                 array(
@@ -13,3 +21,5 @@
                     'prettyprint' => 'text'
                 )
             );
+    }
+}

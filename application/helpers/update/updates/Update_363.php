@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_363 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             $aTableNames = dbGetTablesLike("tokens%");
             $oDB = Yii::app()->getDb();
             foreach ($aTableNames as $sTableName) {
@@ -22,3 +30,5 @@
                     rollBackToTransactionBookmark();
                 }
             }
+    }
+}

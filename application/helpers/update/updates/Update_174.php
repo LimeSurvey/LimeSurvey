@@ -1,3 +1,11 @@
+<?php
+
+namespace LimeSurvey\Helpers\Update;
+
+class Update_174 extends DatabaseUpdateBase
+{
+    public function run()
+    {
             alterColumn('{{participants}}', 'email', "string(254)");
             alterColumn('{{saved_control}}', 'email', "string(254)");
             alterColumn('{{surveys}}', 'adminemail', "string(254)");
@@ -9,3 +17,5 @@
                     dropUniqueKeyMSSQL('email', '{{users}}');
             }
             alterColumn('{{users}}', 'email', "string(254)");
+    }
+}
