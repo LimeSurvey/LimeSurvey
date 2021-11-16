@@ -3283,8 +3283,9 @@ function getRelevantUpdates($iOldDBVersion, CDbConnection $db, $options)
     foreach ($dir as $fileinfo) {
         if (!$fileinfo->isDot()) {
             $info = $fileinfo->getFileInfo();
-            $basename = $info->getBasename();
-            $update = new $basename($db, $options);
+            $basename = $info->getBasename(".php");
+            $fullname = 'LimeSurvey\\Helpers\\Update\\' . $basename;
+            $update = new $fullname($db, $options);
             $version = $update->getVersion();
             // Only add if version is newer than $iOldDBVersion
             if ($version > $iOldDBVersion) {
@@ -3292,6 +3293,6 @@ function getRelevantUpdates($iOldDBVersion, CDbConnection $db, $options)
             }
         }
     }
-    asort($updates);
+    ksort($updates, SORT_NUMERIC);
     return $updates;
 }

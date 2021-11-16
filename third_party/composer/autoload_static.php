@@ -88,6 +88,7 @@ class ComposerStaticInitddb1a145e450f862353420acc5153e40
         'LimeSurvey\\Helpers\\Update\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers/update',
+            1 => __DIR__ . '/../..' . '/application/helpers/update/updates',
         ),
         'LimeSurvey\\Helpers\\' => 
         array (

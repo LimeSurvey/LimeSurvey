@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '4529d90c5da60f59d91a394a46c32d55dc67b323',
+    'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
     'name' => 'limesurvey/limesurvey',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '4529d90c5da60f59d91a394a46c32d55dc67b323',
+      'reference' => 'f372bde4157481d0fcd0438dd483033d8068ce48',
     ),
     'paragonie/constant_time_encoding' => 
     array (
