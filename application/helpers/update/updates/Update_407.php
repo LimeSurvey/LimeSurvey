@@ -56,7 +56,7 @@ class Update_407 extends DatabaseUpdateBase
             FROM {{defaultvalues_update407}}
             GROUP BY qid, sqid, scale_id, specialtype
             "
-            )->execute();
+        )->execute();
 
         $this->db->createCommand()->createIndex(
             '{{idx1_defaultvalue}}',

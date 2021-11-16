@@ -13,7 +13,7 @@ class Update_475 extends DatabaseUpdateBase
             FROM {{labels}}
             GROUP BY {{labels}}.lid
             HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
-            )->queryAll();
+        )->queryAll();
         foreach ($lids as $lid) {
             $hasLanguageColumn = false;
             regenerateLabelCodes400($lid['lid'], $hasLanguageColumn);

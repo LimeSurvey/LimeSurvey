@@ -76,7 +76,7 @@ class Update_400 extends DatabaseUpdateBase
             FROM {{questions_update400}}
             INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
             "
-            )->execute();
+        )->execute();
 
         switchMSSQLIdentityInsert('questions', false); // Untested
         $this->db->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
@@ -200,7 +200,7 @@ class Update_400 extends DatabaseUpdateBase
             INNER JOIN {{answers}}
             ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
             "
-            )->execute();
+        )->execute();
 
         $this->db->createCommand()->dropTable('{{answers_update400}}');
         $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
@@ -213,7 +213,7 @@ class Update_400 extends DatabaseUpdateBase
             FROM {{labels}}
             GROUP BY {{labels}}.lid, {{labels}}.language
             HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
-            )->queryAll();
+        )->queryAll();
 
         foreach ($lids as $lid) {
             regenerateLabelCodes400($lid['lid']);
@@ -247,7 +247,7 @@ class Update_400 extends DatabaseUpdateBase
             SELECT lid, code, min(sortorder), min(assessment_value)
             FROM {{labels_update400}}
             GROUP BY lid, code"
-            )->execute();
+        )->execute();
 
         $this->db->createCommand()->createTable(
             '{{label_l10ns}}',
