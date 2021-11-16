@@ -33,5 +33,3 @@
                 }
             };
             $insertPlugin('ExportSPSSsav', 1);
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 460], "stg_name='DBVersion'");
-            $oTransaction->commit();

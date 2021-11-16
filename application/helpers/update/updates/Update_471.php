@@ -17,5 +17,3 @@
                 $oDB->createCommand()->update('{{question_themes}}', array('title' => $newTitle), "name='$themeName'");
             }
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 471), "stg_name='DBVersion'");
-            $oTransaction->commit();

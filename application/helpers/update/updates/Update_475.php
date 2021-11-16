@@ -10,5 +10,3 @@
                 regenerateLabelCodes400($lid['lid'], $hasLanguageColumn = false);
             }
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 475), "stg_name='DBVersion'");
-            $oTransaction->commit();

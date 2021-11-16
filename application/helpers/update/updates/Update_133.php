@@ -72,5 +72,3 @@
             )->execute();
             // drop old URL field
             dropColumn('{{surveys}}', 'url');
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 133), "stg_name='DBVersion'");
-            $oTransaction->commit();

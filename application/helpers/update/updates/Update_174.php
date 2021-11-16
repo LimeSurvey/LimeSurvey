@@ -9,5 +9,3 @@
                     dropUniqueKeyMSSQL('email', '{{users}}');
             }
             alterColumn('{{users}}', 'email', "string(254)");
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 174), "stg_name='DBVersion'");
-            $oTransaction->commit();

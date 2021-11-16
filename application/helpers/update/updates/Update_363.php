@@ -22,5 +22,3 @@
                     rollBackToTransactionBookmark();
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 363], "stg_name='DBVersion'");
-            $oTransaction->commit();

@@ -54,5 +54,3 @@
             // Also update 'preselectquestiontheme' user settings where the value is 'core'
             $oDB->createCommand($updateUserSettingsQuery)->execute();
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 470), "stg_name='DBVersion'");
-            $oTransaction->commit();

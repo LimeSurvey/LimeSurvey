@@ -4,5 +4,3 @@
             $oDB->createCommand()->update('{{surveys}}', array('expires' => null), "useexpiry='N'");
             dropColumn('{{surveys}}', 'useexpiry');
             dropColumn('{{surveys}}', 'usestartdate');
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 137), "stg_name='DBVersion'");
-            $oTransaction->commit();

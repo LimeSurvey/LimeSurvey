@@ -10,5 +10,3 @@
                     $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings->attributes);
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 412), "stg_name='DBVersion'");
-            $oTransaction->commit();

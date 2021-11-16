@@ -10,5 +10,3 @@
             if (isset($table->columns['extends_template_name'])) {
                 $oDB->createCommand()->renameColumn('{{templates}}', 'extends_template_name', 'extends');
             }
-
-            $oTransaction->commit();

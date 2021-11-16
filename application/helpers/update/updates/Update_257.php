@@ -22,5 +22,3 @@
                 upgradeSurveyTables181('utf8mb4_bin');
                 upgradeTokenTables181('utf8mb4_bin');
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 257), "stg_name='DBVersion'");
-            $oTransaction->commit();

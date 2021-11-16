@@ -12,5 +12,3 @@
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
             $oTransaction->commit();
-
-            SurveymenuEntries::reorderMenu(2);

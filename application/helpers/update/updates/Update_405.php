@@ -8,5 +8,3 @@
                 END
                 "
             )->execute();
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 405), "stg_name='DBVersion'");
-            $oTransaction->commit();

@@ -26,5 +26,3 @@
                 ),
                 "name='bootwatch'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 423), "stg_name='DBVersion'");
-            $oTransaction->commit();

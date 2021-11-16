@@ -15,5 +15,3 @@
                     addColumn('{{sessions}}', 'data', 'BYTEA');
                     break;
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 171), "stg_name='DBVersion'");
-            $oTransaction->commit();

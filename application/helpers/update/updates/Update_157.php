@@ -326,5 +326,3 @@
                 "attribute = 'random_order' and value = '2'"
             );
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 157), "stg_name='DBVersion'");
-            $oTransaction->commit();

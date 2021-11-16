@@ -11,5 +11,3 @@
                 updateEncryptedValues450($oDB);
             }
 
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 450], "stg_name='DBVersion'");
-            $oTransaction->commit();

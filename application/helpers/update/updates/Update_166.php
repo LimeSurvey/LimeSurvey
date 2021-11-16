@@ -27,5 +27,3 @@
             dropColumn('{{users}}', 'manage_label');
             dropColumn('{{users}}', 'participant_panel');
             $oDB->createCommand()->dropTable('{{templates_rights}}');
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 166), "stg_name='DBVersion'");
-            $oTransaction->commit();

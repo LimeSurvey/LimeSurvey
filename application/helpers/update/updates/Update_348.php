@@ -7,5 +7,3 @@
             );
             $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
 
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 348], "stg_name='DBVersion'");
-            $oTransaction->commit();

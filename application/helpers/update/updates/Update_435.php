@@ -33,5 +33,3 @@
                 ),
                 "gsid=1"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 435), "stg_name='DBVersion'");
-            $oTransaction->commit();

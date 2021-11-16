@@ -63,5 +63,3 @@
                 $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
             }
 
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 344], "stg_name='DBVersion'");
-            $oTransaction->commit();

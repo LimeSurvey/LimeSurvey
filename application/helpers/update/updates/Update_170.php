@@ -9,5 +9,3 @@
                 array('attribute' => 'date_max'),
                 "attribute='dropdown_dates_year_max'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 170), "stg_name='DBVersion'");
-            $oTransaction->commit();

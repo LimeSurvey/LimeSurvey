@@ -10,5 +10,3 @@
                 ),
                 "name='resources'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 427), "stg_name='DBVersion'");
-            $oTransaction->commit();

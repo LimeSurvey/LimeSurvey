@@ -18,5 +18,3 @@
                 )
             );
             alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "text");
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 165), "stg_name='DBVersion'");
-            $oTransaction->commit();

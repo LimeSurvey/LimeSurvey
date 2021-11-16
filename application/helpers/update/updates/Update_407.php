@@ -62,5 +62,3 @@
             )->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 407), "stg_name='DBVersion'");
-            $oTransaction->commit();

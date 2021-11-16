@@ -15,5 +15,3 @@
             upgradeArchivedTableSettings446();
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
-
-            $oTransaction->commit();

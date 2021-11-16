@@ -10,5 +10,3 @@
                 'quotals_urldescrip' => 'string',
             );
             $oDB->createCommand()->createTable('{{quota_languagesettings}}', $aFields);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 136), "stg_name='DBVersion'");
-            $oTransaction->commit();

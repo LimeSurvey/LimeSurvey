@@ -15,5 +15,3 @@
             //for all non active surveys,the value must be "I" for inheritance ...
             $oDB->createCommand()->update('{{surveys}}', array('ipanonymize' => 'I'), "active='N'");
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 426), "stg_name='DBVersion'");
-            $oTransaction->commit();

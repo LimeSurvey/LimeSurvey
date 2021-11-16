@@ -23,5 +23,3 @@
                     'load_error_message' => null
                 ]
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 442), "stg_name='DBVersion'");
-            $oTransaction->commit();

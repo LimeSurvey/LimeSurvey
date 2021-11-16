@@ -8,5 +8,3 @@
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 146), "stg_name='DBVersion'");
-            $oTransaction->commit();

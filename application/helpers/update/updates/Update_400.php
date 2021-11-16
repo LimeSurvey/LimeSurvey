@@ -269,5 +269,3 @@
             upgradeSurveyTimings350();
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
-
-            $oTransaction->commit();

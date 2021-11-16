@@ -26,5 +26,3 @@
                         'id = 5'
                     );
             }
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 356], "stg_name='DBVersion'");
-            $oTransaction->commit();

@@ -80,5 +80,3 @@
                 ];
                 $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
             }
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 345], "stg_name='DBVersion'");
-            $oTransaction->commit();

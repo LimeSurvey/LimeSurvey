@@ -6,5 +6,3 @@
                 ),
                 "name='assessments'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 437), "stg_name='DBVersion'");
-            $oTransaction->commit();

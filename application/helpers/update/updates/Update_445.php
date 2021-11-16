@@ -16,5 +16,3 @@
                 array('stg_value' => 445),
                 "stg_name = 'DBVersion'"
             );
-
-            $oTransaction->commit();

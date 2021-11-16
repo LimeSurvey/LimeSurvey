@@ -28,5 +28,3 @@
                 ),
                 "htmleditormode='source'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 441), "stg_name='DBVersion'");
-            $oTransaction->commit();

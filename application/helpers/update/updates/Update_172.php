@@ -29,5 +29,3 @@
                 default:
                     alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 172), "stg_name='DBVersion'");
-            $oTransaction->commit();

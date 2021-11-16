@@ -6,5 +6,3 @@
                 ['lid', 'sortorder', 'language'],
                 false
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 323), "stg_name='DBVersion'");
-            $oTransaction->commit();

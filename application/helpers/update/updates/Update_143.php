@@ -71,5 +71,3 @@
             }
             // close directory
             closedir($hTemplateDirectory);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 143), "stg_name='DBVersion'");
-            $oTransaction->commit();

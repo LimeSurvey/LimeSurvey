@@ -51,5 +51,3 @@
             foreach ($oSurveyResult as $row) {
                 $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 156), "stg_name='DBVersion'");
-            $oTransaction->commit();

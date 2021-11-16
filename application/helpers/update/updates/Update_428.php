@@ -14,5 +14,3 @@
                 ],
                 "template_name = 'bootswatch' AND files_css != 'inherit'"
             );
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 428), "stg_name='DBVersion'");
-            $oTransaction->commit();

@@ -15,5 +15,3 @@
             alterColumn('{{surveys_languagesettings}}', 'email_admin_responses', "text", true);
             alterColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer", false, '0');
             alterColumn('{{user_groups}}', 'description', "text", false);
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 359], "stg_name='DBVersion'");
-            $oTransaction->commit();

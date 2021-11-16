@@ -8,5 +8,3 @@
                     ) x
                 )";
             $oDB->createCommand($deleteQuery)->execute();
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 444), "stg_name='DBVersion'");
-            $oTransaction->commit();

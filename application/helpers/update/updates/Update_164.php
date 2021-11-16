@@ -2,5 +2,3 @@
             // fix survey tables for missing or incorrect token field
             upgradeSurveyTables164();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 164), "stg_name='DBVersion'");
-            $oTransaction->commit();
-            // Not updating settings table as upgrade process takes care of that step now
