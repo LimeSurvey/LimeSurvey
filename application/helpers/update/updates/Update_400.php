@@ -2,6 +2,9 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class Update_400 extends DatabaseUpdateBase
 {
     public function run()
@@ -74,141 +77,149 @@ class Update_400 extends DatabaseUpdateBase
             INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
             "
             )->execute();
-            switchMSSQLIdentityInsert('questions', false); // Untested
-            $this->db->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
-            $this->db->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
-            $this->db->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
-            $this->db->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
-            $this->db->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
-            $this->db->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
-            // Groups table
+        switchMSSQLIdentityInsert('questions', false); // Untested
+        $this->db->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
+        $this->db->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+        $this->db->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+        $this->db->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+        $this->db->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+        $this->db->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
+
+        // Groups table
         if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{group_l10ns}}');
         }
-            $this->db->createCommand()->createTable(
-                '{{group_l10ns}}',
-                array(
-                    'id' => "pk",
-                    'gid' => "integer NOT NULL",
-                    'group_name' => "text NOT NULL",
-                    'description' => "mediumtext",
-                    'language' => "string(20) NOT NULL"
-                ),
-                $options
-            );
-            $this->db->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
-            $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-            $this->db->createCommand(
-                sprintf(
-                    "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
-                    $quotedGroups
-                )
-            )->execute();
+
+        $this->db->createCommand()->createTable(
+            '{{group_l10ns}}',
+            array(
+                'id' => "pk",
+                'gid' => "integer NOT NULL",
+                'group_name' => "text NOT NULL",
+                'description' => "mediumtext",
+                'language' => "string(20) NOT NULL"
+            ),
+            $options
+        );
+        $this->db->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $this->db->createCommand(
+            sprintf(
+                "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
+                $quotedGroups
+            )
+        )->execute();
         if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
             $this->db->createCommand()->dropTable('{{groups_update400}}');
         }
-            $this->db->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
-            $this->db->createCommand()->createTable(
-                '{{groups}}',
-                array(
-                    'gid' => "pk",
-                    'sid' => "integer NOT NULL default '0'",
-                    'group_order' => "integer NOT NULL default '0'",
-                    'randomization_group' => "string(20) NOT NULL default ''",
-                    'grelevance' => "text NULL"
-                ),
-                $options
-            );
-            switchMSSQLIdentityInsert('groups', true); // Untested
-            $this->db->createCommand(
-                "INSERT INTO " . $quotedGroups . "
-                (gid, sid, group_order, randomization_group, grelevance)
-                SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
-                FROM {{groups_update400}}
-                    INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
-                "
-            )->execute();
-            switchMSSQLIdentityInsert('groups', false); // Untested
-            $this->db->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
-            $this->db->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+        $this->db->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
+        $this->db->createCommand()->createTable(
+            '{{groups}}',
+            array(
+                'gid' => "pk",
+                'sid' => "integer NOT NULL default '0'",
+                'group_order' => "integer NOT NULL default '0'",
+                'randomization_group' => "string(20) NOT NULL default ''",
+                'grelevance' => "text NULL"
+            ),
+            $options
+        );
+        switchMSSQLIdentityInsert('groups', true); // Untested
+        $this->db->createCommand(
+            "INSERT INTO " . $quotedGroups . "
+            (gid, sid, group_order, randomization_group, grelevance)
+            SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
+            FROM {{groups_update400}}
+            INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
+            "
+        )->execute();
 
-            // Answers table
+        switchMSSQLIdentityInsert('groups', false); // Untested
+        $this->db->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
+        $this->db->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+
+        // Answers table
         if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{answer_l10ns}}');
         }
-            $this->db->createCommand()->createTable(
-                '{{answer_l10ns}}',
-                array(
-                    'id' => "pk",
-                    'aid' => "integer NOT NULL",
-                    'answer' => "mediumtext NOT NULL",
-                    'language' => "string(20) NOT NULL"
-                ),
-                $options
-            );
-            $this->db->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
-            /* Renaming old without pk answers */
+
+        $this->db->createCommand()->createTable(
+            '{{answer_l10ns}}',
+            array(
+                'id' => "pk",
+                'aid' => "integer NOT NULL",
+                'answer' => "mediumtext NOT NULL",
+                'language' => "string(20) NOT NULL"
+            ),
+            $options
+        );
+        $this->db->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+
+        /* Renaming old without pk answers */
         if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
             $this->db->createCommand()->dropTable('{{answers_update400}}');
         }
-            $this->db->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
-            /* Create new answers with pk and copy answers_update400 Grouping by unique part */
-            $this->db->createCommand()->createTable(
-                '{{answers}}',
-                [
-                    'aid' => 'pk',
-                    'qid' => 'integer NOT NULL',
-                    'code' => 'string(5) NOT NULL',
-                    'sortorder' => 'integer NOT NULL',
-                    'assessment_value' => 'integer NOT NULL DEFAULT 0',
-                    'scale_id' => 'integer NOT NULL DEFAULT 0'
-                ],
-                $options
-            );
-            $this->db->createCommand()->createIndex(
-                'answer_update400_idx_10',
-                '{{answers_update400}}',
-                ['qid', 'code', 'scale_id']
-            );
-            /* No pk in insert */
-            $this->db->createCommand(
-                "INSERT INTO {{answers}}
-                (qid, code, sortorder, assessment_value, scale_id)
-                SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
-                FROM {{answers_update400}}
-                    INNER JOIN {{questions}} ON {{answers_update400}}.qid = {{questions}}.qid
-                    INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
-                "
-            )->execute();
-            /* no pk in insert, get aid by INNER join */
-            $this->db->createCommand(
-                "INSERT INTO {{answer_l10ns}}
-                (aid, answer, language)
-                SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
-                FROM {{answers_update400}}
-                INNER JOIN {{answers}}
-                ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
+
+        $this->db->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
+        /* Create new answers with pk and copy answers_update400 Grouping by unique part */
+        $this->db->createCommand()->createTable(
+            '{{answers}}',
+            [
+                'aid' => 'pk',
+                'qid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0',
+                'scale_id' => 'integer NOT NULL DEFAULT 0'
+            ],
+            $options
+        );
+        $this->db->createCommand()->createIndex(
+            'answer_update400_idx_10',
+            '{{answers_update400}}',
+            ['qid', 'code', 'scale_id']
+        );
+        /* No pk in insert */
+        $this->db->createCommand(
+            "INSERT INTO {{answers}}
+            (qid, code, sortorder, assessment_value, scale_id)
+            SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
+            FROM {{answers_update400}}
+            INNER JOIN {{questions}} ON {{answers_update400}}.qid = {{questions}}.qid
+            INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
+            "
+        )->execute();
+
+        /* no pk in insert, get aid by INNER join */
+        $this->db->createCommand(
+            "INSERT INTO {{answer_l10ns}}
+            (aid, answer, language)
+            SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
+            FROM {{answers_update400}}
+            INNER JOIN {{answers}}
+            ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
             "
             )->execute();
 
-            $this->db->createCommand()->dropTable('{{answers_update400}}');
-            $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
-            $this->db->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
+        $this->db->createCommand()->dropTable('{{answers_update400}}');
+        $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+        $this->db->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
-            // Apply integrity fix before starting label set update.
-            // List of label set ids which contain code duplicates.
-            $lids = $this->db->createCommand(
-                "SELECT {{labels}}.lid AS lid
-                FROM {{labels}}
-                GROUP BY {{labels}}.lid, {{labels}}.language
-                HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
+        // Apply integrity fix before starting label set update.
+        // List of label set ids which contain code duplicates.
+        $lids = $this->db->createCommand(
+            "SELECT {{labels}}.lid AS lid
+            FROM {{labels}}
+            GROUP BY {{labels}}.lid, {{labels}}.language
+            HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
+
         foreach ($lids as $lid) {
             regenerateLabelCodes400($lid['lid']);
         }
 
-            // Labels table
+        // Labels table
         if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{label_l10ns}}');
         }
@@ -280,4 +291,4 @@ class Update_400 extends DatabaseUpdateBase
 
         $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
     }
-    }
+}

@@ -2,16 +2,19 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class Update_345 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $fruityConf = $this->db
-                ->createCommand()
-                ->select('*')
-                ->from('{{template_configuration}}')
-                ->where('template_name=:template_name', ['template_name' => 'fruity'])
-                ->queryRow();
+        $fruityConf = $this->db
+           ->createCommand()
+           ->select('*')
+           ->from('{{template_configuration}}')
+           ->where('template_name=:template_name', ['template_name' => 'fruity'])
+           ->queryRow();
         if ($fruityConf) {
             // Brute force way. Just have to hope noone changed the default
             // config yet.
@@ -48,12 +51,12 @@ class Update_345 extends DatabaseUpdateBase
             ];
             $this->db->createCommand()->insert('{{template_configuration}}', $fruityConfData);
         }
-            $bootswatchConf = $this->db
-                ->createCommand()
-                ->select('*')
-                ->from('{{template_configuration}}')
-                ->where('template_name=:template_name', ['template_name' => 'bootswatch'])
-                ->queryRow();
+        $bootswatchConf = $this->db
+           ->createCommand()
+           ->select('*')
+           ->from('{{template_configuration}}')
+           ->where('template_name=:template_name', ['template_name' => 'bootswatch'])
+           ->queryRow();
         if ($bootswatchConf) {
             $this->db->createCommand()->update(
                 '{{template_configuration}}',

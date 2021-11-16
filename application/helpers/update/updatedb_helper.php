@@ -69,8 +69,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     Yii::app()->loadHelper('database');
     Yii::import('application.helpers.admin.import_helper', true);
-    $sUserTemplateRootDir       = Yii::app()->getConfig('userthemerootdir');
-    $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);

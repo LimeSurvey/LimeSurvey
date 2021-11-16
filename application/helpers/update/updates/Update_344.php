@@ -2,27 +2,30 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class Update_344 extends DatabaseUpdateBase
 {
     public function run()
     {
 
-            // All templates should inherit from vanilla as default (if extends is empty).
-            $this->db->createCommand()->update(
-                '{{templates}}',
-                [
-                    'extends' => 'vanilla',
-                ],
-                "extends = '' AND name != 'vanilla'"
-            );
+        // All templates should inherit from vanilla as default (if extends is empty).
+        $this->db->createCommand()->update(
+            '{{templates}}',
+            [
+                'extends' => 'vanilla',
+            ],
+            "extends = '' AND name != 'vanilla'"
+        );
 
-            // If vanilla template is missing, install it.
-            $vanilla = $this->db
-                ->createCommand()
-                ->select('*')
-                ->from('{{templates}}')
-                ->where('name=:name', ['name' => 'vanilla'])
-                ->queryRow();
+        // If vanilla template is missing, install it.
+        $vanilla = $this->db
+            ->createCommand()
+            ->select('*')
+            ->from('{{templates}}')
+            ->where('name=:name', ['name' => 'vanilla'])
+            ->queryRow();
         if (empty($vanilla)) {
             $vanillaData = [
                 'name' => 'vanilla',
@@ -45,12 +48,12 @@ class Update_344 extends DatabaseUpdateBase
             ];
             $this->db->createCommand()->insert('{{templates}}', $vanillaData);
         }
-            $vanillaConf = $this->db
-                ->createCommand()
-                ->select('*')
-                ->from('{{template_configuration}}')
-                ->where('template_name=:template_name', ['template_name' => 'vanilla'])
-                ->queryRow();
+        $vanillaConf = $this->db
+            ->createCommand()
+            ->select('*')
+            ->from('{{template_configuration}}')
+            ->where('template_name=:template_name', ['template_name' => 'vanilla'])
+            ->queryRow();
         if (empty($vanillaConf)) {
             $vanillaConfData = [
                 'template_name' => 'vanilla',

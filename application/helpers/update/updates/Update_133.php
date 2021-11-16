@@ -6,14 +6,43 @@ class Update_133 extends DatabaseUpdateBase
 {
     public function run()
     {
-            addColumn('{{users}}', 'one_time_pw', 'binary');
-            // Add new assessment setting
-            addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL default 'N'");
-            // add new assessment value fields to answers & labels
-            addColumn('{{answers}}', 'assessment_value', "integer NOT NULL default '0'");
-            addColumn('{{labels}}', 'assessment_value', "integer NOT NULL default '0'");
-            // copy any valid codes from code field to assessment field
-        switch (Yii::app()->db->driverName) {
+        addColumn('{{users}}', 'one_time_pw', 'binary');
+        // Add new assessment setting
+        addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL default 'N'");
+        // add new assessment value fields to answers & labels
+        addColumn('{{answers}}', 'assessment_value', "integer NOT NULL default '0'");
+        addColumn('{{labels}}', 'assessment_value', "integer NOT NULL default '0'");
+
+        $this->applyUpdates();
+
+        // activate assessment where assessment rules exist
+        $this->db->createCommand(
+            "UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)"
+        )->execute();
+        // add language field to assessment table
+        addColumn('{{assessments}}', 'language', "string(20) NOT NULL default 'en'");
+        // update language field with default language of that particular survey
+        $this->db->createCommand(
+            "UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)"
+        )->execute();
+        // drop the old link field
+        dropColumn('{{assessments}}', 'link');
+
+        // Add new fields to survey language settings
+        addColumn('{{surveys_languagesettings}}', 'surveyls_url', "string");
+        addColumn('{{surveys_languagesettings}}', 'surveyls_endtext', 'text');
+        // copy old URL fields ot language specific entries
+        $this->db->createCommand(
+            "UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)"
+        )->execute();
+        // drop old URL field
+        dropColumn('{{surveys}}', 'url');
+    }
+
+    public function applyUpdates()
+    {
+        // copy any valid codes from code field to assessment field
+        switch ($this->db->driverName) {
             case 'mysql':
                 $this->db->createCommand(
                     "UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
@@ -58,27 +87,5 @@ class Update_133 extends DatabaseUpdateBase
                 )->execute();
                 break;
         }
-            // activate assessment where assessment rules exist
-            $this->db->createCommand(
-                "UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)"
-            )->execute();
-            // add language field to assessment table
-            addColumn('{{assessments}}', 'language', "string(20) NOT NULL default 'en'");
-            // update language field with default language of that particular survey
-            $this->db->createCommand(
-                "UPDATE {{assessments}} SET language=(select language from {{surveys}} where sid={{assessments}}.sid)"
-            )->execute();
-            // drop the old link field
-            dropColumn('{{assessments}}', 'link');
-
-            // Add new fields to survey language settings
-            addColumn('{{surveys_languagesettings}}', 'surveyls_url', "string");
-            addColumn('{{surveys_languagesettings}}', 'surveyls_endtext', 'text');
-            // copy old URL fields ot language specific entries
-            $this->db->createCommand(
-                "UPDATE {{surveys_languagesettings}} set surveyls_url=(select url from {{surveys}} where sid={{surveys_languagesettings}}.surveyls_survey_id)"
-            )->execute();
-            // drop old URL field
-            dropColumn('{{surveys}}', 'url');
     }
 }
