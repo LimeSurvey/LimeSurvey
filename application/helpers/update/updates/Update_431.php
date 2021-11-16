@@ -2,12 +2,15 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use SurveymenuEntries;
+use LsDefaultDataSets;
+
 /**
  * @SuppressWarnings(PHPMD)
  */
 class Update_431 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         $this->db->createCommand()->update(
             '{{boxes}}',

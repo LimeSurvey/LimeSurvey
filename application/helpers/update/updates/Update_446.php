@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_446 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // archived_table_settings
             $this->db->createCommand()->createTable(

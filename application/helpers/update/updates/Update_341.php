@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_341 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             $this->db->createCommand()->truncateTable('{{tutorials}}');

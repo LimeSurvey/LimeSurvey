@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_477 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             // refactored controller ResponsesController (surveymenu_entry link changes to new controller rout)

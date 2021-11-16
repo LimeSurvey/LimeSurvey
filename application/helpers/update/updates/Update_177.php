@@ -2,11 +2,16 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use class_exists;
+use upgradeSurveys177;
+use Plugin;
+use App;
+
 class Update_177 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-        if (Yii::app()->getConfig('auth_webserver') === true) {
+        if (\Yii::app()->getConfig('auth_webserver') === true) {
             // using auth webserver, now activate the plugin with default settings.
             if (!class_exists('Authwebserver', false)) {
                 $plugin = Plugin::model()->findByAttributes(array('name' => 'Authwebserver'));
@@ -30,6 +35,6 @@ class Update_177 extends DatabaseUpdateBase
                 }
             }
         }
-            upgradeSurveys177();
+        upgradeSurveys177();
     }
 }

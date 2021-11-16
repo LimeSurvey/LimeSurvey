@@ -7,7 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_438 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         $this->db->createCommand()->update(
             '{{question_attributes}}',

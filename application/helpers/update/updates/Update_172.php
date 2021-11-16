@@ -2,11 +2,14 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use alterColumn;
+
 class Update_172 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-        switch (Yii::app()->db->driverName) {
+        switch ($this->db->driverName) {
             case 'pgsql':
                 // Special treatment for Postgres as it is too dumb to convert a string to a number without explicit being told to do so ... seriously?
                 alterColumn('{{permissions}}', 'entity_id', "INTEGER USING (entity_id::integer)", false);

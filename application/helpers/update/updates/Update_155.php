@@ -2,12 +2,17 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use addColumn;
+use setTransactionBookmark;
+use rollBackToTransactionBookmark;
+
 class Update_155 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            addColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");
-            addColumn('{{surveys}}', 'googleanalyticsapikey', "string(25)");
+        addColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");
+        addColumn('{{surveys}}', 'googleanalyticsapikey', "string(25)");
         try {
             setTransactionBookmark();
             $this->db->createCommand()->renameColumn('{{surveys}}', 'showXquestions', 'showxquestions');

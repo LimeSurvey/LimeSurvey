@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_402 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             // Plugin type is either "core", "user" or "upload" (different folder locations).

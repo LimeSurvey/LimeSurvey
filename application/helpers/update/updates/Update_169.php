@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_169 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // Add new column for question index options.
             addColumn('{{surveys}}', 'questionindex', 'integer not null default 0');

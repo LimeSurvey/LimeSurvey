@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_428 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // Update vanilla config
             $this->db->createCommand()->update(

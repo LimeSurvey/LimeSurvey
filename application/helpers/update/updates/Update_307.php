@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_307 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         if (tableExists('{settings_user}')) {
             $this->db->createCommand()->dropTable('{{settings_user}}');

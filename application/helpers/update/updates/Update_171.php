@@ -2,15 +2,19 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use dropColumn;
+use addColumn;
+
 class Update_171 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         try {
             dropColumn('{{sessions}}', 'data');
         } catch (Exception $e) {
         }
-        switch (Yii::app()->db->driverName) {
+        switch ($this->db->driverName) {
             case 'mysql':
                 addColumn('{{sessions}}', 'data', 'longbinary');
                 break;

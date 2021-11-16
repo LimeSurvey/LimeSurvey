@@ -2,6 +2,10 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use CDbConnection;
+use Exception;
+use Throwable;
+
 /**
  * Base class for database migration, inspired by Yii.
  * See more info in README file in same folder.

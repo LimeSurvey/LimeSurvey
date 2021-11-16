@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_427 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.

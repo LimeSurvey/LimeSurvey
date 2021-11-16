@@ -2,12 +2,17 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use upgradeSurveyTimings146;
+use setTransactionBookmark;
+use rollBackToTransactionBookmark;
+
 class Update_146 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            upgradeSurveyTimings146();
-            // Fix permissions for new feature quick-translation
+        upgradeSurveyTimings146();
+        // Fix permissions for new feature quick-translation
         try {
             setTransactionBookmark();
             $this->db->createCommand(

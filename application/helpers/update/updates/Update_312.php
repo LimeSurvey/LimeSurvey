@@ -2,11 +2,16 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use addColumn;
+use setTransactionBookmark;
+use rollBackToTransactionBookmark;
+
 class Update_312 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            // Already added in beta 2 but with wrong type
+        // Already added in beta 2 but with wrong type
         try {
             setTransactionBookmark();
             $this->db->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr');
@@ -20,7 +25,7 @@ class Update_312 extends DatabaseUpdateBase
             rollBackToTransactionBookmark();
         }
 
-            addColumn('{{template_configuration}}', 'packages_ltr', "text");
-            addColumn('{{template_configuration}}', 'packages_rtl', "text");
+        addColumn('{{template_configuration}}', 'packages_ltr', "text");
+        addColumn('{{template_configuration}}', 'packages_rtl', "text");
     }
 }

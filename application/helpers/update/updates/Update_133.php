@@ -2,9 +2,13 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use addColumn;
+use dropColumn;
+
 class Update_133 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         addColumn('{{users}}', 'one_time_pw', 'binary');
         // Add new assessment setting
@@ -68,8 +72,8 @@ class Update_133 extends DatabaseUpdateBase
                 } catch (Exception $e) {
                 };
                 // copy assessment link to message since from now on we will have HTML assignment messages
-                alterColumn('{{assessments}}', 'link', "text", false);
-                alterColumn('{{assessments}}', 'message', "text", false);
+                \alterColumn('{{assessments}}', 'link', "text", false);
+                \alterColumn('{{assessments}}', 'message', "text", false);
                 $this->db->createCommand(
                     "UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'"
                 )->execute();

@@ -2,11 +2,14 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use QuestionTheme;
+use Throwable;
+
 class Update_425 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
+        $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
         if (!empty($aUserDirectory)) {
             reset($aUserDirectory);
             $aUserXMLPaths = key($aUserDirectory);
@@ -17,7 +20,7 @@ class Update_425 extends DatabaseUpdateBase
                         $oQuestionTheme = new QuestionTheme();
                         $oQuestionTheme->importManifest($sXMLDirectoryPath, true);
                     }
-                } catch (throwable $e) {
+                } catch (Throwable $e) {
                     continue;
                 }
             }

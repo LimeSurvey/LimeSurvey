@@ -4,9 +4,9 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_256 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             upgradeTokenTables256();
-            alterColumn('{{participants}}', 'email', "text", false);
+            \alterColumn('{{participants}}', 'email', "text", false);
     }
 }

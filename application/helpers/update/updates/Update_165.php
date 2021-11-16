@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_165 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             $this->db->createCommand()->createTable(
                 '{{plugins}}',
@@ -25,6 +25,6 @@ class Update_165 extends DatabaseUpdateBase
                     'value' => 'text'
                 )
             );
-            alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "text");
+            \alterColumn('{{surveys_languagesettings}}', 'surveyls_url', "text");
     }
 }

@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_445 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             $table = '{{surveymenu_entries}}';

@@ -2,16 +2,20 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use dbGetTablesLike;
+use setTransactionBookmark;
+use rollBackToTransactionBookmark;
+
 class Update_433 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            $aTableNames = dbGetTablesLike("tokens%");
-            $this->db = Yii::app()->getDb();
+        $aTableNames = dbGetTablesLike("tokens%");
         foreach ($aTableNames as $sTableName) {
             try {
                 setTransactionBookmark();
-                switch (Yii::app()->db->driverName) {
+                switch ($this->db->driverName) {
                     case 'mysql':
                     case 'mysqli':
                         try {
@@ -29,7 +33,7 @@ class Update_433 extends DatabaseUpdateBase
                             rollBackToTransactionBookmark();
                         }
                         break;
-                    // MSSQL does not support indexes on text fields so no dice
+                        // MSSQL does not support indexes on text fields so no dice
                 }
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();

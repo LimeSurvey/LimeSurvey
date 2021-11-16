@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_261 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             /*
             * The hash value of a notification is used to calculate uniqueness.

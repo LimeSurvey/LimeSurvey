@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_137 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             addColumn('{{surveys_languagesettings}}', 'surveyls_dateformat', "integer NOT NULL default 1");
             addColumn('{{users}}', 'dateformat', "integer NOT NULL default 1");

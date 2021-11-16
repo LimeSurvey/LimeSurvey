@@ -2,17 +2,20 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use TemplateConfiguration;
+use dropColumn;
+use addColumn;
+
 class Update_352 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            dropColumn('{{sessions}}', 'data');
-            addColumn('{{sessions}}', 'data', 'binary');
+        dropColumn('{{sessions}}', 'data');
+        addColumn('{{sessions}}', 'data', 'binary');
 
-            $aTHemes = TemplateConfiguration::model()->findAll();
-
-        foreach ($aTHemes as $oTheme) {
-            $oTheme->setGlobalOption("ajaxmode", "off");
+        $themes = TemplateConfiguration::model()->findAll();
+        foreach ($themes as $theme) {
+            $theme->setGlobalOption("ajaxmode", "off");
         }
     }
 }

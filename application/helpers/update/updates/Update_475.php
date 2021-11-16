@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_475 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         // Apply integrity fix before adding unique constraint.
         // List of label set ids which contain code duplicates.

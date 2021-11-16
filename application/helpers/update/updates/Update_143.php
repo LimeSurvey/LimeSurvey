@@ -2,12 +2,14 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Template;
+
 class Update_143 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-        $sUserTemplateRootDir = Yii::app()->getConfig('userthemerootdir');
-        $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
+        $sUserTemplateRootDir = \Yii::app()->getConfig('userthemerootdir');
+        $sStandardTemplateRootDir = \Yii::app()->getConfig('standardthemerootdir');
 
         addColumn('{{questions}}', 'parent_qid', 'integer NOT NULL default 0');
         addColumn('{{answers}}', 'scale_id', 'integer NOT NULL default 0');
@@ -56,7 +58,7 @@ class Update_143 extends DatabaseUpdateBase
             $sUserTemplateRootDir
         ) . "<br />";
         $hTemplateDirectory = opendir($sStandardTemplateRootDir);
-        $this->checkTemplateDirs($hTemplateDirectory);
+        $this->checkTemplateDirs($hTemplateDirectory, $sUserTemplateRootDir);
         // close directory
         closedir($hTemplateDirectory);
     }
@@ -67,6 +69,8 @@ class Update_143 extends DatabaseUpdateBase
      */
     public function checkTemplateDirs($hTemplateDirectory, $sUserTemplateRootDir)
     {
+        $sStandardTemplateRootDir = \Yii::app()->getConfig('standardthemerootdir');
+
         $aFailedTemplates = [];
         // get each entry
         while ($entryName = readdir($hTemplateDirectory)) {

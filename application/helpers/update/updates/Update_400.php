@@ -7,10 +7,10 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_400 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-        if (Yii::app()->db->driverName == 'mysql') {
-            Yii::app()->db->createCommand(
+        if ($this->db->driverName == 'mysql') {
+            $this->db->createCommand(
                 "ALTER DATABASE `" . getDBConnectionStringProperty(
                     'dbname'
                 ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -19,7 +19,7 @@ class Update_400 extends DatabaseUpdateBase
 
         // Question table
         /* l10ns question table */
-        if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
+        if ($this->db->schema->getTable('{{question_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{question_l10ns}}');
         }
         $this->db->createCommand()->createTable(
@@ -31,7 +31,7 @@ class Update_400 extends DatabaseUpdateBase
                 'help' => "mediumtext",
                 'language' => "string(20) NOT NULL"
             ),
-            $options
+            $this->options
         );
         $this->db->createCommand()->createIndex(
             '{{idx1_question_l10ns}}',
@@ -43,7 +43,7 @@ class Update_400 extends DatabaseUpdateBase
             "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
         )->execute();
         /* questions by rename/insert */
-        if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
+        if ($this->db->schema->getTable('{{questions_update400}}')) {
             $this->db->createCommand()->dropTable('{{questions_update400}}');
         }
         $this->db->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
@@ -66,7 +66,7 @@ class Update_400 extends DatabaseUpdateBase
                 'relevance' => "text",
                 'modulename' => "string(255) NULL"
             ),
-            $options
+            $this->options
         );
         switchMSSQLIdentityInsert('questions', true); // Untested
         $this->db->createCommand(
@@ -87,7 +87,7 @@ class Update_400 extends DatabaseUpdateBase
         $this->db->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
         // Groups table
-        if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
+        if ($this->db->schema->getTable('{{group_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{group_l10ns}}');
         }
 
@@ -100,17 +100,17 @@ class Update_400 extends DatabaseUpdateBase
                 'description' => "mediumtext",
                 'language' => "string(20) NOT NULL"
             ),
-            $options
+            $this->options
         );
         $this->db->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
-        $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
+        $quotedGroups = $this->db->quoteTableName('{{groups}}');
         $this->db->createCommand(
             sprintf(
                 "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
                 $quotedGroups
             )
         )->execute();
-        if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
+        if ($this->db->schema->getTable('{{groups_update400}}')) {
             $this->db->createCommand()->dropTable('{{groups_update400}}');
         }
         $this->db->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
@@ -123,7 +123,7 @@ class Update_400 extends DatabaseUpdateBase
                 'randomization_group' => "string(20) NOT NULL default ''",
                 'grelevance' => "text NULL"
             ),
-            $options
+            $this->options
         );
         switchMSSQLIdentityInsert('groups', true); // Untested
         $this->db->createCommand(
@@ -140,7 +140,7 @@ class Update_400 extends DatabaseUpdateBase
         $this->db->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
 
         // Answers table
-        if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
+        if ($this->db->schema->getTable('{{answer_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{answer_l10ns}}');
         }
 
@@ -152,12 +152,12 @@ class Update_400 extends DatabaseUpdateBase
                 'answer' => "mediumtext NOT NULL",
                 'language' => "string(20) NOT NULL"
             ),
-            $options
+            $this->options
         );
         $this->db->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
 
         /* Renaming old without pk answers */
-        if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
+        if ($this->db->schema->getTable('{{answers_update400}}')) {
             $this->db->createCommand()->dropTable('{{answers_update400}}');
         }
 
@@ -173,7 +173,7 @@ class Update_400 extends DatabaseUpdateBase
                 'assessment_value' => 'integer NOT NULL DEFAULT 0',
                 'scale_id' => 'integer NOT NULL DEFAULT 0'
             ],
-            $options
+            $this->options
         );
         $this->db->createCommand()->createIndex(
             'answer_update400_idx_10',
@@ -220,10 +220,10 @@ class Update_400 extends DatabaseUpdateBase
         }
 
         // Labels table
-        if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
+        if ($this->db->schema->getTable('{{label_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{label_l10ns}}');
         }
-        if (Yii::app()->db->schema->getTable('{{labels_update400}}')) {
+        if ($this->db->schema->getTable('{{labels_update400}}')) {
             $this->db->createCommand()->dropTable('{{labels_update400}}');
         }
 
@@ -237,7 +237,7 @@ class Update_400 extends DatabaseUpdateBase
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0'
             ],
-            $options
+            $this->options
         );
         /* The previous id is broken and can not be used, create a new one */
         /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
@@ -257,7 +257,7 @@ class Update_400 extends DatabaseUpdateBase
                 'title' => "text",
                 'language' => "string(20) NOT NULL DEFAULT 'en'"
             ),
-            $options
+            $this->options
         );
 
         $this->db->createCommand()->createIndex(
@@ -281,10 +281,10 @@ class Update_400 extends DatabaseUpdateBase
         $this->db->createCommand()->dropTable('{{labels_update400}}');
 
         // Extend language field on labelsets
-        alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+        \alterColumn('{{labelsets}}', 'languages', "string(255)", false);
 
         // Extend question type field length
-        alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
+        \alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
 
         // Drop autoincrement on timings table primary key
         upgradeSurveyTimings350();

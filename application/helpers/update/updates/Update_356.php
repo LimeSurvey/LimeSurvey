@@ -4,9 +4,9 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_356 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-        switch (Yii::app()->db->driverName) {
+        switch (\Yii::app()->db->driverName) {
             case 'sqlsrv':
             case 'dblib':
             case 'mssql':

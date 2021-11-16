@@ -7,10 +7,10 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_407 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         // defaultvalues
-        if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
+        if (\Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
             $this->db->createCommand()->dropTable('{{defaultvalue_l10ns}}');
         }
         $this->db->createCommand()->createTable(
@@ -21,7 +21,7 @@ class Update_407 extends DatabaseUpdateBase
                 'language' => "string(20) NOT NULL",
                 'defaultvalue' => "text",
             ),
-            $options
+            $this->options
         );
         $this->db->createCommand()->createIndex(
             '{{idx1_defaultvalue_l10ns}}',
@@ -29,7 +29,7 @@ class Update_407 extends DatabaseUpdateBase
             ['dvid', 'language'],
             true
         );
-        if (Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
+        if (\Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
             $this->db->createCommand()->dropTable('{{defaultvalues_update407}}');
         }
         $this->db->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
@@ -47,7 +47,7 @@ class Update_407 extends DatabaseUpdateBase
                 'sqid' => "integer NOT NULL default '0'",
                 'specialtype' => "string(20) NOT NULL default ''",
             ],
-            $options
+            $this->options
         );
         /* Get only survey->language */
         $this->db->createCommand(

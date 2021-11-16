@@ -4,11 +4,11 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_470 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // Add the new column to questions table
             $this->db->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
-        switch (Yii::app()->db->driverName) {
+        switch (\Yii::app()->db->driverName) {
             case 'sqlsrv':
             case 'dblib':
             case 'mssql':

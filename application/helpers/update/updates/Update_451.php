@@ -4,11 +4,11 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_451 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
-        if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
+        if (!empty(\Yii::app()->getConfig('encryptionkeypair'))) {
             // update wrongly encrypted custom attribute values for cpdb participants
             $encryptedAttributes = $this->db->createCommand()
                 ->select('attribute_id')
@@ -23,13 +23,13 @@ class Update_451 extends DatabaseUpdateBase
                     ->where('attribute_id = :attribute_id', ['attribute_id' => $encryptedAttribute['attribute_id']])
                     ->queryAll();
                 foreach ($attributes as $attribute) {
-                    $attributeValue = LSActiveRecord::decryptSingle($attribute['value']);
+                    $attributeValue = \LSActiveRecord::decryptSingle($attribute['value']);
                     // This extra decrypt loop is needed because of wrongly encrypted attributes.
                     // @see d1eb8afbc8eb010104f94e143173f7d8802c607d
                     for ($i = 1; $i < $nrOfAttributes; $i++) {
-                        $attributeValue = LSActiveRecord::decryptSingleOld($attributeValue);
+                        $attributeValue = \LSActiveRecord::decryptSingleOld($attributeValue);
                     }
-                    $recryptedValue = LSActiveRecord::encryptSingle($attributeValue);
+                    $recryptedValue = \LSActiveRecord::encryptSingle($attributeValue);
                     $updateArray['value'] = $recryptedValue;
                     $this->db->createCommand()->update(
                         '{{participant_attribute}}',

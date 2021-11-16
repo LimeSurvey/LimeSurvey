@@ -4,11 +4,11 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_355 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             $aIdMap = [];
-            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            $aDefaultSurveyMenus = \LsDefaultDataSets::getSurveyMenuData();
         foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
             $aIdMap[$aSurveymenu['name']] = $this->db->createCommand()
                 ->select(['id'])
@@ -17,7 +17,7 @@ class Update_355 extends DatabaseUpdateBase
                 ->queryScalar();
         }
 
-            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            $aDefaultSurveyMenuEntries = \LsDefaultDataSets::getSurveyMenuEntryData();
         foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
             $this->db->createCommand()->delete(
                 '{{surveymenu_entries}}',

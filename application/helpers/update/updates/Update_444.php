@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_444 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // Delete duplicate template configurations
             $deleteQuery = "DELETE FROM {{template_configuration}}

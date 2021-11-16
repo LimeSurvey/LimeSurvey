@@ -2,10 +2,12 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use LimeExpressionManager;
+
 class Update_158 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            LimeExpressionManager::UpgradeConditionsToRelevance();
+        LimeExpressionManager::UpgradeConditionsToRelevance();
     }
 }

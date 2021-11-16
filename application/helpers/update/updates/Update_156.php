@@ -2,32 +2,37 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Exception;
+use addPrimaryKey;
+use addColumn;
+use upgradeSurveys156;
+
 class Update_156 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         try {
             $this->db->createCommand()->dropTable('{{survey_url_parameters}}');
         } catch (Exception $e) {
             // do nothing
         }
-            $this->db->createCommand()->createTable(
-                '{{survey_url_parameters}}',
-                array(
-                    'id' => 'pk',
-                    'sid' => 'integer NOT NULL',
-                    'parameter' => 'string(50) NOT NULL',
-                    'targetqid' => 'integer',
-                    'targetsqid' => 'integer'
-                )
-            );
+        $this->db->createCommand()->createTable(
+            '{{survey_url_parameters}}',
+            array(
+                'id' => 'pk',
+                'sid' => 'integer NOT NULL',
+                'parameter' => 'string(50) NOT NULL',
+                'targetqid' => 'integer',
+                'targetsqid' => 'integer'
+            )
+        );
 
         try {
             $this->db->createCommand()->dropTable('{{sessions}}');
         } catch (Exception $e) {
             // do nothing
         }
-        if (Yii::app()->db->driverName == 'mysql') {
+        if ($this->db->driverName == 'mysql') {
             $this->db->createCommand()->createTable(
                 '{{sessions}}',
                 array(
@@ -47,15 +52,15 @@ class Update_156 extends DatabaseUpdateBase
             );
         }
 
-            addPrimaryKey('sessions', array('id'));
-            addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text");
-            addColumn('{{surveys}}', 'sendconfirmation', "string(1) default 'Y'");
+        addPrimaryKey('sessions', array('id'));
+        addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text");
+        addColumn('{{surveys}}', 'sendconfirmation', "string(1) default 'Y'");
 
-            upgradeSurveys156();
+        upgradeSurveys156();
 
-            // If a survey has an deleted owner, re-own the survey to the superadmin
-            $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
-            $oSurveyResult = $this->db->createCommand($sSurveyQuery)->queryAll();
+        // If a survey has an deleted owner, re-own the survey to the superadmin
+        $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
+        $oSurveyResult = $this->db->createCommand($sSurveyQuery)->queryAll();
         foreach ($oSurveyResult as $row) {
             $this->db->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
         }

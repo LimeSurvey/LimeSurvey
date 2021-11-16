@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_401 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
 
             $this->db->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');

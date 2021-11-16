@@ -84,11 +84,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         // Get all relevant files from updates/ folder
         $updates = getRelevantUpdates($iOldDBVersion, Yii::app()->db, $options);
         foreach ($updates as $update) {
+            // NB: safeUp() wraps up() inside a transaction and also updates DBVersion.
             $update->safeUp();
         }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
-        $oTransaction->rollback();
         // Activate schema caching
         $oDB->schemaCachingDuration = 3600;
         // Load all tables of the application in the schema

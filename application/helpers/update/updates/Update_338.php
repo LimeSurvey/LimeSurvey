@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_338 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             $rowToRemove = $this->db->createCommand()->select("position, id")->from("{{boxes}}")->where(
                 'ico=:ico',

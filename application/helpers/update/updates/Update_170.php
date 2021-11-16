@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_170 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // renamed advanced attributes fields dropdown_dates_year_min/max
             $this->db->createCommand()->update(

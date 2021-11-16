@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_153 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             $this->db->createCommand()->createTable(
                 '{{expression_errors}}',

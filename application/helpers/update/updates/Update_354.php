@@ -4,21 +4,21 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_354 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            $surveymenuTable = \Yii::app()->db->schema->getTable('{{surveymenu}}');
 
         if (!isset($surveymenuTable->columns['showincollapse'])) {
             $this->db->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
         }
 
-            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            $surveymenuEntryTable = \Yii::app()->db->schema->getTable('{{surveymenu}}');
         if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
             $this->db->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
         }
 
             $aIdMap = [];
-            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            $aDefaultSurveyMenus = \LsDefaultDataSets::getSurveyMenuData();
             switchMSSQLIdentityInsert('surveymenu', true);
         foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
             $this->db->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
@@ -28,7 +28,7 @@ class Update_354 extends DatabaseUpdateBase
         }
             switchMSSQLIdentityInsert('surveymenu', false);
 
-            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            $aDefaultSurveyMenuEntries = \LsDefaultDataSets::getSurveyMenuEntryData();
         foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
             $this->db->createCommand()->delete(
                 '{{surveymenu_entries}}',

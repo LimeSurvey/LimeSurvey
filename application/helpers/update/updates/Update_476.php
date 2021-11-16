@@ -2,11 +2,14 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use Yii;
+use SurveyThemeHelper;
+
 class Update_476 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            Yii::import('application.helpers.SurveyThemeHelper');
+            \Yii::import('application.helpers.SurveyThemeHelper');
             $templateConfigurations = $this->db->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
         if (!empty($templateConfigurations)) {
             foreach ($templateConfigurations as $templateConfiguration) {

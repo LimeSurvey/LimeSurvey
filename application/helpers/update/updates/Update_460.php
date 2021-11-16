@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_460 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             $installedPlugins = array_map(
                 function ($v) {

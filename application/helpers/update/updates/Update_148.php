@@ -7,7 +7,7 @@ namespace LimeSurvey\Helpers\Update;
  */
 class Update_148 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
         addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
 

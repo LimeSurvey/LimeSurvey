@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_323 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             dropPrimaryKey('labels', 'lid');
             $this->db->createCommand()->addColumn('{{labels}}', 'id', 'pk');

@@ -2,15 +2,15 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use TemplateConfiguration;
+
 class Update_353 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-
-            $aTHemes = TemplateConfiguration::model()->findAll();
-
-        foreach ($aTHemes as $oTheme) {
-            $oTheme->addOptionFromXMLToLiveTheme();
+        $themes = TemplateConfiguration::model()->findAll();
+        foreach ($themes as $theme) {
+            $theme->addOptionFromXMLToLiveTheme();
         }
     }
 }

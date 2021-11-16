@@ -2,11 +2,13 @@
 
 namespace LimeSurvey\Helpers\Update;
 
+use DirectoryIterator;
+
 class Update_473 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
-            $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
+        $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
                 $plugin = $this->db->createCommand()

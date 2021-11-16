@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_441 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // Convert old html editor modes if present in global settings
             $this->db->createCommand()->update(

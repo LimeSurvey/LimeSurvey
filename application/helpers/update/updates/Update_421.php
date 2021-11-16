@@ -4,7 +4,7 @@ namespace LimeSurvey\Helpers\Update;
 
 class Update_421 extends DatabaseUpdateBase
 {
-    public function run()
+    public function up()
     {
             // question_themes
             $this->db->createCommand()->createTable(
@@ -39,7 +39,7 @@ class Update_421 extends DatabaseUpdateBase
 
             $this->db->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
-            $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
+            $baseQuestionThemeEntries = \LsDefaultDataSets::getBaseQuestionThemeEntries();
         foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
             $this->db->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
         }
