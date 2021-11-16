@@ -19,6 +19,5 @@ class Update_429 extends DatabaseUpdateBase
                 ),
                 "name='resources'"
             );
-
     }
 }

@@ -15,6 +15,5 @@ class Update_432 extends DatabaseUpdateBase
                 ),
                 "name='theme_options'"
             );
-
     }
 }

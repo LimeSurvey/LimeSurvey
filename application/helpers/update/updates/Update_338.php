@@ -11,10 +11,10 @@ class Update_338 extends DatabaseUpdateBase
                 [':ico' => 'templates']
             )->queryRow();
             $position = 6;
-            if ($rowToRemove !== false) {
-                $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
-                $position = $rowToRemove['position'];
-            }
+        if ($rowToRemove !== false) {
+            $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
+            $position = $rowToRemove['position'];
+        }
             $oDB->createCommand()->insert(
                 "{{boxes}}",
                 [
@@ -27,6 +27,5 @@ class Update_338 extends DatabaseUpdateBase
                     'usergroup' => '-2'
                 ]
             );
-
     }
 }

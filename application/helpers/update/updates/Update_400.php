@@ -6,22 +6,22 @@ class Update_400 extends DatabaseUpdateBase
 {
     public function run()
     {
-            if (Yii::app()->db->driverName == 'mysql') {
-                Yii::app()->db->createCommand(
-                    "ALTER DATABASE `" . getDBConnectionStringProperty(
-                        'dbname'
-                    ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-                );
-            }
+        if (Yii::app()->db->driverName == 'mysql') {
+            Yii::app()->db->createCommand(
+                "ALTER DATABASE `" . getDBConnectionStringProperty(
+                    'dbname'
+                ) . "` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+            );
+        }
 
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
 
             // Question table
             /* l10ns question table */
-            if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
-                $oDB->createCommand()->dropTable('{{question_l10ns}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
+            $oDB->createCommand()->dropTable('{{question_l10ns}}');
+        }
             $oDB->createCommand()->createTable(
                 '{{question_l10ns}}',
                 array(
@@ -43,9 +43,9 @@ class Update_400 extends DatabaseUpdateBase
                 "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
             )->execute();
             /* questions by rename/insert */
-            if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
-                $oDB->createCommand()->dropTable('{{questions_update400}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
+            $oDB->createCommand()->dropTable('{{questions_update400}}');
+        }
             $oDB->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
             $oDB->createCommand()->createTable(
                 '{{questions}}',
@@ -86,9 +86,9 @@ class Update_400 extends DatabaseUpdateBase
             $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
             // Groups table
-            if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
-                $oDB->createCommand()->dropTable('{{group_l10ns}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
+            $oDB->createCommand()->dropTable('{{group_l10ns}}');
+        }
             $oDB->createCommand()->createTable(
                 '{{group_l10ns}}',
                 array(
@@ -108,9 +108,9 @@ class Update_400 extends DatabaseUpdateBase
                     $quotedGroups
                 )
             )->execute();
-            if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
-                $oDB->createCommand()->dropTable('{{groups_update400}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
+            $oDB->createCommand()->dropTable('{{groups_update400}}');
+        }
             $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
             $oDB->createCommand()->createTable(
                 '{{groups}}',
@@ -137,9 +137,9 @@ class Update_400 extends DatabaseUpdateBase
             $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
 
             // Answers table
-            if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
-                $oDB->createCommand()->dropTable('{{answer_l10ns}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
+            $oDB->createCommand()->dropTable('{{answer_l10ns}}');
+        }
             $oDB->createCommand()->createTable(
                 '{{answer_l10ns}}',
                 array(
@@ -152,9 +152,9 @@ class Update_400 extends DatabaseUpdateBase
             );
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             /* Renaming old without pk answers */
-            if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
-                $oDB->createCommand()->dropTable('{{answers_update400}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
+            $oDB->createCommand()->dropTable('{{answers_update400}}');
+        }
             $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
             /* Create new answers with pk and copy answers_update400 Grouping by unique part */
             $oDB->createCommand()->createTable(
@@ -207,17 +207,17 @@ class Update_400 extends DatabaseUpdateBase
                 GROUP BY {{labels}}.lid, {{labels}}.language
                 HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
-            foreach ($lids as $lid) {
-                regenerateLabelCodes400($lid['lid']);
-            }
+        foreach ($lids as $lid) {
+            regenerateLabelCodes400($lid['lid']);
+        }
 
             // Labels table
-            if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
-                $oDB->createCommand()->dropTable('{{label_l10ns}}');
-            }
-            if (Yii::app()->db->schema->getTable('{{labels_update400}}')) {
-                $oDB->createCommand()->dropTable('{{labels_update400}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
+            $oDB->createCommand()->dropTable('{{label_l10ns}}');
+        }
+        if (Yii::app()->db->schema->getTable('{{labels_update400}}')) {
+            $oDB->createCommand()->dropTable('{{labels_update400}}');
+        }
             $oDB->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
             $oDB->createCommand()->createTable(
                 '{{labels}}',

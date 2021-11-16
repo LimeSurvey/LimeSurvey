@@ -34,6 +34,5 @@ class Update_419 extends DatabaseUpdateBase
                 '{{user_in_permissionrole}}',
                 ['ptid', 'uid']
             );
-
     }
 }

@@ -194,27 +194,27 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{users}}', 'superadmin', 'integer', false, 0);
             alterColumn('{{users}}', 'htmleditormode', "string(7)", true, 'default');
             alterColumn('{{users}}', 'dateformat', 'integer', false, 1);
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('email', '{{users}}');
-            } catch (Exception $e) {
-                // do nothing
-                rollBackToTransactionBookmark();
-            }
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('email', '{{users}}');
+        } catch (Exception $e) {
+            // do nothing
+            rollBackToTransactionBookmark();
+        }
 
             $oDB->createCommand()->update('{{user_groups}}', array('name' => ''), "name is NULL");
             $oDB->createCommand()->update('{{user_groups}}', array('description' => ''), "description is NULL");
             alterColumn('{{user_groups}}', 'name', "string(20)", false);
             alterColumn('{{user_groups}}', 'description', "text", false);
 
-            try {
-                $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
-            } catch (Exception $e) {
-            }
-            try {
-                addPrimaryKey('user_in_groups', array('ugid', 'uid'));
-            } catch (Exception $e) {
-            }
+        try {
+            $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
+        } catch (Exception $e) {
+        }
+        try {
+            addPrimaryKey('user_in_groups', array('ugid', 'uid'));
+        } catch (Exception $e) {
+        }
 
             addColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer NOT NULL DEFAULT 0");
 

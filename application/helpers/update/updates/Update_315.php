@@ -12,6 +12,5 @@ class Update_315 extends DatabaseUpdateBase
                 array('packages_to_load' => '["pjax"]'),
                 "templates_name='default' OR templates_name='material'"
             );
-
     }
 }

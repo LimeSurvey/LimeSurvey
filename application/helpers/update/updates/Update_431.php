@@ -123,14 +123,14 @@ class Update_431 extends DatabaseUpdateBase
 
 
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
-            foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
-                if ($aSurveymenuentry['name'] == 'reorder') {
-                    if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
-                        $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
-                        SurveymenuEntries::reorderMenu(2);
-                    }
-                    break;
+        foreach ($aDefaultSurveyMenuEntries as $aSurveymenuentry) {
+            if ($aSurveymenuentry['name'] == 'reorder') {
+                if (SurveymenuEntries::model()->findByAttributes(['name' => $aSurveymenuentry['name']]) == null) {
+                    $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+                    SurveymenuEntries::reorderMenu(2);
                 }
+                break;
             }
+        }
     }
 }

@@ -24,6 +24,5 @@ class Update_471 extends DatabaseUpdateBase
             foreach ($fixedTitles as $themeName => $newTitle) {
                 $oDB->createCommand()->update('{{question_themes}}', array('title' => $newTitle), "name='$themeName'");
             }
-
     }
 }

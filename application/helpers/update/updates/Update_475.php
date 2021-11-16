@@ -14,9 +14,9 @@ class Update_475 extends DatabaseUpdateBase
                 GROUP BY {{labels}}.lid
                 HAVING COUNT(DISTINCT({{labels}}.code)) < COUNT({{labels}}.id)"
             )->queryAll();
-            foreach ($lids as $lid) {
-                regenerateLabelCodes400($lid['lid'], $hasLanguageColumn = false);
-            }
+        foreach ($lids as $lid) {
+            regenerateLabelCodes400($lid['lid'], $hasLanguageColumn = false);
+        }
             $oDB->createCommand()->createIndex('{{idx5_labels}}', '{{labels}}', ['lid','code'], true);
     }
 }

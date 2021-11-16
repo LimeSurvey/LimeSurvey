@@ -9,9 +9,8 @@ class Update_351 extends DatabaseUpdateBase
 
             $aTHemes = TemplateConfiguration::model()->findAll();
 
-            foreach ($aTHemes as $oTheme) {
-                $oTheme->setGlobalOption("ajaxmode", "on");
-            }
-
+        foreach ($aTHemes as $oTheme) {
+            $oTheme->setGlobalOption("ajaxmode", "on");
+        }
     }
 }

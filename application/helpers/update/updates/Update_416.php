@@ -21,19 +21,18 @@ class Update_416 extends DatabaseUpdateBase
             alterColumn('{{surveys}}', 'bounceaccountpass', "text", true, 'NULL');
             $sSurveyQuery = "SELECT * from {{surveys}} order by sid";
             $aSurveys = $oDB->createCommand($sSurveyQuery)->queryAll();
-            foreach ($aSurveys as $aSurvey) {
-                if (!empty($aSurvey['bounceaccountpass'])) {
-                    $oDB->createCommand()->update(
-                        '{{surveys}}',
-                        [
-                            'bounceaccountpass' => LSActiveRecord::encryptSingle(
-                                $aSurvey['bounceaccountpass']
-                            )
-                        ],
-                        "sid=" . $aSurvey['sid']
-                    );
-                }
+        foreach ($aSurveys as $aSurvey) {
+            if (!empty($aSurvey['bounceaccountpass'])) {
+                $oDB->createCommand()->update(
+                    '{{surveys}}',
+                    [
+                        'bounceaccountpass' => LSActiveRecord::encryptSingle(
+                            $aSurvey['bounceaccountpass']
+                        )
+                    ],
+                    "sid=" . $aSurvey['sid']
+                );
             }
-
+        }
     }
 }

@@ -14,6 +14,5 @@ class Update_348 extends DatabaseUpdateBase
                 'string(192)'
             );
             $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
-
     }
 }

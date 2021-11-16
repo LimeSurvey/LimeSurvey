@@ -6,9 +6,9 @@ class Update_307 extends DatabaseUpdateBase
 {
     public function run()
     {
-            if (tableExists('{settings_user}')) {
-                $oDB->createCommand()->dropTable('{{settings_user}}');
-            }
+        if (tableExists('{settings_user}')) {
+            $oDB->createCommand()->dropTable('{{settings_user}}');
+        }
             $oDB->createCommand()->createTable(
                 '{{settings_user}}',
                 array(

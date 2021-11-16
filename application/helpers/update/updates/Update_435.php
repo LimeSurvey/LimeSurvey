@@ -12,21 +12,21 @@ class Update_435 extends DatabaseUpdateBase
             ->from("{{surveys_groups}}")
             ->where('gsid = 1')
             ->queryScalar();
-            if ($defaultSurveyGroupExists == false) {
-                // Add missing default template
-                $date = date("Y-m-d H:i:s");
-                $oDB->createCommand()->insert('{{surveys_groups}}', array(
-                    'gsid'        => 1,
-                    'name'        => 'default',
-                    'title'       => 'Default',
-                    'description' => 'Default survey group',
-                    'sortorder'   => '0',
-                    'owner_id'   => '1',
-                    'created'     => $date,
-                    'modified'    => $date,
-                    'created_by'  => '1'
-                ));
-            }
+        if ($defaultSurveyGroupExists == false) {
+            // Add missing default template
+            $date = date("Y-m-d H:i:s");
+            $oDB->createCommand()->insert('{{surveys_groups}}', array(
+                'gsid'        => 1,
+                'name'        => 'default',
+                'title'       => 'Default',
+                'description' => 'Default survey group',
+                'sortorder'   => '0',
+                'owner_id'   => '1',
+                'created'     => $date,
+                'modified'    => $date,
+                'created_by'  => '1'
+            ));
+        }
             $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
             $oDB->createCommand()->update(
                 '{{surveys_groups}}',

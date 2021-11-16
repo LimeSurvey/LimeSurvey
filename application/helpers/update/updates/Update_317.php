@@ -8,6 +8,5 @@ class Update_317 extends DatabaseUpdateBase
     {
 
             transferPasswordFieldToText($oDB);
-
     }
 }

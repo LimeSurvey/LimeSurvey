@@ -16,6 +16,5 @@ class Update_420 extends DatabaseUpdateBase
                 ],
                 'name=\'listQuestionGroups\''
             );
-
     }
 }

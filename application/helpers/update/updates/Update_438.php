@@ -259,7 +259,5 @@ class Update_438 extends DatabaseUpdateBase
                 array('value' => '0'),
                 "attribute = 'input_boxes' and value = 'N'"
             );
-
-
     }
 }

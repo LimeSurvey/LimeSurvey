@@ -54,29 +54,29 @@ class Update_143 extends DatabaseUpdateBase
             $hTemplateDirectory = opendir($sStandardTemplateRootDir);
             $aFailedTemplates = array();
             // get each entry
-            while ($entryName = readdir($hTemplateDirectory)) {
+        while ($entryName = readdir($hTemplateDirectory)) {
+            if (
+                !in_array($entryName, array('.', '..', '.svn')) && is_dir(
+                    $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
+                ) && !Template::isStandardTemplate($entryName)
+            ) {
                 if (
-                    !in_array($entryName, array('.', '..', '.svn')) && is_dir(
-                        $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
-                    ) && !Template::isStandardTemplate($entryName)
+                    !rename(
+                        $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName,
+                        $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
+                    )
                 ) {
-                    if (
-                        !rename(
-                            $sStandardTemplateRootDir . DIRECTORY_SEPARATOR . $entryName,
-                            $sUserTemplateRootDir . DIRECTORY_SEPARATOR . $entryName
-                        )
-                    ) {
-                        $aFailedTemplates[] = $entryName;
-                    };
-                }
+                    $aFailedTemplates[] = $entryName;
+                };
             }
-            if (count($aFailedTemplates) > 0) {
-                echo "The following templates at {$sStandardTemplateRootDir} could not be moved to the new location at {$sUserTemplateRootDir}:<br /><ul>";
-                foreach ($aFailedTemplates as $sFailedTemplate) {
-                    echo "<li>{$sFailedTemplate}</li>";
-                }
-                echo "</ul>Please move these templates manually after the upgrade has finished.<br />";
+        }
+        if (count($aFailedTemplates) > 0) {
+            echo "The following templates at {$sStandardTemplateRootDir} could not be moved to the new location at {$sUserTemplateRootDir}:<br /><ul>";
+            foreach ($aFailedTemplates as $sFailedTemplate) {
+                echo "<li>{$sFailedTemplate}</li>";
             }
+            echo "</ul>Please move these templates manually after the upgrade has finished.<br />";
+        }
             // close directory
             closedir($hTemplateDirectory);
     }

@@ -6,7 +6,5 @@ class Update_296 extends DatabaseUpdateBase
 {
     public function run()
     {
-
-
     }
 }

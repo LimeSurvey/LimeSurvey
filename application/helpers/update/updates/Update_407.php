@@ -7,9 +7,9 @@ class Update_407 extends DatabaseUpdateBase
     public function run()
     {
             // defaultvalues
-            if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
-                $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
+            $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
+        }
             $oDB->createCommand()->createTable(
                 '{{defaultvalue_l10ns}}',
                 array(
@@ -26,9 +26,9 @@ class Update_407 extends DatabaseUpdateBase
                 ['dvid', 'language'],
                 true
             );
-            if (Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
-                $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
-            }
+        if (Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
+            $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+        }
             $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
             $oDB->createCommand()->createIndex(
                 'defaultvalues_update407_idx_10',
@@ -69,6 +69,5 @@ class Update_407 extends DatabaseUpdateBase
                 "
             )->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
-
     }
 }

@@ -35,6 +35,5 @@ class Update_434 extends DatabaseUpdateBase
                     "stg_value" => $defaultSetting['admincreationemailtemplate'],
                 ]
             );
-
     }
 }

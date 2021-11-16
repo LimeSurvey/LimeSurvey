@@ -8,18 +8,18 @@ class Update_442 extends DatabaseUpdateBase
     {
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
-            foreach ($questionsMetaData as $questionMetaData) {
-                $oDB->createCommand()->update(
-                    '{{question_themes}}',
-                    ['image_path' => $questionMetaData['image_path']],
-                    "name = :name AND extends = :extends AND theme_type = :type",
-                    [
-                        "name" => $questionMetaData['name'],
-                        "extends" => $questionMetaData['questionType'],
-                        "type" => $questionMetaData['type']
-                    ]
-                );
-            }
+        foreach ($questionsMetaData as $questionMetaData) {
+            $oDB->createCommand()->update(
+                '{{question_themes}}',
+                ['image_path' => $questionMetaData['image_path']],
+                "name = :name AND extends = :extends AND theme_type = :type",
+                [
+                    "name" => $questionMetaData['name'],
+                    "extends" => $questionMetaData['questionType'],
+                    "type" => $questionMetaData['type']
+                ]
+            );
+        }
             $oDB->createCommand()->insert(
                 "{{plugins}}",
                 [

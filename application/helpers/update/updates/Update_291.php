@@ -8,6 +8,5 @@ class Update_291 extends DatabaseUpdateBase
     {
 
             addColumn('{{plugins}}', 'version', 'string(32)');
-
     }
 }

@@ -13,51 +13,51 @@ class Update_133 extends DatabaseUpdateBase
             addColumn('{{answers}}', 'assessment_value', "integer NOT NULL default '0'");
             addColumn('{{labels}}', 'assessment_value', "integer NOT NULL default '0'");
             // copy any valid codes from code field to assessment field
-            switch (Yii::app()->db->driverName) {
-                case 'mysql':
+        switch (Yii::app()->db->driverName) {
+            case 'mysql':
+                $oDB->createCommand(
+                    "UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                )->execute();
+                $oDB->createCommand(
+                    "UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                )->execute();
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                $oDB->createCommand(
+                    "UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')"
+                )->execute();
+                break;
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+                try {
                     $oDB->createCommand(
-                        "UPDATE {{answers}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                        "UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
                     )->execute();
                     $oDB->createCommand(
-                        "UPDATE {{labels}} SET assessment_value=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'"
+                        "UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
                     )->execute();
-                    // copy assessment link to message since from now on we will have HTML assignment messages
-                    $oDB->createCommand(
-                        "UPDATE {{assessments}} set message=concat(replace(message,'/''',''''),'<br /><a href=\"',link,'\">',link,'</a>')"
-                    )->execute();
-                    break;
-                case 'sqlsrv':
-                case 'dblib':
-                case 'mssql':
-                    try {
-                        $oDB->createCommand(
-                            "UPDATE {{answers}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
-                        )->execute();
-                        $oDB->createCommand(
-                            "UPDATE {{labels}} SET assessment_value=CAST([code] as int) WHERE ISNUMERIC([code])=1"
-                        )->execute();
-                    } catch (Exception $e) {
-                    };
-                    // copy assessment link to message since from now on we will have HTML assignment messages
-                    alterColumn('{{assessments}}', 'link', "text", false);
-                    alterColumn('{{assessments}}', 'message', "text", false);
-                    $oDB->createCommand(
-                        "UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'"
-                    )->execute();
-                    break;
-                case 'pgsql':
-                    $oDB->createCommand(
-                        "UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
-                    )->execute();
-                    $oDB->createCommand(
-                        "UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
-                    )->execute();
-                    // copy assessment link to message since from now on we will have HTML assignment messages
-                    $oDB->createCommand(
-                        "UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'"
-                    )->execute();
-                    break;
-            }
+                } catch (Exception $e) {
+                };
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                alterColumn('{{assessments}}', 'link', "text", false);
+                alterColumn('{{assessments}}', 'message', "text", false);
+                $oDB->createCommand(
+                    "UPDATE {{assessments}} set message=replace(message,'/''','''')+'<br /><a href=\"'+link+'\">'+link+'</a>'"
+                )->execute();
+                break;
+            case 'pgsql':
+                $oDB->createCommand(
+                    "UPDATE {{answers}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
+                )->execute();
+                $oDB->createCommand(
+                    "UPDATE {{labels}} SET assessment_value=CAST(code as integer) where code ~ '^[0-9]+'"
+                )->execute();
+                // copy assessment link to message since from now on we will have HTML assignment messages
+                $oDB->createCommand(
+                    "UPDATE {{assessments}} set message=replace(message,'/''','''')||'<br /><a href=\"'||link||'\">'||link||'</a>'"
+                )->execute();
+                break;
+        }
             // activate assessment where assessment rules exist
             $oDB->createCommand(
                 "UPDATE {{surveys}} SET assessments='Y' where sid in (SELECT sid FROM {{assessments}} group by sid)"

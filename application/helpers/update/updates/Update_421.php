@@ -40,10 +40,9 @@ class Update_421 extends DatabaseUpdateBase
             $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
             $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
-            foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
-                $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
-            }
+        foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
+            $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
+        }
             unset($baseQuestionThemeEntries);
-
     }
 }

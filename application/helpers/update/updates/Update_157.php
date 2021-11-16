@@ -7,12 +7,12 @@ class Update_157 extends DatabaseUpdateBase
     public function run()
     {
             // MySQL DB corrections
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('questions_idx4', '{{questions}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            }
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('questions_idx4', '{{questions}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        }
 
             alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
             dropPrimaryKey('answers');
@@ -33,12 +33,12 @@ class Update_157 extends DatabaseUpdateBase
             alterColumn('{{quota}}', 'active', 'integer', false, '1');
             alterColumn('{{quota}}', 'autoload_url', 'integer', false, '0');
             alterColumn('{{saved_control}}', 'status', "string(1)", false, '');
-            try {
-                setTransactionBookmark();
-                alterColumn('{{sessions}}', 'id', "string(32)", false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            }
+        try {
+            setTransactionBookmark();
+            alterColumn('{{sessions}}', 'id', "string(32)", false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        }
             alterColumn('{{surveys}}', 'active', "string(1)", false, 'N');
             alterColumn('{{surveys}}', 'anonymized', "string(1)", false, 'N');
             alterColumn('{{surveys}}', 'format', "string(1)");
@@ -77,18 +77,18 @@ class Update_157 extends DatabaseUpdateBase
             alterColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");
 
             alterColumn('{{surveys_languagesettings}}', 'surveyls_dateformat', 'integer', false, 1);
-            try {
-                setTransactionBookmark();
-                alterColumn('{{survey_permissions}}', 'sid', "integer", false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            }
-            try {
-                setTransactionBookmark();
-                alterColumn('{{survey_permissions}}', 'uid', "integer", false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            }
+        try {
+            setTransactionBookmark();
+            alterColumn('{{survey_permissions}}', 'sid', "integer", false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        }
+        try {
+            setTransactionBookmark();
+            alterColumn('{{survey_permissions}}', 'uid', "integer", false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        }
             alterColumn('{{survey_permissions}}', 'create_p', 'integer', false, '0');
             alterColumn('{{survey_permissions}}', 'read_p', 'integer', false, '0');
             alterColumn('{{survey_permissions}}', 'update_p', 'integer', false, '0');
@@ -112,120 +112,120 @@ class Update_157 extends DatabaseUpdateBase
             alterColumn('{{users}}', 'dateformat', 'integer', false, 1);
             alterColumn('{{users}}', 'participant_panel', 'integer', false, '0');
             alterColumn('{{users}}', 'parent_id', 'integer', false);
-            try {
-                setTransactionBookmark();
-                alterColumn('{{surveys_languagesettings}}', 'surveyls_survey_id', "integer", false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            }
+        try {
+            setTransactionBookmark();
+            alterColumn('{{surveys_languagesettings}}', 'surveyls_survey_id', "integer", false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        }
             alterColumn('{{user_groups}}', 'owner_id', "integer", false);
             dropPrimaryKey('user_in_groups');
             alterColumn('{{user_in_groups}}', 'ugid', "integer", false);
             alterColumn('{{user_in_groups}}', 'uid', "integer", false);
 
             // Additional corrections for Postgres
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('questions_idx3', '{{questions}}', 'gid');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('{{user_name_key}}', '{{users}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('users_name', '{{users}}', 'users_name', true);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                addPrimaryKey('user_in_groups', array('ugid', 'uid'));
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('questions_idx3', '{{questions}}', 'gid');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('{{user_name_key}}', '{{users}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('users_name', '{{users}}', 'users_name', true);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            addPrimaryKey('user_in_groups', array('ugid', 'uid'));
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
 
             alterColumn('{{participant_attribute}}', 'value', "string(50)", false);
-            try {
-                setTransactionBookmark();
-                alterColumn('{{participant_attribute_names}}', 'attribute_type', "string(4)", false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                dropColumn('{{participant_attribute_names_lang}}', 'id');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->renameColumn('{{participant_shares}}', 'shared_uid', 'share_uid');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
+        try {
+            setTransactionBookmark();
+            alterColumn('{{participant_attribute_names}}', 'attribute_type', "string(4)", false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            dropColumn('{{participant_attribute_names_lang}}', 'id');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->renameColumn('{{participant_shares}}', 'shared_uid', 'share_uid');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
             alterColumn('{{participant_shares}}', 'date_added', "datetime", false);
             alterColumn('{{participants}}', 'firstname', "string(40)");
             alterColumn('{{participants}}', 'lastname', "string(40)");
             alterColumn('{{participants}}', 'email', "string(80)");
             alterColumn('{{participants}}', 'language', "string(40)");
             alterColumn('{{quota_languagesettings}}', 'quotals_name', "string");
-            try {
-                setTransactionBookmark();
-                alterColumn('{{survey_permissions}}', 'sid', 'integer', false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                alterColumn('{{survey_permissions}}', 'uid', 'integer', false);
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
+        try {
+            setTransactionBookmark();
+            alterColumn('{{survey_permissions}}', 'sid', 'integer', false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            alterColumn('{{survey_permissions}}', 'uid', 'integer', false);
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
             alterColumn('{{users}}', 'htmleditormode', "string(7)", true, 'default');
 
             // Sometimes the survey_links table was deleted before this step, if so
             // we recreate it (copied from line 663)
-            if (!tableExists('{survey_links}')) {
-                $oDB->createCommand()->createTable(
-                    '{{survey_links}}',
-                    array(
-                        'participant_id' => 'string(50) NOT NULL',
-                        'token_id' => 'integer NOT NULL',
-                        'survey_id' => 'integer NOT NULL',
-                        'date_created' => 'datetime NOT NULL'
-                    )
-                );
-                addPrimaryKey('survey_links', array('participant_id', 'token_id', 'survey_id'));
-            }
+        if (!tableExists('{survey_links}')) {
+            $oDB->createCommand()->createTable(
+                '{{survey_links}}',
+                array(
+                    'participant_id' => 'string(50) NOT NULL',
+                    'token_id' => 'integer NOT NULL',
+                    'survey_id' => 'integer NOT NULL',
+                    'date_created' => 'datetime NOT NULL'
+                )
+            );
+            addPrimaryKey('survey_links', array('participant_id', 'token_id', 'survey_id'));
+        }
             alterColumn('{{survey_links}}', 'date_created', "datetime", true);
             alterColumn('{{saved_control}}', 'identifier', "text", false);
             alterColumn('{{saved_control}}', 'email', "string(320)");
@@ -233,53 +233,53 @@ class Update_157 extends DatabaseUpdateBase
             alterColumn('{{surveys}}', 'bounce_email', "string(320)");
             alterColumn('{{users}}', 'email', "string(320)");
 
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('assessments_idx', '{{assessments}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('assessments_idx', '{{assessments}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
 
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('ixcode', '{{labels}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('{{labels_ixcode_idx}}', '{{labels}}');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
-            try {
-                setTransactionBookmark();
-                $oDB->createCommand()->createIndex('labels_code_idx', '{{labels}}', 'code');
-            } catch (Exception $e) {
-                rollBackToTransactionBookmark();
-            };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('ixcode', '{{labels}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->dropIndex('{{labels_ixcode_idx}}', '{{labels}}');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
+        try {
+            setTransactionBookmark();
+            $oDB->createCommand()->createIndex('labels_code_idx', '{{labels}}', 'code');
+        } catch (Exception $e) {
+            rollBackToTransactionBookmark();
+        };
 
 
-            if (Yii::app()->db->driverName == 'pgsql') {
-                try {
-                    setTransactionBookmark();
-                    $oDB->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;
-                } catch (Exception $e) {
-                    rollBackToTransactionBookmark();
-                };
-                try {
-                    setTransactionBookmark();
-                    $oDB->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;
-                } catch (Exception $e) {
-                    rollBackToTransactionBookmark();
-                };
-            }
+        if (Yii::app()->db->driverName == 'pgsql') {
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
+        }
 
             // Additional corrections for MSSQL
             alterColumn('{{answers}}', 'answer', "text", false);
@@ -333,6 +333,5 @@ class Update_157 extends DatabaseUpdateBase
                 array('value' => '1'),
                 "attribute = 'random_order' and value = '2'"
             );
-
     }
 }

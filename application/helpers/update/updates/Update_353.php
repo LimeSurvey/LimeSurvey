@@ -9,9 +9,8 @@ class Update_353 extends DatabaseUpdateBase
 
             $aTHemes = TemplateConfiguration::model()->findAll();
 
-            foreach ($aTHemes as $oTheme) {
-                $oTheme->addOptionFromXMLToLiveTheme();
-            }
-
+        foreach ($aTHemes as $oTheme) {
+            $oTheme->addOptionFromXMLToLiveTheme();
+        }
     }
 }

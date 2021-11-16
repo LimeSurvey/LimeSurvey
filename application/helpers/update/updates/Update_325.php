@@ -268,6 +268,5 @@ class Update_325 extends DatabaseUpdateBase
                     ]
                 )
             );
-
     }
 }
