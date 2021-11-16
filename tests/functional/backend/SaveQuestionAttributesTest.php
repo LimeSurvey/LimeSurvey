@@ -159,6 +159,11 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
             rmdirr($pluginDir);
         }
 
+        $plugin = \Plugin::model()->findByAttributes(['name' => 'NewQuestionAttributesPlugin']);
+        if (!empty($plugin)) {
+            $plugin->delete();
+        }
+
         $urlMan = \Yii::app()->urlManager;
         $web = self::$webDriver;
         
