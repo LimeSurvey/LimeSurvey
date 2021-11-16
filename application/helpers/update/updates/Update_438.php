@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->update(
                 '{{question_attributes}}',

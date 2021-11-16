@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
             if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {

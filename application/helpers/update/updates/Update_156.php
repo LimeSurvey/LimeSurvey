@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             try {
                 $oDB->createCommand()->dropTable('{{survey_url_parameters}}');
             } catch (Exception $e) {

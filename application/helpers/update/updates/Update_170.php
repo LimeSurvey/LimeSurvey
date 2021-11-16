@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // renamed advanced attributes fields dropdown_dates_year_min/max
             $oDB->createCommand()->update(
                 '{{question_attributes}}',

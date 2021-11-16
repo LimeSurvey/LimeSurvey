@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // defaultvalues
             if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
                 $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');

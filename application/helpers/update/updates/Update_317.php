@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             transferPasswordFieldToText($oDB);
 

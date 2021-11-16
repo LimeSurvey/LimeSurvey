@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $aTHemes = TemplateConfiguration::model()->findAll();
 

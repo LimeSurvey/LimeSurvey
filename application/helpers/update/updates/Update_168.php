@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{participants}}', 'created', 'datetime');
             addColumn('{{participants}}', 'modified', 'datetime');
             addColumn('{{participants}}', 'created_by', 'integer');

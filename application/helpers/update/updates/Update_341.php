@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->truncateTable('{{tutorials}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entries}}');

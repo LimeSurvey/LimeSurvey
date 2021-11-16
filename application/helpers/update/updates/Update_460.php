@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $installedPlugins = array_map(
                 function ($v) {
                     return $v['name'];

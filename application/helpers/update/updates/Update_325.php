@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->dropTable('{{templates}}');
             $oDB->createCommand()->dropTable('{{template_configuration}}');
 

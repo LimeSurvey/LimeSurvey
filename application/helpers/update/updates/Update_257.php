@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             switch (Yii::app()->db->driverName) {
                 case 'pgsql':
                     $sSubstringCommand = 'substr';

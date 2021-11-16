@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $aIdMap = [];
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();

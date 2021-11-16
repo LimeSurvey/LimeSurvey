@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             upgradeSurveys177(); // Needs to be run again to make sure
             upgradeTokenTables179();
             alterColumn('{{participants}}', 'email', "string(254)", false);

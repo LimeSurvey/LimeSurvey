@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Check if default survey groups exists - at some point it was possible to delete it
             $defaultSurveyGroupExists = $oDB->createCommand()
             ->select('gsid')

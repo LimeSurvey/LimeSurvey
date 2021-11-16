@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Delete duplicate template configurations
             $deleteQuery = "DELETE FROM {{template_configuration}}
                 WHERE id NOT IN (

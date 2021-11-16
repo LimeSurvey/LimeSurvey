@@ -1,4 +1,3 @@
-            // Update 'Theme Options' Entry (Side Menu Link) in Survey Menu Entries.
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',

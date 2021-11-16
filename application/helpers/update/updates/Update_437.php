@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             //refactore controller assessment (surveymenu_entry link changes to new controller rout)
             $oDB->createCommand()->update(
                 '{{surveymenu_entries}}',

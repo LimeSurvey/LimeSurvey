@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{notifications}}', 'message', "text", false);
             alterColumn('{{settings_user}}', 'stg_value', "text", true);
             alterColumn('{{surveys_languagesettings}}', 'surveyls_description', "text", true);

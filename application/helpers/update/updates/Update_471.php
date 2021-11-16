@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $fixedTitles = [
                 '5pointchoice' => '5 point choice',

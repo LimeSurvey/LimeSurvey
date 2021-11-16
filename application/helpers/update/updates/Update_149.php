@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $aFields = array(
                 'id' => 'integer',
                 'sid' => 'integer',

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable(
                 '{{asset_version}}',
                 array(

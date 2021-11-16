@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}', 'savetimings', "string(1) NULL default 'N'");
             addColumn('{{surveys}}', 'showXquestions', "string(1) NULL default 'Y'");
             addColumn('{{surveys}}', 'showgroupinfo', "string(1) NULL default 'B'");

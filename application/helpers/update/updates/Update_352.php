@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             dropColumn('{{sessions}}', 'data');
             addColumn('{{sessions}}', 'data', 'binary');
 

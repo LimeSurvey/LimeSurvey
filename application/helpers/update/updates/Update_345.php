@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $fruityConf = $oDB
                 ->createCommand()
                 ->select('*')

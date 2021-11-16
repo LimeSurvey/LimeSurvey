@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables253();
 
             // Update DBVersion

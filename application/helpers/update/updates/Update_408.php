@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update(
                 '{{participant_attribute_names}}',
                 array('encrypted' => 'Y'),

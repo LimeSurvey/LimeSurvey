@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             if (Yii::app()->getConfig('auth_webserver') === true) {
                 // using auth webserver, now activate the plugin with default settings.
                 if (!class_exists('Authwebserver', false)) {

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}', 'one_time_pw', 'binary');
             // Add new assessment setting
             addColumn('{{surveys}}', 'assessments', "string(1) NOT NULL default 'N'");

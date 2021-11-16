@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             // All templates should inherit from vanilla as default (if extends is empty).
             $oDB->createCommand()->update(

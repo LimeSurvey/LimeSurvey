@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where(
                 'ico=:ico',
                 [':ico' => 'templates']

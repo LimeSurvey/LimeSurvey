@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $aUsers = User::model()->findAll();
             $aPerm = array(
                 'entity_id' => 0,

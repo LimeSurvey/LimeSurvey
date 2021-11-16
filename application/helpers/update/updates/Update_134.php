@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Add new tokens setting
             addColumn('{{surveys}}', 'usetokens', "string(1) NOT NULL default 'N'");
             addColumn('{{surveys}}', 'attributedescriptions', 'text');

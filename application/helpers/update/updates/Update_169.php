@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Add new column for question index options.
             addColumn('{{surveys}}', 'questionindex', 'integer not null default 0');
             // Set values for existing surveys.

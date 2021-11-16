@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // archived_table_settings
             $oDB->createCommand()->createTable(
                 '{{archived_table_settings}}',

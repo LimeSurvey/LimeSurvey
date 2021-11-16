@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{quota}}', 'autoload_url', "integer NOT NULL default 0");
             // Create quota table
             $aFields = array(

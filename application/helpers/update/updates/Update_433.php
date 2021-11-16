@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $aTableNames = dbGetTablesLike("tokens%");
             $oDB = Yii::app()->getDb();
             foreach ($aTableNames as $sTableName) {

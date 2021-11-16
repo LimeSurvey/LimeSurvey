@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
 
             if (!isset($surveymenuTable->columns['showincollapse'])) {

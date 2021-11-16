@@ -1,4 +1,3 @@
-            // Update the Resources Entry in Survey Menu Entries (cause of refactoring resources controller)
             $oTransaction = $oDB->beginTransaction();
             extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
             $oDB->createCommand()->update(

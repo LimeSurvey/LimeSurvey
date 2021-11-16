@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // MySQL DB corrections
             try {
                 setTransactionBookmark();

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys_languagesettings}}', 'surveyls_dateformat', "integer NOT NULL default 1");
             addColumn('{{users}}', 'dateformat', "integer NOT NULL default 1");
             $oDB->createCommand()->update('{{surveys}}', array('startdate' => null), "usestartdate='N'");

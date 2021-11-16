@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             //update core themes api_version
             $oDB->createCommand()->update(
                 '{{templates}}',

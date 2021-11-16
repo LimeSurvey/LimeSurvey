@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // question_themes
             $oDB->createCommand()->createTable(
                 '{{question_themes}}',

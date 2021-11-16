@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $table = '{{surveymenu_entries}}';
             $data_to_be_updated = [

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
             foreach ($dir as $fileinfo) {
                 if (!$fileinfo->isDot()) {

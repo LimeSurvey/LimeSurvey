@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Already added in beta 2 but with wrong type
             try {
                 setTransactionBookmark();

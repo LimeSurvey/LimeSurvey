@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{surveys}}', 'googleanalyticsstyle', "string(1)");
             addColumn('{{surveys}}', 'googleanalyticsapikey', "string(25)");
             try {

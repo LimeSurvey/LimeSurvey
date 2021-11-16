@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $aTables = dbGetTablesLike("survey\_%");
             $oSchema = Yii::app()->db->schema;
             foreach ($aTables as $sTableName) {

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
             $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();

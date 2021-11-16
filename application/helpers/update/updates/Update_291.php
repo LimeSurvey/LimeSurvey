@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             addColumn('{{plugins}}', 'version', 'string(32)');
 

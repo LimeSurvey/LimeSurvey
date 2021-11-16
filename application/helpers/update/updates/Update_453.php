@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $columnSchema = $oDB->getSchema()->getTable('{{archived_table_settings}}')->getColumn('attributes');
             if ($columnSchema === null) {

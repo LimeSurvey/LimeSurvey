@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTimings146();
             // Fix permissions for new feature quick-translation
             try {

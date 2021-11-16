@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             /*
             * The hash value of a notification is used to calculate uniqueness.
             * @since 2016-08-10

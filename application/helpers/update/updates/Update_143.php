@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}', 'parent_qid', 'integer NOT NULL default 0');
             addColumn('{{answers}}', 'scale_id', 'integer NOT NULL default 0');
             addColumn('{{questions}}', 'scale_id', 'integer NOT NULL default 0');

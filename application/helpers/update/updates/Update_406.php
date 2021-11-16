@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // surveys
             $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
             $oDB->createCommand()->update(

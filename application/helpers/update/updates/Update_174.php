@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             alterColumn('{{participants}}', 'email', "string(254)");
             alterColumn('{{saved_control}}', 'email', "string(254)");
             alterColumn('{{surveys}}', 'adminemail', "string(254)");

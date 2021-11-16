@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
             $oDB->createCommand()->update(

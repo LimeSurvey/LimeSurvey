@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             if (tableExists('{settings_user}')) {
                 $oDB->createCommand()->dropTable('{{settings_user}}');
             }

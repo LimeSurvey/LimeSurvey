@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             // encrypt values in db
             SettingGlobal::setSetting(

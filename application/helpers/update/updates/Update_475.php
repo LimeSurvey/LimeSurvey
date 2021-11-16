@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Apply integrity fix before adding unique constraint.
             // List of label set ids which contain code duplicates.
             $lids = $oDB->createCommand(

@@ -1,4 +1,3 @@
-            // Fix database default collation, again
             if (Yii::app()->db->driverName == 'mysql') {
                 Yii::app()->db->createCommand(
                     "ALTER DATABASE `" . getDBConnectionStringProperty(

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             Yii::import('application.helpers.SurveyThemeHelper');
             $templateConfigurations = $oDB->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
             if (!empty($templateConfigurations)) {

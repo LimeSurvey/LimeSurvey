@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $aUserDirectory = QuestionTheme::getAllQuestionXMLPaths(false, false, true);
             if (!empty($aUserDirectory)) {
                 reset($aUserDirectory);

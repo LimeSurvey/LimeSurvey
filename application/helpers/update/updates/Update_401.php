@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');
             $oDB->createCommand()->addColumn('{{plugins}}', 'load_error_message', 'text');

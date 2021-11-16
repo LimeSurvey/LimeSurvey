@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
 
             $oDB->createCommand()->createTable(

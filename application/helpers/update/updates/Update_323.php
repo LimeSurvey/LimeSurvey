@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
             $oDB->createCommand()->createIndex(

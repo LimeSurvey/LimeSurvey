@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key', 'string(38)');
             $oDB->createCommand()->addColumn('{{users}}', 'validation_key_expiration', 'datetime');

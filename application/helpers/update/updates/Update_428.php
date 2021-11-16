@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Update vanilla config
             $oDB->createCommand()->update(
                 '{{template_configuration}}',

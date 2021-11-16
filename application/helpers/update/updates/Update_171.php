@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             try {
                 dropColumn('{{sessions}}', 'data');
             } catch (Exception $e) {

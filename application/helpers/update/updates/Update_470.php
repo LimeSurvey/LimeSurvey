@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Add the new column to questions table
             $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
             switch (Yii::app()->db->driverName) {

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             // Convert old html editor modes if present in global settings
             $oDB->createCommand()->update(
                 '{{settings_global}}',

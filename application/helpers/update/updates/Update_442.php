@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
             foreach ($questionsMetaData as $questionMetaData) {

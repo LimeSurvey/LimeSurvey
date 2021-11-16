@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             upgradeQuestionAttributes142();
             $oDB->createCommand()->alterColumn('{{surveys}}', 'expires', "datetime");
             $oDB->createCommand()->alterColumn('{{surveys}}', 'startdate', "datetime");

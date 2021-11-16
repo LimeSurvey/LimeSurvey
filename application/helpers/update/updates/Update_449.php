@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             //updating the default values for htmleditor
             //surveys_groupsettings htmlemail should be 'Y'

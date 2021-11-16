@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
             $sSurveyGroupQuery = "SELECT gsid  from {{surveys_groups}} order by gsid";
             $aGroups = $oDB->createCommand($sSurveyGroupQuery)->queryColumn();
             $sSurveyGroupSettingsQuery = "SELECT gsid  from {{surveys_groupsettings}} order by gsid";

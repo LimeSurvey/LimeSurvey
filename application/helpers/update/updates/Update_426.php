@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn(
                 '{{surveys_groupsettings}}',

@@ -1,4 +1,3 @@
-            $oTransaction = $oDB->beginTransaction();
 
             $sEncrypted = 'N';
             $oDB->createCommand()->update(
