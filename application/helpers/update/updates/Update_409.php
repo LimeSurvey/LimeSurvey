@@ -8,7 +8,7 @@ class Update_409 extends DatabaseUpdateBase
     {
 
             $sEncrypted = 'N';
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{participant_attribute_names}}',
                 array('encrypted' => $sEncrypted),
                 "core_attribute='Y'"

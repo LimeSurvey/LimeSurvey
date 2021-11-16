@@ -6,6 +6,6 @@ class Update_333 extends DatabaseUpdateBase
 {
     public function run()
     {
-            upgrade333($oDB);
+            upgrade333($this->db);
     }
 }

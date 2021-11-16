@@ -8,7 +8,7 @@ class Update_344 extends DatabaseUpdateBase
     {
 
             // All templates should inherit from vanilla as default (if extends is empty).
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{templates}}',
                 [
                     'extends' => 'vanilla',
@@ -17,7 +17,7 @@ class Update_344 extends DatabaseUpdateBase
             );
 
             // If vanilla template is missing, install it.
-            $vanilla = $oDB
+            $vanilla = $this->db
                 ->createCommand()
                 ->select('*')
                 ->from('{{templates}}')
@@ -43,9 +43,9 @@ class Update_344 extends DatabaseUpdateBase
                 'owner_id' => 1,
                 'extends' => '',
             ];
-            $oDB->createCommand()->insert('{{templates}}', $vanillaData);
+            $this->db->createCommand()->insert('{{templates}}', $vanillaData);
         }
-            $vanillaConf = $oDB
+            $vanillaConf = $this->db
                 ->createCommand()
                 ->select('*')
                 ->from('{{template_configuration}}')
@@ -68,7 +68,7 @@ class Update_344 extends DatabaseUpdateBase
                 'packages_ltr' => null,
                 'packages_rtl' => null
             ];
-            $oDB->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
+            $this->db->createCommand()->insert('{{template_configuration}}', $vanillaConfData);
         }
     }
 }

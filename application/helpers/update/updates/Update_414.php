@@ -6,6 +6,6 @@ class Update_414 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->addColumn('{{users}}', 'lastLogin', "datetime NULL");
+            $this->db->createCommand()->addColumn('{{users}}', 'lastLogin', "datetime NULL");
     }
 }

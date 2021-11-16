@@ -6,7 +6,7 @@ class Update_418 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{plugins}}",
                 [
                     'name' => 'PasswordRequirement',
@@ -18,7 +18,7 @@ class Update_418 extends DatabaseUpdateBase
                 ]
             );
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
+            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 418), "stg_name='DBVersion'");
             $oTransaction->commit();
     }
 }

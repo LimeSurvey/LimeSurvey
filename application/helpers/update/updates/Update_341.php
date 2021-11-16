@@ -7,8 +7,8 @@ class Update_341 extends DatabaseUpdateBase
     public function run()
     {
 
-            $oDB->createCommand()->truncateTable('{{tutorials}}');
-            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
-            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+            $this->db->createCommand()->truncateTable('{{tutorials}}');
+            $this->db->createCommand()->truncateTable('{{tutorial_entries}}');
+            $this->db->createCommand()->truncateTable('{{tutorial_entry_relation}}');
     }
 }

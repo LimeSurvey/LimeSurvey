@@ -6,6 +6,6 @@ class Update_337 extends DatabaseUpdateBase
 {
     public function run()
     {
-            resetTutorials337($oDB);
+            resetTutorials337($this->db);
     }
 }

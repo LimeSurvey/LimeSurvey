@@ -6,8 +6,8 @@ class Update_432 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update(
+            $oTransaction = $this->db->beginTransaction();
+            $this->db->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => 'themeOptions/updateSurvey',

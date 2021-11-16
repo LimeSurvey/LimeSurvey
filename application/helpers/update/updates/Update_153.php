@@ -6,7 +6,7 @@ class Update_153 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{expression_errors}}',
                 array(
                     'id' => 'pk',

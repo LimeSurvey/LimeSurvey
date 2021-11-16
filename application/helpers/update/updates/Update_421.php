@@ -7,7 +7,7 @@ class Update_421 extends DatabaseUpdateBase
     public function run()
     {
             // question_themes
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{question_themes}}',
                 [
                     'id' => "pk",
@@ -37,11 +37,11 @@ class Update_421 extends DatabaseUpdateBase
                 $options
             );
 
-            $oDB->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
+            $this->db->createCommand()->createIndex('{{idx1_question_themes}}', '{{question_themes}}', 'name', false);
 
             $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
         foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
-            $oDB->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
+            $this->db->createCommand()->insert("{{question_themes}}", $baseQuestionThemeEntry);
         }
             unset($baseQuestionThemeEntries);
     }

@@ -7,6 +7,6 @@ class Update_316 extends DatabaseUpdateBase
     public function run()
     {
 
-            //$oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
+            //$this->db->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
     }
 }

@@ -6,6 +6,6 @@ class Update_404 extends DatabaseUpdateBase
 {
     public function run()
     {
-            createSurveysGroupSettingsTable($oDB);
+            createSurveysGroupSettingsTable($this->db);
     }
 }

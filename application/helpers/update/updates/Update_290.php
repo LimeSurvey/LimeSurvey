@@ -18,7 +18,7 @@ class Update_290 extends DatabaseUpdateBase
             if (in_array('seed', $oTableSchema->columnNames)) {
                 continue;
             }
-            removeMysqlZeroDate($sTableName, $oTableSchema, $oDB);
+            removeMysqlZeroDate($sTableName, $oTableSchema, $this->db);
             // If survey has active table, create seed column
             Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 

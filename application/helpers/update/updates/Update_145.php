@@ -37,13 +37,13 @@ class Update_145 extends DatabaseUpdateBase
                 'import_p' => "integer NOT NULL default 0",
                 'export_p' => "integer NOT NULL default 0"
             );
-            $oDB->createCommand()->createTable('{{survey_permissions}}', $aFields);
+            $this->db->createCommand()->createTable('{{survey_permissions}}', $aFields);
             addPrimaryKey('survey_permissions', array('sid', 'uid', 'permission'));
 
             upgradeSurveyPermissions145();
 
             // drop the old survey rights table
-            $oDB->createCommand()->dropTable('{{surveys_rights}}');
+            $this->db->createCommand()->dropTable('{{surveys_rights}}');
 
             // Add new fields for email templates
             addColumn('{{surveys_languagesettings}}', 'email_admin_notification_subj', "string");
@@ -52,7 +52,7 @@ class Update_145 extends DatabaseUpdateBase
             addColumn('{{surveys_languagesettings}}', 'email_admin_responses', "text");
 
             //Add index to questions table to speed up subquestions
-            $oDB->createCommand()->createIndex('parent_qid_idx', '{{questions}}', 'parent_qid');
+            $this->db->createCommand()->createIndex('parent_qid_idx', '{{questions}}', 'parent_qid');
 
             addColumn('{{surveys}}', 'emailnotificationto', "text");
 
@@ -60,24 +60,24 @@ class Update_145 extends DatabaseUpdateBase
             dropColumn('{{surveys}}', 'notification');
             alterColumn('{{conditions}}', 'method', "string(5)", false, '');
 
-            $oDB->createCommand()->renameColumn('{{surveys}}', 'private', 'anonymized');
-            $oDB->createCommand()->update('{{surveys}}', array('anonymized' => 'N'), "anonymized is NULL");
+            $this->db->createCommand()->renameColumn('{{surveys}}', 'private', 'anonymized');
+            $this->db->createCommand()->update('{{surveys}}', array('anonymized' => 'N'), "anonymized is NULL");
             alterColumn('{{surveys}}', 'anonymized', "string(1)", false, 'N');
 
             //now we clean up things that were not properly set in previous DB upgrades
-            $oDB->createCommand()->update('{{answers}}', array('answer' => ''), "answer is NULL");
-            $oDB->createCommand()->update('{{assessments}}', array('scope' => ''), "scope is NULL");
-            $oDB->createCommand()->update('{{assessments}}', array('name' => ''), "name is NULL");
-            $oDB->createCommand()->update('{{assessments}}', array('message' => ''), "message is NULL");
-            $oDB->createCommand()->update('{{assessments}}', array('minimum' => ''), "minimum is NULL");
-            $oDB->createCommand()->update('{{assessments}}', array('maximum' => ''), "maximum is NULL");
-            $oDB->createCommand()->update('{{groups}}', array('group_name' => ''), "group_name is NULL");
-            $oDB->createCommand()->update('{{labels}}', array('code' => ''), "code is NULL");
-            $oDB->createCommand()->update('{{labelsets}}', array('label_name' => ''), "label_name is NULL");
-            $oDB->createCommand()->update('{{questions}}', array('type' => 'T'), "type is NULL");
-            $oDB->createCommand()->update('{{questions}}', array('title' => ''), "title is NULL");
-            $oDB->createCommand()->update('{{questions}}', array('question' => ''), "question is NULL");
-            $oDB->createCommand()->update('{{questions}}', array('other' => 'N'), "other is NULL");
+            $this->db->createCommand()->update('{{answers}}', array('answer' => ''), "answer is NULL");
+            $this->db->createCommand()->update('{{assessments}}', array('scope' => ''), "scope is NULL");
+            $this->db->createCommand()->update('{{assessments}}', array('name' => ''), "name is NULL");
+            $this->db->createCommand()->update('{{assessments}}', array('message' => ''), "message is NULL");
+            $this->db->createCommand()->update('{{assessments}}', array('minimum' => ''), "minimum is NULL");
+            $this->db->createCommand()->update('{{assessments}}', array('maximum' => ''), "maximum is NULL");
+            $this->db->createCommand()->update('{{groups}}', array('group_name' => ''), "group_name is NULL");
+            $this->db->createCommand()->update('{{labels}}', array('code' => ''), "code is NULL");
+            $this->db->createCommand()->update('{{labelsets}}', array('label_name' => ''), "label_name is NULL");
+            $this->db->createCommand()->update('{{questions}}', array('type' => 'T'), "type is NULL");
+            $this->db->createCommand()->update('{{questions}}', array('title' => ''), "title is NULL");
+            $this->db->createCommand()->update('{{questions}}', array('question' => ''), "question is NULL");
+            $this->db->createCommand()->update('{{questions}}', array('other' => 'N'), "other is NULL");
 
             alterColumn('{{answers}}', 'answer', "text", false);
             alterColumn('{{answers}}', 'assessment_value', 'integer', false, '0');
@@ -114,14 +114,14 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{questions}}', 'question', "text", false);
             try {
                 setTransactionBookmark();
-                $oDB->createCommand()->dropIndex('questions_idx4', '{{questions}}');
+                $this->db->createCommand()->dropIndex('questions_idx4', '{{questions}}');
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             }
 
             alterColumn('{{questions}}', 'type', "string(1)", false, 'T');
             try {
-                $oDB->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
+                $this->db->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
             } catch (Exception $e) {
             };
             alterColumn('{{questions}}', 'other', "string(1)", false, 'N');
@@ -129,28 +129,28 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{question_attributes}}', 'attribute', "string(50)");
             alterColumn('{{quota}}', 'qlimit', 'integer');
 
-            $oDB->createCommand()->update('{{saved_control}}', array('identifier' => ''), "identifier is NULL");
+            $this->db->createCommand()->update('{{saved_control}}', array('identifier' => ''), "identifier is NULL");
             alterColumn('{{saved_control}}', 'identifier', "text", false);
-            $oDB->createCommand()->update('{{saved_control}}', array('access_code' => ''), "access_code is NULL");
+            $this->db->createCommand()->update('{{saved_control}}', array('access_code' => ''), "access_code is NULL");
             alterColumn('{{saved_control}}', 'access_code', "text", false);
             alterColumn('{{saved_control}}', 'email', "string(320)");
-            $oDB->createCommand()->update('{{saved_control}}', array('ip' => ''), "ip is NULL");
+            $this->db->createCommand()->update('{{saved_control}}', array('ip' => ''), "ip is NULL");
             alterColumn('{{saved_control}}', 'ip', "text", false);
-            $oDB->createCommand()->update('{{saved_control}}', array('saved_thisstep' => ''), "saved_thisstep is NULL");
+            $this->db->createCommand()->update('{{saved_control}}', array('saved_thisstep' => ''), "saved_thisstep is NULL");
             alterColumn('{{saved_control}}', 'saved_thisstep', "text", false);
-            $oDB->createCommand()->update('{{saved_control}}', array('status' => ''), "status is NULL");
+            $this->db->createCommand()->update('{{saved_control}}', array('status' => ''), "status is NULL");
             alterColumn('{{saved_control}}', 'status', "string(1)", false, '');
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{saved_control}}',
                 array('saved_date' => '1980-01-01 00:00:00'),
                 "saved_date is NULL"
             );
             alterColumn('{{saved_control}}', 'saved_date', "datetime", false);
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => ''), "stg_value is NULL");
+            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => ''), "stg_value is NULL");
             alterColumn('{{settings_global}}', 'stg_value', "string", false, '');
 
             alterColumn('{{surveys}}', 'admin', "string(50)");
-            $oDB->createCommand()->update('{{surveys}}', array('active' => 'N'), "active is NULL");
+            $this->db->createCommand()->update('{{surveys}}', array('active' => 'N'), "active is NULL");
 
             alterColumn('{{surveys}}', 'active', "string(1)", false, 'N');
 
@@ -170,7 +170,7 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{surveys}}', 'bounce_email', "string(320)");
             alterColumn('{{surveys}}', 'tokenlength', 'integer', true, 15);
 
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{surveys_languagesettings}}',
                 array('surveyls_title' => ''),
                 "surveyls_title is NULL"
@@ -185,8 +185,8 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{surveys_languagesettings}}', 'surveyls_email_confirm_subj', "string");
             alterColumn('{{surveys_languagesettings}}', 'surveyls_dateformat', 'integer', false, 1);
 
-            $oDB->createCommand()->update('{{users}}', array('users_name' => ''), "users_name is NULL");
-            $oDB->createCommand()->update('{{users}}', array('full_name' => ''), "full_name is NULL");
+            $this->db->createCommand()->update('{{users}}', array('users_name' => ''), "users_name is NULL");
+            $this->db->createCommand()->update('{{users}}', array('full_name' => ''), "full_name is NULL");
             alterColumn('{{users}}', 'users_name', "string(64)", false, '');
             alterColumn('{{users}}', 'full_name', "string(50)", false);
             alterColumn('{{users}}', 'lang', "string(20)");
@@ -196,19 +196,19 @@ class Update_145 extends DatabaseUpdateBase
             alterColumn('{{users}}', 'dateformat', 'integer', false, 1);
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('email', '{{users}}');
+            $this->db->createCommand()->dropIndex('email', '{{users}}');
         } catch (Exception $e) {
             // do nothing
             rollBackToTransactionBookmark();
         }
 
-            $oDB->createCommand()->update('{{user_groups}}', array('name' => ''), "name is NULL");
-            $oDB->createCommand()->update('{{user_groups}}', array('description' => ''), "description is NULL");
+            $this->db->createCommand()->update('{{user_groups}}', array('name' => ''), "name is NULL");
+            $this->db->createCommand()->update('{{user_groups}}', array('description' => ''), "description is NULL");
             alterColumn('{{user_groups}}', 'name', "string(20)", false);
             alterColumn('{{user_groups}}', 'description', "text", false);
 
         try {
-            $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
+            $this->db->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
         } catch (Exception $e) {
         }
         try {
@@ -218,7 +218,7 @@ class Update_145 extends DatabaseUpdateBase
 
             addColumn('{{surveys_languagesettings}}', 'surveyls_numberformat', "integer NOT NULL DEFAULT 0");
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{failed_login_attempts}}',
                 array(
                     'id' => "pk",

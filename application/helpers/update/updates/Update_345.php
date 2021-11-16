@@ -6,7 +6,7 @@ class Update_345 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $fruityConf = $oDB
+            $fruityConf = $this->db
                 ->createCommand()
                 ->select('*')
                 ->from('{{template_configuration}}')
@@ -15,7 +15,7 @@ class Update_345 extends DatabaseUpdateBase
         if ($fruityConf) {
             // Brute force way. Just have to hope noone changed the default
             // config yet.
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{template_configuration}}',
                 [
                     'files_css' => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
@@ -46,16 +46,16 @@ class Update_345 extends DatabaseUpdateBase
                 'packages_ltr' => null,
                 'packages_rtl' => null
             ];
-            $oDB->createCommand()->insert('{{template_configuration}}', $fruityConfData);
+            $this->db->createCommand()->insert('{{template_configuration}}', $fruityConfData);
         }
-            $bootswatchConf = $oDB
+            $bootswatchConf = $this->db
                 ->createCommand()
                 ->select('*')
                 ->from('{{template_configuration}}')
                 ->where('template_name=:template_name', ['template_name' => 'bootswatch'])
                 ->queryRow();
         if ($bootswatchConf) {
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{template_configuration}}',
                 [
                     'files_css' => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
@@ -86,7 +86,7 @@ class Update_345 extends DatabaseUpdateBase
                 'packages_ltr' => null,
                 'packages_rtl' => null
             ];
-            $oDB->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
+            $this->db->createCommand()->insert('{{template_configuration}}', $bootswatchConfData);
         }
     }
 }

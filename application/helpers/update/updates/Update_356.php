@@ -10,18 +10,18 @@ class Update_356 extends DatabaseUpdateBase
             case 'sqlsrv':
             case 'dblib':
             case 'mssql':
-                $oDB->createCommand("UPDATE {{boxes}} SET ico = 'icon-' + ico")->execute();
+                $this->db->createCommand("UPDATE {{boxes}} SET ico = 'icon-' + ico")->execute();
                 break;
             default:
-                $oDB->createCommand("UPDATE {{boxes}} SET ico = CONCAT('icon-', ico)")->execute();
+                $this->db->createCommand("UPDATE {{boxes}} SET ico = CONCAT('icon-', ico)")->execute();
                 break;
         }
             // Only change label box if it's there.
-            $labelBox = $oDB->createCommand(
+            $labelBox = $this->db->createCommand(
                 "SELECT * FROM {{boxes}} WHERE id = 5 AND position = 5 AND title = 'Label sets'"
             )->queryRow();
         if ($labelBox) {
-            $oDB
+            $this->db
                 ->createCommand()
                 ->update(
                     '{{boxes}}',

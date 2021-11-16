@@ -13,7 +13,7 @@ class Update_257 extends DatabaseUpdateBase
             default:
                 $sSubstringCommand = 'substring';
         }
-            $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
+            $this->db->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
         try {
             dropPrimaryKey('templates');
         } catch (Exception $e) {

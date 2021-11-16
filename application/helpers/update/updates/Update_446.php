@@ -7,7 +7,7 @@ class Update_446 extends DatabaseUpdateBase
     public function run()
     {
             // archived_table_settings
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{archived_table_settings}}',
                 [
                     'id' => "pk",
@@ -22,6 +22,6 @@ class Update_446 extends DatabaseUpdateBase
             );
             upgradeArchivedTableSettings446();
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
+            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 446), "stg_name='DBVersion'");
     }
 }

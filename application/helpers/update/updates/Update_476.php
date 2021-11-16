@@ -7,7 +7,7 @@ class Update_476 extends DatabaseUpdateBase
     public function run()
     {
             Yii::import('application.helpers.SurveyThemeHelper');
-            $templateConfigurations = $oDB->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
+            $templateConfigurations = $this->db->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
         if (!empty($templateConfigurations)) {
             foreach ($templateConfigurations as $templateConfiguration) {
                 $decodedOptions = json_decode($templateConfiguration['options'], true);
@@ -16,7 +16,7 @@ class Update_476 extends DatabaseUpdateBase
                         $value = SurveyThemeHelper::sanitizePathInOption($value, $templateConfiguration['template_name'], $templateConfiguration['sid']);
                     }
                     $sanitizedOptions = json_encode($decodedOptions);
-                    $oDB->createCommand()->update('{{template_configuration}}', ['options' => $sanitizedOptions], 'id=:id', [':id' => $templateConfiguration['id']]);
+                    $this->db->createCommand()->update('{{template_configuration}}', ['options' => $sanitizedOptions], 'id=:id', [':id' => $templateConfiguration['id']]);
                 }
             }
         }

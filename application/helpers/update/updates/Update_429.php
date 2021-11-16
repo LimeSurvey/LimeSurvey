@@ -6,9 +6,9 @@ class Update_429 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oTransaction = $oDB->beginTransaction();
-            extendDatafields429($oDB); // Do it again for people already using 4.x before this was introduced
-            $oDB->createCommand()->update(
+            $oTransaction = $this->db->beginTransaction();
+            extendDatafields429($this->db); // Do it again for people already using 4.x before this was introduced
+            $this->db->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => '',

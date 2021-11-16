@@ -6,16 +6,16 @@ class Update_338 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where(
+            $rowToRemove = $this->db->createCommand()->select("position, id")->from("{{boxes}}")->where(
                 'ico=:ico',
                 [':ico' => 'templates']
             )->queryRow();
             $position = 6;
         if ($rowToRemove !== false) {
-            $oDB->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
+            $this->db->createCommand()->delete("{{boxes}}", 'id=:id', [':id' => $rowToRemove['id']]);
             $position = $rowToRemove['position'];
         }
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{boxes}}",
                 [
                     'position' => $position,

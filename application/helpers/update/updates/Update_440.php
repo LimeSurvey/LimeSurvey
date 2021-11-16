@@ -6,6 +6,6 @@ class Update_440 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createIndex('sess_expire', '{{sessions}}', 'expire');
+            $this->db->createCommand()->createIndex('sess_expire', '{{sessions}}', 'expire');
     }
 }

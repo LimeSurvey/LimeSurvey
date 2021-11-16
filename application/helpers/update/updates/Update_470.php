@@ -7,7 +7,7 @@ class Update_470 extends DatabaseUpdateBase
     public function run()
     {
             // Add the new column to questions table
-            $oDB->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
+            $this->db->createCommand()->addColumn('{{questions}}', 'question_theme_name', 'string(150) NULL');
         switch (Yii::app()->db->driverName) {
             case 'sqlsrv':
             case 'dblib':
@@ -56,10 +56,10 @@ class Update_470 extends DatabaseUpdateBase
         }
 
             // Fill column from question_attributes when it's not null or 'core'
-            $oDB->createCommand($updateExtendedQuery)->execute();
+            $this->db->createCommand($updateExtendedQuery)->execute();
             // Fill null question_theme_name values using the proper theme name
-            $oDB->createCommand($updateCoreQuery)->execute();
+            $this->db->createCommand($updateCoreQuery)->execute();
             // Also update 'preselectquestiontheme' user settings where the value is 'core'
-            $oDB->createCommand($updateUserSettingsQuery)->execute();
+            $this->db->createCommand($updateUserSettingsQuery)->execute();
     }
 }

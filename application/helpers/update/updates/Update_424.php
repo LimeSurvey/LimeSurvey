@@ -10,15 +10,15 @@ class Update_424 extends DatabaseUpdateBase
                 function ($v) {
                     return $v['name'];
                 },
-                $oDB->createCommand('SELECT name FROM {{plugins}}')->queryAll()
+                $this->db->createCommand('SELECT name FROM {{plugins}}')->queryAll()
             );
             /**
              * @param string $name Name of plugin
              * @param int $active
              */
-            $insertPlugin = function ($name, $active = 0) use ($installedPlugins, $oDB) {
+            $insertPlugin = function ($name, $active = 0) use ($installedPlugins) {
                 if (!in_array($name, $installedPlugins)) {
-                    $oDB->createCommand()->insert(
+                    $this->db->createCommand()->insert(
                         "{{plugins}}",
                         [
                             'name' => $name,
@@ -30,7 +30,7 @@ class Update_424 extends DatabaseUpdateBase
                         ]
                     );
                 } else {
-                    $oDB->createCommand()->update(
+                    $this->db->createCommand()->update(
                         "{{plugins}}",
                         [
                             'plugin_type' => 'core',

@@ -9,7 +9,7 @@ class Update_442 extends DatabaseUpdateBase
             $questionTheme = new QuestionTheme();
             $questionsMetaData = $questionTheme->getAllQuestionMetaData(false, false, true)['available_themes'];
         foreach ($questionsMetaData as $questionMetaData) {
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{question_themes}}',
                 ['image_path' => $questionMetaData['image_path']],
                 "name = :name AND extends = :extends AND theme_type = :type",
@@ -20,7 +20,7 @@ class Update_442 extends DatabaseUpdateBase
                 ]
             );
         }
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{plugins}}",
                 [
                     'name' => 'TwoFactorAdminLogin',

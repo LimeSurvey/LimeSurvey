@@ -21,14 +21,14 @@ class Update_180 extends DatabaseUpdateBase
             );
 
             foreach ($aUsers as $oUser) {
-                $permissionExists = $oDB->createCommand()->select('id')->from("{{permissions}}")->where(
+                $permissionExists = $this->db->createCommand()->select('id')->from("{{permissions}}")->where(
                     "(permission='auth_db' OR permission='superadmin') and read_p=1 and entity='global' and uid=:uid",
                     [':uid' => $oUser->uid]
                 )->queryScalar();
                 if ($permissionExists == false) {
                     $newPermission = $aPerm;
                     $newPermission['uid'] = $oUser->uid;
-                    $oDB->createCommand()->insert("{{permissions}}", $newPermission);
+                    $this->db->createCommand()->insert("{{permissions}}", $newPermission);
                 }
             }
     }

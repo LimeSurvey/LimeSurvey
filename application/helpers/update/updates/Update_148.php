@@ -8,7 +8,7 @@ class Update_148 extends DatabaseUpdateBase
     {
             addColumn('{{users}}', 'participant_panel', "integer NOT NULL default 0");
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participants}}',
                 array(
                     'participant_id' => 'string(50) NOT NULL',
@@ -22,7 +22,7 @@ class Update_148 extends DatabaseUpdateBase
             );
             addPrimaryKey('participants', array('participant_id'));
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participant_attribute}}',
                 array(
                     'participant_id' => 'string(50) NOT NULL',
@@ -32,7 +32,7 @@ class Update_148 extends DatabaseUpdateBase
             );
             addPrimaryKey('participant_attribute', array('participant_id', 'attribute_id'));
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participant_attribute_names}}',
                 array(
                     'attribute_id' => 'autoincrement',
@@ -42,7 +42,7 @@ class Update_148 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participant_attribute_names_lang}}',
                 array(
                     'attribute_id' => 'integer NOT NULL',
@@ -52,7 +52,7 @@ class Update_148 extends DatabaseUpdateBase
             );
             addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participant_attribute_values}}',
                 array(
                     'attribute_id' => 'integer NOT NULL',
@@ -61,7 +61,7 @@ class Update_148 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{participant_shares}}',
                 array(
                     'participant_id' => 'string(50) NOT NULL',
@@ -72,7 +72,7 @@ class Update_148 extends DatabaseUpdateBase
             );
             addPrimaryKey('participant_shares', array('participant_id', 'share_uid'));
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{survey_links}}',
                 array(
                     'participant_id' => 'string(50) NOT NULL',

@@ -6,7 +6,7 @@ class Update_322 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{tutorials}}',
                 [
                     'tid' => 'pk',
@@ -18,7 +18,7 @@ class Update_322 extends DatabaseUpdateBase
                     'permission_grade' => 'string(128) NOT NULL'
                 ]
             );
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{tutorial_entries}}',
                 [
                     'teid' => 'pk',

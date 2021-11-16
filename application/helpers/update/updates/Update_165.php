@@ -6,7 +6,7 @@ class Update_165 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{plugins}}',
                 array(
                     'id' => 'pk',
@@ -14,7 +14,7 @@ class Update_165 extends DatabaseUpdateBase
                     'active' => 'boolean'
                 )
             );
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{plugin_settings}}',
                 array(
                     'id' => 'pk',

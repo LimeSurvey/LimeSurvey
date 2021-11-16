@@ -8,11 +8,11 @@ class Update_434 extends DatabaseUpdateBase
     {
             $defaultSetting = LsDefaultDataSets::getDefaultUserAdministrationSettings();
 
-            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'sendadmincreationemail']);
-            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailsubject']);
-            $oDB->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailtemplate']);
+            $this->db->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'sendadmincreationemail']);
+            $this->db->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailsubject']);
+            $this->db->createCommand()->delete('{{settings_global}}', 'stg_name=:name', [':name' => 'admincreationemailtemplate']);
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 '{{settings_global}}',
                 [
                     "stg_name" => 'sendadmincreationemail',
@@ -20,7 +20,7 @@ class Update_434 extends DatabaseUpdateBase
                 ]
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 '{{settings_global}}',
                 [
                     "stg_name" => 'admincreationemailsubject',
@@ -28,7 +28,7 @@ class Update_434 extends DatabaseUpdateBase
                 ]
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 '{{settings_global}}',
                 [
                     "stg_name" => 'admincreationemailtemplate',

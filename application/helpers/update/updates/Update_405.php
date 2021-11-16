@@ -6,7 +6,7 @@ class Update_405 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "
                 UPDATE
                     {{boxes}}

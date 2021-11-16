@@ -7,7 +7,7 @@ class Update_433 extends DatabaseUpdateBase
     public function run()
     {
             $aTableNames = dbGetTablesLike("tokens%");
-            $oDB = Yii::app()->getDb();
+            $this->db = Yii::app()->getDb();
         foreach ($aTableNames as $sTableName) {
             try {
                 setTransactionBookmark();
@@ -16,7 +16,7 @@ class Update_433 extends DatabaseUpdateBase
                     case 'mysqli':
                         try {
                             setTransactionBookmark();
-                            $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                            $this->db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
                         } catch (Exception $e) {
                             rollBackToTransactionBookmark();
                         }
@@ -24,7 +24,7 @@ class Update_433 extends DatabaseUpdateBase
                     case 'pgsql':
                         try {
                             setTransactionBookmark();
-                            $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
+                            $this->db->createCommand()->createIndex('idx_email', $sTableName, 'email', false);
                         } catch (Exception $e) {
                             rollBackToTransactionBookmark();
                         }

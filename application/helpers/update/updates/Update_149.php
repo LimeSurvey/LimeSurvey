@@ -13,6 +13,6 @@ class Update_149 extends DatabaseUpdateBase
                 'targetqid' => 'integer',
                 'targetsqid' => 'integer'
             );
-            $oDB->createCommand()->createTable('{{survey_url_parameters}}', $aFields);
+            $this->db->createCommand()->createTable('{{survey_url_parameters}}', $aFields);
     }
 }

@@ -9,7 +9,7 @@ class Update_157 extends DatabaseUpdateBase
             // MySQL DB corrections
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('questions_idx4', '{{questions}}');
+            $this->db->createCommand()->dropIndex('questions_idx4', '{{questions}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         }
@@ -126,37 +126,37 @@ class Update_157 extends DatabaseUpdateBase
             // Additional corrections for Postgres
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('questions_idx3', '{{questions}}', 'gid');
+            $this->db->createCommand()->createIndex('questions_idx3', '{{questions}}', 'gid');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid');
+            $this->db->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
+            $this->db->createCommand()->createIndex('questions_idx4', '{{questions}}', 'type');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
+            $this->db->createCommand()->dropIndex('user_in_groups_idx1', '{{user_in_groups}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('{{user_name_key}}', '{{users}}');
+            $this->db->createCommand()->dropIndex('{{user_name_key}}', '{{users}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('users_name', '{{users}}', 'users_name', true);
+            $this->db->createCommand()->createIndex('users_name', '{{users}}', 'users_name', true);
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
@@ -188,7 +188,7 @@ class Update_157 extends DatabaseUpdateBase
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->renameColumn('{{participant_shares}}', 'shared_uid', 'share_uid');
+            $this->db->createCommand()->renameColumn('{{participant_shares}}', 'shared_uid', 'share_uid');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
@@ -215,7 +215,7 @@ class Update_157 extends DatabaseUpdateBase
             // Sometimes the survey_links table was deleted before this step, if so
             // we recreate it (copied from line 663)
         if (!tableExists('{survey_links}')) {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{survey_links}}',
                 array(
                     'participant_id' => 'string(50) NOT NULL',
@@ -235,32 +235,32 @@ class Update_157 extends DatabaseUpdateBase
 
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('assessments_idx', '{{assessments}}');
+            $this->db->createCommand()->dropIndex('assessments_idx', '{{assessments}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid');
+            $this->db->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
 
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('ixcode', '{{labels}}');
+            $this->db->createCommand()->dropIndex('ixcode', '{{labels}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('{{labels_ixcode_idx}}', '{{labels}}');
+            $this->db->createCommand()->dropIndex('{{labels_ixcode_idx}}', '{{labels}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex('labels_code_idx', '{{labels}}', 'code');
+            $this->db->createCommand()->createIndex('labels_code_idx', '{{labels}}', 'code');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         };
@@ -269,13 +269,13 @@ class Update_157 extends DatabaseUpdateBase
         if (Yii::app()->db->driverName == 'pgsql') {
             try {
                 setTransactionBookmark();
-                $oDB->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;
+                $this->db->createCommand("ALTER TABLE ONLY {{user_groups}} ADD PRIMARY KEY (ugid); ")->execute;
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
             try {
                 setTransactionBookmark();
-                $oDB->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;
+                $this->db->createCommand("ALTER TABLE ONLY {{users}} ADD PRIMARY KEY (uid); ")->execute;
             } catch (Exception $e) {
                 rollBackToTransactionBookmark();
             };
@@ -328,7 +328,7 @@ class Update_157 extends DatabaseUpdateBase
             addColumn('{{users}}', 'one_time_pw', 'binary');
 
 
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{question_attributes}}',
                 array('value' => '1'),
                 "attribute = 'random_order' and value = '2'"

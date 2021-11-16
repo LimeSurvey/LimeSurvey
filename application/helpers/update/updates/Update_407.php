@@ -8,9 +8,9 @@ class Update_407 extends DatabaseUpdateBase
     {
             // defaultvalues
         if (Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')) {
-            $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
+            $this->db->createCommand()->dropTable('{{defaultvalue_l10ns}}');
         }
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{defaultvalue_l10ns}}',
                 array(
                     'id' => "pk",
@@ -20,22 +20,22 @@ class Update_407 extends DatabaseUpdateBase
                 ),
                 $options
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx1_defaultvalue_l10ns}}',
                 '{{defaultvalue_l10ns}}',
                 ['dvid', 'language'],
                 true
             );
         if (Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')) {
-            $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+            $this->db->createCommand()->dropTable('{{defaultvalues_update407}}');
         }
-            $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
+            $this->db->createCommand()->createIndex(
                 'defaultvalues_update407_idx_10',
                 '{{defaultvalues_update407}}',
                 ['qid', 'scale_id', 'sqid', 'specialtype', 'language']
             );
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{defaultvalues}}',
                 [
                     'dvid' => "pk",
@@ -47,20 +47,20 @@ class Update_407 extends DatabaseUpdateBase
                 $options
             );
             /* Get only survey->language */
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{defaultvalues}} (qid, sqid, scale_id, specialtype)
                 SELECT qid, sqid, scale_id, specialtype
                 FROM {{defaultvalues_update407}}
                 GROUP BY qid, sqid, scale_id, specialtype
                 "
             )->execute();
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx1_defaultvalue}}',
                 '{{defaultvalues}}',
                 ['qid', 'scale_id', 'sqid', 'specialtype'],
                 false
             );
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
                 SELECT {{defaultvalues}}.dvid, {{defaultvalues_update407}}.language, {{defaultvalues_update407}}.defaultvalue
                 FROM {{defaultvalues}}
@@ -68,6 +68,6 @@ class Update_407 extends DatabaseUpdateBase
                     ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id AND {{defaultvalues}}.specialtype = {{defaultvalues_update407}}.specialtype
                 "
             )->execute();
-            $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+            $this->db->createCommand()->dropTable('{{defaultvalues_update407}}');
     }
 }

@@ -6,7 +6,7 @@ class Update_259 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{notifications}}',
                 array(
                     'id' => 'pk',
@@ -21,7 +21,7 @@ class Update_259 extends DatabaseUpdateBase
                     'first_read' => 'datetime'
                 )
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{notif_index}}',
                 '{{notifications}}',
                 'entity, entity_id, status',

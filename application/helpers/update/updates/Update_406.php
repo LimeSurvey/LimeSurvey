@@ -7,8 +7,8 @@ class Update_406 extends DatabaseUpdateBase
     public function run()
     {
             // surveys
-            $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
+            $this->db->createCommand()->update(
                 '{{surveys}}',
                 array(
                     'tokenencryptionoptions' => json_encode(
@@ -19,23 +19,23 @@ class Update_406 extends DatabaseUpdateBase
             // participants
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}');
+            $this->db->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         }
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}');
+            $this->db->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         }
             alterColumn('{{participants}}', 'firstname', "text");
             alterColumn('{{participants}}', 'lastname', "text");
-            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL DEFAULT ''");
-            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL DEFAULT ''");
+            $this->db->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL DEFAULT ''");
+            $this->db->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL DEFAULT ''");
             $aCoreAttributes = array('firstname', 'lastname', 'email');
         foreach ($aCoreAttributes as $attribute) {
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 '{{participant_attribute_names}}',
                 array(
                     'attribute_type' => 'TB',
@@ -46,6 +46,6 @@ class Update_406 extends DatabaseUpdateBase
                 )
             );
         }
-            $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+            $this->db->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
     }
 }

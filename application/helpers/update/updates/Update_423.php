@@ -7,7 +7,7 @@ class Update_423 extends DatabaseUpdateBase
     public function run()
     {
             //update core themes api_version
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{templates}}',
                 array(
                     'api_version' => "3.0",
@@ -16,7 +16,7 @@ class Update_423 extends DatabaseUpdateBase
                 ),
                 "name='fruity'"
             );
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{templates}}',
                 array(
                     'api_version' => "3.0",
@@ -25,7 +25,7 @@ class Update_423 extends DatabaseUpdateBase
                 ),
                 "name='vanilla'"
             );
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{templates}}',
                 array(
                     'api_version' => "3.0",

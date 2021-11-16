@@ -20,10 +20,10 @@ class Update_416 extends DatabaseUpdateBase
             // encrypt bounceaccountpass value in db
             alterColumn('{{surveys}}', 'bounceaccountpass', "text", true, 'NULL');
             $sSurveyQuery = "SELECT * from {{surveys}} order by sid";
-            $aSurveys = $oDB->createCommand($sSurveyQuery)->queryAll();
+            $aSurveys = $this->db->createCommand($sSurveyQuery)->queryAll();
         foreach ($aSurveys as $aSurvey) {
             if (!empty($aSurvey['bounceaccountpass'])) {
-                $oDB->createCommand()->update(
+                $this->db->createCommand()->update(
                     '{{surveys}}',
                     [
                         'bounceaccountpass' => LSActiveRecord::encryptSingle(

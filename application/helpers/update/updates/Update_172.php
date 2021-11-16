@@ -16,18 +16,18 @@ class Update_172 extends DatabaseUpdateBase
             case 'mssql':
                 try {
                     setTransactionBookmark();
-                    $oDB->createCommand()->dropIndex('permissions_idx2', '{{permissions}}');
+                    $this->db->createCommand()->dropIndex('permissions_idx2', '{{permissions}}');
                 } catch (Exception $e) {
                     rollBackToTransactionBookmark();
                 };
                 try {
                     setTransactionBookmark();
-                    $oDB->createCommand()->dropIndex('idxPermissions', '{{permissions}}');
+                    $this->db->createCommand()->dropIndex('idxPermissions', '{{permissions}}');
                 } catch (Exception $e) {
                     rollBackToTransactionBookmark();
                 };
                 alterColumn('{{permissions}}', 'entity_id', "INTEGER", false);
-                $oDB->createCommand()->createIndex(
+                $this->db->createCommand()->createIndex(
                     'permissions_idx2',
                     '{{permissions}}',
                     'entity_id,entity,permission,uid',

@@ -17,6 +17,6 @@ class Update_136 extends DatabaseUpdateBase
                 'quotals_url' => 'string',
                 'quotals_urldescrip' => 'string',
             );
-            $oDB->createCommand()->createTable('{{quota_languagesettings}}', $aFields);
+            $this->db->createCommand()->createTable('{{quota_languagesettings}}', $aFields);
     }
 }

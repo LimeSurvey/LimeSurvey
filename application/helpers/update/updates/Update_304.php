@@ -6,6 +6,6 @@ class Update_304 extends DatabaseUpdateBase
 {
     public function run()
     {
-            upgradeTemplateTables304($oDB);
+            upgradeTemplateTables304($this->db);
     }
 }

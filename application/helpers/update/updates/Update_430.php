@@ -6,7 +6,7 @@ class Update_430 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{plugins}}",
                 [
                     'name' => 'ComfortUpdateChecker',

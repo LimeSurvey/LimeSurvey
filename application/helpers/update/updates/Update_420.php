@@ -6,7 +6,7 @@ class Update_420 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 "{{surveymenu_entries}}",
                 [
                     'name' => "listSurveyGroups",

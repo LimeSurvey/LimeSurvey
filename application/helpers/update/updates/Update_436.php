@@ -6,6 +6,6 @@ class Update_436 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->update('{{boxes}}', array('url' => 'themeOptions'), "url='admin/themeoptions'");
+            $this->db->createCommand()->update('{{boxes}}', array('url' => 'themeOptions'), "url='admin/themeoptions'");
     }
 }

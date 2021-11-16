@@ -15,6 +15,6 @@ class Update_444 extends DatabaseUpdateBase
                             GROUP BY t.template_name, t.sid, t.gsid, t.uid
                     ) x
                 )";
-            $oDB->createCommand($deleteQuery)->execute();
+            $this->db->createCommand($deleteQuery)->execute();
     }
 }

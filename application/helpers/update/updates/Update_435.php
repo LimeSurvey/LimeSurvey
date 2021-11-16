@@ -7,7 +7,7 @@ class Update_435 extends DatabaseUpdateBase
     public function run()
     {
             // Check if default survey groups exists - at some point it was possible to delete it
-            $defaultSurveyGroupExists = $oDB->createCommand()
+            $defaultSurveyGroupExists = $this->db->createCommand()
             ->select('gsid')
             ->from("{{surveys_groups}}")
             ->where('gsid = 1')
@@ -15,7 +15,7 @@ class Update_435 extends DatabaseUpdateBase
         if ($defaultSurveyGroupExists == false) {
             // Add missing default template
             $date = date("Y-m-d H:i:s");
-            $oDB->createCommand()->insert('{{surveys_groups}}', array(
+            $this->db->createCommand()->insert('{{surveys_groups}}', array(
                 'gsid'        => 1,
                 'name'        => 'default',
                 'title'       => 'Default',
@@ -27,14 +27,14 @@ class Update_435 extends DatabaseUpdateBase
                 'created_by'  => '1'
             ));
         }
-            $oDB->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->addColumn('{{surveys_groups}}', 'alwaysavailable', "boolean NULL");
+            $this->db->createCommand()->update(
                 '{{surveys_groups}}',
                 array(
                     'alwaysavailable' => '0',
                 )
             );
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{surveys_groups}}',
                 array(
                     'alwaysavailable' => '0',

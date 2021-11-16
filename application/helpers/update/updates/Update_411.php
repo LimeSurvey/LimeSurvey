@@ -6,6 +6,6 @@ class Update_411 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->addColumn('{{plugins}}', 'priority', "int NOT NULL default 0");
+            $this->db->createCommand()->addColumn('{{plugins}}', 'priority', "int NOT NULL default 0");
     }
 }

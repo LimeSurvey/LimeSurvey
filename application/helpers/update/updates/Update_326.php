@@ -6,6 +6,6 @@ class Update_326 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->alterColumn('{{surveys}}', 'datecreated', 'datetime');
+            $this->db->createCommand()->alterColumn('{{surveys}}', 'datecreated', 'datetime');
     }
 }

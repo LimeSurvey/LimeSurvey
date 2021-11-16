@@ -12,6 +12,6 @@ class Update_261 extends DatabaseUpdateBase
             * @author Olle Haerstedt
             */
             addColumn('{{notifications}}', 'hash', 'string(64)');
-            $oDB->createCommand()->createIndex('{{notif_hash_index}}', '{{notifications}}', 'hash', false);
+            $this->db->createCommand()->createIndex('{{notif_hash_index}}', '{{notifications}}', 'hash', false);
     }
 }

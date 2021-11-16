@@ -21,7 +21,7 @@ class Update_143 extends DatabaseUpdateBase
                 'specialtype' => "string(20) NOT NULL default ''",
                 'defaultvalue' => 'text',
             );
-            $oDB->createCommand()->createTable('{{defaultvalues}}', $aFields);
+            $this->db->createCommand()->createTable('{{defaultvalues}}', $aFields);
             addPrimaryKey('defaultvalues', array('qid', 'specialtype', 'language', 'scale_id', 'sqid'));
 
             // -Move all 'answers' that are subquestions to the questions table
@@ -42,10 +42,10 @@ class Update_143 extends DatabaseUpdateBase
                 'modified' => "datetime NOT NULL",
                 'sessdata' => 'text'
             );
-            $oDB->createCommand()->createTable('{{sessions}}', $aFields);
+            $this->db->createCommand()->createTable('{{sessions}}', $aFields);
             addPrimaryKey('sessions', array('sesskey'));
-            $oDB->createCommand()->createIndex('sess2_expiry', '{{sessions}}', 'expiry');
-            $oDB->createCommand()->createIndex('sess2_expireref', '{{sessions}}', 'expireref');
+            $this->db->createCommand()->createIndex('sess2_expiry', '{{sessions}}', 'expiry');
+            $this->db->createCommand()->createIndex('sess2_expireref', '{{sessions}}', 'expireref');
             // Move all user templates to the new user template directory
             echo "<br>" . sprintf(
                 gT("Moving user templates to new location at %s..."),

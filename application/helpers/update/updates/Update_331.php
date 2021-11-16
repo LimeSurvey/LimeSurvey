@@ -6,6 +6,6 @@ class Update_331 extends DatabaseUpdateBase
 {
     public function run()
     {
-            upgrade331($oDB);
+            upgrade331($this->db);
     }
 }

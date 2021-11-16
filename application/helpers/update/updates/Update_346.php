@@ -6,9 +6,9 @@ class Update_346 extends DatabaseUpdateBase
 {
     public function run()
     {
-            createSurveyMenuTable($oDB);
-            $oDB->createCommand()->truncateTable('{{tutorials}}');
-            $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
-            $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
+            createSurveyMenuTable($this->db);
+            $this->db->createCommand()->truncateTable('{{tutorials}}');
+            $this->db->createCommand()->truncateTable('{{tutorial_entries}}');
+            $this->db->createCommand()->truncateTable('{{tutorial_entry_relation}}');
     }
 }

@@ -8,7 +8,7 @@ class Update_427 extends DatabaseUpdateBase
     {
 
             // Menu Link needs to be updated, cause we will revert the filemanager and enable the older one.
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{surveymenu_entries}}',
                 array(
                     'menu_link' => '',

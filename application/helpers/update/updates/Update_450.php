@@ -7,16 +7,16 @@ class Update_450 extends DatabaseUpdateBase
     public function run()
     {
 
-            $oDB->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
+            $this->db->createCommand()->addColumn('{{archived_table_settings}}', 'attributes', 'text NULL');
             $archivedTableSettings = Yii::app()->db->createCommand("SELECT * FROM {{archived_table_settings}}")->queryAll();
         foreach ($archivedTableSettings as $archivedTableSetting) {
             if ($archivedTableSetting['tbl_type'] === 'token') {
-                $oDB->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
+                $this->db->createCommand()->update('{{archived_table_settings}}', ['attributes' => json_encode(['unknown'])], 'id = :id', ['id' => $archivedTableSetting['id']]);
             }
         }
             // When encryptionkeypair is empty, encryption was never used (user comes from LS3), so it's safe to skip this udpate.
         if (!empty(Yii::app()->getConfig('encryptionkeypair'))) {
-            updateEncryptedValues450($oDB);
+            updateEncryptedValues450($this->db);
         }
     }
 }

@@ -10,7 +10,7 @@ class Update_355 extends DatabaseUpdateBase
             $aIdMap = [];
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
         foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
-            $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
+            $aIdMap[$aSurveymenu['name']] = $this->db->createCommand()
                 ->select(['id'])
                 ->from('{{surveymenu}}')
                 ->where('name=:name', [':name' => $aSurveymenu['name']])
@@ -19,7 +19,7 @@ class Update_355 extends DatabaseUpdateBase
 
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
         foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
-            $oDB->createCommand()->delete(
+            $this->db->createCommand()->delete(
                 '{{surveymenu_entries}}',
                 'name=:name',
                 [':name' => $aSurveymenuentry['name']]
@@ -38,7 +38,7 @@ class Update_355 extends DatabaseUpdateBase
                     $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu'];
                     break;
             }
-            $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
         }
     }
 }

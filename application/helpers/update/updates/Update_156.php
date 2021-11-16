@@ -7,11 +7,11 @@ class Update_156 extends DatabaseUpdateBase
     public function run()
     {
         try {
-            $oDB->createCommand()->dropTable('{{survey_url_parameters}}');
+            $this->db->createCommand()->dropTable('{{survey_url_parameters}}');
         } catch (Exception $e) {
             // do nothing
         }
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{survey_url_parameters}}',
                 array(
                     'id' => 'pk',
@@ -23,12 +23,12 @@ class Update_156 extends DatabaseUpdateBase
             );
 
         try {
-            $oDB->createCommand()->dropTable('{{sessions}}');
+            $this->db->createCommand()->dropTable('{{sessions}}');
         } catch (Exception $e) {
             // do nothing
         }
         if (Yii::app()->db->driverName == 'mysql') {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{sessions}}',
                 array(
                     'id' => 'string(32) NOT NULL',
@@ -37,7 +37,7 @@ class Update_156 extends DatabaseUpdateBase
                 )
             );
         } else {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{sessions}}',
                 array(
                     'id' => 'string(32) NOT NULL',
@@ -55,9 +55,9 @@ class Update_156 extends DatabaseUpdateBase
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
             $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
-            $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+            $oSurveyResult = $this->db->createCommand($sSurveyQuery)->queryAll();
         foreach ($oSurveyResult as $row) {
-            $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
+            $this->db->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
         }
     }
 }

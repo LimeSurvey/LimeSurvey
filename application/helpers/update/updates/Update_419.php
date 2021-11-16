@@ -6,7 +6,7 @@ class Update_419 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 "{{permissiontemplates}}",
                 [
                     'ptid' => "pk",
@@ -18,9 +18,9 @@ class Update_419 extends DatabaseUpdateBase
                 ]
             );
 
-            $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
+            $this->db->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{user_in_permissionrole}}',
                 array(
                     'ptid' => "integer NOT NULL",
@@ -29,7 +29,7 @@ class Update_419 extends DatabaseUpdateBase
                 $options
             );
 
-            $oDB->createCommand()->addPrimaryKey(
+            $this->db->createCommand()->addPrimaryKey(
                 '{{user_in_permissionrole_pk}}',
                 '{{user_in_permissionrole}}',
                 ['ptid', 'uid']

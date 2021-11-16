@@ -7,7 +7,7 @@ class Update_415 extends DatabaseUpdateBase
     public function run()
     {
 
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{surveymenu_entries}}',
                 [
                     "menu_link" => "admin/filemanager",

@@ -6,17 +6,17 @@ class Update_166 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
+            $this->db->createCommand()->renameTable('{{survey_permissions}}', '{{permissions}}');
             dropPrimaryKey('permissions');
             alterColumn('{{permissions}}', 'permission', "string(100)", false);
-            $oDB->createCommand()->renameColumn('{{permissions}}', 'sid', 'entity_id');
+            $this->db->createCommand()->renameColumn('{{permissions}}', 'sid', 'entity_id');
             alterColumn('{{permissions}}', 'entity_id', "string(100)", false);
             addColumn('{{permissions}}', 'entity', "string(50)");
-            $oDB->createCommand("update {{permissions}} set entity='survey'")->query();
+            $this->db->createCommand("update {{permissions}} set entity='survey'")->query();
             addColumn('{{permissions}}', 'id', 'pk');
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 'idxPermissions',
                 '{{permissions}}',
                 'entity_id,entity,permission,uid',
@@ -34,6 +34,6 @@ class Update_166 extends DatabaseUpdateBase
             dropColumn('{{users}}', 'manage_template');
             dropColumn('{{users}}', 'manage_label');
             dropColumn('{{users}}', 'participant_panel');
-            $oDB->createCommand()->dropTable('{{templates_rights}}');
+            $this->db->createCommand()->dropTable('{{templates_rights}}');
     }
 }

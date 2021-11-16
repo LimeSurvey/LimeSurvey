@@ -7,7 +7,7 @@ class Update_428 extends DatabaseUpdateBase
     public function run()
     {
             // Update vanilla config
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{template_configuration}}',
                 [
                     'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',
@@ -15,7 +15,7 @@ class Update_428 extends DatabaseUpdateBase
                 "template_name = 'vanilla' AND files_css != 'inherit'"
             );
             // Update bootswatch config
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{template_configuration}}',
                 [
                     'files_css' => '{"add":["css/base.css","css/theme.css","css/custom.css","css/noTablesOnMobile.css"]}',

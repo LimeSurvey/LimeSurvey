@@ -6,6 +6,6 @@ class Update_443 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->renameColumn('{{users}}', 'lastLogin', 'last_login');
+            $this->db->createCommand()->renameColumn('{{users}}', 'lastLogin', 'last_login');
     }
 }

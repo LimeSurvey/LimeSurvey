@@ -6,6 +6,6 @@ class Update_154 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->addColumn('{{groups}}', 'grelevance', "text");
+            $this->db->createCommand()->addColumn('{{groups}}', 'grelevance', "text");
     }
 }

@@ -10,7 +10,7 @@ class Update_155 extends DatabaseUpdateBase
             addColumn('{{surveys}}', 'googleanalyticsapikey', "string(25)");
         try {
             setTransactionBookmark();
-            $oDB->createCommand()->renameColumn('{{surveys}}', 'showXquestions', 'showxquestions');
+            $this->db->createCommand()->renameColumn('{{surveys}}', 'showXquestions', 'showxquestions');
         } catch (Exception $e) {
             rollBackToTransactionBookmark();
         }

@@ -9,7 +9,7 @@ class Update_473 extends DatabaseUpdateBase
             $dir = new DirectoryIterator(APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'plugins');
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
-                $plugin = $oDB->createCommand()
+                $plugin = $this->db->createCommand()
                     ->select('*')
                     ->from('{{plugins}}')
                     ->where("name = :name", [':name' => $fileinfo->getFilename()])
@@ -17,7 +17,7 @@ class Update_473 extends DatabaseUpdateBase
 
                 if (!empty($plugin)) {
                     if ($plugin['plugin_type'] !== 'core') {
-                        $oDB->createCommand()->update(
+                        $this->db->createCommand()->update(
                             '{{plugins}}',
                             ['plugin_type' => 'core'],
                             'name = :name',

@@ -9,28 +9,28 @@ class Update_354 extends DatabaseUpdateBase
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
 
         if (!isset($surveymenuTable->columns['showincollapse'])) {
-            $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
+            $this->db->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
         }
 
             $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
         if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
-            $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            $this->db->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
         }
 
             $aIdMap = [];
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             switchMSSQLIdentityInsert('surveymenu', true);
         foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
-            $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
-            $oDB->createCommand()->delete('{{surveymenu}}', 'id=:id', [':id' => $aSurveymenu['id']]);
-            $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+            $this->db->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+            $this->db->createCommand()->delete('{{surveymenu}}', 'id=:id', [':id' => $aSurveymenu['id']]);
+            $this->db->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
             $aIdMap[$aSurveymenu['name']] = $aSurveymenu['id'];
         }
             switchMSSQLIdentityInsert('surveymenu', false);
 
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
         foreach ($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
-            $oDB->createCommand()->delete(
+            $this->db->createCommand()->delete(
                 '{{surveymenu_entries}}',
                 'name=:name',
                 [':name' => $aSurveymenuentry['name']]
@@ -49,7 +49,7 @@ class Update_354 extends DatabaseUpdateBase
                     $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu'];
                     break;
             }
-            $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            $this->db->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
         }
             unset($aDefaultSurveyMenuEntries);
     }

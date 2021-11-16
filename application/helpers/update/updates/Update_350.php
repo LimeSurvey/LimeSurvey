@@ -6,7 +6,7 @@ class Update_350 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{asset_version}}',
                 array(
                     'id' => 'pk',

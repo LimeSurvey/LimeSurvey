@@ -15,14 +15,14 @@ class Update_400 extends DatabaseUpdateBase
         }
 
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
-            $oTransaction = $oDB->beginTransaction();
+            $oTransaction = $this->db->beginTransaction();
 
             // Question table
             /* l10ns question table */
         if (Yii::app()->db->schema->getTable('{{question_l10ns}}')) {
-            $oDB->createCommand()->dropTable('{{question_l10ns}}');
+            $this->db->createCommand()->dropTable('{{question_l10ns}}');
         }
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{question_l10ns}}',
                 array(
                     'id' => "pk",
@@ -33,21 +33,21 @@ class Update_400 extends DatabaseUpdateBase
                 ),
                 $options
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx1_question_l10ns}}',
                 '{{question_l10ns}}',
                 ['qid', 'language'],
                 true
             );
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}"
             )->execute();
             /* questions by rename/insert */
         if (Yii::app()->db->schema->getTable('{{questions_update400}}')) {
-            $oDB->createCommand()->dropTable('{{questions_update400}}');
+            $this->db->createCommand()->dropTable('{{questions_update400}}');
         }
-            $oDB->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
+            $this->db->createCommand()->createTable(
                 '{{questions}}',
                 array(
                     'qid' => "pk",
@@ -69,7 +69,7 @@ class Update_400 extends DatabaseUpdateBase
                 $options
             );
             switchMSSQLIdentityInsert('questions', true); // Untested
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{questions}}
                 (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
                 SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
@@ -78,18 +78,18 @@ class Update_400 extends DatabaseUpdateBase
                 "
             )->execute();
             switchMSSQLIdentityInsert('questions', false); // Untested
-            $oDB->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
-            $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
-            $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
-            $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
-            $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
-            $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
+            $this->db->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
+            $this->db->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+            $this->db->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+            $this->db->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+            $this->db->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+            $this->db->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
             // Groups table
         if (Yii::app()->db->schema->getTable('{{group_l10ns}}')) {
-            $oDB->createCommand()->dropTable('{{group_l10ns}}');
+            $this->db->createCommand()->dropTable('{{group_l10ns}}');
         }
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{group_l10ns}}',
                 array(
                     'id' => "pk",
@@ -100,19 +100,19 @@ class Update_400 extends DatabaseUpdateBase
                 ),
                 $options
             );
-            $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+            $this->db->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
             $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
-            $oDB->createCommand(
+            $this->db->createCommand(
                 sprintf(
                     "INSERT INTO {{group_l10ns}} (gid, group_name, description, language) SELECT gid, group_name, description, language FROM %s",
                     $quotedGroups
                 )
             )->execute();
         if (Yii::app()->db->schema->getTable('{{groups_update400}}')) {
-            $oDB->createCommand()->dropTable('{{groups_update400}}');
+            $this->db->createCommand()->dropTable('{{groups_update400}}');
         }
-            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
+            $this->db->createCommand()->createTable(
                 '{{groups}}',
                 array(
                     'gid' => "pk",
@@ -124,7 +124,7 @@ class Update_400 extends DatabaseUpdateBase
                 $options
             );
             switchMSSQLIdentityInsert('groups', true); // Untested
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO " . $quotedGroups . "
                 (gid, sid, group_order, randomization_group, grelevance)
                 SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
@@ -133,14 +133,14 @@ class Update_400 extends DatabaseUpdateBase
                 "
             )->execute();
             switchMSSQLIdentityInsert('groups', false); // Untested
-            $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
-            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+            $this->db->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
+            $this->db->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
 
             // Answers table
         if (Yii::app()->db->schema->getTable('{{answer_l10ns}}')) {
-            $oDB->createCommand()->dropTable('{{answer_l10ns}}');
+            $this->db->createCommand()->dropTable('{{answer_l10ns}}');
         }
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{answer_l10ns}}',
                 array(
                     'id' => "pk",
@@ -150,14 +150,14 @@ class Update_400 extends DatabaseUpdateBase
                 ),
                 $options
             );
-            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+            $this->db->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             /* Renaming old without pk answers */
         if (Yii::app()->db->schema->getTable('{{answers_update400}}')) {
-            $oDB->createCommand()->dropTable('{{answers_update400}}');
+            $this->db->createCommand()->dropTable('{{answers_update400}}');
         }
-            $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
+            $this->db->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
             /* Create new answers with pk and copy answers_update400 Grouping by unique part */
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{answers}}',
                 [
                     'aid' => 'pk',
@@ -169,13 +169,13 @@ class Update_400 extends DatabaseUpdateBase
                 ],
                 $options
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 'answer_update400_idx_10',
                 '{{answers_update400}}',
                 ['qid', 'code', 'scale_id']
             );
             /* No pk in insert */
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{answers}}
                 (qid, code, sortorder, assessment_value, scale_id)
                 SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
@@ -185,7 +185,7 @@ class Update_400 extends DatabaseUpdateBase
                 "
             )->execute();
             /* no pk in insert, get aid by INNER join */
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{answer_l10ns}}
                 (aid, answer, language)
                 SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
@@ -195,13 +195,13 @@ class Update_400 extends DatabaseUpdateBase
             "
             )->execute();
 
-            $oDB->createCommand()->dropTable('{{answers_update400}}');
-            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
-            $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
+            $this->db->createCommand()->dropTable('{{answers_update400}}');
+            $this->db->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $this->db->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
             // Apply integrity fix before starting label set update.
             // List of label set ids which contain code duplicates.
-            $lids = $oDB->createCommand(
+            $lids = $this->db->createCommand(
                 "SELECT {{labels}}.lid AS lid
                 FROM {{labels}}
                 GROUP BY {{labels}}.lid, {{labels}}.language
@@ -213,13 +213,13 @@ class Update_400 extends DatabaseUpdateBase
 
             // Labels table
         if (Yii::app()->db->schema->getTable('{{label_l10ns}}')) {
-            $oDB->createCommand()->dropTable('{{label_l10ns}}');
+            $this->db->createCommand()->dropTable('{{label_l10ns}}');
         }
         if (Yii::app()->db->schema->getTable('{{labels_update400}}')) {
-            $oDB->createCommand()->dropTable('{{labels_update400}}');
+            $this->db->createCommand()->dropTable('{{labels_update400}}');
         }
-            $oDB->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
+            $this->db->createCommand()->createTable(
                 '{{labels}}',
                 [
                     'id' => "pk",
@@ -232,14 +232,14 @@ class Update_400 extends DatabaseUpdateBase
             );
             /* The previous id is broken and can not be used, create a new one */
             /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
-            $oDB->createCommand(
+            $this->db->createCommand(
                 "INSERT INTO {{labels}}
                 (lid, code, sortorder, assessment_value)
                 SELECT lid, code, min(sortorder), min(assessment_value)
                 FROM {{labels_update400}}
                 GROUP BY lid, code"
             )->execute();
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{label_l10ns}}',
                 array(
                     'id' => "pk",
@@ -249,15 +249,15 @@ class Update_400 extends DatabaseUpdateBase
                 ),
                 $options
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx1_label_l10ns}}',
                 '{{label_l10ns}}',
                 ['label_id', 'language'],
                 true
             );
             // Remove invalid labels, otherwise update will fail because of index duplicates in the next query
-            $oDB->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
-            $oDB->createCommand(
+            $this->db->createCommand("delete from {{labels_update400}} WHERE code=''")->execute();
+            $this->db->createCommand(
                 "INSERT INTO {{label_l10ns}}
                 (label_id, title, language)
                 SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
@@ -265,7 +265,7 @@ class Update_400 extends DatabaseUpdateBase
                     INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
                 "
             )->execute();
-            $oDB->createCommand()->dropTable('{{labels_update400}}');
+            $this->db->createCommand()->dropTable('{{labels_update400}}');
 
             // Extend language field on labelsets
             alterColumn('{{labelsets}}', 'languages', "string(255)", false);
@@ -276,6 +276,6 @@ class Update_400 extends DatabaseUpdateBase
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
+            $this->db->createCommand()->update('{{settings_global}}', array('stg_value' => 400), "stg_name='DBVersion'");
     }
 }

@@ -8,7 +8,7 @@ class Update_477 extends DatabaseUpdateBase
     {
 
             // refactored controller ResponsesController (surveymenu_entry link changes to new controller rout)
-            $oDB->createCommand()->update(
+            $this->db->createCommand()->update(
                 '{{surveymenu_entries}}',
                 [
                     'menu_link' => 'responses/browse',

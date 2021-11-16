@@ -7,17 +7,17 @@ class Update_363 extends DatabaseUpdateBase
     public function run()
     {
             $aTableNames = dbGetTablesLike("tokens%");
-            $oDB = Yii::app()->getDb();
+            $this->db = Yii::app()->getDb();
         foreach ($aTableNames as $sTableName) {
             try {
                 setTransactionBookmark();
                 switch (Yii::app()->db->driverName) {
                     case 'mysql':
                     case 'mysqli':
-                        $oDB->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
+                        $this->db->createCommand()->createIndex('idx_email', $sTableName, 'email(30)', false);
                         break;
                     case 'pgsql':
-                        $oDB->createCommand()->createIndex(
+                        $this->db->createCommand()->createIndex(
                             'idx_email_' . substr($sTableName, 7) . '_' . rand(1, 50000),
                             $sTableName,
                             'email',

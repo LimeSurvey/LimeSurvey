@@ -6,11 +6,11 @@ class Update_325 extends DatabaseUpdateBase
 {
     public function run()
     {
-            $oDB->createCommand()->dropTable('{{templates}}');
-            $oDB->createCommand()->dropTable('{{template_configuration}}');
+            $this->db->createCommand()->dropTable('{{templates}}');
+            $this->db->createCommand()->dropTable('{{template_configuration}}');
 
             // templates
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{templates}}',
                 array(
                     'id' => "pk",
@@ -34,10 +34,10 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->createIndex('{{idx1_templates}}', '{{templates}}', 'name', false);
-            $oDB->createCommand()->createIndex('{{idx2_templates}}', '{{templates}}', 'title', false);
-            $oDB->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
-            $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
+            $this->db->createCommand()->createIndex('{{idx1_templates}}', '{{templates}}', 'name', false);
+            $this->db->createCommand()->createIndex('{{idx2_templates}}', '{{templates}}', 'title', false);
+            $this->db->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
+            $this->db->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
 
             $headerArray = [
                 'name',
@@ -58,7 +58,7 @@ class Update_325 extends DatabaseUpdateBase
                 'owner_id',
                 'extends'
             ];
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{templates}}",
                 array_combine(
                     $headerArray,
@@ -84,7 +84,7 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{templates}}",
                 array_combine(
                     $headerArray,
@@ -110,7 +110,7 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{templates}}",
                 array_combine(
                     $headerArray,
@@ -138,7 +138,7 @@ class Update_325 extends DatabaseUpdateBase
 
 
             // template_configuration
-            $oDB->createCommand()->createTable(
+            $this->db->createCommand()->createTable(
                 '{{template_configuration}}',
                 array(
                     'id' => "pk",
@@ -159,25 +159,25 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx1_template_configuration}}',
                 '{{template_configuration}}',
                 'template_name',
                 false
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx2_template_configuration}}',
                 '{{template_configuration}}',
                 'sid',
                 false
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx3_template_configuration}}',
                 '{{template_configuration}}',
                 'gsid',
                 false
             );
-            $oDB->createCommand()->createIndex(
+            $this->db->createCommand()->createIndex(
                 '{{idx4_template_configuration}}',
                 '{{template_configuration}}',
                 'uid',
@@ -200,7 +200,7 @@ class Update_325 extends DatabaseUpdateBase
                 'packages_ltr',
                 'packages_rtl'
             ];
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{template_configuration}}",
                 array_combine(
                     $headerArray,
@@ -223,7 +223,7 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{template_configuration}}",
                 array_combine(
                     $headerArray,
@@ -246,7 +246,7 @@ class Update_325 extends DatabaseUpdateBase
                 )
             );
 
-            $oDB->createCommand()->insert(
+            $this->db->createCommand()->insert(
                 "{{template_configuration}}",
                 array_combine(
                     $headerArray,
