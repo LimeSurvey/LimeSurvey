@@ -18,7 +18,7 @@ abstract class DatabaseUpdateBase
     {
         $this->db = $connection;
         // Database version is part of class and file name, e.g. Update_123.
-        $this->newVersion = $this->getVersionFromClass($this);
+        $this->newVersion = $this->getVersion();
     }
 
     /**
@@ -53,14 +53,13 @@ abstract class DatabaseUpdateBase
     }
 
     /**
-     * @param object $that
      * @return int
      */
-    private function getVersionFromClass($that)
+    public function getVersion()
     {
         $nameParts = explode(
             '_',
-            (new \ReflectionClass($that))->getShortName()
+            (new \ReflectionClass($this))->getShortName()
         );
         if (count($nameParts) !== 2) {
             throw new Exception('Expected exactly two name parts');
