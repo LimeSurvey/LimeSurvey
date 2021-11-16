@@ -9,8 +9,8 @@ class Update_476 extends DatabaseUpdateBase
 {
     public function up()
     {
-            \Yii::import('application.helpers.SurveyThemeHelper');
-            $templateConfigurations = $this->db->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
+        Yii::import('application.helpers.SurveyThemeHelper');
+        $templateConfigurations = $this->db->createCommand()->select(['id', 'template_name', 'sid', 'options'])->from('{{template_configuration}}')->queryAll();
         if (!empty($templateConfigurations)) {
             foreach ($templateConfigurations as $templateConfiguration) {
                 $decodedOptions = json_decode($templateConfiguration['options'], true);

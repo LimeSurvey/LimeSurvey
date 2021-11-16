@@ -18,12 +18,12 @@ abstract class DatabaseUpdateBase
     /** @var int */
     protected $newVersion;
 
-    /** @var string Specific database options like ENGINE=INNODB etc */
+    /** @var string */
     protected $options;
 
     /**
      * @param CDbConnection $connection
-     * @param string $options
+     * @param string $options Specific database options like ENGINE=INNODB etc
      */
     public function __construct(CDbConnection $connection, $options)
     {
@@ -35,9 +35,10 @@ abstract class DatabaseUpdateBase
 
     /**
      * Runs up() wrapped in a transaction.
-     * Returns true at success; otherwise the exception object
+     * Will rollback transaction and re-throw exception at failure.
      *
-     * @return true|Throwable
+     * @return void
+     * @throws Throwable
      */
     public function safeUp()
     {
@@ -46,10 +47,9 @@ abstract class DatabaseUpdateBase
             $this->up();
             $this->updateVersion();
             $transaction->commit();
-            return true;
         } catch (Throwable $e) {
             $transaction->rollback();
-            return $e;
+            throw $e;
         }
     }
 
@@ -65,6 +65,8 @@ abstract class DatabaseUpdateBase
     }
 
     /**
+     * Get db version number based on class name, e.g. 123 for Update_123
+     *
      * @return int
      */
     public function getVersion()
@@ -79,5 +81,8 @@ abstract class DatabaseUpdateBase
         return (int) $nameParts[1];
     }
 
+    /**
+     * This is the function that must be implemented by the child classes.
+     */
     abstract public function up();
 }
