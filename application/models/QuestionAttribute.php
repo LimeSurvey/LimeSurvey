@@ -379,6 +379,7 @@ class QuestionAttribute extends LSActiveRecord
             "readonly" => false,
             "readonly_when_active" => false,
             "expression" => null,
+            "xssfilter" => true,
         );
     }
 
