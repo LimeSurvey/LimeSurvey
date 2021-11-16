@@ -161,29 +161,41 @@ class SaveQuestionAttributesTest extends TestBaseClassWeb
 
         $urlMan = \Yii::app()->urlManager;
         $web = self::$webDriver;
+        
+        try {
+            // Go to plugin manager page
+            $url = $urlMan->createUrl('admin/pluginmanager/sa/index');
+            $web->get($url);
 
-        // Go to plugin manager page
-        $url = $urlMan->createUrl('admin/pluginmanager/sa/index');
-        $web->get($url);
+            $button = $this->waitForElementShim($web, '[data-target="#installPluginZipModal"]');
+            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-target="#installPluginZipModal"]')));
+            $button->click();
 
-        $button = $this->waitForElementShim($web, '[data-target="#installPluginZipModal"]');
-        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[data-target="#installPluginZipModal"]')));
-        $button->click();
+            // Upload the file
+            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
+            $fileInput = $web->findByCss('#installPluginZipModal #the_file');
+            $fileInput->setFileDetector(new LocalFileDetector());
+            $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
+            $this->assertTrue(file_exists($file));
+            $fileInput->sendKeys($file)->submit();
 
-        // Upload the file
-        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('#installPluginZipModal #the_file')));
-        $fileInput = $web->findByCss('#installPluginZipModal #the_file');
-        $fileInput->setFileDetector(new LocalFileDetector());
-        $file = BASEPATH . '../tests/data/file_upload/NewQuestionAttributesPlugin.zip';
-        $this->assertTrue(file_exists($file));
-        $fileInput->sendKeys($file)->submit();
+            $button = $this->waitForElementShim($web, '[type="submit"][value="Install"]');
+            $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[type="submit"][value="Install"]')));
+            $button = $web->findByCss('[type="submit"][value="Install"]');
+            $button->click();
 
-        $button = $this->waitForElementShim($web, '[type="submit"][value="Install"]', 20);
-        $web->wait(10)->until(WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('[type="submit"][value="Install"]')));
-        $button = $web->findByCss('[type="submit"][value="Install"]');
-        $button->click();
+            sleep(2);
+        } catch (\Facebook\WebDriver\Exception\NoSuchElementException $ex) {
+            // Dump for debugging.
+            $web->dumpBody();
 
-        sleep(2);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL
+                .  'Screenshot taken.' . PHP_EOL
+                .  self::$testHelper->javaTrace($ex)
+            );
+        }
 
         // Check result in database
         $plugin = \Plugin::model()->findByAttributes(['name' => 'NewQuestionAttributesPlugin']);
