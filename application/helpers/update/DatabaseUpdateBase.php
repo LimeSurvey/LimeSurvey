@@ -11,16 +11,14 @@ abstract class DatabaseUpdateBase
     /** @var CDbConnection */
     private $db;
 
-    /** @var int */
-    private $newVersion;
-
     /**
      * @param CDbConnection $connection
      */
-    public function __construct(CDbConnection $connection, $newVersion)
+    public function __construct(CDbConnection $connection)
     {
         $this->db = $connection;
-        $this->newVersion = $newVersion;
+        // Database version is part of class and file name, e.g. Update_123.
+        $this->newVersion = $this->getVersionFromClass($this);
     }
 
     /**
@@ -52,6 +50,22 @@ abstract class DatabaseUpdateBase
         $this->db
             ->createCommand()
             ->update('{{settings_global}}', ['stg_value' => $this->newVersion], "stg_name='DBVersion'");
+    }
+
+    /**
+     * @param object $that
+     * @return int
+     */
+    private function getVersionFromClass($that)
+    {
+        $nameParts = explode(
+            '_',
+            (new \ReflectionClass($that))->getShortName()
+        );
+        if (count($nameParts) !== 2) {
+            throw new Exception('Expected exactly two name parts');
+        }
+        return (int) $nameParts[1];
     }
 
     abstract public function up();
