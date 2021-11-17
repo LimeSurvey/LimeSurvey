@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-17 14:20:05+00:00\n"
+"POT-Creation-Date: 2021-11-17 14:26:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -120,7 +120,7 @@ msgstr ""
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
-#: application/views/admin/token/afterDeleteParticipantsTable.php:24
+#: application/views/admin/token/afterDeleteParticipantsTable.php:26
 #: application/views/surveyAdministration/importSurvey_view.php:22
 #: application/views/surveyAdministration/importSurvey_view.php:40
 msgid "Main Admin Screen"
@@ -2090,7 +2090,7 @@ msgid "Error: Cannot purge files for a survey that is not deleted. Please delete
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2040
-msgid "Reorder question/question groups"
+msgid "Reorder questions/question groups"
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:2112
@@ -21333,19 +21333,19 @@ msgstr ""
 msgid "Add new survey participant"
 msgstr ""
 
-#: application/views/admin/token/afterDeleteParticipantsTable.php:10
+#: application/views/admin/token/afterDeleteParticipantsTable.php:12
 msgid "Survey participants table deleted"
 msgstr ""
 
-#: application/views/admin/token/afterDeleteParticipantsTable.php:13
+#: application/views/admin/token/afterDeleteParticipantsTable.php:15
 msgid "The survey participants table has been deleted and your survey has been switched back to open-access mode. Participants no longer require an access code to access the survey."
 msgstr ""
 
-#: application/views/admin/token/afterDeleteParticipantsTable.php:15
-msgid "A backup of this table has been made and can be accessed by your administrator."
+#: application/views/admin/token/afterDeleteParticipantsTable.php:17
+msgid "A backup of this table has been made, which can only be accessed by your site administrator."
 msgstr ""
 
-#: application/views/admin/token/afterDeleteParticipantsTable.php:19
+#: application/views/admin/token/afterDeleteParticipantsTable.php:21
 #: application/views/admin/token/deleteParticipantsTable.php:20
 msgid "You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."
 msgstr ""
