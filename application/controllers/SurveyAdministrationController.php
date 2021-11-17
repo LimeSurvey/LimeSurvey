@@ -2624,6 +2624,15 @@ class SurveyAdministrationController extends LSBaseController
             } else {
                 die('No permission');
             }
+        } elseif (!Permission::model()->hasGlobalPermission('templates','read') && !Permission::model()->hasTemplatePermission($template)) {
+            if (!empty($bReturn)) {
+                $aResults[$iSurveyID]['title'] = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = false;
+                $aResults[$iSurveyID]['error'] = gT("User does not have permission to use this theme");
+                return $aResults;
+            } else {
+                die('No permission');
+            }
         }
 
         $survey->template = $sTemplate;
