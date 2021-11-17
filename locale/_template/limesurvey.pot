@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-17 14:07:53+00:00\n"
+"POT-Creation-Date: 2021-11-17 14:14:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21839,7 +21839,8 @@ msgid "If you switch to closed-access mode then this survey will only be accessi
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:23
-msgid "You can switch back to open-access mode at any time. Navigate to Settings --> Survey participants and click on the red 'Delete participants table' button from the top bar."
+#: application/views/surveyAdministration/_activation_feedback.php:57
+msgid "You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants table' button in the top bar."
 msgstr ""
 
 #: application/views/admin/token/tokenwarning.php:28
@@ -23856,10 +23857,6 @@ msgstr ""
 
 #: application/views/surveyAdministration/_activation_feedback.php:54
 msgid "In closed-access mode, only those who are invited (and have an access code) can access the survey. You can activate the closed access mode now or later."
-msgstr ""
-
-#: application/views/surveyAdministration/_activation_feedback.php:57
-msgid "You can switch back to open-access mode at any time. Navigate to Settings -> Survey participants and click on the red 'Delete participants table' button from the top bar."
 msgstr ""
 
 #: application/views/surveyAdministration/_activation_feedback.php:77
