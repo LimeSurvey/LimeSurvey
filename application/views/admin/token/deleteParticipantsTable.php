@@ -9,11 +9,11 @@
             <div class="jumbotron message-box">
                 <h3 class="lead"><?php eT('Delete survey participants table'); ?></h3>
                 <p>
-            <?php eT('Delete participants table will switch the survey back to open-access mode.'); ?>
+            <?php eT('Deleting the participants table will switch the survey back to open-access mode.'); ?>
             <br /> <br />
             <?php eT('Access codes will no longer be required to access this survey.'); ?>
             <br /> <br />
-            <?php eT('A backup of this table will be made if you proceed. Your system administrator will be able to access this table.'); ?>
+            <?php eT('A backup of this table will be made if you proceed. Your site administrator will be able to access this table.'); ?>
             <br />
             <?php echo '('. $backupTableName .')'; ?>
             <br /> <br />

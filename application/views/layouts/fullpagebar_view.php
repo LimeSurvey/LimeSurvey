@@ -73,7 +73,7 @@
                 <!-- Create Box Button -->
                 <a href="<?php echo $this->createUrl('homepageSettings/createBox/'); ?>" class="btn btn-default">
                     <span class="icon-add text-success"></span>
-                    <?php eT("Create Box"); ?>
+                    <?php eT("Create box"); ?>
                 </a>
             <?php endif; ?>
         </div>
