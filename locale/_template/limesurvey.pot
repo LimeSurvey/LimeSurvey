@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-17 14:26:20+00:00\n"
+"POT-Creation-Date: 2021-11-17 14:40:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23145,11 +23145,11 @@ msgid "Resend"
 msgstr ""
 
 #: application/views/layouts/sidemenu.php:55
-msgid "It is not possible to add questions on an active survey."
+msgid "It is not possible to add questions to an active survey."
 msgstr ""
 
 #: application/views/layouts/sidemenu.php:56
-msgid "It is not possible to add groups on an active survey."
+msgid "It is not possible to add groups to an active survey."
 msgstr ""
 
 #: application/views/limereplacementfields/limeReplacementFields_view.php:22
@@ -24696,7 +24696,7 @@ msgid "Create permission role"
 msgstr ""
 
 #: application/views/userRole/partials/_form.php:11
-msgid "Edit permission role *%s*"
+msgid "Edit permission role '%s'"
 msgstr ""
 
 #: application/views/userRole/partials/_import.php:4
