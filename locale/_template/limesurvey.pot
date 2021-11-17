@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-17 14:40:49+00:00\n"
+"POT-Creation-Date: 2021-11-17 14:54:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9498,7 +9498,7 @@ msgid "Impossible to delete this group because there is at least one question ha
 msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/groupToolsDropdownItems.php:49
-msgid "It is not possible to add or delete a group on an active survey."
+msgid "It is not possible to add/delete groups if the survey is active."
 msgstr ""
 
 #: application/extensions/TopbarWidget/views/includes/groupTopbarLeft_view.php:12
@@ -15413,11 +15413,11 @@ msgid "Submitted"
 msgstr ""
 
 #: application/models/Surveymenu.php:180
-msgid "The %s section is not available yet. Please activate your survey to enable this section."
+msgid "The '%s' section is not available yet. Please activate your survey to enable this section."
 msgstr ""
 
 #: application/models/Surveymenu.php:183
-msgid "The %s section is not available while the survey is active."
+msgid "The '%'s' section is not available while the survey is active."
 msgstr ""
 
 #: application/models/Surveymenu.php:259
@@ -19935,7 +19935,7 @@ msgid "Randomize on each page load"
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:130
-msgid "It is not possible to add or delete a question on an active survey."
+msgid "It is not possible to add/delete questions if the survey is active."
 msgstr ""
 
 #: application/views/admin/survey/Question/questionbar_view.php:142
@@ -21478,7 +21478,7 @@ msgid "Delete survey participants table"
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:12
-msgid "Delete participants table will switch the survey back to open-access mode."
+msgid "Deleting the participants table will switch the survey back to open-access mode."
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:14
@@ -21486,7 +21486,7 @@ msgid "Access codes will no longer be required to access this survey."
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:16
-msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgid "A backup of this table will be made if you proceed. Your site administrator will be able to access this table."
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:33
@@ -23124,7 +23124,7 @@ msgid "Maintenance mode is active!"
 msgstr ""
 
 #: application/views/layouts/fullpagebar_view.php:76
-msgid "Create Box"
+msgid "Create box"
 msgstr ""
 
 #: application/views/layouts/fullpagebar_view.php:128
