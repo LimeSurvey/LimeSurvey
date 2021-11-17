@@ -54,7 +54,8 @@
         "phpmd/phpmd" : "^2.8",
         "phpunit/phpunit": "^8.0",
         "vimeo/psalm": "^4.6",
-		"misantron/dbunit": "^5.1"
+		"misantron/dbunit": "^5.1",
+		"tebazil/yii1-db-seeder": "^0.0.0"
     },
     "scripts": {
         "test": [
