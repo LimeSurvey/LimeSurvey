@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-17 14:14:50+00:00\n"
+"POT-Creation-Date: 2021-11-17 14:20:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21346,7 +21346,8 @@ msgid "A backup of this table has been made and can be accessed by your administ
 msgstr ""
 
 #: application/views/admin/token/afterDeleteParticipantsTable.php:19
-msgid "You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the ''Switch to closed-access mode'' button."
+#: application/views/admin/token/deleteParticipantsTable.php:20
+msgid "You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."
 msgstr ""
 
 #: application/views/admin/token/bounce.php:13
@@ -21486,10 +21487,6 @@ msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:16
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
-msgstr ""
-
-#: application/views/admin/token/deleteParticipantsTable.php:20
-msgid "You can switch back to closed-access mode at any time. Navigate to Settings --> Survey participants and click on the 'Switch to closed-access mode' button."
 msgstr ""
 
 #: application/views/admin/token/deleteParticipantsTable.php:33
