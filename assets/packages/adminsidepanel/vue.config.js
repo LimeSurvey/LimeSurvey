@@ -6,7 +6,7 @@ const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scs
 const RtlCSS = require("../meta/LSRTLPlugin/LSRTLPlugin.js");
 
 
-module.exports = {
+export default {
     outputDir: outputDir,
     filenameHashing: false,
     runtimeCompiler: true,
