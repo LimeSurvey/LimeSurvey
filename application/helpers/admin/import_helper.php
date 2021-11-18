@@ -881,7 +881,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
                 $insertdata[(string) $key] = (string) $value;
             }
             unset($insertdata['qaid']);
-            if ($insertdata['qid']) {
+            if (isset($aQIDReplacements[$insertdata['qid']])) {
                 $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
             }
 
