@@ -122,22 +122,32 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <?php echo TbHtml::label(gT("Email:"), 'lang', ['class' => " control-label"]); ?>
+                                        <div class="">
+                                            <?php echo TbHtml::emailField('email', $sEmailAdress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <hr/>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
-                                    <button class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangePassword" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
-                                        <?= gT("Change password and/or Email") ?>
+                                        <?= gT("Change password") ?>
                                     </button>
-
+                                    <button type="button" class="btn btn-default btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
+                                        <i class="fa fa-lock"></i>
+                                        <?= gT("Change email") ?>
+                                    </button>
                                     <br/>
                                 </div>
                             </div>
-                            <div class="row selector__password-row hidden">
-                                <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0"/>
+                            <div class="row selector__oldpassword-row hidden">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="oldpassword" class="control-label">
@@ -149,8 +159,9 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                </div>
+                            </div>
+                            <div class="row selector__password-row hidden">
+                                <input type="hidden" id="newpasswordshown" name="newpasswordshown" value="0"/>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <?php echo TbHtml::label(gT("New password:"), 'lang', ['class' => " control-label"]); ?>
@@ -170,11 +181,14 @@ echo $oQuestionSelector->getModal();
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row selector__email-row hidden">
+                                <input type="hidden" id="newemailshown" name="newemailshown" value="0"/>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Email:"), 'lang', ['class' => " control-label"]); ?>
+                                        <?php echo TbHtml::label(gT("New email:"), 'lang', ['class' => " control-label"]); ?>
                                         <div class="">
-                                            <?php echo TbHtml::emailField('email', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
+                                            <?php echo TbHtml::emailField('newemail', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -412,17 +426,5 @@ echo $oQuestionSelector->getModal();
 
     </div>
 
-<?php App()->getClientScript()->registerScript(
-    "personalSettings",
-    "$('#selector__showChangePassword').on('click', function(e){
-        e.preventDefault();
-        $('#newpasswordshown').val('1');
-        $('.selector__password-row').removeClass('hidden').find('input').each(
-            function(i,item){
-                $(item).prop('disabled', false);
-           }
-        );
-        $(this).closest('div').remove();
-    });",
-    LSYii_ClientScript::POS_POSTSCRIPT
-);
+<?php
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'personalsettings.js');
