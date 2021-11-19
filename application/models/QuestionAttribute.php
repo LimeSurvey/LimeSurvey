@@ -30,8 +30,6 @@
  */
 class QuestionAttribute extends LSActiveRecord
 {
-    protected $xssFilterAttributes = ['value'];
-
     /**
      * @inheritdoc
      * @return QuestionAttribute
