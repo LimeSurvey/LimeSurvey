@@ -7,6 +7,7 @@ import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
 
 export default {
+    name: 'SideBar',
     props: {
         landOnTab: String,
         isSideMenuElementActive: Boolean,
