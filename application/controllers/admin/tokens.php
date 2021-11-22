@@ -2086,7 +2086,7 @@ class tokens extends Survey_Common_Action
                                     if ($bAllowInvalidEmail) {
                                         $iInvalidEmailCount++;
                                         if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK")) {
-                                                                                    $aWriteArray['emailstatus'] = "invalid";
+                                            $aWriteArray['emailstatus'] = "invalid";
                                         }
                                     } else {
                                         $bInvalidEmail = true;
