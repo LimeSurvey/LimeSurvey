@@ -2885,9 +2885,8 @@ class remotecontrol_handle
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $survey_dynamic->setAttributes($aResponseData, false);
-            $survey_dynamic->encryptSave();
 
-            if ($survey_dynamic->id) {
+            if ($survey_dynamic->encryptSave()) {
                 $result_id = $survey_dynamic->id;
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
