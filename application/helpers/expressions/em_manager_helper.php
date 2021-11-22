@@ -5180,19 +5180,13 @@ class LimeExpressionManager
                 if ($oResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                     $oResponse->setAttributes($aResponseAttributes, false);
                     $oResponse->decrypt();
-                    if (!$oResponse->encryptSave()) {
-                        $message = submitfailed('', print_r($oResponse->getErrors(), true)); // $response->getErrors() is array[string[]], then can not join
-                        if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
-                            $message .= CHTml::errorSummary($oResponse, $this->gT('Error on response update'));  // Add SQL error according to debugLevel
-                        }
-                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $this->sid);
-                    } else { // Actions to do when save is OK
-                        // Save Timings if needed
-                        if ($this->surveyOptions['savetimings']) {
-                            Yii::import("application.libraries.Save");
-                            $cSave = new Save();
-                            $cSave->set_answer_time();
-                        }
+                    // Save only needed value, no validation
+                    $oResponse->encryptSave(false, $aResponseAttributes); // Save only needed values
+                    // Save Timings if needed
+                    if ($this->surveyOptions['savetimings']) {
+                        Yii::import("application.libraries.Save");
+                        $cSave = new Save();
+                        $cSave->set_answer_time();
                     }
                 } else {
                     LimeExpressionManager::addFrontendFlashMessage('error', $this->gT('This response was already submitted.'), $this->sid);
