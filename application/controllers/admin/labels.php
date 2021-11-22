@@ -443,9 +443,6 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['edition'] = true;
             $aData['labelbar']['savebutton']['form'] = 'exportlabelset';
             $aData['labelbar']['savebutton']['text'] = gT("Export");
-            
-            // Save and Close Button
-            $aData['labelbar']['saveandclosebutton']['form'] = 'exportlabelset';
 
             // White Close Button
             $aData['labelbar']['white_closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
