@@ -2048,11 +2048,11 @@ class Participant extends LSActiveRecord
                     ];
                     $oParticipant = new Participant();
                     $oParticipant->setAttributes($writearray, false);
-                    $oParticipant->encryptSave();
+                    $oParticipant->encryptSave(false);
 
                     //Update survey participants table and insert the new UUID
                     $oTokenDynamic->participant_id = $pid;
-                    $oTokenDynamic->encryptSave();
+                    $oTokenDynamic->encryptSave(true, array('participant_id'));
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
