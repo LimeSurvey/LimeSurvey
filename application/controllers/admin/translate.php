@@ -752,7 +752,7 @@ class translate extends Survey_Common_Action
             case "queryupdate":
                 switch ($type) {
                     case 'title':
-                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_title'=>$new));
+                        return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_title'=>substr($new,0,200)));
                     case 'description':
                         return SurveyLanguageSetting::model()->updateByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$tolang), array('surveyls_description'=>$new));
                     case 'welcome':

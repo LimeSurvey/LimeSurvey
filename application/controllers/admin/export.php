@@ -545,6 +545,18 @@ class export extends Survey_Common_Action
                 }
             }
 
+            // Add instructions to change variable type and recode 'Other' option.
+            // This is needed when all answer option codes are numeric but the question has 'Other' enabled,
+            // because the variable is initialy set as alphanumeric in order to hold the '-oth-' value. See issue #16939
+            foreach ($fields as $field) {
+                if (isset($field['needsAlterType'])) {
+                    echo "RECODE {$field['id']} (\"-oth-\" = \"666666\").\n";
+                    echo "EXECUTE.\n";
+                    echo "ADD VALUE LABELS {$field['id']} 666666 \"other\".\n";
+                    echo "ALTER TYPE {$field['id']} (F6.0).\n";
+                }
+            }
+
             foreach ($fields as $field) {
                 if ($field['scale'] !== '') {
                     switch ($field['scale']) {

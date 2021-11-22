@@ -16,12 +16,15 @@
 * Strips html tags and replaces new lines
 *
 * @param $string
+* @param $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
-function stripTagsFull($string)
+function stripTagsFull($string, $removeOther = true)
 {
-    $string = flattenText($string,false,true); // stripo whole + html_entities
-    $string = str_replace('-oth', '', $string);// Why ?
+    $string = flattenText($string, false, true); // stripo whole + html_entities
+    if ($removeOther) {
+        $string = str_replace('-oth-', '', $string);
+    }
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return $string;
@@ -235,7 +238,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
                         if (trim($strTmp) != '') {
                             echo quoteSPSS($strTmp,$q,$field);
                         } else {
@@ -296,8 +299,8 @@ function SPSSGetValues($field, $qidattributes, $language)
                 # Build array that has to be returned
                 foreach ($result as $row) {
                     $answers[] = array(
-                        'code'=>$row['code'],
-                        'value'=>mb_substr(stripTagsFull($row["answer"]), 0, $length_vallabel),
+                        'code' => $row['code'],
+                        'value' => mb_substr(stripTagsFull($row["answer"], false), 0, $length_vallabel),
                     );
                 }
             }
@@ -389,6 +392,16 @@ function SPSSGetValues($field, $qidattributes, $language)
             }
             if ($spsstype == 'F' && (isNumericExtended($answer['code']) === false || $size > 16)) {
                 $spsstype = 'A';
+            }
+        }
+        // For questions types with answer options, if all answer codes are numeric but "Other" option is enabled,
+        // field should be exported as SPSS type 'A', size 6. See issue #16939
+        if (strpos("!LORFH1", $field['LStype']) !== false && $spsstype == 'F') {
+            $oQuestion = Question::model()->findByPk(['qid' => $field["qid"], 'language' => $language]);
+            if ($oQuestion->other == 'Y') {
+                $spsstype = 'A';
+                $size = 6;
+                $answers['needsAlterType'] = true;
             }
         }
         $answers['SPSStype'] = $spsstype;
@@ -633,6 +646,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             if (isset($answers['SPSStype'])) {
                 $tempArray['SPSStype'] = $answers['SPSStype'];
                 unset($answers['SPSStype']);
+            }
+            if (isset($answers['needsAlterType'])) {
+                $tempArray['needsAlterType'] = $answers['needsAlterType'];
+                unset($answers['needsAlterType']);
             }
             if (!empty($answers)) {
                 $tempArray['answers'] = $answers;
@@ -1306,16 +1323,16 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     }
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
     foreach ($QueryResult->readAll() as $Row) {
-        if ($use_answers) {
-            $aid = $Row["aid"];
-        }
         $subQuestion = $dom->createElement("subQuestion");
         $text = $dom->createElement("text", QueXMLCleanup($Row['question'], ''));
         $subQuestion->appendChild($text);
         $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
         if ($use_answers == false && $aid != false) {
-//dual scale array questions
+            //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
+        } else if ($use_answers == true) {
+            //ranking quesions
+            quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row['title']);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
         }
@@ -1324,6 +1341,42 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
 
     return;
 }
+
+/**
+ * Set defaultValue attribute of provided element from response table
+ *
+ * @param mixed $element DOM element to add attribute to
+ * @param int $iResponseID The response id
+ * @param int $qid The qid of the question
+ * @param int $iSurveyID The survey id
+ * @param array $fieldmap A mapping of fields to qid
+ * @param string $acode The answer code to search for
+ */
+function quexml_set_default_value_rank(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $acode)
+{
+	if ($iResponseID) {
+        $search = "qid";
+        //find the rank order of this current answer (if ranked at all over all subquestions)
+        $rank = 1;
+        foreach ($fieldmap as $key => $detail) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
+                $colname = $key;
+                $QRE = Yii::app()->db->createCommand()
+                    ->select($colname.' AS value')
+                    ->from("{{survey_$iSurveyID}}")
+                    ->where('id = :id', ['id' => $iResponseID])
+                    ->query();
+                $QROW = $QRE->read();
+                $value = $QROW['value'];
+                if ($value == $acode) {
+                    $element->setAttribute("defaultValue", $rank);
+                }
+                $rank++;
+            }
+        }
+    }
+}
+
 
 /**
  * Set defaultValue attribute of provided element from response table
@@ -1757,20 +1810,15 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
+                        //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
 
-                        $sqllength = "CHAR_LENGTH";
-                        $platform = Yii::app()->db->getDriverName();
-                        if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
-                            $sqllength = "LEN";
-                        }
-
-                        $QROW = Yii::app()->db->createCommand()
-                            ->select('MAX(' . $sqllength . '(code)) as sc')
+                        $QROWS = Yii::app()->db->createCommand()
+                            ->select('code as sc')
                             ->from("{{answers}}")
                             ->where(" qid=:qid AND  language=:language", array(':qid'=>$qid, ':language'=>$quexmllang))
-                            ->queryRow();
+                            ->queryAll();
 
-                        $response->appendChild(QueXMLCreateFree("integer", $QROW['sc'], ""));
+                        $response->appendChild(QueXMLCreateFree("integer", strlen(count($QROWS)), ""));
                         $question->appendChild($response);
                         break;
                     case "M": //Multiple choice checkbox

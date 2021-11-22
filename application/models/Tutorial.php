@@ -157,7 +157,10 @@ class Tutorial extends LSActiveRecord
         $result = [];
         foreach ($aDefaultTutorials as $aDefaultTutorial) {
             $oTutorial = new Tutorial();
-            $oTutorial->setAttributes($aDefaultTutorial);
+            // We set the attributes passing $safeOnly = false to avoid a warning on 'settings' attribute (issue #14786).
+            // The data comes from LsDefaultDataSets, so we can asume it's safe.
+            // A "better" approach would be to add a rule for the 'settings' attribute, but it seems overkill at this point.
+            $oTutorial->setAttributes($aDefaultTutorial, false);
             $result[] = $oTutorial;
         }
         return $result;

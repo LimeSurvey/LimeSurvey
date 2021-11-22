@@ -581,8 +581,16 @@ function transferlabels(type)
             if(type == 'replace'){
                 $table.find('tbody').empty();
             }
-            
-            $("#labelsetpreview").find('#language_'+lng).find('.selector_label-list').find('.selector_label-list-row').each(function(i,item){
+
+            // Label data is extracted from the preview html.
+            var sourceRows = $("#labelsetpreview").find('#language_'+lng).find('.selector_label-list').find('.selector_label-list-row');
+            // If data for a language is missing from the label set, and it's not the first language (presumably the base language),
+            // we fall back to the first language. This is the same behavior as "Quick Add".
+            if (sourceRows.length == 0 && lng != languages[0]) {
+                sourceRows = $("#labelsetpreview").find('#language_'+languages[0]).find('.selector_label-list').find('.selector_label-list-row');
+            }
+
+            sourceRows.each(function(i,item){
                 try{
                     var label = $(item).data('label');
                     var $row = $(row);

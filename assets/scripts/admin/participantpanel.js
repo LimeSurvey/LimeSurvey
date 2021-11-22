@@ -440,7 +440,7 @@ LS.CPDB = (function() {
     deleteSingleParticipantShare = function(url) {
         $.ajax({
             url: url,
-            method: "GET",
+            method: "POST",
             dataType: 'json',
             success: function(result){
                 $.fn.yiiGridView.update('share_central_participants',{});
