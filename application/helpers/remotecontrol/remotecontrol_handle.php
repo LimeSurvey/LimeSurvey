@@ -2254,6 +2254,52 @@ class remotecontrol_handle
         }
     }
 
+    /**
+     * List the survey groups belonging to a user
+     *
+     * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
+     * Else only the survey groups belonging to the user requesting will be shown.
+     *
+     * Returns array with survey group attributes
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $sUsername (optional) username to get list of survey groups
+     * @return array In case of success the list of survey groups
+     */
+    public function list_survey_groups($sSessionKey, $sUsername = null)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurveyGroup = new SurveysGroups();
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $sOwner = Yii::app()->user->getId();
+            } elseif ($sUsername != null) {
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
+                if (!isset($aUserData)) {
+                    return array('status' => 'Invalid user');
+                } else {
+                    $sOwner = $aUserData->attributes['uid'];
+                }
+            }
+
+            if (empty($sOwner)) {
+                $aUserSurveyGroups = $oSurveyGroup->findAll();
+            } else {
+                $aUserSurveyGroups = $oSurveyGroup->findAllByAttributes(array('owner_id' => $sOwner));
+            }
+            if (count($aUserSurveyGroups) == 0) {
+                return array('status' => 'No survey groups found');
+            }
+
+            foreach ($aUserSurveyGroups as $oSurveyGroup) {
+                $aData[] = $oSurveyGroup->attributes;
+            }
+            return $aData;
+        } else {
+            return array('status' => 'Invalid session key');
+        }
+    }
+
 /**
  * Get list the ids and info of administration user(s) (RPC function)
  *
