@@ -1,16 +1,17 @@
-import  {mount}  from '@vue/test-utils';
+import  { shallowMount }  from '@vue/test-utils';
+import {SideBar} from '../src/components/sidebar.vue';
 
 describe('Admin Sidemenu Funtionalities', () => {
 
     beforeEach(() => {
-        const AdminSidePanelComponent = {
+        const BaseSideBar = {
             template: '',
             props: ['landOnTab', 'isSideMenuElementActive', 'activeSideMenuElement']
         };        
     });
 
     test('does it exists', () => {
-        const wrapper = mount(AdminSidePanelComponent, {
+        const wrapper = shallowMount(SideBar, {
             propsData: {
                 landOnTab: 'Settings',
                 isSideMenuElementActive: false,
