@@ -432,10 +432,10 @@ class LSActiveRecord extends CActiveRecord
         }
 
         // encrypt attributes
-        $this->decryptEncryptAttributes('encrypt');
+        $this->decryptEncryptAttributes('encrypt', $attributes);
 
         // call save() method  without validation, validation is already done ( if needed )
-        return $this->save(false);
+        return $this->save(false, $attributes);
     }
 
     /**

@@ -5181,7 +5181,7 @@ class LimeExpressionManager
                     $oResponse->setAttributes($aResponseAttributes, false);
                     $oResponse->decrypt();
                     // Save only needed value, no validation
-                    $oResponse->encryptSave(false, $aResponseAttributes); // Save only needed values
+                    $oResponse->encryptSave(false, array_keys($aResponseAttributes)); // Save only needed values
                     // Save Timings if needed
                     if ($this->surveyOptions['savetimings']) {
                         Yii::import("application.libraries.Save");
