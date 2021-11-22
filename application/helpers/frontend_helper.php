@@ -416,7 +416,8 @@ function submittokens($quotaexit = false)
         $token->usesleft--;
     }
     $token->decrypt();
-    $token->encryptSave();
+    /* Need to save only updated attributes , mantis 17610 */
+    $token->encryptSave(true, ['completed', 'usesleft']);
 
     if ($quotaexit == false) {
         $token->decrypt();
