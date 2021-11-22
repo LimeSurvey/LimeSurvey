@@ -669,9 +669,6 @@ function buildsurveysession($surveyid, $preview = false)
         breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
-    //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //    usort($arows, 'groupOrderThenQuestionOrder');
-
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray

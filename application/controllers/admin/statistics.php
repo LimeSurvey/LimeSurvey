@@ -167,13 +167,7 @@ class statistics extends Survey_Common_Action
          * b) "groups" -> group_name + group_order *
          */
 
-
-        $rows = Question::model()
-            ->with(array('group' => array('alias' => 'g')))
-            ->findAll(array('condition' => 'parent_qid = 0 AND g.sid=' . $surveyid, 'order' => 'group_order,question_order'));
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
+         $rows = Question::model()->primary()->getQuestionList($surveyid);
 
         //put the question information into the filter array
         $filters = array();
@@ -693,19 +687,13 @@ class statistics extends Survey_Common_Action
         $summary[4] = "idL";
 
         // 1: Get list of questions from survey
-        $rows = Question::model()->getQuestionList($surveyid);
-
-        //SORT IN NATURAL ORDER!
-        usort($rows, 'groupOrderThenQuestionOrder');
+        $rows = Question::model()->primary()->getQuestionList($surveyid);;
 
         // The questions to display (all question)
         foreach ($rows as $row) {
             $type = $row['type'];
-            if ($type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_N_NUMERICAL) {
-                $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
-            }
             switch ($type) {
-                    // Double scale cases
+                // Double scale cases
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($row['qid']);
                     if (!$qidattributes['input_boxes']) {
@@ -759,6 +747,8 @@ class statistics extends Survey_Common_Action
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  //P - Multiple choice with comments
                 case Question::QT_M_MULTIPLE_CHOICE:  //M - Multiple choice
                 case Question::QT_S_SHORT_FREE_TEXT:
+                case Question::QT_T_LONG_FREE_TEXT: // Long free text
+                case Question::QT_N_NUMERICAL:
                     $summary[] = $type . $iSurveyId . 'X' . $row['gid'] . 'X' . $row['qid'];
                     break;
 
@@ -766,10 +756,8 @@ class statistics extends Survey_Common_Action
                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                 case Question::QT_ASTERISK_EQUATION:
                 case Question::QT_D_DATE:
-                case Question::QT_T_LONG_FREE_TEXT: // Long free text
-                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 case Question::QT_VERTICAL_FILE_UPLOAD: // File Upload, we don't show it
-                case Question::QT_N_NUMERICAL:
+                case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
                     break;
