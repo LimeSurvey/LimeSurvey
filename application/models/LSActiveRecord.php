@@ -441,7 +441,7 @@ class LSActiveRecord extends CActiveRecord
     /**
      * Encrypt/decrypt values
      * @param string $action 'decrypt' or 'encrypt' (or other function)
-     * @param array|null $attributes list of attributes that need to be saved. Defaults to null for all attributes.
+     * @param null|string[] $attributes list of attributes that need to be saved. Defaults to null for all attributes.
      * @return void
      */
     public function decryptEncryptAttributes($action = 'decrypt', $attributesFilter = null)
