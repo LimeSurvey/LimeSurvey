@@ -184,8 +184,6 @@ class export extends Survey_Common_Action
         $resultsService = new ExportSurveyResultsService();
         $exports = $resultsService->getExports();
 
-        var_dump($sExportType);die;
-
         if (!$sExportType) {
             $aFieldMap = createFieldMap($survey, 'full', true, false, $survey->language);
 
