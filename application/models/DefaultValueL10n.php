@@ -72,7 +72,7 @@ class DefaultValueL10n extends LSActiveRecord
             'defaultvalue' => array(self::BELONGS_TO, 'defaultvalue', '', 'on' => "$alias.dvid = defaultvalue.dvid"),
         );
     }
-    
+
     public function defaultScope()
     {
         return array('index' => 'language');

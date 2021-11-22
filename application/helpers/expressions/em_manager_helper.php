@@ -3558,7 +3558,8 @@ class LimeExpressionManager
                 case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
                     $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                     $sqsuffix = '_' . $fielddata['aid'];
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
+                    ;
                     $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     $rowdivid = substr($sgqa, 0, -2);
@@ -3707,7 +3708,8 @@ class LimeExpressionManager
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
                 case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $sgqa;
-                    $jsVarName_on = 'answer' . $sgqa;;
+                    $jsVarName_on = 'answer' . $sgqa;
+                    ;
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
                     $jsVarName = $sgqa;

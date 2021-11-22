@@ -4182,7 +4182,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'title'       => 'Default',
                     'description' => 'Default survey group',
                     'sortorder'   => '0',
-                    'owner_uid'   => '1',
+                    'owner_id'   => '1',
                     'created'     => $date,
                     'modified'    => $date,
                     'created_by'  => '1'
@@ -5028,6 +5028,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 "name='responses'"
             );
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 477], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -8155,7 +8156,7 @@ function regenerateLabelCodes400(int $lid, $hasLanguageColumn = true)
         return;
     }
 
-    foreach (explode(',', $labelSet['languages']) as $lang) {
+    foreach (explode(' ', $labelSet['languages']) as $lang) {
         if ($hasLanguageColumn) {
             $query = sprintf(
                 "SELECT * FROM {{labels}} WHERE lid = %d AND language = %s",

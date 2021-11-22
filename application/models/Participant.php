@@ -19,7 +19,7 @@
  */
 class CPDBException extends Exception
 {
- 
+
 }
 
 /**
@@ -224,7 +224,7 @@ class Participant extends LSActiveRecord
             );
             $buttons .= vsprintf($raw_button_template, $infoData);
 
-           
+
             $infoData = array(
                 'action_participant_shareParticipant invisible',
                 '',
@@ -1113,7 +1113,9 @@ class Participant extends LSActiveRecord
                         if (!empty($tokenAndId['participant_id']) && $surveyTableExists) {
                             /** @var Token $token */
                             $token = Token::model($aSurveyID)->find('participant_id = :pid', [':pid' => $tokenAndId['participant_id']]);
-                            $token->delete();
+                            if (!is_null($token)) {
+                                $token->delete();
+                            }
                         }
                         $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
                     }
@@ -1961,7 +1963,7 @@ class Participant extends LSActiveRecord
         $attid = []; //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
-        $aAutoMapped=$survey->getCPDBMappings();
+        $aAutoMapped = $survey->getCPDBMappings();
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
@@ -2210,7 +2212,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /** 
+    /**
      * Get Language Options.
      **/
     public function getLanguageOptions()
@@ -2231,7 +2233,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get Owner Options 
+     * Get Owner Options
      **/
     public function getOwnerOptions()
     {

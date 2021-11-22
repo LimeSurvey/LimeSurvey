@@ -29,12 +29,12 @@ class remotecontrol extends Survey_Common_Action
     public function run()
     {
         Yii::import('application.helpers.remotecontrol.*');
-        
+
         $setAccessControlHeader = Yii::app()->getConfig('add_access_control_header', 1);
         if ($setAccessControlHeader == 1) {
             header("Access-Control-Allow-Origin: *");
         }
-           
+
         $oHandler = new remotecontrol_handle($this->controller);
         $RPCType = Yii::app()->getConfig("RPCInterface");
         if (Yii::app()->getRequest()->isPostRequest) {

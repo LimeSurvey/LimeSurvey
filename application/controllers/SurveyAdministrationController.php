@@ -223,7 +223,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Create Survey Groups Button
         $aData['fullpagebar']['listSurveys']['buttons']['createSurveyGroups'] = true;
-        
+
         // Return Button
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
@@ -2038,7 +2038,7 @@ class SurveyAdministrationController extends LSBaseController
 
         // Display 'Reorder question/question groups' in Green Bar
         $aData['subaction'] = gT('Reorder question/question groups');
-        
+
         $this->aData = $aData;
         $this->render('/admin/survey/organizeGroupsAndQuestions_view', $aData);
     }
@@ -2839,7 +2839,7 @@ class SurveyAdministrationController extends LSBaseController
 
         if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" .
-                                htmlspecialchars($aSurveyInfo['surveyls_url']) . 
+                                htmlspecialchars($aSurveyInfo['surveyls_url']) .
                                 "\" title=\"" .
                                  htmlspecialchars($aSurveyInfo['surveyls_url']) .
                                  "\">" .

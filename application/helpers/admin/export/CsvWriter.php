@@ -9,14 +9,14 @@ class CsvWriter extends Writer
      * The open filehandle
      */
     private $file = null;
-    
+
     /**
      * The filename to use for the resulting file when output = display
      *
      * @var string
      */
     protected $csvFilename = '';
-    
+
     /**
      * Should headers be output? For example spss and r export use more or less
      * the same output but do not need headers at all.
@@ -40,7 +40,7 @@ class CsvWriter extends Writer
             $this->file = fopen($this->filename, 'w');
         }
     }
-    
+
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $sRecord = '';
@@ -55,7 +55,7 @@ class CsvWriter extends Writer
             } else {
                 fwrite($this->file, chr(239) . chr(187) . chr(191)); // Write UTF-8 Byte Order Mark (BOM)
             }
-            
+
             // If we don't want headers in our csv, for example in exports like r/spss etc. we suppress the header by setting this switch in the init
             if ($this->doHeaders === true) {
                 $index = 0;

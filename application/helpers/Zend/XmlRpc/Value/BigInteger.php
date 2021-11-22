@@ -45,7 +45,7 @@ class Zend_XmlRpc_Value_BigInteger extends Zend_XmlRpc_Value_Integer
         $this->_value = $integer->init($value);
         $this->_type = self::XMLRPC_TYPE_I8;
     }
-    
+
     /**
      * Return bigint value
      *

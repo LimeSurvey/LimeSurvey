@@ -252,8 +252,8 @@
                 */
                 $myfield2="D$myfield";
                 $myfield3=$myfield2."eq";
-                $myfield4=$myfield2."less";
-                $myfield5=$myfield2."more";
+                $myfield4=$myfield2."more";
+                $myfield5=$myfield2."less";
                 echo '<div class="statistics-responses-label-group ls-space padding bottom-5 top-15 ls-flex-item">';
                 echo "<input type='checkbox'  name='summary[]' value='$myfield2'";
 

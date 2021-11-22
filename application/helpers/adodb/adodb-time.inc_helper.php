@@ -1198,30 +1198,30 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                 // 4.3.8 uses  ' 4 Jun 2004'
                 $dates .= gmdate('D', $_day_power * (3 + adodb_dow($year, $month, $day))) . ', '
                 . ($day < 10 ? '0' . $day : $day) . ' ' . date('M', mktime(0, 0, 0, $month, 2, 1971)) . ' ' . $year . ' ';
-                 
+
                 if ($hour < 10) {
                     $dates .= '0' . $hour;
                 } else {
                     $dates .= $hour;
                 }
-                 
+
                 if ($min < 10) {
                     $dates .= ':0' . $min;
                 } else {
                     $dates .= ':' . $min;
                 }
-                 
+
                 if ($secs < 10) {
                     $dates .= ':0' . $secs;
                 } else {
                     $dates .= ':' . $secs;
                 }
-                 
+
                 $gmt = adodb_get_gmt_diff($year, $month, $day);
-                 
+
                 $dates .= ' ' . adodb_tz_offset($gmt, $isphp5);
                 break;
-                 
+
             case 'Y':
                 $dates .= $year;
                 break;
@@ -1286,17 +1286,17 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                     $dates .= 'th';
                 }
                 break;
-                 
+
                 // HOUR
             case 'Z':
                 $dates .= ($is_gmt) ? 0 : -adodb_get_gmt_diff($year, $month, $day);
                 break;
             case 'O':
                 $gmt = ($is_gmt) ? 0 : adodb_get_gmt_diff($year, $month, $day);
-                 
+
                 $dates .= adodb_tz_offset($gmt, $isphp5);
                 break;
-                 
+
             case 'H':
                 if ($hour < 10) {
                     $dates .= '0' . $hour;
@@ -1314,18 +1314,18 @@ function adodb_date($fmt, $d = false, $is_gmt = false)
                         $hh = $hour;
                     }
                 }
-                 
+
                 if ($hh < 10) {
                     $dates .= '0' . $hh;
                 } else {
                     $dates .= $hh;
                 }
                 break;
-                 
+
             case 'G':
                 $dates .= $hour;
                 break;
-                 
+
             case 'g':
                 if ($hour > 12) {
                     $hh = $hour - 12;
@@ -1415,12 +1415,12 @@ function adodb_mktime($hr, $min, $sec, $mon = false, $day = false, $year = false
         $usephpfns = (1970 < $year && $year < 2038
         || !defined('ADODB_NO_NEGATIVE_TS') && (1901 < $year && $year < 2038)
         );
-         
+
 
         if ($usephpfns && ($year + $mon / 12 + $day / 365.25 + $hr / (24 * 365.25) >= 2038)) {
             $usephpfns = false;
         }
-         
+
         if ($usephpfns) {
             return $is_gmt ?
             @gmmktime($hr, $min, $sec, $mon, $day, $year) : @mktime($hr, $min, $sec, $mon, $day, $year);

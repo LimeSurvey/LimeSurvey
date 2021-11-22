@@ -371,6 +371,7 @@ export default {
             }
             return result;
         },
+    },
     created() {
         const self = this;
         if(window.innerWidth < 768) {
@@ -462,7 +463,6 @@ export default {
         $(document).on('pjax:refresh', () => {
             this.controlActiveLink();
         });
-    }
     }
 }
 </script>

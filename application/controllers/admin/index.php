@@ -82,7 +82,7 @@ class Index extends Survey_Common_Action
         }
 
         $aData['countSurveyList'] = Survey::model()->count();
-        
+
         // We get the home page display setting
         $aData['bShowSurveyList'] = (getGlobalSetting('show_survey_list') == "show");
         $aData['bShowSurveyListSearch'] = (getGlobalSetting('show_survey_list_search') == "show");

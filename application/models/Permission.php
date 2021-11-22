@@ -678,7 +678,7 @@ class Permission extends LSActiveRecord
     /**
      * Returns true if a role has permission for crud
      * @param integer $roleId
-     * @param string $sPermission 
+     * @param string $sPermission
      * @param string $sCRUD The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
      * @return bool allowed permssion
      */

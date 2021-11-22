@@ -43,7 +43,7 @@ class Label extends LSActiveRecord
     {
         return 'id';
     }
-     
+
     /**
      * @inheritdoc
      * @return Label

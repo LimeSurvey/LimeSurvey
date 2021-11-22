@@ -298,7 +298,7 @@ class quotas extends Survey_Common_Action
     }
 
     /**
-     * Delete answers 
+     * Delete answers
      * @param int $iSurveyId
      */
     public function delans(int $iSurveyId)

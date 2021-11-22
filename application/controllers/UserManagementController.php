@@ -166,20 +166,19 @@ class UserManagementController extends LSBaseController
                 ]
             ]);
         } else {
-
             //generate random password when password is empty
             if (empty($aUser['password'])) {
                 $newPassword = \LimeSurvey\Models\Services\PasswordManagement::getRandomPassword();
                 $aUser['password'] =  $newPassword;
             }
-            
+
             //retrive the raw password
             $aUser['rawPassword'] = $aUser['password'];
 
             $passwordSetByUser = Yii::app()->request->getParam('preset_password');
-            if($passwordSetByUser == 0){ //in this case admin has not set a password, email with link will be sent
+            if ($passwordSetByUser == 0) { //in this case admin has not set a password, email with link will be sent
                 $data = $this->createAdminUser($aUser);
-            }else{ //in this case admin has set a password, no email will be send ...just create user with given credentials
+            } else { //in this case admin has set a password, no email will be send ...just create user with given credentials
                 $data = $this->createAdminUser($aUser, false);
             }
 
@@ -347,7 +346,7 @@ class UserManagementController extends LSBaseController
      * @return string|null
      * @throws CException
      */
-    public function actionViewUser(int $userid) : ?string
+    public function actionViewUser(int $userid): ?string
     {
         if (!Permission::model()->hasGlobalPermission('users', 'read')) {
             return $this->renderPartial(
@@ -1257,7 +1256,7 @@ class UserManagementController extends LSBaseController
             return Yii::app()->getController()->renderPartial('/admin/super/_renderJson', [
                 "data" => [
                     'success' => false,
-                    'errors'  => $event->get('errorMessageTitle') 
+                    'errors'  => $event->get('errorMessageTitle')
                                     . '<br/>'
                                     . $event->get('errorMessageBody'),
                     'debug'   => [

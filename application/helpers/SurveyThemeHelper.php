@@ -183,7 +183,7 @@ class SurveyThemeHelper
             }
             $categoryPath = $categoryPath . '/';
 
-            // Get the realpath for the file. 
+            // Get the realpath for the file.
             $realPath = realpath($categoryPath . $path);
 
             // If the path is not found try with next category
@@ -271,7 +271,9 @@ class SurveyThemeHelper
         $prefix = self::getVirtualPathPrefix($path);
         if (!empty($prefix)) {
             // Find category that matches the prefix
-            $filteredCategories = array_filter($categoryList, function ($v) use ($prefix) { return $v->pathPrefix == $prefix; });
+            $filteredCategories = array_filter($categoryList, function ($v) use ($prefix) {
+                return $v->pathPrefix == $prefix;
+            });
             if (empty($filteredCategories)) {
                 return null;    // No category matched the path's prefix
             }

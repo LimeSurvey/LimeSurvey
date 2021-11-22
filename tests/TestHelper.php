@@ -2,6 +2,8 @@
 
 namespace ls\tests;
 
+use Yii;
+use Exception;
 use Facebook\WebDriver\Exception\WebDriverException;
 use PHPUnit\Framework\TestCase;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -23,17 +25,17 @@ class TestHelper extends TestCase
      */
     public function importAll()
     {
-        \Yii::import('application.helpers.common_helper', true);
-        \Yii::import('application.helpers.replacements_helper', true);
-        \Yii::import('application.helpers.surveytranslator_helper', true);
-        \Yii::import('application.helpers.admin.import_helper', true);
-        \Yii::import('application.helpers.expressions.em_manager_helper', true);
-        \Yii::import('application.helpers.expressions.em_manager_helper', true);
-        \Yii::import('application.helpers.qanda_helper', true);
-        \Yii::import('application.helpers.update.updatedb_helper', true);
-        \Yii::import('application.helpers.update.update_helper', true);
-        \Yii::import('application.helpers.SurveyRuntimeHelper', true);
-        \Yii::app()->loadHelper('admin/activate');
+        Yii::import('application.helpers.common_helper', true);
+        Yii::import('application.helpers.replacements_helper', true);
+        Yii::import('application.helpers.surveytranslator_helper', true);
+        Yii::import('application.helpers.admin.import_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.qanda_helper', true);
+        Yii::import('application.helpers.update.updatedb_helper', true);
+        Yii::import('application.helpers.update.update_helper', true);
+        Yii::import('application.helpers.SurveyRuntimeHelper', true);
+        Yii::app()->loadHelper('admin/activate');
     }
 
     /**
@@ -92,7 +94,7 @@ class TestHelper extends TestCase
             'anonymized' => ($thissurvey['anonymized'] != 'N'),
             'assessments' => ($thissurvey['assessments'] == 'Y'),
             'datestamp' => ($thissurvey['datestamp'] == 'Y'),
-            'deletenonvalues'=>\Yii::app()->getConfig('deletenonvalues'),
+            'deletenonvalues'=>Yii::app()->getConfig('deletenonvalues'),
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'radix'=>$radix,
@@ -101,8 +103,8 @@ class TestHelper extends TestCase
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
-            'target' => \Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
-            'tempdir' => \Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
+            'target' => Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
+            'tempdir' => Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
             'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
             'token' => (isset($clienttoken) ? $clienttoken : null),
         );
@@ -117,7 +119,7 @@ class TestHelper extends TestCase
     {
         $survey = \Survey::model()->findByPk($surveyId);
         if (empty($survey)) {
-            throw new \Exception('Found no survey with id ' . $surveyId);
+            throw new Exception('Found no survey with id ' . $surveyId);
         }
         $survey->anonymized = '';
         $survey->datestamp = '';
@@ -136,7 +138,7 @@ class TestHelper extends TestCase
         \SurveyDynamic::sid($surveyId);
         \SurveyDynamic::model()->refreshMetaData();
 
-        $db = \Yii::app()->getDb();
+        $db = Yii::app()->getDb();
         $db->schema->getTables();
         $db->schema->refresh();
         $db->active = false;
@@ -152,9 +154,9 @@ class TestHelper extends TestCase
     public function deactivateSurvey($surveyId)
     {
         $date     = date('YmdHis');
-        $oldSurveyTableName = \Yii::app()->db->tablePrefix."survey_{$surveyId}";
-        $newSurveyTableName = \Yii::app()->db->tablePrefix."old_survey_{$surveyId}_{$date}";
-        \Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
+        $oldSurveyTableName = Yii::app()->db->tablePrefix."survey_{$surveyId}";
+        $newSurveyTableName = Yii::app()->db->tablePrefix."old_survey_{$surveyId}_{$date}";
+        Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';
         $result = $survey->save();
@@ -175,12 +177,12 @@ class TestHelper extends TestCase
      */
     public function connectToNewDatabase($databaseName)
     {
-        $db = \Yii::app()->getDb();
+        $db = Yii::app()->getDb();
 
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        $config = require(Yii::app()->getBasePath() . '/config/config.php');
 
         // Check that we're using MySQL.
-        $conStr = \Yii::app()->db->connectionString;
+        $conStr = Yii::app()->db->connectionString;
         $isMysql = substr($conStr, 0, 5) === 'mysql';
         if (!$isMysql) {
             $this->markTestSkipped('Only works on MySQL');
@@ -223,11 +225,11 @@ class TestHelper extends TestCase
             'dbname=' . $databaseName,
             $config['components']['db']['connectionString']
         );
-        \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
+        Yii::app()->setComponent('db', $newConfig['components']['db'], false);
         $db->setActive(true);
-        \Yii::app()->db->schema->getTables();
-        \Yii::app()->db->schema->refresh();
-        return \Yii::app()->getDb();
+        Yii::app()->db->schema->getTables();
+        Yii::app()->db->schema->refresh();
+        return Yii::app()->getDb();
     }
 
     /**
@@ -235,16 +237,16 @@ class TestHelper extends TestCase
      */
     public function connectToOriginalDatabase()
     {
-        \Yii::app()->db->setActive(false);
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        \Yii::app()->setComponent('db', $config['components']['db'], false);
-        \Yii::app()->db->setActive(true);
-        \Yii::app()->db->schema->getTables();
-        \Yii::app()->db->schema->refresh();
+        Yii::app()->db->setActive(false);
+        $config = require(Yii::app()->getBasePath() . '/config/config.php');
+        Yii::app()->setComponent('db', $config['components']['db'], false);
+        Yii::app()->db->setActive(true);
+        Yii::app()->db->schema->getTables();
+        Yii::app()->db->schema->refresh();
     }
 
     /**
-     * @param int $version
+     * @param int $version Version to update FROM
      * @return \CDbConnection
      */
     public function updateDbFromVersion($version, $connection = null)
@@ -267,9 +269,18 @@ class TestHelper extends TestCase
         $result = \db_upgrade_all($version);
 
         // Check error messages.
-        $flashes = \Yii::app()->user->getFlashes();
+        $flashes = Yii::app()->user->getFlashes();
         $this->assertEmpty($flashes, 'No flash error messages: ' . json_encode($flashes));
         $this->assertTrue($result, 'Upgrade successful');
+
+        $versionConfig = require(Yii::app()->getBasePath() . '/config/version.php');
+        $currentDbVersion = $connection
+            ->createCommand()
+            ->select('stg_value')
+            ->from('{{settings_global}}')
+            ->where("stg_name=:stg_name", ['stg_name' => 'DBVersion'])
+            ->queryScalar();
+        $this->assertEquals($versionConfig['dbversionnumber'], $currentDbVersion, 'Version in db is same as updated to');
 
         return $connection;
 
@@ -306,7 +317,7 @@ class TestHelper extends TestCase
     public function teardownDatabase($databaseName, $connection = null)
     {
         if (is_null($connection)) {
-            $connection = \Yii::app()->getDb();
+            $connection = Yii::app()->getDb();
         }
         try {
             $connection->createCommand('DROP DATABASE ' . $databaseName)->execute();
@@ -336,7 +347,7 @@ class TestHelper extends TestCase
         $nameParts = explode('\\', $name);
         $name = $nameParts[count($nameParts) - 1];
 
-        $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
+        $tempFolder = Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
         $screenshot = $webDriver->takeScreenshot();
         $filename   = $folder . $name . '.png';
@@ -472,12 +483,12 @@ class TestHelper extends TestCase
             if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
                 if (substr($sLine, $iLineLength - 1, 1) == ';') {
                     $sCommand .= $sLine;
-                    $sDatabasePrefix = \Yii::app()->db->tablePrefix;
+                    $sDatabasePrefix = Yii::app()->db->tablePrefix;
                     $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
 
                     try {
                         $connection->createCommand($sCommand)->execute();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
                     }
 

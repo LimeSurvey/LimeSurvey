@@ -1,33 +1,35 @@
-<?php if (!defined('BASEPATH')) {
+<?php
+
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
 /**
- *		Date and Time Converter by Elac v0.9.3
- *		elacdude@gmail.com
- *		www.elacdude.com
+ *      Date and Time Converter by Elac v0.9.3
+ *      elacdude@gmail.com
+ *      www.elacdude.com
  *
- *		You are free to use this code free of charge, modify it, and distrubute it,
- *		just leave this comment block at the top of this file.
+ *      You are free to use this code free of charge, modify it, and distrubute it,
+ *      just leave this comment block at the top of this file.
  *
  *
- *		Changes/Modifications
- *		6/24/08	- Version 0.9.2 released.  Minor additions
- *					- Added "S" support. (th, rd, st, nd.  example: 5th)
- *					- Added a few more abbreviations for units of time in calculate()  (s.  sec. secs. min. mins. m.  and more)
- *					- Added example.php (php examples and usage) and date_time_formats.html (list of supported date/time formats) to the package.
- *		6/25/08	- Version 0.9.3 released.  Bug fixes
- *					- Fixed month subtraction (wrap to previous year) bug
- *					- Fixed month and year "$only_return_the_value=true" bug.  If you calculated by months or years, and set
- * 					  $only_return_the_value=true, it would overwrite the values instead of just returning them.
- * 					- Fixed the "D" (Sun, Mon, Tue) bug.  If you supplied "D" and "d" in the same mask, it would not return the correct output.
- *					- Changed the names of public variables "day", "month", and "year" added "s" at the end for consistency purposes
- * 		11/14/08 - Version 0.9.4 released.  Bug fix
- * 					- Got rid of the _one_dig_num function and used ltrim($num "0") instead
+ *      Changes/Modifications
+ *      6/24/08 - Version 0.9.2 released.  Minor additions
+ *                  - Added "S" support. (th, rd, st, nd.  example: 5th)
+ *                  - Added a few more abbreviations for units of time in calculate()  (s.  sec. secs. min. mins. m.  and more)
+ *                  - Added example.php (php examples and usage) and date_time_formats.html (list of supported date/time formats) to the package.
+ *      6/25/08 - Version 0.9.3 released.  Bug fixes
+ *                  - Fixed month subtraction (wrap to previous year) bug
+ *                  - Fixed month and year "$only_return_the_value=true" bug.  If you calculated by months or years, and set
+ *                    $only_return_the_value=true, it would overwrite the values instead of just returning them.
+ *                  - Fixed the "D" (Sun, Mon, Tue) bug.  If you supplied "D" and "d" in the same mask, it would not return the correct output.
+ *                  - Changed the names of public variables "day", "month", and "year" added "s" at the end for consistency purposes
+ *      11/14/08 - Version 0.9.4 released.  Bug fix
+ *                  - Got rid of the _one_dig_num function and used ltrim($num "0") instead
  */
 class Date_Time_Converter
 {
-    /*		PUBLIC VARIABLES		*/
+    /*      PUBLIC VARIABLES        */
 
     /**
      * The date to be calculated in timestamp format
@@ -55,16 +57,16 @@ class Date_Time_Converter
     public $years;
     public $ampm;
 
-    /*		CONSTRUCTOR and DESTRUCTOR */
+    /*      CONSTRUCTOR and DESTRUCTOR */
 
     /** Constructor.  This is where you supply the date.  Accepts almost any format of
      *   date as long as you supply the correct mask.  DOES accept dates
-     * 	without leading zeros (n,j,g,G) as long as they aren't bunched together.
+     *  without leading zeros (n,j,g,G) as long as they aren't bunched together.
      *   ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work.
-     *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s'); 	*/
+     *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s');  */
     public function __construct($sDate, $sFormat)
     {
-        require_once(APPPATH.'/helpers/adodb/adodb-time.inc_helper.php');
+        require_once(APPPATH . '/helpers/adodb/adodb-time.inc_helper.php');
         $this->_default_date_time_units(); //set date&time units to default values
         $this->date_time = $sDate;
         $this->date_time_mask = $sFormat;
@@ -87,9 +89,9 @@ class Date_Time_Converter
         unset($this->ampm);
     }
 
-    /*		PRIVATE FUNCTIONS		*/
+    /*      PRIVATE FUNCTIONS       */
 
-    /** 
+    /**
      * Private function. Resets date and time unit variables to default
      */
     private function _default_date_time_units()
@@ -107,7 +109,7 @@ class Date_Time_Converter
         $this->ampm         = 'am';
     }
 
-    /** 
+    /**
      * Private Function.  Converts a textual month into a digit.  Accepts almost any
      * textual format of a month including abbreviations.
      * Example: _month_num("jan"); //returns '1'   Example2: _month_num("january", true);  //returns '01'
@@ -183,7 +185,7 @@ class Date_Time_Converter
         }
     }
 
-    /** 
+    /**
      * Private Function. Converts a date into a timestamp.  Accepts almost any
      * format of date as long as you supply the correct mask.  DOES accept dates
      * without leading zeros (n,j,g,G) as long as they aren't bunched together.
@@ -219,7 +221,7 @@ class Date_Time_Converter
             'd' => 'dd', // Day of the month, 2 digits with leading zeros
             'j' => 'jj', // Day of the month without leading zeros
             'S' => 'SS', // English ordinal suffix for the day of the month, 2 characters (st, nd, rd, or th. works well with j)
-            'D' => 'DDD'		// Textual representation of day of the week (Sun, Mon, Tue, Wed)
+            'D' => 'DDD'        // Textual representation of day of the week (Sun, Mon, Tue, Wed)
 
         );
 
@@ -246,7 +248,7 @@ class Date_Time_Converter
                 // find the value from $thedate
                 $val = substr(trim($thedate), $pos, strlen($chars));
 
-                /*		START FIX FOR UNITS WITHOUT LEADING ZEROS		*/
+                /*      START FIX FOR UNITS WITHOUT LEADING ZEROS       */
                 if ($type == "n" || $type == "j" || $type == "g" || $type == "G") {
                     //if its not numeric, try a shorter digit
                     if (!is_numeric($val) || strval(intval($val)) !== $val) {
@@ -287,7 +289,7 @@ class Date_Time_Converter
                     }
                 }
 
-                /*		END FIX FOR UNITS WITHOUT LEADING ZEROS		*/
+                /*      END FIX FOR UNITS WITHOUT LEADING ZEROS     */
 
                 //save this value
                 $vals[$type] = $val;
@@ -295,7 +297,6 @@ class Date_Time_Converter
         }
 
         foreach ($vals as $type => $val) {
-
             switch ($type) {
                 case 's':
                     $this->seconds = $val;
@@ -312,7 +313,7 @@ class Date_Time_Converter
                     $this->ampm = $val;
                     break;
                 case 'y':
-                    $this->years = '20'.$val;
+                    $this->years = '20' . $val;
                     break;
                 case 'Y':
                     $this->years = $val;
@@ -359,10 +360,10 @@ class Date_Time_Converter
         return $make_stamp;
     }
 
-    /**		PUBLIC FUNCTIONS			*/
+    /**     PUBLIC FUNCTIONS            */
 
     /** Sets a new format/mask for the date using the php date() style formatting
-     * 	Example: $obj->convert("M j Y H:i:s A");
+     *  Example: $obj->convert("M j Y H:i:s A");
      */
     public function convert($new_mask, $save = true)
     {

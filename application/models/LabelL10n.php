@@ -71,7 +71,7 @@ class LabelL10n extends LSActiveRecord
             'label' => array(self::BELONGS_TO, 'Label', 'label_id')
         );
     }
-    
+
     public function defaultScope()
     {
         return array('index' => 'language');

@@ -2455,7 +2455,7 @@ class remotecontrol_handle
     public function list_survey_groups($sSessionKey, $sUsername = null)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
-            $oSurveyGroup = new SurveysGroups;
+            $oSurveyGroup = new SurveysGroups();
             if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 $sOwner = Yii::app()->user->getId();
             } elseif ($sUsername != null) {
@@ -2657,7 +2657,7 @@ class remotecontrol_handle
                 $emailsToCheck = preg_split("/(,|;)/", $oToken['email']);
 
                 //Loop through each email and validate it
-                foreach($emailsToCheck as $emailToCheck) {
+                foreach ($emailsToCheck as $emailToCheck) {
                     if (preg_match($pattern, $emailToCheck) !== 1) {
                         unset($aResultTokens[$key]);
                         //subtract from 'left to send'
@@ -2670,7 +2670,7 @@ class remotecontrol_handle
             if (empty($aResultTokens)) {
                 return array('status' => 'Error: No candidate tokens');
             }
-            
+
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'register');
             $iLeft = $iAllTokensCount - count($aResultTokens);
             $aResult['status'] = $iLeft . " left to send";
@@ -2730,7 +2730,7 @@ class remotecontrol_handle
                 $emailsToCheck = preg_split("/(,|;)/", $oToken['email']);
 
                 //Loop through each email and validate it
-                foreach($emailsToCheck as $emailToCheck) {
+                foreach ($emailsToCheck as $emailToCheck) {
                     if (preg_match($pattern, $emailToCheck) !== 1) {
                         unset($aResultTokens[$key]);
                         break;
@@ -3013,35 +3013,32 @@ class remotecontrol_handle
      * @param int $iResponseID Id of the response to delete
      * @return array Result of the change action
      */
-     public function delete_response($sSessionKey, $iSurveyID, $iResponseID)
-     {
-    	  // check sessionKey is valid or not
-        if ($this->_checkSessionKey($sSessionKey)){
-    		    $oSurvey = Survey::model()->findByPk($iSurveyID);
-    		    if (!isset($oSurvey)){
-    			      return array('status' => 'Error: Invalid survey ID');
+    public function delete_response($sSessionKey, $iSurveyID, $iResponseID)
+    {
+         // check sessionKey is valid or not
+        if ($this->_checkSessionKey($sSessionKey)) {
+                $oSurvey = Survey::model()->findByPk($iSurveyID);
+            if (!isset($oSurvey)) {
+                  return array('status' => 'Error: Invalid survey ID');
             }
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')){
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'delete')) {
                 // get response id from response table using ID
                 $Response = Response::model($iSurveyID)->findByPk($iResponseID);
-                if ($Response){
+                if ($Response) {
                     // delete the files and timings and row
-                    if ($Response->delete()){
-                        return array($iResponseID=>'deleted');
+                    if ($Response->delete()) {
+                        return array($iResponseID => 'deleted');
                     }
                     return array('status' => 'Response not deleted for unknow reason');
-                }
-                else{
+                } else {
                     return array('status' => 'Response Id not found');
                 }
-            }
-            else{
+            } else {
                 return array('status' => 'No permission');
             }
-        }
-    	  else{
-           return array('status' => 'Invalid Session Key');
+        } else {
+            return array('status' => 'Invalid Session Key');
         }
     }
 

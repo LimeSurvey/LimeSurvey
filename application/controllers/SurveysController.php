@@ -155,7 +155,7 @@ class SurveysController extends LSYii_Controller
         $aError['title'] = nl2br(CHtml::encode($error['message']));
         $aError['message'] = $message;
         $aError['contact'] = $contact;
-        
+
         if (App()->getConfig('debug') != 0) {
             $aError['trace'] = $error['trace'];
         }
