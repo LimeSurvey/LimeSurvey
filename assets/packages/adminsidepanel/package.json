@@ -13,8 +13,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.16.0",
     "core-js": "^2.6.5",
     "lodash": "^4.17.4",
     "node-sass": "^4.0.0",
@@ -26,11 +24,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.16.0",
     "@testing-library/vue": "^5.8.2",
     "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-plugin-eslint": "^3.6.0",
     "@vue/cli-service": "^3.6.0",
     "@vue/test-utils": "^1.2.2",
+    "@vue/vue2-jest": "^27.0.0-alpha.3",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^27.3.1",
     "eslint": "^5.16.0",
