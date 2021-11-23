@@ -162,8 +162,9 @@ import _ from "lodash";
 import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
+    name: 'QuestionExplorer',
     mixins: [ajaxMethods],
-    data(){
+    data() {
         return {
             active: [],
             questiongroupDragging: false,
@@ -199,7 +200,7 @@ export default {
             return containerHeight - 100;
         },
         orderedQuestionGroups() {
-            return LS.ld.orderBy(
+            return _.orderBy(
                 this.$store.state.questiongroups,
                 a => {
                     return parseInt(a.group_order || 999999);
@@ -275,7 +276,7 @@ export default {
             return classes;
         },
         orderQuestions(questionList) {
-            return LS.ld.orderBy(
+            return _.orderBy(
                 questionList,
                 a => {
                     return parseInt(a.question_order || 999999);
@@ -287,7 +288,7 @@ export default {
             return gid == this.$store.state.lastQuestionGroupOpen;
         },
         isOpen(index) {
-            const result = LS.ld.indexOf(this.active, index) != -1;
+            const result = _.indexOf(this.active, index) != -1;
 
             if (this.questiongroupDragging === true) return false;
 
@@ -295,7 +296,7 @@ export default {
         },
         toggleActivation(index) {
             if (this.isOpen(index)) {
-                let removed = LS.ld.remove(this.active, idx => {
+                let removed = _.remove(this.active, idx => {
                     return idx === index;
                 });
             } else {
@@ -355,7 +356,7 @@ export default {
                 if(window.SideMenuData.isActive) {return;}
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
-                    const removedFromInital = LS.ld.remove(
+                    const removedFromInital = _.remove(
                         this.draggedQuestionsGroup.questions,
                         (question, i) => {
                             return question.qid === this.draggedQuestion.qid;
@@ -373,7 +374,7 @@ export default {
                             this.draggedQuestionsGroup.group_order
                         ) {
                             this.draggedQuestion.question_order = 0;
-                            LS.ld.each(
+                            _.each(
                                 questiongroupObject.questions,
                                 (question, i) => {
                                     question.question_order =
