@@ -628,7 +628,7 @@ class database extends Survey_Common_Action
                         $data['surveyls_policy_notice_label'] = $dataseclabel;
                     }
                     if ($sURL !== null) {
-                        $data['surveyls_url'] = htmlspecialchars($sURL);
+                        $data['surveyls_url'] = $sURL;
                     }
                     if ($sURLDescription !== null) {
                         $data['surveyls_urldescription'] = $sURLDescription;
