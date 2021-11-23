@@ -120,7 +120,8 @@ class export extends Survey_Common_Action
 
     public function exportresults()
     {
-        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid')) ??
+            sanitize_int(Yii::app()->request->getParam('surveyId'));
         $survey = Survey::model()->findByPk($iSurveyID);
 
 
@@ -152,7 +153,7 @@ class export extends Survey_Common_Action
 
         if (!$survey->isActive) {
             Yii::app()->session['flashmessage'] = gT('This survey is not active - no responses are available.');
-            $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyID}"));
+            $this->getController()->redirect($this->getController()->createUrl("surveyAdministration/view/surveyid/{$iSurveyID}"));
         }
 
 

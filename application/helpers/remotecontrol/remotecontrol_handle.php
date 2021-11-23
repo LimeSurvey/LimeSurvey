@@ -1789,7 +1789,7 @@ class remotecontrol_handle
                                     return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language' => $sLanguage));
+                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
                 if (!isset($oQuestion)) {
                                     return array('status' => 'Error: Invalid questionid');
                 }

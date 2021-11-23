@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.2 (build 211115) to 5.2.3 (build 211122) November 22, 2021
+-Fixed issue: Error in RemoteControl API when using using set_question_properties (#2142) (Víctor Echeverría)
+-Fixed issue T155: Sometimes editing survey participants doesn't show data (#2145) (Gabriel Jenik)
+-Fixed issue #17734: Unable to use quote inside relevance of subquestion (Denis Chenu)
+-Fixed issue #17729: Setting default answers for single choice question type (#2146) (Denis Chenu)
+-Fixed issue #17696: Mass changing expiration date fails (except for superadmin) (#2144) (Gabriel Jenik)
+#Updated translation: Sinhala by sayuri
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, femariso, jchina, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, femariso, fermacedo, holch, marcelovincenzi, samarta
+#Updated translation: German by c_schmitz, Hyperion, RobinBur, sur5r_
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, HonkXL, RobinBur
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.2.1 (build 211111) to 5.2.2 (build 211115) November 15, 2021
 -Fixed issue: Error message "Unknown column 'owner_uid' in 'field list'"  when updating from 4.x (Carsten Schmitz)
 -Fixed issue: Confusing message when the ComfortUpdate server is preparing the update package (Carsten Schmitz)

@@ -46,7 +46,7 @@
                                                     $answer           = $answer->attributes;
                                                     $answer['answer'] = $sAnswer;
                                                     ?>
-                                                    <option <? echo $answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '' ?> value="<?php echo $answer['code'] ?>">
+                                                    <option <?php echo $answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '' ?> value="<?php echo $answer['code'] ?>">
                                                         <?php echo $answer['answer'] ?>
                                                     </option>
                                                 <?php } ?>

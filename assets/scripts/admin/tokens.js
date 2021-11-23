@@ -395,7 +395,9 @@ var startEditToken = function(){
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
         $oldModalBody   = $modalBody.html();
+        modalContent = $modal.find('#modal-content');
     $ajaxLoader.show();
+    modalContent.empty();
     $modal.modal('show');
 
     // Ajax request
@@ -404,9 +406,18 @@ var startEditToken = function(){
         type : 'GET',
 
         // html contains the buttons
-        success : function(html, statut){
+        success : function(html, status){
 
-            $('#modal-content').empty().append(html);                       // Inject the returned HTML in the modal body
+            // Fake hide of modal content, so we can still get width of inner elements like labels
+            var previousCss  = modalContent.attr("style");
+            modalContent
+                .css({
+                    position:   'absolute', // Optional if #myDiv is already absolute
+                    visibility: 'hidden',
+                    display:    'block'
+                });
+
+            modalContent.append(html);                       // Inject the returned HTML in the modal body
 
             // Apply the yes/no/date jquery plugin to the elements loaded via ajax
             /*
@@ -434,28 +445,19 @@ var startEditToken = function(){
 
             var elGeneral  = $('#general');
 
-            // Fake hide of modal content, so we can still get width of inner elements like labels
-            var previousCss  = $("#modal-content").attr("style");
-            $("#modal-content")
-                .css({
-                    position:   'absolute', // Optional if #myDiv is already absolute
-                    visibility: 'hidden',
-                    display:    'block'
-                });
-
             // Stick the labels on the left side
             // Sometime, the content is loaded after modal is shown, sometimes not. So, we wait 200ms just in case (For label width)
             setTimeout(function(){
                 elGeneral.stickLabelOnLeft();
                 $ajaxLoader.hide();
                 // Remove fake hide
-                $("#modal-content").attr("style", previousCss ? previousCss : "");
+                modalContent.attr("style", previousCss ? previousCss : "");
             }, 200);
 
         },
-        error :  function(html, statut){
+        error :  function(html, status){
             $ajaxLoader.hide();
-            $('#modal-content').empty().append(html);
+            modalContent.append(html);
             console.ls.error(html);
         }
     });
