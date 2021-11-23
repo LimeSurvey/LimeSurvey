@@ -13,7 +13,7 @@ use Facebook\WebDriver\Exception\TimeOutException;
  * @since 2021-11-19
  * @group editquestion
  */
-class SaveSubquestionRelevance extends TestBaseClassWeb
+class SaveSubquestionRelevanceTest extends TestBaseClassWeb
 {
     /**
      *
@@ -58,15 +58,29 @@ class SaveSubquestionRelevance extends TestBaseClassWeb
     }
 
     /**
-     * Login, edit subquestion relevance, check database result.
+     * Provides subquestion relevance equations for the test
      */
-    public function testEditSubquestionRelevance()
+    public function equationProvider()
+    {
+        return [
+            ['Q01_SQ001 == "Y"'],
+            ["Q01_SQ001 == 'Y'"],
+            ['Q01_SQ001 > "Y"'],
+        ];
+    }
+
+    /**
+     * Login, edit subquestion relevance, check database result.
+     * @dataProvider equationProvider
+     */
+    public function testEditSubquestionRelevance($subquestionRelevanceEquation)
     {
         try {
             $gid = self::$testSurvey->groups[0]->gid;
             $qid = self::$testSurvey->questions[0]->qid;
-            $sqid = self::$testSurvey->questions[0]->subquestions[1]->qid;
-            $subquestionRelevanceEquation = 'Q01_SQ001 == "Y"';
+            $oQuestion = \Question::model()->findByPk($qid);
+            $this->assertNotEmpty($oQuestion);
+            $sqid = $oQuestion->subquestions[1]->qid;
 
             // Go to edit group page.
             $urlMan = \Yii::app()->urlManager;
@@ -94,8 +108,7 @@ class SaveSubquestionRelevance extends TestBaseClassWeb
             $editButton->click();
 
             // Subquestions are recreated on edit, so we need to get the new subquestion id
-            $oQuestion = \Question::model()->findByPk($qid);
-            $this->assertNotEmpty($oQuestion);
+            $oQuestion->refresh();
             $sqid = $oQuestion->subquestions[1]->qid;
 
             // Check subquestion relevance
