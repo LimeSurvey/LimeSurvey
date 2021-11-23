@@ -5,7 +5,7 @@
  * @copyright 2021 Respondage <https://www.respondage.nl/> 
  * @copyright 2021 Denis Chenu <https://www.sondages.pro> 
  * @license GPL version 3
- * @version 0.1.0
+ * @version 0.2.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,15 @@ class expressionAnswerOptions extends PluginBase
     protected static $description = 'Expression Script: make answer option text available.';
     protected static $name = 'expressionAnswerOptions';
 
+    /** @inheritdoc, this plugin settings are update during getSettings */
+    protected $settings = array(
+        'information' => array(
+            'type' => 'info',
+            'content' => '',
+            'default'=> false
+        ),
+    );
+
     /** @inheritdoc, this plugin didn't have any public method */
     public $allowedPublicMethods = array();
 
@@ -33,6 +42,11 @@ class expressionAnswerOptions extends PluginBase
         $this->subscribe('ExpressionManagerStart', 'newValidFunctions');
     }
 
+    /** 
+     * @see https://manual.limesurvey.org/ExpressionManagerStart ExpressionManagerStart event
+     * add the getAnswerOptionText static function to Expression Manager function
+     * @return void
+     */
     public function newValidFunctions()
     {
         Yii::setPathOfAlias("expressionAnswerOptions", dirname(__FILE__));
@@ -48,6 +62,27 @@ class expressionAnswerOptions extends PluginBase
             ),
         );
         $this->getEvent()->append('functions', $newFunctions);
+    }
+
+    /**
+     * @inheritdoc
+     * Update the information content
+     */
+    public function getPluginSettings($getValues = true)
+    {
+        $this->subscribe('getPluginTwigPath');
+        $content = Yii::app()->twigRenderer->renderPartial('/expressionAnswerOptionsInfo.twig', array());
+        $this->settings['information']['content'] = $content;
+        return parent::getPluginSettings($getValues);
+    }
+
+    /**
+     * Add some views for this and other plugin
+     */
+    public function getPluginTwigPath()
+    {
+        $viewPath = dirname(__FILE__)."/views";
+        $this->getEvent()->append('add', array($viewPath));
     }
 }
 
