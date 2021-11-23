@@ -8,7 +8,7 @@ use LimeSurvey\PluginManager\PluginEvent;
 
 class remotecontrol_handle
 {
-    const INVALID_SESSION_KEY = 'Invalid session key';;
+    const INVALID_SESSION_KEY = 'Invalid session key';
 
     /**
      * @var AdminController
