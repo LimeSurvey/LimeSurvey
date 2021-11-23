@@ -23,7 +23,7 @@ class Update_473 extends DatabaseUpdateBase
                             '{{plugins}}',
                             ['plugin_type' => 'core'],
                             'name = :name',
-                            [':name' => $plugin->name]
+                            [':name' => $plugin['name']]
                         );
                     }
                 } else {
