@@ -74,6 +74,19 @@
             <help>Show a tick on the selected item in the dropdown</help>
             <caption>Display tick on selected item</caption>
         </attribute>
+        <attribute>
+            <name>width_entry</name>
+            <category>Display theme options</category>
+            <sortorder>92</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <true>Width of dropdown to be currently selected entry</true>
+                <false>Width of dropdown to be longest entry</false>
+            </options>
+            <default>false</default>
+            <help>Can be as wide as the entry that is selected, or fixed at the longest entry (default)</help>
+            <caption>Width of dropdown should be the currently selected entry</caption>
+        </attribute>
     </attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->

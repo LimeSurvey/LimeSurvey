@@ -16,6 +16,7 @@
 
 {% set data_live_search = (question_template_attribute.show_search == 'default' or question_template_attribute.show_search is empty or question_template_attribute.show_search == 'false') ? '' : "data-live-search='true'" %}
 {% set show_tick = (question_template_attribute.show_tick == 'default' or question_template_attribute.show_tick is empty or question_template_attribute.show_tick == 'false') ? '' : "show-tick" %}
+{% set width_entry = (question_template_attribute.width_entry == 'default' or question_template_attribute.width_entry is empty or question_template_attribute.width_entry == 'false') ? "data-width='auto'" : '' %}
 
 <!-- List Dropdown -->
 
@@ -25,6 +26,8 @@
         <select
                 class="form-control list-question-select {{ show_tick }}"
                 {{ data_live_search }}
+                {{ width_entry }}
+                data-none-selected-text=''
                 name="{{ name }}"
                 id="answer{{ name }}"
                 {% if dropdownSize %} size={{ dropdownSize }} {% endif %}
