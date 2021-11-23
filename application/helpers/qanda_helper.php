@@ -769,13 +769,13 @@ function do_list_dropdown($ia)
                     'name' => $ia[1],
                     'value' => $optionarray['code'],
                     'opt_select' => $opt_select,
-                    'answer' => flattenText($optionarray['answer'])
+                    'answer' => $optionarray['answer']
                     ), true);
             }
 
 
             $sOptions .= doRender('/survey/questions/answer/list_dropdown/rows/optgroup', array(
-                'categoryname'      => flattenText($categoryname),
+                'categoryname'      => $categoryname,
                 'sOptGroupOptions'  => $sOptGroupOptions,
                 ), true);
         }
@@ -791,7 +791,7 @@ function do_list_dropdown($ia)
                 'name' => $ia[1],
                 'value' => $optionarray['code'],
                 'opt_select' => $opt_select,
-                'answer' => flattenText($optionarray['answer'])
+                'answer' => $optionarray['answer']
                 ), true);
         }
     }
@@ -811,7 +811,7 @@ function do_list_dropdown($ia)
             'classes' => 'other-item',
             'value' => '-oth-',
             'opt_select' => $opt_select,
-            'answer' => flattenText($_prefix . $othertext)
+            'answer' => $_prefix . $othertext
             ), true);
     }
 
