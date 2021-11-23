@@ -88,7 +88,7 @@ class DbSeederCommand extends CConsoleCommand
                 'sortorder' => function () use (&$i) {
                     return $i++;
                 },
-                'assessment_value' => fn () => rand(1, 10)
+                'assessment_value' => function () { return rand(1, 10); }
             ]
         )->rowQuantity(30);
 
