@@ -25,6 +25,11 @@ export default  function(userid) {
         bottommenus: null,
         surveyActiveState: false,
         toggleKey: Math.floor(Math.random()*10000)+'--key',
-        allowOrganizer: true
+        allowOrganizer: true,
+        SideMenuData: {
+            'isActive': false,
+            'createQuestionGroupLink': '',
+            'createQuestionLink': '',
+        }
     };
 };
