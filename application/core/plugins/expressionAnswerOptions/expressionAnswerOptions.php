@@ -5,7 +5,7 @@
  * @copyright 2021 Respondage <https://www.respondage.nl/> 
  * @copyright 2021 Denis Chenu <https://www.sondages.pro> 
  * @license GPL version 3
- * @version 0.2.1
+ * @version 0.2.2
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
  */
 class expressionAnswerOptions extends PluginBase
 {
+
     protected static $description = 'Expression Script: make answer option text available.';
     protected static $name = 'expressionAnswerOptions';
 
@@ -83,6 +84,15 @@ class expressionAnswerOptions extends PluginBase
     {
         $viewPath = dirname(__FILE__)."/views";
         $this->getEvent()->append('add', array($viewPath));
+    }
+
+    /**
+     * @inheritdoc
+     * But do nothing
+     */
+    public function saveSettings($settings)
+    {
+        // Nothing saved, not needed
     }
 }
 
