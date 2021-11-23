@@ -109,4 +109,67 @@ class TestBaseClass extends TestCase
             self::$testSurvey = null;
         }
     }
+
+    protected static function createUserWithPermissions(array $userData, array $permissions = [])
+    {
+        if ($userData['password'] != ' ') {
+            $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        }
+
+        $oUser = new \User();
+        $oUser->setAttributes($userData);
+
+        if (!$oUser->save()) {
+            throw new \Exception(
+                "Could not save user: "
+                . print_r($oUser->getErrors(), true)
+            );
+        };
+
+        $newUserId = $oUser->uid;
+        self::addUserPermissions($newUserId, $permissions);
+
+        return $oUser;
+    }
+
+    /**
+     * Adds permission to a users
+     * Needs an array in the form of [PERMISSIONID][PERMISSION]
+     *
+     * @param int $userId
+     * @param array $permissions
+     * @return array
+     */
+    protected static function addUserPermissions(int $userId, array $permissions)
+    {
+        //Delete all current Permissions
+        $criteria = new \CDbCriteria();
+        $criteria->compare('uid', $userId);
+        // without entity
+        $criteria->compare('entity_id', 0);
+        // except for template entity (no entity_id is set here)
+        $criteria->compare('entity', "<>template");
+        \Permission::model()->deleteAll($criteria);
+
+        $results = [];
+        //Apply the permission array
+        foreach ($permissions as $permissionKey => $permissionSettings) {
+            $permission = new \Permission();
+            $permission->entity = 'global';
+            $permission->entity_id = 0;
+            $permission->uid = $userId;
+            $permission->permission = $permissionKey;
+
+            foreach ($permissionSettings as $settingKey => $settingValue) {
+                $permissionDBSettingKey = $settingKey . '_p';
+                $permission->$permissionDBSettingKey = $settingValue == 'on' ? 1 : 0;
+            }
+
+            $results[$permissionKey] = [
+                'success' => $permission->save(),
+                'storedValue' => $permission->attributes
+            ];
+        }
+        return $results;
+    }
 }
