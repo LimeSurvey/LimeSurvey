@@ -440,7 +440,7 @@ export default {
             this.$log.log('vue-reload-remote');
             this.$store.dispatch('getQuestions');
             this.$store.dispatch('collectMenus');
-            this.updatePjaxLinks();
+            this.updatePjaxLinks(this.$store);
         });
 
         $(document).on("vue-redraw", () => {
@@ -451,7 +451,7 @@ export default {
 
         //control the active link
         this.controlActiveLink();
-        this.updatePjaxLinks();
+        this.updatePjaxLinks(this.$store);
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
         });

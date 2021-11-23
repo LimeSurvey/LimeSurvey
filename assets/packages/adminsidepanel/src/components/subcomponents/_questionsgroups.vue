@@ -159,29 +159,45 @@
 </template>
 <script>
 import _ from "lodash";
-import ajaxMethods from "../../mixins/runAjax.js";
+import pjaxMixins from "../../mixins/pjaxMixins.js";
+import translateMixins from "../../mixins/translateMixins.js";
 
 export default {
     name: 'QuestionExplorer',
-    mixins: [ajaxMethods],
+    mixins: [pjaxMixins, translateMixins],
+    filters: {
+        translate: function(value) {
+            return value;
+        }
+    },
     data() {
         return {
-            active: [],
-            questiongroupDragging: false,
+            openQuestionGroups: [],
+            currentlyDraggingQuestionGroups: false,
             draggedQuestionGroup: null,
             questionDragging: false,
             draggedQuestion: null,
             draggedQuestionsGroup: null,
+            questionGroups: [],
+            lastQuestionGroupOpened: false,
+            isSurveyActive: false,
+            createQuestionGroupLinkString: '',
+            createQuestionLinkString: '',
+            sideMenuData: [],
         };
     },
     computed: {
-        allowOrganizer() {return this.$store.state.allowOrganizer===1},
-        surveyIsActive() {return window.SideMenuData.isActive; },
+        allowOrganizer() {
+            return this.$store.state.allowOrganizer === 1
+        },
+        surveyIsActive() {
+            return this.isSurveyActive;
+        },
         createQuestionGroupLink() { 
-            return window.SideMenuData.createQuestionGroupLink
+            return this.createQuestionGroupLinkString;
         },
         createQuestionLink() { 
-            return window.SideMenuData.createQuestionLink 
+            return this.createQuestionLinkString;
         },
         buttonDisabledTooltipQuestions() {
             if (this.surveyIsActive) {
@@ -201,7 +217,7 @@ export default {
         },
         orderedQuestionGroups() {
             return _.orderBy(
-                this.$store.state.questiongroups,
+                this.questionGroups,
                 a => {
                     return parseInt(a.group_order || 999999);
                 },
@@ -233,7 +249,7 @@ export default {
             this.$store.dispatch('unlockLockOrganizer');
         },
         collapseAll() {
-            this.active = [];
+            this.openQuestionGroups = [];
         },
         createFullQuestionLink() {
           if(this.createQuestionAllowed) {
@@ -285,53 +301,53 @@ export default {
             );
         },
         isActive(gid) {
-            return gid == this.$store.state.lastQuestionGroupOpen;
+            return gid == this.lastQuestionGroupOpened;
         },
         isOpen(index) {
-            const result = _.indexOf(this.active, index) != -1;
+            const result = _.indexOf(this.openQuestionGroups, index) != -1;
 
-            if (this.questiongroupDragging === true) return false;
+            if (this.currentlyDraggingQuestionGroups === true) return false;
 
             return result;
         },
         toggleActivation(index) {
             if (this.isOpen(index)) {
-                let removed = _.remove(this.active, idx => {
+                let removed = _.remove(this.openQuestionGroups, idx => {
                     return idx === index;
                 });
             } else {
-                this.active.push(index);
+                this.openQuestionGroups.push(index);
             }
-            this.$store.commit("questionGroupOpenArray", this.active);
-            this.updatePjaxLinks();
+            this.$store.commit("questionGroupOpenArray", this.openQuestionGroups);
+            this.updatePjaxLinks(this.$store);
         },
         addActive(questionGroupId) {
             if (!this.isOpen(questionGroupId)) {
-                this.active.push(questionGroupId);
+                this.openQuestionGroups.push(questionGroupId);
             }
-            this.$store.commit("questionGroupOpenArray", this.active);
+            this.$store.commit("questionGroupOpenArray", this.openQuestionGroups);
         },
         openQuestionGroup(questionGroup) {
             this.addActive(questionGroup.gid);
             this.$store.commit("lastQuestionGroupOpen", questionGroup);
-            this.updatePjaxLinks();
+            this.updatePjaxLinks(this.$store);
         },
         openQuestion(question) {
             this.addActive(question.gid);
             this.$store.commit("lastQuestionOpen", question);
-            this.updatePjaxLinks();
+            this.updatePjaxLinks(this.$store);
             $(document).trigger("pjax:load", { url: question.link });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
             this.draggedQuestionGroup = questiongroupObject;
-            this.questiongroupDragging = true;
+            this.currentlyDraggingQuestionGroups = true;
             $event.dataTransfer.setData("text/plain", "node");
         },
         endDraggingGroup($event, questiongroupObject) {
             if (this.draggedQuestionGroup !== null) {
                 this.draggedQuestionGroup = null;
-                this.questiongroupDragging = false;
+                this.currentlyDraggingQuestionGroups = false;
                 this.$emit("questiongrouporder");
             }
         },
@@ -344,7 +360,7 @@ export default {
                     });
             }
                 
-            if (this.questiongroupDragging) {
+            if (this.currentlyDraggingQuestionGroups) {
                 const targetPosition = parseInt(questiongroupObject.group_order);
                 const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
                 if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
@@ -416,9 +432,17 @@ export default {
             }
         }
     },
+    created() {
+        this.questionGroups = this.$store.state.questiongroups;
+        this.lastQuestionGroupOpened = this.$store.state.lastQuestionGroupOpen;
+        this.sideMenuData = this.$store.state.SideMenuData;
+    },
     mounted() {
-        this.active = this.$store.state.questionGroupOpenArray;
-        this.updatePjaxLinks();
+        this.openQuestionGroups = this.$store.state.questionGroupOpenArray;
+        this.updatePjaxLinks(this.$store);
+        this.isSurveyActive = this.$store.SideMenuData.isActive;
+        this.createQuestionGroupLinkString = this.$store.SideMenuData.createQuestionGroupLink;
+        this.createQuestionLinkString = this.$store.SideMenuData.createQuestionLink;
     }
 };
 </script>
