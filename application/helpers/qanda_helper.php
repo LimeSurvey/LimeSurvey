@@ -2479,7 +2479,8 @@ function do_shortfreetext($ia)
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
-            'withColumn'             => $withColumn
+            'withColumn'             => $withColumn,
+            'questionAttributes'    => $aQuestionAttributes
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
         $coreClass       = "ls-answers map-item geoloc-item";
@@ -2647,7 +2648,8 @@ function do_shortfreetext($ia)
             'maxlength' => $maxlength,
             'inputsize'              => $inputsize,
             'placeholder'            => $placeholder,
-            'withColumn'             => $withColumn
+            'withColumn'             => $withColumn,
+            'questionAttributes'    => $aQuestionAttributes
         );
         $answer = doRender('/survey/questions/answer/shortfreetext/text/item', $itemDatas, true);
     }
