@@ -4,34 +4,18 @@ import Sidebar from "./components/sidebar.vue";
 import getAppState from "./store/vuex-store.js";
 import {PluginLog} from "./mixins/logSystem.js";
 import Loader from './helperComponents/loader.vue';
+import { pjaxMixins } from './mixins/pjaxMixins.js';
+import { translateMixins } from "./mixins/translateMixins";
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 Vue.config.devtools = true;
 
 Vue.use(PluginLog);
+Vue.use(pjaxMixins);
+Vue.use(translateMixins);
 
 Vue.component('loader-widget', Loader);
-
-Vue.mixin({
-    methods: {
-        updatePjaxLinks: function () {
-            this.$forceUpdate();
-            this.$store.commit('newToggleKey');
-        },
-        redoTooltips: function () {
-            window.LS.doToolTip();
-        },
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
-        }
-    },
-    filters: {
-        translate(string){
-            return window.SideMenuData.translate[string] || string;
-        }
-    }
-});
 
 const Lsadminsidepanel = (userid, surveyid) => {
     const AppState = getAppState(userid, surveyid);
@@ -80,11 +64,10 @@ const Lsadminsidepanel = (userid, surveyid) => {
                 const maxHeight = $("#in_survey_common").height() - 35 || 400;
                 this.$store.commit("changeMaxHeight", maxHeight);
                 this.$store.commit("setAllowOrganizer", window.SideMenuData.allowOrganizer);
-                this.updatePjaxLinks();
-
-
+                this.updatePjaxLinks(this.$store);
+                
                 $(document).on("vue-redraw", () => {
-                    this.updatePjaxLinks();
+                    this.updatePjaxLinks(this.$store);
                 });
 
                 $(document).trigger("vue-reload-remote");
