@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of ExpressionAnswerOptions plugin
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 namespace expressionAnswerOptions;
@@ -33,10 +33,17 @@ class AnswerOptionsFunctions
             $oQuestion = Question::model()->find("title = :title and sid = :sid", array(":title"=>$qidortitle, ":sid" => $surveyId));
         }
         if(empty($oQuestion)) {
+            if (Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) { // update ???
+                return sprintf(gT("Invalid question code or id “%s”"), CHtml::encode($qidortitle));
+            }
             return null;
         }
-        /* Don't check the question type : we know it's a question (not a subquetsion) */
+        /* Don't check the question type : we know it's a question (not a subquestion) */
         $language = LimeExpressionManager::getEMlanguage(); // Or by App()->getLanguage(), em for expression file view ?
-        return Answer::model()->getAnswerFromCode($oQuestion->qid, $code, $language, $scale);
+        $answer = Answer::model()->getAnswerFromCode($oQuestion->qid, $code, $language, $scale);
+        if (is_null($answer) && Permission::model()->hasSurveyPermission($surveyId, 'surveycontent')) {
+            return sprintf(gT("Invalid answer option code “%s”"), CHtml::encode($code));
+        }
+        return $answer;
     }
 }

@@ -8,7 +8,7 @@
         <author>Denis Chenu (for Respondage)</author>
         <authorUrl>https://www.respondage.nl</authorUrl>
         <supportUrl>https://www.limesurvey.org</supportUrl>
-        <version>0.1.1</version>
+        <version>0.2.0</version>
         <license>GNU General Public License version 3 or later</license>
         <description><![CDATA[Expression Script: make answer option text available; usage : <code>getAnswerOptionText("qcode", "A2")</code>.]]></description>
     </metadata>
