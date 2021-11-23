@@ -38,30 +38,33 @@ class DbSeederCommand extends CConsoleCommand
         $sidValidator = new IdValidator($sids);
         $seeder->table('{{surveys}}')->columns(
             [
-                'sid' => $faker->valid($sidValidator)->randomElement($sids),
+                'sid' => $faker->unique()->numberBetween(1, 3),
                 'owner_id' => 1,
                 'language' => 'en'
             ]
-        )->rowQuantity(count($sids));
+        )->rowQuantity(3);
 
         // Generate survey text
         $sidValidator = new IdValidator($sids);
         $seeder->table('{{surveys_languagesettings}}')->columns(
             [
-                'surveyls_survey_id' => $faker->valid($sidValidator)->randomElement($sids),
-                'surveyls_language' => 'en'
+                'surveyls_survey_id' => $faker->unique(true)->numberBetween(1, 4),
+                'surveyls_language' => 'en',
+                'surveyls_title' => 'mo'
             ]
-        )->rowQuantity(count($sids));
+        )->rowQuantity(3);
 
         // Generate groups
         $gids = [1, 2, 3, 4, 5];
         $gidValidator = new IdValidator($gids);
         $seeder->table('{{groups}}')->columns(
             [
-                'gid' => $faker->valid($gidValidator)->randomElement($gids),
-                'sid' => $faker->randomElement($sids)
+                'gid' => $faker->unique(true)->numberBetween(1, 10),
+                'sid' => $faker->numberBetween(1, 3),
             ]
-        )->rowQuantity(count($gids));
+        )->rowQuantity(10);
+        $seeder->refill();
+        return;
 
         // Generate questions
         $qids = [1, 2, 3, 4, 5, 6, 7];
