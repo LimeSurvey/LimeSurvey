@@ -500,16 +500,13 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid)
     {
-        $db                  = Yii::app()->db;
-        $quotedGroup         = $db->quoteTableName('group');
-        $quotedGrouporder    = $db->quoteColumnName('group_order');
-        $quotedQuestionorder = $db->quoteColumnName('question_order');
         return Question::model()
             ->with('group')
             ->findAll(
                 array(
-                    'condition' => 't.sid=' . $surveyid,
-                    'order'     => $quotedGroup .  '.' . $quotedGrouporder . ' DESC, ' . $quotedQuestionorder
+                    'condition' => 't.sid=:sid',
+                    'order'     => 'group.group_order,question_order',
+                    'params'    => array(':sid' => $surveyid)
                 )
             );
     }
@@ -1023,6 +1020,14 @@ class Question extends LSActiveRecord
             ),
         ));
         return $dataProvider;
+    }
+
+    /** @inheritdoc */
+    public function scopes()
+    {
+        return array(
+            'primary' => array('condition' => "parent_qid = 0"),
+        );
     }
 
     /**
