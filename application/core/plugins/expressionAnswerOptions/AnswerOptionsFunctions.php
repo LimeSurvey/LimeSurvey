@@ -4,7 +4,7 @@
  * @version 0.1.0
  */
 
-namespace ExpressionAnswerOptionsExt;
+namespace expressionAnswerOptions;
 
 use LimeExpressionManager;
 use Question;
