@@ -1,8 +1,9 @@
 import  { shallowMount, createLocalVue }  from '@vue/test-utils';
 import Vuex from 'vuex';
 import SideBar from '../src/components/sidebar.vue';
-import QuestionExplorer from '../src/components/subcomponents/_questionsgroups.vue';
-import AddQuestionGroupAndAddQuestionButtons from '../src/components/subcomponents/_addQuestionGroupAndAddQuestionButtons.vue';
+import QuestionExplorer from '../src/components/subcomponents/questionexplorer/_questionExplorer.vue';
+import AddQuestionGroupAndAddQuestionButtons from '../src/components/subcomponents/questionexplorer/_addQuestionGroupAndAddQuestionButtons.vue';
+import ListOfAllQuestionGroupsWithQuestions from '../src/components/subcomponents/questionexplorer/_listOfAllQuestionGroupsWithQuestions.vue';
 
 // Mixins
 import pjaxMixins from '../src/mixins/pjaxMixins.js';
@@ -13,9 +14,10 @@ localVue.use(Vuex);
 
 describe('Admin Sidemenu Funtionalities', () => {
 
-    test('does it exists', () => {
+    /** test('does it exists', () => {
         const store = new Vuex.Store({
             state: {
+                '$': {},
             },
         });
         localVue.use(store);
@@ -52,7 +54,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         });      
         expect(wrapper.vm._isVue).toBe(true);
         wrapper.destroy();
-    });
+    });*/
 
     test('Create Question and Create Question Group Buttons are visible', () => {
         const store = new Vuex.Store({
@@ -97,6 +99,35 @@ describe('Admin Sidemenu Funtionalities', () => {
         
         expect(addquestiongroupandaddquestionbuttons.vm._isVue).toBe(true);
         addquestiongroupandaddquestionbuttons.destroy();
+    });
+
+    test('List of all Questions Groups with Questions', () => {
+        const store = new Vuex.Store({
+            state: {
+                'SideMenuData': {
+                    
+                }
+            },
+        });
+        localVue.use(store);
+        
+        const listofallquestiongroupswithquestions = shallowMount(ListOfAllQuestionGroupsWithQuestions, {
+            localVue,
+            store,
+            propsData: {
+                isSurveyActive: true,
+                allowOrganizer: true,
+                currentlyDraggingQuestionGroups: false,
+            },
+            data() {
+                return {
+                    openQuestionGroups: [],
+                }
+            }
+        });
+        
+        expect(listofallquestiongroupswithquestions.vm._isVue).toBe(true);
+        listofallquestiongroupswithquestions.destroy();
     });
 
     test('owns Questions', () => {

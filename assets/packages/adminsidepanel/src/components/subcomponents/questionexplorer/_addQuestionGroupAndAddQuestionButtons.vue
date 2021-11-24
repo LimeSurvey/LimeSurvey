@@ -65,8 +65,8 @@
     </div>
 </template>
 <script>
-import translateMixins from '../../mixins/translateMixins';
-import EventBus from '../../../eventbus.js';
+import translateMixins from '../../../mixins/translateMixins';
+import EventBus from '../../../../eventbus.js';
 
 export default {
     name: 'AddQuestionGroupAndAddQuestionButtons',
