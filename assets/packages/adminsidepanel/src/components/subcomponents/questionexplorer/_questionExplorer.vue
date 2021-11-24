@@ -2,113 +2,30 @@
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
         <!-- Add Question Group and Add Question Buttons -->
         <add-question-group-and-add-question-buttons
-            :isSurveyActive="surveyIsActive" 
-            :createQuestionGroupLink="createQuestionGroupLinkString" 
-            :createQuestionLink="createQuestionLinkString" 
-            :isCreateQuestionAllowed="createQuestionAllowed"
-            :allowOrganizer="allowOrganizer" />
+            :isSurveyActive="this.surveyIsActive" 
+            :createQuestionGroupLink="this.createQuestionGroupLinkString" 
+            :createQuestionLink="this.createQuestionLinkString" 
+            :isCreateQuestionAllowed="this.createQuestionAllowed"
+            :allowOrganizer="this.allowOrganizer" />
         <!-- List of all Question Groups with Questions -->
-        <div class="ls-flex-row ls-space padding all-0">
-            <ul 
-                class="list-group col-12 questiongroup-list-group"  
-                @drop="dropQuestionGroup($event, questiongroup)"
-            >
-                <li 
-                    v-for="questiongroup in orderedQuestionGroups" 
-                    v-bind:key="questiongroup.gid" 
-                    class="list-group-item ls-flex-column" 
-                    v-bind:class="questionGroupItemClasses(questiongroup)" 
-                    @dragenter="dragoverQuestiongroup($event, questiongroup)"
-                >
-                    <div class="col-12 ls-flex-row nowrap ls-space padding right-5 bottom-5">
-                        <i 
-                            v-if="!surveyIsActive"
-                            class="fa fa-bars bigIcons dragPointer" 
-                            :class=" allowOrganizer ? '' : 'disabled' "
-                            :draggable="allowOrganizer"
-                            @dragend="endDraggingGroup($event, questiongroup)" 
-                            @dragstart="startDraggingGroup($event, questiongroup)"
-                            @click.stop.prevent="()=>false"
-                        >
-                            &nbsp;
-                        </i>
-                        <a 
-                            class="col-12 pjax"
-                            :href="questiongroup.link" 
-                            @click.stop="openQuestionGroup(questiongroup)" 
-                        > 
-                            <span 
-                                :class="$store.getters.isRTL ? 'question_text_ellipsize pull-right' : 'question_text_ellipsize pull-left'"
-                                :style="{ 'max-width': itemWidth }"
-                            >
-                                {{questiongroup.group_name}} 
-                            </span>
-                            <span 
-                                :class="$store.getters.isRTL ? 'badge ls-space margin right-5 pull-left' : 'badge ls-space margin right-5 pull-right'"
-                            >
-                                {{questiongroup.questions.length}}
-                            </span>
-                        </a>
-                        <i class="fa bigIcons" v-bind:class="isOpen(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
-                    </div>
-                    <transition name="slide-fade-down">
-                        <ul 
-                            class="list-group background-muted padding-left question-question-list" 
-                            v-if="isOpen(questiongroup.gid)" 
-                            @drop="dropQuestion($event, question)"
-                        >
-                            <li 
-                                v-for="question in orderQuestions(questiongroup.questions)" 
-                                v-bind:key="question.qid" 
-                                v-bind:class="questionItemClasses(question)" 
-                                data-toggle="tootltip" 
-                                class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start" 
-                                :data-is-hidden="question.hidden"
-                                :data-questiontype="question.type"
-                                :data-has-condition="questionHasCondition(question)"
-                                :title="question.question_flat"
-                                @dragenter="dragoverQuestion($event, question, questiongroup)"
-                            >
-                                    <i 
-                                        v-if="!$store.state.surveyActiveState"
-                                        class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag" 
-                                        :class=" allowOrganizer ? '' : 'disabled' "
-                                        :draggable="allowOrganizer"
-                                        @dragend="endDraggingQuestion($event, question)" 
-                                        @dragstart="startDraggingQuestion($event, question, questiongroup)"
-                                        @click.stop.prevent="()=>false"
-                                    >
-                                        &nbsp;
-                                    </i>
-                                <a
-                                    :href="question.link"  
-                                    class="col-9 pjax question-question-list-item-link display-as-container" 
-                                    @click.stop.prevent="openQuestion(question)" 
-                                > 
-                                    <span 
-                                        class="question_text_ellipsize" 
-                                        :class="{'question-hidden' : question.hidden}" 
-                                        :style="{ width: itemWidth }"
-                                    >
-                                        [{{question.title}}] &rsaquo; {{ question.question_flat }} 
-                                    </span> 
-                                </a>
-                            </li>
-                        </ul>
-                    </transition>
-                </li>
-            </ul>
-        </div>
+        <list-of-all-question-groups-with-questions
+            :orderedQuestionGroups="this.questionGroups"
+            :isSurveyActive="this.surveyIsActive"
+            :allowOrganizer="this.allowOrganizer"
+            :currentlyDraggingQuestionGroups="this.currentlyDraggingQuestionGroups" />
     </div>
 </template>
 <script>
 import _ from "lodash";
-import pjaxMixins from "../../mixins/pjaxMixins.js";
-import translateMixins from "../../mixins/translateMixins.js";
+import pjaxMixins from "../../../mixins/pjaxMixins.js";
+import translateMixins from "../../../mixins/translateMixins.js";
 import AddQuestionGroupAndAddQuestionButtons from './_addQuestionGroupAndAddQuestionButtons.vue';
-import EventBus from '../../../eventbus.js';
+import ListOfAllQuestionGroupsWithQuestions from './_listOfAllQuestionGroupsWithQuestions.vue';
+import EventBus from '../../../../eventbus.js';
+import _listOfAllQuestionGroupsWithQuestions from './_listOfAllQuestionGroupsWithQuestions.vue';
 
 export default {
+  components: { _listOfAllQuestionGroupsWithQuestions },
     name: 'QuestionExplorer',
     mixins: [pjaxMixins, translateMixins],
     filters: {
@@ -118,6 +35,7 @@ export default {
     },
     componets: {
         'add-question-group-and-add-question-buttons': AddQuestionGroupAndAddQuestionButtons,
+        'list-of-all-question-groups-with-questions': ListOfAllQuestionGroupsWithQuestions,
     },
     data() {
         return {
@@ -227,13 +145,6 @@ export default {
         },
         isActive(gid) {
             return gid == this.lastQuestionGroupOpened;
-        },
-        isOpen(index) {
-            const result = _.indexOf(this.openQuestionGroups, index) != -1;
-
-            if (this.currentlyDraggingQuestionGroups === true) return false;
-
-            return result;
         },
         toggleActivation(index) {
             if (this.isOpen(index)) {

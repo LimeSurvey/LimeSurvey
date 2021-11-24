@@ -1,10 +1,11 @@
 <script>
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
-import Questionexplorer from "./subcomponents/_questionsgroups.vue";
+import Questionexplorer from "./subcomponents/questionexplorer/_questionExplorer.vue";
 import SidebarStateToggle from "./subcomponents/_sidebarStateToggle.vue";
 import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
+import EventBus from "../../eventbus.js";
 
 export default {
     name: 'SideBar',
@@ -393,18 +394,18 @@ export default {
     mounted() {
         const self = this;
 
-        LS.EventBus.$on('updateSideBar', (payload) => {
+        EventBus.$on('updateSideBar', (payload) => {
             this.loading = true;
             const promises = [
                 Promise.resolve()
             ];
-            if(payload.updateQuestions) {
+            if (payload.updateQuestions) {
                 promises.push(this.$store.dispatch('getQuestions'));
             }
-            if(payload.collectMenus) {
+            if (payload.collectMenus) {
                 promises.push(this.$store.dispatch('collectMenus'));
             }
-            if(payload.activeMenuIndex) {
+            if (payload.activeMenuIndex) {
                 this.controlActiveLink();
                 promises.push(Promise.resolve());
             }
@@ -418,7 +419,6 @@ export default {
                 })
         });
 
-
         $(document).trigger("sidebar:mounted");
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
@@ -426,9 +426,8 @@ export default {
             self.calculateHeight(self);
         });
         
-
         $(document).on("pjax:send", () => {
-            if(this.useMobileView && this.smallScreenHidden) {
+            if (this.useMobileView && this.smallScreenHidden) {
                 this.smallScreenHidden = false
             }
         });
