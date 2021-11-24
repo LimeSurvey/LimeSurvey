@@ -9,6 +9,8 @@ namespace expressionAnswerOptions;
 use LimeExpressionManager;
 use Question;
 use Answer;
+use Permission;
+use CHtml;
 
 class AnswerOptionsFunctions
 {
