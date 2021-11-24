@@ -2,6 +2,7 @@ import  { shallowMount, createLocalVue }  from '@vue/test-utils';
 import Vuex from 'vuex';
 import SideBar from '../src/components/sidebar.vue';
 import QuestionExplorer from '../src/components/subcomponents/_questionsgroups.vue';
+import AddQuestionGroupAndAddQuestionButtons from '../src/components/subcomponents/_addQuestionGroupAndAddQuestionButtons.vue';
 
 // Mixins
 import pjaxMixins from '../src/mixins/pjaxMixins.js';
@@ -53,6 +54,51 @@ describe('Admin Sidemenu Funtionalities', () => {
         wrapper.destroy();
     });
 
+    test('Create Question and Create Question Group Buttons are visible', () => {
+        const store = new Vuex.Store({
+            state: {
+                'SideMenuData': {
+                    'translate': {
+                        'lockOrganizerTitle': 'Lock question organizer',
+                        'unlockOrganizerTitle': 'Unlock question organizer',
+                    },
+                    'createQuestionGroupLink': 'createQuestionGroupLinkMock',
+                    'createQuestionLink': 'createQuestionLinkMock',
+                    'buttonDisabledTooltipQuestions': 'Add Question Button is disbaled',
+                    'buttonDisabledTooltipGroups': 'Add Question Group Button is disabled',
+                    'lockOrganizerTitle': 'Lock question organizer',
+                    'unlockOrganizerTitle': 'Unlock question organizer',
+                }
+            },
+            mutations: {
+                newToggleKey (state) {
+                    state.toggleKey = Math.floor(Math.random()*10000)+'--key';
+                },
+            }
+        });
+        localVue.use(store);
+        localVue.use(translateMixins);
+        const addquestiongroupandaddquestionbuttons = shallowMount(AddQuestionGroupAndAddQuestionButtons, {
+            localVue,
+            store,
+            propsData: {
+                isSurveyActive: true,
+                createQuestionGroupLink: 'createQuestionGroupLinkMock',
+                createQuestionLink: 'createQuestionLinkMock',
+                isCreateQuestionAllowed: true,
+                allowOrganizer: true,
+            },
+            data() {
+                return {
+
+                }
+            }
+        });
+        
+        expect(addquestiongroupandaddquestionbuttons.vm._isVue).toBe(true);
+        addquestiongroupandaddquestionbuttons.destroy();
+    });
+
     test('owns Questions', () => {
         const store = new Vuex.Store({
             state: {
@@ -66,6 +112,8 @@ describe('Admin Sidemenu Funtionalities', () => {
                     'isActive': false,
                     'createQuestionGroupLink': 'createQuestionGroupLinkMock',
                     'createQuestionLink': 'createQuestionLinkMock',
+                    'buttonDisabledTooltipQuestions': 'Add Question Button is disbaled',
+                    'buttonDisabledTooltipGroups': 'Add Question Group Button is disabled',
                 }
             },
             mutations: {
@@ -78,7 +126,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         localVue.use(pjaxMixins);
         localVue.use(translateMixins);
 
-        const questionexplorer = shallowMount(QuestionExplorer, {
+      /**   const questionexplorer = shallowMount(QuestionExplorer, {
             localVue,
             store,
             data() {
@@ -93,11 +141,12 @@ describe('Admin Sidemenu Funtionalities', () => {
                     lastQuestionGroupOpened: false,
                     isSurveyActive: false,
                     createQuestionGroupLinkString: '',
+                    createQuestionLinkString: '',
                     sideMenuData: [],
                 }
             },
             mixins: pjaxMixins,
-        });
+        });*/
       /*  const wrapper = shallowMount(SideBar, {
             localVue,
             store,
@@ -135,7 +184,7 @@ describe('Admin Sidemenu Funtionalities', () => {
      //   expect(wrapper.vm.$children).toBeDefined();
      //   expect(wrapper.vm.$children[0].$options._base.component.name).toBe('QuestionExplorer');
 
-        questionexplorer.destroy();
-        wrapper.destroy();
+       // questionexplorer.destroy();
+       // wrapper.destroy();
     });
 });

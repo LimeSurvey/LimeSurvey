@@ -1,68 +1,12 @@
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding left-0 top-0 bottom-0 right-5 margin top-5">
-        <div 
-           class="ls-flex-row wrap align-content-center align-items-center ls-space margin top-5 bottom-15 button-sub-bar">
-            <div class="scoped-toolbuttons-left">
-                <!-- Add Group Button -->
-                <!-- Survey is not active -->
-                <a v-if="!(surveyIsActive)"
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    class="btn btn-small btn-default ls-space margin right-5 pjax"
-                    :href="createQuestionGroupLink">
-                    <i class="fa fa-plus"></i>&nbsp;
-                    {{"createPage"|translate}}
-                </a>
-                <!-- Survey is active -->
-                <a v-else
-                    id="adminsidepanel__sidebar--selectorCreateQuestionGroup"
-                    :disabled="!(createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1)"
-                    class="btn btn-small btn-default ls-space margin right-5 pjax"
-                    data-toggle="tooltip"
-                    :title="buttonDisabledTooltipGroups"
-                >
-                    <i class="fa fa-plus"></i>&nbsp;
-                    {{"createPage"|translate}}
-                </a>
-
-                <!-- Create Question Button -->
-                <!-- Survey is not active -->
-                <a v-if="!(surveyIsActive)"
-                    id="adminsidepanel__sidebar--selectorCreateQuestion"
-                    :href="createFullQuestionLink()"
-                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
-                >
-                    <i class="fa fa-plus-circle"></i>&nbsp;
-                    {{"createQuestion"|translate}}
-                </a>
-                <!-- Survey is active -->
-                <a v-else
-                    id="adminsidepanel__sidebar--selectorCreateQuestion"
-                    class="btn btn-small btn-primary ls-space margin right-10 pjax"
-                    :disabled="!createQuestionAllowed"
-                    data-toggle="tooltip"
-                    :title="buttonDisabledTooltipQuestions">
-                    <i class="fa fa-plus-circle"></i>&nbsp;
-                    {{"createQuestion"|translate}}
-                </a>
-
-            </div>
-            <div class="scoped-toolbuttons-right">
-                <button
-                    class="btn btn-default"
-                    @click="toggleOrganizer"
-                    :title="translate(allowOrganizer ? 'lockOrganizerTitle' : 'unlockOrganizerTitle')"
-                >
-                    <i :class="allowOrganizer ? 'fa fa-unlock' : 'fa fa-lock'" />
-                </button>
-                <button
-                    class="btn btn-default"
-                    @click="collapseAll"
-                    :title="translate('collapseAll')"
-                >
-                    <i class="fa fa-compress" />
-                </button>
-            </div>
-        </div>
+        <!-- Add Question Group and Add Question Buttons -->
+        <add-question-group-and-add-question-buttons
+            :isSurveyActive="surveyIsActive" 
+            :createQuestionGroupLink="createQuestionGroupLinkString" 
+            :createQuestionLink="createQuestionLinkString" 
+            :isCreateQuestionAllowed="createQuestionAllowed"
+            :allowOrganizer="allowOrganizer" />
         <!-- List of all Question Groups with Questions -->
         <div class="ls-flex-row ls-space padding all-0">
             <ul 
@@ -161,6 +105,8 @@
 import _ from "lodash";
 import pjaxMixins from "../../mixins/pjaxMixins.js";
 import translateMixins from "../../mixins/translateMixins.js";
+import AddQuestionGroupAndAddQuestionButtons from './_addQuestionGroupAndAddQuestionButtons.vue';
+import EventBus from '../../../eventbus.js';
 
 export default {
     name: 'QuestionExplorer',
@@ -169,6 +115,9 @@ export default {
         translate: function(value) {
             return value;
         }
+    },
+    componets: {
+        'add-question-group-and-add-question-buttons': AddQuestionGroupAndAddQuestionButtons,
     },
     data() {
         return {
@@ -188,7 +137,7 @@ export default {
     },
     computed: {
         allowOrganizer() {
-            return this.$store.state.allowOrganizer === 1
+            return this.$store.state.allowOrganizer === 1;
         },
         surveyIsActive() {
             return this.isSurveyActive;
@@ -198,18 +147,6 @@ export default {
         },
         createQuestionLink() { 
             return this.createQuestionLinkString;
-        },
-        buttonDisabledTooltipQuestions() {
-            if (this.surveyIsActive) {
-                return window.SideMenuData.buttonDisabledTooltipQuestions
-            }
-            return "";
-        },
-        buttonDisabledTooltipGroups() {
-            if (this.surveyIsActive) {
-                return window.SideMenuData.buttonDisabledTooltipGroups
-            }
-            return "";
         },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
@@ -245,20 +182,8 @@ export default {
         }
     },
     methods: {
-        toggleOrganizer(){
-            this.$store.dispatch('unlockLockOrganizer');
-        },
         collapseAll() {
             this.openQuestionGroups = [];
-        },
-        createFullQuestionLink() {
-          if(this.createQuestionAllowed) {
-            if (LS.reparsedParameters().combined.gid) {
-              return LS.createUrl(this.createQuestionLink, {gid: LS.reparsedParameters().combined.gid});
-            }
-            return LS.createUrl(this.createQuestionLink, {});
-          }
-          return "";
         },
         questionHasCondition(question) {
             return question.relevance !== '1';
@@ -398,8 +323,7 @@ export default {
                                 }
                             );
                         } else {
-                            this.draggedQuestion.question_order =
-                                this.draggedQuestionsGroup.questions.length + 1;
+                            this.draggedQuestion.question_order = this.draggedQuestionsGroup.questions.length + 1;
                         }
 
                         this.draggedQuestionsGroup = questiongroupObject;
@@ -443,6 +367,10 @@ export default {
         this.isSurveyActive = this.$store.SideMenuData.isActive;
         this.createQuestionGroupLinkString = this.$store.SideMenuData.createQuestionGroupLink;
         this.createQuestionLinkString = this.$store.SideMenuData.createQuestionLink;
+
+        EventBus.$on('collapseAll', (payload) => {
+            this.openQuestionGroups = $payload;
+        });
     }
 };
 </script>
