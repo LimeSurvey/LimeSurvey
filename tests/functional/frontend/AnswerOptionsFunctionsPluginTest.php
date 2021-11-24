@@ -25,8 +25,10 @@ class AnswerOptionsFunctionsPluginTest extends TestBaseClassWeb
 
     }
 
-    /* Launch survey with an already submitted token */
-    public function testPluginsByTokens()
+    /**
+     * Check if function return good value in loaded survey
+     **/
+    public function testGetAnswerOptionText()
     {
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
