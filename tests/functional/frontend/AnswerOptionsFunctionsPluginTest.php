@@ -53,14 +53,6 @@ class AnswerOptionsFunctionsPluginTest extends TestBaseClassWeb
                     'id' => 'check-answerem',
                     'text' => 'Very important',
                 ),
-                'checkinvalidq'=> array(
-                    'id' => 'check-invalidq',
-                    'text' => 'Invalid question code or id “invalidquestion”',
-                ),
-                'checkinvalida'=> array(
-                    'id' => 'check-invalida',
-                    'text' => 'Invalid answer option code “invalidanswer”',
-                ),
             ),
             'fr' => array(
                 'checkstring'=> array(
