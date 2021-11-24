@@ -27,9 +27,17 @@ export default  function(userid) {
         toggleKey: Math.floor(Math.random()*10000)+'--key',
         allowOrganizer: true,
         SideMenuData: {
+            'translate': {
+                'lockOrganizerTitle': 'Lock question organizer',
+                'unlockOrganizerTitle': 'Unlock question organizer',
+            },
             'isActive': false,
             'createQuestionGroupLink': '',
             'createQuestionLink': '',
-        }
+            'buttonDisabledTooltipQuestions': '',
+            'buttonDisabledTooltipGroups': '',
+            'lockOrganizerTitle': 'Lock question organizer',
+            'unlockOrganizerTitle': 'Unlock question organizer',
+        },
     };
 };
