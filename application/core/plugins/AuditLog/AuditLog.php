@@ -197,7 +197,7 @@ class AuditLog extends \LimeSurvey\PluginManager\PluginBase
         $iSurveyID = $event->get('iSurveyID');
         $iUserID = $event->get('iUserID');
         $oCurrentUser = $this->api->getCurrentUser();
-        $oOldPermission = $this->api->getPermissionSet($iUserID, $iSurveyID, 'survey');
+        $oOldPermission = $this->api->getPermissionSet($iUserID, $iSurveyID, 'Survey');
         $sAction = 'update';   // Permissions are in general only updated (either you have a permission or you don't)
 
         if (count(array_diff_assoc_recursive($aNewPermissions, $oOldPermission))) {

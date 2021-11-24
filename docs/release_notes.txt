@@ -34,6 +34,43 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.2 (build 211115) to 5.2.3 (build 211122) November 22, 2021
+-Fixed issue: Error in RemoteControl API when using using set_question_properties (#2142) (Víctor Echeverría)
+-Fixed issue T155: Sometimes editing survey participants doesn't show data (#2145) (Gabriel Jenik)
+-Fixed issue #17734: Unable to use quote inside relevance of subquestion (Denis Chenu)
+-Fixed issue #17729: Setting default answers for single choice question type (#2146) (Denis Chenu)
+-Fixed issue #17696: Mass changing expiration date fails (except for superadmin) (#2144) (Gabriel Jenik)
+#Updated translation: Sinhala by sayuri
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, holch, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, femariso, jchina, samarta
+#Updated translation: Portuguese (Portugal) by c_schmitz, femariso, fermacedo, holch, marcelovincenzi, samarta
+#Updated translation: German by c_schmitz, Hyperion, RobinBur, sur5r_
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, HonkXL, RobinBur
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.2.1 (build 211111) to 5.2.2 (build 211115) November 15, 2021
+-Fixed issue: Error message "Unknown column 'owner_uid' in 'field list'"  when updating from 4.x (Carsten Schmitz)
+-Fixed issue: Confusing message when the ComfortUpdate server is preparing the update package (Carsten Schmitz)
+-Fixed issue #L41-T1509: Numeric questions prevent statistics from generating and display false data (Patrick Teichmann)
+-Fixed issue #L41-T1509: Numeric questions prevent statistics from generating and display false data (#2127) (Patrick Teichmann)
+-Fixed issue #17719: Question list not updated when adding/changing questions (Olle Haerstedt)
+-Fixed issue #17717: Saving survey group permissions fails with error if auditlog plugin is active (#2141) (Vitauts Stočka)
+-Fixed issue #17713: broken theme name in Survey general settings (#2140) (Vitauts Stočka)
+-Fixed issue #17674: Impossible to add new Menu or New Menu Entry  (#2136) (Gabriel Jenik)
+-Fixed issue #17637: wrong question order (#2139) (Vitauts Stočka)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by c_schmitz, rovinj
+
+
 Changes from 5.2.0 (build 211110) to 5.2.1 (build 211111) November 11, 2021
 -Fixed issue: Missing database commit in update 477 (Olle Haerstedt)
 #Updated translation: Portuguese (Portugal) by samarta

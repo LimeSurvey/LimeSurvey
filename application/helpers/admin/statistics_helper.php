@@ -606,25 +606,25 @@ class statistics_helper
         //M - Multiple choice, therefore multiple fields - one for each answer
         if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
-            list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+            [$qsid, $qgid, $qqid] = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
             $nresult = Question::model()->find('parent_qid=0 AND qid=:qid', array(':qid' => $qqid));
-            $qtitle = $nresult->title;
-            $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->questionl10ns[$language]->question);
             $qother = 'N';
             if (!empty($nresult)) {
+                $qtitle = $nresult->title;
+                $qtype = $nresult->type;
+                $qquestion = flattenText($nresult->questionl10ns[$language]->question);
                 $qother = $nresult->other;
             }
 
 
             //1. Get list of answers
-            $result = Question::model()->findAll(array('order' => 'question_order',
+            $rows = Question::model()->findAll(array('order' => 'question_order',
                 'condition' => 'parent_qid=:qid AND scale_id=0',
                 'params' => array(':qid' => $qqid)
             ));
-            foreach ($result as $row) {
+            foreach ($rows as $row) {
                 $mfield = substr($rt, 1, strlen($rt)) . $row['title'];
                 $alist[] = array($row['title'], flattenText($row->questionl10ns[$language]->question), $mfield);
             }
@@ -714,10 +714,10 @@ class statistics_helper
 
             //get answers
             $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid WHERE a.qid='$qqid' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $rows = Yii::app()->db->createCommand($query)->query();
 
             //loop through answers
-            foreach ($result->readAll() as $row) {
+            foreach ($rows->readAll() as $row) {
                 $row = array_values($row);
                 //create an array containing answer code, answer and fieldname(??)
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
@@ -752,24 +752,24 @@ class statistics_helper
             // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
             $fieldname = substr($rt, 1, strlen($rt));
             $query = "SELECT SUM(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as sum, AVG(" . Yii::app()->db->quoteColumnName($fieldname . '_filecount') . ") as avg FROM {{survey_$surveyid}}";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $rows = Yii::app()->db->createCommand($query)->query();
 
             $showem = array();
 
-            foreach ($result->readAll() as $row) {
+            foreach ($rows->readAll() as $row) {
                 $showem[] = array(gT("Total number of files"), $row['sum']);
                 $showem[] = array(gT("Average no. of files per respondent"), $row['avg']);
             }
 
 
             $query = "SELECT " . $fieldname . " as json FROM {{survey_$surveyid}}";
-            $result = Yii::app()->db->createCommand($query)->query();
+            $rows = Yii::app()->db->createCommand($query)->query();
 
             $responsecount = 0;
             $filecount = 0;
             $size = 0;
 
-            foreach ($result->readAll() as $row) {
+            foreach ($rows->readAll() as $row) {
                 $json = $row['json'];
                 $phparray = json_decode($json);
 
@@ -915,45 +915,18 @@ class statistics_helper
                 //this field is queried using mathematical functions
                 $fieldname = substr($rt, 1, strlen($rt));
 
-                //special treatment for MS SQL databases
-                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
-                    //standard deviation
-                    $query = "SELECT STDEVP(" . Yii::app()->db->quoteColumnName($fieldname) . "*1) as stdev";
-                }
-
-                //other databases (MySQL, Postgres)
-                else {
-                    //standard deviation
-                    $query = "SELECT STDDEV(CAST(" . Yii::app()->db->quoteColumnName($fieldname) . " AS DECIMAL(26,6))) as stdev";
-                }
-
-                //sum
-                $query .= ", SUM(CAST(" . Yii::app()->db->quoteColumnName($fieldname) . " AS DECIMAL(26,6))) as sum";
-
-                //average
-                $query .= ", AVG(CAST(" . Yii::app()->db->quoteColumnName($fieldname) . " AS DECIMAL(26,6))) as average";
-
-                //min
-                $query .= ", MIN(CAST(" . Yii::app()->db->quoteColumnName($fieldname) . " AS DECIMAL(26,6))) as minimum";
-
-                //max
-                $query .= ", MAX(CAST(" . Yii::app()->db->quoteColumnName($fieldname) . " AS DECIMAL(26,6))) as maximum";
+                $query = "SELECT " . Yii::app()->db->quoteColumnName($fieldname);
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
-
+                $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                 //special treatment for MS SQL databases
-                if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
+                if ($sDatabaseType === 'mssql' || $sDatabaseType === 'sqlsrv' || $sDatabaseType === 'dblib') {
                     //no NULL/empty values please
-                    $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                     if (!$excludezeros) {
                         //NO ZERO VALUES
                         $query .= " AND (" . Yii::app()->db->quoteColumnName($fieldname) . " <> 0)";
                     }
-                }
-
-                //other databases (MySQL, Postgres)
-                else {
+                } else { //other databases (MySQL, Postgres)
                     //no NULL/empty values please
-                    $query .= " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT NULL";
                     if (!$excludezeros) {
                         //NO ZERO VALUES
                         $query .= " AND (" . Yii::app()->db->quoteColumnName($fieldname) . " != 0)";
@@ -961,9 +934,9 @@ class statistics_helper
                 }
 
                 //filter incomplete answers if set
-                if (incompleteAnsFilterState() == "incomplete") {
+                if (incompleteAnsFilterState() === "incomplete") {
                     $query .= " AND submitdate is null";
-                } elseif (incompleteAnsFilterState() == "complete") {
+                } elseif (incompleteAnsFilterState() === "complete") {
                     $query .= " AND submitdate is not null";
                 }
 
@@ -973,27 +946,38 @@ class statistics_helper
                 }
 
                 //execute query
-                $result = Yii::app()->db->createCommand($query)->queryAll();
-
-                //get calculated data
-                foreach ($result as $row) {
-                    //put translation of mean and calculated data into $showem array
-                    $showem[] = array(gT("Sum"), $row['sum']);
-                    $showem[] = array(gT("Standard deviation"), round($row['stdev'], 2));
-                    $showem[] = array(gT("Average"), round($row['average'], 2));
-                    $showem[] = array(gT("Minimum"), $row['minimum']);
-
-                    //Display the maximum and minimum figures after the quartiles for neatness
-                    $maximum = $row['maximum'];
+                $rows = Yii::app()->db->createCommand($query)->queryAll();
+                foreach ($rows as $key => $row) {
+                    if ($fielddata['encrypted'] === "Y") {
+                        $rows[$key] = LSActiveRecord::decryptSingle($row[$fieldname]);
+                    } else {
+                        $rows[$key] = $row[$fieldname];
+                    }
                 }
+
+                //calculate statistical values
+                $standardDeviation = standardDeviation($rows);
+                $sum = array_sum($rows);
+                $average = $sum / count($rows);
+                $min = min($rows);
+                $max = max($rows);
+
+                //put translation of mean and calculated data into $showem array
+                $showem[] = [gT("Sum"), $sum];
+                $showem[] = [gT("Standard deviation"), round($standardDeviation, 2)];
+                $showem[] = [gT("Average"), round($average, 2)];
+                $showem[] = [gT("Minimum"), $min];
+
+                //Display the maximum and minimum figures after the quartiles for neatness
+                $maximum = $max;
 
 
                 //CALCULATE QUARTILES
-                $medcount = $this->getQuartile(0, $fieldname, $surveyid, $sql, $excludezeros); // Get the recordcount
+                $medcount = $this->getQuartile(0, $fielddata, $sql, $excludezeros); // Get the recordcount
                 $quartiles = array();
-                $quartiles[1] = $this->getQuartile(1, $fieldname, $surveyid, $sql, $excludezeros);
-                $quartiles[2] = $this->getQuartile(2, $fieldname, $surveyid, $sql, $excludezeros);
-                $quartiles[3] = $this->getQuartile(3, $fieldname, $surveyid, $sql, $excludezeros);
+                $quartiles[1] = $this->getQuartile(1, $fielddata, $sql, $excludezeros);
+                $quartiles[2] = $this->getQuartile(2, $fielddata, $sql, $excludezeros);
+                $quartiles[3] = $this->getQuartile(3, $fielddata, $sql, $excludezeros);
 
                 //we just put the total number of records at the beginning of this array
                 array_unshift($showem, array(gT("Count"), $medcount));
@@ -4115,50 +4099,53 @@ class statistics_helper
      * @staticvar null $field
      * @staticvar null $allRows
      * @param integer $quartile use 0 for return of recordcount, otherwise will return Q1,Q2,Q3
-     * @param string $fieldname
-     * @param int $surveyid
+     * @param array $fielddata
      * @param string $sql
      * @param bool $excludezeros
      * @return null|float
      */
-    protected function getQuartile($quartile, $fieldname, $surveyid, $sql, $excludezeros)
+    protected function getQuartile($quartile, $fielddata, $sql, $excludezeros)
     {
         static $sid = null;
         static $recordCount = 0;
         static $field = null;
         static $allRows = null;
 
-        if ($surveyid !== $sid || $fieldname !== $field) {
+        $criteria = new CDbCriteria();
+        if ($fielddata['sid'] !== $sid || $fielddata['fieldname'] !== $field) {
             //get data
-            $query = " FROM {{survey_$surveyid}} WHERE " . Yii::app()->db->quoteColumnName($fieldname) . " IS NOT null";
+            $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " IS NOT null");
             //NO ZEROES
             if (!$excludezeros) {
-                $query .= " AND " . Yii::app()->db->quoteColumnName($fieldname) . " != 0";
+                $criteria->addCondition(Yii::app()->db->quoteColumnName($fielddata['fieldname']) . " != 0");
             }
 
             //filtering enabled?
             if (incompleteAnsFilterState() == "incomplete") {
-                $query .= " AND submitdate is null";
+                $criteria->addCondition("submitdate is null");
             } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " AND submitdate is not null";
+                $criteria->addCondition("submitdate is not null");
             }
 
             //if $sql values have been passed to the statistics script from another script, incorporate them
             if (!empty($sql)) {
-                $query .= " AND $sql";
+                $criteria->addCondition($sql);
             }
         }
 
-        if ($surveyid !== $sid) {
-            $sid = $surveyid;
+        if ($fielddata['sid'] !== $sid) {
+            $sid = $fielddata['sid'];
             $recordCount = 0;
             $field = null; // Reset cache
         }
 
-        if ($fieldname !== $field) {
-            $field = $fieldname;
-            $allRows = Yii::app()->db->createCommand("SELECT " . Yii::app()->db->quoteColumnName($fieldname) . $query . ' ORDER BY ' . Yii::app()->db->quoteColumnName($fieldname))->queryAll();
-            $recordCount = Yii::app()->db->createCommand("SELECT COUNT(" . Yii::app()->db->quoteColumnName($fieldname) . ")" . $query)->queryScalar(); // Record count for THIS $fieldname
+        if ($fielddata['fieldname'] !== $field) {
+            $field = $fielddata['fieldname'];
+            $criteria->select = Yii::app()->db->quoteColumnName($fielddata['fieldname']);
+            $criteria->order = Yii::app()->db->quoteColumnName($fielddata['fieldname']);
+            $allRows = Yii::app()->db->getCommandBuilder()->createFindCommand("{{survey_{$fielddata['sid']}}}", $criteria)->queryAll();
+            $criteria->select = "COUNT(" . Yii::app()->db->quoteColumnName($fielddata['fieldname']) . ")";
+            $recordCount = Response::model($fielddata['sid'])->count($criteria); // Record count for THIS $fieldname
         }
 
         // Qx = (x/4) * (n+1) if not integer, interpolate
@@ -4188,10 +4175,22 @@ class statistics_helper
         $q1 = $quartile / 4 * ($recordCount + 1);
         $row = $q1 - 1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
-            return $allRows[$row][$fieldname];
+            if ($fielddata['encrypted'] === "Y") {
+                $quartileValue = LSActiveRecord::decryptSingle($allRows[$row][$fielddata['fieldname']]);
+            } else {
+                $quartileValue = $allRows[$row][$fielddata['fieldname']];
+            }
+            return $quartileValue;
         } else {
-            $diff = ($q1 - (int) $q1);
-            return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
+            $diff = ($q1 - (int)$q1);
+            if ($fielddata['encrypted'] === "Y") {
+                $firstRowFieldvalue = LSActiveRecord::decryptSingle($allRows[$row][$fielddata['fieldname']]);
+                $nextRowFieldvalue = LSActiveRecord::decryptSingle($allRows[$row + 1][$fielddata['fieldname']]);
+            } else {
+                $firstRowFieldvalue = $allRows[$row][$fielddata['fieldname']];
+                $nextRowFieldvalue = $allRows[$row + 1][$fielddata['fieldname']];
+            }
+            return $firstRowFieldvalue + $diff * ($nextRowFieldvalue - $firstRowFieldvalue);
         }
     }
 
