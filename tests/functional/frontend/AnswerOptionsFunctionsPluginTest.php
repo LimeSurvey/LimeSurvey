@@ -129,7 +129,7 @@ class AnswerOptionsFunctionsPluginTest extends TestBaseClassWeb
         if (!$plugin) {
             $plugin = new \Plugin();
             $plugin->name = 'expressionAnswerOptions';
-            $plugin->type = 'core';
+            $plugin->plugin_type = 'core';
             $plugin->active = 1;
             $plugin->save();
         } else {
