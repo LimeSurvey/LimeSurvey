@@ -1380,7 +1380,7 @@ class tokens extends Survey_Common_Action
             $ctresult = $tokenDynamic->findUninvited($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
 
-            $emresult = $tokenDynamic->findUninvited($aTokenIds, $iMaxEmails, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $emresult = array_slice($ctresult, 0, $iMaxEmails);
             $emcount = count($emresult);
 
             foreach ($aSurveyLangs as $language) {
