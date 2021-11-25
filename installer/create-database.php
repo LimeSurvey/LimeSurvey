@@ -119,7 +119,7 @@ function populateDatabase($oDB)
             'dvid' =>  "integer NOT NULL default '0'",
             'language' =>  "string(20) NOT NULL",
             'defaultvalue' =>  "text",
-        ));
+        ), $options);
         $oDB->createCommand()->createIndex('{{idx1_defaultvalue_ls}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], false);
 
         // expression_errors
@@ -331,7 +331,7 @@ function populateDatabase($oDB)
             'renewed_last' =>  "datetime NULL",
             'created_at' =>  "datetime NOT NULL",
             'created_by' =>  "int NOT NULL"
-        ]);
+        ], $options);
 
         $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
 
