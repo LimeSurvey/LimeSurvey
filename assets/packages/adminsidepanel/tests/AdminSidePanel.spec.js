@@ -15,7 +15,7 @@ localVue.use(Vuex);
 
 describe('Admin Sidemenu Funtionalities', () => {
 
-    test('does it exists', () => {
+    test('Does the sidemenu exists', () => {
         const store = new Vuex.Store({
             state: {
                 '$': {},
@@ -90,7 +90,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         wrapper.destroy();
     });
 
-    test('Create Question and Create Question Group Buttons are visible', () => {
+    test('Does Create Question and Create Question Group Buttons exists', () => {
         const store = new Vuex.Store({
             state: {
                 'SideMenuData': {
@@ -135,7 +135,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         addquestiongroupandaddquestionbuttons.destroy();
     });
 
-    test('List of all Questions Groups with Questions', () => {
+    test('Does List all question groups with questions exists', () => {
         const store = new Vuex.Store({
             state: {
                 'SideMenuData': {
@@ -164,7 +164,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         listofallquestiongroupswithquestions.destroy();
     });
 
-    test('owns Questions', () => {
+    test('Does the question explorer exists', () => {
         const store = new Vuex.Store({
             state: {
                 'lastQuestionGroupOpen': 1,
