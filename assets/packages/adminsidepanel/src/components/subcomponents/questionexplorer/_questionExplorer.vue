@@ -203,7 +203,9 @@ export default {
                 } 
                 
             } else {
-                if(window.SideMenuData.isActive) {return;}
+                if (this.$store.state.SideMenuData.isActive) {
+                    return;
+                }
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
                     const removedFromInital = _.remove(
@@ -258,7 +260,9 @@ export default {
         },
         dragoverQuestion($event, questionObject, questionGroupObject) {
             if (this.questionDragging) {
-                if(this.questionDragging.gid !== questionObject.gid && window.SideMenuData.isActive) {return;}
+                if (this.questionDragging.gid !== questionObject.gid && this.$store.state.SideMenuData.isActive) {
+                    return;
+                }
                 let orderSwap = questionObject.question_order;
                 questionObject.question_order = this.draggedQuestion.question_order;
                 this.draggedQuestion.question_order = orderSwap;
@@ -273,9 +277,9 @@ export default {
     mounted() {
         this.openQuestionGroups = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks(this.$store);
-        this.isSurveyActive = this.$store.SideMenuData.isActive;
-        this.createQuestionGroupLinkString = this.$store.SideMenuData.createQuestionGroupLink;
-        this.createQuestionLinkString = this.$store.SideMenuData.createQuestionLink;
+        this.isSurveyActive = this.$store.state.SideMenuData.isActive;
+        this.createQuestionGroupLinkString = this.$store.state.SideMenuData.createQuestionGroupLink;
+        this.createQuestionLinkString = this.$store.state.SideMenuData.createQuestionLink;
 
         EventBus.$on('collapseAll', (payload) => {
             this.openQuestionGroups = $payload;

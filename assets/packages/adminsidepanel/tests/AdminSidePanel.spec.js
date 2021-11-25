@@ -175,10 +175,16 @@ describe('Admin Sidemenu Funtionalities', () => {
                 'lastQuestionGroupOpen': false,
                 'SideMenuData': {
                     'isActive': false,
+                    'translate': {
+                        'lockOrganizerTitle': 'Lock question organizer',
+                        'unlockOrganizerTitle': 'Unlock question organizer',
+                    },
                     'createQuestionGroupLink': 'createQuestionGroupLinkMock',
                     'createQuestionLink': 'createQuestionLinkMock',
                     'buttonDisabledTooltipQuestions': 'Add Question Button is disbaled',
                     'buttonDisabledTooltipGroups': 'Add Question Group Button is disabled',
+                    'lockOrganizerTitle': 'Lock question organizer',
+                    'unlockOrganizerTitle': 'Unlock question organizer',
                 }
             },
             mutations: {
@@ -191,7 +197,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         localVue.use(pjaxMixins);
         localVue.use(translateMixins);
 
-      /**   const questionexplorer = shallowMount(QuestionExplorer, {
+        const questionexplorer = shallowMount(QuestionExplorer, {
             localVue,
             store,
             data() {
@@ -211,45 +217,13 @@ describe('Admin Sidemenu Funtionalities', () => {
                 }
             },
             mixins: pjaxMixins,
-        });*/
-      /*  const wrapper = shallowMount(SideBar, {
-            localVue,
-            store,
-            propsData: {
-                landOnTab: 'Settings',
-                isSideMenuElementActive: false,
-                activeSideMenuElement: ''
-            },
-            data() {
-                return {
-                    activeMenuElement: 0,
-                    openSubpanelId: 0,
-                    menues: [],
-                    collapsed: false,
-                    sideBarWidth: "315",
-                    sideBarHeight: "400px",
-                    initialPos: {
-                        x: 0,
-                        y: 0
-                    },
-                    isMouseDown: false,
-                    isMouseDownTimeOut: null,
-                    showLoader: false,
-                    loading: true,
-                    hiddenStateToggleDisplay: 'flex',
-                    smallScreenHidden: false,
-                }
-            },
             stubs: {
-                'registered-component': questionexplorer,
-                'another-component': true,
+                AddQuestionGroupAndAddQuestionButtons: true,
+                ListOfAllQuestionGroupsWithQuestions: true,
             }
-        });*/
-
-     //   expect(wrapper.vm.$children).toBeDefined();
-     //   expect(wrapper.vm.$children[0].$options._base.component.name).toBe('QuestionExplorer');
-
-       // questionexplorer.destroy();
-       // wrapper.destroy();
+        });
+      
+        expect(questionexplorer.vm._isVue).toBe(true);
+        questionexplorer.destroy();
     });
 });
