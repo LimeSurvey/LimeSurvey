@@ -22,10 +22,8 @@ import translateMixins from "../../../mixins/translateMixins.js";
 import AddQuestionGroupAndAddQuestionButtons from './_addQuestionGroupAndAddQuestionButtons.vue';
 import ListOfAllQuestionGroupsWithQuestions from './_listOfAllQuestionGroupsWithQuestions.vue';
 import EventBus from '../../../../eventbus.js';
-import _listOfAllQuestionGroupsWithQuestions from './_listOfAllQuestionGroupsWithQuestions.vue';
 
 export default {
-  components: { _listOfAllQuestionGroupsWithQuestions },
     name: 'QuestionExplorer',
     mixins: [pjaxMixins, translateMixins],
     filters: {
