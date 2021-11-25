@@ -1,6 +1,8 @@
 <script>
+import $ from 'jquery';
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
+import pjaxMixins from "../mixins/pjaxMixins.js";
 import Questionexplorer from "./subcomponents/questionexplorer/_questionExplorer.vue";
 import SidebarStateToggle from "./subcomponents/_sidebarStateToggle.vue";
 import Sidemenu from "./subcomponents/_sidemenu.vue";
@@ -20,7 +22,7 @@ export default {
         quickmenu: Quickmenu,
         SidebarStateToggle
     },
-    mixins: [ajaxMixin],
+    mixins: [ajaxMixin, pjaxMixins],
     data() {
         return {
             activeMenuIndex: 0,
@@ -40,7 +42,9 @@ export default {
     },
     computed: {
         useMobileView() { return window.innerWidth < 768; },
-        isActive(){ return window.SideMenuData.isActive; },
+        isActive() {
+            return this.$store.state.SideMenuData.isActive;
+        },
         questiongroups() { return this.$store.state.questiongroups },
         sidemenus: {
             get(){return this.$store.state.sidemenus; },
@@ -52,7 +56,9 @@ export default {
         },
         currentTab: {
             get() { return this.$store.state.currentTab; },
-            set(tab) { this.$store.commit("changeCurrentTab", tab); }
+            set(tab) {
+                this.$store.commit("changeCurrentTab", tab);
+            }
         },
         getSideBarWidth() {
             return this.$store.getters.isCollapsed ? "98" : this.sideBarWidth;
@@ -386,7 +392,7 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        _.each(window.SideMenuData.basemenus, this.setBaseMenuPosition);
+        _.each(this.$store.state.SideMenuData.basemenus, this.setBaseMenuPosition);
 
         // select right menu entry
         this.activeMenuIndex = this.filterAgainstMenus(this.isSideMenuActive);

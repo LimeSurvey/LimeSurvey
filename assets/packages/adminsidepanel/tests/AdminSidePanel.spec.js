@@ -1,5 +1,6 @@
 import  { shallowMount, createLocalVue }  from '@vue/test-utils';
 import Vuex from 'vuex';
+
 import SideBar from '../src/components/sidebar.vue';
 import QuestionExplorer from '../src/components/subcomponents/questionexplorer/_questionExplorer.vue';
 import AddQuestionGroupAndAddQuestionButtons from '../src/components/subcomponents/questionexplorer/_addQuestionGroupAndAddQuestionButtons.vue';
@@ -14,14 +15,47 @@ localVue.use(Vuex);
 
 describe('Admin Sidemenu Funtionalities', () => {
 
-    /** test('does it exists', () => {
+    test('does it exists', () => {
         const store = new Vuex.Store({
             state: {
                 '$': {},
+                'currentTab': 'settings',
+                'toggleKey': Math.floor(Math.random()*10000)+'--key',
+                'lastMenuOpen': false,
+                'lastMenuItemOpen': false,
+                'lastQuestionsGroupOpen': false,
+                'lastQuestionOpen': false,
+                'sideBarHeight': 400,
+                'surveyActiveState': false,
+                'SideMenuData': {
+                    'isActive': false,
+                    'basemenus': [],
+                }
             },
+            mutations: {
+                setSurveyActiveState(state, surveyState) {
+                    state.surveyActiveState = !!surveyState;
+                },
+                changeSideBarHeight(state, newHeight) {
+                    state.sideBarHeight = newHeight;
+                },
+                closeAllMenus(state) {
+                    state.lastMenuOpen = false;
+                    state.lastMenuItemOpen = false;
+                    state.lastQuestionGroupOpen = false;
+                    state.lastQuestionOpen = false;
+                },
+                newToggleKey(state){
+                    state.toggleKey = Math.floor(Math.random()*10000)+'--key';
+                },
+                changeCurrentTab(state, value) {
+                    state.currentTab = value;
+                },
+            }
         });
         localVue.use(store);
         localVue.use(translateMixins);
+        localVue.use(pjaxMixins);
 
         const wrapper = shallowMount(SideBar, {
             localVue,
@@ -54,7 +88,7 @@ describe('Admin Sidemenu Funtionalities', () => {
         });      
         expect(wrapper.vm._isVue).toBe(true);
         wrapper.destroy();
-    });*/
+    });
 
     test('Create Question and Create Question Group Buttons are visible', () => {
         const store = new Vuex.Store({
