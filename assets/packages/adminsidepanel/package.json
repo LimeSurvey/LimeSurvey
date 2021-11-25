@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.4",
     "node-sass": "^4.0.0",
     "vue": "^2.6.10",
