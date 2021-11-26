@@ -365,6 +365,7 @@
             <sortorder>200</sortorder>
             <inputtype>textarea</inputtype>
             <expression>2</expression>
+            <xssfilter>0</xssfilter>
             <help>Enter a boolean equation to validate the whole question.</help>
             <caption>Question validation equation</caption>
             <i18n></i18n>
