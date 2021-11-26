@@ -78,6 +78,9 @@ abstract class DatabaseUpdateBase
         if (count($nameParts) !== 2) {
             throw new Exception('Expected exactly two name parts');
         }
+        if ($nameParts[0] !== 'Update') {
+            throw new Exception('Update file MUST be named Update_x for a DBVersion number x');
+        }
         return (int) $nameParts[1];
     }
 
