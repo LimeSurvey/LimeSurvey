@@ -790,6 +790,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
           });
         }
 
+        // Answer option IDs are generated randomly, so they repeat sometimes.
+        // We keep track of the generated numbers to make sure they don't repeat.
+        var generatedIds = [];
+
         // Loop the preview table and copy rows to destination (subquestions or answer options).
         $('#labelsetpreview').find(`#language_${lang}`).find('.selector_label-list').find('.selector_label-list-row')
         .each((i, item) => {
@@ -812,7 +816,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
             // Only define random ids the FIRST language we loop for.
             // Different translations still use the same question code in the input name.
             if (langIds[i] === undefined) {
-              langIds[i] = `new${Math.floor(Math.random() * 10000)}`;
+              var randId = `new${Math.floor(Math.random() * 99999)}`;
+              var tries = 1;
+              while (generatedIds.includes(randId)) {
+                if (tries > 100) {
+                  throw 'Couldn\'t generate a unique ID';
+                }
+                randId = `new${Math.floor(Math.random() * 99999)}`;
+                tries++;
+              }
+              generatedIds.push(randId);
+              langIds[i] = randId;
             }
 
             $tr.attr('data-common-id', $tr.attr('data-common-id').replace('/new[0-9]{3,6}/', langIds[i]));
@@ -948,6 +962,10 @@ $(document).on('ready pjax:scriptcomplete', function () {
       codeSigil.push(currentCharacter);
     }
 
+    // Answer option IDs are generated randomly, so they repeat sometimes.
+    // We keep track of the generated numbers to make sure they don't repeat.
+    var generatedIds = [];
+
     // TODO: Document value
     // NB: splitCSV is added to string prototype in adminbasics.
     lsrows.forEach((value /*: string & {splitCSV: string => Array<string>} */, k /*: number */) => {
@@ -967,7 +985,17 @@ $(document).on('ready pjax:scriptcomplete', function () {
       } else {
         thisrow[0] = thisrow[0].replace(/[^A-Za-z0-9]/g, '').substr(0, 20);
       }
-      const quid = `new${Math.floor(Math.random() * 10000)}`;
+
+      var quid = `new${Math.floor(Math.random() * 99999)}`;
+      var tries = 1;
+      while (generatedIds.includes(quid)) {
+        if (tries > 100) {
+          throw 'Couldn\'t generate a unique ID';
+        }
+        quid = `new${Math.floor(Math.random() * 99999)}`;
+        tries++;
+      }
+      generatedIds.push(quid);
 
       // TODO: What's happening here?
       languages.forEach((language, x) => {
