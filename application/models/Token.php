@@ -418,7 +418,7 @@ abstract class Token extends Dynamic
             array('firstname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('lastname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('language', 'LSYii_Validators', 'isLanguage' => true),
-            array('language','in','range' => array($this->survey->language) + explode(' ', $this->survey->additional_languages),'allowEmpty' => true),
+            array('language','in','range' => array($this->survey->language) + explode(' ', $this->survey->additional_languages),'allowEmpty' => true,'message' => gT('Language code is invalid in this survey')),
             array(implode(',', $this->tableSchema->columnNames), 'safe'),
             /* pseudo date : force date or specific string ? */
             array('remindersent', 'length', 'min' => 0, 'max' => 17),
