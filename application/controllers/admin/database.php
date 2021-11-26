@@ -587,7 +587,6 @@ class database extends Survey_Common_Action
                     /* delete IS NULL too*/
                     QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
                     foreach ($aLanguages as $sLanguage) {
-                        // TODO sanitise XSS
                         $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
                         $questionAttributes = QuestionAttribute::model()->findAll('attribute=:attribute AND qid=:qid AND language=:language', [':attribute' => $validAttribute['name'], ':qid' => $this->iQuestionID, ':language' => $sLanguage]);
                         if (count($questionAttributes) > 0) {
