@@ -2151,9 +2151,8 @@ class tokens extends Survey_Common_Action
                             foreach ($aWriteArray as $key => $value) {
                                     $oToken->$key = $value;
                             }
-                            if (!$oToken->encryptSave()) {
-                                $errors = ($oToken->getErrors());
-                                $aModelErrorList[] = sprintf(gT("Line %s : %s"), $iRecordCount, print_r($errors, true));
+                            if (!$oToken->encryptSave(true)) {
+                                $aModelErrorList[] = array('line' => $iRecordCount, 'errors' => CHtml::errorSummary($oToken, '', '', ['class' => 'text-left']));
                             } else {
                                 $bImportDone = true;
                             }
