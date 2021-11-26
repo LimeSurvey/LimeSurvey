@@ -161,9 +161,7 @@ abstract class Token extends Dynamic
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
-            if (!empty(Yii::app()->getConfig('mysqlEngine'))) {
-                $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
-            }
+            $options = sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
         }
 
         if (
