@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-22 11:44:30+00:00\n"
+"POT-Creation-Date: 2021-11-29 09:31:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,7 +53,7 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:1614
 #: application/helpers/admin/import_helper.php:1718
 #: application/helpers/admin/import_helper.php:1861
-#: application/helpers/admin/import_helper.php:2203
+#: application/helpers/admin/import_helper.php:2207
 #: application/models/TemplateManifest.php:177
 #: application/models/TemplateManifest.php:433
 #: application/views/admin/dataentry/active_html_view.php:116
@@ -1899,10 +1899,10 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:269
 #: application/views/admin/token/tokenform.php:115
 #: application/views/admin/token/tokenform.php:133
-#: application/views/admin/token/tokenform.php:274
-#: application/views/admin/token/tokenform.php:291
-#: application/views/admin/token/tokenform.php:327
-#: application/views/admin/token/tokenform.php:337
+#: application/views/admin/token/tokenform.php:275
+#: application/views/admin/token/tokenform.php:292
+#: application/views/admin/token/tokenform.php:328
+#: application/views/admin/token/tokenform.php:338
 #: application/views/admin/usergroup/usergroups_view.php:142
 #: application/views/survey/frontpage/clearallForm/form.php:11
 msgid "Yes"
@@ -2055,10 +2055,10 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:270
 #: application/views/admin/token/tokenform.php:116
 #: application/views/admin/token/tokenform.php:134
-#: application/views/admin/token/tokenform.php:275
-#: application/views/admin/token/tokenform.php:292
-#: application/views/admin/token/tokenform.php:328
-#: application/views/admin/token/tokenform.php:338
+#: application/views/admin/token/tokenform.php:276
+#: application/views/admin/token/tokenform.php:293
+#: application/views/admin/token/tokenform.php:329
+#: application/views/admin/token/tokenform.php:339
 #: application/views/survey/frontpage/clearallForm/form.php:14
 msgid "No"
 msgstr ""
@@ -8182,31 +8182,31 @@ msgstr ""
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2141
+#: application/helpers/admin/import_helper.php:2145
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2143
+#: application/helpers/admin/import_helper.php:2147
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2146
+#: application/helpers/admin/import_helper.php:2150
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2150
+#: application/helpers/admin/import_helper.php:2154
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2153
+#: application/helpers/admin/import_helper.php:2157
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2156
+#: application/helpers/admin/import_helper.php:2160
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2174
+#: application/helpers/admin/import_helper.php:2178
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -13393,7 +13393,7 @@ msgstr ""
 #: application/models/Token.php:90 application/models/TokenDynamic.php:755
 #: application/views/admin/token/dummytokenform.php:91
 #: application/views/admin/token/massive_actions/_update.php:334
-#: application/views/admin/token/tokenform.php:398
+#: application/views/admin/token/tokenform.php:399
 msgid "Valid from"
 msgstr ""
 
@@ -13407,13 +13407,13 @@ msgstr ""
 
 #: application/models/TokenDynamic.php:713
 #: application/views/admin/token/massive_actions/_update.php:189
-#: application/views/admin/token/tokenform.php:240
+#: application/views/admin/token/tokenform.php:241
 msgid "Invitation sent?"
 msgstr ""
 
 #: application/models/TokenDynamic.php:722
 #: application/views/admin/token/massive_actions/_update.php:247
-#: application/views/admin/token/tokenform.php:313
+#: application/views/admin/token/tokenform.php:314
 msgid "Reminder sent?"
 msgstr ""
 
@@ -20030,7 +20030,7 @@ msgid "Add another participant"
 msgstr ""
 
 #: application/views/admin/token/addtokenpost.php:30
-#: application/views/admin/token/tokenform.php:456
+#: application/views/admin/token/tokenform.php:457
 msgid "Add token entry"
 msgstr ""
 
@@ -20181,7 +20181,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:72
 #: application/views/admin/token/massive_actions/_update.php:320
-#: application/views/admin/token/tokenform.php:372
+#: application/views/admin/token/tokenform.php:373
 msgid "Uses left:"
 msgstr ""
 
@@ -20199,7 +20199,7 @@ msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:121
 #: application/views/admin/token/massive_actions/_update.php:360
-#: application/views/admin/token/tokenform.php:410
+#: application/views/admin/token/tokenform.php:411
 msgid "Until:"
 msgstr ""
 
@@ -20396,12 +20396,12 @@ msgid "Additional attributes"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:175
-#: application/views/admin/token/tokenform.php:224
+#: application/views/admin/token/tokenform.php:225
 msgid "Email status:"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_update.php:306
-#: application/views/admin/token/tokenform.php:361
+#: application/views/admin/token/tokenform.php:362
 msgid "Reminder count:"
 msgstr ""
 
@@ -20504,7 +20504,7 @@ msgstr ""
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr ""
 
-#: application/views/admin/token/tokenform.php:451
+#: application/views/admin/token/tokenform.php:452
 msgid "Update token entry"
 msgstr ""
 
