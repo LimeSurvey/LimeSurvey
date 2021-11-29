@@ -34,6 +34,31 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.3 (build 211122) to 5.2.4 (build 211129) November 29, 2021
+-Fixed issue: SQL error on token import (depending on MySQL server configuration) when important invalid entries (Carsten Schmitz)
+-Fixed issue: If selecting InnoDB database for MySQL not all tables were created in InnoDB format (Carsten Schmitz)
+-Fixed issue: If admin email is too long the default settings for survey groups cannot properly created on upgrade (Carsten Schmitz)
+-Fixed issue #17755: remotecontrol error status inconsistent (#2154) (Florian Fleck)
+-Fixed issue #17734: Relevance equation for subquestion is not saved (#2148) (Gabriel Jenik)
+-Fixed issue #17698: Change of email address for survey administrator confusing (#2152) (Gabriel Jenik)
+-Fixed issue #17647: Strange sort order of question groups in statistics (#2143) (Denis Chenu)
+-Fixed issue #17618: Conversion failed when converting the nvarchar value 'NaN' to data type int (#2158) (Gabriel Jenik)
+-Fixed issue #17602: Errors while installing when using MySQL 8 and selecting InnoDB engine (Carsten Schmitz)
+-Fixed issue #17594: Token language does not work in upper case (Carsten Schmitz)
+-Fixed issue #17527: Validate before using updateAll (#2086) (Gabriel Jenik)
+-Fixed issue #15992: Using Expression Manager with double quotes fails for end URL field (#2147) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by c_schmitz, Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang
+
+
 Changes from 5.2.2 (build 211115) to 5.2.3 (build 211122) November 22, 2021
 -Fixed issue: Error in RemoteControl API when using using set_question_properties (#2142) (Víctor Echeverría)
 -Fixed issue T155: Sometimes editing survey participants doesn't show data (#2145) (Gabriel Jenik)

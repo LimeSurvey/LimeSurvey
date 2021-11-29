@@ -644,18 +644,15 @@ class UserAction extends Survey_Common_Action
 
                 $oldPassword = Yii::app()->request->getPost('oldpassword');
 
-                $newPassword = Yii::app()->request->getPost('password');
-                $repeatPassword = Yii::app()->request->getPost('repeatpassword');
-                $oUserModel->email = Yii::app()->request->getPost('email');
-
-                //if only email should be changed, then just check the current password
+                // Check the current password
                 $currentPasswordOk = $oUserModel->checkPassword($oldPassword);
-                if ($currentPasswordOk) {
-                    $uresult = $oUserModel->save();
-                } else {
+                if (!$currentPasswordOk) {
                     Yii::app()->setFlashMessage(gT('The current password is not correct.'), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
+
+                $newPassword = Yii::app()->request->getPost('password');
+                $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
                 if ($newPassword !== '' && $repeatPassword !== '') {
                     $error = $oUserModel->validateNewPassword($newPassword, $oldPassword, $repeatPassword);
@@ -668,6 +665,25 @@ class UserAction extends Survey_Common_Action
                         $oUserModel->setPassword($newPassword);
                     }
                 }
+            }
+
+            if (Yii::app()->request->getPost('newemailshown') == "1") {
+                if (Yii::app()->getConfig('demoMode')) {
+                    Yii::app()->setFlashMessage(gT("You can't change email if demo mode is active."), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+
+                $oldPassword = Yii::app()->request->getPost('oldpassword');
+
+                // Check the current password
+                $currentPasswordOk = $oUserModel->checkPassword($oldPassword);
+                if (!$currentPasswordOk) {
+                    Yii::app()->setFlashMessage(gT('The current password is not correct.'), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                }
+
+                $oUserModel->email = Yii::app()->request->getPost('newemail');
+                $uresult = $oUserModel->save();
             }
 
             $oUserModel->lang                 = Yii::app()->request->getPost('lang');
