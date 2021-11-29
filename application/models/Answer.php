@@ -207,7 +207,7 @@ class Answer extends LSActiveRecord
      */
     public static function updateSortOrder($qid)
     {
-        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder asc'));
+        $data = self::model()->findAllByAttributes(array('qid' => $qid), array('order' => 'sortorder, code'));
         $position = 0;
 
         foreach ($data as $row) {
@@ -224,7 +224,7 @@ class Answer extends LSActiveRecord
      */
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
-        return Answer::model()->findAll($condition);
+        return Answer::model()->findAll(['condition' => $condition, 'order' => $orderby]);
     }
 
     /**
@@ -235,7 +235,7 @@ class Answer extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-        $oAnswers = Answer::model()->with('answerl10ns')->findAll($condition);
+        $oAnswers = Answer::model()->with('answerl10ns')->findAll(['condition' => $condition,'order' => $orderby]);
         $arr = array();
         foreach ($oAnswers as $key => $answer) {
             $arr[$key] = array_merge($answer->attributes, current($answer->answerl10ns)->attributes);
