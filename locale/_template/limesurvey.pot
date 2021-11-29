@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-29 09:31:31+00:00\n"
+"POT-Creation-Date: 2021-11-29 21:22:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6974,7 +6974,7 @@ msgid "The current password is not correct."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:672
-msgid "You can't change email if demo mode is active."
+msgid "You can't change your email adress if demo mode is active."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:719
@@ -10322,35 +10322,35 @@ msgstr ""
 msgid "Survey"
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:92
+#: application/helpers/admin/activate_helper.php:91
 msgid "This survey does not contain any question groups."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:114
+#: application/helpers/admin/activate_helper.php:113
 msgid "This group does not contain any question(s)."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:167
+#: application/helpers/admin/activate_helper.php:166
 msgid "This question has missing subquestions."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:179
+#: application/helpers/admin/activate_helper.php:178
 msgid "This question has missing answer options."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:194
+#: application/helpers/admin/activate_helper.php:193
 msgid "This question does not have a question 'type' set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:209
+#: application/helpers/admin/activate_helper.php:208
 msgid "This question requires answers, but none are set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:223
+#: application/helpers/admin/activate_helper.php:222
 msgid "This question requires a second answer set but none is set."
 msgstr ""
 
-#: application/helpers/admin/activate_helper.php:267
+#: application/helpers/admin/activate_helper.php:266
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr ""
 
@@ -16904,7 +16904,6 @@ msgstr ""
 #: application/views/admin/token/massive_actions/_update.php:160
 #: application/views/admin/token/tokenform.php:209
 #: application/views/admin/user/editusers.php:115
-#: application/views/admin/user/personalsettings.php:127
 msgid "Email:"
 msgstr ""
 
@@ -21517,6 +21516,7 @@ msgid "Access code length"
 msgstr ""
 
 #: application/views/admin/token/dummytokenform.php:56
+#: application/views/admin/user/personalsettings.php:127
 #: application/views/survey/frontpage/registerForm/form.php:17
 #: tmp/runtime/twig_cache/78/781d5263cbef938c990f501a9034588666804acfba182bfdbc4ba7e62c14e121.php:124
 msgid "Email address:"
@@ -22661,7 +22661,7 @@ msgid "Change password"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:145
-msgid "Change email"
+msgid "Change email address"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:154
@@ -22677,7 +22677,7 @@ msgid "Repeat new password:"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:189
-msgid "New email:"
+msgid "New email address:"
 msgstr ""
 
 #: application/views/admin/user/personalsettings.php:207
