@@ -34,6 +34,16 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.26 (build 211123) to 3.27.27 (build 211130) November 29, 2021
+-Fixed issue #17525: VVImport: "Exclude record IDs" ignores existing e… (#2114) (Denis Chenu)
+-Fixed issue #17224: When entering an invalid email when create token : lost all information (#2111) (Gabriel Jenik)
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
 Changes from 3.27.25 (build 211116) to 3.27.26 (build 211123) November 22, 2021
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
