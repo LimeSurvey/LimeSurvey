@@ -669,7 +669,7 @@ class UserAction extends Survey_Common_Action
 
             if (Yii::app()->request->getPost('newemailshown') == "1") {
                 if (Yii::app()->getConfig('demoMode')) {
-                    Yii::app()->setFlashMessage(gT("You can't change email if demo mode is active."), 'error');
+                    Yii::app()->setFlashMessage(gT("You can't change your email adress if demo mode is active."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
                 }
 
