@@ -174,7 +174,7 @@ class TokenDynamic extends LSActiveRecord
         $command = new CDbCriteria();
         $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
-        $command->addCondition("`t`.token <> ''");
+        $command->addCondition("t.token <> ''");
         $command->addCondition("email <> ''");
 
         if ($bEmail) {
