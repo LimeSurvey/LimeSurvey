@@ -852,7 +852,16 @@ class database extends Survey_Common_Action
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $request = Yii::app()->request;
-        $oSurvey->additional_languages = implode(' ', Yii::app()->request->getPost('additional_languages', array()));
+        $oldBaseLanguage = $oSurvey->language;
+        $newBaseLanguage = Yii::app()->request->getPost('language', $oldBaseLanguage);
+        $oSurvey->language = $newBaseLanguage;
+        // On the UI the field is "Survey Languages", but on the db and model the field is "additional_languages".
+        $additionalLanguages = Yii::app()->request->getPost('additional_languages', array());
+        // Exclude base language from the additional languages array
+        if (($newBaseLanguageKey = array_search($newBaseLanguage, $additionalLanguages)) !== false) {
+            unset($additionalLanguages[$newBaseLanguageKey]);
+        }
+        $oSurvey->additional_languages = implode(' ', $additionalLanguages);
         $oSurvey->admin = $request->getPost('admin');
         $oSurvey->adminemail = $request->getPost('adminemail');
         $oSurvey->bounce_email = $request->getPost('bounce_email');
@@ -880,15 +889,13 @@ class database extends Survey_Common_Action
             $oSurvey->owner_id = $request->getPost('owner_id');
         }
 
-        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
-        $aAvailableLanguage = $oSurvey->getAllLanguages();
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('surveyls_survey_id', $iSurveyID);
-        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
-        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+        // If the base language is changing, we may need the current title to avoid the survey
+        // being listed with an empty title.
+        $surveyTitle = $oSurvey->languagesettings[$oldBaseLanguage]->surveyls_title;
 
         /* Add new language fixLanguageConsistency do it ?*/
-        foreach ($oSurvey->additionalLanguages as $sLang) {
+        $aAvailableLanguage = $oSurvey->getAllLanguages();
+        foreach ($aAvailableLanguage as $sLang) {
             if ($sLang) {
                 $oLanguageSettings = SurveyLanguageSetting::model()->find(
                     'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
@@ -899,7 +906,11 @@ class database extends Survey_Common_Action
                     $languagedetails = getLanguageDetails($sLang);
                     $oLanguageSettings->surveyls_survey_id = $iSurveyID;
                     $oLanguageSettings->surveyls_language = $sLang;
-                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    if ($sLang == $newBaseLanguage) {
+                        $oLanguageSettings->surveyls_title = $surveyTitle;
+                    } else {
+                        $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    }
                     $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
                     if (!$oLanguageSettings->save()) {
                         Yii::app()->setFlashMessage(gT("Survey language could not be created."), "error");
@@ -908,9 +919,16 @@ class database extends Survey_Common_Action
                 }
             }
         }
+        fixLanguageConsistency($iSurveyID, implode(" ", $aAvailableLanguage), $oldBaseLanguage);
+
+        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('surveyls_survey_id', $iSurveyID);
+        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
+        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+
         /* Language fix : remove and add question/group */
         cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
-        fixLanguageConsistency($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
 
         //This is SUPER important! Recalculating the ExpressionScript Engine state!
         LimeExpressionManager::SetDirtyFlag();
