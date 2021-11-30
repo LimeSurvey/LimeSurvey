@@ -416,9 +416,8 @@ return array(
             'leaflet.css'
         ),
     ),
-    /* For geoname search autocomplete without jquery */
     'devbridge-autocomplete' => array(
-        'basePath' => 'third_party.devbridge-autocomplete.dist', 
+        'basePath' => 'third_party.devbridge-autocomplete.dist', /* For geoname search autocomplete without jquery */
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.autocomplete'.$minVersion.'.js'
