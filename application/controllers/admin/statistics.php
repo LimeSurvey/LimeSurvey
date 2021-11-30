@@ -400,7 +400,7 @@ class statistics extends Survey_Common_Action
 
                 case Question::QT_R_RANKING_STYLE: //RANKING
                     //get some answers
-                    $result = Answer::model()->getAnswersForStatistics('code, answer', "qid=$flt[0]", 'sortorder, answer');
+                    $result = Answer::model()->getAnswersForStatistics('code, answer', "qid=$flt[0]", 'sortorder, code');
                     $aData['result'][$key1] = $result;
                     break;
 
