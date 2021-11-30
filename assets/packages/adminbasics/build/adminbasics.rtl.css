@@ -342,7 +342,7 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 }
 
 .grid-view-ls.grid-view-loading {
-  background: url(/application/extensions/bootstrap/assets/img/loader.gif) no-repeat 0% 10px;
+  background: url(../img/loader.gif) no-repeat 0% 10px;
 }
 
 .grid-view-ls.grid-view-loading .table {
