@@ -124,7 +124,7 @@ echo $oQuestionSelector->getModal();
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
-                                        <?php echo TbHtml::label(gT("Email:"), 'lang', ['class' => " control-label"]); ?>
+                                        <?php echo TbHtml::label(gT("Email address:"), 'lang', ['class' => " control-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::emailField('email', $sEmailAdress, ['readonly' => true, 'class' => 'form-control', 'maxlength' => 254]); ?>
                                         </div>
@@ -142,7 +142,7 @@ echo $oQuestionSelector->getModal();
                                     </button>
                                     <button type="button" class="btn btn-default btn-warning " id="selector__showChangeEmail" style="color: white; outline: none;">
                                         <i class="fa fa-lock"></i>
-                                        <?= gT("Change email") ?>
+                                        <?= gT("Change email address") ?>
                                     </button>
                                     <br/>
                                 </div>
@@ -186,7 +186,7 @@ echo $oQuestionSelector->getModal();
                                 <input type="hidden" id="newemailshown" name="newemailshown" value="0"/>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
-                                        <?php echo TbHtml::label(gT("New email:"), 'lang', ['class' => " control-label"]); ?>
+                                        <?php echo TbHtml::label(gT("New email address:"), 'lang', ['class' => " control-label"]); ?>
                                         <div class="">
                                             <?php echo TbHtml::emailField('newemail', $sEmailAdress, ['class' => 'form-control', 'maxlength' => 254]); ?>
                                         </div>

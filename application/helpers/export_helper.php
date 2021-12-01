@@ -822,7 +822,8 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
         WHERE {{answers}}.qid={{questions}}.qid
-        AND {{questions}}.sid=$iSurveyID";
+        AND {{questions}}.sid=$iSurveyID
+        ORDER BY {{answers}}.sortorder";
         buildXMLFromQuery($xmlwriter, $aquery);
 
         //Answer L10n table
@@ -830,7 +831,8 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         FROM {{answer_l10ns}}, {{answers}}, {{questions}}
         WHERE {{answers}}.aid={{answer_l10ns}}.aid
         AND {{answers}}.qid={{questions}}.qid
-        AND {{questions}}.sid=$iSurveyID";
+        AND {{questions}}.sid=$iSurveyID
+        ORDER BY {{answers}}.sortorder";
         buildXMLFromQuery($xmlwriter, $aquery);
     }
 
