@@ -25,7 +25,6 @@ class labels extends Survey_Common_Action
     /**
      * routes to the correct subdir
      *
-     * @access public
      * @param string $sa
      * @return void
      */
@@ -39,7 +38,6 @@ class labels extends Survey_Common_Action
     /**
      * Function responsible to import label resources from a '.zip' file.
      *
-     * @access public
      * @return void
      */
     public function importlabelresources()
@@ -116,7 +114,6 @@ class labels extends Survey_Common_Action
     /**
      * Function to import a label set
      *
-     * @access public
      * @return void
      */
     public function import()
@@ -137,7 +134,7 @@ class labels extends Survey_Common_Action
 
             $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(20);
             $aPathInfo = pathinfo($_FILES['the_file']['name']);
-            $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
+            $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : ''; // TODO: $sExtension is not used. Remove it.
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)) {
                 Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."), 'error');
@@ -162,7 +159,6 @@ class labels extends Survey_Common_Action
     /**
      * Function to load new/edit labelset screen.
      *
-     * @access public
      * @param string  $sa
      * @param integer $lid
      * @return void
@@ -230,7 +226,6 @@ class labels extends Survey_Common_Action
     /**
      * Function to view a labelset.
      *
-     * @access public
      * @param int $lid
      * @return void
      */
@@ -338,7 +333,6 @@ class labels extends Survey_Common_Action
     /**
      * Process labels form data depending on $action.
      *
-     * @access public
      * @return void
      */
     public function process()
@@ -384,7 +378,6 @@ class labels extends Survey_Common_Action
     /**
      * Save new label set
      * 
-     * @access public
      * @return void
      */
     public function saveNewLabelSet()
@@ -406,7 +399,6 @@ class labels extends Survey_Common_Action
     /**
      * Delete a label set
      *
-     * @access public
      * @return void
      */
     public function delete()
@@ -432,7 +424,6 @@ class labels extends Survey_Common_Action
     /**
      * Multi label export
      *
-     * @access public
      * @return void
      */
     public function exportmulti()
@@ -460,7 +451,6 @@ class labels extends Survey_Common_Action
     /**
      * Get all label sets
      * 
-     * @access public
      * @return void
      */
     public function getAllSets()
@@ -481,7 +471,6 @@ class labels extends Survey_Common_Action
      * Used in question editor
      * Echoes JSON
      *
-     * @access public
      * @return void
      * @todo Permission check
      * @todo Move save logic into service class.
@@ -643,7 +632,6 @@ class labels extends Survey_Common_Action
     /**
      * New label set from question editor
      * 
-     * @access public
      * @return void
      */
     public function newLabelSetFromQuestionEditor()
@@ -694,7 +682,6 @@ class labels extends Survey_Common_Action
     /**
      * Get Label I10N Object
      * 
-     * @access private
      * @param int    $labelId   Label ID
      * @param string $language  Language Code
      * @return LabelL10n
@@ -713,7 +700,6 @@ class labels extends Survey_Common_Action
     /**
      * Get Label Object
      * 
-     * @access private
      * @param int $labelId Label ID
      * @return Label
      */

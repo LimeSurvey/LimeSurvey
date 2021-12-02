@@ -27,7 +27,6 @@ class export extends Survey_Common_Action
     /**
      * Export Constructor.
      * 
-     * @access public
      * @param         $controller Controller
      * @param integer $id
      */
@@ -41,8 +40,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export Survey
-     * 
-     * @access public
      */
     public function survey()
     {
@@ -58,8 +55,6 @@ class export extends Survey_Common_Action
     /**
      * This function exports a ZIP archives of several ZIP archives - it is used in the listSurvey controller
      * The SIDs are read from session flashdata.
-     *
-     * @access public
      */
     public function surveyarchives()
     {
@@ -115,8 +110,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export Group
-     * 
-     * @access public
      */
     public function group()
     {
@@ -130,8 +123,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export Question
-     * 
-     * @access public
      */
     public function question()
     {
@@ -143,8 +134,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export Results
-     * 
-     * @access public
      */
     public function exportresults()
     {
@@ -386,7 +375,6 @@ class export extends Survey_Common_Action
     *
     * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
     * 
-    * @access public
     */
     public function exportspss()
     {
@@ -653,8 +641,6 @@ class export extends Survey_Common_Action
 
     /**
      * VV Export
-     * 
-     * @access public
      */
     public function vvexport()
     {
@@ -806,8 +792,6 @@ class export extends Survey_Common_Action
 
     /**
      * Resources Export
-     * 
-     * @access public
      */
     public function resources()
     {
@@ -849,8 +833,6 @@ class export extends Survey_Common_Action
 
     /**
      * Dump Label
-     * 
-     * @access public
      */
     public function dumplabel()
     {
@@ -908,8 +890,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action
-     * 
-     * @access public
      */
     public function exportMultipleStructureSurveys()
     {
@@ -920,8 +900,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export multiple surveys structure. Called via ajax from surveys list massive action
-     * 
-     * @access public
      */
     public function exportMultiplePrintableSurveys()
     {
@@ -932,8 +910,6 @@ class export extends Survey_Common_Action
 
     /**
      * Export multiple surveys archives. Called via ajax from surveys list massive action
-     * 
-     * @access public
      */
     public function exportMultipleArchiveSurveys()
     {
@@ -945,7 +921,6 @@ class export extends Survey_Common_Action
     /**
      * Export Multiple Surveys
      * 
-     * @access public
      * @param string $sSurveys
      * @param string $sExportType
      * @return array
@@ -1055,7 +1030,6 @@ class export extends Survey_Common_Action
     /**
      * Exports a archive (ZIP) of the current survey (structure, responses, timings, tokens)
      *
-     * @access private
      * @param integer $iSurveyID      The ID of the survey to export
      * @param boolean $bSendToBrowser If TRUE (default) then the ZIP file is sent to the browser
      * @return string Full path of the ZIP filename if $bSendToBrowser is set to TRUE, otherwise no return value
@@ -1064,7 +1038,7 @@ class export extends Survey_Common_Action
     {
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        $aSurveyInfo = getSurveyInfo($iSurveyID);
+        $aSurveyInfo = getSurveyInfo($iSurveyID); // TODO: $aSurveyInfo is not used anymore. Remove it.
 
         $sTempDir = Yii::app()->getConfig("tempdir");
 
@@ -1123,7 +1097,6 @@ class export extends Survey_Common_Action
     /**
      * Add to zip
      * 
-     * @access private
      * @param PclZip $zip
      * @param string $name
      * @param string $full_name
@@ -1143,7 +1116,6 @@ class export extends Survey_Common_Action
     /**
      * Survey export
      * 
-     * @access private
      * @param string $action
      * @param int    $iSurveyID
      * @return void
@@ -1192,7 +1164,6 @@ class export extends Survey_Common_Action
     /**
      * Return a list of queXML settings
      *
-     * @access private
      * @return string[] queXML settings
      */
     private function _quexmlsettings(): array
@@ -1221,7 +1192,6 @@ class export extends Survey_Common_Action
     /**
      * Clear queXML settings from settings table
      *
-     * @access public
      * @param int $iSurveyID
      * @return void
      */
@@ -1237,7 +1207,6 @@ class export extends Survey_Common_Action
     /**
      * Generate a queXML PDF document with provided styles/settings
      *
-     * @access public
      * @param int $iSurveyID
      * @return void
      */
@@ -1422,7 +1391,6 @@ class export extends Survey_Common_Action
     /**
      * Generate an TSV (tab-separated value) file for the survey structure
      * 
-     * @access private
      * @param integer $surveyid
      * @return void
      */
@@ -1440,8 +1408,6 @@ class export extends Survey_Common_Action
     /**
      * Add Headers
      * 
-     * @access private
-     * 
      * @param string $filename
      * @param string $content_type
      * @param string $expires
@@ -1458,8 +1424,7 @@ class export extends Survey_Common_Action
 
     /**
      * XML to JSON
-     * 
-     * @access private
+     *
      * @param string $fileContents
      * @return string
      */
@@ -1483,7 +1448,6 @@ class export extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @access protected
      * @param string $sAction       Current action, the folder to fetch views from
      * @param string $aViewUrls     View url(s)
      * @param array  $aData         Data to be passed on. Optional.
