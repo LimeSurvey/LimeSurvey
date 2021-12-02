@@ -651,10 +651,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             switchMSSQLIdentityInsert('questions', false);
             $aQIDReplacements[$iOldQID] = $oQuestion->qid;
+
+            $newqid = $oQuestion->qid;
         }
 
         $results['questions'] = isset($results['questions']) ? $results['questions'] + 1 : 1;
-        $newqid = $oQuestion->qid;
 
         if (isset($oQuestionL10n)) {
             $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
