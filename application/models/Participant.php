@@ -1083,7 +1083,9 @@ class Participant extends LSActiveRecord
                         if (!empty($tokenAndId['participant_id']) && $surveyTableExists) {
                             /** @var Token $token */
                             $token = Token::model($aSurveyID)->find('participant_id = :pid', [':pid' => $tokenAndId['participant_id']]);
-                            $token->delete();
+                            if (!is_null($token)) {
+                                $token->delete();
+                            }
                         }
                         $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
                     }

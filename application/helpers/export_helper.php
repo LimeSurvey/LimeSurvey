@@ -16,12 +16,15 @@
 * Strips html tags and replaces new lines
 *
 * @param $string
+* @param $removeOther   if 'true', removes '-oth-' from the string.
 * @return string
 */
-function stripTagsFull($string)
+function stripTagsFull($string, $removeOther = true)
 {
-    $string = flattenText($string,false,true); // stripo whole + html_entities
-    $string = str_replace('-oth', '', $string);// Why ?
+    $string = flattenText($string, false, true); // stripo whole + html_entities
+    if ($removeOther) {
+        $string = str_replace('-oth-', '', $string);
+    }
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return $string;
@@ -235,7 +238,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                             break; // Break inside if : comment and other are string to be filtered
                         } // else do default action
                     default:
-                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        $strTmp = mb_substr(stripTagsFull($row[$fieldno], false), 0, $iLength);
                         if (trim($strTmp) != '') {
                             echo quoteSPSS($strTmp,$q,$field);
                         } else {
@@ -296,8 +299,8 @@ function SPSSGetValues($field, $qidattributes, $language)
                 # Build array that has to be returned
                 foreach ($result as $row) {
                     $answers[] = array(
-                        'code'=>$row['code'],
-                        'value'=>mb_substr(stripTagsFull($row["answer"]), 0, $length_vallabel),
+                        'code' => $row['code'],
+                        'value' => mb_substr(stripTagsFull($row["answer"], false), 0, $length_vallabel),
                     );
                 }
             }
@@ -389,6 +392,16 @@ function SPSSGetValues($field, $qidattributes, $language)
             }
             if ($spsstype == 'F' && (isNumericExtended($answer['code']) === false || $size > 16)) {
                 $spsstype = 'A';
+            }
+        }
+        // For questions types with answer options, if all answer codes are numeric but "Other" option is enabled,
+        // field should be exported as SPSS type 'A', size 6. See issue #16939
+        if (strpos("!LORFH1", $field['LStype']) !== false && $spsstype == 'F') {
+            $oQuestion = Question::model()->findByPk(['qid' => $field["qid"], 'language' => $language]);
+            if ($oQuestion->other == 'Y') {
+                $spsstype = 'A';
+                $size = 6;
+                $answers['needsAlterType'] = true;
             }
         }
         $answers['SPSStype'] = $spsstype;
@@ -633,6 +646,10 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
             if (isset($answers['SPSStype'])) {
                 $tempArray['SPSStype'] = $answers['SPSStype'];
                 unset($answers['SPSStype']);
+            }
+            if (isset($answers['needsAlterType'])) {
+                $tempArray['needsAlterType'] = $answers['needsAlterType'];
+                unset($answers['needsAlterType']);
             }
             if (!empty($answers)) {
                 $tempArray['answers'] = $answers;

@@ -1,20 +1,18 @@
 <?php
-/** @var string $successLabel */
-
 /**
- * This view display the result of delete multiple action. It's rendered via ajax for the confirmation modal in survey list
+ * This view display the result of selected surveys. It's rendered via ajax for the confirmation modal in survey list
  *
- * it's also used for saving "change survey group" result (not only delete multiple action) ...
- *
- * @var $aResults   The array containing the result of each survey deletion
+ * @var $aResults   The array containing the result of each survey selection
  */
 ?>
+<hr>
 <table class="table table-striped">
     <thead>
         <th><?php eT('Survey ID');?></th>
-        <th><?php eT('Survey title');?></th>
+        <th><?php eT('Title');?></th>
         <th><?php eT('Status');?></th>
     </thead>
+    
     <tbody>
         <?php foreach($aResults as $iSid => $result):?>
             <tr>
@@ -22,15 +20,15 @@
                     <?php echo $iSid;?>
                 </td>
                 <td>
-                    <?php echo CHtml::encode($result['title']);?>
+                    <?php echo $result['title'];?>
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
-                        <?php echo $successLabel ?>
+                        <?php eT('Selected'); ?>
                     </td>
                 <?php else: ?>
                     <td class="text-warning">
-                        <?= empty($result['error']) ? gT('Error') : sprintf(gT("Unable to perform function - %s"), $result['error']) ?>
+                        <?php echo $result['error'] ; ?>
                     </td>
                 <?php endif;?>
             </tr>

@@ -53,6 +53,7 @@ class ExpressionManager
     private $RDP_result; // final result of evaluating the expression;
     private $RDP_evalStatus; // true if $RDP_result is a valid result, and  there are no serious errors
     private $varsUsed; // list of variables referenced in the equation
+    public $resetErrorsAndWarningsOnEachPart = true;
 
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed; // full list of variables used within the string, even if contains multiple expressions
@@ -1847,7 +1848,7 @@ class ExpressionManager
             } else {
                 ++$this->substitutionNum;
                 $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
-                if ($this->RDP_Evaluate($expr, false, false)) { // We call RDP_Evaluate with $resetErrorsAndWarnings = false because, if $src has more than one expression, error information could be lost
+                if ($this->RDP_Evaluate($expr, false, $this->resetErrorsAndWarningsOnEachPart)) {
                     $resolvedPart = $this->GetResult();
                 } else {
                     // show original and errors in-line only if user have the rigth to update survey content
