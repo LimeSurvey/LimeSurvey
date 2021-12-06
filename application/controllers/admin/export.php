@@ -715,7 +715,7 @@ class export extends Survey_Common_Action
             if (incompleteAnsFilterState() == "incomplete") {
                 $query .= " WHERE submitdate IS NULL ";
             } elseif (incompleteAnsFilterState() == "complete") {
-                $query .= " WHERE submitdate >= '01/01/1980' ";
+                $query  .= " WHERE submitdate >= '1980-01-01' ";
             }
             $result = Yii::app()->db->createCommand($query)->query();
 
