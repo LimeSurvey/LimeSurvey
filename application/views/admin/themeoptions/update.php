@@ -113,7 +113,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
 
                     <div class="alert alert-warning alert-dismissible" role="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <p><strong><?php eT('Warning!'); ?></strong> <?php eT("Don't touch the values below unless you know what you're doing."); ?></p>
+                        <p><strong><?php eT('Caution:'); ?></strong> <?php eT("This advanced themes feature requires a good knowledge of JSON/CSS/JavaScript."); ?></p>
                     </div>
 
                     <?php
