@@ -48,7 +48,7 @@ class LSYii_ImageValidator
         $result = [];
 
         /** @var ?? */
-        $checkImage = CFileHelper::getMimeType($path);
+        $checkImage = CFileHelper::getMimeType($path, null, false); // Don't fallback to checking the file extension because the tmp file name doesn't have one.
         $result['debug'] = $checkImage;
 
         // TODO: Why hard-coded?
@@ -72,6 +72,9 @@ class LSYii_ImageValidator
         ) {
             $result['uploadresult'] = '';
             $result['check'] = true;
+        } elseif (is_null($checkImage)) {
+            $result['uploadresult'] = sprintf(gT("This file is not a supported image format - only the following ones are allowed: %s"),strtoupper(Yii::app()->getConfig('allowedthemeimageformats')));
+            $result['check'] = false;
         } else {
             $result['uploadresult'] = sprintf(gT("This file is not a supported image format - only the following ones are allowed: %s"),strtoupper(Yii::app()->getConfig('allowedthemeimageformats')));
             $result['check'] = false;

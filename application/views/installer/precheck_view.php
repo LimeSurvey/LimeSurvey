@@ -65,6 +65,11 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                        <td><?= $model->isPhpMbStringPresent ? $iconOk : $iconFail ?></td>
                 </tr>
                 <tr>
+                       <td><?php eT("PHP fileinfo library"); ?></td>
+                       <td><span class='fa fa-check text-success'></span></td>
+                       <td><?= $model->isPhpFileInfoPresent ? $iconOk : $iconFail ?></td>
+                </tr>
+                <tr>
                        <td><?php eT("PHP zlib library");?></td>
                        <td><span class='fa fa-check text-success'></span></td>
                        <td><?= $model->isPhpZlibPresent ? $iconOk : $iconFail ?></td>
