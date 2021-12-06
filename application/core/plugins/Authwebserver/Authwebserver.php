@@ -21,10 +21,10 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             'default' => 'REMOTE_USER',
         ),
         'is_default' => array(
-                'type' => 'checkbox',
-                'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
-                'default' => true,
-                )
+            'type' => 'checkbox',
+            'label' => 'Check to make default authentication method (This disable Default LimeSurvey authentification by database)',
+            'default' => true,
+        )
     );
     
     public function init()
@@ -96,7 +96,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         if ($identity->plugin != 'Authwebserver') {
             return;
         }
-
+        $authEvent = $this->getEvent();
         /* @var $identity LSUserIdentity */
         $sUser = $this->getUserName();
 
@@ -112,7 +112,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         } else {
             if (Permission::model()->find('permission = :permission AND uid=:uid AND read_p =1', array(":permission" => 'auth_webserver', ":uid" => $oUser->uid))) {
                 // Don't use Permission::model()->hasGlobalPermission : it's update the plugins event (and remove user/pass from event)
-                $this->setAuthSuccess($oUser);
+                $this->setAuthSuccess($oUser, $authEvent);
                 return;
             } else {
                 $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Web server authentication method is not allowed for this user'));
@@ -133,13 +133,34 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             if ($oUser->save()) {
                 Permission::setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
                 Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
-
                 // read again user from newly created entry
-                $this->setAuthSuccess($oUser);
+                $this->setAuthSuccess($oUser, $authEvent );
                 return;
             } else {
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             }
         }
+    }
+
+    /**
+     * @inheritfoc
+     * Replace to use own event
+     *
+     * @param User $user
+     * @param PluginEvent $event
+     * @return AuthPluginBase
+     */
+    public function setAuthSuccess(User $user, LimeSurvey\PluginManager\PluginEvent $event = null)
+    {
+        if(empty($event)) {
+            $event = $this->getEvent();
+        }
+        $identity = $event->get('identity');
+        $identity->id = $user->uid;
+        $identity->user = $user;
+        $event->set('identity', $identity);
+        $event->set('result', new LSAuthResult(self::ERROR_NONE));
+
+        return $this;
     }
 }
