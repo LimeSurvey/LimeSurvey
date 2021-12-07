@@ -34,6 +34,11 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.27.27 (build 211130) to 3.27.28 (build 211208) December 7, 2021
+- Fixed issue 1287: Advanced themes warning message needs to be reworded (Jessica Höck)
+#Updated translation: Czech by uradonline
+
+
 Changes from 3.27.26 (build 211123) to 3.27.27 (build 211130) November 29, 2021
 -Fixed issue #17525: VVImport: "Exclude record IDs" ignores existing e… (#2114) (Denis Chenu)
 -Fixed issue #17224: When entering an invalid email when create token : lost all information (#2111) (Gabriel Jenik)
