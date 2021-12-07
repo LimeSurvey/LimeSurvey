@@ -251,13 +251,12 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     *
      * @param array<string, mixed> $settings
      * @return void
      */
-    public function saveSettings($settings)
+    public function saveSettings($aSettings)
     {
-        foreach ($settings as $name => $setting) {
+        foreach ($aSettings as $name => $setting) {
             $this->set($name, $setting);
         }
     }
