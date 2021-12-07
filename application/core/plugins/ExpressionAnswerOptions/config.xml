@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <metadata>
-        <name>expressionAnswerOptions</name>
+        <name>ExpressionAnswerOptions</name>
         <type>plugin</type>
         <creationDate>2021-11-18</creationDate>
         <lastUpdate>2021-11-23</lastUpdate>

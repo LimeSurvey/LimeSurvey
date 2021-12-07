@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-class expressionAnswerOptions extends PluginBase
+class ExpressionAnswerOptions extends PluginBase
 {
 
     protected static $description = 'Expression Script: make answer option text available.';
-    protected static $name = 'expressionAnswerOptions';
+    protected static $name = 'ExpressionAnswerOptions';
 
     /** @inheritdoc, this plugin settings are update during getSettings */
     protected $settings = array(
