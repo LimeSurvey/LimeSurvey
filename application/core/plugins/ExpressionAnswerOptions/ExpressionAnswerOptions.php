@@ -50,10 +50,10 @@ class ExpressionAnswerOptions extends PluginBase
      */
     public function newValidFunctions()
     {
-        Yii::setPathOfAlias("expressionAnswerOptions", dirname(__FILE__));
+        Yii::setPathOfAlias("ExpressionAnswerOptions", dirname(__FILE__));
         $newFunctions = array(
             'getAnswerOptionText' => array(
-                '\expressionAnswerOptions\AnswerOptionsFunctions::getAnswerOptionText',
+                '\ExpressionAnswerOptions\AnswerOptionsFunctions::getAnswerOptionText',
                 null, // No javascript function : set as static function
                 $this->gT("Return the answer text related to a question by answer code"), // Description for admin
                 'string getAnswerOptionText(QuestionCode, code[, scale = 0])', // Extra description
