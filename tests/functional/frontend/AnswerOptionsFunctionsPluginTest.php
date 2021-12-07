@@ -119,10 +119,10 @@ class AnswerOptionsFunctionsPluginTest extends TestBaseClassWeb
     private static function _activateAndLoadPlugins()
     {
         /* expressionAnswerOptions plugin */
-        $plugin = \Plugin::model()->findByAttributes(array('name'=>'expressionAnswerOptions'));
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'ExpressionAnswerOptions'));
         if (!$plugin) {
             $plugin = new \Plugin();
-            $plugin->name = 'expressionAnswerOptions';
+            $plugin->name = 'ExpressionAnswerOptions';
             $plugin->plugin_type = 'core';
             $plugin->active = 1;
             $plugin->save();
