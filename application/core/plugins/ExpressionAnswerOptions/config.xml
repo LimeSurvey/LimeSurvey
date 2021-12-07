@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>ExpressionAnswerOptions</name>
+        <type>plugin</type>
+        <creationDate>2021-11-18</creationDate>
+        <lastUpdate>2021-11-23</lastUpdate>
+        <author>Denis Chenu (for Respondage)</author>
+        <authorUrl>https://www.respondage.nl</authorUrl>
+        <supportUrl>https://www.limesurvey.org</supportUrl>
+        <version>0.2.1</version>
+        <license>GNU General Public License version 3 or later</license>
+        <description><![CDATA[Expression Script: make answer option text available; see settings for documentation and usage.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>5.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>
