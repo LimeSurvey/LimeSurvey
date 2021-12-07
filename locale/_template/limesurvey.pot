@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-11-29 09:31:21+00:00\n"
+"POT-Creation-Date: 2021-12-07 09:35:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17323,7 +17323,6 @@ msgstr ""
 #: application/views/admin/survey/subview/_survey_quickaction.php:44
 #: application/views/admin/survey/subview/_survey_quickaction.php:52
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:161
-#: application/views/admin/themeoptions/update.php:116
 #: application/views/admin/token/invite.php:19
 #: application/views/admin/token/remind.php:16
 msgid "Warning!"
@@ -19764,7 +19763,11 @@ msgid "All fields below (except CSS framework name) must be either a valid JSON 
 msgstr ""
 
 #: application/views/admin/themeoptions/update.php:116
-msgid "Don't touch the values below unless you know what you're doing."
+msgid "Caution:"
+msgstr ""
+
+#: application/views/admin/themeoptions/update.php:116
+msgid "This advanced themes feature requires a good knowledge of JSON/CSS/JavaScript."
 msgstr ""
 
 #: application/views/admin/themeoptions/update.php:144
