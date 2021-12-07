@@ -1337,6 +1337,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
+        $aColumns = SurveyLanguageSetting::model()->attributes;
+        $insertdata = array_intersect_key($insertdata, $aColumns);
 
         if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");
