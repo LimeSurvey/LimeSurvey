@@ -34,6 +34,29 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.4 (build 211129) to 5.2.5 (build 211207) December 7, 2021
+-Fixed issue: Standard deviation in statistics not working if data had no value (Carsten Schmitz)
+-Fixed issue: One-click fixing of duplicate question codes not working on survey activation (Carsten Schmitz)
+-Fixed issue: Missing loader image if LimeSurvey is installed in a subdirectory (Carsten Schmitz)
+-Fixed issue: Cannot export only complete entries in VVExport (Carsten Schmitz)
+-Fixed issue #17777: PGSQL CDbCommand issue in statistics (Denis Chenu)
+-Fixed issue #17765: The order of the answer options not correct when exporting to printable survey or queXML (#2165) (Carsten Schmitz)
+-Fixed issue #17646: Cannot import version 3 lsq file in to LS5 (#2168) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by femariso, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1, uradonline
+#Updated translation: Czech (Informal) by jelen1
+
+
 Changes from 5.2.3 (build 211122) to 5.2.4 (build 211129) November 29, 2021
 -Fixed issue: SQL error on token import (depending on MySQL server configuration) when important invalid entries (Carsten Schmitz)
 -Fixed issue: If selecting InnoDB database for MySQL not all tables were created in InnoDB format (Carsten Schmitz)
