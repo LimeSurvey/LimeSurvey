@@ -2,8 +2,8 @@
 
 /**
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2021 Respondage <https://www.respondage.nl/> 
- * @copyright 2021 Denis Chenu <https://www.sondages.pro> 
+ * @copyright 2021 Respondage <https://www.respondage.nl/>
+ * @copyright 2021 Denis Chenu <https://www.sondages.pro>
  * @license GPL version 3
  * @version 0.2.2
  *
@@ -31,7 +31,7 @@ class ExpressionAnswerOptions extends PluginBase
         'information' => array(
             'type' => 'info',
             'content' => '',
-            'default'=> false
+            'default' => false
         ),
     );
 
@@ -43,7 +43,7 @@ class ExpressionAnswerOptions extends PluginBase
         $this->subscribe('ExpressionManagerStart', 'newValidFunctions');
     }
 
-    /** 
+    /**
      * @see https://manual.limesurvey.org/ExpressionManagerStart ExpressionManagerStart event
      * add the getAnswerOptionText static function to Expression Manager function
      * @return void
@@ -82,7 +82,7 @@ class ExpressionAnswerOptions extends PluginBase
      */
     public function getPluginTwigPath()
     {
-        $viewPath = dirname(__FILE__)."/views";
+        $viewPath = dirname(__FILE__) . "/views";
         $this->getEvent()->append('add', array($viewPath));
     }
 
@@ -95,4 +95,3 @@ class ExpressionAnswerOptions extends PluginBase
         // Nothing saved, not needed
     }
 }
-
