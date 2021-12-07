@@ -16,8 +16,9 @@ class AnswerOptionsFunctions
 {
     /**
      * Return the answer text related to a question
-     * @param integer|string $qid : id or code of question, get parent question if needed 
+     * @param integer|string $qidortitle : question id or code of question, get parent question if needed 
      * @param string $code : code of the answer text to return
+     * @param integer $scale : scale of the answers, 1 is for array dual scale question, and other question with multiple answers scale.
      * @return null|string
      */
     public static function getAnswerOptionText($qidortitle, $code, $scale = 0)
