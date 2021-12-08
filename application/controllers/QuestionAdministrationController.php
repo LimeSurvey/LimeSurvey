@@ -244,6 +244,8 @@ class QuestionAdministrationController extends LSBaseController
             $selectormodeclass = App()->getConfig('defaultquestionselectormode');
         }
 
+        $defaultValues = self::getDefaultValues($question->sid, $question->gid, $question->qid);
+
         $viewData = [
             'oSurvey'                => $question->survey,
             'oQuestion'              => $question,
@@ -254,6 +256,7 @@ class QuestionAdministrationController extends LSBaseController
             'jsVariablesHtml'       => $jsVariablesHtml,
             'modalsHtml'            => $modalsHtml,
             'selectormodeclass'     => $selectormodeclass,
+            'defaultValues'         => $defaultValues,
         ];
 
         $this->aData = array_merge($this->aData, $viewData);
@@ -479,6 +482,15 @@ class QuestionAdministrationController extends LSBaseController
                     );
                 }
             }
+
+            // Update default values
+            $this->updateQuestionDefaultValues(
+                $question,
+                $request->getPost('defaultvalues'),
+                $request->getPost('other'),
+                $request->getPost('defaultvalues_em')
+            );
+
             $transaction->commit();
 
             // All done, redirect to edit form.
@@ -697,7 +709,7 @@ class QuestionAdministrationController extends LSBaseController
      * @todo Should be GET, not POST
      * @return void
      */
-    public function actionGetSubquestionRowQuickAdd($surveyid, $gid)
+    public function actionGetSubquestionRowQuickAdd()
     {
         $qid               = '{{quid_placeholder}}';
         $request           = Yii::app()->request;
@@ -1783,11 +1795,15 @@ class QuestionAdministrationController extends LSBaseController
                 throw new CHttpException(403, gT('No permission'));
             }
         }
+
+        $defaultValues = self::getDefaultValues($surveyId, $question->gid, $question->qid);
+
         $this->renderPartial(
             "extraOptions",
             [
                 'question'         => $question,
                 'survey'           => $question->survey,
+                'defaultValues'    => $defaultValues,
             ]
         );
     }
@@ -2173,6 +2189,7 @@ class QuestionAdministrationController extends LSBaseController
 
                         $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['sqresult'][] = $aSubquestion;
                     }
+                    $aDefaultValues[$language][$aQuestionAttributes['type']][$scale_id]['template']['options'] = $options;
                 }
             }
             if (
@@ -3077,5 +3094,180 @@ class QuestionAdministrationController extends LSBaseController
                 'overviewVisibility' => false,  // Hidden by default
             ]
         );
+    }
+
+    /**
+     * Update the default values. This is called when creating/updating a question
+     * @param Question $question
+     * @param array<string,array<integer,array<integer,string>>>|null $defaultAnswers
+     * @param array<string,array<integer,string>>|null $other
+     * @param array<string,string>|null $expression  EM expressions (for Yes/No questions)
+     * @return void
+     */
+    private function updateQuestionDefaultValues($question, $defaultAnswers, $other, $expression)
+    {
+        // No need to do anything if there are no default answers passed
+        if (empty($defaultAnswers)) {
+            return;
+        }
+
+        if (!$question->questionType->hasdefaultvalues) {
+            return;
+        }
+
+        $surveyLanguages = $question->survey->allLanguages;
+        $qid = $question->qid;
+        $surveyId = $question->sid;
+
+        // Set 'same_default' on Question model ("Use same default value across languages")
+        $question->same_default = Yii::app()->request->getPost('samedefault') ? 1 : 0;
+        $question->save();
+
+        $answerScales = (int)$question->questionType->answerscales;
+        $subquestionScales = $question->questionType->subquestions;
+
+        /**
+         * NOTE: Default values functionality depends on three question type properties:
+         *  - answerscales
+         *  - subquestions
+         *  - hasdefaultvalues
+         * 
+         * Currently, default values are only supported for the following combinations of answerscales and subquestions:
+         *  - Case 1: answerscales = 1 and subquestions = 0
+         *  - Case 2: answerscales = 0 and subquestions = 1
+         *  - Case 3: answerscales = 0 and subquestions = 0
+         * 
+         * The old code (for editing default values on a dedicated page) seemed inconsistent in the checks between the
+         * view and the controller, but worked fine because 'hasdefaultvalues' is not set to 1 for any other combination.
+         * 
+         * Since it's not clear how this should work for other combinations of 'answerscales' and 'subquestions', this
+         * code (and the view) will be more explicit in the validations.
+         * 
+         * So, if at some point support is added for Array (type 'F') questions (answerscales = 1 and subquestions = 1) and
+         * Array Numbers (type ':') questions (subquestions = 2), among others, this code will need to be adjusted.
+         */
+
+        // Process default values for all survey languages
+        foreach ($surveyLanguages as $language) {
+            // Case 1
+            if ($answerScales == 1 && $subquestionScales == 0) {
+                //for ($scaleId = 0; $scaleId < $answerScales; $scaleId++) {
+                $scaleId = 0;
+                if (!is_null($defaultAnswers[$language][$scaleId])) {
+                    $this->updateDefaultValues($surveyId, $qid, 0, $scaleId, '', $language, $defaultAnswers[$language][$scaleId]);
+                }
+                if (!is_null($other[$language][$scaleId])) {
+                    $this->updateDefaultValues($surveyId, $qid, 0, $scaleId, 'other', $language, $other[$language][$scaleId]);
+                }
+                //}
+                continue;
+            }
+
+            // Case 2
+            if ($answerScales == 0 && $subquestionScales == 1) {
+                // Make sure we have the latest info
+                $question->refresh();
+                foreach ($question->subquestions as $subquestion) {
+                    //for ($scaleId = 0; $scaleId < $subquestionScales; $scaleId++) {
+                    $scaleId = 0;
+                    // Old code handled subquestions by sqid, but now we may be dealing with new subquestions,
+                    // so we will use the subquestion title instead.
+                    if (!is_null($defaultAnswers[$language][$subquestion->title][$scaleId])) {
+                        $this->updateDefaultValues($surveyId, $qid, $subquestion->qid, $scaleId, '', $language, $defaultAnswers[$language][$subquestion->title][$scaleId]);
+                    }
+                    //}
+                }
+                continue;
+            }
+
+            //Case 3
+            if ($answerScales == 0 && $subquestionScales == 0) {
+                if (!is_null($defaultAnswers[$language])) {
+                    // Yes/No question type needs special handling because, if "EM" is selected, the value
+                    // is input in a different control on the page.
+                    if ($question->type == 'Y' && $defaultAnswers[$language] == 'EM') {
+                        $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, !is_null($expression[$language]) ? $expression[$language] : '');
+                    } else {
+                        $this->updateDefaultValues($surveyId, $qid, 0, 0, '', $language, $defaultAnswers[$language]);
+                    }
+                }
+                continue;
+            }
+        }
+
+        //This is SUPER important! Recalculating the ExpressionScript Engine state!
+        LimeExpressionManager::SetDirtyFlag();
+    }
+
+    /**
+     * This is a convenience function to update/delete answer default values. If the given
+     * $defaultvalue is empty then the entry is removed from table defaultvalues
+     * 
+     * Copied from database::_updateDefaultValues().
+     *
+     * @param integer $surveyId
+     * @param integer $qid  Question ID
+     * @param integer $sqid  Subquestion ID
+     * @param integer $scaleId Scale ID
+     * @param string $specialtype   Special type (i.e. for  'Other')
+     * @param string $language  Language (defaults are language specific)
+     * @param mixed $defaultvalue   The default value itself
+     */
+    private function updateDefaultValues($surveyId, $qid, $sqid, $scaleId, $specialtype, $language, $defaultvalue)
+    {
+        $arDefaultValue = DefaultValue::model()
+            ->find(
+                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id',
+                array(
+                ':specialtype' => $specialtype,
+                ':qid' => $qid,
+                ':sqid' => $sqid,
+                ':scale_id' => $scaleId,
+                )
+            );
+        $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
+
+        if ($defaultvalue == '') {
+            // Remove the default value if it is empty
+            if ($dvid !== null) {
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $dvid, 'language' => $language ));
+                $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
+                if ($iRowCount == 0) {
+                    DefaultValue::model()->deleteByPk($dvid);
+                }
+            }
+        } else {
+            if (is_null($dvid)) {
+                $data = array('qid' => $qid, 'sqid' => $sqid, 'scale_id' => $scaleId, 'specialtype' => $specialtype);
+                $oDefaultvalue = new DefaultValue();
+                $oDefaultvalue->attributes = $data;
+                $oDefaultvalue->specialtype = $specialtype;
+                $oDefaultvalue->save();
+                if (!empty($oDefaultvalue->dvid)) {
+                    $dataL10n = array('dvid' => $oDefaultvalue->dvid, 'language' => $language, 'defaultvalue' => $defaultvalue);
+                    $oDefaultvalueL10n = new DefaultValueL10n();
+                    $oDefaultvalueL10n->attributes = $dataL10n;
+                    $oDefaultvalueL10n->save();
+                }
+            } else {
+                if ($dvid !== null) {
+                    $arDefaultValue->with('defaultvaluel10ns');
+                    $idL10n = !empty($arDefaultValue->defaultvaluel10ns) && array_key_exists($language, $arDefaultValue->defaultvaluel10ns) ? $arDefaultValue->defaultvaluel10ns[$language]->id : null;
+                    if ($idL10n !== null) {
+                        DefaultValueL10n::model()->updateAll(array('defaultvalue' => $defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
+                    } else {
+                        $dataL10n = array('dvid' => $dvid, 'language' => $language, 'defaultvalue' => $defaultvalue);
+                        $oDefaultvalueL10n = new DefaultValueL10n();
+                        $oDefaultvalueL10n->attributes = $dataL10n;
+                        $oDefaultvalueL10n->save();
+                    }
+                }
+            }
+        }
+
+        // At this point, database controller called updateFieldArray():
+        // $surveyid = $this->iSurveyID;
+        // updateFieldArray();
+        // But it's seemed to do nothing, because updateFieldArray() uses global $surveyid, and it was only being set locally.
     }
 }

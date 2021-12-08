@@ -122,6 +122,7 @@
                                 [
                                     'question'        => $oQuestion,
                                     'survey'          => $oSurvey,
+                                    'defaultValues'   => $defaultValues,
                                 ]
                             ); ?>
                         </div>
