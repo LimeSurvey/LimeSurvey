@@ -38,7 +38,7 @@ $aActionsArray = array(
             'keepopen'      => 'yes',
             'showSelected'  => 'yes',
             'selectedUrl'   => App()->createUrl('userManagement/renderSelectedItems/'),
-            'sModalTitle'   => gT('Resend login data user'),
+            'sModalTitle'   => gT('Resend login data'),
             'htmlModalBody' => gT('Are you sure you want to reset and resend selected users login data?'),
         ),
         // Mass Edit
