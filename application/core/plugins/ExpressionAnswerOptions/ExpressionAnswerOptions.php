@@ -90,7 +90,7 @@ class ExpressionAnswerOptions extends PluginBase
      * @inheritdoc
      * But do nothing
      */
-    public function saveSettings($aSettings)
+    public function saveSettings($settings)
     {
         // Nothing saved, not needed
     }
