@@ -6,7 +6,6 @@
         <meta name="robots" content="noindex, nofollow" />
         <?php
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('jquery-superfish');
             App()->getClientScript()->registerPackage('ckeditor');
             App()->getClientScript()->registerPackage('ckeditoradditions');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui.css');
