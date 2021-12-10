@@ -56,11 +56,7 @@
         "test": [
             "./tests/bin/lint-tests",
             "./tests/bin/lint-application",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/services",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateManifest.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfiguration.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/TemplateConfig.php",
-            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models/ArchivedTableSettings.php",
+            "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/models",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/libraries/ExtensionInstaller",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/helpers/update/updatedb_helper.php",
             "./third_party/bin/phpcs --standard=tests/rulesets/phpcs_ruleset.xml application/core/plugins/ExpressionAnswerOptions/ExpressionAnswerOptions.php",
