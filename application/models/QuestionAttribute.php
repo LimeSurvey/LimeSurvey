@@ -594,7 +594,7 @@ class QuestionAttribute extends LSActiveRecord
     /**
      * Apply XSS filter to question attribute value unless 'xssfilter' property is false.
      * @param string $attribute the name of the attribute to be validated.
-	 * @param array<mixed> $params additional parameters passed with rule when being executed.
+     * @param array<mixed> $params additional parameters passed with rule when being executed.
      * @return void
      */
     public function filterXss($attribute, $params)
@@ -621,7 +621,7 @@ class QuestionAttribute extends LSActiveRecord
         }
 
         // By default, LSYii_Validators only applies an XSS filter. It has other filters but they are not enabled by default.
-        $validator = new LSYii_Validators;
+        $validator = new LSYii_Validators();
         $validator->attributes = [$attribute];
         $validator->validate($this, [$attribute]);
     }
