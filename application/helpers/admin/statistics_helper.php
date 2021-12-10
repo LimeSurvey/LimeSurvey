@@ -2084,7 +2084,7 @@ class statistics_helper
         //close table/output
         if ($outputType == 'html') {
             // show this block only when we show graphs and are not in the public statics controller
-            if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
+            if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'StatisticsUserController') {
                 $fullLabels = $labels;
                 // We clean the labels
                 $iMaxLabelLength = 0;
@@ -3365,7 +3365,7 @@ class statistics_helper
         //close table/output
         if ($outputType == 'html') {
             // show this block only when we show graphs and are not in the public statics controller
-            if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController') {
+            if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'StatisticsUserController') {
                 // We clean the labels
                 $iMaxLabelLength = 0;
 

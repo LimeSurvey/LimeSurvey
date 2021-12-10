@@ -24,8 +24,7 @@
  * after he/she has submitted the survey.
  *
  */
-
-class Statistics_userController extends SurveyController
+class StatisticsUserController extends SurveyController
 {
 
     /**
@@ -42,8 +41,9 @@ class Statistics_userController extends SurveyController
      * @param mixed $method
      * @param array $params
      * @return array
+     * @todo Not used?
      */
-    public function _remap($method, $params = array())
+    public function remap($method, $params = array())
     {
         array_unshift($params, $method);
         return call_user_func_array(array($this, "action"), $params);
