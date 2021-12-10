@@ -36,7 +36,7 @@
                                     <li><?php eT("Responses are no longer accessible.");?> <?php echo gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
                                     <li><?php eT("All participant information will be lost.");?></li>
                                     <li><?php eT("A deactivated survey cannot be accessed by participants.  A message will be displayed stating that the survey has been closed.");?></li>
-                                    <li><?php eT("Questions, groups and parameters be edited again.");?></li>
+                                    <li><?php eT("Questions, groups and parameters can be edited again.");?></li>
                                     <li><a title='<?php eT("Export survey results") ?>' href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/'.$surveyid) ?>'>
                                         <?php eT("We highly recommend that you export your responses before deactivating your survey.");?>
                                     </li>
