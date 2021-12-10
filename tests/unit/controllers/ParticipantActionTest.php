@@ -39,7 +39,7 @@ class ParticipantActionTest extends TestBaseClass
         $this->assertTrue($attrName2->save());
 
         $part = new \Participant();
-        $part->participant_id = $part->gen_uuid();
+        $part->participant_id = $part->genUuid();
         $part->blacklisted = 'N';
         $part->owner_uid   = 1;
         $part->created_by  = 1;
