@@ -27,7 +27,8 @@
 			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
 			"LimeSurvey\\Helpers\\": "application/helpers",
 			"LimeSurvey\\Models\\Services\\": "application/models/services",
-			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects"
+			"LimeSurvey\\Datavalueobjects\\": "application/datavalueobjects",
+			"LimeSurvey\\Exceptions\\": "application/exceptions"
 		}
 	},
 	"require": {

@@ -530,6 +530,7 @@ class TokenDynamic extends LSActiveRecord
     /**
      * @return array
      */
+    // phpcs:ignore
     public function getCustom_attributes()
     {
         $columns = $this->getMetaData()->columns;

@@ -617,6 +617,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_header_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeHeaderValue', Yii::app()->params['defaultEllipsizeHeaderValue']);
@@ -628,6 +629,7 @@ class SurveyDynamic extends LSActiveRecord
      * @see: http://www.yiiframework.com/wiki/324/cgridview-keep-state-of-page-and-sort/
      * @see: http://www.yiiframework.com/forum/index.php?/topic/8994-dropdown-for-pagesize-in-cgridview
      */
+    // phpcs:ignore
     public function getEllipsize_question_value()
     {
         return Yii::app()->user->getState('defaultEllipsizeQuestionValue', Yii::app()->params['defaultEllipsizeQuestionValue']);

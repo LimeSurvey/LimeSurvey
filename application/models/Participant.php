@@ -13,14 +13,7 @@
  *
  */
 
-/**
- * Specific exception for our purpose
- * Used to spit out error messages if mapping attributes doesn't work.
- */
-class CPDBException extends Exception
-{
-
-}
+use LimeSurvey\Exception\CPDBException;
 
 /**
  * This is the model class for table "{{participants}}".

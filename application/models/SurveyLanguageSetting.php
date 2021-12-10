@@ -276,7 +276,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param bool $xssfiltering
      * @return bool
      */
-    function updateRecord($data, $condition = '', $xssfiltering = false)
+    public function updateRecord($data, $condition = '', $xssfiltering = false)
     {
         $record = $this->findByPk($condition);
         foreach ($data as $key => $value) {
@@ -291,7 +291,7 @@ class SurveyLanguageSetting extends LSActiveRecord
      * @param array $data
      * @return bool
      */
-    function insertSomeRecords($data)
+    public function insertSomeRecords($data)
     {
         $lang = new self();
         foreach ($data as $k => $v) {
