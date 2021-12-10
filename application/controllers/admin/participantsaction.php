@@ -739,7 +739,7 @@ class participantsaction extends Survey_Common_Action
     public function addParticipant($aData, array $extraAttributes = array())
     {
         if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
-            $uuid = Participant::gen_uuid();
+            $uuid = Participant::genUuid();
             $aData['participant_id'] = $uuid;
             $aData['owner_uid'] = Yii::app()->user->id;
             $aData['created_by'] = Yii::app()->user->id;
@@ -1082,7 +1082,7 @@ class participantsaction extends Survey_Common_Action
 
                     //First, process the known fields
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
-                        $uuid = Participant::gen_uuid(); //Generate a UUID for the new participant
+                        $uuid = Participant::genUuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
                     if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {

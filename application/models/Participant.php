@@ -616,7 +616,7 @@ class Participant extends LSActiveRecord
      * Function for generation of unique id
      * @return string
      */
-    public static function gen_uuid()
+    public static function genUuid()
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -2026,7 +2026,7 @@ class Participant extends LSActiveRecord
                 } /* If there isn't an existing entry, create one! */ else {
                     /* Create entry in participants table */
                     $black = !empty($oTokenDynamic->blacklisted) ? $oTokenDynamic->blacklisted : 'N';
-                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->gen_uuid();
+                    $pid = !empty($oTokenDynamic->participant_id) ? $oTokenDynamic->participant_id : $this->genUuid();
 
                     $writearray = [
                         'participant_id' => $pid,
