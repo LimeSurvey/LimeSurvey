@@ -1946,7 +1946,7 @@ class participantsaction extends Survey_Common_Action
         if (Yii::app()->request->getPost('oper') == "edit" && isset($_POST['attvalue'])) {
             $pid = explode('_', Yii::app()->request->getPost('participant_id'));
             $iAttributeId = Yii::app()->request->getPost('attid');
-            if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && Participant::model()->is_owner($pid[0])) {
+            if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && Participant::model()->isOwner($pid[0])) {
                 $aData = array('participant_id' => $pid[0], 'attribute_id' => $iAttributeId, 'value' => Yii::app()->request->getPost('attvalue'));
                 ParticipantAttributeName::model()->editParticipantAttributeValue($aData);
             }
@@ -2136,7 +2136,7 @@ class participantsaction extends Survey_Common_Action
                 if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                     $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                 } else {
-                    if (Participant::model()->is_owner($value['participant_id'])) {
+                    if (Participant::model()->isOwner($value['participant_id'])) {
                         $participantid .= "," . $value['participant_id']; // combine the participant id's in an string
                     }
                 }

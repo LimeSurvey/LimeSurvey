@@ -314,8 +314,7 @@ class ParticipantAttributeName extends LSActiveRecord
         ));
     }
 
-
-    function getAllAttributes()
+    public function getAllAttributes()
     {
         $aResult = Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
                                                 ->from('{{participant_attribute_names}}')
@@ -325,7 +324,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $aResult;
     }
 
-    function getAllAttributesValues()
+    public function getAllAttributesValues()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->queryAll();
     }
@@ -480,7 +479,7 @@ class ParticipantAttributeName extends LSActiveRecord
      *                  result['attribute_name']
      *                  result['lang']
      */
-    function getCPDBAttributes()
+    public function getCPDBAttributes()
     {
         /**  @var $models ParticipantAttributeName[] */
         $models = ParticipantAttributeName::model()->findAll('core_attribute=:core_attribute', array(
@@ -709,7 +708,7 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
-    function saveAttribute($data)
+    public function saveAttribute($data)
     {
         if (empty($data['attribute_id'])) {
             return;
