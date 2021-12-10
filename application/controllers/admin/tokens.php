@@ -1366,10 +1366,21 @@ class tokens extends Survey_Common_Action
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
 
-            $ctresult = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $tokenDynamic = TokenDynamic::model($iSurveyId);
+            if (Yii::app()->request->getPost('partialonly')) {
+                $tokenDynamic->with([
+                    'responses' => [
+                        'select' => false,
+                        'joinType' => 'INNER JOIN',
+                        'condition' => 'responses.submitdate IS NULL',
+                    ],
+                ]);
+            }
+
+            $ctresult = $tokenDynamic->findUninvited($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
 
-            $emresult = TokenDynamic::model($iSurveyId)->findUninvited($aTokenIds, $iMaxEmails, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $emresult = array_slice($ctresult, 0, $iMaxEmails);
             $emcount = count($emresult);
 
             foreach ($aSurveyLangs as $language) {

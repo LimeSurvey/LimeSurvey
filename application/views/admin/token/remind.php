@@ -46,17 +46,46 @@
                             ?>
                         </div>
                     </div>
-                    
-                    <!-- Min days between reminders -->
+
                     <div class='form-group'>
-                        <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                        <?php
+                            echo CHtml::label(gT("Bypass date control before sending email:"), 'bypassdatecontrol', [
+                              'title' => gT("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                              'unescaped' => 'unescaped',
+                              'class' => 'control-label '
+                            ]);
+                        ?>
                         <div class=''>
-                            <input type="text" id="minreminderdelay" class="form-control" size="25" value="" name="minreminderdelay" style="width: 50%;">
+                        <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', [
+                                'name' => "bypassdatecontrol",
+                                'id'=>"bypassdatecontrol",
+                                'value' => '0',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')
+                            ]);
+                        ?>
+                        </div>
+                        <div class=''></div>
+                    </div>
+
+                    <!-- Only partial responses -->
+                    <div class='form-group'>
+                        <label class='control-label ' for='partialonly'><?php eT("Send email only to participants with partial responses:"); ?></label>
+                        <div class=''>
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', [
+                                'name' => "partialonly",
+                                'id' => "partialonly",
+                                'value' => '0',
+                                'onLabel' => gT('On'),
+                                'offLabel' => gT('Off')
+                            ]);
+                            ?>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
-
                     <!-- Max reminders -->
                     <div class='form-group'>
                         <label class='control-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
@@ -65,25 +94,12 @@
                         </div>
                     </div>
 
+                    <!-- Min days between reminders -->
                     <div class='form-group'>
-                          <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', 
-                          array(
-                              'title'=>gt("If some participants have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
-                              'unescaped'=>'unescaped', 
-                              'class' => 'control-label '
-                              )
-                            ); ?>
-                          <div class=''>
-                          <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => "bypassdatecontrol",
-                                'id'=>"bypassdatecontrol",
-                                'value' => '0',
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                          </div>
-                          <div class=''></div>
+                        <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                        <div class=''>
+                            <input type="text" id="minreminderdelay" class="form-control" size="25" value="" name="minreminderdelay" style="width: 50%;">
+                        </div>
                     </div>
                 </div>
             </div>

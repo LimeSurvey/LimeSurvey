@@ -174,7 +174,7 @@ class TokenDynamic extends LSActiveRecord
         $command = new CDbCriteria();
         $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
-        $command->addCondition("token <> ''");
+        $command->addCondition("t.token <> ''");
         $command->addCondition("email <> ''");
 
         if ($bEmail) {
@@ -205,7 +205,7 @@ class TokenDynamic extends LSActiveRecord
 
         $command->order = 'tid';
 
-        $oResult = TokenDynamic::model()->findAll($command);
+        $oResult = $this->findAll($command);
         foreach ($oResult as $key => $result) {
             $oResult[$key] = $result->decrypt();
         }
