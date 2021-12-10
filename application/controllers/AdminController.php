@@ -30,9 +30,9 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _init()
+    protected function customInit()
     {
-        parent::_init();
+        parent::customInit();
         App()->getComponent('bootstrap');
         $this->_sessioncontrol();
 
@@ -93,7 +93,7 @@ class AdminController extends LSYii_Controller
      */
     public function error($message, $sURL = array())
     {
-        $this->_getAdminHeader();
+        $this->getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">' . gT('Error') . '</div><br />' . "\n";
         $sOutput .= $message . '<br /><br />' . "\n";
@@ -115,7 +115,7 @@ class AdminController extends LSYii_Controller
         $sOutput .= '</div>' . "\n";
         echo $sOutput;
 
-        $this->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
+        $this->getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
 
         Yii::app()->end();
     }
@@ -426,7 +426,7 @@ class AdminController extends LSYii_Controller
      * @param bool $return
      * @return string|null
      */
-    public function _getAdminHeader($meta = false, $return = false)
+    public function getAdminHeader($meta = false, $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
@@ -492,7 +492,7 @@ class AdminController extends LSYii_Controller
      * @param bool $return
      * @return string|null
      */
-    public function _getAdminFooter($url, $explanation, $return = false)
+    public function getAdminFooter($url, $explanation, $return = false)
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
