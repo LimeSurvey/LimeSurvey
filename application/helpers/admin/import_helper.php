@@ -2778,7 +2778,7 @@ function createXMLfromData($aData = array()){
  * Read a csv file and resturn a tmp ressources to same file in utf8
  * @param string $fullfilepath
  * @param string $encoding from
- * @return ressource
+ * @return resource
  */
 function fileCsvToUtf8($fullfilepath, $encoding = 'auto')
 {
