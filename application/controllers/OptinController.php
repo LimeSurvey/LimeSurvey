@@ -27,7 +27,7 @@ class OptinController extends LSYii_Controller
     public $layout = 'bare';
     public $defaultAction = 'tokens';
 
-    function actiontokens($surveyid, $token, $langcode = '')
+    public function actiontokens($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');

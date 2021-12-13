@@ -48,12 +48,12 @@ class CheckIntegrity extends Survey_Common_Action
      */
     public function index()
     {
-        $aData = $this->_checkintegrity();
+        $aData = $this->checkintegrity();
         $aData['pageTitle'] = gT('Check data integrity');
         $aData['fullpagebar']['returnbutton']['url'] = 'admin/index';
         $aData['fullpagebar']['returnbutton']['text'] = gT('Back');
 
-        $this->_renderWrappedTemplate('checkintegrity', 'check_view', $aData);
+        $this->renderWrappedTemplate('checkintegrity', 'check_view', $aData);
     }
 
     public function fixredundancy()
@@ -62,7 +62,7 @@ class CheckIntegrity extends Survey_Common_Action
         $aData = [];
         $aData['messages'] = array();
         if (Permission::model()->hasGlobalPermission('settings', 'update') && Yii::app()->request->getPost('ok') == 'Y') {
-            $aDelete = $this->_checkintegrity();
+            $aDelete = $this->checkintegrity();
             if (isset($aDelete['redundanttokentables'])) {
                 foreach ($aDelete['redundanttokentables'] as $aTokenTable) {
                     if (in_array($aTokenTable['table'], $oldsmultidelete)) {
@@ -82,7 +82,7 @@ class CheckIntegrity extends Survey_Common_Action
             if (count($aData['messages']) == 0) {
                 $aData['messages'][] = gT('No old survey or survey participants table selected.');
             }
-            $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
+            $this->renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
         }
     }
 
@@ -98,7 +98,7 @@ class CheckIntegrity extends Survey_Common_Action
         if (Yii::app()->request->getPost('ok') != 'Y') {
             throw new CHttpException(403);
         }
-        $aDelete = $this->_checkintegrity();
+        $aDelete = $this->checkintegrity();
         $aData = array([
             'messsages' => array(),
             'warnings'  => array(),
@@ -170,14 +170,14 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         if (isset($aDelete['orphansurveytables'])) {
-            $aData = $this->_dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
+            $aData = $this->dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
         }
 
         if (isset($aDelete['orphantokentables'])) {
             $aData = $this->deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
         }
 
-        $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
+        $this->renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
     }
 
     /**
@@ -203,7 +203,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @param array $aData
      * @return array
      */
-    private function _dropOrphanSurveyTables(array $surveyTables, array $aData)
+    private function dropOrphanSurveyTables(array $surveyTables, array $aData)
     {
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
@@ -561,7 +561,7 @@ class CheckIntegrity extends Survey_Common_Action
      * @return array Array with all found issues.
      * @throws CDbException
      */
-    protected function _checkintegrity()
+    protected function checkintegrity()
     {
         /* Find is some fix is done */
         $bDirectlyFixed = false;
@@ -1244,8 +1244,8 @@ class CheckIntegrity extends Survey_Common_Action
      * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'checkintegrity', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

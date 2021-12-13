@@ -41,7 +41,7 @@ class UserAction extends Survey_Common_Action
      * @param string $param
      * @return string
      */
-    private function _getPostOrParam(string $param)
+    private function getPostOrParam(string $param)
     {
         $value = Yii::app()->request->getPost($param);
         if (!$value) {
@@ -84,14 +84,15 @@ class UserAction extends Survey_Common_Action
 
         $aData['model'] = $model;
         $aData['formUrl'] = 'admin/user/sa/index';
-        $this->_renderWrappedTemplate('user', 'editusers', $aData);
+        $this->renderWrappedTemplate('user', 'editusers', $aData);
     }
 
     /**
      * @param array $user
      * @return int
+     * @todo Not used?
      */
-    private function _getSurveyCountForUser(array $user)
+    private function getSurveyCountForUser(array $user)
     {
         return Survey::model()->countByAttributes(array('owner_id' => $user['uid']));
     }
@@ -179,7 +180,7 @@ class UserAction extends Survey_Common_Action
                     $sHeader = gT("Warning");
                 }
 
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect(
+                $aViewUrls['mboxwithredirect'][] = $this->messageBoxWithRedirect(
                     gT("Add user"),
                     $sHeader,
                     $classMsg,
@@ -191,7 +192,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('user', $aViewUrls);
+        $this->renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
@@ -206,15 +207,15 @@ class UserAction extends Survey_Common_Action
                 $this->getController()->redirect(array("admin/user/sa/index"));
             }
 
-            $action = $this->_getPostOrParam("action");
+            $action = $this->getPostOrParam("action");
 
             $aViewUrls = array();
 
             // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
             $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
 
-            $postuserid = $this->_getPostOrParam("uid");
-            $postuser = flattenText($this->_getPostOrParam("user"));
+            $postuserid = $this->getPostOrParam("uid");
+            $postuser = flattenText($this->getPostOrParam("user"));
 
             if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) {
                 // it's the original superadmin !!!
@@ -265,7 +266,7 @@ class UserAction extends Survey_Common_Action
                     $aData['current_user'] = $current_user;
 
                     $aViewUrls['deluser'][] = $aData;
-                    $this->_renderWrappedTemplate('user', $aViewUrls);
+                    $this->renderWrappedTemplate('user', $aViewUrls);
                 }
             } else {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -327,13 +328,12 @@ class UserAction extends Survey_Common_Action
         if ($transfer_surveys_to > 0 && $iSurveysTransferred > 0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;
-            //$sTransferred_to = $this->getController()->_getUserNameFromUid($transfer_surveys_to);
             $extra = sprintf(gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
         }
 
         $aViewUrls = array();
-        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", gT("Success!"), "text-success", $extra);
-        $this->_renderWrappedTemplate('user', $aViewUrls);
+        $aViewUrls['mboxwithredirect'][] = $this->messageBoxWithRedirect("", gT("Success!"), "text-success", $extra);
+        $this->renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
@@ -359,7 +359,7 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
                 $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
-                $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
+                $this->renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
             } else {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
@@ -443,7 +443,7 @@ class UserAction extends Survey_Common_Action
 
         $aData = array();
         $aData['fullpagebar']['continuebutton']['url'] = 'admin/user/sa/index';
-        $this->_renderWrappedTemplate('user', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
     /**
@@ -544,7 +544,7 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
 
-                $this->_renderWrappedTemplate('user', 'setuserpermissions', $aData);
+                $this->renderWrappedTemplate('user', 'setuserpermissions', $aData);
             } else {
                 Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
                 $this->getController()->redirect(array("admin/user/sa/index"));
@@ -568,7 +568,7 @@ class UserAction extends Survey_Common_Action
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aData['oUser'] = $oUser;
-        $this->_refreshtemplates();
+        $this->refreshtemplates();
         $templaterights = array();
 
         $trights = Permission::model()->findAllByAttributes(array('uid' => $oUser->uid, 'entity' => 'template'));
@@ -583,7 +583,7 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
         $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
 
-        $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
+        $this->renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
     /**
@@ -784,7 +784,7 @@ class UserAction extends Survey_Common_Action
         if (isset($_POST['saveandclose'])) {
             $this->getController()->redirect(array("admin/user/sa/index"));
         } else {
-            $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
+            $this->renderWrappedTemplate('user', 'personalsettings', $aData);
         }
     }
 
@@ -807,8 +807,9 @@ class UserAction extends Survey_Common_Action
     /**
      * @param int $uid
      * @return string|boolean
+     * @todo Not used?
      */
-    private function _getUserNameFromUid(int $uid)
+    private function getUserNameFromUid(int $uid)
     {
         $uid = sanitize_int($uid);
         $result = User::model()->findByPk($uid);
@@ -823,7 +824,7 @@ class UserAction extends Survey_Common_Action
     /**
      * Refresh templates
      */
-    private function _refreshtemplates()
+    private function refreshtemplates()
     {
         $template_a = Template::getTemplateList();
         foreach ($template_a as $tp => $fullpath) {
@@ -858,19 +859,20 @@ class UserAction extends Survey_Common_Action
      * @param string $str
      * @param bool   $like Default is false.
      * @return string
+     * @todo Not used?
      */
-    private function escape_str(string $str, bool $like = false)
+    private function escapeStr(string $str, bool $like = false)
     {
         if (is_array($str)) {
             foreach ($str as $key => $val) {
-                $str[$key] = $this->escape_str($val, $like);
+                $str[$key] = $this->escapeStr($val, $like);
             }
 
             return $str;
         }
 
         // Escape single quotes
-        $str = str_replace("'", "''", $this->remove_invisible_characters($str));
+        $str = str_replace("'", "''", $this->removeInvisibleCharacters($str));
 
         return $str;
     }
@@ -880,8 +882,9 @@ class UserAction extends Survey_Common_Action
      * @param string $str
      * @param bool   $url_encoded Default is true.
      * @return string
+     * @todo Not used?
      */
-    private function remove_invisible_characters($str, $url_encoded = true)
+    private function removeInvisibleCharacters($str, $url_encoded = true)
     {
         $non_displayables = array();
 
@@ -913,7 +916,7 @@ class UserAction extends Survey_Common_Action
      * @param string $classMbTitle
      * @todo to many arguments
      */
-    private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
+    private function messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
         $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
         $urlText = (!empty($urlText)) ? $urlText : gT("Continue");
@@ -939,8 +942,8 @@ class UserAction extends Survey_Common_Action
      * @param array        $aData       Data to be passed on. Optional.
      * @param bool         $sRenderFile
      */
-    protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

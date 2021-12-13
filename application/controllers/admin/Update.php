@@ -55,13 +55,13 @@
 * They are different types of possible errors :
 * - Warning message (like : modified files, etc.) : they don't stop the process, they are parsed to the step view, and the view manage how to display them. They can be generated from the ComfortUpdate server ($answer_from_server->result == TRUE ; and something like $answer_from_server->error == message or anything else that the step view manage ), or in the LimeSurvey update controller/model
 * - Error while processing a request on the server part : should never happen, but if something goes wrong in the server side (like generating an object from model), the server returns an error object ($answer_from_server->result == FALSE ; $answer_from_server->error == message )
-*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->_renderError
-* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->_renderErrorString($error), wich generate the error object, and then render the error view
+*   Those errors stop the process, and are display in _error view. Very usefull to debug. They are parsed directly to $this->renderError
+* - Error while checking needed datas in the LimeSurvey update controller : the controller always check if it has the needed datas (such as destintion_build, or zip_file), or the state of the key (outdated, etc). For the code to be dryer, the method parse an error string to $this->renderErrorString($error), wich generate the error object, and then render the error view
 *
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class update extends Survey_Common_Action
+class Update extends Survey_Common_Action
 {
     /**
      * First function to be called, when coming to admin/update
@@ -115,7 +115,7 @@ class update extends Survey_Common_Action
         }
     }
 
-    public function manage_submitkey()
+    public function manageSubmitkey()
     {
         $buttons = 1;
         $updateModel = new UpdateForm();
@@ -171,7 +171,7 @@ class update extends Survey_Common_Action
         }
     }
 
-    public function delete_key()
+    public function deleteKey()
     {
         $this->requirePostRequest();
 
@@ -188,7 +188,7 @@ class update extends Survey_Common_Action
      */
     public function getstablebutton()
     {
-        echo $this->_getButtons("1");
+        echo $this->getButtons("1");
     }
 
     /**
@@ -197,7 +197,7 @@ class update extends Survey_Common_Action
      */
     public function getbothbuttons()
     {
-        echo $this->_getButtons("1");
+        echo $this->getButtons("1");
     }
 
     /**
@@ -218,7 +218,7 @@ class update extends Survey_Common_Action
                 $welcome['destinationBuild'] = $destinationBuild;
             $welcome = (object) $welcome;
 
-                return $this->_renderWelcome($welcome);
+                return $this->renderWelcome($welcome);
         }
     }
 
@@ -243,7 +243,7 @@ class update extends Survey_Common_Action
 
                 return $this->controller->renderPartial('update/updater/steps/_check_local_errors', $aData, false, false);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
@@ -270,11 +270,11 @@ class update extends Survey_Common_Action
                     $aData['destinationBuild'] = $destinationBuild;
                     $aData['access_token'] = $access_token;
                 } else {
-                    return $this->_renderError($changelog);
+                    return $this->renderError($changelog);
                 }
                 return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
@@ -298,16 +298,16 @@ class update extends Survey_Common_Action
                     $aData = $updateModel->getFileStatus($changedFiles->files);
 
                     $aData['html_from_server'] = (isset($changedFiles->html)) ? $changedFiles->html : '';
-                    $aData['datasupdateinfo'] = $this->_parseToView($changedFiles->files);
+                    $aData['datasupdateinfo'] = $this->parseToView($changedFiles->files);
                     $aData['destinationBuild'] = $tobuild;
                     $aData['updateinfo'] = $changedFiles->files;
                     $aData['access_token'] = $access_token;
 
                     return $this->controller->renderPartial('update/updater/steps/_fileSystem', $aData, false, false);
                 }
-                return $this->_renderError($changedFiles);
+                return $this->renderError($changedFiles);
             }
-            return $this->_renderErrorString("unknown_destination_build");
+            return $this->renderErrorString("unknown_destination_build");
         }
     }
 
@@ -335,7 +335,7 @@ class update extends Survey_Common_Action
                         $aData['dbBackupInfos'] = $dbBackupInfos;
                         $aData['basefilename'] = $backupInfos->basefilename;
                         $aData['tempdir'] = $backupInfos->tempdir;
-                        $aData['datasupdateinfo'] = $this->_parseToView($updateinfos);
+                        $aData['datasupdateinfo'] = $this->parseToView($updateinfos);
                         $aData['destinationBuild'] = $destinationBuild;
                         $aData['access_token'] = $access_token;
                         return $this->controller->renderPartial('update/updater/steps/_backup', $aData, false, false);
@@ -348,7 +348,7 @@ class update extends Survey_Common_Action
             } else {
                 $error = "unknown_destination_build";
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
@@ -356,7 +356,7 @@ class update extends Survey_Common_Action
      * Display step4
      * @return string
      */
-    function step4()
+    public function step4()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             if (App()->request->getPost('destinationBuild')) {
@@ -403,7 +403,7 @@ class update extends Survey_Common_Action
             } else {
                 $error = "unknown_destination_build";
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
@@ -446,7 +446,7 @@ class update extends Survey_Common_Action
                     return $this->controller->renderPartial('update/updater/welcome/_error_files_update_updater', array('localChecks' => $localChecks), false, false);
                 }
             }
-            return $this->_renderErrorString($error);
+            return $this->renderErrorString($error);
         }
     }
 
@@ -462,7 +462,7 @@ class update extends Survey_Common_Action
             // To force server to render the subscribe message, we call for the last 2.06+ release (which need at least a free key)
             $updateModel = new UpdateForm();
             $welcome = $updateModel->getWelcomeMessage(null, '160129'); //$updateKey
-            echo $this->_renderWelcome($welcome);
+            echo $this->renderWelcome($welcome);
         }
     }
 
@@ -488,9 +488,9 @@ class update extends Survey_Common_Action
                     $check->view = "key_updated";
                 }
                 // then, we render the what returned the server (views and key infos or error )
-                echo $this->_renderWelcome($check);
+                echo $this->renderWelcome($check);
             } else {
-                return $this->_renderErrorString("key_null");
+                return $this->renderErrorString("key_null");
             }
         }
     }
@@ -544,7 +544,7 @@ class update extends Survey_Common_Action
      * this function render the update buttons
      * @param string $crosscheck
      */
-    private function _getButtons($crosscheck)
+    private function getButtons($crosscheck)
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             $updateModel = new UpdateForm();
@@ -565,7 +565,7 @@ class update extends Survey_Common_Action
      * This method render the welcome/subscribe/key_updated message
      * @param obj $serverAnswer the answer return by the server
      */
-    private function _renderWelcome($serverAnswer)
+    private function renderWelcome($serverAnswer)
     {
         if ($serverAnswer->result) {
             // Available views (in /admin/update/welcome/ )
@@ -581,7 +581,7 @@ class update extends Survey_Common_Action
                 $serverAnswer->error = "unknown_view";
             }
         }
-        echo $this->_renderError($serverAnswer);
+        echo $this->renderError($serverAnswer);
     }
 
 
@@ -590,7 +590,7 @@ class update extends Survey_Common_Action
      * @param object $errorObject
      * @return string
      */
-    private function _renderError($errorObject)
+    private function renderError($errorObject)
     {
         echo $this->controller->renderPartial('//admin/update/updater/_error', array('errorObject' => $errorObject), false, false);
     }
@@ -600,12 +600,12 @@ class update extends Survey_Common_Action
      * @param string $error the error message
      * @return string
      */
-    private function _renderErrorString($error)
+    private function renderErrorString($error)
     {
             $errorObject = new stdClass();
             $errorObject->result = false;
             $errorObject->error = $error;
-            return $this->_renderError($errorObject);
+            return $this->renderError($errorObject);
     }
 
     /**
@@ -614,7 +614,7 @@ class update extends Survey_Common_Action
      * @param array $updateinfos the udpadte infos array returned by the update server
      * @return $string
      */
-    private function _parseToView($updateinfos)
+    private function parseToView($updateinfos)
     {
         $data = json_encode($updateinfos);
         return base64_encode($data);

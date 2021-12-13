@@ -20,7 +20,7 @@
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class conditionsaction extends Survey_Common_Action
+class ConditionsAction extends Survey_Common_Action
 {
     /**
      * @var array
@@ -628,7 +628,7 @@ class conditionsaction extends Survey_Common_Action
         }
 
         $aData['conditionsoutput'] = $aViewUrls['output'];
-        $this->_renderWrappedTemplate('conditions', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('conditions', $aViewUrls, $aData);
 
         // TMSW Condition->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
     }
@@ -659,7 +659,7 @@ class conditionsaction extends Survey_Common_Action
         if (empty(Yii::app()->request->getPost('ok'))) {
             $data = array('iSurveyID' => $iSurveyID);
             $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
-            $this->_renderWrappedTemplate('conditions', array('message' => array(
+            $this->renderWrappedTemplate('conditions', array('message' => array(
                 'title' => gT("Warning"),
                 'message' => $content
             )));
@@ -1217,9 +1217,9 @@ class conditionsaction extends Survey_Common_Action
      * @return void
      * @throws CHttpException
      */
-    protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

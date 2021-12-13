@@ -46,9 +46,9 @@ class GlobalSettings extends Survey_Common_Action
     public function index()
     {
         if (!empty(Yii::app()->getRequest()->getPost('action'))) {
-            $this->_saveSettings();
+            $this->saveSettings();
         }
-        $this->_displaySettings();
+        $this->displaySettings();
     }
 
     /**
@@ -77,7 +77,7 @@ class GlobalSettings extends Survey_Common_Action
      * Displays the settings.
      * @throws CHttpException
      */
-    private function _displaySettings()
+    private function displaySettings()
     {
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
@@ -86,7 +86,7 @@ class GlobalSettings extends Survey_Common_Action
         $data = [];
         $data['title'] = "hi";
         $data['message'] = "message";
-        foreach ($this->_checkSettings() as $key => $row) {
+        foreach ($this->checkSettings() as $key => $row) {
             $data[$key] = $row;
         }
         Yii::app()->loadLibrary('Date_Time_Converter');
@@ -135,7 +135,7 @@ class GlobalSettings extends Survey_Common_Action
         // Green Bar Title
         $data['pageTitle'] = gT("Global settings");
 
-        $this->_renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
+        $this->renderWrappedTemplate('globalsettings', 'globalSettings_view', $data);
     }
 
     /**
@@ -225,7 +225,7 @@ class GlobalSettings extends Survey_Common_Action
     /**
      * Save Settings
      */
-    private function _saveSettings()
+    private function saveSettings()
     {
         if (Yii::app()->getRequest()->getPost('action') !== "globalsettingssave") {
             return;
@@ -411,7 +411,7 @@ class GlobalSettings extends Survey_Common_Action
     /**
      * Check Settings
      */
-    private function _checkSettings()
+    private function checkSettings()
     {
         $surveycount = Survey::model()->count();
 
@@ -527,7 +527,7 @@ class GlobalSettings extends Survey_Common_Action
             ],
         ];
 
-        $this->_renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
+        $this->renderWrappedTemplate('globalsettings', 'surveySettings', $aData);
     }
 
     /**
@@ -556,7 +556,7 @@ class GlobalSettings extends Survey_Common_Action
         $body[] = sprintf(gT('This is a test email from %s'), $sSiteName);
         $body   = implode("\n", $body);
 
-        $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
+        $this->sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom);
     }
 
     /**
@@ -566,7 +566,7 @@ class GlobalSettings extends Survey_Common_Action
      * @param string $sTo
      * @param string $sFrom
      */
-    private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
+    private function sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom)
     {
         $mailer = new \LimeMailer();
         $mailer->emailType = 'settings_test';
@@ -589,7 +589,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['success'] = $success;
         $data['maildebug'] = $mailer->getDebug('html');
 
-        $this->_renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
+        $this->renderWrappedTemplate('globalsettings', '_emailTestResults', $data);
     }
 
     /**
@@ -619,10 +619,10 @@ class GlobalSettings extends Survey_Common_Action
      * @param array  $aData       Data to be passed on. Optional.
      * @param bool   $sRenderFile
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'globalsettings.js');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

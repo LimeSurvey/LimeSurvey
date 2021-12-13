@@ -20,7 +20,7 @@ class Expressions extends Survey_Common_Action
     /**
      * Index
      **/
-    function index()
+    public function index()
     {
         $aData = array();
         $needpermission = false;
@@ -42,7 +42,7 @@ class Expressions extends Survey_Common_Action
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
-            $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
+            $this->renderWrappedTemplate('survey', array("message" => $message), $aData);
         } else {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
@@ -50,9 +50,9 @@ class Expressions extends Survey_Common_Action
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts') . 'survey_runtime.js');
             App()->getClientScript()->registerPackage('expression-extend');
 
-            $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
+            $this->printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
-            $aData['subaction'] = $this->_printTitle($aData['sa']);
+            $aData['subaction'] = $this->printTitle($aData['sa']);
 
 
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
@@ -60,7 +60,7 @@ class Expressions extends Survey_Common_Action
             if ($sAction) {
                 $this->test($sAction, $aData);
             } else {
-                $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
+                $this->renderWrappedTemplate('expressions', 'test_view', $aData);
             }
         }
     }
@@ -77,7 +77,9 @@ class Expressions extends Survey_Common_Action
 
     /**
      * Survey Logic file
+     * NB: To apply PSR-12 to function name, database must be changed for menu entries.
      **/
+    // phpcs:ignore
     public function survey_logic_file()
     {
         $aData = array();
@@ -90,7 +92,7 @@ class Expressions extends Survey_Common_Action
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
-            $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
+            $this->renderWrappedTemplate('survey', array("message" => $message), $aData);
             return;
         }
 
@@ -184,15 +186,14 @@ class Expressions extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);
+        $this->renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);
     }
 
     /**
      * Survey Logic Form
      **/
-    public function survey_logic_form()
+    public function surveyLogicForm()
     {
-
         $aData['surveylist'] = getSurveyList();
 
         App()->getClientScript()->registerPackage('decimal');
@@ -200,15 +201,15 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('expressions');
         App()->getClientScript()->registerPackage('expression-extend');
 
-        $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);
+        $this->renderWrappedTemplate('expressions', 'test/surveyLogicForm', $aData);
     }
 
     protected function test($which, $aData)
     {
         if ($which == 'survey_logic_file') {
-            $which = 'survey_logic_form';
+            $which = 'surveyLogicForm';
         }
-        $this->_renderWrappedTemplate('expressions', 'test/' . $which, $aData);
+        $this->renderWrappedTemplate('expressions', 'test/' . $which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 
@@ -216,7 +217,7 @@ class Expressions extends Survey_Common_Action
      * Print on load
      * @param string $which
      **/
-    private function _printOnLoad(string $which)
+    private function printOnLoad(string $which)
     {
         switch ($which) {
             case 'relevance':
@@ -233,7 +234,7 @@ class Expressions extends Survey_Common_Action
      * @param string $which
      * @return string
      **/
-    private function _printTitle(string $which): string
+    private function printTitle(string $which): string
     {
         switch ($which) {
             case 'index':
@@ -299,10 +300,10 @@ class Expressions extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

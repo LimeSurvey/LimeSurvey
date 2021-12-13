@@ -16,16 +16,13 @@
 */
 
 /**
-* Update Database Controller
-* This controller must be accessible by unlogged user (in case of modifications of {{permissions}} blocking the login )
-*
-* @package       LimeSurvey
-* @subpackage    Backend
-*
-*/
-
-
-class databaseupdate extends Survey_Common_Action
+ * Update Database Controller
+ * This controller must be accessible by unlogged user (in case of modifications of {{permissions}} blocking the login )
+ *
+ * @package       LimeSurvey
+ * @subpackage    Backend
+ */
+class DatabaseUpdate extends Survey_Common_Action
 {
     /**
      * Update database
@@ -45,9 +42,6 @@ class databaseupdate extends Survey_Common_Action
 
         $aData['updatedbaction'] = true;
 
-        $this->_renderWrappedTemplate('update', $aViewUrls, $aData, 'layout_minimal.php');
-
-        //$aData = array_merge($aData, $aViewUrls);
-        //Yii::app()->getController()->renderPartial('databaseupdate/db', $aData);
+        $this->renderWrappedTemplate('update', $aViewUrls, $aData, 'layout_minimal.php');
     }
 }

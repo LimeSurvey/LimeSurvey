@@ -54,7 +54,7 @@ Y - Yes/No
 * @copyright 2011
 * @access public
 */
-class dataentry extends Survey_Common_Action
+class DataEntry extends Survey_Common_Action
 {
     /**
      * Dataentry Constructor
@@ -93,9 +93,9 @@ class dataentry extends Survey_Common_Action
 
                 $subAction = Yii::app()->request->getPost('subaction');
                 if ($subAction != "upload") {
-                    $this->_showUploadForm($this->_getEncodingsArray(), $iSurveyId, $aData);
+                    $this->showUploadForm($this->getEncodingsArray(), $iSurveyId, $aData);
                 } else {
-                    $this->_handleFileUpload($iSurveyId, $aData);
+                    $this->handleFileUpload($iSurveyId, $aData);
                 }
             } else {
                 Yii::app()->session['flashmessage'] = gT("This survey is not active. You must activate the survey before attempting to import a VVexport file.");
@@ -129,7 +129,7 @@ class dataentry extends Survey_Common_Action
                 Yii::app()->db->createCommand("UPDATE {{tokens_$surveyid}} SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1 where usesleft=0")->execute();
                 $aData['success'] = true;
             }
-            $this->_renderWrappedTemplate('dataentry', 'iteratesurvey', $aData);
+            $this->renderWrappedTemplate('dataentry', 'iteratesurvey', $aData);
         }
     }
 
@@ -139,9 +139,9 @@ class dataentry extends Survey_Common_Action
      * @param array $aData     Given Data
      * @return void
      */
-    private function _handleFileUpload($iSurveyId, $aData)
+    private function handleFileUpload($iSurveyId, $aData)
     {
-        $filePath = $this->_moveUploadedFile($aData);
+        $filePath = $this->moveUploadedFile($aData);
 
         Yii::app()->loadHelper('admin/import');
         // Fill option
@@ -174,7 +174,7 @@ class dataentry extends Survey_Common_Action
         $aData['aResult']['errors'] = (isset($aResult['errors'])) ? $aResult['errors'] : false;
         $aData['aResult']['warnings'] = (isset($aResult['warnings'])) ? $aResult['warnings'] : false;
 
-        $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
+        $this->renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
     }
 
     /**
@@ -183,7 +183,7 @@ class dataentry extends Survey_Common_Action
      * @param array $aData Given Data
      * @return void
      */
-    private function _moveUploadedFile($aData)
+    private function moveUploadedFile($aData)
     {
         $sFullFilePath = Yii::app()->getConfig('tempdir') . "/" . randomChars(20);
         $fileVV = CUploadedFile::getInstanceByName('csv_vv_file');
@@ -199,7 +199,7 @@ class dataentry extends Survey_Common_Action
                     'link' => $this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/' . $aData['surveyid']),
                     'text' => $aData['aUrlText'][] = gT("Back to Response Import"),
                     );
-                $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
+                $this->renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
             } else {
                 return $sFullFilePath;
             }
@@ -216,7 +216,7 @@ class dataentry extends Survey_Common_Action
      * @param array  $aData      Given Data
      * @return void
      */
-    private function _showUploadForm($aEncodings, $surveyid, $aData)
+    private function showUploadForm($aEncodings, $surveyid, $aData)
     {
         unset($aEncodings['auto']);
         asort($aEncodings);
@@ -238,7 +238,7 @@ class dataentry extends Survey_Common_Action
 
         $aData['display']['menu_bars']['browse'] = gT("Import VV file");
 
-        $this->_renderWrappedTemplate('dataentry', 'vvimport', $aData);
+        $this->renderWrappedTemplate('dataentry', 'vvimport', $aData);
     }
 
     /**
@@ -305,7 +305,7 @@ class dataentry extends Survey_Common_Action
             $aData['topBar']['showImportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('dataentry', 'import', $aData);
+            $this->renderWrappedTemplate('dataentry', 'import', $aData);
         } else {
             $aSRIDConversions = array();
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
@@ -1290,7 +1290,7 @@ class dataentry extends Survey_Common_Action
             $aData['topBar']['showSaveButton']  = true;
             $aData['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+            $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
 
@@ -1341,7 +1341,7 @@ class dataentry extends Survey_Common_Action
             $aData['topBar']['name'] = 'baseTopbar_view';
             $aData['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('dataentry', 'delete', $aData);
+            $this->renderWrappedTemplate('dataentry', 'delete', $aData);
         }
     }
 
@@ -1456,6 +1456,8 @@ class dataentry extends Survey_Common_Action
                             $thisvalue = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
                     }
+                    // TODO: Fallthru on purpose?
+                    /* FALLTHRU */
                 case 'startdate':
                 case 'datestamp':
                     if (empty($thisvalue)) {
@@ -1788,7 +1790,7 @@ class dataentry extends Survey_Common_Action
 
             $aData['topBar']['name'] = 'baseTopbar_view';
 
-            $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
+            $this->renderWrappedTemplate('dataentry', 'insert', $aData);
         }
     }
 
@@ -1971,9 +1973,9 @@ class dataentry extends Survey_Common_Action
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($arQuestion['qid']);
-                    $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
+                    $arrayFilterHelp = flattenText($this->arrayFilterHelp($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                    if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != '')) {
+                    if (($relevance != '' && $relevance != '1') || ($validation != '') || ($arrayFilterHelp != '')) {
                         $showme = '<div class="alert alert-warning col-sm-8 col-sm-offset-2" role="alert">';
                         if ($bgc == "even") {
                             $bgc = "odd";
@@ -1986,11 +1988,11 @@ class dataentry extends Survey_Common_Action
                         if ($validation != '') {
                             $showme .= '<strong>' . gT("The answer(s) must meet these validation criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$validation\n";
                         }
-                        if ($showme != '' && $array_filter_help != '') {
+                        if ($showme != '' && $arrayFilterHelp != '') {
                             $showme .= '<br/>';
                         }
-                        if ($array_filter_help != '') {
-                            $showme .= '<strong>' . gT("The answer(s) must meet these array_filter criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$array_filter_help\n";
+                        if ($arrayFilterHelp != '') {
+                            $showme .= '<strong>' . gT("The answer(s) must meet these array_filter criteria:", 'html', $sDataEntryLanguage) . "</strong><br />$arrayFilterHelp\n";
                         }
                         $showme .= '</div>';
                         $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
@@ -2215,7 +2217,7 @@ class dataentry extends Survey_Common_Action
             $aData['topBar']['showSaveButton']  = true;
             $aData['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+            $this->renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
 
@@ -2223,7 +2225,7 @@ class dataentry extends Survey_Common_Action
      * Returns Encoding Array.
      * @return array
      */
-    private function _getEncodingsArray()
+    private function getEncodingsArray()
     {
         return aEncodingsArray();
     }
@@ -2237,7 +2239,7 @@ class dataentry extends Survey_Common_Action
     * @param int    $surveyid        Given Survey ID
     * @return string
     */
-    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid)
+    private function arrayFilterHelp($qidattributes, $surveyprintlang, $surveyid)
     {
         $output = "";
         if (!empty($qidattributes['array_filter'])) {
@@ -2271,7 +2273,7 @@ class dataentry extends Survey_Common_Action
      * @param bool         $sRenderFile Boolean value if file will be rendered.
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         if (!isset($aData['display']['menu_bars']['browse'])) {
             $iSurveyId = 0;
@@ -2288,6 +2290,6 @@ class dataentry extends Survey_Common_Action
             $aData["survey"] = $survey;
             $aData['title_bar']['title'] = gT("Data entry");
         }
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }
