@@ -83,7 +83,7 @@ class Labels extends SurveyCommonAction
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
                 foreach ($folders as $folder) {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
                 }
@@ -739,5 +739,65 @@ class Labels extends SurveyCommonAction
         $aData['display']['menu_bars'] = false;
 
         parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * @deprecated use ServiceClass FilterImportedResources instead ... (models/services/)
+     * @param string $extractdir
+     * @param string $destdir
+     * @return array
+     */
+    private function filterImportedResources($extractdir, $destdir)
+    {
+        $aErrorFilesInfo = array();
+        $aImportedFilesInfo = array();
+
+        if (!is_dir($extractdir)) {
+                    return array(array(), array());
+        }
+
+        if (!is_dir($destdir)) {
+                    mkdir($destdir);
+        }
+
+        $dh = opendir($extractdir);
+        if (!$dh) {
+            $aErrorFilesInfo[] = array(
+                "filename" => '',
+                "status" => gT("Extracted files not found - maybe a permission problem?")
+            );
+            return array($aImportedFilesInfo, $aErrorFilesInfo);
+        }
+        while ($direntry = readdir($dh)) {
+            if ($direntry != "." && $direntry != "..") {
+                if (is_file($extractdir . "/" . $direntry)) {
+                    // is  a file
+                    $extfile = (string) substr(strrchr($direntry, '.'), 1);
+                    if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false)) {
+                        // Extension allowed
+                        if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry)) {
+                            $aErrorFilesInfo[] = array(
+                            "filename" => $direntry,
+                            "status" => gT("Copy failed")
+                            );
+                        } else {
+                            $aImportedFilesInfo[] = array(
+                            "filename" => $direntry,
+                            "status" => gT("OK")
+                            );
+                        }
+                    } else {
+                        // Extension forbidden
+                        $aErrorFilesInfo[] = array(
+                        "filename" => $direntry,
+                        "status" => gT("Forbidden Extension")
+                        );
+                    }
+                    unlink($extractdir . "/" . $direntry);
+                }
+            }
+        }
+
+        return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
 }
