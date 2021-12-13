@@ -41,7 +41,6 @@
 
 class TemplateConfiguration extends TemplateConfig
 {
-
     /**
      * @var TemplateConfiguration $oParentTemplate The parent template name
      * A template configuration, in the database, can inherit from another one.
