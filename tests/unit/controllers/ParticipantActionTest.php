@@ -14,12 +14,12 @@ class ParticipantActionTest extends TestBaseClass
      */
     public function testUpdateEncryption()
     {
-        \Yii::import('application.controllers.admin.participantsaction', true);
+        \Yii::import('application.controllers.admin.ParticipantsAction', true);
         \Yii::import('application.helpers.admin.ajax_helper', true);
         \Yii::app()->session['loginID'] = 1;
 
         /** @var participantsaction */
-        $participantController = new \participantsaction('dummy');
+        $participantController = new \ParticipantsAction('dummy');
 
         // TODO: Use PHPUnit dataset instead? https://phpunit.de/manual/6.5/en/database.html
         $attrName = new \ParticipantAttributeName();
