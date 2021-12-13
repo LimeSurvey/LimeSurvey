@@ -5,7 +5,6 @@
  */
 class PluginHelper extends Survey_Common_Action
 {
-
     /** @inheritdoc */
     public $defaultAction = 'sidebody';
 

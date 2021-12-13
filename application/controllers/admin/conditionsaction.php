@@ -22,7 +22,6 @@
  */
 class conditionsaction extends Survey_Common_Action
 {
-
     /**
      * @var array
      */

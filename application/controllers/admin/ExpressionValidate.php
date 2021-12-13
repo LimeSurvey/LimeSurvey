@@ -10,7 +10,6 @@
 */
 class ExpressionValidate extends Survey_Common_Action
 {
-
     /**
      * @var string : Default layout is popup : less header, no footer
      */

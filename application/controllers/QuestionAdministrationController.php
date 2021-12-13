@@ -5,7 +5,6 @@
  */
 class QuestionAdministrationController extends LSBaseController
 {
-
     /**
      * It's import to have the accessRules set (security issue).
      * Only logged in users should have access to actions. All other permissions

@@ -63,7 +63,6 @@
 */
 class update extends Survey_Common_Action
 {
-
     /**
      * First function to be called, when coming to admin/update
      *

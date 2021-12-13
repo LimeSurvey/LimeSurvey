@@ -216,7 +216,7 @@ class labels extends Survey_Common_Action
         $aData['labelbar']['buttons']['return'] = true;
         $aData['labelbar']['savebutton']['form'] = 'labelsetform';
         $aData['labelbar']['savebutton']['text'] = gT("Save");
-      
+
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
 
@@ -377,7 +377,7 @@ class labels extends Survey_Common_Action
 
     /**
      * Save new label set
-     * 
+     *
      * @return void
      */
     public function saveNewLabelSet()
@@ -450,7 +450,7 @@ class labels extends Survey_Common_Action
 
     /**
      * Get all label sets
-     * 
+     *
      * @return void
      */
     public function getAllSets()
@@ -631,7 +631,7 @@ class labels extends Survey_Common_Action
 
     /**
      * New label set from question editor
-     * 
+     *
      * @return void
      */
     public function newLabelSetFromQuestionEditor()
@@ -681,7 +681,7 @@ class labels extends Survey_Common_Action
 
     /**
      * Get Label I10N Object
-     * 
+     *
      * @param int    $labelId   Label ID
      * @param string $language  Language Code
      * @return LabelL10n
@@ -699,7 +699,7 @@ class labels extends Survey_Common_Action
 
     /**
      * Get Label Object
-     * 
+     *
      * @param int $labelId Label ID
      * @return Label
      */
@@ -715,7 +715,7 @@ class labels extends Survey_Common_Action
      * @param string       $sAction     Current action, the folder to fetch views from
      * @param string|array $aViewUrls   View url(s)
      * @param array        $aData       Data to be passed on. Optional.
-     * @parm  bool         $sRenderFile 
+     * @parm  bool         $sRenderFile
      * @return void
      */
     protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)

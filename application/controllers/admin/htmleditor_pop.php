@@ -16,7 +16,6 @@
 
 class htmleditor_pop extends Survey_Common_Action
 {
-
     public function index()
     {
         Yii::app()->loadHelper('admin.htmleditor');

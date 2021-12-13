@@ -24,7 +24,6 @@
 */
 class InstallerController extends CController
 {
-
     /**
      * @var CDbConnection
      */

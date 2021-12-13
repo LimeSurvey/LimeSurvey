@@ -23,10 +23,9 @@
 */
 class export extends Survey_Common_Action
 {
-
     /**
      * Export Constructor.
-     * 
+     *
      * @param         $controller Controller
      * @param integer $id
      */
@@ -375,7 +374,7 @@ class export extends Survey_Common_Action
     * Final output renders $fields to a DATA LIST, and then stitches in the tmp file data.
     *
     * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
-    * 
+    *
     */
     public function exportspss()
     {
@@ -921,7 +920,7 @@ class export extends Survey_Common_Action
 
     /**
      * Export Multiple Surveys
-     * 
+     *
      * @param string $sSurveys
      * @param string $sExportType
      * @return array
@@ -1007,7 +1006,7 @@ class export extends Survey_Common_Action
 
     /**
      * Download an archive file
-     * 
+     *
      * @param string $sZip name of zip file to download (will be downloaded as "surveys_archive.zip")
      */
     public function downloadZip(string $sZip)
@@ -1097,7 +1096,7 @@ class export extends Survey_Common_Action
 
     /**
      * Add to zip
-     * 
+     *
      * @param PclZip $zip
      * @param string $name
      * @param string $full_name
@@ -1116,7 +1115,7 @@ class export extends Survey_Common_Action
 
     /**
      * Survey export
-     * 
+     *
      * @param string $action
      * @param int    $iSurveyID
      * @return void
@@ -1391,7 +1390,7 @@ class export extends Survey_Common_Action
 
     /**
      * Generate an TSV (tab-separated value) file for the survey structure
-     * 
+     *
      * @param integer $surveyid
      * @return void
      */
@@ -1408,7 +1407,7 @@ class export extends Survey_Common_Action
 
     /**
      * Add Headers
-     * 
+     *
      * @param string $filename
      * @param string $content_type
      * @param string $expires
@@ -1452,7 +1451,7 @@ class export extends Survey_Common_Action
      * @param string $sAction       Current action, the folder to fetch views from
      * @param string $aViewUrls     View url(s)
      * @param array  $aData         Data to be passed on. Optional.
-     * @param bool   $sRenderFile 
+     * @param bool   $sRenderFile
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {

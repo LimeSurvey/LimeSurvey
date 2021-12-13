@@ -56,7 +56,6 @@ Y - Yes/No
 */
 class dataentry extends Survey_Common_Action
 {
-
     /**
      * Dataentry Constructor
      * @param Controller $controller Given Controller

@@ -28,7 +28,6 @@
  */
 class Authentication extends Survey_Common_Action
 {
-
     /**
      * Show login screen and parse login data
      * Will redirect or echo json depending on ajax call

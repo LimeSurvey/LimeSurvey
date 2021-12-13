@@ -17,7 +17,6 @@ if (!defined('BASEPATH')) {
 
 class index extends CAction
 {
-
     public $oTemplate;
 
     public function run()

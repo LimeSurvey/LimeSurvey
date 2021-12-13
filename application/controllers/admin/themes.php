@@ -24,7 +24,6 @@ use LimeSurvey\ExtensionInstaller\QuestionThemeInstaller;
 */
 class themes extends Survey_Common_Action
 {
-
     public function runWithParams($params)
     {
         $sTemplateName = Yii::app()->request->getPost('templatename', '');

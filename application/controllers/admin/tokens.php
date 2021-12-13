@@ -23,7 +23,6 @@
 */
 class tokens extends Survey_Common_Action
 {
-
     /**
      * Show token index page, handle token database
      * @param int $surveyid  The survey ID

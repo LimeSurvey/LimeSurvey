@@ -5,7 +5,6 @@
  */
 class SurveymenuController extends Survey_Common_Action
 {
-
     /**
      * @return string[] action filters
      */

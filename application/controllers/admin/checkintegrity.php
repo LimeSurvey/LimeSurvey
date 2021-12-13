@@ -22,7 +22,6 @@
  */
 class CheckIntegrity extends Survey_Common_Action
 {
-
     /**
      * Constructor
      *

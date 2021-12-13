@@ -21,7 +21,6 @@ use LimeSurvey\Models\Services\SurveysGroupCreator;
  */
 class SurveysGroupsController extends Survey_Common_Action
 {
-
     /**
      * Displays a particular model.
      *

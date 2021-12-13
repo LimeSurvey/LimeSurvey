@@ -14,7 +14,6 @@
  */
 class LimeReplacementFieldsController extends LSBaseController
 {
-
     /**
      *
      * @todo: document me ...

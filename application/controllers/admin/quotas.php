@@ -23,7 +23,6 @@
  */
 class quotas extends Survey_Common_Action
 {
-
     public function __construct($controller, $id)
     {
         parent::__construct($controller, $id);

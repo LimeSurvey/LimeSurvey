@@ -14,7 +14,6 @@
  */
 class Index extends Survey_Common_Action
 {
-
     public function run()
     {
         App()->loadHelper('surveytranslator');

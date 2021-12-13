@@ -24,7 +24,6 @@ use LimeSurvey\Models\Services\PermissionManager;
 
 class surveypermission extends Survey_Common_Action
 {
-
     /**
      * Load survey security screen.
      *

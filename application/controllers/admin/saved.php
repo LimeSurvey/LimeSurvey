@@ -22,7 +22,6 @@
  */
 class saved extends Survey_Common_Action
 {
-
     /**
      * Show the list of save response
      * @param int $surveyid

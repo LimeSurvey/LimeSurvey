@@ -22,7 +22,6 @@
 */
 class translate extends Survey_Common_Action
 {
-
     public function index($surveyid)
     {
         /* existing + read (survey) already checked in Survey_Common_Action : existing use model : then if surveyid is not valid : return a 404 */

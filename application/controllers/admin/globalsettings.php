@@ -22,7 +22,6 @@
 */
 class GlobalSettings extends Survey_Common_Action
 {
-
     /**
      * GlobalSettings Constructor
      * @param $controller

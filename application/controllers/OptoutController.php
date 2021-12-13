@@ -25,7 +25,6 @@ if (!defined('BASEPATH')) {
  */
 class OptoutController extends LSYii_Controller
 {
-
         public $layout = 'bare';
         public $defaultAction = 'tokens';
 

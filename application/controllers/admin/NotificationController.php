@@ -5,7 +5,6 @@
  */
 class NotificationController extends Survey_Common_Action
 {
-
     /**
      * List all notifications for a user
      */

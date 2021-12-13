@@ -23,7 +23,6 @@
  */
 class statistics extends Survey_Common_Action
 {
-
     function __construct($controller, $id)
     {
         parent::__construct($controller, $id);
@@ -687,7 +686,8 @@ class statistics extends Survey_Common_Action
         $summary[4] = "idL";
 
         // 1: Get list of questions from survey
-        $rows = Question::model()->primary()->getQuestionList($surveyid);;
+        $rows = Question::model()->primary()->getQuestionList($surveyid);
+        ;
 
         // The questions to display (all question)
         foreach ($rows as $row) {
