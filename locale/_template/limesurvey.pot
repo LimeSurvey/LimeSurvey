@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2021-12-07 09:35:19+00:00\n"
+"POT-Creation-Date: 2021-12-13 09:32:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,23 +38,23 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:204
 #: application/helpers/admin/import_helper.php:302
 #: application/helpers/admin/import_helper.php:749
-#: application/helpers/admin/import_helper.php:1342
-#: application/helpers/admin/import_helper.php:1380
-#: application/helpers/admin/import_helper.php:1504
-#: application/helpers/admin/import_helper.php:1610
-#: application/helpers/admin/import_helper.php:1782
-#: application/helpers/admin/import_helper.php:1789
-#: application/helpers/admin/import_helper.php:1867
-#: application/helpers/admin/import_helper.php:1898
-#: application/helpers/admin/import_helper.php:1924
-#: application/helpers/admin/import_helper.php:1951
-#: application/helpers/admin/import_helper.php:1973
-#: application/helpers/admin/import_helper.php:1996
-#: application/helpers/admin/import_helper.php:2099
-#: application/helpers/admin/import_helper.php:2281
-#: application/helpers/admin/import_helper.php:2645
-#: application/helpers/admin/import_helper.php:3298
-#: application/helpers/admin/import_helper.php:3343
+#: application/helpers/admin/import_helper.php:1344
+#: application/helpers/admin/import_helper.php:1382
+#: application/helpers/admin/import_helper.php:1506
+#: application/helpers/admin/import_helper.php:1612
+#: application/helpers/admin/import_helper.php:1784
+#: application/helpers/admin/import_helper.php:1791
+#: application/helpers/admin/import_helper.php:1869
+#: application/helpers/admin/import_helper.php:1900
+#: application/helpers/admin/import_helper.php:1926
+#: application/helpers/admin/import_helper.php:1953
+#: application/helpers/admin/import_helper.php:1975
+#: application/helpers/admin/import_helper.php:1998
+#: application/helpers/admin/import_helper.php:2101
+#: application/helpers/admin/import_helper.php:2283
+#: application/helpers/admin/import_helper.php:2647
+#: application/helpers/admin/import_helper.php:3300
+#: application/helpers/admin/import_helper.php:3345
 #: application/models/TemplateManifest.php:171
 #: application/models/TemplateManifest.php:418
 #: application/models/services/PasswordManagement.php:85
@@ -929,7 +929,6 @@ msgstr ""
 #: application/controllers/QuestionGroupsAdministrationController.php:513
 #: application/controllers/QuestionGroupsAdministrationController.php:737
 #: application/controllers/QuestionGroupsAdministrationController.php:741
-#: application/controllers/SurveyAdministrationController.php:110
 #: application/controllers/SurveyAdministrationController.php:364
 #: application/controllers/SurveyAdministrationController.php:577
 #: application/controllers/SurveyAdministrationController.php:885
@@ -1644,6 +1643,10 @@ msgstr ""
 
 #: application/controllers/ResponsesController.php:964
 msgid "This survey has not been activated. There are no results to browse."
+msgstr ""
+
+#: application/controllers/SurveyAdministrationController.php:110
+msgid "No permission or survey does not exist."
 msgstr ""
 
 #: application/controllers/SurveyAdministrationController.php:153
@@ -10383,25 +10386,25 @@ msgstr ""
 #: application/helpers/admin/import_helper.php:208
 #: application/helpers/admin/import_helper.php:306
 #: application/helpers/admin/import_helper.php:753
-#: application/helpers/admin/import_helper.php:1508
-#: application/helpers/admin/import_helper.php:1614
+#: application/helpers/admin/import_helper.php:1510
+#: application/helpers/admin/import_helper.php:1616
 msgid "Error while saving: "
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:221
 #: application/helpers/admin/import_helper.php:632
-#: application/helpers/admin/import_helper.php:1522
+#: application/helpers/admin/import_helper.php:1524
 msgid "Question code %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:321
 #: application/helpers/admin/import_helper.php:769
-#: application/helpers/admin/import_helper.php:1629
+#: application/helpers/admin/import_helper.php:1631
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:516
-#: application/helpers/admin/import_helper.php:2113
+#: application/helpers/admin/import_helper.php:2115
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
@@ -10430,77 +10433,77 @@ msgstr ""
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1422
+#: application/helpers/admin/import_helper.php:1424
 msgid "Error while saving group: "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2019
+#: application/helpers/admin/import_helper.php:2021
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2022
+#: application/helpers/admin/import_helper.php:2024
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2162
+#: application/helpers/admin/import_helper.php:2164
 msgid "This is not a valid participant data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2206
+#: application/helpers/admin/import_helper.php:2208
 msgid "Skipped participant entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2249
+#: application/helpers/admin/import_helper.php:2251
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2300
+#: application/helpers/admin/import_helper.php:2302
 #: application/views/surveyAdministration/_activation_error.php:13
 msgid "The survey response table could not be created."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2300
+#: application/helpers/admin/import_helper.php:2302
 #: application/views/surveyAdministration/_activation_error.php:14
 msgid "Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2364
+#: application/helpers/admin/import_helper.php:2366
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2414
+#: application/helpers/admin/import_helper.php:2416
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2421
+#: application/helpers/admin/import_helper.php:2423
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2582
+#: application/helpers/admin/import_helper.php:2584
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2584
+#: application/helpers/admin/import_helper.php:2586
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2587
+#: application/helpers/admin/import_helper.php:2589
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2591
+#: application/helpers/admin/import_helper.php:2593
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2594
+#: application/helpers/admin/import_helper.php:2596
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2597
+#: application/helpers/admin/import_helper.php:2599
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2614
+#: application/helpers/admin/import_helper.php:2616
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
@@ -18233,17 +18236,17 @@ msgstr ""
 msgid "Editing %s"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:34
+#: application/views/admin/htmleditor/pop_editor_view.php:33
 #: application/views/admin/survey/prepareEditorScript_view.php:36
 msgid "Placeholder fields"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:35
+#: application/views/admin/htmleditor/pop_editor_view.php:34
 #: application/views/admin/survey/prepareEditorScript_view.php:37
 msgid "Insert/edit placeholder field"
 msgstr ""
 
-#: application/views/admin/htmleditor/pop_editor_view.php:67
+#: application/views/admin/htmleditor/pop_editor_view.php:66
 msgid "Editing"
 msgstr ""
 
@@ -24514,11 +24517,8 @@ msgid "Are you sure you want to delete the selected user?"
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:34
-msgid "Resend login data"
-msgstr ""
-
 #: application/views/userManagement/massiveAction/_selector.php:41
-msgid "Resend login data user"
+msgid "Resend login data"
 msgstr ""
 
 #: application/views/userManagement/massiveAction/_selector.php:42

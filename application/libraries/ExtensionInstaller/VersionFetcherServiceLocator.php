@@ -25,7 +25,6 @@ use Exception;
  */
 class VersionFetcherServiceLocator
 {
-
     /**
      * Array of callables that return a version fetcher.
      * @var array<string, callable>
