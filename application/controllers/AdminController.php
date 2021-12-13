@@ -34,7 +34,7 @@ class AdminController extends LSYii_Controller
     {
         parent::customInit();
         App()->getComponent('bootstrap');
-        $this->_sessioncontrol();
+        $this->sessioncontrol();
 
         $this->user_id = Yii::app()->user->getId();
         // Check if the user really exists
@@ -128,7 +128,7 @@ class AdminController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessioncontrol()
     {
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
@@ -340,42 +340,42 @@ class AdminController extends LSYii_Controller
         'authentication'   => 'authentication',
         'checkintegrity'   => 'checkintegrity',
         'conditions'       => 'conditionsaction',
-        'database'         => 'database',
+        'database'         => 'Database',
         'databaseupdate'   => 'databaseupdate',
         'dataentry'        => 'dataentry',
         'dumpdb'           => 'dumpdb',
         'emailtemplates'   => 'emailtemplates',
-        'export'           => 'export',
+        'export'           => 'Export',
         'expressions'      => 'expressions',
         'validate'         => 'ExpressionValidate',
         'globalsettings'   => 'globalsettings',
-        'htmleditor_pop'   => 'htmleditor_pop',
+        'htmleditor_pop'   => 'htmleditorpop',
         'homepagesettings' => 'homepagesettings',
         //'themeoptions'     => 'themeoptions',
         'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
-        'labels'           => 'labels',
-        'participants'     => 'participantsaction',
+        'labels'           => 'Labels',
+        'participants'     => 'ParticipantsAction',
         'pluginmanager'    => 'PluginManagerController',
         'printablesurvey'  => 'printablesurvey',
 //        'roles'            => 'PermissiontemplatesController',
 //        'questiongroups'   => 'questiongroups',  refactored to QuestionGroupsAdministration
 //        'questions'        => 'questions',
 //        'questioneditor'   => 'questionedit',
-        'questionthemes'   => 'questionthemes',
-        'quotas'           => 'quotas',
-        'remotecontrol'    => 'remotecontrol',
+        'questionthemes'   => 'QuestionThemes',
+        'quotas'           => 'Quotas',
+        'remotecontrol'    => 'RemoteControl',
 //        'responses'        => 'responses',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
       //  'survey'           => 'surveyadmin',
-        'surveypermission' => 'surveypermission',
+        'surveypermission' => 'SurveyPermission',
         'user'             => 'useraction',
 //        'usermanagement'   => 'UserManagement',  refactored to UserManagementController
 //        'usergroups'       => 'usergroups',      refactored to UserGroupController
-        'themes'           => 'themes',
-        'tokens'           => 'tokens',
+        'themes'           => 'Themes',
+        'tokens'           => 'Tokens',
         'translate'        => 'translate',
         'update'           => 'update',
         'pluginhelper'     => 'PluginHelper',
@@ -527,7 +527,7 @@ class AdminController extends LSYii_Controller
      * @param boolean $return
      * @return string|null
      */
-    public function _showMessageBox($title, $message, $class = "message-box-error", $return = false)
+    public function showMessageBox($title, $message, $class = "message-box-error", $return = false)
     {
         $aData['title'] = $title;
         $aData['message'] = $message;
@@ -543,7 +543,7 @@ class AdminController extends LSYii_Controller
      * @return bool|string
      * @throws CException
      */
-    public function _loadEndScripts()
+    public function loadEndScripts()
     {
         static $bRendered = false;
         if ($bRendered) {

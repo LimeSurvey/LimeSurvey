@@ -14,7 +14,7 @@
  */
 
 
-class htmleditor_pop extends Survey_Common_Action
+class htmleditorpop extends Survey_Common_Action
 {
     public function index()
     {

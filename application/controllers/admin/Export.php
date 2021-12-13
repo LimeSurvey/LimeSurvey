@@ -21,7 +21,7 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class export extends Survey_Common_Action
+class Export extends Survey_Common_Action
 {
     /**
      * Export Constructor.
@@ -46,7 +46,7 @@ class export extends Survey_Common_Action
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')) {
-            $this->_surveyexport($action, $iSurveyID);
+            $this->surveyexport($action, $iSurveyID);
             return;
         }
     }
@@ -68,7 +68,7 @@ class export extends Survey_Common_Action
             $iSurveyID = (int) $iSurveyID;
 
             if ($iSurveyID > 0) {
-                $aExportedFiles[$iSurveyID] = $this->_exportarchive($iSurveyID, false);
+                $aExportedFiles[$iSurveyID] = $this->exportarchive($iSurveyID, false);
             }
         }
 
@@ -292,7 +292,7 @@ class export extends Survey_Common_Action
             $data['title_bar']['title'] = gT('Browse responses') . ': ' . $survey->currentLanguageSettings->surveyls_title;
             $data['subaction'] = gT('Export results');
 
-            $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
+            $this->renderWrappedTemplate('export', 'exportresults_view', $data);
 
             return;
         }
@@ -451,7 +451,7 @@ class export extends Survey_Common_Action
             $data['topBar']['name'] = 'baseTopbar_view';
             $data['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('export', 'spss_view', $data);
+            $this->renderWrappedTemplate('export', 'spss_view', $data);
             return;
         }
 
@@ -683,7 +683,7 @@ class export extends Survey_Common_Action
             $aData['topBar']['showExportButton'] = true;
             $aData['topBar']['showCloseButton'] = true;
 
-            $this->_renderWrappedTemplate('export', 'vv_view', $aData);
+            $this->renderWrappedTemplate('export', 'vv_view', $aData);
         } elseif (isset($iSurveyId) && $iSurveyId) {
             //Export is happening
             $extension = sanitize_paranoid_string(returnGlobal('extension'));
@@ -691,7 +691,7 @@ class export extends Survey_Common_Action
             $vvVersion = (in_array($vvVersion, array(1, 2))) ? $vvVersion : 2; // Only 2 version actually, default to 2
             $fn = "vvexport_$iSurveyId." . $extension;
 
-            $this->_addHeaders($fn, "text/comma-separated-values", 0);
+            $this->addHeaders($fn, "text/comma-separated-values", 0);
 
             $s = "\t";
 
@@ -823,7 +823,7 @@ class export extends Survey_Common_Action
             if ($zip->create($zipdirs, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0) {
                 safeDie("Error : " . $zip->errorInfo(true));
             } elseif (file_exists($zipfilepath)) {
-                $this->_addHeaders($zipfilename, 'application/force-download', 0);
+                $this->addHeaders($zipfilename, 'application/force-download', 0);
                 readfile($zipfilepath);
                 unlink($zipfilepath);
                 Yii::app()->end();
@@ -860,7 +860,7 @@ class export extends Survey_Common_Action
         $fn = "limesurvey_labelset_" . implode('_', $lids) . ".lsl";
         $xml = getXMLWriter();
 
-        $this->_addHeaders($fn, "application/force-download", "Mon, 26 Jul 1997 05:00:00 GMT");
+        $this->addHeaders($fn, "application/force-download", "Mon, 26 Jul 1997 05:00:00 GMT");
 
         $xml->openURI('php://output');
 
@@ -952,7 +952,7 @@ class export extends Survey_Common_Action
                     // Export archives for active surveys
                     case 'archive':
                         if ($oSurvey->isActive) {
-                            $archiveName = $this->_exportarchive($iSurveyID, false);
+                            $archiveName = $this->exportarchive($iSurveyID, false);
 
                             if (is_file($archiveName)) {
                                 $aResults[$iSurveyID]['result'] = true;
@@ -960,7 +960,7 @@ class export extends Survey_Common_Action
                                 $bArchiveIsEmpty                = false;
                                 $archiveFile                    = $archiveName;
                                 $newArchiveFileFullName         = 'survey_archive_' . $iSurveyID . '.lsa';
-                                $this->_addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                                $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
                                 unlink($archiveFile);
                             } else {
                                 $aResults[$iSurveyID]['error'] = gT("Unknown error");
@@ -971,14 +971,14 @@ class export extends Survey_Common_Action
                         break;
                     // Export printable archives for all selected surveys
                     case 'printable':
-                        $archiveName = $this->_exportPrintableHtmls($iSurveyID, false);
+                        $archiveName = $this->exportPrintableHtmls($iSurveyID, false);
                         if (is_file($archiveName)) {
                             $aResults[$iSurveyID]['result'] = true;
                             $aResults[$iSurveyID]['file']   = $archiveName;
                             $bArchiveIsEmpty                = false;
                             $archiveFile                    = $archiveName;
                             $newArchiveFileFullName         = 'survey_printables_' . $iSurveyID . '.zip';
-                            $this->_addToZip($zip, $archiveFile, $newArchiveFileFullName);
+                            $this->addToZip($zip, $archiveFile, $newArchiveFileFullName);
                             unlink($archiveFile);
                         } else {
                             $aResults[$iSurveyID]['error'] = gT("Unknown error");
@@ -993,7 +993,7 @@ class export extends Survey_Common_Action
                         $lssFileName = "limesurvey_survey_{$iSurveyID}.lss";
                         $archiveFile = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
                         file_put_contents($archiveFile, surveyGetXMLData($iSurveyID));
-                        $this->_addToZip($zip, $archiveFile, $lssFileName);
+                        $this->addToZip($zip, $archiveFile, $lssFileName);
                         unlink($archiveFile);
                         break;
                 }
@@ -1019,7 +1019,7 @@ class export extends Survey_Common_Action
             $fn = "surveys_archive.zip";
 
             //Send the file for download!
-            $this->_addHeaders($fn, "application/force-download", 0);
+            $this->addHeaders($fn, "application/force-download", 0);
 
             @readfile($aZIPFileName);
 
@@ -1034,7 +1034,7 @@ class export extends Survey_Common_Action
      * @param boolean $bSendToBrowser If TRUE (default) then the ZIP file is sent to the browser
      * @return string Full path of the ZIP filename if $bSendToBrowser is set to TRUE, otherwise no return value
      */
-    private function _exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
+    private function exportarchive(int $iSurveyID, bool $bSendToBrowser = true)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -1053,25 +1053,25 @@ class export extends Survey_Common_Action
 
         file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
 
-        $this->_addToZip($zip, $sLSSFileName, 'survey_' . $iSurveyID . '.lss');
+        $this->addToZip($zip, $sLSSFileName, 'survey_' . $iSurveyID . '.lss');
 
         unlink($sLSSFileName);
 
         if ($survey->isActive) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, false);
-            $this->_addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
+            $this->addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
             unlink($sLSRFileName);
         }
 
         if ($survey->hasTokensTable) {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
-            $this->_addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
+            $this->addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
             unlink($sLSTFileName);
         }
 
         if (isset($survey->hasTimingsTable) && $survey->hasTimingsTable == 'Y') {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
-            $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
+            $this->addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
         }
 
@@ -1080,7 +1080,7 @@ class export extends Survey_Common_Action
                 $fn = "survey_archive_{$iSurveyID}.lsa";
 
                 //Send the file for download!
-                $this->_addHeaders($fn, "application/force-download", 0);
+                $this->addHeaders($fn, "application/force-download", 0);
 
                 @readfile($aZIPFileName);
 
@@ -1101,7 +1101,7 @@ class export extends Survey_Common_Action
      * @param string $name
      * @param string $full_name
      */
-    private function _addToZip(PclZip $zip, string $name, string $full_name)
+    private function addToZip(PclZip $zip, string $name, string $full_name)
     {
         $zip->add(
             array(
@@ -1120,22 +1120,22 @@ class export extends Survey_Common_Action
      * @param int    $iSurveyID
      * @return void
      */
-    private function _surveyexport(string $action, int $iSurveyID)
+    private function surveyexport(string $action, int $iSurveyID)
     {
         viewHelper::disableHtmlLogging();
         if ($action == "exportstructurexml") {
             $fn = "limesurvey_survey_{$iSurveyID}.lss";
 
-            $this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
+            $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 
             echo surveyGetXMLData($iSurveyID);
             Yii::app()->end();
         } elseif ($action == "exportstructurejson") {
             $fn = "limesurvey_survey_{$iSurveyID}.json";
-            $this->_addHeaders($fn, "application/json", "Mon, 26 Jul 1997 05:00:00 GMT");
+            $this->addHeaders($fn, "application/json", "Mon, 26 Jul 1997 05:00:00 GMT");
             $surveyInXmlFormat = surveyGetXMLData($iSurveyID);
             // now convert this xml into json format and then return
-            echo _xmlToJson($surveyInXmlFormat);
+            echo $this->xmlToJson($surveyInXmlFormat);
             Yii::app()->end();
         } elseif ($action == "exportstructurequexml") {
             if (isset($surveyprintlang) && !empty($surveyprintlang)) {
@@ -1147,17 +1147,17 @@ class export extends Survey_Common_Action
             if (!(isset($noheader) && $noheader == true)) {
                 $fn = "survey_{$iSurveyID}_{$quexmllang}.xml";
 
-                $this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
+                $this->addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 
                 echo quexml_export($iSurveyID, $quexmllang);
                 Yii::app()->end();
             }
         } elseif ($action == 'exportstructuretsv') {
-            $this->_exporttsv($iSurveyID);
+            $this->exporttsv($iSurveyID);
         } elseif ($action == "exportarchive") {
-            $this->_exportarchive($iSurveyID);
+            $this->exportarchive($iSurveyID);
         } elseif ($action == "exportprintables") {
-            $this->_exportPrintableHtmls($iSurveyID);
+            $this->exportPrintableHtmls($iSurveyID);
         }
     }
 
@@ -1166,7 +1166,7 @@ class export extends Survey_Common_Action
      *
      * @return string[] queXML settings
      */
-    private function _quexmlsettings(): array
+    private function quexmlsettings(): array
     {
         return array(
             'queXMLBackgroundColourQuestion',
@@ -1197,7 +1197,7 @@ class export extends Survey_Common_Action
      */
     public function quexmlclear(int $iSurveyID)
     {
-        $queXMLSettings = $this->_quexmlsettings();
+        $queXMLSettings = $this->quexmlsettings();
         foreach ($queXMLSettings as $s) {
             SettingGlobal::setSetting($s, '');
         }
@@ -1215,7 +1215,7 @@ class export extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        $queXMLSettings = $this->_quexmlsettings();
+        $queXMLSettings = $this->quexmlsettings();
         $aData = array();
         $aData['surveyid'] = $iSurveyID;
         $aData['slangs'] = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -1241,7 +1241,7 @@ class export extends Survey_Common_Action
         }
 
         if (empty($_POST['ok'])) {
-            $this->_renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
+            $this->renderWrappedTemplate('survey', 'queXMLSurvey_view', $aData);
         } else {
             $quexmlpdf = new quexmlpdf($this->getController());
 
@@ -1301,7 +1301,7 @@ class export extends Survey_Common_Action
             rmdir($zipdir);
 
             $fn = "quexmlpdf_{$qid}_{$lang}.zip";
-            $this->_addHeaders($fn, "application/zip", 0);
+            $this->addHeaders($fn, "application/zip", 0);
             header('Content-Transfer-Encoding: binary');
 
             // load the file to send:
@@ -1318,7 +1318,7 @@ class export extends Survey_Common_Action
      * @param bool $readFile Whether we read the file for direct download (or not as in massive actions)
      * @return string
      */
-    private function _exportPrintableHtmls(int $iSurveyID, bool $readFile = true): string
+    private function exportPrintableHtmls(int $iSurveyID, bool $readFile = true): string
     {
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $assetsDir = substr(Template::getTemplateURL($oSurvey->templateEffectiveName), 1);
@@ -1346,7 +1346,7 @@ class export extends Survey_Common_Action
                 $_SESSION['LEMsid'] = $oSurvey->getPrimaryKey();
             }
 
-            $file = $this->_exportPrintableHtml($oSurvey, $language, $tempdir);
+            $file = $this->exportPrintableHtml($oSurvey, $language, $tempdir);
             $z->add($file, PCLZIP_OPT_REMOVE_PATH, $tempdir);
             unlink($file);
         }
@@ -1354,7 +1354,7 @@ class export extends Survey_Common_Action
         Yii::app()->language = $siteLanguage;
 
         if ($readFile) {
-            $this->_addHeaders($fn, "application/zip", 0);
+            $this->addHeaders($fn, "application/zip", 0);
             header('Content-Transfer-Encoding: binary');
             header("Content-disposition: attachment; filename=\"" . $fn . "\"");
             readfile($zipfile);
@@ -1374,7 +1374,7 @@ class export extends Survey_Common_Action
      * @param string $tempdir the directory the file will be stored in
      * @return string File name where the data is stored
      */
-    private function _exportPrintableHtml(Survey $oSurvey, string $language, string $tempdir): string
+    private function exportPrintableHtml(Survey $oSurvey, string $language, string $tempdir): string
     {
         $printableSurvey = new printablesurvey();
         $response = $printableSurvey->index($oSurvey->primaryKey, $language, true);
@@ -1394,7 +1394,7 @@ class export extends Survey_Common_Action
      * @param integer $surveyid
      * @return void
      */
-    private function _exporttsv(int $surveyid)
+    private function exporttsv(int $surveyid)
     {
         $fn = "limesurvey_survey_$surveyid.txt";
         header("Content-Type: text/tab-separated-values charset=UTF-8");
@@ -1413,7 +1413,7 @@ class export extends Survey_Common_Action
      * @param string $expires
      * @return void
      */
-    private function _addHeaders(string $filename, string $content_type, string $expires)
+    private function addHeaders(string $filename, string $content_type, string $expires)
     {
         header("Content-Type: {$content_type}; charset=UTF-8");
         header("Content-Disposition: attachment; filename={$filename}");
@@ -1428,7 +1428,7 @@ class export extends Survey_Common_Action
      * @param string $fileContents
      * @return string
      */
-    private function _xmlToJson(string $fileContents): string
+    private function xmlToJson(string $fileContents): string
     {
         if (\PHP_VERSION_ID < 80000) {
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
@@ -1453,9 +1453,9 @@ class export extends Survey_Common_Action
      * @param array  $aData         Data to be passed on. Optional.
      * @param bool   $sRenderFile
      */
-    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

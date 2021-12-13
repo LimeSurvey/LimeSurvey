@@ -41,7 +41,7 @@ class Authentication extends Survey_Common_Action
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         }
         // The page should be shown only for non logged in users
-        $this->_redirectIfLoggedIn();
+        $this->redirectIfLoggedIn();
 
         // Result can be success, fail or data for template
         $result = self::prepareLogin();
@@ -60,9 +60,8 @@ class Authentication extends Survey_Common_Action
                 ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
                 return;
             }
-        }
-        // If not ajax, redirect to admin startpage or again to login form
-        else {
+        } else {
+            // If not ajax, redirect to admin startpage or again to login form
             if ($succeeded) {
                 self::doRedirect();
             } elseif ($failed) {
@@ -76,7 +75,7 @@ class Authentication extends Survey_Common_Action
         $aData = $result;
 
         // If for any reason, the plugin bugs, we can't let the user with a blank screen.
-        $this->_renderWrappedTemplate('authentication', 'login', $aData);
+        $this->renderWrappedTemplate('authentication', 'login', $aData);
     }
 
     /**
@@ -258,7 +257,7 @@ class Authentication extends Survey_Common_Action
             'validationKey' => $user->validation_key
         ];
 
-        $this->_renderWrappedTemplate('authentication', 'newPassword', $aData);
+        $this->renderWrappedTemplate('authentication', 'newPassword', $aData);
     }
 
     /**
@@ -287,10 +286,10 @@ class Authentication extends Survey_Common_Action
      */
     public function forgotpassword()
     {
-        $this->_redirectIfLoggedIn();
+        $this->redirectIfLoggedIn();
 
         if (!Yii::app()->request->getPost('action')) {
-            $this->_renderWrappedTemplate('authentication', 'forgotpassword');
+            $this->renderWrappedTemplate('authentication', 'forgotpassword');
         } else {
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
@@ -366,7 +365,7 @@ class Authentication extends Survey_Common_Action
     /**
      * Redirects a logged in user to the administration page
      */
-    private function _redirectIfLoggedIn()
+    private function redirectIfLoggedIn()
     {
         if (!Yii::app()->user->getIsGuest()) {
             $this->runDbUpgrade();
@@ -393,10 +392,10 @@ class Authentication extends Survey_Common_Action
      * @param array $aData Data to be passed on. Optional.
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars'] = false;
         $aData['language'] = Yii::app()->getLanguage() != Yii::app()->getConfig("defaultlang") ? Yii::app()->getLanguage() : 'default';
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

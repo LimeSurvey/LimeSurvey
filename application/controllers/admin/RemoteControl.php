@@ -13,7 +13,7 @@
 *
 */
 
-class remotecontrol extends Survey_Common_Action
+class RemoteControl extends Survey_Common_Action
 {
     /**
      * @var Zend_XmlRpc_Server

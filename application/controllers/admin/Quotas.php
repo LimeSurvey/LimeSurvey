@@ -21,7 +21,7 @@
  * @package     LimeSurvey
  * @subpackage  Backend
  */
-class quotas extends Survey_Common_Action
+class Quotas extends Survey_Common_Action
 {
     public function __construct($controller, $id)
     {
@@ -41,7 +41,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    private function _getData($iSurveyId)
+    private function getData($iSurveyId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         // Set the variables in an array
@@ -60,15 +60,15 @@ class quotas extends Survey_Common_Action
     /**
      * @param string $sPermission
      */
-    private function _checkPermissions($iSurveyId, $sPermission)
+    private function checkPermissions($iSurveyId, $sPermission)
     {
         if (!empty($sPermission) && !(Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', $sPermission))) {
             Yii::app()->session['flashmessage'] = gT('Access denied!');
-            $this->_redirectToIndex($iSurveyId);
+            $this->redirectToIndex($iSurveyId);
         }
     }
 
-    private function _redirectToIndex($iSurveyId)
+    private function redirectToIndex($iSurveyId)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
@@ -133,8 +133,8 @@ class quotas extends Survey_Common_Action
     public function index(int $iSurveyId, bool $quickreport = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'read');
-        $aData = $this->_getData($iSurveyId);
+        $this->checkPermissions($iSurveyId, 'read');
+        $aData = $this->getData($iSurveyId);
         $aViewUrls = array();
 
         if ($quickreport == false) {
@@ -251,7 +251,7 @@ class quotas extends Survey_Common_Action
         $aData['totalcompleted'] = $totalcompleted;
 
         if ($quickreport == false) {
-            $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
+            $this->renderWrappedTemplate('quotas', $aViewUrls, $aData);
         } else {
             /* Export a quickly done csv file */
             header("Content-Disposition: attachment; filename=quotas-survey" . $iSurveyId . ".csv");
@@ -271,7 +271,7 @@ class quotas extends Survey_Common_Action
     public function insertquotaanswer(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'update');
+        $this->checkPermissions($iSurveyId, 'update');
 
         $oQuotaMembers = new QuotaMember('create'); // Trigger the 'create' rules
         $oQuotaMembers->sid = $iSurveyId;
@@ -281,18 +281,18 @@ class quotas extends Survey_Common_Action
         if ($oQuotaMembers->save()) {
             if (!empty($_POST['createanother'])) {
                 $_POST['action'] = "quotas";
-                $_POST['subaction'] = "new_answer";
-                $sSubAction = "new_answer";
-                self::new_answer($iSurveyId, $sSubAction);
+                $_POST['subaction'] = "newanswer";
+                $sSubAction = "newanswer";
+                self::newanswer($iSurveyId, $sSubAction);
             } else {
-                self::_redirectToIndex($iSurveyId);
+                self::redirectToIndex($iSurveyId);
             }
         } else {
             // Save was not successful, redirect back
             $_POST['action'] = "quotas";
-            $_POST['subaction'] = "new_answer";
+            $_POST['subaction'] = "newanswer";
             $sSubAction = "new_answer_two";
-            self::new_answer($iSurveyId, $sSubAction);
+            self::newanswer($iSurveyId, $sSubAction);
         }
     }
 
@@ -303,7 +303,7 @@ class quotas extends Survey_Common_Action
     public function delans(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'update');
+        $this->checkPermissions($iSurveyId, 'update');
 
         QuotaMember::model()->deleteAllByAttributes(array(
             'id' => Yii::app()->request->getPost('quota_member_id'),
@@ -311,7 +311,7 @@ class quotas extends Survey_Common_Action
             'code' => Yii::app()->request->getPost('quota_anscode'),
         ));
 
-        self::_redirectToIndex($iSurveyId);
+        self::redirectToIndex($iSurveyId);
     }
 
     /**
@@ -323,7 +323,7 @@ class quotas extends Survey_Common_Action
         $this->requirePostRequest();
 
         $iSurveyId = sanitize_int($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'delete');
+        $this->checkPermissions($iSurveyId, 'delete');
 
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
@@ -333,19 +333,19 @@ class quotas extends Survey_Common_Action
 
         Yii::app()->user->setFlash('success', sprintf(gT("Quota with ID %s was deleted"), $quotaId));
 
-        self::_redirectToIndex($iSurveyId);
+        self::redirectToIndex($iSurveyId);
     }
 
     /**
      * Edit Quota
      * @param int iSurveyId
      */
-    function editquota(int $iSurveyId)
+    public function editquota(int $iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'update');
-        $aData = $this->_getData($iSurveyId);
+        $this->checkPermissions($iSurveyId, 'update');
+        $aData = $this->getData($iSurveyId);
         $aViewUrls = array();
         $quotaId = Yii::app()->request->getQuery('quota_id');
 
@@ -370,7 +370,7 @@ class quotas extends Survey_Common_Action
                 }
                 if (!$oQuota->getErrors()) {
                     Yii::app()->user->setFlash('success', gT("Quota saved"));
-                    self::_redirectToIndex($iSurveyId);
+                    self::redirectToIndex($iSurveyId);
                 }
             }
         }
@@ -391,7 +391,7 @@ class quotas extends Survey_Common_Action
         $aData['topBar']['showSaveButton'] = true;
 
 
-        $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
     /**
@@ -401,18 +401,18 @@ class quotas extends Survey_Common_Action
      * @param string $sSubAction
      * @return void
      */
-    public function new_answer($iSurveyId, $sSubAction = 'new_answer')
+    public function newanswer($iSurveyId, $sSubAction = 'newanswer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-        $this->_checkPermissions($iSurveyId, 'update');
-        $aData = $this->_getData($iSurveyId);
+        $this->checkPermissions($iSurveyId, 'update');
+        $aData = $this->getData($iSurveyId);
         $aViewUrls = array();
         $quota = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
         $aData['oQuota'] = $quota;
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
+        if (($sSubAction == "newanswer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
                 $aViewUrls[] = 'newanswererror_view';
@@ -445,9 +445,9 @@ class quotas extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $iSurveyId . ")";
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/' . $iSurveyId; // Close button
-        $aData['surveybar']['closebutton']['forbidden'][] = 'new_answer';
+        $aData['surveybar']['closebutton']['forbidden'][] = 'newanswer';
 
-        $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
     /**
@@ -458,8 +458,8 @@ class quotas extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $this->_checkPermissions($iSurveyId, 'create');
-        $aData = $this->_getData($iSurveyId);
+        $this->checkPermissions($iSurveyId, 'create');
+        $aData = $this->getData($iSurveyId);
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['langs'] = $aData['aLangs'];
@@ -495,7 +495,7 @@ class quotas extends Survey_Common_Action
                 }
                 if (!$oQuota->getErrors()) {
                     Yii::app()->user->setFlash('success', gT("New quota saved"));
-                    self::_redirectToIndex($iSurveyId);
+                    self::redirectToIndex($iSurveyId);
                 } else {
                     // if any of the parts fail to save we delete the quota and and try again
                     $oQuota->delete();
@@ -520,7 +520,7 @@ class quotas extends Survey_Common_Action
             $aData['aQuotaLanguageSettings'][$language] = $oQuotaLanguageSetting;
         }
 
-        $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
+        $this->renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }
 
     /**
@@ -535,9 +535,9 @@ class quotas extends Survey_Common_Action
         $iQuestionId = sanitize_int($iQuestionId);
         $iSurveyId   = sanitize_int($iSurveyId);
         $iQuotaId    = sanitize_int($iQuotaId);
-        $aData       = $this->_getData($iSurveyId);
+        $aData       = $this->getData($iSurveyId);
         $sBaseLang   = $aData['sBaseLang'];
-        $this->_checkPermissions($iSurveyId, 'read');
+        $this->checkPermissions($iSurveyId, 'read');
         $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         $aQuestion = Question::model()
@@ -630,9 +630,9 @@ class quotas extends Survey_Common_Action
      * @param array        $aData       Data to be passed on. Optional.
      * @param bool         $sRenderFile Default is false.
      */
-    protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'quotas.js');
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

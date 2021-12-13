@@ -20,7 +20,7 @@
 * @package      LimeSurvey
 * @subpackage   Backend
 */
-class translate extends Survey_Common_Action
+class Translate extends Survey_Common_Action
 {
     public function index($surveyid)
     {
@@ -46,7 +46,7 @@ class translate extends Survey_Common_Action
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
 
         if ($action == "ajaxtranslategoogleapi") {
-            echo $this->translate_google_api();
+            echo $this->translateGoogleApi();
             return;
         }
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'translation.js');
@@ -84,13 +84,13 @@ class translate extends Survey_Common_Action
         if (!empty($tolang)) {
             // Only save if the administration user has the correct permission
             if ($actionvalue == "translateSave" && Permission::model()->hasSurveyPermission($surveyid, 'translations', 'update')) {
-                $this->_translateSave($surveyid, $tolang, $baselang, $tab_names);
+                $this->translateSave($surveyid, $tolang, $baselang, $tab_names);
                 Yii::app()->setFlashMessage(gT("Saved"), 'success');
             }
 
             $tolangdesc = $supportedLanguages[$tolang]['description'];
             // Display tabs with fields to translate, as well as input fields for translated values
-            $aViewUrls = array_merge($aViewUrls, $this->_displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
+            $aViewUrls = array_merge($aViewUrls, $this->displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
             //var_dump(array_keys($aViewUrls));die();
         }
 
@@ -102,13 +102,13 @@ class translate extends Survey_Common_Action
             $aData['topBar']['showSaveButton'] = true;
         }
 
-        $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
 
     /**
      * @param string[] $tab_names
      */
-    private function _translateSave($iSurveyID, $tolang, $baselang, $tab_names)
+    private function translateSave($iSurveyID, $tolang, $baselang, $tab_names)
     {
         $tab_names_full = $tab_names;
 
@@ -147,7 +147,7 @@ class translate extends Survey_Common_Action
     /**
      * @param string[] $tab_names
      */
-    private function _displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc)
+    private function displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc)
     {
         // Define aData
         $aData['surveyid'] = $iSurveyID;
@@ -245,10 +245,10 @@ class translate extends Survey_Common_Action
                 $all_fields_empty = !($textform_length > 0);
 
                 $aData = array_merge($aData, array(
-                                'textfrom' => $this->_cleanup($textfrom, array()),
-                                'textfrom2' => $this->_cleanup($textfrom2, array()),
-                                'textto' => $this->_cleanup($textto, array()),
-                                'textto2' => $this->_cleanup($textto2, array()),
+                                'textfrom' => $this->cleanup($textfrom, array()),
+                                'textfrom2' => $this->cleanup($textfrom2, array()),
+                                'textto' => $this->cleanup($textto, array()),
+                                'textto2' => $this->cleanup($textto2, array()),
                                 'rowfrom' => $aRowfrom,
                                 'rowfrom2' => $aResultBase2,
                                 'evenRow' => $evenRow,
@@ -316,15 +316,15 @@ class translate extends Survey_Common_Action
      */
     private function showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
     {
-        return $this->_getLanguageList($iSurveyID, $tolang);
+        return $this->getLanguageList($iSurveyID, $tolang);
     }
 
     /*
-    * _getLanguageList() returns survey language list
+    * getLanguageList() returns survey language list
     * @param string $iSurveyID Survey id
     * @param string $tolang The target translation code
     */
-    private function _getLanguageList($iSurveyID, $tolang)
+    private function getLanguageList($iSurveyID, $tolang)
     {
         $language_list = "";
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -372,7 +372,7 @@ class translate extends Survey_Common_Action
         return $language_list;
     }
 
-    private function _cleanup($string, $options = array())
+    private function cleanup($string, $options = array())
     {
         if (extension_loaded('tidy')) {
             $oTidy = new tidy();
@@ -394,8 +394,6 @@ class translate extends Survey_Common_Action
      */
     private function setupTranslateFields($type)
     {
-
-
         $aData = array();
 
         switch ($type) {
@@ -770,9 +768,11 @@ class translate extends Survey_Common_Action
     private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID = "", $new = "")
     {
         $amTypeOptions = array();
+        // TODO: Fallthru on purpose or not?
         switch ($action) {
             case "queryto":
                 $baselang = $tolang;
+                /* FALLTHRU */
             case "querybase":
                 switch ($type) {
                     case 'title':
@@ -813,6 +813,7 @@ class translate extends Survey_Common_Action
                         ->with('group')
                         ->findAllByAttributes(array(), array('order' => 'group_order, question.question_order, t.scale_id, t.sortorder', 'condition' => 'question.sid=:sid', 'params' => array(':sid' => $iSurveyID)));
                 }
+                /* FALLTHRU */
             case "queryupdate":
                 switch ($type) {
                     case 'title':
@@ -946,7 +947,7 @@ class translate extends Survey_Common_Action
         if (is_numeric($iScaleID)) {
             $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
         }
-            $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
+            $nrows = max($this->calcNRows($textfrom), $this->calcNRows($textto));
             $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
 
             $minHeight = 'auto';
@@ -975,7 +976,7 @@ class translate extends Survey_Common_Action
                 $qid,
                 "translate" . $amTypeOptions["HTMLeditorType"]
             );
-            $translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
+            $translateoutput .= $this->loadEditor($amTypeOptions, $htmleditor_data);
 
             $translateoutput .= "</td>";
             $translateoutput .= "</tr>";
@@ -988,7 +989,7 @@ class translate extends Survey_Common_Action
      * @param string[] $aData
      * @return mixed
      */
-    private function _loadEditor($htmleditor, $aData)
+    private function loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
         $displayType = strtolower($htmleditor["HTMLeditorDisplay"]);
@@ -1007,12 +1008,12 @@ class translate extends Survey_Common_Action
     }
 
     /**
-     * calc_nrows($subject) calculates the vertical size of textbox for survey translation.
+     * calcNRows($subject) calculates the vertical size of textbox for survey translation.
      * The function adds the number of line breaks <br /> to the number of times a string wrap occurs.
      * @param string $subject The text string that is being translated
      * @return double
      */
-    private function calc_nrows($subject)
+    private function calcNRows($subject)
     {
         // Determines the size of the text box
         // A proxy for box sixe is string length divided by 80
@@ -1075,14 +1076,15 @@ class translate extends Survey_Common_Action
         // Ensure YII_CSRF_TOKEN, we are in admin, then only user with admin rigth can post
         /* No Permission check on survey, seems unneded (return a josn with current string posted */
         if (Yii::app()->request->isPostRequest) {
-            echo self::translate_google_api();
+            echo self::translateGoogleApi();
         }
     }
+
     /*
-    * translate_google_api.php
-    * Creates a JSON interface for the auto-translate feature
-    */
-    private function translate_google_api()
+     * translateGoogleApi.php
+     * Creates a JSON interface for the auto-translate feature
+     */
+    private function translateGoogleApi()
     {
         $sBaselang   = Yii::app()->getRequest()->getPost('baselang');
         $sTolang     = Yii::app()->getRequest()->getPost('tolang');
@@ -1141,9 +1143,9 @@ class translate extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'translate', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'translate', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

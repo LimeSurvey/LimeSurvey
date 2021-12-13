@@ -20,7 +20,7 @@
 * @copyright 2011
 * @access public
 */
-class labels extends Survey_Common_Action
+class Labels extends Survey_Common_Action
 {
     /**
      * routes to the correct subdir
@@ -107,7 +107,7 @@ class labels extends Survey_Common_Action
                 'lid' => $lid
             );
 
-            $this->_renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
+            $this->renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
         }
     }
 
@@ -153,7 +153,7 @@ class labels extends Survey_Common_Action
             $aViewUrls['import_view'][] = array('aImportResults' => $aImportResults);
         }
 
-        $this->_renderWrappedTemplate('labels', $aViewUrls);
+        $this->renderWrappedTemplate('labels', $aViewUrls);
     }
 
     /**
@@ -220,7 +220,7 @@ class labels extends Survey_Common_Action
         // Green SurveyManagerBar
         $aData['pageTitle'] = $pageTitle;
 
-        $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
     /**
@@ -327,7 +327,7 @@ class labels extends Survey_Common_Action
         // Green SurveyManagerBar Page Title
         $aData['pageTitle'] = gT('Label sets list');
 
-        $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
     /**
@@ -444,7 +444,7 @@ class labels extends Survey_Common_Action
             // Green Page Title
             $aData['pageTitle'] = gT('Export multiple label sets');
 
-            $this->_renderWrappedTemplate('labels', 'exportmulti_view', $aData);
+            $this->renderWrappedTemplate('labels', 'exportmulti_view', $aData);
         }
     }
 
@@ -685,8 +685,9 @@ class labels extends Survey_Common_Action
      * @param int    $labelId   Label ID
      * @param string $language  Language Code
      * @return LabelL10n
+     * @todo Not used?
      */
-    private function _getLabelI10NObject(int $labelId, string $language)
+    private function getLabelI10NObject(int $labelId, string $language)
     {
         $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
         if ($oLabelL10n == null) {
@@ -702,8 +703,9 @@ class labels extends Survey_Common_Action
      *
      * @param int $labelId Label ID
      * @return Label
+     * @todo Not used?
      */
-    private function _getLabelObject(int $labelId): Label
+    private function getLabelObject(int $labelId): Label
     {
         $oLabel = Label::model()->findByPk($labelId);
         return $oLabel == null ? (new Label()) : $oLabel;
@@ -718,7 +720,7 @@ class labels extends Survey_Common_Action
      * @parm  bool         $sRenderFile
      * @return void
      */
-    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'labels.js');
 
@@ -736,6 +738,6 @@ class labels extends Survey_Common_Action
 
         $aData['display']['menu_bars'] = false;
 
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

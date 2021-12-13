@@ -22,7 +22,7 @@ use LimeSurvey\ExtensionInstaller\QuestionThemeInstaller;
 * @author
 * @copyright 2011
 */
-class themes extends Survey_Common_Action
+class Themes extends Survey_Common_Action
 {
     public function runWithParams($params)
     {
@@ -189,7 +189,7 @@ class themes extends Survey_Common_Action
                 $aData = array('lid' => $lid);
             }
 
-            $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
+            $this->renderWrappedTemplate('themes', $aViewUrls, $aData);
         } else {
             App()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(array("themeOptions/index"));
@@ -515,8 +515,9 @@ class themes extends Survey_Common_Action
      * @access protected
      * @param string $name
      * @return string
+     * @todo Used? Previous name: _strip_ext
      */
-    protected function _strip_ext($name)
+    protected function stripExt($name)
     {
         $ext = strrchr($name, '.');
         if ($ext !== false) {
@@ -551,7 +552,7 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        $aViewUrls = $this->initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
@@ -566,7 +567,7 @@ class themes extends Survey_Common_Action
         // White Bar
         $aData['templateEditorBar']['buttons']['returnbutton'] = true;
 
-        $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('themes', $aViewUrls, $aData);
 
         // This helps handle the load/save buttons)
         if ($screenname != 'welcome') {
@@ -929,7 +930,7 @@ class themes extends Survey_Common_Action
      * @return void
      * @deprecated ? 151005
      */
-    protected function _templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
+    protected function templatebar($screenname, $editfile, $screens, $tempdir, $templatename)
     {
         $aData = array();
         $aData['screenname'] = $screenname;
@@ -956,7 +957,7 @@ class themes extends Survey_Common_Action
      * @param array $myoutput
      * @return array
      */
-    protected function _templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
+    protected function templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
@@ -1056,7 +1057,7 @@ class themes extends Survey_Common_Action
      * @param bool $showsummary
      * @return
      */
-    protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
+    protected function initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
         $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
@@ -1286,7 +1287,7 @@ class themes extends Survey_Common_Action
 
         if ($showsummary) {
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
-            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge($aViewUrls, $this->templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
 
 
@@ -1324,9 +1325,9 @@ class themes extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
     /**

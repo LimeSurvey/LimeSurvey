@@ -22,7 +22,7 @@
 
 use LimeSurvey\Models\Services\PermissionManager;
 
-class surveypermission extends Survey_Common_Action
+class SurveyPermission extends Survey_Common_Action
 {
     /**
      * Load survey security screen.
@@ -176,9 +176,8 @@ class surveypermission extends Survey_Common_Action
                     // Full icon = all permissions
                     if ($iCount == $iPermissionCount) {
                         $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check\">&nbsp;</div>";
-                    }
-                    // Blurred icon, meaning only partial permissions
-                    elseif ($iCount > 0) {
+                    } elseif ($iCount > 0) {
+                        // Blurred icon, meaning only partial permissions
                         $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
                     } else {
                         $insert = "<div>&#8211;</div>";
@@ -227,7 +226,7 @@ class surveypermission extends Survey_Common_Action
         $surveysecurity .= '</div></div></div>';
         $aViewUrls['output'] = $surveysecurity;
 
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -236,7 +235,7 @@ class surveypermission extends Survey_Common_Action
      * @param mixed $surveyid
      * @return void
      */
-    function addusergroup($surveyid)
+    public function addusergroup($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -325,7 +324,7 @@ class surveypermission extends Survey_Common_Action
             $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
 
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -334,7 +333,7 @@ class surveypermission extends Survey_Common_Action
      * @param mixed $surveyid
      * @return void
      */
-    function adduser($surveyid)
+    public function adduser($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -403,7 +402,7 @@ class surveypermission extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -412,7 +411,7 @@ class surveypermission extends Survey_Common_Action
      * @param mixed $surveyid
      * @return void
      */
-    function set($surveyid)
+    public function set($surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey->hasPermission('surveysecurity', 'update')) {
@@ -488,7 +487,7 @@ class surveypermission extends Survey_Common_Action
         $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup'; /* Not used */
         $aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/' . $surveyid; // Close button
 
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -497,7 +496,7 @@ class surveypermission extends Survey_Common_Action
      * @param mixed $surveyid
      * @return void
      */
-    function delete($surveyid)
+    public function delete($surveyid)
     {
         $this->requirePostRequest();
 
@@ -552,7 +551,7 @@ class surveypermission extends Survey_Common_Action
         //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         //$aData['surveybar']['closebutton']['url'] = 'surveyAdministration/view/surveyid/'.$surveyid;
 
-        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -561,7 +560,7 @@ class surveypermission extends Survey_Common_Action
      * @param int $surveyid Survey ID
      * @return void
      */
-    function surveyright(int $surveyid)
+    public function surveyright(int $surveyid)
     {
         $surveyid = sanitize_int($surveyid);
         $aData['surveyid'] = $surveyid;
@@ -663,7 +662,7 @@ class surveypermission extends Survey_Common_Action
         $aData['sidemenu']['state']  = false;
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title . " (" . gT("ID") . ":" . $surveyid . ")";
 
-        $this->_renderWrappedTemplate('', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     /**
@@ -673,8 +672,8 @@ class surveypermission extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
-        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+        parent::renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 }

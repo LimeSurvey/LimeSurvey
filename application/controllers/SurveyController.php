@@ -88,7 +88,7 @@ class SurveyController extends LSYii_Controller
      * @access protected
      * @return void
      */
-    protected function _sessioncontrol()
+    protected function sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
