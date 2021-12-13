@@ -47,7 +47,6 @@
  */
 class SurveyLanguageSetting extends LSActiveRecord
 {
-
     /** @inheritdoc */
     public function tableName()
     {

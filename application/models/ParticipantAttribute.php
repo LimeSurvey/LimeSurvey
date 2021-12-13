@@ -27,7 +27,6 @@
  */
 class ParticipantAttribute extends LSActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return ParticipantAttribute

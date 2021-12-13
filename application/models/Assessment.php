@@ -29,7 +29,6 @@
  */
 class Assessment extends LSActiveRecord
 {
-
     public function init()
     {
         parent::init();

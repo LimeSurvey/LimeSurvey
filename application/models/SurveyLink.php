@@ -35,7 +35,6 @@
  */
 class SurveyLink extends LSActiveRecord
 {
-
     /**
      * @inheritdoc
      * @return SurveyLink
