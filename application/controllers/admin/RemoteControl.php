@@ -86,7 +86,7 @@ class RemoteControl extends SurveyCommonAction
                 ksort($list);
                 $aData['method'] = $RPCType;
                 $aData['list'] = $list;
-                $this->_renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
+                $this->renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
             }
         }
         Yii::app()->session->destroy();

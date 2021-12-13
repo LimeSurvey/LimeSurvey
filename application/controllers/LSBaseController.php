@@ -76,7 +76,7 @@ class LSBaseController extends LSYii_Controller
     }
 
     /**
-     * This part comes from _renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
+     * This part comes from renderWrappedTemplate (not the best way to refactoring, but a temporary solution)
      *
      * todo REFACTORING find all actions that set $aData['surveyid'] and change the layout directly in the action
      *

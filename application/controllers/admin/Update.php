@@ -91,7 +91,7 @@ class Update extends SurveyCommonAction
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
-        $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
+        $this->renderWrappedTemplate('update', '_updateContainer', $aData);
     }
 
     public function managekey()
@@ -107,10 +107,10 @@ class Update extends SurveyCommonAction
             //$this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array('serverAnswer' => $serverAnswer),  false, false);
             if (!$updateKey) {
                 $aData['fullpagebar']['saveandclosebutton']['form'] = true;
-                $this->_renderWrappedTemplate('update/manage/', 'subscribe', $aData);
+                $this->renderWrappedTemplate('update/manage/', 'subscribe', $aData);
             } else {
                 $aData['updateKeyInfos'] = $updateModel->checkUpdateKeyonServer($updateKey);
-                $this->_renderWrappedTemplate('update/manage/', 'manage_key', $aData);
+                $this->renderWrappedTemplate('update/manage/', 'manage_key', $aData);
             }
         }
     }
@@ -513,7 +513,7 @@ class Update extends SurveyCommonAction
 
         $aData['updatedbaction'] = true;
 
-        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
+        $this->renderWrappedTemplate('update', $aViewUrls, $aData);
     }
 
     /**
@@ -527,7 +527,7 @@ class Update extends SurveyCommonAction
             }
             $aData = App()->session['installlstep4b'];
             unset(App()->session['installlstep4b']);
-            $this->_renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
+            $this->renderWrappedTemplate('update/updater/steps', '_old_step4b', $aData);
         }
     }
 

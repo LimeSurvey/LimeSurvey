@@ -50,7 +50,7 @@ class TutorialEntryController extends SurveyCommonAction
         $data = array();
         $data['model'] = TutorialEntry::model();
         //App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('tutorialentries/index'), $data);
+        $this->renderWrappedTemplate(null, array('tutorialentries/index'), $data);
     }
 
     /**

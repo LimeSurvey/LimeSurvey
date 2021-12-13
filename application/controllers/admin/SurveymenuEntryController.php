@@ -72,7 +72,7 @@ class SurveymenuEntryController extends SurveyCommonAction
             ],
         ];
         App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
+        $this->renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }
 
     public function getsurveymenuentryform($menuentryid = null)

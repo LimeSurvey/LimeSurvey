@@ -99,7 +99,7 @@ class SurveysGroupsController extends SurveyCommonAction
         $userCriteria->order = "full_name";
         $userCriteria->addInCondition('uid', $aUserIds);
         $aData['oUsers'] = User::model()->findAll($userCriteria);
-        $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
+        $this->renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
     /**
@@ -207,7 +207,7 @@ class SurveysGroupsController extends SurveyCommonAction
         }
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
-        $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
+        $this->renderWrappedTemplate('surveysgroups', 'update', $aData);
     }
 
     /**
@@ -340,7 +340,7 @@ class SurveysGroupsController extends SurveyCommonAction
         $aData['pageTitle'] = gT('Survey settings for group: ') . $model->title;
 
         $aData['fullpagebar'] = $buttons;
-        $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
+        $this->renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 
     /**
@@ -389,7 +389,7 @@ class SurveysGroupsController extends SurveyCommonAction
         $aData = array(
             'model' => $model
         );
-        $this->_renderWrappedTemplate('surveysgroups', 'index', $aData);
+        $this->renderWrappedTemplate('surveysgroups', 'index', $aData);
     }
 
     /**

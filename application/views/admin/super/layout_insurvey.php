@@ -18,7 +18,7 @@ echo "<!-- BEGIN LAYOUT_INSURVEY -->";
 // See bug #11845
 LimeExpressionManager::StartProcessingPage(false, true);
 $aData['debug'] = $aData;
-$this->_titlebar($aData);
+$this->titlebar($aData);
 
 //The load indicator for pjax
 echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';

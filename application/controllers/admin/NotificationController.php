@@ -15,7 +15,7 @@ class NotificationController extends SurveyCommonAction
         $data = array();
         $data['model'] = Notification::model();
 
-        $this->_renderWrappedTemplate(null, array('notification/index'), $data);
+        $this->renderWrappedTemplate(null, array('notification/index'), $data);
     }
 
     /**

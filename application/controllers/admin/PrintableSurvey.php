@@ -37,7 +37,7 @@ class PrintableSurvey extends SurveyCommonAction
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
-            $this->_renderWrappedTemplate('survey', array("message" => $message), $aData);
+            $this->renderWrappedTemplate('survey', array("message" => $message), $aData);
         } else {
             /* Remove admin css and js */
             Yii::app()->clientScript->reset();

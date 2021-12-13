@@ -83,7 +83,7 @@ class Labels extends SurveyCommonAction
                 // now read tempdir and copy authorized files only
                 $folders = array('flash', 'files', 'images');
                 foreach ($folders as $folder) {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
                 }

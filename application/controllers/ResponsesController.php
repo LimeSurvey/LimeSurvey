@@ -38,7 +38,7 @@ class ResponsesController extends LSBaseController
     }
 
     /**
-     * this is part of _renderWrappedTemplate implement in old responses.php
+     * this is part of renderWrappedTemplate implement in old responses.php
      *
      * @param string $view
      * @return bool

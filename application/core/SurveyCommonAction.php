@@ -58,7 +58,7 @@ class SurveyCommonAction extends CAction
         }
 
         // Populate the params. eg. surveyid -> iSurveyId
-        $params = $this->_addPseudoParams($params);
+        $params = $this->addPseudoParams($params);
 
         if (!empty($params['iSurveyId'])) {
             LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
@@ -89,13 +89,13 @@ class SurveyCommonAction extends CAction
      * those variables so that we don't end up in an error.
      *
      * This is also used while rendering wrapped template
-     * {@link Survey_Common_Action::_renderWrappedTemplate()}
+     * {@link SurveyCommonAction::renderWrappedTemplate()}
      *
      * @param array $params Parameters to parse and populate
      * @return array Populated parameters
      * @throws CHttpException
      */
-    private function _addPseudoParams($params)
+    private function addPseudoParams($params)
     {
         // Return if params isn't an array
         if (empty($params) || !is_array($params)) {
@@ -246,7 +246,7 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * Rendering the subviews and views of _renderWrappedTemplate
+     * Rendering the subviews and views of renderWrappedTemplate
      *
      * @param string $sAction
      * @param array|string $aViewUrls
@@ -263,7 +263,7 @@ class SurveyCommonAction extends CAction
                     $sViewPath .= $sAction . '/';
         }
         //TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..],
-        //todo and then call to function such as $this->_nsurveysummary($aData);
+        //todo and then call to function such as $this->nsurveysummary($aData);
         // Load views
         $content = "";
 
@@ -324,12 +324,12 @@ class SurveyCommonAction extends CAction
      * @param string|boolean $sRenderFile File to be rendered as a layout. Optional.
      * @throws CHttpException
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
+    protected function renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         // Gather the data
 
-        // This call 2 times _addPseudoParams because it's already done in runWithParams : why ?
-        $aData = $this->_addPseudoParams($aData);
+        // This call 2 times addPseudoParams because it's already done in runWithParams : why ?
+        $aData = $this->addPseudoParams($aData);
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
 
@@ -368,11 +368,11 @@ class SurveyCommonAction extends CAction
      *
      * REFACTORED (in LayoutHelper.php)
      */
-    protected function _updatenotification()
+    protected function updatenotification()
     {
         // Never use Notification model for database update.
         // TODO: Real fix: No database queries while doing database update, meaning
-        // don't call _renderWrappedTemplate.
+        // don't call renderWrappedTemplate.
         if (get_class($this) == 'databaseupdate') {
             return;
         }
@@ -392,7 +392,7 @@ class SurveyCommonAction extends CAction
      *
      * * REFACTORED (in LayoutHelper.php)
      */
-    private function _notifications()
+    protected function notifications()
     {
             $aMessage = App()->session['arrayNotificationMessages'];
         if (!is_array($aMessage)) {
@@ -409,7 +409,7 @@ class SurveyCommonAction extends CAction
      * Survey summary
      * @param array $aData
      */
-    private function _nsurveysummary($aData)
+    protected function nsurveysummary($aData)
     {
         if (isset($aData['display']['surveysummary'])) {
             if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid'])) {
@@ -426,7 +426,7 @@ class SurveyCommonAction extends CAction
      *
      * @param array $aData
      */
-    private function _showHeaders($aData, $sendHTTPHeader = true)
+    protected function showHeaders($aData, $sendHTTPHeader = true)
     {
         if (!isset($aData['display']['header']) || $aData['display']['header'] !== false) {
             // Send HTTP header
@@ -438,7 +438,7 @@ class SurveyCommonAction extends CAction
     }
 
     /**
-     * _showadminmenu() function returns html text for the administration button bar
+     * showadminmenu() function returns html text for the administration button bar
      *
      * REFACTORED (in LayoutHelper.php)
      *
@@ -452,7 +452,7 @@ class SurveyCommonAction extends CAction
      * @global string $imageurl
      * @global int $surveyid
      */
-    public function _showadminmenu($aData)
+    protected function showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
         if (!Yii::app()->user->isGuest) {
@@ -519,7 +519,7 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
-    private function _titlebar($aData)
+    protected function titlebar($aData)
     {
         if (isset($aData['title_bar'])) {
             $this->getController()->renderPartial("/admin/super/title_bar", $aData);
@@ -536,7 +536,7 @@ class SurveyCommonAction extends CAction
      * @since 2014-09-30
      * @author Olle Haerstedt
      */
-    private function _organizequestionbar($aData)
+    protected function organizequestionbar($aData)
     {
         if (isset($aData['organizebar'])) {
             if (isset($aData['questionbar']['closebutton']['url'])) {
@@ -555,7 +555,7 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
-    public function _generaltopbar($aData)
+    public function generaltopbar($aData)
     {
         $aData['topBar'] = isset($aData['topBar']) ? $aData['topBar'] : [];
         $aData['topBar'] = array_merge(
@@ -579,7 +579,7 @@ class SurveyCommonAction extends CAction
      *
      * @param array $aData
      */
-    public function _questionbar($aData)
+    public function questionbar($aData)
     {
         if (isset($aData['questionbar'])) {
             if (is_object($aData['oSurvey'])) {
@@ -661,7 +661,7 @@ class SurveyCommonAction extends CAction
      *
      * @param array $aData ?
      */
-    function _nquestiongroupbar($aData)
+    public function nquestiongroupbar($aData)
     {
         if (isset($aData['questiongroupbar'])) {
             if (!isset($aData['gid'])) {
@@ -703,7 +703,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      * @throws CException
      */
-    function _fullpagebar(array $aData)
+    public function fullpagebar(array $aData)
     {
         if ((isset($aData['fullpagebar']))) {
             if (isset($aData['fullpagebar']['closebutton']['url']) && !isset($aData['fullpagebar']['closebutton']['url_keep'])) {
@@ -724,7 +724,7 @@ class SurveyCommonAction extends CAction
      * @todo Needs to be removed later. Duplication in LayoutHelper.
      * @param array $aData
      */
-    public function _surveyManagerBar(array $aData)
+    public function surveyManagerBar(array $aData)
     {
         if (isset($aData['pageTitle'])) {
             Yii::app()->getController()->renderPartial("/layouts/surveymanagerbar", $aData);
@@ -737,7 +737,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      * @deprecated
      */
-    function _surveybar($aData)
+    public function surveybar($aData)
     {
         if ((isset($aData['surveybar']))) {
             $iSurveyID = $aData['surveyid'];
@@ -891,7 +891,7 @@ class SurveyCommonAction extends CAction
      *
      * @param array $aData all the needed data
      */
-    private function _surveysidemenu($aData)
+    protected function surveysidemenu($aData)
     {
         $iSurveyID = $aData['surveyid'];
 
@@ -1001,7 +1001,7 @@ class SurveyCommonAction extends CAction
      * listquestion groups
      * @param array $aData
      */
-    private function _listquestiongroups(array $aData)
+    protected function listquestiongroups(array $aData)
     {
         if (isset($aData['display']['menu_bars']['listquestiongroups'])) {
             $this->getController()->renderPartial("/questionGroupsAdministration/listquestiongroups", $aData);
@@ -1014,7 +1014,7 @@ class SurveyCommonAction extends CAction
      * @param $aData
      * @throws CException
      */
-    private function _listquestions($aData)
+    protected function listquestions($aData)
     {
         if (isset($aData['display']['menu_bars']['listquestions'])) {
             $iSurveyID = $aData['surveyid'];
@@ -1057,7 +1057,7 @@ class SurveyCommonAction extends CAction
      * @param array $aData
      * @return void
      */
-    public function _userGroupBar(array $aData)
+    public function userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0;
         if (!empty($aData['display']['menu_bars']['user_group'])) {
@@ -1093,7 +1093,7 @@ class SurveyCommonAction extends CAction
      * @param string $destdir
      * @return array
      */
-    protected function _filterImportedResources($extractdir, $destdir)
+    protected function filterImportedResources($extractdir, $destdir)
     {
         $aErrorFilesInfo = array();
         $aImportedFilesInfo = array();

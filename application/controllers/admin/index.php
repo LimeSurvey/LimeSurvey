@@ -91,6 +91,6 @@ class Index extends SurveyCommonAction
         $aData['iBoxesByRow'] = (int) getGlobalSetting('boxes_by_row');
         $aData['sBoxesOffSet'] = (int) getGlobalSetting('boxes_offset');
         $aData['bBoxesInContainer'] = (getGlobalSetting('boxes_in_container') == 'yes');
-        $this->_renderWrappedTemplate('super', 'welcome', $aData);
+        $this->renderWrappedTemplate('super', 'welcome', $aData);
     }
 }

@@ -42,7 +42,7 @@ class PluginHelper extends SurveyCommonAction
         $aData['content'] = $content;
 
         $aData['sideMenuOpen'] = false; // TODO: Assume this for all plugins?
-        $this->_renderWrappedTemplate(null, array('super/sidebody'), $aData);
+        $this->renderWrappedTemplate(null, array('super/sidebody'), $aData);
     }
 
     /**
@@ -59,7 +59,7 @@ class PluginHelper extends SurveyCommonAction
         $content = $this->getContent(null, $plugin, $method);
 
         $aData['content'] = $content;
-        $this->_renderWrappedTemplate(null, 'super/dummy', $aData, 'layout_main.php');
+        $this->renderWrappedTemplate(null, 'super/dummy', $aData, 'layout_main.php');
     }
 
     /**

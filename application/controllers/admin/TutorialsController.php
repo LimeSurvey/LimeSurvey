@@ -91,7 +91,7 @@ class TutorialsController extends SurveyCommonAction
             }
         }
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             null,
             array('tutorials/create'),
             array(
@@ -119,7 +119,7 @@ class TutorialsController extends SurveyCommonAction
             }
         }
 
-        $this->_renderWrappedTemplate(
+        $this->renderWrappedTemplate(
             null,
             array('tutorials/update'),
             array(
@@ -162,7 +162,7 @@ class TutorialsController extends SurveyCommonAction
         $data = array();
         $data['model'] = Tutorial::model();
         //App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('tutorials/index'), $data);
+        $this->renderWrappedTemplate(null, array('tutorials/index'), $data);
     }
 
     /**

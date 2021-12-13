@@ -28,7 +28,7 @@ class AssessmentController extends LSBaseController
 
 
     /**
-     * This part comes from _renderWrappedTemplate
+     * This part comes from renderWrappedTemplate
      *
      * @param string $view View
      *

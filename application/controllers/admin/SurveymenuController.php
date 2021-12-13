@@ -401,7 +401,7 @@ class SurveymenuController extends SurveyCommonAction
         ];
 
         App()->getClientScript()->registerPackage('surveymenufunctions');
-        $this->_renderWrappedTemplate(null, array('surveymenu/index'), $aData);
+        $this->renderWrappedTemplate(null, array('surveymenu/index'), $aData);
     }
 
     /**
