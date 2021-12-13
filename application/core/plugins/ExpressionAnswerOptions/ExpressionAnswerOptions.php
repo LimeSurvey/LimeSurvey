@@ -22,7 +22,6 @@
  */
 class ExpressionAnswerOptions extends PluginBase
 {
-
     protected static $description = 'Expression Script: make answer option text available.';
     protected static $name = 'ExpressionAnswerOptions';
 
