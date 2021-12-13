@@ -10,7 +10,6 @@ namespace LimeSurvey\Models\Services;
  */
 class IpAddressAnonymizer
 {
-
     /** @var string the original ip address */
     private $ipAddress;
 

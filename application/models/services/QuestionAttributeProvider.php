@@ -8,7 +8,6 @@ namespace LimeSurvey\Models\Services;
 
 abstract class QuestionAttributeProvider
 {
-
     /**
      * Returns question attribute definitions for the specified options from one source
      *
