@@ -22,7 +22,7 @@
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class DatabaseUpdate extends Survey_Common_Action
+class DatabaseUpdate extends SurveyCommonAction
 {
     /**
      * Update database

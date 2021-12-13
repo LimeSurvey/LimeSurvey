@@ -281,7 +281,7 @@ class AdminController extends LSYii_Controller
         // But now, they can be in a module added by a third pary developper.
         $aModuleActions = $this->getModulesActions();
 
-        // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (Survey_Common_Action, renderPartial, etc)
+        // We keep a trace of the overriden actions and their path. It will be used in the rendering logic (SurveyCommonAction, renderPartial, etc)
         foreach ($aModuleActions as $sAction => $sActionClass) {
           // Module override existing action
             if (!empty($aActions[$sAction])) {
@@ -398,7 +398,7 @@ class AdminController extends LSYii_Controller
     public function getAdminModulesActionClasses()
     {
 
-      // This function is called at least twice by page load. Once from AdminController, another one by Survey_Common_Action
+      // This function is called at least twice by page load. Once from AdminController, another one by SurveyCommonAction
         if (empty($this->aAdminModulesClasses)) {
             $aAdminModulesClasses = array();
             $slsadminmodules = new DirectoryIterator(Yii::app()->getConfig('lsadminmodulesrootdir'));

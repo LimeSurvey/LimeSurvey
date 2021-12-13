@@ -23,10 +23,7 @@
 * @author        LimeSurvey Team
 * @method        void index()
 */
-
-
-
-class Survey_Common_Action extends CAction
+class SurveyCommonAction extends CAction
 {
     public function __construct($controller = null, $id = null)
     {
@@ -571,7 +568,7 @@ class Survey_Common_Action extends CAction
             ],
             $aData['topBar']
         );
-        
+
         $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
     }
 
@@ -1040,7 +1037,7 @@ class Survey_Common_Action extends CAction
             if (isset($_GET['pageSize'])) {
                 App()->user->setState('pageSize', (int) $_GET['pageSize']);
             }
-            
+
             $aData['pageSize'] = App()->user->getState('pageSize', App()->params['defaultPageSize']);
 
             // We filter the current survey id
@@ -1070,7 +1067,7 @@ class Survey_Common_Action extends CAction
             if (!empty($ugid)) {
                 $userGroup = UserGroup::model()->findByPk($ugid);
                 $uid = Yii::app()->session['loginID'];
-                if (($userGroup && $userGroup->hasUser($uid)) || Permission::model()->hasGlobalPermission('superadmin') ) {
+                if (($userGroup && $userGroup->hasUser($uid)) || Permission::model()->hasGlobalPermission('superadmin')) {
                     $data['userGroup'] = $userGroup;
                 } else {
                     $data['userGroup'] = null;
@@ -1181,7 +1178,7 @@ class Survey_Common_Action extends CAction
      */
     protected function renderJSON($aData, $success = true)
     {
-        
+
         $aData['success'] = $aData['success'] ?? $success;
 
         if (Yii::app()->getConfig('debug') > 0) {
@@ -1204,7 +1201,7 @@ class Survey_Common_Action extends CAction
      */
     protected function requirePostRequest()
     {
-        if(!Yii::app()->getRequest()->isPostRequest) {
+        if (!Yii::app()->getRequest()->isPostRequest) {
             throw new CHttpException(405, gT("Invalid action"));
         }
     }

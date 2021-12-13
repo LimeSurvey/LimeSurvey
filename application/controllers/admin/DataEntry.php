@@ -54,7 +54,7 @@ Y - Yes/No
 * @copyright 2011
 * @access public
 */
-class DataEntry extends Survey_Common_Action
+class DataEntry extends SurveyCommonAction
 {
     /**
      * Dataentry Constructor

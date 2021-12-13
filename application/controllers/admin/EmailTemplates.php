@@ -20,7 +20,7 @@
  * @copyright 2011
  * @access public
  */
-class EmailTemplates extends Survey_Common_Action
+class EmailTemplates extends SurveyCommonAction
 {
     /**
      * Load edit email template screen.

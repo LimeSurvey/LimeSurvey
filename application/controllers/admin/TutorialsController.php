@@ -5,7 +5,7 @@
  * Current project stance is only to serve pregenerated tutorials bay LimeSurvey Company.
  * @TODO: Make this user editable
  */
-class TutorialsController extends Survey_Common_Action
+class TutorialsController extends SurveyCommonAction
 {
     /**
      * @return string[] action filters

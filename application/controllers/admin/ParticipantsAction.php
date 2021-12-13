@@ -43,7 +43,7 @@ function subval_sort($a, $subkey, $order)
 /**
  * This is the main controller for Participants Panel
  */
-class ParticipantsAction extends Survey_Common_Action
+class ParticipantsAction extends SurveyCommonAction
 {
     /**********************************************BASIC SETTINGS AND METHODS***********************************************/
 

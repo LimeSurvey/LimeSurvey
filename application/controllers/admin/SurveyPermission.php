@@ -22,7 +22,7 @@
 
 use LimeSurvey\Models\Services\PermissionManager;
 
-class SurveyPermission extends Survey_Common_Action
+class SurveyPermission extends SurveyCommonAction
 {
     /**
      * Load survey security screen.

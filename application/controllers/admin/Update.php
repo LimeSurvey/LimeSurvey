@@ -61,7 +61,7 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Update extends Survey_Common_Action
+class Update extends SurveyCommonAction
 {
     /**
      * First function to be called, when coming to admin/update

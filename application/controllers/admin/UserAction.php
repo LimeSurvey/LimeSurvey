@@ -22,7 +22,7 @@ use LimeSurvey\PluginManager\AuthPluginBase;
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-class UserAction extends Survey_Common_Action
+class UserAction extends SurveyCommonAction
 {
     /**
      * Constructor

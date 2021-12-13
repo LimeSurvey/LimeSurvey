@@ -21,7 +21,7 @@
  * @package     LimeSurvey
  * @subpackage  Backend
  */
-class Quotas extends Survey_Common_Action
+class Quotas extends SurveyCommonAction
 {
     public function __construct($controller, $id)
     {

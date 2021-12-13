@@ -20,7 +20,7 @@
  * @copyright 2011
  * @access public
  */
-class Saved extends Survey_Common_Action
+class Saved extends SurveyCommonAction
 {
     /**
      * Show the list of save response

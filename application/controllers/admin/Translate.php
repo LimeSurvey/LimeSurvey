@@ -20,11 +20,11 @@
 * @package      LimeSurvey
 * @subpackage   Backend
 */
-class Translate extends Survey_Common_Action
+class Translate extends SurveyCommonAction
 {
     public function index($surveyid)
     {
-        /* existing + read (survey) already checked in Survey_Common_Action : existing use model : then if surveyid is not valid : return a 404 */
+        /* existing + read (survey) already checked in SurveyCommonAction : existing use model : then if surveyid is not valid : return a 404 */
         /* survey : read OK, not survey:tranlations:read … */
         if (!Permission::model()->hasSurveyPermission($surveyid, 'translations', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");

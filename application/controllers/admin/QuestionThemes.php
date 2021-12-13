@@ -1,6 +1,6 @@
 <?php
 
-class QuestionThemes extends Survey_Common_Action
+class QuestionThemes extends SurveyCommonAction
 {
     /**
      * @param string $id

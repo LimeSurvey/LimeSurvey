@@ -21,7 +21,7 @@
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class PrintableSurvey extends Survey_Common_Action
+class PrintableSurvey extends SurveyCommonAction
 {
     /**
      * Show printable survey

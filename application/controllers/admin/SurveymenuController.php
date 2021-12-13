@@ -3,7 +3,7 @@
 /**
  * Class SurveymenuController
  */
-class SurveymenuController extends Survey_Common_Action
+class SurveymenuController extends SurveyCommonAction
 {
     /**
      * @return string[] action filters

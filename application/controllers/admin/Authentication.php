@@ -26,7 +26,7 @@
 *
 * @method void redirect(string|array $url, boolean $terminate, integer $statusCode)
  */
-class Authentication extends Survey_Common_Action
+class Authentication extends SurveyCommonAction
 {
     /**
      * Show login screen and parse login data

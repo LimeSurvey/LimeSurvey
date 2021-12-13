@@ -23,7 +23,7 @@ use LimeSurvey\Helpers\questionHelper;
 * @copyright 2011
 * @access public
 */
-class Database extends Survey_Common_Action
+class Database extends SurveyCommonAction
 {
     /**
      * @var integer Group id

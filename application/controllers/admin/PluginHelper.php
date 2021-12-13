@@ -3,7 +3,7 @@
 /**
  * @todo Better name?
  */
-class PluginHelper extends Survey_Common_Action
+class PluginHelper extends SurveyCommonAction
 {
     /** @inheritdoc */
     public $defaultAction = 'sidebody';

@@ -13,7 +13,7 @@
  *
  */
 
-class HtmlEditorPop extends Survey_Common_Action
+class HtmlEditorPop extends SurveyCommonAction
 {
     public function index()
     {

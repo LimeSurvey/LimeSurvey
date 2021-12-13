@@ -20,7 +20,7 @@
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class CheckIntegrity extends Survey_Common_Action
+class CheckIntegrity extends SurveyCommonAction
 {
     /**
      * Constructor

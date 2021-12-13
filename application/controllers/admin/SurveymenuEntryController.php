@@ -3,7 +3,7 @@
 /**
  * Class SurveymenuEntryController
  */
-class SurveymenuEntryController extends Survey_Common_Action
+class SurveymenuEntryController extends SurveyCommonAction
 {
     /**
      * SurveymenuEntryController constructor.

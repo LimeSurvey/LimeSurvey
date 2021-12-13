@@ -20,7 +20,7 @@ use LimeSurvey\Menu\MenuItem;
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
  */
-class PluginManagerController extends Survey_Common_Action
+class PluginManagerController extends SurveyCommonAction
 {
     /**
      * Init

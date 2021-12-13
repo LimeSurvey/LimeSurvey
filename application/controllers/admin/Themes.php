@@ -22,7 +22,7 @@ use LimeSurvey\ExtensionInstaller\QuestionThemeInstaller;
 * @author
 * @copyright 2011
 */
-class Themes extends Survey_Common_Action
+class Themes extends SurveyCommonAction
 {
     public function runWithParams($params)
     {

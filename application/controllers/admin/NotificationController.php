@@ -3,7 +3,7 @@
 /**
  * Mostly for Ajax actions
  */
-class NotificationController extends Survey_Common_Action
+class NotificationController extends SurveyCommonAction
 {
     /**
      * List all notifications for a user

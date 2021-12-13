@@ -21,7 +21,7 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Export extends Survey_Common_Action
+class Export extends SurveyCommonAction
 {
     /**
      * Export Constructor.

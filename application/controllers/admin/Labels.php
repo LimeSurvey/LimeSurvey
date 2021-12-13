@@ -20,7 +20,7 @@
 * @copyright 2011
 * @access public
 */
-class Labels extends Survey_Common_Action
+class Labels extends SurveyCommonAction
 {
     /**
      * routes to the correct subdir

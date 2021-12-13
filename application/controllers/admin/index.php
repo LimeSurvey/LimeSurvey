@@ -12,7 +12,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
-class Index extends Survey_Common_Action
+class Index extends SurveyCommonAction
 {
     public function run()
     {

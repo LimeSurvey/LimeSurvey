@@ -1,6 +1,6 @@
 <?php
 
-class TutorialEntryController extends Survey_Common_Action
+class TutorialEntryController extends SurveyCommonAction
 {
     /**
      * @return string[] action filters

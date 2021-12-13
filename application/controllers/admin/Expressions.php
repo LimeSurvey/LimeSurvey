@@ -15,7 +15,7 @@
 /**
  * Class Expressions
  **/
-class Expressions extends Survey_Common_Action
+class Expressions extends SurveyCommonAction
 {
     /**
      * Index

@@ -20,7 +20,7 @@
 * @package        LimeSurvey
 * @subpackage    Backend
 */
-class GlobalSettings extends Survey_Common_Action
+class GlobalSettings extends SurveyCommonAction
 {
     /**
      * GlobalSettings Constructor

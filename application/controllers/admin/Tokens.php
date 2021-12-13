@@ -21,7 +21,7 @@
 * @package       LimeSurvey
 * @subpackage    Backend
 */
-class Tokens extends Survey_Common_Action
+class Tokens extends SurveyCommonAction
 {
     /**
      * Show token index page, handle token database
