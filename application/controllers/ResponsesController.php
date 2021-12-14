@@ -957,6 +957,12 @@ class ResponsesController extends LSBaseController
 
         $thissurvey = getSurveyInfo($surveyId);
 
+        // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
+        // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
+        LimeExpressionManager::SetEMLanguage($thissurvey['oSurvey']->language);
+        LimeExpressionManager::SetSurveyId($surveyId);
+        LimeExpressionManager::StartProcessingPage(false, true);
+
         if (!$thissurvey) {
             App()->session['flashmessage'] = gT("Invalid survey ID");
             $this->redirect(["admin/index"]);
