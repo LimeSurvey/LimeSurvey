@@ -12,6 +12,8 @@ To create a module, you must first know a bit of the Yii 1 Framework.
 see: https://www.yiiframework.com/doc/guide/1.1/en
 
 
+NB: More info can be found in deleted globalsettings module: bc85197a266d44b75e8b7a5f6193ee750a0871a2
+
 ##  Full page Hello World Module
 
 

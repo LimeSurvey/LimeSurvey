@@ -349,7 +349,6 @@ class AdminController extends LSYii_Controller
             'validate'         => 'ExpressionValidate',
             'globalsettings'   => 'GlobalSettings',
             'htmleditorpop'    => 'HtmlEditorPop',
-            'homepagesettings' => 'homepagesettings',
             'surveysgroups'    => 'SurveysGroupsController',
             'limereplacementfields' => 'limereplacementfields',
             'index'            => 'index',
