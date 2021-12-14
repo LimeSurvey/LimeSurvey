@@ -43,9 +43,6 @@ LS.renderBootstrapSwitch();
                 'deactivatedsurveys'=>$deactivatedsurveys,
                 'activetokens'=>$activetokens,
                 'deactivatedtokens'=>$deactivatedtokens,
-
-                // Here, we pass to the subview the new parameter 
-                'myNewParam'=>$myNewParam,
               )
             ); ?>
     </div>
