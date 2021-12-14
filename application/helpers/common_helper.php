@@ -2051,16 +2051,6 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
     }
 }
 
-
-function categorySort($a, $b)
-{
-    $result = strnatcasecmp($a['category'], $b['category']);
-    if ($result == 0) {
-        $result = $a['sortorder'] - $b['sortorder'];
-    }
-    return $result;
-}
-
 function questionTitleSort($a, $b)
 {
     $result = strnatcasecmp($a['title'], $b['title']);
