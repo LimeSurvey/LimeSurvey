@@ -117,7 +117,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
      */
     public function testNumericalQuestion()
     {
-        $this->markTestSkipped();
+        $this->markTestSkipped('This test is not finished');
+        // TODO: Lack import survey part here
         $sgqa = '563168X136X5376';
         foreach ($this->expressions as $expr) {
             $questionType = 'N';
@@ -133,7 +134,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
      */
     public function testShortTextQuestion()
     {
-        $this->markTestSkipped();
+        $this->markTestSkipped('This test is not finished');
+        // TODO: Lack import survey part here
         $sgqa = '563168X136X5376';
         foreach ($this->expressions as $expr) {
             $questionType = 'S';
