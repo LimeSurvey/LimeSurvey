@@ -3,8 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use setTransactionBookmark;
-use rollBackToTransactionBookmark;
 
 /**
  * @SuppressWarnings(PHPMD)

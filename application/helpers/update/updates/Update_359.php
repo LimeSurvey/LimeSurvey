@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use alterColumn;
-
 class Update_359 extends DatabaseUpdateBase
 {
     public function up()

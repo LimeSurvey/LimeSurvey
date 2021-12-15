@@ -3,9 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use addPrimaryKey;
-use addColumn;
-use upgradeSurveys156;
 
 class Update_156 extends DatabaseUpdateBase
 {

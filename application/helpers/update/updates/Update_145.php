@@ -3,8 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use addColumn;
-use addPrimaryKey;
 
 /**
  * @SuppressWarnings(PHPMD)

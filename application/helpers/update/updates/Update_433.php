@@ -3,9 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use dbGetTablesLike;
-use setTransactionBookmark;
-use rollBackToTransactionBookmark;
 
 class Update_433 extends DatabaseUpdateBase
 {

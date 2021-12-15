@@ -3,7 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use alterColumn;
 
 class Update_172 extends DatabaseUpdateBase
 {

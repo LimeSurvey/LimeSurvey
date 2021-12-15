@@ -2,8 +2,6 @@
 
 namespace LimeSurvey\Helpers\Update;
 
-use class_exists;
-use upgradeSurveys177;
 use Plugin;
 use App;
 

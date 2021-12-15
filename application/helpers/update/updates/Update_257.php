@@ -3,12 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use alterColumn;
-use dropColumn;
-use addPrimaryKey;
-use fixMySQLCollations;
-use upgradeSurveyTables181;
-use upgradeTokenTables181;
 
 class Update_257 extends DatabaseUpdateBase
 {
