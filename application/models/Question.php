@@ -48,18 +48,18 @@ use LimeSurvey\Helpers\questionHelper;
  */
 class Question extends LSActiveRecord
 {
-    const QT_1_ARRAY_DUAL = '1'; //ARRAY Dual scale
+    const QT_1_ARRAY_DUAL = '1'; // Array Dual scale
     const QT_5_POINT_CHOICE = '5';
-    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // Array of 5 point choice questions
+    const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
     const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // Array of 10 point choice questions
     const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
     const QT_D_DATE = 'D';
-    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
+    const QT_E_ARRAY_INC_SAME_DEC = 'E';
     const QT_F_ARRAY = 'F';
-    const QT_G_GENDER_DROPDOWN = 'G';
+    const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
-    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
     const QT_N_NUMERICAL = 'N';
@@ -70,7 +70,7 @@ class Question extends LSActiveRecord
     const QT_S_SHORT_FREE_TEXT = 'S';
     const QT_T_LONG_FREE_TEXT = 'T';
     const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_X_BOILERPLATE_QUESTION = 'X';
+    const QT_X_TEXT_DISPLAY = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
     const QT_EXCLAMATION_LIST_DROPDOWN = '!';
     const QT_VERTICAL_FILE_UPLOAD = '|';
@@ -581,7 +581,7 @@ class Question extends LSActiveRecord
                 return 'array-flexible-dual-scale';
             case Question::QT_5_POINT_CHOICE:
                 return 'choice-5-pt-radio';
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+            case Question::QT_A_ARRAY_5_POINT:
                 return 'array-5-pt';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                 return 'array-10-pt';
@@ -589,17 +589,17 @@ class Question extends LSActiveRecord
                 return 'array-yes-uncertain-no';
             case Question::QT_D_DATE:
                 return 'date';
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 return 'array-increase-same-decrease';
             case Question::QT_F_ARRAY:
                 return 'array-flexible-row';
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 return 'gender';
             case Question::QT_H_ARRAY_COLUMN:
                 return 'array-flexible-column';
             case Question::QT_I_LANGUAGE:
                 return 'language';
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
                 return 'numeric-multi';
             case Question::QT_L_LIST:
                 return 'list-radio';
@@ -621,7 +621,7 @@ class Question extends LSActiveRecord
                 return 'text-long';
             case Question::QT_U_HUGE_FREE_TEXT:
                 return 'text-huge';
-            case Question::QT_X_BOILERPLATE_QUESTION:
+            case Question::QT_X_TEXT_DISPLAY:
                 return 'boilerplate';
             case Question::QT_Y_YES_NO_RADIO:
                 return 'yes-no';
@@ -807,7 +807,7 @@ class Question extends LSActiveRecord
 
     public function getMandatoryIcon()
     {
-        if ($this->type != Question::QT_X_BOILERPLATE_QUESTION && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($this->type != Question::QT_X_TEXT_DISPLAY && $this->type != Question::QT_VERTICAL_FILE_UPLOAD) {
             if ($this->mandatory == "Y") {
                 $sIcon = '<span class="fa fa-asterisk text-danger"></span>';
             } elseif ($this->mandatory == "S") {
@@ -1158,7 +1158,7 @@ class Question extends LSActiveRecord
         $type = $type === null ? $this->type : $type;
         LoadQuestionTypes::load($type);
         switch ($type) {
-            case Question::QT_X_BOILERPLATE_QUESTION:
+            case Question::QT_X_TEXT_DISPLAY:
                 $oRenderer = new RenderBoilerplate($aFieldArray);
                 break;
             case Question::QT_5_POINT_CHOICE:
@@ -1203,10 +1203,10 @@ class Question extends LSActiveRecord
             case Question::QT_U_HUGE_FREE_TEXT:
                 $oRenderer = new RenderHugeFreeText($aFieldArray);
                 break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
                 $oRenderer = new RenderMultipleNumerical($aFieldArray);
                 break;
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+            case Question::QT_A_ARRAY_5_POINT:
                 $oRenderer = new RenderArray5ChoiceQuestion($aFieldArray);
                 break;
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
@@ -1215,13 +1215,13 @@ class Question extends LSActiveRecord
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 $oRenderer = new RenderArrayYesUncertainNo($aFieldArray);
                 break;
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 $oRenderer = new RenderArrayOfIncSameDecQuestions($aFieldArray);
                 break;
             case Question::QT_F_ARRAY:
                 $oRenderer = new RenderArrayFlexibleRow($aFieldArray);
                 break;
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 $oRenderer = new RenderGenderDropdown($aFieldArray);
                 break;
             case Question::QT_H_ARRAY_COLUMN:
@@ -1259,7 +1259,7 @@ class Question extends LSActiveRecord
         LoadQuestionTypes::load($type);
 
         switch ($type) {
-            case Question::QT_X_BOILERPLATE_QUESTION:
+            case Question::QT_X_TEXT_DISPLAY:
                 return new DataSetBoilerplate($this->qid);
             case Question::QT_5_POINT_CHOICE:
                 return new DataSetFivePointChoice($this->qid);
@@ -1289,19 +1289,19 @@ class Question extends LSActiveRecord
                 return new DataSetLongFreeText($this->qid);
             case Question::QT_U_HUGE_FREE_TEXT:
                 return new DataSetHugeFreeText($this->qid);
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
                 return new DataSetMultipleNumerical($this->qid);
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+            case Question::QT_A_ARRAY_5_POINT:
                 return new DataSetArray5ChoiceQuestion($this->qid);
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                 return new DataSetArray10ChoiceQuestion($this->qid);
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 return new DataSetArrayYesUncertainNo($this->qid);
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 return new DataSetArrayOfIncSameDecQuestions($this->qid);
             case Question::QT_F_ARRAY:
                 return new DataSetArrayFlexibleRow($this->qid);
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 return new DataSetGenderDropdown($this->qid);
             case Question::QT_H_ARRAY_COLUMN:
                 return new DataSetArrayFlexibleColumn($this->qid);

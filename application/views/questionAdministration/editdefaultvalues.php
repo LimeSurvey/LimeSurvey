@@ -84,7 +84,7 @@
                                         case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                             $inputStyle = 'enum';
                                             break;
-                                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                                        case Question::QT_K_MULTIPLE_NUMERICAL:
                                         case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                                             $inputStyle = 'text';
                                             break;

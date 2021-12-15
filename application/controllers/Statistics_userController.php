@@ -246,7 +246,7 @@ class Statistics_userController extends SurveyController
 
             //let's switch through the question type for each question
             switch ($type) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+                case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                     $results = Question::model()->with('questionl10ns')->findAll([
                         'condition' => 'language=:language AND parent_qid=:parent_qid',
@@ -257,10 +257,10 @@ class Statistics_userController extends SurveyController
                         $allfields[] = $flt->type . $SGQidentifier . $row->title;
                     }
                     break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // Array of 5 point choice questions
+                case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array of Yes\No\Uncertain questions
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // Array of Increase/Same/Decrease questions
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
                 case Question::QT_F_ARRAY: // Array
                 case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
                     $results = Question::model()->with('questionl10ns')->findAll([
@@ -309,7 +309,7 @@ class Statistics_userController extends SurveyController
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+                case Question::QT_X_TEXT_DISPLAY:  //This is a boilerplate question and it has no business in this script
                     break;
                 case Question::QT_1_ARRAY_DUAL: // Dual scale
                     $results = Question::model()->with('questionl10ns')->findAll([

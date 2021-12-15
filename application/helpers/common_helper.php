@@ -994,7 +994,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue = convertDateTimeFormat($sValue, "Y-m-d H:i:s", $dateformatdetails['phpdate']);
                 }
                 break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 // Fix the value : Value is stored as decimal in SQL
                 if ($sValue[0] === ".") {
@@ -1037,7 +1037,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         $this_answer = gT("No answer", null, $sLanguage);
                 }
                 break;
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 switch ($sValue) {
                     case "M":
                         $this_answer = gT("Male", null, $sLanguage);
@@ -1062,7 +1062,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                         break;
                 }
                 break;
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 switch ($sValue) {
                     case "I":
                         $this_answer = gT("Increase", null, $sLanguage);
@@ -1177,7 +1177,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
             $sLanguage = $oSurvey->language;
         }
         switch ($flt['type']) {
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+            case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
             case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                 //get answers
                 $result = Question::model()->getQuestionsForStatistics('title as code, question as answer', "parent_qid=$flt[qid] AND language = '{$sLanguage}'", 'question_order');
@@ -1188,10 +1188,10 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
                     $allfields[] = $myfield2;
                 }
                 break;
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // Array of 5 point choice questions
+            case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // Array of Increase/Same/Decrease questions
+            case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
             case Question::QT_F_ARRAY: // Array
             case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
                 //get answers
@@ -1236,7 +1236,7 @@ function createCompleteSGQA($iSurveyID, $aFilters, $sLanguage)
 
                 break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-            case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+            case Question::QT_X_TEXT_DISPLAY:  //This is a boilerplate question and it has no business in this script
                 break;
             case Question::QT_1_ARRAY_DUAL: // Dual scale
                 //get answers

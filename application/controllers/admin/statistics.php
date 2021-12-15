@@ -309,7 +309,7 @@ class statistics extends Survey_Common_Action
 
             //let's switch through the question type for each question
             switch ($flt[2]) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
+                case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1]['key1'] = $result;
@@ -325,7 +325,7 @@ class statistics extends Survey_Common_Action
 
                     //----------------------- ARRAYS --------------------------
 
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                case Question::QT_A_ARRAY_5_POINT:
                     //get answers
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1] = $result;
@@ -350,7 +350,7 @@ class statistics extends Survey_Common_Action
 
 
                     //similiar to the above one
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // Array of Increase/Same/Decrease questions
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
                     $result = Question::model()->getQuestionsForStatistics('title, question', "parent_qid=$flt[0] ", 'question_order');
                     $aData['result'][$key1] = $result;
                     break;
@@ -726,10 +726,10 @@ class statistics extends Survey_Common_Action
                     break;
 
                     // Cases with subquestions
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                case Question::QT_A_ARRAY_5_POINT:
                 case Question::QT_F_ARRAY: // Array
                 case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+                case Question::QT_E_ARRAY_INC_SAME_DEC:
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
@@ -750,7 +750,7 @@ class statistics extends Survey_Common_Action
                     break;
 
                     // Not shown (else would only show 'no answer' )
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
                 case Question::QT_ASTERISK_EQUATION:
                 case Question::QT_D_DATE:
                 case Question::QT_VERTICAL_FILE_UPLOAD: // File Upload, we don't show it

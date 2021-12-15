@@ -5,8 +5,8 @@
         <type>plugin</type>
         <creationDate>2019-03-10</creationDate>
         <lastUpdate>2021-03-25</lastUpdate>
-        <author>Markus Fluer, Eddy Lackmann</author>
-        <authorUrl>https://limesurvey.org</authorUrl>
+        <author>LimeSurvey GmbH</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.2.5</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[Use a TOTP based 2 factor authentication on logging in into the admin portal.]]></description>

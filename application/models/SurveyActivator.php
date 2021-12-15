@@ -129,7 +129,7 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
                 case Question::QT_N_NUMERICAL:
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "decimal (30,10)");
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
@@ -157,9 +157,9 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "datetime");
                     break;
                 case Question::QT_5_POINT_CHOICE:
-                case Question::QT_G_GENDER_DROPDOWN:
+                case Question::QT_G_GENDER:
                 case Question::QT_Y_YES_NO_RADIO:
-                case Question::QT_X_BOILERPLATE_QUESTION:
+                case Question::QT_X_TEXT_DISPLAY:
                     $aTableDefinition[$aRow['fieldname']] = (array_key_exists('encrypted', $aRow) && $aRow['encrypted'] == 'Y') ? "text" : (isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "string(1)");
                     break;
                 case Question::QT_I_LANGUAGE:

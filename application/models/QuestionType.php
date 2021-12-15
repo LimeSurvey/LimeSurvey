@@ -16,18 +16,18 @@
  */
 class QuestionType extends StaticModel
 {
-    const QT_1_ARRAY_DUAL = '1'; //ARRAY Dual scale
+    const QT_1_ARRAY_DUAL = '1'; // Array dual scale
     const QT_5_POINT_CHOICE = '5';
-    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // Array of 5 point choice questions
+    const QT_A_ARRAY_5_POINT = 'A'; // Array of 5 point choice questions
     const QT_B_ARRAY_10_POINT = 'B'; // Array of 10 point choice questions
-    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
+    const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF Yes\No\Uncertain questions
     const QT_D_DATE = 'D';
-    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
+    const QT_E_ARRAY_INC_SAME_DEC = 'E';
     const QT_F_ARRAY = 'F';
-    const QT_G_GENDER_DROPDOWN = 'G';
+    const QT_G_GENDER = 'G';
     const QT_H_ARRAY_COLUMN = 'H';
     const QT_I_LANGUAGE = 'I';
-    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_K_MULTIPLE_NUMERICAL = 'K';
     const QT_L_LIST = 'L';
     const QT_M_MULTIPLE_CHOICE = 'M';
     const QT_N_NUMERICAL = 'N';
@@ -38,7 +38,7 @@ class QuestionType extends StaticModel
     const QT_S_SHORT_FREE_TEXT = 'S';
     const QT_T_LONG_FREE_TEXT = 'T';
     const QT_U_HUGE_FREE_TEXT = 'U';
-    const QT_X_BOILERPLATE_QUESTION = 'X';
+    const QT_X_TEXT_DISPLAY = 'X';
     const QT_Y_YES_NO_RADIO = 'Y';
     const QT_EXCLAMATION_LIST_DROPDOWN = '!';
     const QT_VERTICAL_FILE_UPLOAD = '|';
@@ -137,8 +137,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => "choice-5-pt-radio"
             ],
-            self::QT_A_ARRAY_5_CHOICE_QUESTIONS => [
-                'code' => self::QT_A_ARRAY_5_CHOICE_QUESTIONS,
+            self::QT_A_ARRAY_5_POINT => [
+                'code' => self::QT_A_ARRAY_5_POINT,
                 'description' => gT("Array (5 point choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
@@ -177,8 +177,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'date'
             ],
-            self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => [
-                'code' => self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS,
+            self::QT_E_ARRAY_INC_SAME_DEC => [
+                'code' => self::QT_E_ARRAY_INC_SAME_DEC,
                 'description' => gT("Array (Increase/Same/Decrease)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
@@ -197,8 +197,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 1,
                 'class' => 'array-flexible-row'
             ],
-            self::QT_G_GENDER_DROPDOWN => [
-                'code' => self::QT_G_GENDER_DROPDOWN,
+            self::QT_G_GENDER => [
+                'code' => self::QT_G_GENDER,
                 'description' => gT("Gender", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -227,8 +227,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'language'
             ],
-            self::QT_K_MULTIPLE_NUMERICAL_QUESTION => [
-                'code' => self::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+            self::QT_K_MULTIPLE_NUMERICAL => [
+                'code' => self::QT_K_MULTIPLE_NUMERICAL,
                 'description' => gT("Multiple numerical input", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
@@ -337,8 +337,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'text-huge'
             ],
-            self::QT_X_BOILERPLATE_QUESTION => [
-                'code' => self::QT_X_BOILERPLATE_QUESTION,
+            self::QT_X_TEXT_DISPLAY => [
+                'code' => self::QT_X_TEXT_DISPLAY,
                 'description' => gT("Text display", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
@@ -432,8 +432,8 @@ class QuestionType extends StaticModel
     public static function charCodes()
     {
         return [
-            self::QT_5_POINT_CHOICE, self::QT_G_GENDER_DROPDOWN, self::QT_Y_YES_NO_RADIO,
-            self::QT_X_BOILERPLATE_QUESTION
+            self::QT_5_POINT_CHOICE, self::QT_G_GENDER, self::QT_Y_YES_NO_RADIO,
+            self::QT_X_TEXT_DISPLAY
         ];
     }
 

@@ -105,7 +105,7 @@ function loadanswers()
             if (in_array($column, $_SESSION['survey_' . $surveyid]['insertarray']) && isset($_SESSION['survey_' . $surveyid]['fieldmap'][$column])) {
                 if (
                     ($_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_N_NUMERICAL ||
-                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION ||
+                        $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_K_MULTIPLE_NUMERICAL ||
                         $_SESSION['survey_' . $surveyid]['fieldmap'][$column]['type'] == Question::QT_D_DATE) && $value == null
                 ) {
                     // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
@@ -1331,7 +1331,7 @@ function getNavigatorDatas()
 
     // Previous ?
     if (
-        $thissurvey['format'] != Question::QT_A_ARRAY_5_CHOICE_QUESTIONS && ($thissurvey['allowprev'] != "N")
+        $thissurvey['format'] != Question::QT_A_ARRAY_5_POINT && ($thissurvey['allowprev'] != "N")
         && $iSessionStep
         && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
         && !Yii::app()->getConfig('previewmode')

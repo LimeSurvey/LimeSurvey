@@ -617,14 +617,14 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class' => 'form-control'));
 
                             break;
-                        case Question::QT_X_BOILERPLATE_QUESTION: //Boilerplate question
+                        case Question::QT_X_TEXT_DISPLAY: //Boilerplate question
                             $aDataentryoutput .= "";
                             break;
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                             $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
                             $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                             break;
-                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                        case Question::QT_K_MULTIPLE_NUMERICAL:
                             $aDataentryoutput .= $fname['subquestion'] . '&nbsp;';
                             /* Fix DB DECIMAL type */
                             $value = $idrow[$fname['fieldname']];
@@ -689,7 +689,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
                             }
                             break;
-                        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
+                        case Question::QT_G_GENDER: //GENDER drop-down list
                             $select_options = array(
                             '' => gT("Please choose") . '...',
                             'F' => gT("Female"),
@@ -1018,7 +1018,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= ">" . gT("No") . "</option>\n"
                             . "\t</select>\n";
                             break;
-                        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
                             $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid = $fname['qid'];
                             while ($fname['qid'] == $thisqid) {
@@ -1041,7 +1041,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             $fname = prev($fnames);
                             break;
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //Array (10 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
                             $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid = $fname['qid'];
                             while ($fname['qid'] == $thisqid) {
@@ -1064,7 +1064,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
                             $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid = $fname['qid'];
                             while ($fname['qid'] == $thisqid) {
@@ -1093,7 +1093,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Increase/Same/Decrease) radio-buttons
                             $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid = $fname['qid'];
                             while ($fname['qid'] == $thisqid) {
@@ -1122,7 +1122,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_F_ARRAY: //ARRAY 
+                        case Question::QT_F_ARRAY: // Array 
                         case Question::QT_H_ARRAY_COLUMN:
                         case Question::QT_1_ARRAY_DUAL:
                             $aDataentryoutput .= "<table class='table'>\n";
@@ -1161,7 +1161,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_COLON_ARRAY_NUMBERS: //ARRAY (Multi Flexi) (Numbers)
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array (Numbers)
                             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             $minvalue = 1;
                             $maxvalue = 10;
@@ -1217,7 +1217,7 @@ class dataentry extends Survey_Common_Action
                             $fname = prev($fnames);
                             $aDataentryoutput .= "</table>\n";
                             break;
-                        case Question::QT_SEMICOLON_ARRAY_TEXT: //ARRAY (Multi Flexi)
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array
                             $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid = $fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid) {
@@ -1411,7 +1411,7 @@ class dataentry extends Survey_Common_Action
                     }
                     break;
                 case Question::QT_N_NUMERICAL:
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                case Question::QT_K_MULTIPLE_NUMERICAL:
                     if ($thisvalue === "") {
                         $oReponse->$fieldname = null;
                         break;
@@ -1618,7 +1618,7 @@ class dataentry extends Survey_Common_Action
                 foreach ($fieldmap as $irow) {
                     $fieldname = $irow['fieldname'];
                     if (isset($_POST[$fieldname])) {
-                        if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL_QUESTION)) {
+                        if ($_POST[$fieldname] == "" && ($irow['type'] == Question::QT_D_DATE || $irow['type'] == Question::QT_N_NUMERICAL || $irow['type'] == Question::QT_K_MULTIPLE_NUMERICAL)) {
                             // can't add '' in Date column
                             // Do nothing
                         } elseif ($irow['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
@@ -2022,7 +2022,7 @@ class dataentry extends Survey_Common_Action
                     }
                     switch ($arQuestion['type']) {
                         case Question::QT_Q_MULTIPLE_SHORT_TEXT: //Multiple short text
-                        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+                        case Question::QT_K_MULTIPLE_NUMERICAL:
                             $cdata['dearesult'] = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
                             break;
 
@@ -2116,10 +2116,10 @@ class dataentry extends Survey_Common_Action
                         case Question::QT_I_LANGUAGE: //Language Switch
                             $cdata['slangs'] = $survey->allLanguages;
                             break;
-                        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //Array (10 point choice) radio-buttons
-                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case Question::QT_A_ARRAY_5_POINT: // Array (5 point choice) radio-buttons
+                        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array (10 point choice) radio-buttons
+                        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array (Yes/Uncertain/No)
+                        case Question::QT_E_ARRAY_INC_SAME_DEC: // Array (Yes/Uncertain/No)
                         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                             $cdata['mearesult'] = $arQuestion->subquestions;
                             break;
@@ -2128,7 +2128,7 @@ class dataentry extends Survey_Common_Action
                             $maxfiles = $qidattributes['max_num_of_files'];
                             $cdata['maxfiles'] = $maxfiles;
                             break;
-                        case Question::QT_COLON_ARRAY_NUMBERS: //ARRAY (Multi Flexi)
+                        case Question::QT_COLON_ARRAY_NUMBERS: // Array
                             $minvalue = 1;
                             $maxvalue = 10;
                             if (trim($qidattributes['multiflexible_max']) != '' && trim($qidattributes['multiflexible_min']) == '') {
@@ -2173,11 +2173,11 @@ class dataentry extends Survey_Common_Action
                                 $this->getController()->redirect($this->getController()->createUrl("/admin/"));
                             }
                             break;
-                        case Question::QT_SEMICOLON_ARRAY_TEXT: //ARRAY (Multi Flexi)
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: // Array
                             $cdata['lresult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 1]);
                             $cdata['mearesult'] = $arQuestion->findAllByAttributes(['parent_qid' => $arQuestion['qid'], 'scale_id' => 0]);
                             break;
-                        case Question::QT_F_ARRAY: //ARRAY
+                        case Question::QT_F_ARRAY: // Array
                         case Question::QT_H_ARRAY_COLUMN:
                             $cdata['mearesult'] = $arQuestion->subquestions;
                             $cdata['fresult'] = Answer::model()->findAllByAttributes(['qid' => $arQuestion['qid']]);

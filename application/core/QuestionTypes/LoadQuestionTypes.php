@@ -39,7 +39,7 @@ class LoadQuestionTypes
     public static function load($type)
     {
         switch ($type) {
-            case Question::QT_X_BOILERPLATE_QUESTION:
+            case Question::QT_X_TEXT_DISPLAY:
                 Yii::import('questiontypes.BoilerplateQuestion.*');
                 break;
             case Question::QT_5_POINT_CHOICE:
@@ -84,10 +84,10 @@ class LoadQuestionTypes
             case Question::QT_U_HUGE_FREE_TEXT:
                 Yii::import('questiontypes.HugeFreeText.*');
                 break;
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
                 Yii::import('questiontypes.MultipleNumericalQuestion.*');
                 break;
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+            case Question::QT_A_ARRAY_5_POINT:
                 Yii::import('questiontypes.Array5ChoiceQuestions.*');
                 break;
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
@@ -96,13 +96,13 @@ class LoadQuestionTypes
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                 Yii::import('questiontypes.ArrayYesUncertainNo.*');
                 break;
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 Yii::import('questiontypes.ArrayOfIncSameDecQuestions.*');
                 break;
             case Question::QT_F_ARRAY:
                 Yii::import('questiontypes.ArrayFlexibleRow.*');
                 break;
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 Yii::import('questiontypes.GenderDropdown.*');
                 break;
             case Question::QT_H_ARRAY_COLUMN:

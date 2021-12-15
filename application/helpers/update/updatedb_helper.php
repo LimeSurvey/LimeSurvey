@@ -2090,8 +2090,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'default',
                         'Advanced Template',
                         date('Y-m-d H:i:s'),
-                        'Louis Gac',
-                        'louis.gac@limesurvey.org',
+                        'LimeSurvey GmbH',
+                        'info@limesurvey.org',
                         'https://www.limesurvey.org/',
                         'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                         'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -2116,8 +2116,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'material',
                         'Material Template',
                         date('Y-m-d H:i:s'),
-                        'Louis Gac',
-                        'louis.gac@limesurvey.org',
+                        'LimeSurvey GmbH',
+                        'info@limesurvey.org',
                         'https://www.limesurvey.org/',
                         'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                         'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -2142,8 +2142,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'monochrome',
                         'Monochrome Templates',
                         date('Y-m-d H:i:s'),
-                        'Louis Gac',
-                        'louis.gac@limesurvey.org',
+                        'LimeSurvey GmbH',
+                        'info@limesurvey.org',
                         'https://www.limesurvey.org/',
                         'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                         'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -2484,8 +2484,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'folder' => 'vanilla',
                     'title' => 'Vanilla Theme',
                     'creation_date' => date('Y-m-d H:i:s'),
-                    'author' => 'Louis Gac',
-                    'author_email' => 'louis.gac@limesurvey.org',
+                    'author' => 'LimeSurvey GmbH',
+                    'author_email' => 'info@limesurvey.org',
                     'author_url' => 'https://www.limesurvey.org/',
                     'copyright' => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.',
                     'license' => 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -5030,6 +5030,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 477], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 478) {
+            $oTransaction = $oDB->beginTransaction();
+            $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
+            foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
+                unset($baseQuestionThemeEntry['visible']);
+                $oDB->createCommand()->update("{{question_themes}}", $baseQuestionThemeEntry, 'name=:name', [':name' => $baseQuestionThemeEntry['name']]);
+            }
+            unset($baseQuestionThemeEntries);
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 478], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -6621,8 +6632,8 @@ function upgradeTemplateTables304($oDB)
         'folder'                 => 'default',
         'title'                  => 'Advanced Template',
         'creation_date'          => '2017-07-12 12:00:00',
-        'author'                 => 'Louis Gac',
-        'author_email'           => 'louis.gac@limesurvey.org',
+        'author'                 => 'LimeSurvey GmbH',
+        'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -6641,8 +6652,8 @@ function upgradeTemplateTables304($oDB)
         'folder'                 => 'minimal',
         'title'                  => 'Minimal Template',
         'creation_date'          => '2017-07-12 12:00:00',
-        'author'                 => 'Louis Gac',
-        'author_email'           => 'louis.gac@limesurvey.org',
+        'author'                 => 'LimeSurvey GmbH',
+        'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
@@ -6663,8 +6674,8 @@ function upgradeTemplateTables304($oDB)
         'folder'                 => 'material',
         'title'                  => 'Material Template',
         'creation_date'          => '2017-07-12 12:00:00',
-        'author'                 => 'Louis Gac',
-        'author_email'           => 'louis.gac@limesurvey.org',
+        'author'                 => 'LimeSurvey GmbH',
+        'author_email'           => 'info@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
         'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
         'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',

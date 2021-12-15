@@ -47,13 +47,13 @@ class expressionQuestionForAll extends PluginBase
 
         $aQuestionManaged = array(
             \QuestionType::QT_1_ARRAY_DUAL,
-            \QuestionType::QT_A_ARRAY_5_CHOICE_QUESTIONS,
+            \QuestionType::QT_A_ARRAY_5_POINT,
             \QuestionType::QT_B_ARRAY_10_POINT,
             \QuestionType::QT_C_ARRAY_YES_UNCERTAIN_NO,
-            \QuestionType::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS,
+            \QuestionType::QT_E_ARRAY_INC_SAME_DEC,
             \QuestionType::QT_F_ARRAY,
             \QuestionType::QT_H_ARRAY_COLUMN,
-            \QuestionType::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+            \QuestionType::QT_K_MULTIPLE_NUMERICAL,
             \QuestionType::QT_M_MULTIPLE_CHOICE,
             \QuestionType::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
             \QuestionType::QT_Q_MULTIPLE_SHORT_TEXT,

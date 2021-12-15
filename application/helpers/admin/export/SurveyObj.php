@@ -98,7 +98,7 @@ class SurveyObj
 
         //echo "\n$fieldName: $fieldType = $answerCode";
         switch ($fieldType) {
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 $fullAnswer = $answerCode;
                 if (trim($fullAnswer) !== '') {
@@ -120,7 +120,7 @@ class SurveyObj
                 $fullAnswer = $answer;
                 break;
 
-            case Question::QT_1_ARRAY_DUAL:   //Array dual scale
+            case Question::QT_1_ARRAY_DUAL:   // Array dual scale
                 if (mb_substr($fieldName, -1) == 0) {
                     $answers = $this->getAnswers($questionId, 0);
                 } else {
@@ -171,7 +171,7 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_G_GENDER_DROPDOWN:
+            case Question::QT_G_GENDER:
                 switch ($answerCode) {
                     case 'M':
                         $fullAnswer = $translator->translate('Male', $sLanguageCode);
@@ -219,7 +219,7 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+            case Question::QT_E_ARRAY_INC_SAME_DEC:
                 switch ($answerCode) {
                     case 'I':
                         $fullAnswer = $translator->translate('Increase', $sLanguageCode);
@@ -261,7 +261,7 @@ class SurveyObj
         $sFieldType = $aQuestion['type'];
 
         switch ($sFieldType) {
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
+            case Question::QT_K_MULTIPLE_NUMERICAL:
             case Question::QT_N_NUMERICAL:
                 if (trim($sValue) != '') {
                     if (strpos($sValue, ".") !== false) {

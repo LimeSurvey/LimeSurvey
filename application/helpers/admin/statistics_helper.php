@@ -1144,8 +1144,8 @@ class statistics_helper
 
             //check question types
             switch ($qtype) {
-                //Array of 5 point choices (several items to rank!)
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
+                // Array of 5 point choices (several items to rank!)
+                case Question::QT_A_ARRAY_5_POINT:
                     //get data
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                     //loop through results
@@ -1166,7 +1166,7 @@ class statistics_helper
 
 
 
-                    //Array of 10 point choices
+                    // Array of 10 point choices
                     //same as above just with 10 items
                 case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
@@ -1183,7 +1183,7 @@ class statistics_helper
 
 
 
-                    //Array of Yes/No/gT("Uncertain")
+                    // Array of Yes/No/gT("Uncertain")
                 case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                     //loop thorugh results
@@ -1201,9 +1201,9 @@ class statistics_helper
 
 
 
-                    //Array of Yes/No/gT("Uncertain")
+                    // Array of Yes/No/gT("Uncertain")
                     //same as above
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
+                case Question::QT_E_ARRAY_INC_SAME_DEC:
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                     foreach ($qresult as $qrow) {
                         $alist[] = array("I", gT("Increase"));
@@ -1216,7 +1216,7 @@ class statistics_helper
                     break;
 
 
-                case Question::QT_SEMICOLON_ARRAY_TEXT: //Array (Multi Flexi) (Text)
+                case Question::QT_SEMICOLON_ARRAY_TEXT: // Array (Multi Flexi) (Text)
                     list($qacode, $licode) = explode("_", $qanswer);
 
                     $qresult = Question::model()->findAll(array('condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
@@ -1233,7 +1233,7 @@ class statistics_helper
                     $qtitle .= "($qanswer)" . "[" . $atext . "] [" . $ltext . "]";
                     break;
 
-                case Question::QT_COLON_ARRAY_NUMBERS: //Array (Multiple Flexi) (Numbers)
+                case Question::QT_COLON_ARRAY_NUMBERS: // Array (Multiple Flexi) (Numbers)
                     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max']) != '') {
                         $maxvalue = $aQuestionAttributes['multiflexible_max'];
@@ -1268,8 +1268,8 @@ class statistics_helper
                     $qtitle .= "[$myans][$mylabel]";
                     break;
 
-                case Question::QT_F_ARRAY: //Array of Flexible
-                case Question::QT_H_ARRAY_COLUMN: //Array of Flexible by Column
+                case Question::QT_F_ARRAY: // Array of Flexible
+                case Question::QT_H_ARRAY_COLUMN: // Array of Flexible by Column
                     $qresult = Question::model()->findAll(array('order' => 'question_order', 'condition' => 'parent_qid=:parent_qid AND title=:title', 'params' => array(":parent_qid" => $qiqid, ':title' => $qanswer)));
                     //loop through answers
                     foreach ($qresult as $qrow) {
@@ -1291,7 +1291,7 @@ class statistics_helper
 
 
 
-                case Question::QT_G_GENDER_DROPDOWN: //Gender
+                case Question::QT_G_GENDER: //Gender
                     $alist[] = array("F", gT("Female"));
                     $alist[] = array("M", gT("Male"));
                     break;
@@ -1807,7 +1807,7 @@ class statistics_helper
             //data available
             if (($gdata[$i] !== "N/A")) {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)) {
+                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -1907,7 +1907,7 @@ class statistics_helper
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
-            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
+            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT) {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
@@ -2417,7 +2417,7 @@ class statistics_helper
             //check if aggregated results should be shown
             elseif (Yii::app()->getConfig('showaggregateddata') == 1) {
                 if (!isset($showheadline) || $showheadline != false) {
-                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
+                    if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT) {
                         switch ($outputType) {
                             case 'xls':
                                 $this->xlsRow++;
@@ -2824,7 +2824,7 @@ class statistics_helper
             //data available
             else {
                 //check if data should be aggregated
-                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS)) {
+                if (Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT)) {
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
@@ -3058,7 +3058,7 @@ class statistics_helper
             //it's only useful to calculate standard deviation and arithmetic means for question types
             //5 = 5 Point Scale
             //A = Array (5 Point Choice)
-            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_CHOICE_QUESTIONS) {
+            if ($outputs['qtype'] == Question::QT_5_POINT_CHOICE || $outputs['qtype'] == Question::QT_A_ARRAY_5_POINT) {
                 $stddev = 0;
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
@@ -3798,7 +3798,7 @@ class statistics_helper
                 // textfields get special treatment
                 //statistics for Date questions are not implemented yet.
                 // See buildOutputList for special treatment
-                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_T_LONG_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT, Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_R_RANKING, Question::QT_VERTICAL_FILE_UPLOAD, "", Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL_QUESTION, Question::QT_D_DATE);
+                $specialQuestionTypes = array(Question::QT_M_MULTIPLE_CHOICE, Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS, Question::QT_T_LONG_FREE_TEXT, Question::QT_S_SHORT_FREE_TEXT, Question::QT_Q_MULTIPLE_SHORT_TEXT, Question::QT_R_RANKING, Question::QT_VERTICAL_FILE_UPLOAD, "", Question::QT_N_NUMERICAL, Question::QT_K_MULTIPLE_NUMERICAL, Question::QT_D_DATE);
                 if (in_array($field['type'], $specialQuestionTypes)) {
                     $myField = $field['type'] . $myField;
                 }

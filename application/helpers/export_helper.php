@@ -442,22 +442,22 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     $typeMap = array(
         Question::QT_5_POINT_CHOICE => array('name' => '5 point choice', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('name' => 'Array (10 point choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_A_ARRAY_5_CHOICE_QUESTIONS => array('name' => 'Array (5 point choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_A_ARRAY_5_POINT => array('name' => 'Array (5 point choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
         Question::QT_F_ARRAY => array('name' => 'Array', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_1_ARRAY_DUAL => array('name' => 'Array dual scale', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_H_ARRAY_COLUMN => array('name' => 'Array by column', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => array('name' => 'Array (Increase, Same, Decrease)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 2),
+        Question::QT_E_ARRAY_INC_SAME_DEC => array('name' => 'Array (Increase, Same, Decrease)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 2),
         Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('name' => 'Array (Yes/No/Uncertain)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_X_BOILERPLATE_QUESTION => array('name' => 'Text display', 'size' => 1, 'SPSStype' => 'A', 'hide' => 1),
+        Question::QT_X_TEXT_DISPLAY => array('name' => 'Text display', 'size' => 1, 'SPSStype' => 'A', 'hide' => 1),
         Question::QT_D_DATE => array('name' => 'Date', 'size' => 20, 'SPSStype' => 'DATETIME23.2'),
-        Question::QT_G_GENDER_DROPDOWN => array('name' => 'Gender', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_G_GENDER => array('name' => 'Gender', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge free text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_L_LIST => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_O_LIST_WITH_COMMENT => array('name' => 'List With Comment', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_T_LONG_FREE_TEXT => array('name' => 'Long free text', 'size' => 1, 'SPSStype' => 'A'),
-        Question::QT_K_MULTIPLE_NUMERICAL_QUESTION => array('name' => 'Multiple numerical input', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_K_MULTIPLE_NUMERICAL => array('name' => 'Multiple numerical input', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_M_MULTIPLE_CHOICE => array('name' => 'Multiple choice', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array('name' => 'Multiple choice with comments', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_Q_MULTIPLE_SHORT_TEXT => array('name' => 'Multiple short text', 'size' => 1, 'SPSStype' => 'F'),
@@ -1919,34 +1919,34 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
-                    case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+                    case "A": // Array (5 point choice) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5)));
                         $question->appendChild($response);
                         break;
-                    case "B": //Array (10 point choice) radio-buttons
+                    case "B": // Array (10 point choice) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 7, "8" => 8, "9" => 9, "10" => 10)));
                         $question->appendChild($response);
                         break;
-                    case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    case "C": // Array (Yes/Uncertain/No)
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y', gT("Uncertain") => 'U', gT("No") => 'N')));
                         $question->appendChild($response);
                         break;
-                    case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                    case "E": // Array (Increase/Same/Decrease) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I', gT("Same") => 'S', gT("Decrease") => 'D')));
                         $question->appendChild($response);
                         break;
-                    case "F": //ARRAY (Flexible) - Row Format
+                    case "F": // Array (Flexible) - Row Format
                         //select subQuestions from answers table where QID
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, false, false, 0, $other, $sgq));
                         $question->appendChild($response);
                         //select fixed responses from
                         break;
-                    case "H": //ARRAY (Flexible) - Column Format
+                    case "H": // Array (Flexible) - Column Format
                         quexml_create_subQuestions($question, $RowQ['qid'], $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, true, false, 0, $other, $sgq));
                         $question->appendChild($response);
