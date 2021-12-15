@@ -3,8 +3,6 @@
 namespace LimeSurvey\Helpers\Update;
 
 use Exception;
-use setTransactionBookmark;
-use rollBackToTransactionBookmark;
 use Token;
 
 class Update_406 extends DatabaseUpdateBase
