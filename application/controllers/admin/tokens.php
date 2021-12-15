@@ -1366,10 +1366,21 @@ class tokens extends Survey_Common_Action
             $SQLremindercountcondition = $this->getSQLremindercountcondition();
             $SQLreminderdelaycondition = $this->getSQLreminderdelaycondition($bIsInvitation);
 
-            $ctresult = TokenDynamic::model($iSurveyId)->findUninvitedIDs($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $tokenDynamic = TokenDynamic::model($iSurveyId);
+            if (Yii::app()->request->getPost('partialonly')) {
+                $tokenDynamic->with([
+                    'responses' => [
+                        'select' => false,
+                        'joinType' => 'INNER JOIN',
+                        'condition' => 'responses.submitdate IS NULL',
+                    ],
+                ]);
+            }
+
+            $ctresult = $tokenDynamic->findUninvited($aTokenIds, 0, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
             $ctcount = count($ctresult);
 
-            $emresult = TokenDynamic::model($iSurveyId)->findUninvited($aTokenIds, $iMaxEmails, $bIsInvitation, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+            $emresult = array_slice($ctresult, 0, $iMaxEmails);
             $emcount = count($emresult);
 
             foreach ($aSurveyLangs as $language) {
@@ -2151,9 +2162,8 @@ class tokens extends Survey_Common_Action
                             foreach ($aWriteArray as $key => $value) {
                                     $oToken->$key = $value;
                             }
-                            if (!$oToken->encryptSave()) {
-                                $errors = ($oToken->getErrors());
-                                $aModelErrorList[] = sprintf(gT("Line %s : %s"), $iRecordCount, print_r($errors, true));
+                            if (!$oToken->encryptSave(true)) {
+                                $aModelErrorList[] = array('line' => $iRecordCount, 'errors' => CHtml::errorSummary($oToken, '', '', ['class' => 'text-left']));
                             } else {
                                 $bImportDone = true;
                             }

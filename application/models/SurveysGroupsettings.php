@@ -467,8 +467,8 @@ class SurveysGroupsettings extends LSActiveRecord
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
         $this->format = 'G';
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
+        $this->admin = substr(App()->getConfig('siteadminname'), 0, 50);
+        $this->adminemail = substr(App()->getConfig('siteadminemail'), 0, 254);
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
     }
 }

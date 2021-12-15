@@ -505,7 +505,8 @@ class Question extends LSActiveRecord
             ->findAll(
                 array(
                     'condition' => 't.sid=:sid',
-                    'order'     => 'group.group_order,question_order',
+                    /* table name not needed , see #17777 */
+                    'order'     => 'group_order,question_order',
                     'params'    => array(':sid' => $surveyid)
                 )
             );

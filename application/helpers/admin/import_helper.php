@@ -651,10 +651,11 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $iNewGID, $options = array(
 
             switchMSSQLIdentityInsert('questions', false);
             $aQIDReplacements[$iOldQID] = $oQuestion->qid;
+
+            $newqid = $oQuestion->qid;
         }
 
         $results['questions'] = isset($results['questions']) ? $results['questions'] + 1 : 1;
-        $newqid = $oQuestion->qid;
 
         if (isset($oQuestionL10n)) {
             $oQuestionL10n->qid = $aQIDReplacements[$iOldQID];
@@ -1336,6 +1337,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         if (isset($insertdata['surveyls_attributecaptions']) && substr($insertdata['surveyls_attributecaptions'], 0, 1) != '{') {
             unset($insertdata['surveyls_attributecaptions']);
         }
+        $aColumns = SurveyLanguageSetting::model()->attributes;
+        $insertdata = array_intersect_key($insertdata, $aColumns);
 
         if (!SurveyLanguageSetting::model()->insertNewSurvey($insertdata)) {
             throw new Exception(gT("Error") . ": Failed to import survey language settings - data is invalid<br />");

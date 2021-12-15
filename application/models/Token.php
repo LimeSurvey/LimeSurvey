@@ -161,9 +161,7 @@ abstract class Token extends Dynamic
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
-            if (!empty(Yii::app()->getConfig('mysqlEngine'))) {
-                $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
-            }
+            $options = sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
         }
 
         if (
@@ -418,7 +416,7 @@ abstract class Token extends Dynamic
             array('firstname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('lastname', 'filter', 'filter' => array(self::class, 'sanitizeAttribute')),
             array('language', 'LSYii_Validators', 'isLanguage' => true),
-            array('language', 'length', 'min' => 2, 'max' => 25, 'allowEmpty' => true),
+            array('language','in','range' => array_merge(array($this->survey->language), explode(' ', $this->survey->additional_languages)),'allowEmpty' => true,'message' => gT('Language code is invalid in this survey')),
             array(implode(',', $this->tableSchema->columnNames), 'safe'),
             /* pseudo date : force date or specific string ? */
             array('remindersent', 'length', 'min' => 0, 'max' => 17),

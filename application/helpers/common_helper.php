@@ -837,7 +837,7 @@ function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 * Compares two elements from an array (passed by the usort function)
 * and returns -1, 0 or 1 depending on the result of the comparison of
 * the sort order of the group_order and question_order field
-* Used by : 
+* Used by :
 * - conditionsaction->getQuestionRows with merging group and question attributes (all in same array)
 * - remotecontrol_handle->export_statistics with merging group and question attributes (all in same array)
 * - checkQuestions() in activate_helper function with ?
@@ -3663,9 +3663,10 @@ function cleanLanguagesFromSurvey($iSurveyID, $availlangs)
 * fixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space separated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
+* @param string $baselang - language to use as base (useful when changing the base language) - if empty, it will be picked from the survey
 * @return bool - always returns true
 */
-function fixLanguageConsistency($sid, $availlangs = '')
+function fixLanguageConsistency($sid, $availlangs = '', $baselang = '')
 {
     $sid = (int) $sid;
     if (trim($availlangs) != '') {
@@ -3680,7 +3681,9 @@ function fixLanguageConsistency($sid, $availlangs = '')
     if (count($langs) == 0) {
         return true; // Survey only has one language
     }
-    $baselang = Survey::model()->findByPk($sid)->language;
+    if (empty($baselang)) {
+        $baselang = Survey::model()->findByPk($sid)->language;
+    }
     $quotedGroups = Yii::app()->db->quoteTableName('{{groups}}');
     $query = "SELECT * FROM $quotedGroups g JOIN {{group_l10ns}} ls ON ls.gid=g.gid WHERE sid='{$sid}' AND language='{$baselang}'  ";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -5097,6 +5100,8 @@ function recursive_preg_replace($pattern, $replacement, $subject, $limit = -1, &
  */
 function standardDeviation(array $numbers): float
 {
+    // Filter empty "" records
+    $numbers = array_filter($numbers);
     $numberOfElements = count($numbers);
 
     $variance = 0.0;

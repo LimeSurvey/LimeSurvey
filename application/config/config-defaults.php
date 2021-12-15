@@ -254,8 +254,8 @@ $config['disablescriptwithxss'] = true;
 $config['usercontrolSameGroupPolicy'] = true;
 
 // ownerManageAllSurveysInGroup
-// If this option is set to true, then oner of a group
-// have all rights on surveys in is group
+// If this option is set to true, then owner of a group
+// has all permissions on surveys in that group
 $config['ownerManageAllSurveysInGroup'] = true;
 
 // demoMode
@@ -657,8 +657,9 @@ $config['InsertansUnsupportedtypes'] = array();
 $config['proxy_host_name'] = '';
 $config['proxy_host_port'] = 80;
 
-/** Forced superadmin rights, users in this array can not have superadmin total right disable.
- * Default use the user created at the installation.
+/** Forced superadmin permissions
+ * Users in this array can not have their superadmin permissions disabled
+ * Default is set to user ID 1, which is the user created at installation (site admin)
  * @var integer[]
  */
 $config['forcedsuperadmin'] = array(1);

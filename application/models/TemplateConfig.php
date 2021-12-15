@@ -22,7 +22,6 @@
  */
 class TemplateConfig extends CActiveRecord
 {
-
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 

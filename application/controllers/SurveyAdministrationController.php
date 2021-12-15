@@ -107,7 +107,7 @@ class SurveyAdministrationController extends LSBaseController
         $iSurveyID = $this->getSurveyIdFromGetRequest();
 
         if (!Permission::model()->hasSurveyPermission((int)$iSurveyID, 'survey', 'read')) {
-            Yii::app()->user->setFlash('error', gT("Access denied"));
+            Yii::app()->user->setFlash('error', gT("No permission or survey does not exist."));
             $this->redirect(Yii::app()->request->urlReferrer);
         }
 

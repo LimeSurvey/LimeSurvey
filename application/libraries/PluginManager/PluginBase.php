@@ -251,7 +251,6 @@ abstract class PluginBase implements iPlugin
     }
 
     /**
-     *
      * @param array<string, mixed> $settings
      * @return void
      */

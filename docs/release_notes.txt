@@ -34,6 +34,67 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.5 (build 211207) to 5.2.6 (build 211213) December 13, 2021
+-Fixed issue: Resend Login Data Popup Wording / Grammar Change (#2173) (Jessica Höck)
+-Fixed issue: Error on unknown fields in survey_language_settings when importing survey from Cloud hosting (Carsten Schmitz)
+-Fixed issue: Browse button in statistics not working (Carsten Schmitz)
+-Fixed issue #17594: Token language does not work in upper case (Carsten Schmitz)
+-Fixed issue #17140: Wrong message for Superadmin for outdated survey URL (Carsten Schmitz)
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Croatian by rovinj
+
+
+Changes from 5.2.4 (build 211129) to 5.2.5 (build 211207) December 7, 2021
+-Fixed issue: Standard deviation in statistics not working if data had no value (Carsten Schmitz)
+-Fixed issue: One-click fixing of duplicate question codes not working on survey activation (Carsten Schmitz)
+-Fixed issue: Missing loader image if LimeSurvey is installed in a subdirectory (Carsten Schmitz)
+-Fixed issue: Cannot export only complete entries in VVExport (Carsten Schmitz)
+-Fixed issue #17777: PGSQL CDbCommand issue in statistics (Denis Chenu)
+-Fixed issue #17765: The order of the answer options not correct when exporting to printable survey or queXML (#2165) (Carsten Schmitz)
+-Fixed issue #17646: Cannot import version 3 lsq file in to LS5 (#2168) (Gabriel Jenik)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Portuguese (Portugal) by femariso, samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Easy) by c_schmitz
+#Updated translation: Finnish by Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1, uradonline
+#Updated translation: Czech (Informal) by jelen1
+
+
+Changes from 5.2.3 (build 211122) to 5.2.4 (build 211129) November 29, 2021
+-Fixed issue: SQL error on token import (depending on MySQL server configuration) when important invalid entries (Carsten Schmitz)
+-Fixed issue: If selecting InnoDB database for MySQL not all tables were created in InnoDB format (Carsten Schmitz)
+-Fixed issue: If admin email is too long the default settings for survey groups cannot properly created on upgrade (Carsten Schmitz)
+-Fixed issue #17755: remotecontrol error status inconsistent (#2154) (Florian Fleck)
+-Fixed issue #17734: Relevance equation for subquestion is not saved (#2148) (Gabriel Jenik)
+-Fixed issue #17698: Change of email address for survey administrator confusing (#2152) (Gabriel Jenik)
+-Fixed issue #17647: Strange sort order of question groups in statistics (#2143) (Denis Chenu)
+-Fixed issue #17618: Conversion failed when converting the nvarchar value 'NaN' to data type int (#2158) (Gabriel Jenik)
+-Fixed issue #17602: Errors while installing when using MySQL 8 and selecting InnoDB engine (Carsten Schmitz)
+-Fixed issue #17594: Token language does not work in upper case (Carsten Schmitz)
+-Fixed issue #17527: Validate before using updateAll (#2086) (Gabriel Jenik)
+-Fixed issue #15992: Using Expression Manager with double quotes fails for end URL field (#2147) (Gabriel Jenik)
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Finnish by c_schmitz, Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Croatian by rovinj
+#Updated translation: Chinese (Taiwan) (Traditional) by CTFang
+
+
 Changes from 5.2.2 (build 211115) to 5.2.3 (build 211122) November 22, 2021
 -Fixed issue: Error in RemoteControl API when using using set_question_properties (#2142) (Víctor Echeverría)
 -Fixed issue T155: Sometimes editing survey participants doesn't show data (#2145) (Gabriel Jenik)

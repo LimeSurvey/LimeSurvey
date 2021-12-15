@@ -92,7 +92,7 @@
     <!-- Import -->
     <?php if($hasSurveyContentCreatePermission):?>
         <?php if($oSurvey->active!='Y'): ?>
-            <a class="btn btn-default" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView/surveyid/$surveyid"); ?>" role="button">
+            <a class="btn btn-default" id="import-button" href="<?php echo Yii::App()->createUrl("questionAdministration/importView", ["surveyid" => $surveyid, "groupid" => $gid]); ?>" role="button">
                 <span class="icon-import icon"></span>
                 <?php eT("Import question"); ?>
             </a>
