@@ -69,7 +69,7 @@ class questionHelper
         "caption" => gT('Sort answers alphabetically'));
 
         self::$attributes["answer_width"] = array(
-        "types" => Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_1_ARRAY_MULTISCALE . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        "types" => Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'integer',
@@ -91,7 +91,7 @@ class questionHelper
         );
 
         self::$attributes["repeat_headings"] = array(
-            "types" => Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_1_ARRAY_MULTISCALE . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+            "types" => Question::QT_F_ARRAY . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_1_ARRAY_DUAL . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'min' => '0',
@@ -102,7 +102,7 @@ class questionHelper
         );
 
         self::$attributes["array_filter"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING,
             'category' => gT('Logic'),
             'sortorder' => 100,
             'inputtype' => 'text',
@@ -111,7 +111,7 @@ class questionHelper
         );
 
         self::$attributes["array_filter_exclude"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING,
             'category' => gT('Logic'),
             'sortorder' => 100,
             'inputtype' => 'text',
@@ -120,7 +120,7 @@ class questionHelper
         );
 
         self::$attributes["array_filter_style"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_L_LIST . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING,
             'category' => gT('Logic'),
             'sortorder' => 100,
             'inputtype' => 'buttongroup',
@@ -231,7 +231,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_prepostfix"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE,
+        "types" => Question::QT_1_ARRAY_DUAL,
             'category' => gT('Display'),
             'sortorder' => 112,
             'inputtype' => 'text',
@@ -241,7 +241,7 @@ class questionHelper
         );
 
         self::$attributes["dropdown_separators"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE,
+        "types" => Question::QT_1_ARRAY_DUAL,
             'category' => gT('Display'),
             'sortorder' => 120,
             'inputtype' => 'text',
@@ -250,7 +250,7 @@ class questionHelper
         );
 
         self::$attributes["dualscale_headerA"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE,
+        "types" => Question::QT_1_ARRAY_DUAL,
             'category' => gT('Display'),
             'sortorder' => 110,
             'inputtype' => 'text',
@@ -261,7 +261,7 @@ class questionHelper
         );
 
         self::$attributes["dualscale_headerB"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE,
+        "types" => Question::QT_1_ARRAY_DUAL,
             'category' => gT('Display'),
             'sortorder' => 111,
             'inputtype' => 'text',
@@ -293,7 +293,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_L_LIST . Question::QT_5_POINT_CHOICE . Question::QT_G_GENDER_DROPDOWN . Question::QT_I_LANGUAGE . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_L_LIST . Question::QT_5_POINT_CHOICE . Question::QT_G_GENDER_DROPDOWN . Question::QT_I_LANGUAGE . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Logic'),
             'sortorder' => 200,
             'inputtype' => 'textarea',
@@ -302,7 +302,7 @@ class questionHelper
             "caption" => gT('Question validation equation')
         );
         self::$attributes["em_validation_q_tip"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_L_LIST . Question::QT_5_POINT_CHOICE . Question::QT_G_GENDER_DROPDOWN . Question::QT_I_LANGUAGE . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_L_LIST . Question::QT_5_POINT_CHOICE . Question::QT_G_GENDER_DROPDOWN . Question::QT_I_LANGUAGE . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Logic'),
             'sortorder' => 210,
             'inputtype' => 'textarea',
@@ -313,7 +313,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq"] = array(
-        "types" => Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
+        "types" => Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
             'category' => gT('Logic'),
             'sortorder' => 220,
             'inputtype' => 'textarea',
@@ -323,7 +323,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_sq_tip"] = array(
-        "types" => Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
+        "types" => Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
             'category' => gT('Logic'),
             'sortorder' => 230,
             'inputtype' => 'textarea',
@@ -523,7 +523,7 @@ class questionHelper
         );
 
         self::$attributes['hidden'] = array(
-        'types' => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
+        'types' => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Display'),
             'sortorder' => 101,
             'inputtype' => 'switch',
@@ -534,7 +534,7 @@ class questionHelper
         );
 
         self::$attributes['cssclass'] = array(
-            'types' => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
+            'types' => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Display'),
             'sortorder' => 102,
             'inputtype' => 'text',
@@ -544,7 +544,7 @@ class questionHelper
         );
 
         self::$attributes["max_answers"] = array(
-        "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING_STYLE . Question::QT_1_ARRAY_MULTISCALE . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT,
+        "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT,
             'category' => gT('Logic'),
             'sortorder' => 11,
             'inputtype' => 'text',
@@ -575,7 +575,7 @@ class questionHelper
 
         /* Ranking specific : max DB answer */
         self::$attributes["max_subquestions"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'readonly_when_active' => true,
             'category' => gT('Logic'),
             'sortorder' => 12,
@@ -586,7 +586,7 @@ class questionHelper
         );
 
         self::$attributes["maximum_chars"] = array(
-        "types" => Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        "types" => Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Input'),
             'sortorder' => 100,
             'inputtype' => 'integer',
@@ -596,7 +596,7 @@ class questionHelper
         );
 
         self::$attributes["min_answers"] = array(
-        "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING_STYLE . Question::QT_1_ARRAY_MULTISCALE . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT,
+        "types" => Question::QT_M_MULTIPLE_CHOICE . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_Q_MULTIPLE_SHORT_TEXT,
             'category' => gT('Logic'),
             'sortorder' => 10,
             'inputtype' => 'text',
@@ -626,7 +626,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_max"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 112,
             'inputtype' => 'text',
@@ -636,7 +636,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_min"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 110,
             'inputtype' => 'text',
@@ -646,7 +646,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_step"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 111,
             'inputtype' => 'float',
@@ -656,7 +656,7 @@ class questionHelper
         );
 
         self::$attributes["multiflexible_checkbox"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'switch',
@@ -667,7 +667,7 @@ class questionHelper
         );
 
         self::$attributes["reverse"] = array(
-        "types" => Question::QT_D_DATE . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_D_DATE . Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'switch',
@@ -689,18 +689,18 @@ class questionHelper
         );
 
         self::$attributes["numbers_only"] = array(
-        "types" => Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Other'),
             'sortorder' => 150,
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
-            "help" => gT('Allow only numerical input'),
+            "help" => gT('Allow only Numerical input'),
             "caption" => gT('Numbers only')
         );
 
         self::$attributes['show_totals'] = array(
-        'types' =>    Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        'types' =>    Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' =>    gT('Other'),
             'sortorder' =>    151,
             'inputtype'    => 'buttongroup',
@@ -716,7 +716,7 @@ class questionHelper
         );
 
         self::$attributes['show_grand_total'] = array(
-        'types' =>    Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        'types' =>    Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' =>    gT('Other'),
             'sortorder' =>    152,
             'inputtype' =>    'switch',
@@ -726,7 +726,7 @@ class questionHelper
             'caption' =>    gT('Show grand total')
         );
         self::$attributes["input_size"] = array(
-            "types" => Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+            "types" => Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'integer',
@@ -764,7 +764,7 @@ class questionHelper
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
-            "help" => gT("Allow only numerical input for 'Other' text"),
+            "help" => gT("Allow only Numerical input for 'Other' text"),
             "caption" => gT("Numbers only for 'Other'")
         );
 
@@ -780,7 +780,7 @@ class questionHelper
         );
 
         self::$attributes["page_break"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_VERTICAL_FILE_UPLOAD . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Other'),
             'sortorder' => 100,
             'inputtype' => 'switch',
@@ -791,7 +791,7 @@ class questionHelper
         );
 
         self::$attributes["placeholder"] = array(
-            "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
+            "types" => Question::QT_COLON_ARRAY_NUMBERS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_N_NUMERICAL,
             'category' => gT('Display'),
             'sortorder' => 12,
             'inputtype' => 'text',
@@ -813,7 +813,7 @@ class questionHelper
         );
 
         self::$attributes["printable_help"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING_STYLE . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Display'),
             'sortorder' => 201,
             "inputtype" => "text",
@@ -825,7 +825,7 @@ class questionHelper
         );
 
         self::$attributes["public_statistics"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING_STYLE . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_R_RANKING . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Statistics'),
             'sortorder' => 80,
             'inputtype' => 'switch',
@@ -836,7 +836,7 @@ class questionHelper
         );
 
         self::$attributes["random_order"] = array(
-        "types" => Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_1_ARRAY_MULTISCALE . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        "types" => Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_H_ARRAY_COLUMN . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_1_ARRAY_DUAL . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
@@ -849,7 +849,7 @@ class questionHelper
         );
 
         self::$attributes["showpopups"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'category' => gT('Display'),
             'sortorder' => 110,
             'inputtype' => 'switch',
@@ -860,7 +860,7 @@ class questionHelper
         );
 
         self::$attributes["samechoiceheight"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'category' => gT('Display'),
             'sortorder' => 120,
             'inputtype' => 'switch',
@@ -871,7 +871,7 @@ class questionHelper
         );
 
         self::$attributes["samelistheight"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'category' => gT('Display'),
             'sortorder' => 121,
             'inputtype' => 'switch',
@@ -882,7 +882,7 @@ class questionHelper
         );
 
         self::$attributes["parent_order"] = array(
-        "types" => Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+        "types" => Question::QT_COLON_ARRAY_NUMBERS,
             'category' => gT('Display'),
             'sortorder' => 100,
             'inputtype' => 'text',
@@ -1072,7 +1072,7 @@ class questionHelper
         );
 
         self::$attributes["text_input_width"] = array(
-        "types" => Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_N_NUMERICAL . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+        "types" => Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_N_NUMERICAL . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_SEMICOLON_ARRAY_TEXT,
         'category' => gT('Display'),
         'sortorder' => 100,
         'inputtype' => 'singleselect',
@@ -1171,7 +1171,7 @@ class questionHelper
         "caption" => gT('Choice column width'));
 
         self::$attributes["use_dropdown"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_O_LIST_WITH_COMMENT,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_F_ARRAY . Question::QT_O_LIST_WITH_COMMENT,
             'category' => gT('Display'),
             'sortorder' => 112,
             'inputtype' => 'switch',
@@ -1208,7 +1208,7 @@ class questionHelper
         );
 
         self::$attributes["scale_export"] = array(
-        "types" => Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Y_YES_NO_RADIO . Question::QT_1_ARRAY_MULTISCALE . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_ASTERISK_EQUATION,
+        "types" => Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Y_YES_NO_RADIO . Question::QT_1_ARRAY_DUAL . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_ASTERISK_EQUATION,
             'category' => gT('Other'),
             'sortorder' => 100,
             'inputtype' => 'singleselect',
@@ -1222,7 +1222,7 @@ class questionHelper
         );
 
         self::$attributes["choice_title"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'category' => gT('Other'),
             'sortorder' => 200,
             "inputtype" => "text",
@@ -1234,7 +1234,7 @@ class questionHelper
         );
 
         self::$attributes["rank_title"] = array(
-        "types" => Question::QT_R_RANKING_STYLE,
+        "types" => Question::QT_R_RANKING,
             'category' => gT('Other'),
             'sortorder' => 201,
             "inputtype" => "text",
@@ -1517,7 +1517,7 @@ class questionHelper
         );
 
         self::$attributes["random_group"] = array(
-        "types" => Question::QT_1_ARRAY_MULTISCALE . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY_FLEXIBLE_ROW . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_FLEXIBLE_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING_STYLE . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS . Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT . Question::QT_VERTICAL_FILE_UPLOAD,
+        "types" => Question::QT_1_ARRAY_DUAL . Question::QT_5_POINT_CHOICE . Question::QT_A_ARRAY_5_CHOICE_QUESTIONS . Question::QT_B_ARRAY_10_CHOICE_QUESTIONS . Question::QT_C_ARRAY_YES_UNCERTAIN_NO . Question::QT_D_DATE . Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS . Question::QT_F_ARRAY . Question::QT_G_GENDER_DROPDOWN . Question::QT_H_ARRAY_COLUMN . Question::QT_I_LANGUAGE . Question::QT_K_MULTIPLE_NUMERICAL_QUESTION . Question::QT_L_LIST . Question::QT_M_MULTIPLE_CHOICE . Question::QT_N_NUMERICAL . Question::QT_O_LIST_WITH_COMMENT . Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS . Question::QT_Q_MULTIPLE_SHORT_TEXT . Question::QT_R_RANKING . Question::QT_S_SHORT_FREE_TEXT . Question::QT_T_LONG_FREE_TEXT . Question::QT_U_HUGE_FREE_TEXT . Question::QT_X_BOILERPLATE_QUESTION . Question::QT_Y_YES_NO_RADIO . Question::QT_EXCLAMATION_LIST_DROPDOWN . Question::QT_COLON_ARRAY_NUMBERS . Question::QT_SEMICOLON_ARRAY_TEXT . Question::QT_VERTICAL_FILE_UPLOAD,
             'category' => gT('Logic'),
             'sortorder' => 180,
             'inputtype' => 'text',

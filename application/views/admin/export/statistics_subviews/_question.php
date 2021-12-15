@@ -58,7 +58,7 @@
                     foreach($row1 as $row)
                     {
                         /*
-                        * filter form for numerical input
+                        * filter form for Numerical input
                         * - checkbox
                         * - greater than
                         * - less than
@@ -104,7 +104,7 @@
 
 
 
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get subqestions
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]'", 'question_order');
@@ -436,7 +436,7 @@
 
                 //----------------------- ARRAYS --------------------------
 
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // Array of 5 point choice questions
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 //get answers
                 $result[$key1] = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$flt[0]' AND language = '{$language}'", 'question_order');
@@ -483,7 +483,7 @@
 
 
             //just like above only a different loop
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
@@ -569,7 +569,7 @@
 
 
             //similiar to the above one
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // Array of Increase/Same/Decrease questions
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $row)
                 {
@@ -611,7 +611,7 @@
                 $counter=0;
                 break;
 
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
+            case Question::QT_SEMICOLON_ARRAY_TEXT:  // Array (Text)
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 foreach($result[$key1] as $key => $row)
                 {
@@ -636,7 +636,7 @@
                 $counter=0;
                 break;
 
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
+            case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
                 $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
@@ -704,8 +704,8 @@
             * The only difference is that the labels are applied to column heading
             * or rows respectively
             */
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+            case Question::QT_F_ARRAY: // Array
+            case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
 
                 //Get answers. We always use the answer code because the label might be too long elsewise
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
@@ -768,7 +768,7 @@
 
 
 
-                case Question::QT_R_RANKING_STYLE: //RANKING
+                case Question::QT_R_RANKING: // Ranking
 
                 //get some answers
                 //get number of columns
@@ -832,7 +832,7 @@
                 break;
 
 
-            case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+            case Question::QT_1_ARRAY_DUAL: // Dual scale
 
                 //special dual scale counter
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';

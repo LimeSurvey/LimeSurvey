@@ -51,7 +51,7 @@ class LoadQuestionTypes
             case Question::QT_D_DATE:
                 Yii::import('questiontypes.Date.*');
                 break;
-            case Question::QT_1_ARRAY_MULTISCALE:
+            case Question::QT_1_ARRAY_DUAL:
                 Yii::import('questiontypes.ArrayMultiscale.*');
                 break;
             case Question::QT_L_LIST:
@@ -63,7 +63,7 @@ class LoadQuestionTypes
             case Question::QT_O_LIST_WITH_COMMENT:
                 Yii::import('questiontypes.ListWithComment.*');
                 break;
-            case Question::QT_R_RANKING_STYLE:
+            case Question::QT_R_RANKING:
                 Yii::import('questiontypes.RankingStyle.*');
                 break;
             case Question::QT_M_MULTIPLE_CHOICE:
@@ -99,13 +99,13 @@ class LoadQuestionTypes
             case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
                 Yii::import('questiontypes.ArrayOfIncSameDecQuestions.*');
                 break;
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
+            case Question::QT_F_ARRAY:
                 Yii::import('questiontypes.ArrayFlexibleRow.*');
                 break;
             case Question::QT_G_GENDER_DROPDOWN:
                 Yii::import('questiontypes.GenderDropdown.*');
                 break;
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+            case Question::QT_H_ARRAY_COLUMN:
                 Yii::import('questiontypes.ArrayFlexibleColumn.*');
                 break;
             case Question::QT_N_NUMERICAL:
@@ -117,10 +117,10 @@ class LoadQuestionTypes
             case Question::QT_Y_YES_NO_RADIO:
                 Yii::import('questiontypes.YesNoRadio.*');
                 break;
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+            case Question::QT_COLON_ARRAY_NUMBERS:
                 Yii::import('questiontypes.ArrayMultiFlexNumbers.*');
                 break;
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+            case Question::QT_SEMICOLON_ARRAY_TEXT:
                 Yii::import('questiontypes.ArrayMultiFlexText.*');
                 break;
             case Question::QT_VERTICAL_FILE_UPLOAD:

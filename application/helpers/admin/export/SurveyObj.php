@@ -116,11 +116,11 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_R_RANKING_STYLE:   //RANKING TYPE
+            case Question::QT_R_RANKING:   // Ranking TYPE
                 $fullAnswer = $answer;
                 break;
 
-            case Question::QT_1_ARRAY_MULTISCALE:   //Array dual scale
+            case Question::QT_1_ARRAY_DUAL:   //Array dual scale
                 if (mb_substr($fieldName, -1) == 0) {
                     $answers = $this->getAnswers($questionId, 0);
                 } else {
@@ -235,8 +235,8 @@ class SurveyObj
                 }
                 break;
 
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+            case Question::QT_F_ARRAY:
+            case Question::QT_H_ARRAY_COLUMN:
                 $answers = $this->getAnswers($questionId, 0);
                 $fullAnswer = (isset($answers[$answerCode])) ? $answers[$answerCode] : "";
                 break;

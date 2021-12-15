@@ -107,7 +107,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php break;
 
 
-            //MULTIPLE SHORT TEXT
+            //Multiple short text
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: ?>
             <div class="col-sm-10">
@@ -127,8 +127,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php break;
 
 
-            // multi scale
-            case Question::QT_1_ARRAY_MULTISCALE: ?>
+            // Dual scale
+            case Question::QT_1_ARRAY_DUAL: ?>
             <div class="col-sm-10">
                 <table>
                     <tr>
@@ -230,8 +230,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <?php break;
 
 
-        //RANKING TYPE QUESTION
-        case Question::QT_R_RANKING_STYLE: ?>
+        // Ranking TYPE QUESTION
+        case Question::QT_R_RANKING: ?>
         <div class="col-sm-10">
         <div id="question<?php echo $thisqid ?>" class="ranking-answers">
             <ul class="answers-list list-unstyled">
@@ -492,7 +492,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             echo '</div>';
             break;
 
-        case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
+        case Question::QT_S_SHORT_FREE_TEXT: //Short free text
             ?>
             <div class="col-sm-10">
             <?php
@@ -587,7 +587,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php
             break;
 
-        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+        case Question::QT_U_HUGE_FREE_TEXT: //Huge free text
             if (trim($qidattributes['display_rows'])!='')
             {
                 $drows=$qidattributes['display_rows'];
@@ -652,7 +652,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <?php break;
 
 
-        //ARRAY (10 POINT CHOICE) radio-buttons
+        //Array (10 point choice) radio-buttons
         case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:  ?>
         <div class="col-sm-10">
         <table>
@@ -726,7 +726,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 
         //ARRAY (Multi Flexi)
-        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+        case Question::QT_COLON_ARRAY_NUMBERS:
             $labelcodes=array();
         ?>
         <div class="col-sm-10">
@@ -782,7 +782,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 
         //ARRAY (Multi Flexi)
-        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: ?>
+        case Question::QT_SEMICOLON_ARRAY_TEXT: ?>
         <div class="col-sm-10">
         <table>
             <tr><td></td>
@@ -827,8 +827,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 
         //ARRAY (Flexible Labels)
-        case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: ?>
+        case Question::QT_F_ARRAY:
+        case Question::QT_H_ARRAY_COLUMN: ?>
         <div class="col-sm-10">
         <table>
             <?php  foreach ( $mearesult as $mearow)

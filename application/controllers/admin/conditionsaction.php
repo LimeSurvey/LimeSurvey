@@ -1443,7 +1443,7 @@ class conditionsaction extends Survey_Common_Action
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
                     }
                 } //foreach
-            } elseif ($rows['type'] == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
+            } elseif ($rows['type'] == Question::QT_COLON_ARRAY_NUMBERS || $rows['type'] == Question::QT_SEMICOLON_ARRAY_TEXT) {
                 // Multiflexi
                 // Get the Y-Axis
                 $fquery = "SELECT sq.*, q.other, l10ns.question
@@ -1493,7 +1493,7 @@ class conditionsaction extends Survey_Common_Action
                 }
                 unset($x_axis);
             } elseif ($rows['type'] == "1") {
-                //Multi Scale
+                //Dual scale
                 $aresult = Question::model()->with(array(
                             'questionl10ns' => array(
                                 'condition' => 'questionl10ns.language = :lang',
@@ -1559,7 +1559,7 @@ class conditionsaction extends Survey_Common_Action
                         $canswers[] = array($rows['sid'] . $X . $rows['gid'] . $X . $rows['qid'] . $arows['title'], "", gT("No answer"));
                     }
                 } //foreach
-            } elseif ($rows['type'] == Question::QT_R_RANKING_STYLE) {
+            } elseif ($rows['type'] == Question::QT_R_RANKING) {
                 //Answer Ranking
                 $aresult = Answer::model()->with(array(
                             'answerl10ns' => array(

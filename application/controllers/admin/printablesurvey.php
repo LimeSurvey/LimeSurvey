@@ -298,8 +298,8 @@ class printablesurvey extends Survey_Common_Action
                                         break;
                                     case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:
                                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
-                                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                                    case Question::QT_COLON_ARRAY_NUMBERS:
+                                    case Question::QT_SEMICOLON_ARRAY_TEXT:
                                     case Question::QT_5_POINT_CHOICE:
                                         $conditions[] = $conrow['value'];
                                         break;
@@ -328,7 +328,7 @@ class printablesurvey extends Survey_Common_Action
                                                 $conditions[] = gT("Same");
                                                 break;
                                         }
-                                    case Question::QT_1_ARRAY_MULTISCALE:
+                                    case Question::QT_1_ARRAY_DUAL:
                                         $labelIndex = preg_match("/^[^#]+#([01]{1})$/", $conrow['cfieldname']);
                                         $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=" . $labelIndex;
                                         $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
@@ -339,7 +339,7 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_L_LIST:
                                     case Question::QT_EXCLAMATION_LIST_DROPDOWN:
                                     case Question::QT_O_LIST_WITH_COMMENT:
-                                    case Question::QT_R_RANKING_STYLE:
+                                    case Question::QT_R_RANKING:
                                         $condition = "qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
                                         $ansresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
 
@@ -364,8 +364,8 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                                         $conditions[] = $value;
                                         break;
-                                    case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-                                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                                    case Question::QT_F_ARRAY:
+                                    case Question::QT_H_ARRAY_COLUMN:
                                     default:
                                         $condition = " qid='{$conrow['cqid']}' AND code='{$conrow['value']}'";
                                         $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
@@ -382,8 +382,8 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:
                                     case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:
                                     case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:
-                                    case Question::QT_F_ARRAY_FLEXIBLE_ROW:
-                                    case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                                    case Question::QT_F_ARRAY:
+                                    case Question::QT_H_ARRAY_COLUMN:
                                     case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid={$conrow['cqid']} AND title='{$thiscquestion['aid']}'";
@@ -393,7 +393,7 @@ class printablesurvey extends Survey_Common_Action
                                         }
                                         break;
 
-                                    case Question::QT_1_ARRAY_MULTISCALE: // dual: (Label 1), (Label 2)
+                                    case Question::QT_1_ARRAY_DUAL: // dual: (Label 1), (Label 2)
                                         $labelIndex = substr($conrow['cfieldname'], -1);
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
@@ -416,8 +416,8 @@ class printablesurvey extends Survey_Common_Action
                                             $answer_section = " (" . $ansrow->questionl10ns[$sLanguageCode]->question . " " . sprintf(gT("Label %s"), $header) . ")";
                                         }
                                         break;
-                                    case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                                    case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //multi flexi: ( answer [label] )
+                                    case Question::QT_COLON_ARRAY_NUMBERS:
+                                    case Question::QT_SEMICOLON_ARRAY_TEXT: //multi flexi: ( answer [label] )
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
                                         $ansresult = Question::model()->findAll($condition);
@@ -430,7 +430,7 @@ class printablesurvey extends Survey_Common_Action
                                             } // while
                                         }
                                         break;
-                                    case Question::QT_R_RANKING_STYLE: // (Rank 1), (Rank 2)...
+                                    case Question::QT_R_RANKING: // (Rank 1), (Rank 2)...
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $rankid = $thiscquestion['aid'];
                                         $answer_section = " (" . gT("RANK") . " $rankid)";
@@ -671,7 +671,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_R_RANKING_STYLE:  //RANKING Type Question
+                        case Question::QT_R_RANKING:  // Ranking Type Question
                             $rearesult = Answer::model()->findAll(['condition' => "qid={$arQuestion['qid']}", 'order' => 'sortorder, code']);
                             $reacount = count($rearesult);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please number each box in order of preference from 1 to") . " $reacount");
@@ -754,7 +754,7 @@ class printablesurvey extends Survey_Common_Action
 
 
                             // ==================================================================
-                        case Question::QT_Q_MULTIPLE_SHORT_TEXT:  //MULTIPLE SHORT TEXT
+                        case Question::QT_Q_MULTIPLE_SHORT_TEXT:  //Multiple short text
                             $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_columns']);
                             break;
                         case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:  //MULTIPLE NUMERICAL
@@ -967,7 +967,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexible) (Numbers)
+                        case Question::QT_COLON_ARRAY_NUMBERS: //ARRAY (Multi Flexible) (Numbers)
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
                             if ($qidattributes['multiflexible_checkbox'] != 0) {
                                 $checkboxlayout = true;
@@ -1028,7 +1028,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexible) (text)
+                        case Question::QT_SEMICOLON_ARRAY_TEXT: //ARRAY (Multi Flexible) (text)
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
                             $mearesult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' AND scale_id=0");
 
@@ -1079,7 +1079,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible Labels)
+                        case Question::QT_F_ARRAY: //ARRAY 
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
@@ -1143,7 +1143,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_1_ARRAY_MULTISCALE:
+                        case Question::QT_1_ARRAY_DUAL:
                             $leftheader = $qidattributes['dualscale_headerA'][$sLanguageCode];
                             $rightheader = $qidattributes['dualscale_headerB'][$sLanguageCode];
 
@@ -1237,7 +1237,7 @@ class printablesurvey extends Survey_Common_Action
                             break;
 
                             // ==================================================================
-                        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:
+                        case Question::QT_H_ARRAY_COLUMN:
                             $condition = "parent_qid={$arQuestion['qid']}";
                             $fresult = Question::model()->FindAll($condition);
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));

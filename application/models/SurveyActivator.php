@@ -149,8 +149,8 @@ class SurveyActivator
                 case Question::QT_U_HUGE_FREE_TEXT:
                 case Question::QT_Q_MULTIPLE_SHORT_TEXT:
                 case Question::QT_T_LONG_FREE_TEXT:
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
+                case Question::QT_SEMICOLON_ARRAY_TEXT:
+                case Question::QT_COLON_ARRAY_NUMBERS:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
                 case Question::QT_D_DATE:
@@ -189,7 +189,7 @@ class SurveyActivator
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = isset($aRow['answertabledefinition']) && !empty($aRow['answertabledefinition']) ? $aRow['answertabledefinition'] : "text";
                     break;
-                case Question::QT_R_RANKING_STYLE:
+                case Question::QT_R_RANKING:
                     /**
                      * See bug #09828: Ranking question : update allowed can broke Survey DB
                      * If max_subquestions is not set or is invalid : set it to actual answers numbers

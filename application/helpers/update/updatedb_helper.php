@@ -5504,7 +5504,7 @@ function createFieldMap450($survey): array
         // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
-        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING_STYLE && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
+        if ($questionTypeMetaData[$arow['type']]['settings']->subquestions == 0 && $arow['type'] != Question::QT_R_RANKING && $arow['type'] != Question::QT_VERTICAL_FILE_UPLOAD) {
             if (isset($fieldmap[$fieldname])) {
                 $aDuplicateQIDs[$arow['qid']] = ['fieldname' => $fieldname, 'question' => $arow['question'], 'gid' => $arow['gid']];
             }
@@ -5655,7 +5655,7 @@ function createFieldMap450($survey): array
                 }
             }
             unset($answerset);
-        } elseif ($arow['type'] === Question::QT_1_ARRAY_MULTISCALE) {
+        } elseif ($arow['type'] === Question::QT_1_ARRAY_DUAL) {
             $abrows = getSubQuestions($survey['sid'], $arow['qid'], $survey['language']);
             foreach ($abrows as $abrow) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -5706,7 +5706,7 @@ function createFieldMap450($survey): array
                     $fieldmap[$fieldname]['groupSeq'] = $groupSeq;
                 }
             }
-        } elseif ($arow['type'] === Question::QT_R_RANKING_STYLE) {
+        } elseif ($arow['type'] === Question::QT_R_RANKING) {
             // Sub question by answer number OR attribute
             $answersCount = Yii::app()->db->createCommand()
                 ->select('count(*)')
