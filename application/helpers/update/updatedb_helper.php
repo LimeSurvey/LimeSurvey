@@ -5033,7 +5033,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 478) {
             $oTransaction = $oDB->beginTransaction();
             $baseQuestionThemeEntries = LsDefaultDataSets::getBaseQuestionThemeEntries();
-            $oDB->createCommand()->update("{{question_themes}}", ['name' => 'bootstrap_buttons_multi'], "name='bootstrap_buttons' and " . Yii::app()->db->schema->quoteColumnName('group') . "='Multiple choice questions'");
+            $oDB->createCommand()->update("{{question_themes}}", ['name' => 'bootstrap_buttons_multi'], "name='bootstrap_buttons' and extends='M'");
             foreach ($baseQuestionThemeEntries as $baseQuestionThemeEntry) {
                 unset($baseQuestionThemeEntry['visible']);
                 $oDB->createCommand()->update("{{question_themes}}", $baseQuestionThemeEntry, 'name=:name', [':name' => $baseQuestionThemeEntry['name']]);
