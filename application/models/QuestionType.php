@@ -46,6 +46,22 @@ class QuestionType extends StaticModel
     const QT_COLON_ARRAY_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_TEXT = ';';
 
+    /*
+    * @deprecated The following constants are deprecated and will be removed in LimeSurvey 6 - please use the ones above.
+    */
+    const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
+    const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
+    const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
+    const QT_F_ARRAY_FLEXIBLE_ROW = 'F';
+    const QT_G_GENDER_DROPDOWN = 'G';
+    const QT_H_ARRAY_FLEXIBLE_COLUMN = 'H';
+    const QT_K_MULTIPLE_NUMERICAL_QUESTION = 'K';
+    const QT_R_RANKING_STYLE = 'R';
+    const QT_X_BOILERPLATE_QUESTION = 'X';
+    const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
+    const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
+
+
     /** @var Question */
     public $question;
 
