@@ -8,16 +8,6 @@
     </li>
 <?php endif;?>
 
-<?php if($hasSurveyContentUpdatePermission && $hasdefaultvalues > 0):?>
-    <!-- Default Values -->
-    <li>
-        <a id="default_value_button" href="<?php echo Yii::App()->createUrl("questionAdministration/editdefaultvalues/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>">
-            <span class="icon-defaultanswers icon"></span>
-            <?php eT("Edit default answers"); ?>
-        </a>
-    </li>
-<?php endif;?>
-
 <?php if($hasSurveyContentExportPermission):?>
     <!-- Export -->
     <li>
