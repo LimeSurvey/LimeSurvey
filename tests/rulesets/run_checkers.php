@@ -11,7 +11,7 @@
  * Before running this file, you need to install phpmd, phpcs and psalm (composer install
  * should be enough for psalm). TODO: More instructions.
  *
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  * @since 2018-04-16
  */
 

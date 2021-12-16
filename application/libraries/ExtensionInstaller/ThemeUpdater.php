@@ -17,7 +17,7 @@ namespace LimeSurvey\ExtensionInstaller;
 /**
  * @todo Survey theme, question theme, admin theme...?
  * @since 2018-10-09
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class ThemeUpdater extends ExtensionUpdater
 {

@@ -1598,7 +1598,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /**
          * Add table for notifications
          * @since 2016-08-04
-         * @author Olle Haerstedt
+         * @author LimeSurvey GmbH
          */
         if ($iOldDBVersion < 259) {
             $oTransaction = $oDB->beginTransaction();
@@ -1640,7 +1640,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             /*
             * The hash value of a notification is used to calculate uniqueness.
             * @since 2016-08-10
-            * @author Olle Haerstedt
+            * @author LimeSurvey GmbH
             */
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('{{notif_hash_index}}', '{{notifications}}', 'hash', false);
