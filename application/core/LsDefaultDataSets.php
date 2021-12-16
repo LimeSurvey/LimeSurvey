@@ -2735,7 +2735,7 @@ class LsDefaultDataSets
                 "visible" => "Y",
                 "xml_path" => "themes/question/image_select/survey/questions/answer/multiplechoice",
                 "image_path" => "/assets/images/screenshots/M.png",
-                "title" => "Image Select Multiple choice",
+                "title" => "Image select multiple choice",
                 "creation_date" => "1970-01-01 01:00:00",
                 "author" => "LimeSurvey GmbH",
                 "author_email" => "info@limesurvey.org",
