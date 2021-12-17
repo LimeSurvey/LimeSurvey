@@ -2342,4 +2342,21 @@ class Participant extends LSActiveRecord
         }
         return $checkedActions;
     }
+
+    /**
+     * Returns the list of blacklisted participant IDs
+     * @return string[]
+     */
+    public function getBlacklistedParticipantIds()
+    {
+        $command = new CDbCriteria();
+        $command->condition = '';
+        $command->addCondition("blacklisted = 'Y'");
+
+        $oResult = $this->getCommandBuilder()
+            ->createFindCommand($this->getTableSchema(), $command)
+            ->select('participant_id')
+            ->queryColumn();
+        return $oResult;
+    }
 }

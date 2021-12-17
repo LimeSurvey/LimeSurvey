@@ -209,6 +209,12 @@ class TokenDynamic extends LSActiveRecord
         foreach ($oResult as $key => $result) {
             $oResult[$key] = $result->decrypt();
         }
+
+        $cpdbBlacklisted = Participant::model()->getBlacklistedParticipantIds();
+        $oResult = array_filter($oResult, function ($item) use ($cpdbBlacklisted) {
+            return empty($item->participant_id) || !in_array($item->participant_id, $cpdbBlacklisted);
+        });
+
         return $oResult;
     }
 
@@ -223,44 +229,11 @@ class TokenDynamic extends LSActiveRecord
      */
     public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $command = new CDbCriteria();
-        $command->condition = '';
-        $command->addCondition("(completed ='N') or (completed='')");
-        $command->addCondition("token <> ''");
-        $command->addCondition("email <> ''");
-        if ($bEmail) {
-            $command->addCondition("(sent = 'N') or (sent = '')");
-        } else {
-            $command->addCondition("(sent <> 'N') AND (sent <> '')");
-        }
-
-        if ($SQLemailstatuscondition) {
-            $command->addCondition($SQLemailstatuscondition);
-        }
-
-        if ($SQLremindercountcondition) {
-            $command->addCondition($SQLremindercountcondition);
-        }
-
-        if ($SQLreminderdelaycondition) {
-            $command->addCondition($SQLreminderdelaycondition);
-        }
-
-        if ($aTokenIds) {
-            $command->addCondition("tid IN ('" . implode("', '", $aTokenIds) . "')");
-        }
-
-        if ($iMaxEmails) {
-            $command->limit = $iMaxEmails;
-        }
-
-        $command->order = 'tid';
-
-        $oResult = $this->getCommandBuilder()
-            ->createFindCommand($this->getTableSchema(), $command)
-            ->select('tid')
-            ->queryColumn();
-        return $oResult;
+        $tokens = $this->findUninvited($aTokenIds, $iMaxEmails, $bEmail, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
+        $ids = array_map(function ($item) { 
+            return $item->tid; 
+        }, $tokens);
+        return $ids;
     }
 
     /**
