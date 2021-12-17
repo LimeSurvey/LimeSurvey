@@ -317,6 +317,7 @@ class LimeReplacementFieldsController extends LSBaseController
             $replFields['EMAIL'] = gT("Participant - Email address");
             $replFields['TOKEN'] = gT("Participant - Access code");
             $replFields['OPTOUTURL'] = gT("Participant - Opt-out URL");
+            $replFields['GLOBALOPTOUTURL'] = gT("Participant - Central Participant Opt-out URL");
             $replFields['OPTINURL'] = gT("Participant - Opt-in URL");
             $replFields['FIRSTNAME'] = gT("Participant - First name");
             $replFields['LASTNAME'] = gT("Participant - Last name");
