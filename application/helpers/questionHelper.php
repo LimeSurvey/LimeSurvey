@@ -298,6 +298,7 @@ class questionHelper
             'sortorder'=>200,
             'inputtype'=>'textarea',
             'expression'=>2,
+            'xssfilter' => 0,
             "help"=>gT('Enter a boolean equation to validate the whole question.'),
             "caption"=>gT('Question validation equation')
         );
@@ -319,6 +320,7 @@ class questionHelper
             'sortorder'=>220,
             'inputtype'=>'textarea',
             'expression'=>2,
+            'xssfilter' => 0,
             "help"=>gT('Enter a boolean equation to validate each subquestion.'),
             "caption"=>gT('Subquestion validation equation')
         );

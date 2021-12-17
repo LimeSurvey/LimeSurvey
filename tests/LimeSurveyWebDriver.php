@@ -133,4 +133,23 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     {
         return $this->findElement(WebDriverBy::cssSelector($css));
     }
+
+    /**
+     * Click "Close" on notification modal.
+     *
+     * @return void
+     */
+    public function dismissModal()
+    {
+        try {
+            // If not clickable, dismiss modal.
+            $button = $this->findElement(
+                WebDriverBy::cssSelector('#admin-notification-modal .modal-footer .btn')
+            );
+            $button->click();
+            sleep(1);
+        } catch (\Exception $ex) {
+            // Do nothing.
+        }
+    }
 }
