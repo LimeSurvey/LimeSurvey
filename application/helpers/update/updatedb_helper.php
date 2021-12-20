@@ -5033,6 +5033,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 478) {
             $oTransaction = $oDB->beginTransaction();
 
+            //intentionally left blank to  sync db changes with LimeSurvey Cloud
+
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value' => 478], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
