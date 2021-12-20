@@ -33,7 +33,7 @@
                             </td>
                             <td>
                                 <ul>
-                                    <li><?php eT("Responses are no longer accessible.");?> <?php echo gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
+                                    <li><?php eT("Responses are no longer accessible.");?><?php sprintf(gT('Your response table will be renamed to: {%s}old_%d_{%s}'), $dbprefix, $surveyid, $date); ?></li>
                                     <li><?php eT("All participant information will be lost.");?></li>
                                     <li><?php eT("A deactivated survey cannot be accessed by participants.  A message will be displayed stating that the survey has been closed.");?></li>
                                     <li><?php eT("Questions, groups and parameters can be edited again.");?></li>
