@@ -235,19 +235,19 @@
                     </td>
                     <td>
                         <?php
+                            $value = $setting['value'];
+                            if (!empty($setting['i18n'])) {
+                                $value = $setting[$question->survey->language]['value'];
+                            }
                             if (isset($setting['expression']) && $setting['expression'] > 0) {
                                 if ($setting['expression'] == 1) {
-                                    LimeExpressionManager::ProcessString($setting['value'], $question->qid);
+                                    LimeExpressionManager::ProcessString($value, $question->qid);
                                 } else {
-                                    LimeExpressionManager::ProcessString('{' . $setting['value'] . '}', $question->qid);
+                                    LimeExpressionManager::ProcessString('{' . $value . '}', $question->qid);
                                 }
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             } else {
-                                if (($setting['i18n'] ==null) || ($setting['i18n'] == false)) {
-                                    echo htmlspecialchars($setting['value']);
-                                } else {
-                                    echo htmlspecialchars($setting[$question->survey->language]['value']);
-                                }
+                                echo htmlspecialchars($value);
                             }
                         ?>
                     </td>
