@@ -141,7 +141,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only Numerical input</help>
+            <help>Allow only numerical input</help>
             <caption>Numbers only</caption>
             <i18n></i18n>
             <readonly></readonly>

@@ -695,7 +695,7 @@ class questionHelper
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
-            "help" => gT('Allow only Numerical input'),
+            "help" => gT('Allow only numerical input'),
             "caption" => gT('Numbers only')
         );
 
@@ -764,7 +764,7 @@ class questionHelper
             'inputtype' => 'switch',
             'options' => array(0 => gT('No'), 1 => gT('Yes')),
             'default' => 0,
-            "help" => gT("Allow only Numerical input for 'Other' text"),
+            "help" => gT("Allow only numerical input for 'Other' text"),
             "caption" => gT("Numbers only for 'Other'")
         );
 
