@@ -1,4 +1,4 @@
-<?php
+-<?php
 /** @var Question $oQuestion */
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
@@ -200,19 +200,19 @@
                             </td>
                             <td>
                                 <?php
+                                    $value = $aAdvancedSetting['value'];
+                                    if ($aAdvancedSetting['i18n']) {
+                                        $value = $aAdvancedSetting[$baselang]['value'];
+                                    }
                                     if (isset($aAdvancedSetting['expression']) && $aAdvancedSetting['expression'] > 0) {
                                         if ($aAdvancedSetting['expression'] == 1) {
-                                            LimeExpressionManager::ProcessString($aAdvancedSetting['value'], $qid);
+                                            LimeExpressionManager::ProcessString($value, $qid);
                                         } else {
-                                            LimeExpressionManager::ProcessString('{' . $aAdvancedSetting['value'] . '}', $qid);
+                                            LimeExpressionManager::ProcessString('{' . $value . '}', $qid);
                                         }
-                                        echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                        echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                                     } else {
-                                        if ($aAdvancedSetting['i18n']==false){
-                                            echo htmlspecialchars($aAdvancedSetting['value']);
-                                        } else {
-                                            echo htmlspecialchars($aAdvancedSetting[$baselang]['value']);
-                                        }
+                                        echo CHtml::encode($value);
                                     }
                                 ?>
                             </td>

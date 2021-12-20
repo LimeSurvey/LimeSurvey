@@ -82,8 +82,11 @@ class questions extends Survey_Common_Action
         $DisplayArray = array();
 
         foreach ($aAttributesWithValues as $aAttribute) {
-            if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
-                || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
+            if (
+                ($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
+                ||
+                ($aAttribute['i18n'] == true && isset($aAttribute[$baselang]['value']) && $aAttribute[$baselang]['value'] != $aAttribute['default'])
+            ) {
                 if ($aAttribute['inputtype'] == 'singleselect') {
                     if (isset($aAttribute['options'][$aAttribute['value']])) {
                         $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
