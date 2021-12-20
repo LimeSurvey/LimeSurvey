@@ -225,8 +225,11 @@
         <!-- Advanced Settings -->
         <?php foreach ($advancedSettings as $settings){ ?>
             <?php foreach ($settings as $setting){
-
-                if($setting['default'] != $setting['value']){ ?>
+                $value = $setting['value'];
+                if (!empty($setting['i18n'])) {
+                    $value = $setting[$question->survey->language]['value'];
+                }
+                if($setting['default'] != $value){ ?>
                 <tr>
                     <td>
                         <strong>
@@ -235,10 +238,7 @@
                     </td>
                     <td>
                         <?php
-                            $value = $setting['value'];
-                            if (!empty($setting['i18n'])) {
-                                $value = $setting[$question->survey->language]['value'];
-                            }
+
                             if (isset($setting['expression']) && $setting['expression'] > 0) {
                                 if ($setting['expression'] == 1) {
                                     LimeExpressionManager::ProcessString($value, $question->qid);
