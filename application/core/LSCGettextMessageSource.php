@@ -5,7 +5,7 @@
  * their own localization files
  *
  * @since 2016-07-25
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class LSCGettextMessageSource extends CGettextMessageSource
 {

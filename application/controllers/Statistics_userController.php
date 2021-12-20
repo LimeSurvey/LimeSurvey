@@ -89,9 +89,9 @@ class Statistics_userController extends SurveyController
             throw new CHttpException(404, 'You have to provide a valid survey ID.');
         } else {
             $surveyinfo = getSurveyInfo($iSurveyID);
-            // CHANGE JSW_NZ - let's get the survey title for display
+            // let's get the survey title for display
             $thisSurveyTitle = $surveyinfo["name"];
-            // CHANGE JSW_NZ - let's get css from individual template.css - so define path
+            // let's get css from individual template.css - so define path
             $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
             if ($surveyinfo['publicstatistics'] != 'Y') {
                 throw new CHttpException(404, 'The public statistics for this survey are deactivated.');
@@ -178,29 +178,6 @@ class Statistics_userController extends SurveyController
             $totalrecords = reset($row);
         }
 
-        //SET THE TEMPLATE DIRECTORY
-        //---------- CREATE STATISTICS ----------
-        //some progress bar stuff
-
-        // Create progress bar which is shown while creating the results
-        //~ $prb = new ProgressBar();
-        //~ $prb->pedding = 2;    // Bar Pedding
-        //~ $prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";    // Bar Border Color
-
-        //~ $prb->setFrame();    // set ProgressBar Frame
-        //~ $prb->frame['left'] = 50;    // Frame position from left
-        //~ $prb->frame['top'] =     80;    // Frame position from top
-        //~ $prb->addLabel('text','txt1',gT("Please wait ..."));    // add Text as Label 'txt1' and value 'Please wait'
-        //~ $prb->addLabel('percent','pct1');    // add Percent as Label 'pct1'
-        //~ $prb->addButton('btn1',gT('Go back'),'?action=statistics&amp;sid='.$iSurveyID);    // add Button as Label 'btn1' and action '?restart=1'
-
-        //~ $prb->show();    // show the ProgressBar
-
-        //~ // 1: Get list of questions with answers chosen
-        //~ //"Getting Questions and Answer ..." is shown above the bar
-        //~ $prb->setLabelValue('txt1',gT('Getting questions and answers ...'));
-        //~ $prb->moveStep(5);
-
         // creates array of post variable names
         $postvars = array();
         for (reset($_POST); $key = key($_POST); next($_POST)) {
@@ -210,17 +187,13 @@ class Statistics_userController extends SurveyController
         $data['totalrecords'] = $totalrecords;
         $data['summary'] = $summary;
         //show some main data at the beginnung
-        // CHANGE JSW_NZ - let's allow html formatted questions to show
+        // let's allow html formatted questions to show
 
         //push progress bar from 35 to 40
         $process_status = 40;
 
         //Show Summary results
         if (isset($summary) && !empty($summary)) {
-            //"Generating Summaries ..." is shown above the progress bar
-            //~ $prb->setLabelValue('txt1',gT('Generating summaries ...'));
-            //~ $prb->moveStep($process_status);
-
             //let's run through the survey // Fixed bug 3053 with array_unique
             $runthrough = array_unique($summary);
 
@@ -230,7 +203,6 @@ class Statistics_userController extends SurveyController
                 if ($process_status < 100) {
                     $process_status++;
                 }
-                //~ $prb->moveStep($process_status);
             }    // end foreach -> loop through all questions
 
             $helper = new userstatistics_helper();
@@ -238,13 +210,6 @@ class Statistics_userController extends SurveyController
         }    //end if -> show summary results
 
         $data['statisticsoutput'] = $statisticsoutput;
-        //done! set progress bar to 100%
-        if (isset($prb)) {
-            //~ $prb->setLabelValue('txt1',gT('Completed'));
-            //~ $prb->moveStep(100);
-            //~ $prb->hide();
-        }
-
         $data['aSurveyInfo'] = getSurveyInfo($iSurveyID);
         $data['graphUrl'] = Yii::app()->getController()->createUrl("admin/statistics/sa/graph");
 
@@ -281,8 +246,8 @@ class Statistics_userController extends SurveyController
 
             //let's switch through the question type for each question
             switch ($type) {
-                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: // Multiple Numerical
-                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple Short Text
+                case Question::QT_K_MULTIPLE_NUMERICAL: // Multiple Numerical
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT: // Multiple short text
                     $results = Question::model()->with('questionl10ns')->findAll([
                         'condition' => 'language=:language AND parent_qid=:parent_qid',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
@@ -292,12 +257,12 @@ class Statistics_userController extends SurveyController
                         $allfields[] = $flt->type . $SGQidentifier . $row->title;
                     }
                     break;
-                case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: // ARRAY OF 5 POINT CHOICE QUESTIONS
-                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // ARRAY OF 10 POINT CHOICE QUESTIONS
-                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
-                case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: // ARRAY OF Increase/Same/Decrease QUESTIONS
-                case Question::QT_F_ARRAY_FLEXIBLE_ROW: // FlEXIBLE ARRAY
-                case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: // ARRAY (By Column)
+                case Question::QT_A_ARRAY_5_POINT: // Array of 5 point choice questions
+                case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: // Array of 10 point choice questions
+                case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: // Array of Yes\No\Uncertain questions
+                case Question::QT_E_ARRAY_INC_SAME_DEC: // Array of Increase/Same/Decrease questions
+                case Question::QT_F_ARRAY: // Array
+                case Question::QT_H_ARRAY_COLUMN: // Array (By Column)
                     $results = Question::model()->with('questionl10ns')->findAll([
                         'condition' => 'language=:language AND parent_qid=:parent_qid',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],
@@ -308,13 +273,13 @@ class Statistics_userController extends SurveyController
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
+                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                 case Question::QT_T_LONG_FREE_TEXT: // Long free text
                 case Question::QT_U_HUGE_FREE_TEXT: // Huge free text
-                case Question::QT_S_SHORT_FREE_TEXT: // Short free text
                     $allfields = "T" . $SGQidentifier;
                     break;
-                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  //ARRAY (Multi Flex) (Text)
-                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:  //ARRAY (Multi Flex) (Numbers)
+                case Question::QT_SEMICOLON_ARRAY_TEXT:  // Array (Text)
+                case Question::QT_COLON_ARRAY_NUMBERS:  // Array (Numbers)
                     $resultsScale0 = Question::model()->with('questionl10ns')->findAll([
                         'condition' => 'language=:language AND parent_qid=:parent_qid AND scale_id=:scale_id',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid, ':scale_id' => 0],
@@ -331,7 +296,7 @@ class Statistics_userController extends SurveyController
                         }
                     }
                     break;
-                case Question::QT_R_RANKING_STYLE: //RANKING
+                case Question::QT_R_RANKING: // Ranking
                     $results = Answer::model()->with('answerl10ns')->findAll([
                         'condition' => 'language=:language AND qid=:qid',
                         'params'    => [':language' => $this->sLanguage, ':qid' => $flt->qid],
@@ -344,9 +309,9 @@ class Statistics_userController extends SurveyController
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-                case Question::QT_X_BOILERPLATE_QUESTION:  //This is a boilerplate question and it has no business in this script
+                case Question::QT_X_TEXT_DISPLAY:  //This is a boilerplate question and it has no business in this script
                     break;
-                case Question::QT_1_ARRAY_MULTISCALE: // MULTI SCALE
+                case Question::QT_1_ARRAY_DUAL: // Dual scale
                     $results = Question::model()->with('questionl10ns')->findAll([
                         'condition' => 'language=:language AND parent_qid=:parent_qid',
                         'params'    => [':language' => $this->sLanguage, ':parent_qid' => $flt->qid],

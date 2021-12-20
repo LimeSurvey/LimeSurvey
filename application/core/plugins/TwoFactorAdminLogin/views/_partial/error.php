@@ -3,7 +3,7 @@
  * Subview: Misserfolgsmelder mit Animation
  * 
  * @package SMKUserManagement
- * @author Markus Flür <markus.fluer@limesurvey.org>
+ * @author LimeSurvey GmbH <info@limesurvey.org>
  * @license GPL3.0
  */
 ?>

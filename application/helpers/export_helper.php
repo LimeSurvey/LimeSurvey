@@ -440,33 +440,33 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
 {
     $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
-        Question::QT_5_POINT_CHOICE => array('name' => '5 Point Choice', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('name' => 'Array (10 Point Choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_A_ARRAY_5_CHOICE_QUESTIONS => array('name' => 'Array (5 Point Choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_F_ARRAY_FLEXIBLE_ROW => array('name' => 'Array (Flexible Labels)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_1_ARRAY_MULTISCALE => array('name' => 'Array (Flexible Labels) Dual Scale', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_H_ARRAY_FLEXIBLE_COLUMN => array('name' => 'Array (Flexible Labels) by Column', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => array('name' => 'Array (Increase, Same, Decrease)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 2),
+        Question::QT_5_POINT_CHOICE => array('name' => '5 point choice', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array('name' => 'Array (10 point choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_A_ARRAY_5_POINT => array('name' => 'Array (5 point choice)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_F_ARRAY => array('name' => 'Array', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_1_ARRAY_DUAL => array('name' => 'Array dual scale', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_H_ARRAY_COLUMN => array('name' => 'Array by column', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_E_ARRAY_INC_SAME_DEC => array('name' => 'Array (Increase, Same, Decrease)', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 2),
         Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array('name' => 'Array (Yes/No/Uncertain)', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_X_BOILERPLATE_QUESTION => array('name' => 'Boilerplate Question', 'size' => 1, 'SPSStype' => 'A', 'hide' => 1),
+        Question::QT_X_TEXT_DISPLAY => array('name' => 'Text display', 'size' => 1, 'SPSStype' => 'A', 'hide' => 1),
         Question::QT_D_DATE => array('name' => 'Date', 'size' => 20, 'SPSStype' => 'DATETIME23.2'),
-        Question::QT_G_GENDER_DROPDOWN => array('name' => 'Gender', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge Free Text', 'size' => 1, 'SPSStype' => 'A'),
+        Question::QT_G_GENDER => array('name' => 'Gender', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_U_HUGE_FREE_TEXT => array('name' => 'Huge free text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_I_LANGUAGE => array('name' => 'Language Switch', 'size' => 2, 'SPSStype' => 'A'),
         Question::QT_EXCLAMATION_LIST_DROPDOWN => array('name' => 'List (Dropdown)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_L_LIST => array('name' => 'List (Radio)', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_O_LIST_WITH_COMMENT => array('name' => 'List With Comment', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_T_LONG_FREE_TEXT => array('name' => 'Long free text', 'size' => 1, 'SPSStype' => 'A'),
-        Question::QT_K_MULTIPLE_NUMERICAL_QUESTION => array('name' => 'Multiple Numerical Input', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_K_MULTIPLE_NUMERICAL => array('name' => 'Multiple numerical input', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_M_MULTIPLE_CHOICE => array('name' => 'Multiple choice', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array('name' => 'Multiple choice with comments', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_Q_MULTIPLE_SHORT_TEXT => array('name' => 'Multiple Short Text', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_N_NUMERICAL => array('name' => 'Numerical Input', 'size' => 3, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_R_RANKING_STYLE => array('name' => 'Ranking', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_Q_MULTIPLE_SHORT_TEXT => array('name' => 'Multiple short text', 'size' => 1, 'SPSStype' => 'F'),
+        Question::QT_N_NUMERICAL => array('name' => 'Numerical input', 'size' => 3, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_R_RANKING => array('name' => 'Ranking', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_S_SHORT_FREE_TEXT => array('name' => 'Short free text', 'size' => 1, 'SPSStype' => 'F'),
         Question::QT_Y_YES_NO_RADIO => array('name' => 'Yes/No', 'size' => 1, 'SPSStype' => 'F'),
-        Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => array('name' => 'Multi flexi numbers', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
-        Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => array('name' => 'Multi flexi text', 'size' => 1, 'SPSStype' => 'A'),
+        Question::QT_COLON_ARRAY_NUMBERS => array('name' => 'Multi flexi numbers', 'size' => 1, 'SPSStype' => 'F', 'Scale' => 3),
+        Question::QT_SEMICOLON_ARRAY_TEXT => array('name' => 'Multi flexi text', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_VERTICAL_FILE_UPLOAD => array('name' => 'File upload', 'size' => 1, 'SPSStype' => 'A'),
         Question::QT_ASTERISK_EQUATION => array('name' => 'Equation', 'size' => 1, 'SPSStype' => 'A'),
     );
@@ -1396,7 +1396,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
             //dual scale array questions
             quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } elseif ($use_answers == true) {
-            //ranking quesions
+            // Ranking quesions
             quexml_set_default_value_rank($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, $Row->code);
         } else {
             quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
@@ -1754,7 +1754,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
             $sgq = $RowQ['title'];
 
             //if this is a multi-flexi style question, create multiple questions
-            if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
+            if ($type == Question::QT_COLON_ARRAY_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_TEXT) {
                 $Rows = App()->db->createCommand()
                     ->select('*')
                     ->from("{{questions}} q")
@@ -1776,7 +1776,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                             $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen(quexml_get_lengthth($qid, 'multiflexible_max', 1)));
                             quexml_create_multi($question, $qid, $sgq . "_" . $SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                         }
-                    } elseif ($type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT) {
+                    } elseif ($type == Question::QT_SEMICOLON_ARRAY_TEXT) {
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
@@ -1865,7 +1865,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         $question->appendChild($response);
                         $question->appendChild($response2);
                         break;
-                    case "R": //RANKING STYLE
+                    case "R": // Ranking STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
                         //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
                         $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid]);
@@ -1878,7 +1878,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "P": //Multiple choice with comments checkbox + text
                         quexml_create_multi($question, $qid, $sgq, $iResponseID, $fieldmap, false, false, $other, "Y", true);
                         break;
-                    case "Q": //MULTIPLE SHORT TEXT
+                    case "Q": //Multiple short text
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFree("text", quexml_get_lengthth($qid, "maximum_chars", "10"), ""));
                         $question->appendChild($response);
@@ -1893,7 +1893,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
-                    case "S": //SHORT FREE TEXT
+                    case "S": //Short free text
                         // default is fieldlength of 24 characters.
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "maximum_chars", "24"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
@@ -1904,7 +1904,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
-                    case "U": //HUGE FREE TEXT
+                    case "U": //Huge free text
                         $response->appendChild(QueXMLCreateFree("longtext", quexml_get_lengthth($qid, "display_rows", "80"), ""));
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
@@ -1919,34 +1919,34 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         quexml_set_default_value($response, $iResponseID, $qid, $iSurveyID, $fieldmap);
                         $question->appendChild($response);
                         break;
-                    case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+                    case "A": // Array (5 point choice) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5)));
                         $question->appendChild($response);
                         break;
-                    case "B": //ARRAY (10 POINT CHOICE) radio-buttons
+                    case "B": // Array (10 point choice) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array("1" => 1, "2" => 2, "3" => 3, "4" => 4, "5" => 5, "6" => 6, "7" => 7, "8" => 8, "9" => 9, "10" => 10)));
                         $question->appendChild($response);
                         break;
-                    case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    case "C": // Array (Yes/Uncertain/No)
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y', gT("Uncertain") => 'U', gT("No") => 'N')));
                         $question->appendChild($response);
                         break;
-                    case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                    case "E": // Array (Increase/Same/Decrease) radio-buttons
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I', gT("Same") => 'S', gT("Decrease") => 'D')));
                         $question->appendChild($response);
                         break;
-                    case "F": //ARRAY (Flexible) - Row Format
+                    case "F": // Array (Flexible) - Row Format
                         //select subQuestions from answers table where QID
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, false, false, 0, $other, $sgq));
                         $question->appendChild($response);
                         //select fixed responses from
                         break;
-                    case "H": //ARRAY (Flexible) - Column Format
+                    case "H": // Array (Flexible) - Column Format
                         quexml_create_subQuestions($question, $RowQ['qid'], $sgq, $iResponseID, $fieldmap);
                         $response->appendChild(QueXMLCreateFixed($qid, $iResponseID, $fieldmap, true, false, 0, $other, $sgq));
                         $question->appendChild($response);

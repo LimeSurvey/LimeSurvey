@@ -1611,7 +1611,7 @@ class QuestionAdministrationController extends LSBaseController
         $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid' => $questionGroupId));
         $aData['surveyid'] = $surveyId; //this is important to load the correct layout (see beforeRender)
 
-        //array elements for frontend (topbar etc.)
+        // Array elements for frontend (topbar etc.)
         $aData['sidemenu']['landOnSideMenuTab'] = 'structure';
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title
             . " (" . gT("ID") . ":" . $surveyId . ")";
@@ -2015,7 +2015,7 @@ class QuestionAdministrationController extends LSBaseController
             $iQid = (int)$sQid;
             $oQuestion = Question::model()->findByPk(["qid" => $iQid], 'sid=:sid', [':sid' => $iSid]);
             // These are the questions types that have no mandatory property - so ignore them
-            if ($oQuestion->type != Question::QT_X_BOILERPLATE_QUESTION && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
+            if ($oQuestion->type != Question::QT_X_TEXT_DISPLAY && $oQuestion->type != Question::QT_VERTICAL_FILE_UPLOAD) {
                 $oQuestion->mandatory = $sMandatory;
                 $oQuestion->save();
             }

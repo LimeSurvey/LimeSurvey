@@ -2764,7 +2764,7 @@ You must enter values for <b>age</b> and <b>yearsMarried</b> in order to complet
     <gid><![CDATA[11]]></gid>
     <type><![CDATA[Q]]></type>
     <title><![CDATA[oMS]]></title>
-    <question><![CDATA[prefix/suffix for Multiple Short Text]]></question>
+    <question><![CDATA[prefix/suffix for Multiple short text]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -2782,7 +2782,7 @@ You must enter values for <b>age</b> and <b>yearsMarried</b> in order to complet
     <gid><![CDATA[11]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[oSFT]]></title>
-    <question><![CDATA[prefix/suffix for short free text]]></question>
+    <question><![CDATA[prefix/suffix for Short free text]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>

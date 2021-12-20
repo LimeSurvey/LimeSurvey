@@ -16,7 +16,7 @@ use ExtensionConfig;
  * Each extension type can support a number of different file fetch methods.
  *
  * @since 2018-09-24
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 abstract class FileFetcher
 {

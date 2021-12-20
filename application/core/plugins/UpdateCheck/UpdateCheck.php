@@ -19,7 +19,7 @@ use LimeSurvey\Menu\Menu;
  * Uses the ExtensionInstaller library.
  *
  * @since 2018-10-04
- * @author Olle Haerstedt
+ * @author LimeSurvey GmbH
  */
 class UpdateCheck extends PluginBase
 {

@@ -50,7 +50,7 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:       // Increase/same/decrease
+            case Question::QT_E_ARRAY_INC_SAME_DEC:       // Increase/same/decrease
                 if ($value == 'I') {
                     return 1;
                 } elseif ($value == 'S') {
@@ -60,7 +60,7 @@ class RDataWriter extends CsvWriter
                 }
                 break;
 
-            case Question::QT_G_GENDER_DROPDOWN:       // Gender question
+            case Question::QT_G_GENDER:       // Gender question
                 if ($value == 'F') {
                     return 1;
                 } elseif ($value == 'M') {

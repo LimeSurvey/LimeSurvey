@@ -7,8 +7,8 @@
         <type>question_theme</type>
         <title>List (Radio)</title>
         <creationDate>09/08/2018</creationDate>
-        <author>Dominik Vitt</author>
-        <authorEmail>dominik.vitt@limesurvey.org</authorEmail>
+        <author>LimeSurvey GmbH</author>
+        <authorEmail>info@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2018 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
@@ -255,7 +255,7 @@
                 </option>
             </options>
             <default>0</default>
-            <help>Allow only numerical input for &#039;Other&#039; text</help>
+            <help>Allow only Numerical input for &#039;Other&#039; text</help>
             <caption>Numbers only for &#039;Other&#039;</caption>
             <i18n></i18n>
             <readonly></readonly>
