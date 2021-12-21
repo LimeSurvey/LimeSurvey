@@ -34,6 +34,26 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 5.2.6 (build 211213) to 5.2.7 (build 211221) December 21, 2021
+-Fixed issue: Error shown when re-sending login data (Carsten Schmitz)
+-Fixed issue #17732: Direct access to response browsing break (#2167) (Gabriel Jenik)
+-Fixed issue #13660: Core question types & themes are not translated in question selector (#2181) (Carsten Schmitz)
+#Updated translation: Slovak by jelen1
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Inuktitut by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: French (France) by AlainR, Antonin36, eddylackmann, sim.eesp
+#Updated translation: Finnish by c_schmitz, Jmantysalo
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Chinese (Hong Kong) (Traditional) by dominiclo
+#Updated translation: Catalan by qualitatuvic
+
+
 Changes from 5.2.5 (build 211207) to 5.2.6 (build 211213) December 13, 2021
 -Fixed issue: Resend Login Data Popup Wording / Grammar Change (#2173) (Jessica Höck)
 -Fixed issue: Error on unknown fields in survey_language_settings when importing survey from Cloud hosting (Carsten Schmitz)
