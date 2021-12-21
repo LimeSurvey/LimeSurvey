@@ -104,6 +104,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpMbStringPresent = false;
 
     /** @var bool */
+    public $isPhpFileInfoPresent = false;
+
+    /** @var bool */
     public $isPhpZlibPresent = false;
 
     /** @var bool */
@@ -204,6 +207,7 @@ class InstallerConfigForm extends CFormModel
     private function checkStatus()
     {
         $this->isPhpMbStringPresent = function_exists('mb_convert_encoding');
+        $this->isPhpFileInfoPresent = function_exists('finfo_open');
         $this->isPhpZlibPresent = function_exists('zlib_get_coding_type');
         $this->isPhpJsonPresent = function_exists('json_encode');
         $this->isMemoryLimitOK = $this->checkMemoryLimit();
@@ -234,6 +238,7 @@ class InstallerConfigForm extends CFormModel
             or !$this->isConfigDirWriteable
             or !$this->isPhpVersionOK
             or !$this->isPhpMbStringPresent
+            or !$this->isPhpFileInfoPresent
             or !$this->isPhpZlibPresent
             or !$this->isPhpJsonPresent
         ) {
