@@ -1450,15 +1450,16 @@ class dataentry extends Survey_Common_Action
                     }
                     if(empty($thisvalue)) {
                         if (Survey::model()->findByPk($surveyid)->isDateStamp) {
-                            $thisvalue = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                            $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         } else {
-                            $thisvalue = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                            $oReponse->$fieldname = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
                         }
+                        break;
                     }
                 case 'startdate':
                 case 'datestamp':
                     if(empty($thisvalue)) {
-                        $oReponse->$fieldname = null;
+                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                         break;
                     }
                     $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1467,11 +1468,8 @@ class dataentry extends Survey_Common_Action
                         $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
                         Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"),htmlentities($thisvalue),$fieldname), 'warning');
-                        if($fieldname == 'startdate') {
-                            $oReponse->$fieldname = date("Y-m-d H:i:s");// Need not null value
-                        } else {
-                            $oReponse->$fieldname = null;
-                        }
+                        /* We get here : we need a valid value : NOT NULL in db or completed != "N" */
+                        $oReponse->$fieldname = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
                     }
                     break;
                 default:
