@@ -354,7 +354,7 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_M_MULTIPLE_CHOICE:
                                     case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                                         $condition = " parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}'";
-                                        $ansresult = Question::model()->findAll($condition);
+                                        $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                                         foreach ($ansresult as $ansrow) {
                                             $conditions[] = $ansrow->questionl10ns[$sLanguageCode]->question;
                                         }
@@ -387,7 +387,7 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_K_MULTIPLE_NUMERICAL:
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid={$conrow['cqid']} AND title='{$thiscquestion['aid']}'";
-                                        $ansresult = Question::model()->findAll($condition);
+                                        $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                                         foreach ($ansresult as $ansrow) {
                                             $answer_section = " (" . $ansrow->questionl10ns[$sLanguageCode]->question . ")";
                                         }
@@ -397,7 +397,7 @@ class printablesurvey extends Survey_Common_Action
                                         $labelIndex = substr($conrow['cfieldname'], -1);
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
-                                        $ansresult = Question::model()->findAll($condition);
+                                        $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                                         $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
                                         if ($labelIndex == 0) {
                                             if (trim($cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
@@ -420,7 +420,7 @@ class printablesurvey extends Survey_Common_Action
                                     case Question::QT_SEMICOLON_ARRAY_TEXT: //multi flexi: ( answer [label] )
                                         $thiscquestion = $fieldmap[$conrow['cfieldname']];
                                         $condition = "parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}'";
-                                        $ansresult = Question::model()->findAll($condition);
+                                        $ansresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                                         foreach ($ansresult as $ansrow) {
                                             $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}'";
                                             $fresult = Answer::model()->findAll(['condition' => $condition, 'order' => 'sortorder, code']);
@@ -692,7 +692,8 @@ class printablesurvey extends Survey_Common_Action
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose *all* that apply:"));
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $condition = "parent_qid={$arQuestion['qid']}";
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             $meacount = count($mearesult);
                             if ($arQuestion['other'] == 'Y') {
                                 $meacount++;
@@ -733,7 +734,8 @@ class printablesurvey extends Survey_Common_Action
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose all that apply and provide a comment:"));
 
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $condition = "parent_qid={$arQuestion['qid']}";
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             $j = 0;
                             $longest_string = 0;
                             foreach ($mearesult as $mearow) {
@@ -770,7 +772,8 @@ class printablesurvey extends Survey_Common_Action
 
 
                             $longest_string = 0;
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $condition = "parent_qid={$arQuestion['qid']}";
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             $question['answer'] = "";
                             foreach ($mearesult as $mearow) {
                                 $longest_string = longestString($mearow->questionl10ns[$sLanguageCode]->question, $longest_string);
@@ -850,7 +853,7 @@ class printablesurvey extends Survey_Common_Action
                             $question['answer'] .= "\t</tr></thead>\n\n\t<tbody>\n";
                             $j = 0;
                             $rowclass = 'ls-odd';
-                            $mearesult = Question::model()->findAll($condition);
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -893,7 +896,8 @@ class printablesurvey extends Survey_Common_Action
                             $question['answer'] .= "\t</tr></thead>\n\n\t<tbody>\n";
                             $j = 0;
                             $rowclass = 'ls-odd';
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $condition = "parent_qid={$arQuestion['qid']}";
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow->questionl10ns[$sLanguageCode]->question}" . self::_addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . "</th>\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -923,7 +927,8 @@ class printablesurvey extends Survey_Common_Action
 
                             $rowclass = 'ls-odd';
 
-                            $mearesult = Question::model()->findAll("parent_qid=" . $arQuestion['qid']);
+                            $condition = "parent_qid=" . $arQuestion['qid'];
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $question['answer'] .= "\t\t\t<th class=\"answertext\">{$mearow->questionl10ns[$sLanguageCode]->question}" . self::_addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . "</th>\n";
@@ -952,7 +957,8 @@ class printablesurvey extends Survey_Common_Action
                             $j = 0;
                             $rowclass = 'ls-odd';
 
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $condition = "parent_qid={$arQuestion['qid']}";
+                            $mearesult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $question['answer'] .= "\t\t\t<th class=\"answertext\">{$mearow->questionl10ns[$sLanguageCode]->question}" . self::_addsgqacode(" (" . $fieldname . $mearow['title'] . ")") . "</th>\n";
@@ -980,7 +986,7 @@ class printablesurvey extends Survey_Common_Action
                             $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
-                            $fresult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' and scale_id=1");
+                            $fresult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=1", 'order' => 'question_order']);                                        
                             $fcount = count($fresult);
                             $i = 0;
                             // Array to temporary store X axis question codes
@@ -996,7 +1002,7 @@ class printablesurvey extends Survey_Common_Action
                             $a = 1; //Counter for pdfoutput
                             $rowclass = 'ls-odd';
 
-                            $result = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' and scale_id=0");
+                            $result = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=0", 'order' => 'question_order']);                                        
                             foreach ($result as $frow) {
                                 $question['answer'] .= "\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -1030,14 +1036,12 @@ class printablesurvey extends Survey_Common_Action
                             // ==================================================================
                         case Question::QT_SEMICOLON_ARRAY_TEXT: // Array (Multi Flexible) (text)
                             $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                            $mearesult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}' AND scale_id=0");
-
                             $question['type_help'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
                             $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                             $question['answer'] .= "\t\t\t<td style='width:{$answerwidth}%'><span></span></td>\n";
-                            $fresult = Question::model()->findAll("parent_qid={$arQuestion['qid']}  AND scale_id=1");
+                            $fresult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=1", 'order' => 'question_order']);                                        
                             $fcount = count($fresult);
                             $i = 0;
                             // Array to temporary store X axis question codes
@@ -1053,6 +1057,7 @@ class printablesurvey extends Survey_Common_Action
                             $a = 1;
                             $rowclass = 'ls-odd';
 
+                            $mearesult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}' and scale_id=0", 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -1111,7 +1116,7 @@ class printablesurvey extends Survey_Common_Action
                             $counter = 1;
                             $rowclass = 'ls-odd';
 
-                            $mearesult = Question::model()->findAll("parent_qid='{$arQuestion['qid']}'");
+                            $mearesult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}'", 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -1206,7 +1211,7 @@ class printablesurvey extends Survey_Common_Action
 
                             //counter for each subquestion
                             $sqcounter = 0;
-                            $mearesult = Question::model()->findAll("parent_qid={$arQuestion['qid']}");
+                            $mearesult = Question::model()->findAll(['condition' => "parent_qid='{$arQuestion['qid']}'", 'order' => 'question_order']);                                        
                             foreach ($mearesult as $mearow) {
                                 $question['answer'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass, 'row');
@@ -1239,7 +1244,8 @@ class printablesurvey extends Survey_Common_Action
                             // ==================================================================
                         case Question::QT_H_ARRAY_COLUMN:
                             $condition = "parent_qid={$arQuestion['qid']}";
-                            $fresult = Question::model()->FindAll($condition);
+                            $fresult = Question::model()->findAll(['condition' => $condition, 'order' => 'question_order']);                                        
+
                             $question['type_help'] .= CHtml::tag("div", array("class" => "tip-help"), gT("Please choose the appropriate response for each item:"));
                             $answerwidth = (trim($qidattributes['answer_width_bycolumn']) != '') ? $qidattributes['answer_width_bycolumn'] : 33;
                             $question['answer'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
