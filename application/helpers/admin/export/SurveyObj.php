@@ -127,7 +127,7 @@ class SurveyObj
                     $answers = $this->getAnswers($questionId, 1);
                 }
                 if (array_key_exists($answerCode, $answers)) {
-                    $fullAnswer = $answers[$answerCode]['answer'];
+                    $fullAnswer = $answers[$answerCode];
                 } else {
                     $fullAnswer = null;
                 }
