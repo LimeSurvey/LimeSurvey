@@ -614,9 +614,9 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailFormated()
     {
         if ($this->emailstatus == "bounced") {
-            return '<span class="text-warning"><strong> '.$this->email.'</strong></span>';
+            return '<span class="text-warning"><strong> ' . CHtml::encode($this->email) . '</strong></span>';
         } else {
-            return $this->email;
+            return CHtml::encode($this->email);
         }
     }
 
@@ -626,9 +626,9 @@ class TokenDynamic extends LSActiveRecord
     public function getEmailstatusFormated()
     {
         if ($this->emailstatus == "bounced") {
-            return '<span class="text-warning"><strong> '.$this->emailstatus.'</strong></span>';
+            return '<span class="text-warning"><strong> ' . CHtml::encode($this->emailstatus) . '</strong></span>';
         } else {
-            return $this->emailstatus;
+            return CHtml::encode($this->emailstatus);
         }
     }
 
