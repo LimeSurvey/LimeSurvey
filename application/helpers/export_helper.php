@@ -1257,7 +1257,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
-    $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition);
+    $QueryResult = Question::model()->with('questionl10ns')->findAllByAttributes($aCondition, ['order' => 'question_order']);
     foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1374,10 +1374,10 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     $qid        = sanitize_paranoid_string($qid);
     if ($use_answers) {
         // $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
-        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid]);
+        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid], ['order' => 'sortorder']);
     } else {
         // $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-        $QueryResult = Question::model()->findAllByAttributes(['parent_qid' => $qid, 'scale_id' => 0]);
+        $QueryResult = Question::model()->findAllByAttributes(['parent_qid' => $qid, 'scale_id' => 0], ['order' => 'question_order']);
     }
     foreach ($QueryResult as $Row) {
         $subQuestion = $dom->createElement("subQuestion");
@@ -1868,7 +1868,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                     case "R": // Ranking STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
                         //width of a ranking style question for display purposes is the width of the number of responses available (eg 12 responses, width 2)
-                        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid]);
+                        $QueryResult = Answer::model()->findAllByAttributes(['qid' => $qid], ['order' => 'sortorder']);
                         $response->appendChild(QueXMLCreateFree("integer", strlen(count($QueryResult)), ""));
                         $question->appendChild($response);
                         break;
