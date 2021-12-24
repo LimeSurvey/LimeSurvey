@@ -1253,34 +1253,38 @@ class dataentry extends Survey_Common_Action
                                     $thisdate = $datetimeobj->format($dateformatdetails['phpdate'] . " H:i");
                                 }
                             }
-                            $aDataentryoutput .= App()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-                                'name' => $fname['fieldname'],
-                                'id' => $fname['fieldname'],
-                                'value' => $thisdate,
-                                'htmlOptions' => array(
-                                    'required' => in_array($fname['fieldname'], array("startdate")),
-                                ),
-                                'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
-                                    'allowInputToggle' => true,
-                                    'showClear' => true,
-                                    'tooltips' => array(
-                                        'clear' => gT('Clear selection'),
-                                        'prevMonth' => gT('Previous month'),
-                                        'nextMonth' => gT('Next month'),
-                                        'selectYear' => gT('Select year'),
-                                        'prevYear' => gT('Previous year'),
-                                        'nextYear' => gT('Next year'),
-                                        'selectDecade' => gT('Select decade'),
-                                        'prevDecade' => gT('Previous decade'),
-                                        'nextDecade' => gT('Next decade'),
-                                        'prevCentury' => gT('Previous century'),
-                                        'nextCentury' => gT('Next century'),
-                                        'selectTime' => gT('Select time')
+                            $aDataentryoutput .= App()->getController()->widget(
+                                'yiiwheels.widgets.datetimepicker.WhDateTimePicker',
+                                array(
+                                    'name' => $fname['fieldname'],
+                                    'id' => $fname['fieldname'],
+                                    'value' => $thisdate,
+                                    'htmlOptions' => array(
+                                        'required' => in_array($fname['fieldname'], array("startdate")),
                                     ),
-                                    'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
-                                )
-                            ), true);
+                                    'pluginOptions' => array(
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                        'allowInputToggle' => true,
+                                        'showClear' => true,
+                                        'tooltips' => array(
+                                            'clear' => gT('Clear selection'),
+                                            'prevMonth' => gT('Previous month'),
+                                            'nextMonth' => gT('Next month'),
+                                            'selectYear' => gT('Select year'),
+                                            'prevYear' => gT('Previous year'),
+                                            'nextYear' => gT('Next year'),
+                                            'selectDecade' => gT('Select decade'),
+                                            'prevDecade' => gT('Previous decade'),
+                                            'nextDecade' => gT('Next decade'),
+                                            'prevCentury' => gT('Previous century'),
+                                            'nextCentury' => gT('Next century'),
+                                            'selectTime' => gT('Select time')
+                                        ),
+                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']),
+                                    )
+                                ),
+                                true
+                            );
                             break;
                         case "startlanguage":
                         default:
