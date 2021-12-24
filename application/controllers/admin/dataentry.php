@@ -1291,7 +1291,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= CHtml::textField(
                                 $fname['fieldname'],
                                 $idrow[$fname['fieldname']],
-                                array('class' => 'form-control'),
+                                array('class' => 'form-control')
                             );
                             break;
                     }
